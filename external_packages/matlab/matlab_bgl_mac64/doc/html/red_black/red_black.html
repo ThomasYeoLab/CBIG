@@ -1,0 +1,282 @@
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Red-Black Ordering with MatlabBGL</title>
+      <meta name="generator" content="MATLAB 7.5">
+      <meta name="date" content="2008-10-22">
+      <meta name="m-file" content="red_black">
+      <link rel="stylesheet" type="text/css" href="../site.css"><style>
+
+body {
+  background: white;
+  color: black;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+pre.codeinput {
+  margin-left: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #bbbbbb;
+  border: solid 1px;
+  font-size: 10pt;
+  width: 620px;
+}
+
+p
+{
+	margin: 10px;
+}
+
+hr
+{
+    color: #bbbbbb;
+    height: 4;
+}
+
+.main
+{
+	border-left-style: solid;
+	margin-left: 100px;	
+	width: 650px;
+}
+
+.upwhitesq
+{
+    position: relative;
+    left: -5px;
+    top: -8px;
+    background: white;  
+}
+.downwhitesq
+{
+    position: relative;
+    left: 95px;
+    bottom: 10px;
+    background: white;  
+}
+
+img
+{
+	text-align: center;
+}
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.showbuttons {
+  margin-left: 30px;
+  border: solid black 2px;
+  padding: 4px;
+  background: #EBEFF3;
+}
+
+pre.codeoutput {
+  margin-left: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 10pt;
+  width: 520px;
+}
+
+pre.error {
+  color: red;
+}
+
+.intro {
+  width: 650px;
+}
+
+    </style></head>
+   <body>
+      <h1>Red-Black Ordering with MatlabBGL</h1>
+      <introduction>
+         <div class="intro">
+            <p>In this example, we will use the MatlabBGL library to compute the red-black ordering of a matrix.  For certain matrices, the
+               red-black ordering does not exist, but if a red-black ordering exists, then this algorithm will find it.
+            </p>
+            <p>A matrix has a red-black ordering if the directed graph of the matrix elements is bipartite.  To find a bipartite ordering
+               of the matrix, we will use the MatlabBGL <tt>bfs</tt> command.
+            </p>
+         </div>
+      </introduction>
+      <h2>Contents</h2>
+      <div>
+         <ul>
+            <li><a href="#1">Generating a Matrix</a></li>
+            <li><a href="#8">Finding the Red-Black ordering</a></li>
+         </ul>
+      </div>
+      <div class="main">
+         <h2>Generating a Matrix<a name="1"></a></h2>
+         <p>If you already have a matrix you want to use, you can skip this step. First, we generate a second order finite difference
+            approximation to the Laplacian operator on a rectangular domain.  This matrix does have a red-black ordering.
+         </p>
+         <p>n is the number of points used to discretize each dimension. N is the total number rows and columns in the matrix/graph.</p><pre class="codeinput">n = 55;
+N = n*n;
+</pre><p>This set of commands creates a pentadiagonal matrix.</p><pre class="codeinput">A = delsq(numgrid(<span class="string">'S'</span>,n+2));
+</pre><p>Now we visualize the matrix.</p><pre class="codeinput">spy(A)
+</pre><img vspace="5" hspace="5" src="red_black_01.png"> <p>The matrix A we just created is block tridiagonal, although this is (perhaps) not obvious from the plot.</p>
+         <p>We know, analytically, that this matrix has a red black ordering given by the odd points and then the even points, when indexed
+            in the current order.
+         </p><pre class="codeinput">p = [1:2:N 2:2:N];
+spy(A(p,p));
+</pre><img vspace="5" hspace="5" src="red_black_02.png"> <p>Usually, it's a little easier to see a red-black ordering using the following command.</p><pre class="codeinput">spy(A(p,p) - diag(diag(A(p,p))));
+hold <span class="string">on</span>;
+plot([size(A,2)/2 size(A,2)/2],[0 size(A,1)], <span class="string">'k-'</span>);
+plot([0 size(A,2)],[size(A,1)/2 size(A,1)/2], <span class="string">'k-'</span>);
+hold <span class="string">off</span>;
+</pre><img vspace="5" hspace="5" src="red_black_03.png"> <p>Now we can see that a matrix with a red-black ordering only has non-zero dots in the upper right and lower left boxes.</p>
+         <hr>
+         <div class="upwhitesq">&nbsp;</div>
+         <h2>Finding the Red-Black ordering<a name="8"></a></h2>
+         <p>To find the red-black ordering for an arbitrary matrix (if we do not know it analytically) is easy using MatlabBGL.</p>
+         <p>The key idea is to realize that a red-black ordering is equivalent with the partition of vertices in a bipartite graph.  Once
+            we see the problem in this light, we can quickly come up with an algorithm that yields a potential red-black ordering.
+         </p>
+         <p>We begin by picking an arbitrary vertex and look at how far a breadth first search goes at every step.  To find the bipartition,
+            we look at all vertices which are an even distance from the root and all the vertices which are an odd distance from the root.
+             If the matrix has a red-black ordering or is a bipartite graph, this algorithm will find it.
+         </p>
+         <p>Implementing this algorithm is trivial using the MatlabBGL library. First, we compute a breadth first search on the graph
+            and store the distance each vertex is from the root.  Because we really do not care, we'll choose vertex 1 (row 1) of the
+            matrix as the root vertex.
+         </p><pre class="codeinput">d = bfs(A,1);
+</pre><p>Now we find the even and odd partitions</p><pre class="codeinput">d_even = find(mod(d,2) == 0);
+d_odd = find(mod(d,2) == 1);
+</pre><p>Getting the actual permutation of the matrix is simple, we list the odd vertices and then the even vertices</p><pre class="codeinput">p = [d_odd' d_even'];
+</pre><p>Computing the same plot shows we found the red-black ordering!</p><pre class="codeinput">spy(A(p,p) - diag(diag(A(p,p))));
+hold <span class="string">on</span>;
+plot([size(A,2)/2 size(A,2)/2],[0 size(A,1)], <span class="string">'k-'</span>);
+plot([0 size(A,2)],[size(A,1)/2 size(A,1)/2], <span class="string">'k-'</span>);
+hold <span class="string">off</span>;
+</pre><img vspace="5" hspace="5" src="red_black_04.png"> <p>and that's it!  MatlabBGL and the <tt>bfs</tt> command made this problem simple!
+         </p>
+         <hr>
+         <div class="upwhitesq">&nbsp;</div>
+      </div>
+      <div class="downwhitesq">&nbsp;</div>
+      <!--
+##### SOURCE BEGIN #####
+%% Red-Black Ordering with MatlabBGL
+% In this example, we will use the MatlabBGL library to compute the
+% red-black ordering of a matrix.  For certain matrices, the red-black
+% ordering does not exist, but if a red-black ordering exists, then this
+% algorithm will find it.  
+% 
+% A matrix has a red-black ordering if the directed graph of the matrix
+% elements is bipartite.  To find a bipartite ordering of the matrix, we
+% will use the MatlabBGL |bfs| command.  
+
+%% Generating a Matrix
+% If you already have a matrix you want to use, you can skip this step.
+% First, we generate a second order finite difference approximation to the
+% Laplacian operator on a rectangular domain.  This matrix does have a
+% red-black ordering.  
+
+%%
+% n is the number of points used to discretize each dimension.
+% N is the total number rows and columns in the matrix/graph.
+
+n = 55;
+N = n*n;
+
+%%
+% This set of commands creates a pentadiagonal matrix.
+
+A = delsq(numgrid('S',n+2));
+
+%% 
+% Now we visualize the matrix.
+
+spy(A)
+
+%%
+% The matrix A we just created is block tridiagonal, although this is
+% (perhaps) not obvious from the plot.  
+%
+% We know, analytically, that this matrix has a red black ordering given 
+% by the odd points and then the even points, when indexed in the current
+% order.
+
+p = [1:2:N 2:2:N];
+spy(A(p,p));
+
+%%
+% Usually, it's a little easier to see a red-black ordering using the
+% following command.
+
+spy(A(p,p) - diag(diag(A(p,p))));
+hold on; 
+plot([size(A,2)/2 size(A,2)/2],[0 size(A,1)], 'k-');
+plot([0 size(A,2)],[size(A,1)/2 size(A,1)/2], 'k-');
+hold off;
+
+%% 
+% Now we can see that a matrix with a red-black ordering only has non-zero
+% dots in the upper right and lower left boxes.
+
+%% Finding the Red-Black ordering
+% To find the red-black ordering for an arbitrary matrix (if we do not know
+% it analytically) is easy using MatlabBGL.
+%
+% The key idea is to realize that a red-black ordering is equivalent with
+% the partition of vertices in a bipartite graph.  Once we see the problem
+% in this light, we can quickly come up with an algorithm that yields a
+% potential red-black ordering.
+%
+% We begin by picking an arbitrary vertex and look at how far a breadth
+% first search goes at every step.  To find the bipartition, we look at all
+% vertices which are an even distance from the root and all the vertices
+% which are an odd distance from the root.  If the matrix has a red-black
+% ordering or is a bipartite graph, this algorithm will find it.
+%
+% Implementing this algorithm is trivial using the MatlabBGL library.
+% First, we compute a breadth first search on the graph and store the
+% distance each vertex is from the root.  Because we really do not care,
+% we'll choose vertex 1 (row 1) of the matrix as the root vertex.
+
+d = bfs(A,1);
+
+%% 
+% Now we find the even and odd partitions
+
+d_even = find(mod(d,2) == 0);
+d_odd = find(mod(d,2) == 1);
+
+%%
+% Getting the actual permutation of the matrix is simple, we list the odd
+% vertices and then the even vertices
+
+p = [d_odd' d_even'];
+
+%% 
+% Computing the same plot shows we found the red-black ordering!
+
+spy(A(p,p) - diag(diag(A(p,p))));
+hold on; 
+plot([size(A,2)/2 size(A,2)/2],[0 size(A,1)], 'k-');
+plot([0 size(A,2)],[size(A,1)/2 size(A,1)/2], 'k-');
+hold off;
+
+%% 
+% and that's it!  MatlabBGL and the |bfs| command made this problem simple!
+##### SOURCE END #####
+-->
+   </body>
+</html>

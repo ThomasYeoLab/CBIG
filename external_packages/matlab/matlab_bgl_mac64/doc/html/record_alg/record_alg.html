@@ -1,0 +1,328 @@
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Recording algorithm behavior with MatlabBGL</title>
+      <meta name="generator" content="MATLAB 7.5">
+      <meta name="date" content="2008-10-22">
+      <meta name="m-file" content="record_alg">
+      <link rel="stylesheet" type="text/css" href="../site.css"><style>
+
+body {
+  background: white;
+  color: black;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+pre.codeinput {
+  margin-left: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #bbbbbb;
+  border: solid 1px;
+  font-size: 10pt;
+  width: 620px;
+}
+
+p
+{
+	margin: 10px;
+}
+
+hr
+{
+    color: #bbbbbb;
+    height: 4;
+}
+
+.main
+{
+	border-left-style: solid;
+	margin-left: 100px;	
+	width: 650px;
+}
+
+.upwhitesq
+{
+    position: relative;
+    left: -5px;
+    top: -8px;
+    background: white;  
+}
+.downwhitesq
+{
+    position: relative;
+    left: 95px;
+    bottom: 10px;
+    background: white;  
+}
+
+img
+{
+	text-align: center;
+}
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.showbuttons {
+  margin-left: 30px;
+  border: solid black 2px;
+  padding: 4px;
+  background: #EBEFF3;
+}
+
+pre.codeoutput {
+  margin-left: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 10pt;
+  width: 520px;
+}
+
+pre.error {
+  color: red;
+}
+
+.intro {
+  width: 650px;
+}
+
+    </style></head>
+   <body>
+      <h1>Recording algorithm behavior with MatlabBGL</h1>
+      <introduction>
+         <div class="intro">
+            <p>In this example, we will write a simple visitor that outputs an algorithm's behavior.  The algorithm we will examine is dijkstra_sp.
+               To examine the runtime behavior we will use a visitor which outputs a string every time a function is called.
+            </p>
+         </div>
+      </introduction>
+      <h2>Contents</h2>
+      <div>
+         <ul>
+            <li><a href="#1">Setup</a></li>
+            <li><a href="#6">Calling dijkstra_sp</a></li>
+            <li><a href="#8">Understanding the output</a></li>
+         </ul>
+      </div>
+      <div class="main">
+         <h2>Setup<a name="1"></a></h2>
+         <p>To begin, we load a graph.</p><pre class="codeinput">load <span class="string">../graphs/clr-25-2.mat</span>
+</pre><p>Next, let's check the documentation to see which functions to implement for the visitor</p><pre class="codeinput">help <span class="string">dijkstra_sp</span>
+</pre><pre class="codeoutput">  DIJKSTRA_SP Compute the weighted single source shortest path problem.
+ 
+  Dijkstra's algorithm for the single source shortest path problem only
+  works on graphs without negative edge weights.
+ 
+  This method works on weighted directed graphs without negative edge
+  weights.
+  The runtime is O(V log (V)).
+ 
+  See the shortest_paths function for calling information.  This function 
+  just calls shortest_paths(...,struct('algname','dijkstra'));
+ 
+  The options structure can contain a visitor for the Dijkstra algorithm.  
+ 
+  See http://www.boost.org/libs/graph/doc/DijkstraVisitor.html for a 
+  description of the events.
+  
+  visitor is a struct with the following optional fields
+     vis.initialize_vertex(u)
+     vis.discover_vertex(u)
+     vis.examine_vertex(u)
+     vis.examine_edge(ei,u,v)
+     vis.edge_relaxed(ei,u,v)
+     vis.edge_not_relaxed(ei,u,v)
+     vis.finish_vertex(u)
+  Each visitor parameter should be a function pointer, which returns 0
+  if the shortest path search should stop.  (If the function does not 
+  return anything, the algorithm continues.)
+ 
+  Example:
+     load graphs/clr-25-2.mat
+     dijkstra_sp(A,1)
+ 
+  See also SHORTEST_PATHS, BELLMAN_FORD_SP.
+
+</pre><p>The help states that dijkstra_sp allows visitors functions for initialize_vertex, discover_vertex, examine_vertex, examine_edge,
+            edge_relaxed, edge_not_relaxed, and finish_vertex.
+         </p>
+         <p>Rather than implementing 7 functions ourselves, we define two helper functions.  These helper functions return functions themselves.
+             There is one helper that returns a vertex visitor function and one helper than returns an edge visitor function.
+         </p><pre class="codeinput">vertex_vis_print_func = @(str) @(u) <span class="keyword">...</span>
+    fprintf(<span class="string">'%s called on %s\n'</span>, str, char(labels{u}));
+edge_vis_print_func = @(str) @(ei,u,v) <span class="keyword">...</span>
+    fprintf(<span class="string">'%s called on (%s,%s)\n'</span>, str, char(labels{u}), char(labels{v}));
+</pre><p>These anonymous functions return functions themselves.</p><pre class="codeinput">ev_func = vertex_vis_print_func(<span class="string">'examine_vertex'</span>);
+ev_func(1)
+</pre><pre class="codeoutput">examine_vertex called on s
+</pre><p>I hope you see how these functions are useful in saving quite a bit of typing.</p>
+         <hr>
+         <div class="upwhitesq">&nbsp;</div>
+         <h2>Calling dijkstra_sp<a name="6"></a></h2>
+         <p>We are almost done.  Now, we just have to setup the visitor structure to pass to the dijkstra_sp call.</p><pre class="codeinput">vis = struct();
+vis.initialize_vertex = vertex_vis_print_func(<span class="string">'initialize_vertex'</span>);
+vis.discover_vertex = vertex_vis_print_func(<span class="string">'discover_vertex'</span>);
+vis.examine_vertex = vertex_vis_print_func(<span class="string">'examine_vertex'</span>);
+vis.finish_vertex = vertex_vis_print_func(<span class="string">'finish_vertex'</span>);
+vis.examine_edge = edge_vis_print_func(<span class="string">'examine_edge'</span>);
+vis.edge_relaxed = edge_vis_print_func(<span class="string">'edge_relaxed'</span>);
+vis.edge_not_relaxed = edge_vis_print_func(<span class="string">'edge_not_relaxed'</span>);
+</pre><p>With the visitor setup, there is hardly any work left.</p><pre class="codeinput">dijkstra_sp(A,1,struct(<span class="string">'visitor'</span>, vis));
+</pre><pre class="codeoutput">initialize_vertex called on s
+initialize_vertex called on u
+initialize_vertex called on x
+initialize_vertex called on v
+initialize_vertex called on y
+discover_vertex called on s
+examine_vertex called on s
+examine_edge called on (s,u)
+edge_relaxed called on (s,u)
+discover_vertex called on u
+examine_edge called on (s,x)
+edge_relaxed called on (s,x)
+discover_vertex called on x
+finish_vertex called on s
+examine_vertex called on u
+examine_edge called on (u,x)
+edge_not_relaxed called on (u,x)
+examine_edge called on (u,v)
+edge_relaxed called on (u,v)
+discover_vertex called on v
+finish_vertex called on u
+examine_vertex called on x
+examine_edge called on (x,u)
+examine_edge called on (x,v)
+edge_not_relaxed called on (x,v)
+examine_edge called on (x,y)
+edge_relaxed called on (x,y)
+discover_vertex called on y
+finish_vertex called on x
+examine_vertex called on v
+examine_edge called on (v,y)
+edge_not_relaxed called on (v,y)
+finish_vertex called on v
+examine_vertex called on y
+examine_edge called on (y,s)
+examine_edge called on (y,v)
+finish_vertex called on y
+</pre><hr>
+         <div class="upwhitesq">&nbsp;</div>
+         <h2>Understanding the output<a name="8"></a></h2>
+         <p>To understand the output, we find it helpful to have a copy of Introduction to Algorithms by Cormen, Leiserson, and Rivest.
+             The source for the graph is Figure 25-2 in that book and the authors use the graph to illustrate how Dijkstra's algorithm
+            runs.  In particular, Figure 25-5 shows a sample run of Dijkstra's algorithm.
+         </p>
+         <p>Perhaps the first thing to notice is that the initialize vertex visitor is never called.  This results from an error in the
+            MatlabBGL and Boost documentation.  Once it is resolved, we will update the MatlabBGL documentation to match the Boost graph
+            library.
+         </p>
+         <p>The results: discover_vertex is called before examine_vertex.  For the edges, examine_edge is always called before either
+            edge_relaxed or edge_not_relaxed.  The edges that are relaxed are the shaded edges in Figure 25-5.
+         </p>
+         <p>Finally, finish vertex is called on a vertex after all of its edges have been examined and possibly relaxed.</p>
+         <hr>
+         <div class="upwhitesq">&nbsp;</div>
+      </div>
+      <div class="downwhitesq">&nbsp;</div>
+      <!--
+##### SOURCE BEGIN #####
+%% Recording algorithm behavior with MatlabBGL
+% In this example, we will write a simple visitor that outputs an
+% algorithm's behavior.  The algorithm we will examine is dijkstra_sp.  To
+% examine the runtime behavior we will use a visitor which outputs a string
+% every time a function is called.
+
+
+%% Setup
+% To begin, we load a graph.
+
+load ../graphs/clr-25-2.mat
+
+%%
+% Next, let's check the documentation to see which functions to implement 
+% for the visitor
+
+help dijkstra_sp
+
+%%
+% The help states that dijkstra_sp allows visitors functions for
+% initialize_vertex, discover_vertex, examine_vertex, examine_edge,
+% edge_relaxed, edge_not_relaxed, and finish_vertex.
+%
+% Rather than implementing 7 functions ourselves, we define two helper
+% functions.  These helper functions return functions themselves.  There is
+% one helper that returns a vertex visitor function and one helper than
+% returns an edge visitor function.
+
+vertex_vis_print_func = @(str) @(u) ...
+    fprintf('%s called on %s\n', str, char(labels{u}));
+edge_vis_print_func = @(str) @(ei,u,v) ...
+    fprintf('%s called on (%s,%s)\n', str, char(labels{u}), char(labels{v}));
+
+%% 
+% These anonymous functions return functions themselves.
+
+ev_func = vertex_vis_print_func('examine_vertex');
+ev_func(1)
+
+%% 
+% I hope you see how these functions are useful in saving quite a bit of
+% typing.
+
+%% Calling dijkstra_sp
+% We are almost done.  Now, we just have to setup the visitor structure to
+% pass to the dijkstra_sp call.
+
+vis = struct();
+vis.initialize_vertex = vertex_vis_print_func('initialize_vertex');
+vis.discover_vertex = vertex_vis_print_func('discover_vertex');
+vis.examine_vertex = vertex_vis_print_func('examine_vertex');
+vis.finish_vertex = vertex_vis_print_func('finish_vertex');
+vis.examine_edge = edge_vis_print_func('examine_edge');
+vis.edge_relaxed = edge_vis_print_func('edge_relaxed');
+vis.edge_not_relaxed = edge_vis_print_func('edge_not_relaxed');
+
+%%
+% With the visitor setup, there is hardly any work left.  
+
+dijkstra_sp(A,1,struct('visitor', vis));
+
+%% Understanding the output
+% To understand the output, we find it helpful to have a copy of
+% Introduction to Algorithms by Cormen, Leiserson, and Rivest.  The source
+% for the graph is Figure 25-2 in that book and the authors use the graph
+% to illustrate how Dijkstra's algorithm runs.  In particular, Figure 25-5
+% shows a sample run of Dijkstra's algorithm.
+%
+% Perhaps the first thing to notice is that the initialize vertex visitor
+% is never called.  This results from an error in the MatlabBGL and Boost
+% documentation.  Once it is resolved, we will update the MatlabBGL
+% documentation to match the Boost graph library.
+%
+% The results: discover_vertex is called before examine_vertex.  For the 
+% edges, examine_edge is always called before either edge_relaxed
+% or edge_not_relaxed.  The edges that are relaxed are the shaded edges in
+% Figure 25-5.
+%
+% Finally, finish vertex is called on a vertex after all of its edges have
+% been examined and possibly relaxed.  
+##### SOURCE END #####
+-->
+   </body>
+</html>

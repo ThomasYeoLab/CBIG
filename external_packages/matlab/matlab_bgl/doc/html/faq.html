@@ -1,0 +1,265 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>MatlabBGL - FAQ</title>
+</head>
+<body>
+    <div id="wrapper-header">
+    <div id="header"> 
+    <div id="wrapper-header2">
+    <div id="wrapper-header3">
+    <img src="images/matlab-bgl-header.png"/>
+    <div id="wrapper-header4">
+        <h1>MatlabBGL</h1>
+        <h2>A Matlab Graph Library</h2>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    
+<div id="wrapper-content">
+    <div id="wrapper-menu-page">
+	    <div id="menu-page">
+	    <h3>MatlabBGL</h3>
+	    <ul>
+	        <li><a href="index.html">Main</a></li>
+		    <li><a href="faq.html">FAQ</a></li>
+		    <li><a href="index.html#examples">Examples</a></li>
+		    <li><a href="changes.html">Change Log</a></li>
+		    <li><a href="matlab_bgl_v2.1.pdf">Documentation</a></li>
+          <li><a href="old.html">Older Versions</a></li>
+          <li><a href="http://launchpad.net/matlab-bgl/">Launchpad page</a></li>
+		    <li><a href="http://www.mathworks.com/matlabcentral/fileexchange/loadFile.do?objectId=10922&objectType=file">Download</a></li>
+	    </ul>
+    	
+	    <!-- <p><img src="images/logo.png" width="165" height="80" alt="" /></p> -->
+    </div><!--menu-page-->
+    </div>
+    
+    <div id="content">
+        <h2>FAQ</h2>
+        <hr />
+        <ul>
+            <li><a href="#help">Help...?</a> (Something doesn't work.)</li>
+            <li><a href="#does">Does it work...?</a> (Platform Questions) </li>
+            <li><a href="#how">How do I...?</a> (Usage Questions)</li>
+            <li><a href="#what">What does...?</a> (Extra Help)</li>
+            <li><a href="#bugs">But what bugs...?</a> (Known Bugs)</li>
+        </ul>
+        <hr />
+        <a name="help"></a><h4>
+            Help...?</h4>
+        <ol>
+            <li>... Matlab just crashes when I try calling some of your routines!<p>
+                In general, this happens on Linux.&nbsp; One problem I've found is that the version
+                of gcc I compiled Matlab with is not always the best one.&nbsp; If you reliably
+                have this problem, I can look into using a new compiler, so please, let me know.&nbsp;
+                If you need a short term fix, I believe this page addresses the issue.&nbsp;</li>
+            </p>
+                <p>
+                    <a href="http://www.mathworks.com/support/solutions/data/1-QBCS1.html?solution=1-QBCS1">
+                        Mathworks Help page on mexErrMsgTxt</a></p>
+            </li>
+            <li>... Matlab gives me an error about 64-bit mex files and sparse matrix compatibility.
+            <p> The error I get from Matlab is 
+                <pre>??? Function "mxGetIr_700" is obsolete in file "compat32.cpp", line 246.
+(64-bit mex files using sparse matrices must be rebuilt with the "-largeArrayDims" option. ...)</pre>
+                The solution to this error is to update to Matlab BGL 2.1 which includes
+                precompiled files for 64-bit linux with support for largeArrayDims included.
+            </p>
+            </li>
+            <li><p>... I get an error about "undefined symbol: mxCreateDoubleMatrix_700."</p>
+            <p> This error results because I have compiled MatlabBGL for a more recent version of Matlab than
+                the one you are using.  The fix is straightforward: you need to recompile the library for 
+                your version of Matlab.
+                <pre>
+>> cd matlab_bgl % or switch to the directory with all the matlab_bgl files
+
+>> cd private
+>> compile      
+</pre></p>
+            <p>
+                If this solution does not work, please send me email with your error message as well
+                as the output of the <span class="matlab">ver</span> command from Matlab.
+            </p>
+            </li>
+            <li><p>... MatlabBGL crashes when I call "max_flow."</p>
+            <p>This error has been fixed as of MatlabBGL 3.0.  This fix applies to earlier versions.</p.
+            <p> With some combinations of Matlab and libc, there are bad interactions with the 
+            free function used inside of a mex file.  The "private/max_flow_mex.c" file inadvertantly
+            used this function to release memory allocated by Matlab.  Again, the fix is 
+            simple: replace the "free" call with "mxFree".
+                <pre>
+>> cd matlab_bgl % or switch to the directory with all the matlab_bgl files
+
+>> cd private
+>> edit max_flow_mex.c
+(in editor) ... Edit->Find and Replace...
+(in find/replace) ... Find what: free; Replace with: mxFree; Match case (on)
+(in find/replace) Replace All
+(in editor) ... File->Save
+>> compile      
+</pre></p>
+            <p>
+                If this solution does not work, please send me email with your error message as well
+                as the output of the <span class="matlab">ver</span> command from Matlab.
+            </p>
+            </li>
+        </ol>
+        <a name="does"></a><h4>
+            Does it work...?</h4>
+        <ol>
+            <li>... with Linux?
+                <p>
+                    It should!&nbsp; I've tested it on a few versions and it has worked assuming you
+                    have Matlab 7.0 or higher.  The code works on both 32-bit and 64-bit version
+                    of Linux.  The precompiled files for 64-bit Linux require Matlab 2006b 
+                    because of a change in the sparse matrix data structure, however, you
+                    can recompile the files yourself for previous versions of Matlab.</p>
+            </li>
+            <li>... with Windows?<p>
+                Yes. I develop the software on Windows. You don't need to do anything (I hope!) to make
+                it work on 32-bit versions of Windows and Matlab.  For 64-bit versions, you will have to 
+                compile some things yourself because I don't have a 64-bit computer with Windows and 
+                Matlab installed.  Please email me if you have questions about a 64-bit version of 
+                Windows.</p>
+            </li>
+            <li>... with MacOS?<p>
+                Yes, as of version 2.1, it works!  For the Intel processor, you will have to compile
+                some things yourself because I don't have access to an Intel Mac with Matlab.</p>
+            </li>
+            <li>... with Sun?<p>
+                I have gotten this to work, you should be able to adapt the compile scripts to 
+                work for sun..</p>
+            </li>
+            <li>... on 64-bit Matlab?<p>
+                Yes!</p>
+            </li>
+        </ol>
+        <hr />
+        <a name="how"></a><h4>
+            How do I...?</h4>
+        <ol>
+            <li>... create a graph?<p>
+                Any Matlab sparse matrix is a MatlabBGL graph.&nbsp; See the Matlab document on
+                sparse matrices.&nbsp; The sparse matrix IS the adjacency matrix of the graph.</p>
+            </li>
+            <li>... add graph properties?<p>
+                MatlabBGL doesn't support graph propreties like Boost does.&nbsp; Instead, it allows
+                you to store separate arrays with data about each vertex.&nbsp; This technique is
+                how all the labels and coordinates are done in the examples.&nbsp; Eventually, I'll
+                put up a tutorial with more examples of how to use this idea.&nbsp; (Send me email
+                if you need it...)</p>
+            </li>
+            <li>... make the matrix/graph symmetric?<p>
+                If you have an undirected graph, then MatlabBGL needs both the forward and reverse
+                edge listed.&nbsp; This requirement means that the adjacency matrix must be symmetric.&nbsp;
+                The easiest way to make a sparse Matlab matrix symmetric is to call</p>
+                <pre>A = max(A,A');</pre>
+            </li>
+            <li>... make an unweighted graph?<p>
+                If you have a weighted graph and want to make an unweighted graph, there are two
+                options.&nbsp; First, for MatlabBGL calls that do not use graph weights, you do
+                not need to do anything!&nbsp; These algorithms (e.g. <span class="matlab">bfs</span>)
+                will not look at the weights on your graph so it will behave exactly like an unweighted
+                graph.&nbsp; If the algorithm does look at the weights (e.g. <span class="matlab">dijkstra_sp</span>)
+                then you can create an unweighted version with the following call</p>
+                <pre>A = spones(A);</pre>
+            </li>
+            <li>... use a dense graph<p>
+                Right now, you can't.&nbsp; All the MatlabBGL algorithms only work on sparse Matlab
+                matrices.&nbsp; You can convert your dense graph into a sparse matrix using the
+                command</p>
+                <pre>A = sparse(A);</pre>
+            </li>
+        </ol>
+        <hr />
+        <a name="what"></a><h4>
+            What does...?</h4>
+        <ol>
+            <li>... "the matrix A must..." mean?<p>
+                MatlabBGL errors are often in terms of "the matrix A."&nbsp; The matrix A is the
+                adjacency matrix for the graph.&nbsp; These errors mean that there is some problem
+                with your input matrix.&nbsp;
+            </p>
+            </li>
+            <li>... "the matrix A must be sparse" mean?<p>
+                MatlabBGL only uses sparse matrices by default.&nbsp; You can set an option to convert
+                all full matrices to sparse matrices.&nbsp;</p>
+            <pre>set_matlab_bgl_default('full2sparse',1);</pre>                            
+            <p>If you want to permanently set <span class="matlab">full2sparse</span> then
+            edit <span class="matlab">set_matlab_bgl_default.m</span> and change
+            <pre>default_options = struct('istrans', 0, 'nocheck', 0, 'full2sparse', 0);</pre>
+            to
+            <pre>default_options = struct('istrans', 0, 'nocheck', 0, 'full2sparse', 1);</pre>
+            </p>
+            </li>
+            <li>... "the matrix A must have double values" mean?<p>
+                For algorithms that use the weights on the graph edges, those weights must be double
+                values.&nbsp; Sometimes, you can inadvertently create a Matlab sparse matrix with
+                a different value type.&nbsp; To convert your graph to a double type, use the statement
+            <pre>A = double(A);</pre>
+                    
+            </li>
+            <li>... "the matrix A must be symmetric" mean?<p>
+                Certain algorithms require undirected graphs.&nbsp; For these algorithms,&nbsp;
+                your adjacency matrix must be symmetric.&nbsp; See How do I make my matrix symmetric
+                in the "How do I...?" section.</p>
+            </li>
+            <li>... "the matrix A must be square" mean?<p>
+                The input to a MatlabBGL function is an adjacency matrix.&nbsp; By definition, an
+                adjacency matrix is square.&nbsp; This error probably means you are passing something
+                to a MatlabBGL call incorrectly.</p>
+            </li>
+        </ol>
+        <hr />
+        <a name="bugs"></a><h4>
+             What what bugs does the software have?</h4>
+        <ol>
+        <li><p>Presently, there are some problems with various calls on empty matrices with 64-bit matlab.  
+            For example
+            <pre>T = mst(sparse([]));</pre>
+            will fail with an out of memory error.
+            These bugs will be fixed in the next version.  If you need a fix before then, contact me for
+            the lastest release.  You will likely need to recompile files for your system.</p>
+        </li>
+        </ol>
+    </div>
+</div>
+    
+
+
+    
+<div id="wrapper-footer">
+<div id="footer">
+<p><a href="faq.html">FAQ</a> | <a href="matlab_bgl_v2.1.pdf">Documentation</a> | <a href="old.html">Older Versions</a></p>
+<p>... <a href="http://www.stanford.edu/~dgleich/">back to website</a>.</p>
+<p>Copyright 2006-2007, <a href="mailto:mithandor+mbgl@gmail.com">David Gleich</a></p>
+</div>
+</div>
+
+    <!-- Start of StatCounter Code -->
+    <script type="text/javascript" language="javascript">
+<!-- 
+var sc_project=1521328; 
+var sc_invisible=1; 
+var sc_partition=13; 
+var sc_security="c102e412"; 
+//-->
+    </script>
+
+    <script type="text/javascript" language="javascript" src="http://www.statcounter.com/counter/counter.js"></script>
+
+    <noscript>
+        <a href="http://www.statcounter.com/" target="_blank">
+            <img src="http://c14.statcounter.com/counter.php?sc_project=1521328&java=0&security=c102e412&invisible=1"
+                alt="counter customizable free hit" border="0"></a>
+    </noscript>
+    <!-- End of StatCounter Code -->
+</body>
+</html>
+
+    
+   

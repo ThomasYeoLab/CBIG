@@ -1,0 +1,1 @@
+mri_segstats --seg mri/wmparc.mgz --sum stats/wmparc.stats --pv mri/norm.mgz --excludeid 0 --brain-vol-from-seg --brainmask mri/brainmask.mgz --in mri/norm.mgz --in-intensity-name norm --in-intensity-units MR --etiv --subject FSL_MNI152_FS --surf-wm-vol --ctab /usr/local/freesurfer/stable4//FreeSurferColorLUT.txt

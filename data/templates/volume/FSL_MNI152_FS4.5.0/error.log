@@ -1,0 +1,10 @@
+MRISreadVertexPosition(white): could not open file ../../downsample_data/lh.white
+MRISreadVertexPosition(pial): could not open file ../../downsample_data/lh.pial
+MRISreadVertexPosition(orig): could not open file ../../downsample_data/lh.orig
+MRISreadVertexPosition(inflated): could not open file ../../downsample_data/lh.inflated
+MRISreadCurvature: could not open ../../downsample_data/lh.curv
+MRISreadVertexPosition(white): could not open file ../../downsample_data/lh.white
+MRISreadVertexPosition(pial): could not open file ../../downsample_data/lh.pial
+MRISreadVertexPosition(orig): could not open file ../../downsample_data/lh.orig
+MRISreadVertexPosition(inflated): could not open file ../../downsample_data/lh.inflated
+MRISreadCurvature: could not open ../../downsample_data/lh.curv

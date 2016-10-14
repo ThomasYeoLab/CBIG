@@ -1,0 +1,73 @@
+% Version 4.0
+% -- added graph layout algorithms
+% -- added planar graph algorithms
+% -- improved testing code
+% -- upgraded to boost 1.36.0
+% -- added edge_weight_vector function
+% -- new option syntax
+% -- fixed bugs with graph generation routines
+%
+% Version 3.1:
+% -- fixed bug with predecessor return from floyd_warshall_all_sp
+% -- updated documentation for all_shortest_paths for predecessor return
+%
+% Version 3.0 (beta): more major updates
+% -- added grid_graph
+% -- added core_numbers
+% -- added weighted and directed clustering components
+% -- added lengauer_tarjan_dominator_tree
+% -- added core_numbers_example
+% -- updated to Boost 1.34.0
+% -- removed kludge to fix bug in Johnson's all pairs shortest path from
+% 1.33.1
+% -- added matching, edmonds_maximum_cardinality_matching, 
+% maximal_matching, and test_matching function
+% -- added kolmogorov and edmunds-karp max flow algorithms
+% -- max_flow correctly implements the transpose option now
+% -- added pred_from_path to convert predecessor arrays into path
+% -- fixed bug with breadth_first_search not stopping
+% -- fixed documentation bug with breadth_first_search
+% -- fixed compiler warnings without -ansi on g++-4.0
+% -- added edge_weight_index to automatically generate the edge index matrix
+% -- fixed bugs with out of range vertices in all shortest path algorithms
+% -- added topological_order function to get the topological order of graph
+% vertices
+% -- added 'target' vertex optional parameters to all search and shortest
+% path algorithms to stop the search early if it finds a target vertex.
+% -- added edge weight options to shortest_paths, all_shortest_paths, mst, 
+% astar_search, betweenness_centrality to allow edge weights that
+% are disjoint from the graph.
+% -- added significantly more testing code
+% -- added new examples for edge-reweighted and targeted search
+% -- fixed floyd-warshall and edge-betweenness code to return output with
+% respect to the 'istrans' option correctly.  
+% -- added root option to prim_mst to get rooted prim's trees
+%
+% Version 2.1: minor update
+% -- fixed bugs with MST and disconnected components
+% -- updated to work with Matlab 2006b
+% -- added predecessors to floyd_warshall output
+% -- added edge centrality output
+% -- added graph generation routines
+% -- fixed error with erdos_reyni
+%
+% 2006-11-10: Fixed bug with MST generating disconnected components
+%
+% Version 2.0: complete update 
+% -- allow dense input (set_matlab_bgl_default('full2sparse',1))
+% -- visitors
+% -- inplace library
+% -- astar search
+% -- erdos_reyni generator
+%
+% components_mex.c: fixed a bug with calculating the size of each
+% component.
+%
+% mst.m: Changed to using kruskal as the default following problems
+% with prim due to negative edge weights.  (2006-05-03)
+% 
+% Fixed another bug with negative edge weights due to Mark Cummins
+% (2006-06-15).
+%
+% 
+%

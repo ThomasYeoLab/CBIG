@@ -1,0 +1,102 @@
+#!/bin/sh
+# Prevent 'unstable_projects', 'legacy' or 'developers' directories from being committed to 'master' branch
+
+if [ "$(git symbolic-ref HEAD 2>/dev/null)" == "refs/heads/master" ]
+then
+  passed=true
+  if [ -d "$CBIG_CODE_DIR/unstable_projects" ]; then
+    echo "'unstable_projects' folder exists"
+    passed=false
+  fi
+  
+  if [ -d "$CBIG_CODE_DIR/legacy" ]; then
+    echo "'legacy' folder exists"
+    passed=false
+  fi
+  
+  if [ -d "$CBIG_CODE_DIR/developers" ]; then
+    echo "'developers' folder exists"
+    passed=false
+  fi
+
+  if [ "$passed" != "true" ]; then
+    echo "Committing to 'master' branch is stopped"
+    exit 1
+  fi
+fi
+
+# Prevent source files without a certain prefix from being committed
+EXTENSIONS_TO_CHECK=("m" "c" "cpp" "sh" "csh" "py" "pl" "r")
+DIRECTORIES_TO_CHECK=("stable_projects" "utilities")
+EXCLUDED_FILES=("Surf2SurfGui.m" "Vol2SurfGui.m")
+PREFIX="CBIG_"
+
+echo -e "\n==> Checking $PREFIX prefix of files to be committed.."
+files_to_be_committed=($(git diff --cached --name-status | awk '(($1 != "R") && ($1 != "D") && ($1 != "U")) { print $2 }'))
+all_with_valid_prefixes=1
+for file_path in "${files_to_be_committed[@]}"
+do
+  for directory in "${DIRECTORIES_TO_CHECK[@]}"
+  do
+    file_name=$(basename $file_path)
+    if [[ $file_path == $directory/* ]] || [[ $file_path == $file_name ]]; then
+      for ext in "${EXTENSIONS_TO_CHECK[@]}"
+      do
+        if [[ $file_name != $PREFIX* ]] && [[ $file_name == *.$ext ]]; then
+          all_with_valid_prefixes=0
+          for excluded_file in "${EXCLUDED_FILES[@]}"
+          do
+            if [[ $file_name == $excluded_file ]]; then
+              all_with_valid_prefixes=1
+            fi
+          done
+
+          if [[ "$all_with_valid_prefixes" == "0" ]]; then
+            echo "$file_path does not have a $PREFIX prefix"
+            break
+          fi
+        fi
+      done
+    fi
+  done
+done
+
+if [ $all_with_valid_prefixes == 0 ]; then
+  echo "   [FAILED] There are functions without $PREFIX prefix. Abort committing."
+  exit 1
+fi
+echo "   [PASSED]"
+
+# TO-DO: Check license in source files other than Matlab's
+echo -e "\n==> Checking license of Matlab files to be committed.."
+for file_path in "${files_to_be_committed[@]}"
+do
+  file_name=$(basename $file_path)
+  for directory in "${DIRECTORIES_TO_CHECK[@]}"
+  do
+    if [[ $file_path == $directory/* ]] && [[ $file_name == *.m ]]; then
+      echo "Processing '$file_path'"
+      $CBIG_CODE_DIR/setup/check_license/CBIG_check_license_matlab_file.sh $file_path
+    fi
+  done
+done
+
+echo -e "\n==> Checking occurences of old function names (without CBIG prefix)"
+for file_path in "${files_to_be_committed[@]}"
+do
+  file_name=$(basename $file_path)
+  for ext in "${EXTENSIONS_TO_CHECK[@]}"
+  do
+    for directory in "${DIRECTORIES_TO_CHECK[@]}"
+    do
+      if [[ $file_path == $directory/* ]] && [[ $file_name == *.$ext ]]; then
+        echo -e "\n  ==> Checking $file_path"
+        $CBIG_CODE_DIR/setup/check_function_format/CBIG_prepend_prefix_to_function_name_wrapper.sh $file_path
+      fi
+    done
+  done
+done
+
+git add .
+
+exit 0

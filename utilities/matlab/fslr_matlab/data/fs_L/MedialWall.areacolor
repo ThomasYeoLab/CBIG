@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Area_Color_File>
+   <FileHeader>
+      <Element>
+         <Name><![CDATA[Caret-Version]]></Name>
+         <Value><![CDATA[5.611]]></Value>
+      </Element>
+      <Element>
+         <Name><![CDATA[comment]]></Name>
+         <Value><![CDATA[]]></Value>
+      </Element>
+      <Element>
+         <Name><![CDATA[date]]></Name>
+         <Value><![CDATA[Sat Mar 14 15:23:01 2009]]></Value>
+      </Element>
+      <Element>
+         <Name><![CDATA[encoding]]></Name>
+         <Value><![CDATA[XML]]></Value>
+      </Element>
+      <Element>
+         <Name><![CDATA[pubmed_id]]></Name>
+         <Value><![CDATA[]]></Value>
+      </Element>
+   </FileHeader>
+   <Color>
+      <name><![CDATA[???]]></name>
+      <red>170</red>
+      <green>170</green>
+      <blue>170</blue>
+      <alpha>255</alpha>
+      <pointSize>2.000000</pointSize>
+      <lineSize>1.000000</lineSize>
+      <symbol><![CDATA[POINT]]></symbol>
+      <sumscolorid><![CDATA[]]></sumscolorid>
+   </Color>
+   <Color>
+      <name><![CDATA[MEDIAL.WALL]]></name>
+      <red>20</red>
+      <green>20</green>
+      <blue>20</blue>
+      <alpha>255</alpha>
+      <pointSize>2.000000</pointSize>
+      <lineSize>1.000000</lineSize>
+      <symbol><![CDATA[POINT]]></symbol>
+      <sumscolorid><![CDATA[]]></sumscolorid>
+   </Color>
+</Area_Color_File>

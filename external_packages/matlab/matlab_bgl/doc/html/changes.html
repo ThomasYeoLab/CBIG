@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>MatlabBGL - Changes</title>
+</head>
+<body>
+    <div id="wrapper-header">
+    <div id="header"> 
+    <div id="wrapper-header2">
+    <div id="wrapper-header3">
+    <img src="images/matlab-bgl-header.png"/>
+    <div id="wrapper-header4">
+        <h1>MatlabBGL</h1>
+        <h2>A Matlab Graph Library</h2>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    
+<div id="wrapper-content">
+    <div id="wrapper-menu-page">
+	    <div id="menu-page">
+	    <h3>MatlabBGL</h3>
+	    <ul>
+	       <li><a href="index.html">Main</a></li>
+		    <li><a href="faq.html">FAQ</a></li>
+		    <li><a href="index.html#examples">Examples</a></li>
+		    <li><a href="changes.html">Change Log</a></li>
+		    <li><a href="matlab_bgl_v2.1.pdf">Documentation</a></li>
+          <li><a href="old.html">Older Versions</a></li>
+          <li><a href="http://launchpad.net/matlab-bgl/">Launchpad page</a></li>
+		    <li><a href="http://www.mathworks.com/matlabcentral/fileexchange/loadFile.do?objectId=10922&objectType=file">Download</a></li>
+	    </ul>
+    	
+	    <!-- <p><img src="images/logo.png" width="165" height="80" alt="" /></p> -->
+    </div><!--menu-page-->
+    </div>
+    
+    <div id="content">
+        <h2>Changes</h2>
+        <p> Version 4.0</p>
+        <ul>
+         <li>Added graph layout algorithms.</li>
+         <li>Added planar graph algorithms.</li>
+			<li>Improved testing code.</li>
+         <li>Upgraded to boost 1.36.0.</li>
+         <li>Added edge_weight_vector function.</li>
+        	<li>New option syntax.</li>
+        	<li>Fixed bugs with graph generation routines.</li>
+        </ul>
+        <p> Version 3.1 (Internal release)</p>
+        <ul>
+        	<li>Fixed bug with predecessor return from floyd_warshall_all_sp.</li>
+        	<li>Updated documentation for all_shortest_paths for predecessor return.</li>
+        </ul>
+        <p> Version 3.0</p>
+        <ul>
+        	<li>Added grid_graph function.</li>
+        	<li>Added core_numbers function.</li>
+        	<li>Added weighted and directed clustering coefficients function.</li>
+        	<li>Added lengauer_tarjan_dominator_tree function.</li>
+        	<li>Added core_numbers_example.</li>
+        	<li>Added matching, edmonds_maximum_cardinality_matching, maximal_matching, and test_matching functions.</li>
+			<li>Added kolmogorov_max_flow and edmunds_karp_max_flow functions.</li>
+			<li>Added topological_order function.</li>
+        	<li>Added pred_from_path to convert predecessors into a path.</li>			
+        	<li> Added edge_weight_index function to automatically generate edge_weight indices. </li>        	
+        	<li>Added 'target' vertex option to all shortest path and search algorithms to stop the search
+        	early if it finds a target vertex.</li>
+        	<li>Added edge_weight option to all functions that depend on a weighted graph except max_flow.
+        	This option allows edge weights to be separate from the graph and allows 0 edge weights.</li>
+        	<li>Added signifcantly more testing code.</li>
+        	<li>Added new examples for edge-reweighted graphs.</li>
+        	<li>Updated to Boost 1.34.0.</li>
+        	<li>Removed kludge to fix bug in Johnson's all pairs shortest path from Boost 1.33.1.</li>
+        	<li>max_flow, floyd_warshall, and betweenness_centrality now correctly implement the transpose option.</li>
+        	<li>Fixed bug with breadth_first_search not stopping. </li>
+        	<li>Fixed documentation bug with breadth_first_search function.</li>
+        	<li>Fixed compiler warnings without -ansi on g++-4.0 </li>        	
+			<li>Fixed bugs with out of range vertices in all shortest path algorithms.</li>        	        	        	
+        </ul>
+        
+        <p>
+            Version 2.1</p>
+        <ul>
+            <li>Fixed bug with MST and disconnected graphs.</li>
+            <li>Added edge centrality output to betweeneness_centrality.</li>
+            <li>Added predecessor matrix to floyd_warshall all pairs shortest paths</li>
+            <li>Updated sparse matrix interface to work with Matlab 2006b on 64-bit processors</li>
+            <li>Fixed error with erdos_reyni</li>
+            <li>Added graph generation functions star_graph, cycle_graph, wheel_graph</li>
+            <li>
+        </ul>
+        <p>
+            Version 2.0</p>
+        <ul>
+            <li>Added support for visitors.</li>
+            <li>Added astar_search.</li>
+            <li>Added some trivial functions (num_edges, num_vertices).</li>
+            <li>Added erdos_reyni graph creation.</li>
+            <li>Fixed symmetrization error with MST and negative edge weights.</li>
+            <li>Added support for non-sparse input.</li>
+            <li>Added additional examples.</li>
+        </ul>
+            <p>
+                Version 1.01</p>
+        <ul>
+            <li>Fixed error with mst.m and graphs with negative weights.</li>
+            <li>Changed default MST algorithm to kruskal.</li>
+            <li>Fixed error with components_mex.c and computing component sizes incorrectly.</li>
+            <li>Added debugging code to library.</li>
+            <li>Added regression tests.</li>
+        </ul>
+                    
+    </div>
+</div>
+    
+
+
+    
+<div id="wrapper-footer">
+<div id="footer">
+<p><a href="faq.html">FAQ</a> | <a href="matlab_bgl_v2.1.pdf">Documentation</a> | <a href="old.html">Older Versions</a></p>
+<p>... <a href="http://www.stanford.edu/~dgleich/">back to website</a>.</p>
+<p>Copyright 2006-2007, <a href="mailto:mithandor+mbgl@gmail.com">David Gleich</a></p>
+</div>
+</div>
+
+    <!-- Start of StatCounter Code -->
+    <script type="text/javascript" language="javascript">
+<!-- 
+var sc_project=1521328; 
+var sc_invisible=1; 
+var sc_partition=13; 
+var sc_security="c102e412"; 
+//-->
+    </script>
+
+    <script type="text/javascript" language="javascript" src="http://www.statcounter.com/counter/counter.js"></script>
+
+    <noscript>
+        <a href="http://www.statcounter.com/" target="_blank">
+            <img src="http://c14.statcounter.com/counter.php?sc_project=1521328&java=0&security=c102e412&invisible=1"
+                alt="counter customizable free hit" border="0"></a>
+    </noscript>
+    <!-- End of StatCounter Code -->
+</body>
+</html>
+
+    
+   

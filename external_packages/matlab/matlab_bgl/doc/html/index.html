@@ -1,0 +1,212 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>MatlabBGL</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body>
+    <div id="wrapper-header">
+    <div id="header"> 
+    <div id="wrapper-header2">
+    <div id="wrapper-header3">
+    <img src="images/matlab-bgl-header.png"/>
+    <div id="wrapper-header4">
+        <h1>MatlabBGL</h1>
+        <h2>A Matlab Graph Library</h2>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    
+<div id="wrapper-content">
+    <div id="wrapper-menu-page">
+	    <div id="menu-page">
+	    <h3>MatlabBGL</h3>
+	    <ul>
+	        <li><a href="index.html">Main</a></li>
+		    <li><a href="faq.html">FAQ</a></li>
+		    <li><a href="index.html#examples">Examples</a></li>
+		    <li><a href="changes.html">Change Log</a></li>
+		    <li><a href="matlab_bgl_v2.1.pdf">Documentation</a></li>
+          <li><a href="old.html">Older Versions</a></li>
+          <li><a href="http://launchpad.net/matlab-bgl/">Launchpad page</a></li>
+		    <li><a href="http://www.mathworks.com/matlabcentral/fileexchange/loadFile.do?objectId=10922&objectType=file">Download</a></li>
+	    </ul>
+    	
+	    <!-- <p><img src="images/logo.png" width="165" height="80" alt="" /></p> -->
+    </div><!--menu-page-->
+    </div>
+    
+    <div id="content">
+        <p>
+        MatlabBGL is a Matlab package for working with graphs.&nbsp; It uses the <a href="http://www.boost.org/libs/graph/doc/">
+            Boost Graph Library</a> to efficiently implement the graph algorithms.&nbsp;
+        MatlabBGL
+        is designed to work with large sparse graphs with hundreds of thousands of nodes.</p>
+        <p class="leftalign">Written by <a href="http://www.stanford.edu/~dgleich">David Gleich</a>.</p>
+        <hr />
+        <h2>News</h2>
+        <p>
+            2008-10-21: Version 4.0 finished. Major updates.  
+                <br /><a href="changes.html"> MatlabBGL Changelog.</a>  
+                Download <a href="http://www.mathworks.com/matlabcentral/fileexchange/loadFile.do?objectId=10922&objectType=file">MatlabBGL 4.0</a>!</p>
+        <p>
+            2007-07-22: Version 3.0-beta released. Major updates.  <a href="changes.html">
+                <br />MatlabBGL Changelog.</a>  Download <a href="old/matlab_bgl-3.0-beta.tar.bz2">MatlabBGL 3.0</a>!
+                (The final version will be released on the Mathworks File Exchange.)</p>        
+        <p>
+            2007-04-11: Version 2.1 released. Minor updates.  <a href="changes.html">
+                <br />MatlabBGL Changelog.</a></p>
+        <p>
+            2006-07-25: Version 2.0 released. Significant updates. <a href="changes.html">
+                <br />MatlabBGL Changelog.</a></p>
+        <p>
+            2006-05-09: Version 1.01 released. Fixes minor bugs. <a href="changes.html">
+                <br />MatlabBGL Changelog.</a></p>
+        <h2>Getting MatlabBGL (Latest Version: 4.0)</h2>
+        <p>
+            The files for MatlabBGL reside on the Mathworks Matlab Central File Exchange.&nbsp;
+            The lastest version is always there.</p>
+        <p>
+            Go to the <a href="http://www.mathworks.com/matlabcentral/fileexchange/loadFile.do?objectId=10922&objectType=file">
+                MatlabBGL page</a> at the Matlab File Exchange.&nbsp; </p>
+        <p>
+            To install MatlabBGL,
+        </p>
+        <ol>
+            <li><a href="http://www.mathworks.com/matlabcentral/fileexchange/loadFile.do?objectId=10922&objectType=file">
+                Download</a> the latest link from the File Exchange and unzip it to a directory of your
+                choosing.</li>
+            <li>Open Matlab and change directory until you get to the directory where you unzipped
+                it.</li>
+            <li>Change into the matlab_bgl subdirectory.</li><li>Try typing <span class="matlab">
+                clustering_coefficients(sparse(ones(5)))</span> into Matlab.&nbsp; You should see
+                the following output.<br />
+                <pre>ans =
+
+     1
+     1
+     1
+     1
+     1
+</pre>
+            </li>
+        </ol>
+        <p>
+            If the above steps do not work, please send me an email with any error messages
+            you get and your system configuration.</p>
+           
+        <h2>
+            Documentation
+        </h2>
+        <p>
+            The documentation file is out of date.  I apologize.  The help
+            commands are up to date.  Also, the examples are up to date. 
+            </p>
+        <p>
+            Shortcut: <a href="matlab_bgl_v2.1.pdf">MatlabBGL 2.1 Documentation</a></p>
+        <p>
+            In the future, we hope to have online documentation. &nbsp;Right now, the documentation
+            associated with MatlabBGL is a pdf file distributed with the library and linked
+            above.&nbsp;
+        </p>
+        <h2>
+            Limitations</h2>
+        <p>
+            Right now, the library only works with Matlab 7.0 and above.&nbsp;
+        </p>
+        <h3>Testing matrix</h3>
+        <p>I have tested MatlabBGL 4.0 with every system in green.  
+        Entries in blue have been tested but require recompiling libmbgl.</p>
+<table>
+   <tr><th></th>               <th>Win32</th>           <th>Win64</th>           <th>Linux32</th>         <th>Linux64</th>         <th>MacPPC</th>          <th>Maci386</th></tr>
+	<tr><th>Matlab 7.0</th>     <td bgcolor="white"></td><td bgcolor="white"></td><td bgcolor="white"></td><td bgcolor="white"></td><td bgcolor="white"></td><td bgcolor="white"></td bgcolor="white"></tr>
+	<tr><th>Matlab 7.1 SP3</th> <td bgcolor="white"></td><td bgcolor="white"></td><td bgcolor="green"></td><td bgcolor="blue" ></td><td bgcolor="white"></td><td bgcolor="white"></td bgcolor="white"></tr>
+	<tr><th>Matlab R2006a</th>  <td bgcolor="white"></td><td bgcolor="white"></td><td bgcolor="white"></td><td bgcolor="blue" ></td><td bgcolor="white"></td><td bgcolor="white"></td bgcolor="white"></tr>
+	<tr><th>Matlab R2006b</th>  <td bgcolor="white"></td><td bgcolor="white"></td><td bgcolor="white"></td><td bgcolor="green"></td><td bgcolor="white"></td><td bgcolor="white"></td bgcolor="white"></tr>
+	<tr><th>Matlab R2007a</th>  <td bgcolor="green"></td><td bgcolor="green"></td><td bgcolor="white"></td><td bgcolor="green"></td><td bgcolor="green"></td><td bgcolor="green"></td bgcolor="green"></tr>
+	<tr><th>Matlab R2007b</th>  <td bgcolor="white"></td><td bgcolor="white"></td><td bgcolor="white"></td><td bgcolor="green"></td><td bgcolor="white"></td><td bgcolor="white"></td bgcolor="white"></tr>
+	<tr><th>Matlab R2008a</th>  <td bgcolor="white"></td><td bgcolor="white"></td><td bgcolor="green"></td><td bgcolor="green"></td><td bgcolor="white"></td><td bgcolor="white"></td bgcolor="white"></tr>
+	<tr><th>Matlab R2008b</th>  <td bgcolor="white"></td><td bgcolor="white"></td><td bgcolor="white"></td><td bgcolor="white"></td><td bgcolor="white"></td><td bgcolor="white"></td bgcolor="white"></tr>
+</table>
+        <h2>
+            Have Questions?</h2>
+        <p>
+            See the <a href="faq.html">MatlabBGL FAQ</a>, it may have answers!&nbsp;
+        </p>
+        <p>
+        		Alternatively, you should contribute a 
+        		<a href="https://answers.launchpad.net/matlab-bgl">
+        		matlab-bgl question on Launchpad</a>.
+        </p>
+        <a name="examples" />
+        <h2>
+            Examples</h2>
+        <ul>
+            <li><a href="red_black/red_black.html">Finding the red-black ordering of a
+                matrix.</a></li>
+            <li><a href="record_alg/record_alg.html">Recording the behavior of an algorithm.</a></li>
+            <li><a href="core_numbers_example/core_numbers_example.html">An explanation of the cores of a graph.</a></li>
+            <li><a href="reweighted_graphs/reweighted_graphs.html">Using edge reweighting to run algorithms with 0 edge weights.</a></li>
+            <li><a href="planar_graphs/planar_graphs.html">Working with planar graphs.</a></li>
+        </ul>
+        <ul>
+            <li><a href="new_in_3/new_in_3_0.html">New features in MatlabBGL-3.</a></li>
+            <li><a href="new_in_4/new_in_4_0.html">New features in MatlabBGL-4.</a></li>                        
+        </ul>
+        </ul>
+        <h2>
+            Problems</h2>
+        <p>
+            Do you have a problem with MatlabBGL?&nbsp; Are you getting an error?&nbsp; Please
+            send me a .mat file with your example graph and a list of commands to reproduce
+            the error.&nbsp;</p>
+        <p>
+            Send both of these to the address <a href="mailto:mithandor+mbglerrors@gmail.com">mithandor+mbglerrors@gmail.com</a>.</p>
+		  <h2>
+            Contributing</h2>
+        <p> Checkout the <a href="https://launchpad.net/matlab-bgl">
+        		matlab-bgl Launchpad page</a> to get all the code! </p>        
+        <h2>
+            Acknowledgements</h2>
+        <p>
+            Thanks to the Boost Graph Library team for a useful and helpful product.&nbsp; Also,
+            the ICME Students who helped me test the software and Amin Saberi for giving me
+            a little while to work on it.  Many
+            thanks to all the folks who sent in bugs with the library.</p>
+    </div>
+</div>
+    
+
+
+    
+<div id="wrapper-footer">
+<div id="footer">
+<p><a href="faq.html">FAQ</a> | <a href="matlab_bgl_v2.1.pdf">Documentation</a> | <a href="old.html">Older Versions</a></p>
+<p>... <a href="http://www.stanford.edu/~dgleich/">back to website</a>.</p>
+<p>Copyright 2006-2007, <a href="mailto:mithandor+mbgl@gmail.com">David Gleich</a></p>
+</div>
+</div>
+
+    <!-- Start of StatCounter Code -->
+    <script type="text/javascript" language="javascript">
+<!-- 
+var sc_project=1521328; 
+var sc_invisible=1; 
+var sc_partition=13; 
+var sc_security="c102e412"; 
+//-->
+    </script>
+
+    <script type="text/javascript" language="javascript" src="http://www.statcounter.com/counter/counter.js"></script>
+
+    <noscript>
+        <a href="http://www.statcounter.com/" target="_blank">
+            <img src="http://c14.statcounter.com/counter.php?sc_project=1521328&java=0&security=c102e412&invisible=1"
+                alt="counter customizable free hit" border="0"></a>
+    </noscript>
+    <!-- End of StatCounter Code -->
+</body>
+</html>

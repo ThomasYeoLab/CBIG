@@ -1,0 +1,27 @@
+# MAC OS
+# System files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+
+
+# LINUX
+# Temporary files
+*~
+*.swp
+
+
+
+# WINDOWS
+# image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+

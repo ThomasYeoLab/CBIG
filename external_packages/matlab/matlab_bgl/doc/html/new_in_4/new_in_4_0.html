@@ -1,0 +1,325 @@
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>New features in MatlabBGL version 4.0</title>
+      <meta name="generator" content="MATLAB 7.5">
+      <meta name="date" content="2008-10-22">
+      <meta name="m-file" content="new_in_4_0">
+      <link rel="stylesheet" type="text/css" href="../site.css"><style>
+
+body {
+  background: white;
+  color: black;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+pre.codeinput {
+  margin-left: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #bbbbbb;
+  border: solid 1px;
+  font-size: 10pt;
+  width: 620px;
+}
+
+p
+{
+	margin: 10px;
+}
+
+hr
+{
+    color: #bbbbbb;
+    height: 4;
+}
+
+.main
+{
+	border-left-style: solid;
+	margin-left: 100px;	
+	width: 650px;
+}
+
+.upwhitesq
+{
+    position: relative;
+    left: -5px;
+    top: -8px;
+    background: white;  
+}
+.downwhitesq
+{
+    position: relative;
+    left: 95px;
+    bottom: 10px;
+    background: white;  
+}
+
+img
+{
+	text-align: center;
+}
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.showbuttons {
+  margin-left: 30px;
+  border: solid black 2px;
+  padding: 4px;
+  background: #EBEFF3;
+}
+
+pre.codeoutput {
+  margin-left: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 10pt;
+  width: 520px;
+}
+
+pre.error {
+  color: red;
+}
+
+.intro {
+  width: 650px;
+}
+
+    </style></head>
+   <body>
+      <h1>New features in MatlabBGL version 4.0</h1>
+      <introduction>
+         <div class="intro">
+            <p>MatlabBGL 3.0 was only released as a beta test.  Version 4.0 is a full release with quite a few new features.</p>
+         </div>
+      </introduction>
+      <h2>Contents</h2>
+      <div>
+         <ul>
+            <li><a href="#1">Improved reweighted graphs</a></li>
+            <li><a href="#3">Graph layout algorithms</a></li>
+            <li><a href="#7">Planar graph algorithms</a></li>
+            <li><a href="#11">New option syntax</a></li>
+         </ul>
+      </div>
+      <div class="main">
+         <h2>Improved reweighted graphs<a name="1"></a></h2>
+         <p>In MatlabBGL 3.0, reweighted graphs were a pain to use.   Now they are simple!  We combine a structural matrix with a weight
+            matrix.  As(i,j)=1 if there is an edge between vertex i and j and A(i,j)=wij where wij is the weight of the edge between i
+            and j.
+         </p><pre class="codeinput">As = cycle_graph(6,<span class="string">'directed'</span>,0); <span class="comment">% compute a 6 node cycle graph</span>
+A = As; <span class="comment">% set all the weights to be one initially</span>
+A(2,3) = 0; A(3,2) = 0; <span class="comment">% make one edge have zero weight</span>
+fprintf(<span class="string">'Edges\n'</span>);
+full(As)
+fprintf(<span class="string">'Weights\n'</span>);
+full(A)
+</pre><pre class="codeoutput">Edges
+
+ans =
+
+     0     1     0     0     0     1
+     1     0     1     0     0     0
+     0     1     0     1     0     0
+     0     0     1     0     1     0
+     0     0     0     1     0     1
+     1     0     0     0     1     0
+
+Weights
+
+ans =
+
+     0     1     0     0     0     1
+     1     0     0     0     0     0
+     0     0     0     1     0     0
+     0     0     1     0     1     0
+     0     0     0     1     0     1
+     1     0     0     0     1     0
+
+</pre><p>Note that As is given as the graph in the following call, not A!</p><pre class="codeinput">[d pred] = shortest_paths(As,1,<span class="string">'edge_weight'</span>,edge_weight_vector(As,A));
+d(3) <span class="comment">% distance from vertex 1 to vertex 3 should be just 1!</span>
+</pre><pre class="codeoutput">
+ans =
+
+     1
+
+</pre><hr>
+         <div class="upwhitesq">&nbsp;</div>
+         <h2>Graph layout algorithms<a name="3"></a></h2>
+         <p>Sometimes, it's really nice to see a picture of your graph.  The BGL implements a few graph layout algorithms and so these
+            are now in MatlabBGL 4.0!
+         </p><pre class="codeinput">G = grid_graph(6,5);
+X = kamada_kawai_spring_layout(G);
+gplot(G,X,<span class="string">'.-'</span>);
+</pre><img vspace="5" hspace="5" src="new_in_4_0_01.png"> <pre class="codeinput">G = grid_graph(6,5);
+X = fruchterman_reingold_force_directed_layout(G);
+gplot(G,X,<span class="string">'.-'</span>);
+</pre><img vspace="5" hspace="5" src="new_in_4_0_02.png"> <pre class="codeinput">G = grid_graph(6,5);
+X = gursoy_atun_layout(G);
+gplot(G,X,<span class="string">'.-'</span>);
+</pre><img vspace="5" hspace="5" src="new_in_4_0_03.png"> <hr>
+         <div class="upwhitesq">&nbsp;</div>
+         <h2>Planar graph algorithms<a name="7"></a></h2>
+         <p>The Boost Graph Library received a new suite of planar graph algorithms. These are now in MatlabBGL too.</p>
+         <p>A grid in the xy plane is a planar graph.</p><pre class="codeinput">G = grid_graph(6,5);
+is_planar = boyer_myrvold_planarity_test(G)
+</pre><pre class="codeoutput">
+is_planar =
+
+     1
+
+</pre><p>Recall that K_5 (the clique on 5 vertices) is not a planar graph.  Let's see what happens.</p><pre class="codeinput">K5 = clique_graph(5);
+is_planar = test_planar_graph(K5) <span class="comment">% helpful wrapper</span>
+</pre><pre class="codeoutput">
+is_planar =
+
+     0
+
+</pre><p>We can also draw planar graphs</p><pre class="codeinput">G = grid_graph(6,5);
+X = chrobak_payne_straight_line_drawing(G);
+gplot(G,X,<span class="string">'.-'</span>); <span class="comment">% it looks a little different!</span>
+</pre><img vspace="5" hspace="5" src="new_in_4_0_04.png"> <hr>
+         <div class="upwhitesq">&nbsp;</div>
+         <h2>New option syntax<a name="11"></a></h2>
+         <p>You probably noticed that the "struct" command that permeated MatlabBGL calls before is gone in these examples.  We've moved
+            to a new option syntax that gives you the choice between the MatlabBGL struct style arguments and a list of key-value pairs
+         </p>
+         <p>We'll look at spanning trees on the clique graph with 5 vertices. Using Prim's algorithm, the spanning tree we get depends
+            on the root.  We always get a star graph rooted at the vertex we pick as the root.
+         </p><pre class="codeinput">G = clique_graph(5);
+</pre><p>Old style</p><pre class="codeinput">full(mst(G,struct(<span class="string">'root'</span>,5,<span class="string">'algname'</span>,<span class="string">'prim'</span>)))
+</pre><pre class="codeoutput">
+ans =
+
+     0     0     0     0     1
+     0     0     0     0     1
+     0     0     0     0     1
+     0     0     0     0     1
+     1     1     1     1     0
+
+</pre><p>New style</p>
+         <p>Just to make sure it works</p><pre class="codeinput">full(mst(G,<span class="string">'root'</span>,1,<span class="string">'algname'</span>,<span class="string">'prim'</span>))
+</pre><pre class="codeoutput">
+ans =
+
+     0     1     1     1     1
+     1     0     0     0     0
+     1     0     0     0     0
+     1     0     0     0     0
+     1     0     0     0     0
+
+</pre><hr>
+         <div class="upwhitesq">&nbsp;</div>
+      </div>
+      <div class="downwhitesq">&nbsp;</div>
+      <!--
+##### SOURCE BEGIN #####
+%% New features in MatlabBGL version 4.0
+% MatlabBGL 3.0 was only released as a beta test.  Version 4.0 is a 
+% full release with quite a few new features.
+
+%% Improved reweighted graphs
+% In MatlabBGL 3.0, reweighted graphs were a pain to use.   Now they are
+% simple!  We combine a structural matrix with a weight matrix.  As(i,j)=1
+% if there is an edge between vertex i and j and A(i,j)=wij where wij is
+% the weight of the edge between i and j.
+
+As = cycle_graph(6,'directed',0); % compute a 6 node cycle graph
+A = As; % set all the weights to be one initially
+A(2,3) = 0; A(3,2) = 0; % make one edge have zero weight
+fprintf('Edges\n');
+full(As)
+fprintf('Weights\n');
+full(A)
+
+%% 
+% Note that As is given as the graph in the following call, not A!
+[d pred] = shortest_paths(As,1,'edge_weight',edge_weight_vector(As,A));
+d(3) % distance from vertex 1 to vertex 3 should be just 1!
+
+%% Graph layout algorithms
+% Sometimes, it's really nice to see a picture of your graph.  The BGL
+% implements a few graph layout algorithms and so these are now in
+% MatlabBGL 4.0!
+
+%%
+G = grid_graph(6,5);
+X = kamada_kawai_spring_layout(G);
+gplot(G,X,'.-');
+
+%%
+G = grid_graph(6,5);
+X = fruchterman_reingold_force_directed_layout(G);
+gplot(G,X,'.-');
+
+%%
+G = grid_graph(6,5);
+X = gursoy_atun_layout(G);
+gplot(G,X,'.-');
+
+%% Planar graph algorithms
+% The Boost Graph Library received a new suite of planar graph algorithms.
+% These are now in MatlabBGL too.
+
+%%
+% A grid in the xy plane is a planar graph.
+G = grid_graph(6,5);
+is_planar = boyer_myrvold_planarity_test(G)
+
+%%
+% Recall that K_5 (the clique on 5 vertices) is not a planar graph.  Let's
+% see what happens.
+K5 = clique_graph(5);
+is_planar = test_planar_graph(K5) % helpful wrapper
+
+%%
+% We can also draw planar graphs
+G = grid_graph(6,5);
+X = chrobak_payne_straight_line_drawing(G);
+gplot(G,X,'.-'); % it looks a little different!
+
+%% New option syntax
+% You probably noticed that the "struct" command that permeated MatlabBGL
+% calls before is gone in these examples.  We've moved to a new option
+% syntax that gives you the _choice_ between the MatlabBGL struct style
+% arguments and a list of key-value pairs
+
+%%
+% We'll look at spanning trees on the clique graph with 5 vertices.  
+% Using Prim's algorithm, the spanning tree we get depends on the root.  We
+% always get a star graph rooted at the vertex we pick as the root.
+G = clique_graph(5);
+
+%%
+% Old style
+full(mst(G,struct('root',5,'algname','prim')))
+
+%%
+% New style
+
+%%
+% Just to make sure it works
+full(mst(G,'root',1,'algname','prim'))
+
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

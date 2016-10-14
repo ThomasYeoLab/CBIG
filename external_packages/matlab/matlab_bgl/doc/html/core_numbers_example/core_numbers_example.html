@@ -1,0 +1,364 @@
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Core numbers in MatlabBGL</title>
+      <meta name="generator" content="MATLAB 7.5">
+      <meta name="date" content="2008-10-22">
+      <meta name="m-file" content="core_numbers_example">
+      <link rel="stylesheet" type="text/css" href="../site.css"><style>
+
+body {
+  background: white;
+  color: black;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+pre.codeinput {
+  margin-left: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #bbbbbb;
+  border: solid 1px;
+  font-size: 10pt;
+  width: 620px;
+}
+
+p
+{
+	margin: 10px;
+}
+
+hr
+{
+    color: #bbbbbb;
+    height: 4;
+}
+
+.main
+{
+	border-left-style: solid;
+	margin-left: 100px;	
+	width: 650px;
+}
+
+.upwhitesq
+{
+    position: relative;
+    left: -5px;
+    top: -8px;
+    background: white;  
+}
+.downwhitesq
+{
+    position: relative;
+    left: 95px;
+    bottom: 10px;
+    background: white;  
+}
+
+img
+{
+	text-align: center;
+}
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.showbuttons {
+  margin-left: 30px;
+  border: solid black 2px;
+  padding: 4px;
+  background: #EBEFF3;
+}
+
+pre.codeoutput {
+  margin-left: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 10pt;
+  width: 520px;
+}
+
+pre.error {
+  color: red;
+}
+
+.intro {
+  width: 650px;
+}
+
+    </style></head>
+   <body>
+      <h1>Core numbers in MatlabBGL</h1>
+      <introduction>
+         <div class="intro">
+            <p>This example illustrates the concept of the core number of a vertex. Mathematically, the core number of a vertex v is the
+               largest integer c such that v has degree &gt; 0 when all vertices of degree &lt; c are removed. Equivalently, the core number of
+               vertex v is the largest integer c such that v exists in a graph where all degrees are at least c.
+            </p>
+         </div>
+      </introduction>
+      <h2>Contents</h2>
+      <div>
+         <ul>
+            <li><a href="#1">A simple algorithm</a></li>
+            <li><a href="#7">With MatlabBGL</a></li>
+            <li><a href="#9">The core numbers of a road network</a></li>
+         </ul>
+      </div>
+      <div class="main">
+         <h2>A simple algorithm<a name="1"></a></h2>
+         <p>The beauty of core-numbers is that they arey very intuitive to compute and understand.</p>
+         <p>Let's load some data.  This graph comes from the paper with the O(m) algorithm to compute the core numbers of an undirected
+            graph by Batagelj and Zaversnik, "An O(m) algorithm for the cores decomposition of a network."
+         </p><pre class="codeinput">load <span class="string">'../graphs/cores_example.mat'</span>;
+</pre><p>Plot the data.</p><pre class="codeinput">gplot(A,xy); hold <span class="string">on</span>; plot(xy(:,1), xy(:,2),<span class="string">'r.'</span>,<span class="string">'MarkerSize'</span>,24); hold <span class="string">off</span>;
+text(xy(:,1)+0.1, xy(:,2)+0.1, num2str((1:21)'));set(gcf,<span class="string">'Color'</span>,[1,1,1]);
+set(gca,<span class="string">'XTick'</span>,[]);set(gca,<span class="string">'YTick'</span>,[]);xlim([-1,10]);ylim([-2,7]);axis <span class="string">off</span>;
+</pre><img vspace="5" hspace="5" src="core_numbers_example_01.png"> <p>By inspection, vertex 16 is in a 0 core because it has no edges in the graph.</p>
+         <p>From the statement of the property, let's figure out the core numbers for this graph.  For each possible degree d, let's remove
+            all vertices with degree &lt;= d and degree&gt;0 and repeat this until there are no vertices with degree (0,d].  Then, any vertex
+            that is left, must have core number at least d+1.
+         </p>
+         <p>The following code implements that algorithm where the graph Ad is the current working version of the graph. At the end of
+            the for loop, the graph Ad is the graph A where all vertices of degree &lt;= d have been removed.
+         </p><pre class="codeinput">max_deg = full(max(sum(A)));
+cn = zeros(num_vertices(A),1);
+Ad = A; dv=sum(Ad);
+<span class="keyword">for</span> d=0:max_deg
+  <span class="comment">% while they are vertices with degree in (0,d], remove them</span>
+  <span class="keyword">while</span> any(dv&lt;=d&amp;dv&gt;0), Ad(dv&lt;=d,:)=0;Ad(:,dv&lt;=d)=0;dv=sum(Ad);<span class="keyword">end</span>
+  <span class="comment">% any vertex that is left must core number at least d+1;</span>
+  cn(dv&gt;d) = d+1;
+<span class="keyword">end</span>
+arrayfun(@(v,c) fprintf(<span class="string">'core_number(%2i) = %i\n'</span>,v,c),1:size(A,1),cn');
+</pre><pre class="codeoutput">core_number( 1) = 1
+core_number( 2) = 2
+core_number( 3) = 2
+core_number( 4) = 3
+core_number( 5) = 3
+core_number( 6) = 3
+core_number( 7) = 3
+core_number( 8) = 3
+core_number( 9) = 2
+core_number(10) = 3
+core_number(11) = 2
+core_number(12) = 1
+core_number(13) = 1
+core_number(14) = 3
+core_number(15) = 3
+core_number(16) = 0
+core_number(17) = 2
+core_number(18) = 2
+core_number(19) = 2
+core_number(20) = 2
+core_number(21) = 1
+</pre><p>The output shows us that vertex 16 is the only vertex with a core number of 0.  Because this graph is an example, "it just
+            so happens" that the cores make a nice picture.  The following code plots the convex hull around the points inside of a k-core.
+             The darker the color, the higher the core.
+         </p><pre class="codeinput">clf; hold <span class="string">on</span>; wh=ones(1,3); colors={0.85*wh,0.7*wh,0.55*wh,0.4*wh};
+<span class="keyword">for</span> c=unique(cn')
+  m=cn&gt;=c; cl=colors{c+1}; lw=16*1.5^(max(cn)-c);
+  xym=xy(m,:);is=convhull(xym(:,1),xym(:,2));
+  h=fill(xym(is,1),xym(is,2),cl);set(h,<span class="string">'LineWidth'</span>,lw,<span class="string">'EdgeColor'</span>,cl);
+<span class="keyword">end</span>
+gplot(A,xy,<span class="string">'k-'</span>);  plot(xy(:,1), xy(:,2),<span class="string">'r.'</span>,<span class="string">'MarkerSize'</span>,24);
+text(xy(:,1)+0.1, xy(:,2)+0.1, num2str((1:21)'));set(gcf,<span class="string">'Color'</span>,[1,1,1]);
+xlim([-1,10]);ylim([-2,7]);axis <span class="string">off</span>; hold <span class="string">off</span>;
+</pre><img vspace="5" hspace="5" src="core_numbers_example_02.png"> <p>The figure shows the 0-core, the 1-core, the 2-core and the 3-core. Although vertex 11 has degree 5, it is only a 2-core vertex
+            because it links to two 1-core vertices.  Also, note that the cores aren't necessarily connected components.  The 2-core contains
+            two connected components (2-11,14-15) and (17-20).
+         </p>
+         <hr>
+         <div class="upwhitesq">&nbsp;</div>
+         <h2>With MatlabBGL<a name="7"></a></h2>
+         <p>The MatlabBGL function core_numbers implements efficient algorithms to compute the cores of a graph.  These algorithms are
+            significantly more efficient than the previous code and produce identical output.
+         </p>
+         <p>Let's check that they produce the same output.</p><pre class="codeinput">cn_bgl = core_numbers(A);
+any(cn_bgl-cn)
+</pre><pre class="codeoutput">
+ans =
+
+     0
+
+</pre><hr>
+         <div class="upwhitesq">&nbsp;</div>
+         <h2>The core numbers of a road network<a name="9"></a></h2>
+         <p>For fun, let's see how many cores there are in a road network.  Vertices in a 1-core in a road network have at least one path
+            between them (assuming the underlying network is connected).  Vertices in a 2-core have at least two paths between them.
+         </p><pre class="codeinput">load(<span class="string">'../graphs/minnesota.mat'</span>);A=spones(A); <span class="comment">% convert to unweighted</span>
+[cn csz]=core_numbers(A);  cs=unique(cn);
+arrayfun(@(v,c) fprintf(<span class="string">'core(%2i) = %4i\n'</span>,v,c),cs,csz(cs+1));
+<span class="comment">% Now, you might complain that there are certain vertices in this graph</span>
+<span class="comment">% that simply chain a path in the road network so it draws correctly.  The</span>
+<span class="comment">% following code removes all vertices of degree two and connects the</span>
+<span class="comment">% end-points of the degree two vertex directly.  It applies this prodecure</span>
+<span class="comment">% iteratively until all the vertices of degree two are gone.  At the end,</span>
+<span class="comment">% we compute the core nubmers again.</span>
+d2v=find(sum(A,2)==2);
+<span class="keyword">while</span> ~isempty(d2v)
+    <span class="keyword">for</span> v=d2v'
+        l=find(A(:,v));A(l(1),v)=0;A(l(2),v)=0;A(v,l(1))=0;A(v,l(2))=0;
+        A(l(1),l(2))=1;A(l(2),l(1))=1;
+    <span class="keyword">end</span>
+    d2v=find(sum(A,2)==2);
+<span class="keyword">end</span>
+max(core_numbers(A))
+</pre><pre class="codeoutput">core( 1) =    2
+core( 2) =   98
+
+ans =
+
+     2
+
+</pre><p>The highest core is still two!  I think that's pretty amazing.  There aren't subnetworks of the Minnesota highways where you
+            always have at least three choices at every intersection.
+         </p>
+         <hr>
+         <div class="upwhitesq">&nbsp;</div>
+      </div>
+      <div class="downwhitesq">&nbsp;</div>
+      <!--
+##### SOURCE BEGIN #####
+%% Core numbers in MatlabBGL
+% This example illustrates the concept of the core number of a vertex.
+% Mathematically, the core number of a vertex v is the largest integer c
+% such that v has degree > 0 when all vertices of degree < c are removed.
+% Equivalently, the core number of vertex v is the largest integer c such
+% that v exists in a graph where all degrees are at least c.
+
+%% A simple algorithm
+% The beauty of core-numbers is that they arey very intuitive to compute
+% and understand.
+
+%% 
+% Let's load some data.  This graph comes from the paper with the O(m)
+% algorithm to compute the core numbers of an undirected graph by Batagelj
+% and Zaversnik, "An O(m) algorithm for the cores decomposition of a
+% network."
+load '../graphs/cores_example.mat';
+%%
+% Plot the data.
+gplot(A,xy); hold on; plot(xy(:,1), xy(:,2),'r.','MarkerSize',24); hold off;
+text(xy(:,1)+0.1, xy(:,2)+0.1, num2str((1:21)'));set(gcf,'Color',[1,1,1]);
+set(gca,'XTick',[]);set(gca,'YTick',[]);xlim([-1,10]);ylim([-2,7]);axis off;
+
+%%
+% By inspection, vertex 16 is in a 0 core because it has no edges in the
+% graph.  
+%
+% From the statement of the property, let's figure out the core numbers
+% for this graph.  For each possible degree d, let's remove all vertices 
+% with degree <= d and degree>0 and repeat this until there are no vertices
+% with degree (0,d].  Then, any vertex that is left, must have core number
+% at least d+1. 
+%
+% The following code implements that algorithm where the graph Ad is the
+% current working version of the graph.
+% At the end of the for loop, the graph Ad is the graph A where all 
+% vertices of degree <= d have been removed.  
+max_deg = full(max(sum(A)));
+cn = zeros(num_vertices(A),1);
+Ad = A; dv=sum(Ad);          
+for d=0:max_deg                
+  % while they are vertices with degree in (0,d], remove them
+  while any(dv<=d&dv>0), Ad(dv<=d,:)=0;Ad(:,dv<=d)=0;dv=sum(Ad);end
+  % any vertex that is left must core number at least d+1;
+  cn(dv>d) = d+1;
+end
+arrayfun(@(v,c) fprintf('core_number(%2i) = %i\n',v,c),1:size(A,1),cn');
+
+%%
+% The output shows us that vertex 16 is the only vertex with a core number
+% of 0.  Because this graph is an example, "it just so happens" that the
+% cores make a nice picture.  The following code plots the convex hull
+% around the points inside of a k-core.  The darker the color, the higher
+% the core.
+clf; hold on; wh=ones(1,3); colors={0.85*wh,0.7*wh,0.55*wh,0.4*wh};
+for c=unique(cn')
+  m=cn>=c; cl=colors{c+1}; lw=16*1.5^(max(cn)-c);
+  xym=xy(m,:);is=convhull(xym(:,1),xym(:,2));
+  h=fill(xym(is,1),xym(is,2),cl);set(h,'LineWidth',lw,'EdgeColor',cl);
+end
+gplot(A,xy,'k-');  plot(xy(:,1), xy(:,2),'r.','MarkerSize',24);
+text(xy(:,1)+0.1, xy(:,2)+0.1, num2str((1:21)'));set(gcf,'Color',[1,1,1]);
+xlim([-1,10]);ylim([-2,7]);axis off; hold off;
+
+%%
+% The figure shows the 0-core, the 1-core, the 2-core and the 3-core.
+% Although vertex 11 has degree 5, it is only a 2-core vertex because it
+% links to two 1-core vertices.  Also, note that the cores aren't
+% necessarily connected components.  The 2-core contains two connected
+% components (2-11,14-15) and (17-20).  
+
+%% With MatlabBGL
+% The MatlabBGL function core_numbers implements efficient algorithms to
+% compute the cores of a graph.  These algorithms are significantly more
+% efficient than the previous code and produce identical output.
+
+%%
+% Let's check that they produce the same output.
+cn_bgl = core_numbers(A);
+any(cn_bgl-cn)
+
+%% The core numbers of a road network
+% For fun, let's see how many cores there are in a road network.  Vertices
+% in a 1-core in a road network have at least one path between them
+% (assuming the underlying network is connected).  Vertices in a 2-core
+% have at least two paths between them.  
+load('../graphs/minnesota.mat');A=spones(A); % convert to unweighted
+[cn csz]=core_numbers(A);  cs=unique(cn);
+arrayfun(@(v,c) fprintf('core(%2i) = %4i\n',v,c),cs,csz(cs+1));
+% Now, you might complain that there are certain vertices in this graph
+% that simply chain a path in the road network so it draws correctly.  The
+% following code removes all vertices of degree two and connects the
+% end-points of the degree two vertex directly.  It applies this prodecure
+% iteratively until all the vertices of degree two are gone.  At the end,
+% we compute the core nubmers again.
+d2v=find(sum(A,2)==2);
+while ~isempty(d2v)
+    for v=d2v'
+        l=find(A(:,v));A(l(1),v)=0;A(l(2),v)=0;A(v,l(1))=0;A(v,l(2))=0;
+        A(l(1),l(2))=1;A(l(2),l(1))=1;
+    end
+    d2v=find(sum(A,2)==2);
+end
+max(core_numbers(A))
+
+%%
+% The highest core is still two!  I think that's pretty amazing.  There
+% aren't subnetworks of the Minnesota highways where you always have at
+% least three choices at every intersection.  
+
+
+
+
+    
+    
+
+
+
+
+    
+
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

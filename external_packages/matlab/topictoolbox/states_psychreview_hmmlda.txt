@@ -1,0 +1,33 @@
+                  TOPIC_1	0.08582	                  TOPIC_2	0.03347	                  TOPIC_3	0.04277	                  TOPIC_4	0.08306	
+
+                    model	0.13554	                       it	0.23781	                    which	0.17821	                      and	0.60712	
+                   theory	0.09441	                 presents	0.03332	                      for	0.12486	                      are	0.11110	
+                  authors	0.02623	                    there	0.02446	                        a	0.02368	                       or	0.06602	
+                  article	0.02372	                describes	0.02170	                     both	0.02249	                      not	0.02562	
+                  process	0.02134	                     they	0.02079	                  explain	0.01794	                       to	0.02377	
+                 function	0.01621	                       we	0.01987	                  whether	0.01483	                     were	0.02205	
+               hypothesis	0.01550	                  however	0.01926	                      how	0.01364	                     term	0.00912	
+
+
+                  TOPIC_5	0.12779	                  TOPIC_6	0.05383	                  TOPIC_7	0.06331	                  TOPIC_8	0.03461	
+
+                       in	0.27210	                 proposed	0.03668	                     that	0.46796	                discussed	0.06209	
+                       by	0.08790	                    shown	0.03364	                       to	0.09291	                        j	0.05203	
+                     with	0.08382	                     used	0.03345	                      can	0.07983	                presented	0.04937	
+                       as	0.08134	                     also	0.02908	                      may	0.04315	                        a	0.04405	
+                       on	0.07501	                      not	0.02889	                      has	0.03377	                        d	0.04376	
+                     from	0.05308	                    based	0.02680	                     have	0.03070	                        r	0.04080	
+                      for	0.04515	                suggested	0.02471	                  account	0.02456	                        p	0.03311	
+
+
+                  TOPIC_9	0.20647	                 TOPIC_10	0.14310	                 TOPIC_11	0.06521	                 TOPIC_12	0.06057	
+
+                      the	0.50115	                       of	0.61390	                       is	0.45179	                  effects	0.03446	
+                        a	0.18715	                       to	0.19239	                      are	0.15907	                 evidence	0.02719	
+                     this	0.04028	                      for	0.03610	                       be	0.13868	                 theories	0.02618	
+                       an	0.03939	                  between	0.03332	                     been	0.03247	                    terms	0.02517	
+                    these	0.02715	                      and	0.02638	                      was	0.02934	                   number	0.02365	
+                    their	0.01739	                       is	0.01165	                      ref	0.00800	                   models	0.01909	
+                      its	0.01075	                       on	0.00865	                     also	0.00753	             implications	0.01875	
+
+

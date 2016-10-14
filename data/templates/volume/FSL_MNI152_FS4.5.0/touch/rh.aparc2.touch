@@ -1,0 +1,1 @@
+mris_ca_label -aseg ../mri/aseg.mgz -seed 1234 FSL_MNI152_FS rh ../surf/rh.sphere.reg /usr/local/freesurfer/stable4//average/rh.destrieux.simple.2009-07-29.gcs ../label/rh.aparc.a2009s.annot

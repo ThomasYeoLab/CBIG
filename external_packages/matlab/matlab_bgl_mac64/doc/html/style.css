@@ -1,0 +1,82 @@
+body {
+	font-family: sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+/* Set the page width */
+#wrapper-menu-top, #header, #wrapper-content, #wrapper-footer {
+	width: 85%;
+	margin: 0 auto;
+}
+
+#header img 
+{
+    float: right;
+    clip: rect(0px 0px 150px 400px); 
+    z-index: 100;
+    padding: 15px 0px 15px 15px;
+}
+
+#wrapper-menu-page 
+{
+    clear: both;
+	float: right;
+	width: 180px;
+	text-align: center;
+	line-height: 140%;
+	font-family: sans-serif;
+	background-color: #222;
+}
+
+/* * html #wrapper-menu-page { margin-right: 15px; margin-left: 1em; } */
+
+#menu-page { font-size: 12pt; line-height: 150%; letter-spacing: 0.1em;}
+
+#menu-page ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+#menu-page h3 {
+	font-variant:small-caps;
+	color: #5b8fbe;
+	font-weight: normal;
+	letter-spacing: 0.15em; 
+}
+
+#menu-page a:link, #menu-page a:visited { color: #888; }
+#menu-page a:hover { color: #5b8fbe; }
+
+#wrapper-footer {
+	margin-top: 1em;
+	text-align: center;
+}
+
+#footer {
+	margin: 0 20px;
+	background-color: #e5f0fc;
+	border: 1px solid #ccc;
+	border-bottom: 0;
+	clear: both;
+	font-size: small;
+}
+
+#footer p {padding: 0px; margin: 0px;}
+
+h2 { font-size: 110%; }
+h3 { font-size: 100%; }
+
+a:link, a:visited { color: #5b8fbe; text-decoration: none; }
+a:hover{ color: #666; text-decoration: none; }
+
+.matlab
+{
+    font-family: monospace;
+}
+
+.rightalign
+{
+    text-align: right;
+}

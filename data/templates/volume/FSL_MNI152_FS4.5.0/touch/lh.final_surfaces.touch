@@ -1,0 +1,1 @@
+mris_make_surfaces -noaparc -mgz -T1 brain.finalsurfs FSL_MNI152_FS lh

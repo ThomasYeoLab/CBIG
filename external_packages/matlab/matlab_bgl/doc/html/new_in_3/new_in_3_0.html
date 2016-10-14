@@ -1,0 +1,464 @@
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>New features in MatlabBGL version 3.0</title>
+      <meta name="generator" content="MATLAB 7.5">
+      <meta name="date" content="2008-10-22">
+      <meta name="m-file" content="new_in_3_0">
+      <link rel="stylesheet" type="text/css" href="../site.css"><style>
+
+body {
+  background: white;
+  color: black;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+pre.codeinput {
+  margin-left: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: #bbbbbb;
+  border: solid 1px;
+  font-size: 10pt;
+  width: 620px;
+}
+
+p
+{
+	margin: 10px;
+}
+
+hr
+{
+    color: #bbbbbb;
+    height: 4;
+}
+
+.main
+{
+	border-left-style: solid;
+	margin-left: 100px;	
+	width: 650px;
+}
+
+.upwhitesq
+{
+    position: relative;
+    left: -5px;
+    top: -8px;
+    background: white;  
+}
+.downwhitesq
+{
+    position: relative;
+    left: 95px;
+    bottom: 10px;
+    background: white;  
+}
+
+img
+{
+	text-align: center;
+}
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.showbuttons {
+  margin-left: 30px;
+  border: solid black 2px;
+  padding: 4px;
+  background: #EBEFF3;
+}
+
+pre.codeoutput {
+  margin-left: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 10pt;
+  width: 520px;
+}
+
+pre.error {
+  color: red;
+}
+
+.intro {
+  width: 650px;
+}
+
+    </style></head>
+   <body>
+      <h1>New features in MatlabBGL version 3.0</h1>
+      <introduction>
+         <div class="intro">
+            <p>Although MatlabBGL 3.0 was never officially released, here are some of it's key features.</p>
+         </div>
+      </introduction>
+      <h2>Contents</h2>
+      <div>
+         <ul>
+            <li><a href="#1">Better performance</a></li>
+            <li><a href="#4">Graph construction functions</a></li>
+            <li><a href="#6">Targeted search</a></li>
+            <li><a href="#8">Edge weights</a></li>
+            <li><a href="#9">Matching algorithms</a></li>
+            <li><a href="#10">New graph statistics</a></li>
+            <li><a href="#14">Max-flow algorithms</a></li>
+            <li><a href="#15">Dominator tree</a></li>
+            <li><a href="#16">New utility functions</a></li>
+         </ul>
+      </div>
+      <div class="main">
+         <h2>Better performance<a name="1"></a></h2>
+         <p>We redid the backend interface to the BGL routines.  This optimization gave a considerable performance increase.</p>
+         <p>test_benchmark on MatlabBGL 2.1</p><pre>2008-10-07, Version 2.1, Matlab 2007b, boost 1.33.0,
+  g++-3.4 (lib), gcc-? (mex)</pre><pre>       airfoil       west    cs-stan    minneso      tapir
+large   0.223 s    0.024 s    0.390 s    0.073 s    0.046 s
+  med     NaN s    0.955 s      NaN s      NaN s    6.621 s
+small     NaN s    0.758 s      NaN s      NaN s      NaN s</pre><p>test_benchmark on MatlabBGL 3.0</p><pre>2008-10-07: Version 3.0, Matlab 2007b, boost 1.34.1,
+  g++-4.0 (lib), gcc-? (mex)</pre><pre>       airfoil       west    cs-stan    minneso      tapir
+large   0.183 s    0.017 s    0.222 s    0.048 s    0.037 s
+  med     NaN s    0.593 s      NaN s      NaN s    3.901 s
+small     NaN s    0.543 s      NaN s      NaN s      NaN s</pre><hr>
+         <div class="upwhitesq">&nbsp;</div>
+         <h2>Graph construction functions<a name="4"></a></h2>
+         <p>MatlabBGL 2.1 had a few graph construction functions.  MatlabBGL 3.0 adds the grid_graph function for line, grid, cube, and
+            hyper-cube graphs
+         </p><pre class="codeinput">[G xy] = grid_graph(6,5); gplot(G,xy,<span class="string">'.-'</span>);
+</pre><img vspace="5" hspace="5" src="new_in_3_0_01.png"> <p>In more dimensions...</p><pre class="codeinput">[G xyz] = grid_graph(6,5,3);
+G = grid_graph(2,2,2,2);
+G = grid_graph([3,3,3,3,3]);
+</pre><hr>
+         <div class="upwhitesq">&nbsp;</div>
+         <h2>Targeted search<a name="6"></a></h2>
+         <p>The graph search algorithms now let you specify a target vertex that will stop the search early if possible.</p><pre class="codeinput">A = grid_graph(50,50);
+tic; d = bfs(A,1,struct()); toc
+tic; d = bfs(A,1,struct(<span class="string">'target'</span>,2)); toc
+</pre><pre class="codeoutput">Elapsed time is 0.001523 seconds.
+Elapsed time is 0.000704 seconds.
+</pre><p>Also implemented for astar_search, shortest_paths, and dfs.</p>
+         <hr>
+         <div class="upwhitesq">&nbsp;</div>
+         <h2>Edge weights<a name="8"></a></h2>
+         <p>In Matlab, there is no way to create a sparse matrix with a structural non-zero (used for MatlabBGL edges) and a value of
+            0 (used for MatlabBGL weights).  Consequently, it's impossible to run algorithms on graphs where the edge weights are 0.
+         </p>
+         <p>Consequently, some algorithms now take an 'edge_weight' parameter that allows you to provide a different set of edge weights
+            which allow structural non-zeros and 0 values.
+         </p>
+         <p>This behavior is a bit complicated, so see the REWEIGHTED_GRAPHS example for more information.</p>
+         <hr>
+         <div class="upwhitesq">&nbsp;</div>
+         <h2>Matching algorithms<a name="9"></a></h2>
+         <p>While maximum cardinality bipartite matching is just a call to max-flow, general graph matching algorithms are not.  MatlabBGL
+            3.0 contains the matching algorithms in Boost 1.34.0.
+         </p><pre class="codeinput">load(<span class="string">'../graphs/matching_example.mat'</span>);
+m = matching(A);
+sum(m&gt;0)/2 <span class="comment">% matching cardinality should be 8</span>
+</pre><pre class="codeoutput">
+ans =
+
+     8
+
+</pre><hr>
+         <div class="upwhitesq">&nbsp;</div>
+         <h2>New graph statistics<a name="10"></a></h2>
+         <p>We added a few new statistics functions.</p>
+         <p>Test for a topological ordering of a graph (only applies to DAGs or directed acyclic graphs)</p><pre class="codeinput">n = 10; A = sparse(1:n-1, 2:n, 1, n, n); <span class="comment">% construct a simple dag</span>
+p = topological_order(A);
+
+test_dag(A)
+test_dag(cycle_graph(6)) <span class="comment">% a cycle is not acyclic!</span>
+</pre><pre class="codeoutput">
+ans =
+
+     1
+
+
+ans =
+
+     0
+
+</pre><p>Core numbers can help identify important regions in a graph.  MatlabBGL includes weighted and directed core numbers.  Also,
+            the algorithms return the removal time of a particular vertex, which gives interesting graph orderings.
+         </p><pre class="codeinput"><span class="comment">% See EXAMPLES/CORE_NUMBERS_EXAMPLE</span>
+</pre><p>New algorithms for clustering_coefficients on weighted and directed graphs.</p><pre class="codeinput">A = clique_graph(6) - cycle_graph(6); <span class="comment">% A is a clique - a directed cycle</span>
+ccfs = clustering_coefficients(A)
+B = sprand(A);
+ccfs = clustering_coefficients(B)
+C = A|A'; <span class="comment">% now it's a full clique again</span>
+ccfs = clustering_coefficients(C)
+</pre><pre class="codeoutput">
+ccfs =
+
+    0.7600
+    0.7600
+    0.7600
+    0.7600
+    0.7600
+    0.7600
+
+
+ccfs =
+
+    0.4543
+    0.4064
+    0.4363
+    0.4310
+    0.4109
+    0.4180
+
+
+ccfs =
+
+     1
+     1
+     1
+     1
+     1
+     1
+
+</pre><hr>
+         <div class="upwhitesq">&nbsp;</div>
+         <h2>Max-flow algorithms<a name="14"></a></h2>
+         <p>Since Boost added the Kolmogorov max-flow function, we added the full collection of flow algorithms to MatlabBGL.</p><pre class="codeinput">load(<span class="string">'../graphs/max_flow_example.mat'</span>);
+
+push_relabel_max_flow(A,1,8)
+kolmogorov_max_flow(A,1,8)
+edmunds_karp_max_flow(A,1,8)
+
+max_flow(A,1,8,struct(<span class="string">'algname'</span>,<span class="string">'push_relabel'</span>));
+max_flow(A,1,8,struct(<span class="string">'algname'</span>,<span class="string">'kolmogorov'</span>));
+max_flow(A,1,8,struct(<span class="string">'algname'</span>,<span class="string">'edmunds_karp'</span>));
+</pre><pre class="codeoutput">
+ans =
+
+     4
+
+
+ans =
+
+     4
+
+
+ans =
+
+     4
+
+</pre><hr>
+         <div class="upwhitesq">&nbsp;</div>
+         <h2>Dominator tree<a name="15"></a></h2>
+         <p>Dominator trees are relations about presidence in certain types of graphs.  These are also called flow-graphs.</p><pre class="codeinput">load(<span class="string">'../graphs/dominator_tree_example.mat'</span>);
+p = lengauer_tarjan_dominator_tree(A,1);
+</pre><hr>
+         <div class="upwhitesq">&nbsp;</div>
+         <h2>New utility functions<a name="16"></a></h2>
+         <p>MatlabBGL 3.0 introduces some new utility functions.</p>
+         <p>The output of a shortest path algorithm is a predecessor matrix.  To convert these predecessor relationships to a path, use
+            the path_from_pred function.
+         </p><pre class="codeinput">[A xy] = grid_graph(6,5); n= size(A,1);
+[d dt pred] = bfs(A,1); <span class="comment">%</span>
+path = path_from_pred(pred,n) <span class="comment">% sequence of vertices to upper corner</span>
+</pre><pre class="codeoutput">
+path =
+
+     1     2     3     4     5     6    12    18    24    30
+
+</pre><p>Let's draw the path</p><pre class="codeinput">gplot(A,xy,<span class="string">'r.-'</span>);
+[px,py]=gplot(sparse(path(1:end-1),path(2:end),1,n,n),xy,<span class="string">'-'</span>);
+hold <span class="string">on</span>; plot(px,py,<span class="string">'-'</span>,<span class="string">'LineWidth'</span>,2); hold <span class="string">off</span>;
+</pre><img vspace="5" hspace="5" src="new_in_3_0_02.png"> <p>We can also create a full shortest path tree using the tree_from_pred function.</p><pre class="codeinput">T = tree_from_pred(pred);
+gplot(A,xy,<span class="string">'r.-'</span>);
+[px,py]=gplot(T,xy,<span class="string">'-'</span>);
+hold <span class="string">on</span>; plot(px,py,<span class="string">'-'</span>,<span class="string">'LineWidth'</span>,2); hold <span class="string">off</span>;
+</pre><img vspace="5" hspace="5" src="new_in_3_0_03.png"> <p>Finally, there are a few new routines to make working with reweighted graphs easier.  See EXAMPLES/REWEIGHTED_GRAPHS for information
+            about the INDEXED_SPARSE and EDGE_WEIGHT_INDEX functions.
+         </p>
+         <hr>
+         <div class="upwhitesq">&nbsp;</div>
+      </div>
+      <div class="downwhitesq">&nbsp;</div>
+      <!--
+##### SOURCE BEGIN #####
+%% New features in MatlabBGL version 3.0
+% Although MatlabBGL 3.0 was never officially released, here are some of
+% it's key features.
+
+%% Better performance
+% We redid the backend interface to the BGL routines.  This optimization
+% gave a considerable performance increase.
+
+%%
+% test_benchmark on MatlabBGL 2.1
+%
+%  2008-10-07, Version 2.1, Matlab 2007b, boost 1.33.0, 
+%    g++-3.4 (lib), gcc-? (mex)
+%
+%         airfoil       west    cs-stan    minneso      tapir   
+%  large   0.223 s    0.024 s    0.390 s    0.073 s    0.046 s  
+%    med     NaN s    0.955 s      NaN s      NaN s    6.621 s  
+%  small     NaN s    0.758 s      NaN s      NaN s      NaN s  
+
+%% 
+% test_benchmark on MatlabBGL 3.0
+%
+%  2008-10-07: Version 3.0, Matlab 2007b, boost 1.34.1, 
+%    g++-4.0 (lib), gcc-? (mex)
+%
+%         airfoil       west    cs-stan    minneso      tapir   
+%  large   0.183 s    0.017 s    0.222 s    0.048 s    0.037 s  
+%    med     NaN s    0.593 s      NaN s      NaN s    3.901 s  
+%  small     NaN s    0.543 s      NaN s      NaN s      NaN s  
+
+%% Graph construction functions
+% MatlabBGL 2.1 had a few graph construction functions.  MatlabBGL 3.0 adds
+% the grid_graph function for line, grid, cube, and hyper-cube graphs
+
+[G xy] = grid_graph(6,5); gplot(G,xy,'.-');
+
+%% 
+% In more dimensions...
+
+[G xyz] = grid_graph(6,5,3);
+G = grid_graph(2,2,2,2);
+G = grid_graph([3,3,3,3,3]);
+
+%% Targeted search
+% The graph search algorithms now let you specify a target vertex that will
+% stop the search early if possible. 
+
+A = grid_graph(50,50);
+tic; d = bfs(A,1,struct()); toc
+tic; d = bfs(A,1,struct('target',2)); toc 
+
+%%
+% Also implemented for astar_search, shortest_paths, and dfs.
+
+%% Edge weights
+% In Matlab, there is no way to create a sparse matrix with a structural
+% non-zero (used for MatlabBGL edges) and a value of 0 (used for MatlabBGL
+% weights).  Consequently, it's impossible to run algorithms on graphs
+% where the edge weights are 0. 
+%
+% Consequently, some algorithms now take an 'edge_weight' parameter that
+% allows you to provide a different set of edge weights which allow
+% structural non-zeros and 0 values.
+%
+% This behavior is a bit complicated, so see the REWEIGHTED_GRAPHS example
+% for more information.
+
+%% Matching algorithms
+% While maximum cardinality bipartite matching is just a call to max-flow,
+% general graph matching algorithms are not.  MatlabBGL 3.0 contains the
+% matching algorithms in Boost 1.34.0.
+
+load('../graphs/matching_example.mat');
+m = matching(A);
+sum(m>0)/2 % matching cardinality should be 8
+
+
+%% New graph statistics
+% We added a few new statistics functions.
+
+%%
+% Test for a topological ordering of a graph (only applies to DAGs or
+% directed acyclic graphs)
+
+n = 10; A = sparse(1:n-1, 2:n, 1, n, n); % construct a simple dag
+p = topological_order(A);
+
+test_dag(A)
+test_dag(cycle_graph(6)) % a cycle is not acyclic!
+
+%% 
+% Core numbers can help identify important regions in a graph.  MatlabBGL
+% includes weighted and directed core numbers.  Also, the algorithms return
+% the removal time of a particular vertex, which gives interesting graph
+% orderings.
+
+% See EXAMPLES/CORE_NUMBERS_EXAMPLE
+
+%%
+% New algorithms for clustering_coefficients on weighted and directed
+% graphs.
+
+A = clique_graph(6) - cycle_graph(6); % A is a clique - a directed cycle
+ccfs = clustering_coefficients(A)
+B = sprand(A);
+ccfs = clustering_coefficients(B)
+C = A|A'; % now it's a full clique again
+ccfs = clustering_coefficients(C)
+
+%% Max-flow algorithms
+% Since Boost added the Kolmogorov max-flow function, we added the
+% full collection of flow algorithms to MatlabBGL.
+
+load('../graphs/max_flow_example.mat');
+
+push_relabel_max_flow(A,1,8)
+kolmogorov_max_flow(A,1,8)
+edmunds_karp_max_flow(A,1,8)
+
+max_flow(A,1,8,struct('algname','push_relabel'));
+max_flow(A,1,8,struct('algname','kolmogorov'));
+max_flow(A,1,8,struct('algname','edmunds_karp'));
+
+%% Dominator tree
+% Dominator trees are relations about presidence in certain types of
+% graphs.  These are also called flow-graphs.
+
+load('../graphs/dominator_tree_example.mat');
+p = lengauer_tarjan_dominator_tree(A,1);
+
+
+%% New utility functions
+% MatlabBGL 3.0 introduces some new utility functions.  
+
+%%
+% The output of a shortest path algorithm is a predecessor matrix.  To
+% convert these predecessor relationships to a path, use the path_from_pred
+% function.
+
+[A xy] = grid_graph(6,5); n= size(A,1);
+[d dt pred] = bfs(A,1); % 
+path = path_from_pred(pred,n) % sequence of vertices to upper corner
+
+%% 
+% Let's draw the path
+gplot(A,xy,'r.-'); 
+[px,py]=gplot(sparse(path(1:end-1),path(2:end),1,n,n),xy,'-');
+hold on; plot(px,py,'-','LineWidth',2); hold off;
+
+%%
+% We can also create a full shortest path tree using the tree_from_pred
+% function.
+T = tree_from_pred(pred);
+gplot(A,xy,'r.-'); 
+[px,py]=gplot(T,xy,'-');
+hold on; plot(px,py,'-','LineWidth',2); hold off;
+
+%%
+% Finally, there are a few new routines to make working with reweighted
+% graphs easier.  See EXAMPLES/REWEIGHTED_GRAPHS for information about
+% the INDEXED_SPARSE and EDGE_WEIGHT_INDEX functions.
+
+##### SOURCE END #####
+-->
+   </body>
+</html>

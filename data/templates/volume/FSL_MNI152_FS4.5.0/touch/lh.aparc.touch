@@ -1,0 +1,1 @@
+mris_ca_label -aseg ../mri/aseg.mgz -seed 1234 FSL_MNI152_FS lh ../surf/lh.sphere.reg /usr/local/freesurfer/stable4//average/lh.curvature.buckner40.filled.desikan_killiany.2009-03-04.gcs ../label/lh.aparc.annot

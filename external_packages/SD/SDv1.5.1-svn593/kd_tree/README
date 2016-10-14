@@ -1,0 +1,23 @@
+
+This distribution contains the KDTREE, KDTREEIDX and KDRANGEQUERY functions.
+
+Included are the source code files in kdtree/src, as well as precompiled
+mex files for the following systems:
+
+  - Mac OS X     (Matlab 6.5)
+  - Redhat Linux (Matlab 6.5)
+  - Windows      (Matlab 6.1)
+
+Two demo scripts are provided (kdtree_demo.m & kdrange_demo.m).
+
+The new features added June 2004:
+	+  You can now use N dimensional data points, where N>3.
+	+  Use KDTREEIND to return the index value to the closest point, 
+	   instead of the closest point values.
+	+  KDRANGEQUERY can now return these index values as well.
+
+
+Written by / send comments or suggestions to :
+ Guy Shechter
+ guy at jhu dot edu
+ June 2004

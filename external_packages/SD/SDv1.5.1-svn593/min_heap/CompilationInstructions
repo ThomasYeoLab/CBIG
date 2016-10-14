@@ -1,0 +1,2 @@
+gcc -fPIC -c min_heap.c
+ar rcs libmin_heap.a min_heap.o

@@ -1,0 +1,160 @@
+
+
+H1
+{
+    text-align: left;
+    font-size: x-large;
+}
+
+H2
+{
+    text-align: left;
+    font-size: larger;
+}
+
+H3
+{
+    text-align: left;
+    font-size: large;
+}
+
+H4
+{
+    text-align: left;
+    font-size:medium;
+}
+
+
+
+
+A:link
+{
+    BACKGROUND-COLOR: transparent;
+    COLOR: #829fe7;
+    TEXT-DECORATION: none
+}
+A:visited
+{
+    BACKGROUND-COLOR: transparent;
+    COLOR: #829fe7;
+    TEXT-DECORATION: none
+}
+A:hover
+{
+    BACKGROUND-COLOR: transparent;
+    COLOR: #66CCFF;
+    TEXT-DECORATION: none
+}
+
+li
+{
+    FONT-FAMILY: Verdana;
+    FONT-SIZE: 12pt;
+    text-align: left;
+}
+
+P
+{
+    FONT-FAMILY: Verdana;
+    FONT-SIZE: 12pt;
+    MARGIN-BOTTOM: 10pt;
+    MARGIN-LEFT: 0pt;
+    MARGIN-TOP: 18pt;
+    TEXT-ALIGN: justify;
+    TEXT-INDENT: 0pt;
+}
+
+.matlab
+{
+    font-family: monospace;
+}
+
+
+.noindent
+{
+    TEXT-INDENT: 0pt
+}
+.nojustify
+{
+    TEXT-ALIGN: left
+}
+.center
+{
+    TEXT-ALIGN: center;
+    TEXT-INDENT: 0px;
+    text-index: 0
+}
+.info
+{
+    FONT-WEIGHT: bold;
+    TEXT-ALIGN: center;
+    MARGIN-BOTTOM: 0px;
+    MARGIN-TOP: 24px;
+    TEXT-INDENT: 0px;
+}
+.title
+{
+    FONT-FAMILY: Verdana; 
+    FONT-SIZE: 28pt;
+    TEXT-ALIGN: center;
+    MARGIN-BOTTOM: 5px;
+    MARGIN-TOP: 5px;
+    MARGIN-LEFT: 0px;
+    TEXT-INDENT: 0px;
+}
+
+
+
+hr
+{
+    color: #829fe7
+}
+
+.sblink_title
+{
+    FONT-FAMILY: Verdana;
+    FONT-SIZE: 14pt;
+    FONT-WEIGHT: bold;
+    MARGIN-BOTTOM: 0px;
+    MARGIN-LEFT: 0px;
+    MARGIN-TOP: 10pt;
+    TEXT-ALIGN: center;
+    TEXT-INDENT: 0px
+}
+
+
+.botlink
+{
+    BACKGROUND-COLOR: transparent;
+    COLOR: #aaa;
+    FONT-FAMILY: Verdana;
+    FONT-SIZE: 8pt;
+    MARGIN-BOTTOM: 0pt;
+    MARGIN-LEFT: 0px;
+    MARGIN-TOP: 0px;
+    TEXT-ALIGN: center;
+    TEXT-INDENT: 0px
+}
+A.botlink:link
+{
+    BACKGROUND-COLOR: transparent;
+    COLOR: black
+}
+A.botlink:visited
+{
+    BACKGROUND-COLOR: transparent;
+    COLOR: black
+}
+A.botlink:hover
+{
+    BACKGROUND-COLOR: transparent;
+    COLOR: #66CCFF
+}
+
+
+
+body {
+	font: 70% verdana, sans-serif;
+	color: #fff; background: #333;
+}
+

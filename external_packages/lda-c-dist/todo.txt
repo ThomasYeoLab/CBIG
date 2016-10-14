@@ -1,0 +1,9 @@
+-- figure out why the likelihood is positive in the short ap documents
+
+-- fix learning alpha
+
+   (a) save alpha
+   (b) start alpha intelligently, or from the previous value of alpha
+   (c) fix convergence criteria of the optimizer
+
+-- deal with settings in a cleaner way

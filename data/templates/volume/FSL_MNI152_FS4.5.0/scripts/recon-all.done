@@ -1,0 +1,10 @@
+------------------------------
+SUBJECT FSL_MNI152_FS
+DATE Fri Jul 16 04:42:45 EDT 2010
+USER ythomas
+HOST compute-0-103.local
+PROCESSOR x86_64
+OS Linux
+Linux compute-0-103.local 2.6.18-53.1.19.el5 #1 SMP Tue Apr 22 03:01:10 EDT 2008 x86_64 x86_64 x86_64 GNU/Linux
+$Id: recon-all,v 1.133.2.64 2010/02/11 17:26:03 mreuter Exp $
+/usr/local/freesurfer/stable4//bin/recon-all

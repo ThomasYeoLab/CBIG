@@ -1,0 +1,61 @@
+status file for recon-all
+Thu Jul 15 08:40:46 EDT 2010
+#@# MotionCor Thu Jul 15 08:40:54 EDT 2010
+#@# Nu Intensity Correction Thu Jul 15 08:41:08 EDT 2010
+#@# Talairach Thu Jul 15 08:43:05 EDT 2010
+#@# Talairach Failure Detection Thu Jul 15 08:43:55 EDT 2010
+#@# Intensity Normalization Thu Jul 15 08:43:56 EDT 2010
+#@# Skull Stripping Thu Jul 15 08:46:26 EDT 2010
+#@# EM Registration Thu Jul 15 09:26:27 EDT 2010
+#@# CA Normalize Thu Jul 15 09:49:51 EDT 2010
+#@# CA Reg Thu Jul 15 09:51:28 EDT 2010
+#@# CA Reg Inv Thu Jul 15 13:38:27 EDT 2010
+#@# Remove Neck Thu Jul 15 13:39:13 EDT 2010
+#@# SkullLTA Thu Jul 15 13:40:19 EDT 2010
+#@# SubCort Seg Thu Jul 15 14:18:56 EDT 2010
+#@# Merge ASeg Thu Jul 15 14:43:33 EDT 2010
+#@# Intensity Normalization2 Thu Jul 15 14:43:33 EDT 2010
+#@# Mask BFS Thu Jul 15 14:46:46 EDT 2010
+#@# WM Segmentation Thu Jul 15 14:46:51 EDT 2010
+#@# Fill Thu Jul 15 14:49:53 EDT 2010
+#@# Tessellate lh Thu Jul 15 14:50:52 EDT 2010
+#@# Smooth1 lh Thu Jul 15 14:51:06 EDT 2010
+#@# Inflation1 lh Thu Jul 15 14:51:13 EDT 2010
+#@# QSphere lh Thu Jul 15 14:52:25 EDT 2010
+#@# Fix Topology lh Thu Jul 15 15:06:02 EDT 2010
+#@# Make Final Surf lh Thu Jul 15 15:53:25 EDT 2010
+#@# Surf Volume lh Thu Jul 15 16:55:48 EDT 2010
+#@# Smooth2 lh Thu Jul 15 16:55:49 EDT 2010
+#@# Inflation2 lh Thu Jul 15 16:55:54 EDT 2010
+#@# Curvature Stats lh Thu Jul 15 16:58:44 EDT 2010
+#@# Sphere lh Thu Jul 15 16:58:52 EDT 2010
+#@# Surf Reg lh Thu Jul 15 18:46:54 EDT 2010
+#@# Jacobian white lh Thu Jul 15 21:14:03 EDT 2010
+#@# AvgCurv lh Thu Jul 15 21:14:07 EDT 2010
+#@# Cortical Parc lh Thu Jul 15 21:14:10 EDT 2010
+#@# Parcellation Stats lh Thu Jul 15 21:14:36 EDT 2010
+#@# Cortical Parc 2 lh Thu Jul 15 21:14:45 EDT 2010
+#@# Parcellation Stats 2 lh Thu Jul 15 21:15:19 EDT 2010
+#@# Tessellate rh Thu Jul 15 21:15:30 EDT 2010
+#@# Smooth1 rh Thu Jul 15 21:15:42 EDT 2010
+#@# Inflation1 rh Thu Jul 15 21:15:48 EDT 2010
+#@# QSphere rh Thu Jul 15 21:16:58 EDT 2010
+#@# Fix Topology rh Thu Jul 15 21:28:20 EDT 2010
+#@# Make Final Surf rh Thu Jul 15 22:00:00 EDT 2010
+#@# Surf Volume rh Thu Jul 15 23:03:37 EDT 2010
+#@# Smooth2 rh Thu Jul 15 23:03:38 EDT 2010
+#@# Inflation2 rh Thu Jul 15 23:03:44 EDT 2010
+#@# Curvature Stats rh Thu Jul 15 23:06:34 EDT 2010
+#@# Sphere rh Thu Jul 15 23:06:41 EDT 2010
+#@# Surf Reg rh Fri Jul 16 01:03:51 EDT 2010
+#@# Jacobian white rh Fri Jul 16 03:44:54 EDT 2010
+#@# AvgCurv rh Fri Jul 16 03:44:57 EDT 2010
+#@# Cortical Parc rh Fri Jul 16 03:44:59 EDT 2010
+#@# Parcellation Stats rh Fri Jul 16 03:45:27 EDT 2010
+#@# Cortical Parc 2 rh Fri Jul 16 03:45:35 EDT 2010
+#@# Parcellation Stats 2 rh Fri Jul 16 03:46:11 EDT 2010
+#@# ASeg Stats Fri Jul 16 03:46:22 EDT 2010
+#@# Cortical ribbon mask Fri Jul 16 03:57:13 EDT 2010
+#@# AParc-to-ASeg Fri Jul 16 04:06:22 EDT 2010
+#@# WMParc Fri Jul 16 04:09:11 EDT 2010
+recon-all finished without error at Fri Jul 16 04:42:45 EDT 2010

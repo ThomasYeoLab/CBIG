@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE Code::Blocks_layout_file>
+<Code::Blocks_layout_file>
+	<File name="compressed_row_matrix.hpp" open="1" top="1">
+		<Cursor position="6608" topLine="173"/>
+	</File>
+	<File name="generic_matrix_operations.hpp" open="1" top="0">
+		<Cursor position="2065" topLine="57"/>
+	</File>
+	<File name="ifstream_as_matrix.hpp" open="1" top="0">
+		<Cursor position="716" topLine="0"/>
+	</File>
+	<File name="indexed_list.hpp" open="0" top="0">
+		<Cursor position="1547" topLine="30"/>
+	</File>
+	<File name="smatrix_traits.hpp" open="1" top="0">
+		<Cursor position="835" topLine="0"/>
+	</File>
+	<File name="tuple_utility.hpp" open="1" top="0">
+		<Cursor position="429" topLine="0"/>
+	</File>
+	<Expand folder="/Headers"/>
+</Code::Blocks_layout_file>

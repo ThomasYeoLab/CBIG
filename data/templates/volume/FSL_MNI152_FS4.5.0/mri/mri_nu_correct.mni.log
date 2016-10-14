@@ -1,0 +1,106 @@
+/autofs/cluster/nexus/12/users/ythomas/data/MaiAtlas/FSL_MNI152_FS/mri
+/usr/local/freesurfer/stable4//bin/mri_nu_correct.mni
+--i orig.mgz --o nu.mgz --n 2
+nIters 2
+$Id: mri_nu_correct.mni,v 1.7.2.2 2009/05/04 16:16:27 nicks Exp $
+Linux compute-0-103.local 2.6.18-53.1.19.el5 #1 SMP Tue Apr 22 03:01:10 EDT 2008 x86_64 x86_64 x86_64 GNU/Linux
+Thu Jul 15 08:41:09 EDT 2010
+Program nu_correct, built from:
+Package MNI N3, version 1.10, compiled by nicks@minerva (x86_64-unknown-linux-gnu) on 2010-02-20 at 17:32:37
+tmpdir is ./tmp.mri_nu_correct.mni.23865
+/autofs/cluster/nexus/12/users/ythomas/data/MaiAtlas/FSL_MNI152_FS/mri
+mri_convert orig.mgz ./tmp.mri_nu_correct.mni.23865/nu0.mnc
+mri_convert orig.mgz ./tmp.mri_nu_correct.mni.23865/nu0.mnc 
+$Id: mri_convert.c,v 1.146.2.5 2009/04/08 18:40:23 nicks Exp $
+reading from orig.mgz...
+TR=1000.00, TE=0.00, TI=0.00, flip angle=0.00
+i_ras = (-1, 0, 0)
+j_ras = (0, 0, -1)
+k_ras = (0, 1, 0)
+writing to ./tmp.mri_nu_correct.mni.23865/nu0.mnc...
+ 
+--------------------------------------------------------
+Iteration 1 Thu Jul 15 08:41:16 EDT 2010
+nu_correct -clobber ./tmp.mri_nu_correct.mni.23865/nu0.mnc ./tmp.mri_nu_correct.mni.23865/nu1.mnc -tmpdir ./tmp.mri_nu_correct.mni.23865/0/
+[ythomas@compute-0-103.local:/autofs/cluster/nexus/12/users/ythomas/data/MaiAtlas/FSL_MNI152_FS/mri/] [2010-07-15 08:41:18] running:
+  /usr/local/freesurfer/stable4//mni/bin/nu_estimate_np_and_em -parzen -log -sharpen 0.15 0.01 -iterations 50 -stop 0.001 -shrink 4 -auto_mask -nonotify -b_spline 1 -distance 200 -quiet -execute -clobber -nokeeptmp -tmpdir ./tmp.mri_nu_correct.mni.23865/0/ ./tmp.mri_nu_correct.mni.23865/nu0.mnc ./tmp.mri_nu_correct.mni.23865/nu1.imp
+
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Number of iterations: 27 
+CV of field change: 0.000925772
+[ythomas@compute-0-103.local:/autofs/cluster/nexus/12/users/ythomas/data/MaiAtlas/FSL_MNI152_FS/mri/] [2010-07-15 08:42:18] running:
+  /usr/local/freesurfer/stable4//mni/bin/make_template -quiet -shrink 3 ./tmp.mri_nu_correct.mni.23865/nu0.mnc ./tmp.mri_nu_correct.mni.23865/0//template.mnc
+
+Transforming slices:......................................................................................Done
+Transforming slices:................................................................................................................................................................................................................................................................Done
+ 
+ 
+--------------------------------------------------------
+Iteration 2 Thu Jul 15 08:42:22 EDT 2010
+nu_correct -clobber ./tmp.mri_nu_correct.mni.23865/nu1.mnc ./tmp.mri_nu_correct.mni.23865/nu2.mnc -tmpdir ./tmp.mri_nu_correct.mni.23865/1/
+[ythomas@compute-0-103.local:/autofs/cluster/nexus/12/users/ythomas/data/MaiAtlas/FSL_MNI152_FS/mri/] [2010-07-15 08:42:25] running:
+  /usr/local/freesurfer/stable4//mni/bin/nu_estimate_np_and_em -parzen -log -sharpen 0.15 0.01 -iterations 50 -stop 0.001 -shrink 4 -auto_mask -nonotify -b_spline 1 -distance 200 -quiet -execute -clobber -nokeeptmp -tmpdir ./tmp.mri_nu_correct.mni.23865/1/ ./tmp.mri_nu_correct.mni.23865/nu1.mnc ./tmp.mri_nu_correct.mni.23865/nu2.imp
+
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Processing:.................................................................Done
+Number of iterations: 13 
+CV of field change: 0.000937279
+[ythomas@compute-0-103.local:/autofs/cluster/nexus/12/users/ythomas/data/MaiAtlas/FSL_MNI152_FS/mri/] [2010-07-15 08:42:55] running:
+  /usr/local/freesurfer/stable4//mni/bin/make_template -quiet -shrink 3 ./tmp.mri_nu_correct.mni.23865/nu1.mnc ./tmp.mri_nu_correct.mni.23865/1//template.mnc
+
+Transforming slices:......................................................................................Done
+Transforming slices:................................................................................................................................................................................................................................................................Done
+ 
+ 
+ 
+mri_convert ./tmp.mri_nu_correct.mni.23865/nu2.mnc nu.mgz --like orig.mgz
+mri_convert ./tmp.mri_nu_correct.mni.23865/nu2.mnc nu.mgz --like orig.mgz 
+$Id: mri_convert.c,v 1.146.2.5 2009/04/08 18:40:23 nicks Exp $
+reading from ./tmp.mri_nu_correct.mni.23865/nu2.mnc...
+TR=0.00, TE=0.00, TI=0.00, flip angle=0.00
+i_ras = (-1, 0, 0)
+j_ras = (0, 0, -1)
+k_ras = (0, 1, 0)
+INFO: transform src into the like-volume: orig.mgz
+writing to nu.mgz...
+ 
+ 
+Thu Jul 15 08:43:05 EDT 2010
+mri_nu_correct.mni done

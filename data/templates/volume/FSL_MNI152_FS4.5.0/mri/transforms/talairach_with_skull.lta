@@ -1,0 +1,30 @@
+# transform file transforms/talairach_with_skull.lta
+# created by ythomas on Thu Jul 15 14:18:56 2010
+
+type      = 0
+nxforms   = 1
+mean      = 126.000 141.000 129.000
+sigma     = 10000.000
+1 4 4
++0.952175  -0.043417  -0.028992  +14.766460  
++0.035068  +0.978886  +0.018143  -25.017700  
++0.028013  -0.019184  +0.947165  -13.451917  
++0.000000  +0.000000  +0.000000  +1.000000  
+src volume info
+valid = 1  # volume info valid
+filename = /autofs/cluster/nexus/12/users/ythomas/data/MaiAtlas/FSL_MNI152_FS/mri/nu_noneck.mgz
+volume = 256 256 256
+voxelsize = 1.0000 1.0000 1.0000
+xras   = -1.0000 0.0000 0.0000
+yras   = 0.0000 0.0000 -1.0000
+zras   = 0.0000 1.0000 0.0000
+cras   = -1.0000 -17.0000 19.0000
+dst volume info
+valid = 1  # volume info valid
+filename = /usr/local/freesurfer/stable4//average/RB_all_withskull_2008-03-26.gca
+volume = 256 256 256
+voxelsize = 1.0000 1.0000 1.0000
+xras   = -1.0000 0.0000 0.0000
+yras   = 0.0000 0.0000 -1.0000
+zras   = 0.0000 1.0000 0.0000
+cras   = 0.0000 0.0000 0.0000
