@@ -1,0 +1,4 @@
+/data/users/xzhang/storage/ADFactors_newVBM_CNReg/vbm_earlySteps/nanbo_initBET_bl/orig_810bl/0979_bl.nii.gz
+/data/users/xzhang/storage/ADFactors_newVBM_CNReg/vbm_earlySteps/nanbo_initBET_bl/orig_810bl/1119_bl.nii.gz
+/data/users/xzhang/storage/ADFactors_newVBM_CNReg/vbm_earlySteps/nanbo_initBET_bl/orig_810bl/1225_bl.nii.gz
+/data/users/xzhang/storage/ADFactors_newVBM_CNReg/vbm_earlySteps/nanbo_initBET_bl/orig_810bl/1343_bl.nii.gz

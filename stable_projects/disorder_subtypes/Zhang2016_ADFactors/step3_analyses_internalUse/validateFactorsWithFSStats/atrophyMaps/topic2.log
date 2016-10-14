@@ -1,0 +1,48 @@
+movvol ../../lda/postprocess/188blAD/k3/r14/topic2.nii.gz
+targvol /data/users/xzhang/thomas/code/templates/volume/FSL_MNI152_FS4.5.0/mri/aparc+aseg.mgz
+outvol ./atrophyMaps/topic2_resampled.nii.gz
+invert 0
+tal    0
+talres 2
+regheader 1
+noresample 0
+interp  trilinear (1)
+precision  float (3)
+Gdiag_no  -1
+Synth      0
+SynthSeed  1464914315
+
+Computing registration based on scanner-to-scanner
+
+Final tkRAS-to-tkRAS Matrix is:
+ 1.000   0.000   0.000   0.000;
+ 0.000   0.000   1.000   0.000;
+ 0.000  -1.000   0.000   0.000;
+ 0.000   0.000   0.000   1.000;
+
+
+Vox2Vox Matrix is:
+ 0.500   0.000   0.000  -18.500;
+ 0.000   0.000   0.500  -9.500;
+ 0.000  -0.500   0.000   109.500;
+ 0.000   0.000   0.000   1.000;
+
+Resampling
+Output registration matrix is identity
+INFO: writing registration to ./atrophyMaps/topic2_resampled.nii.gz.lta
+transformed matrix:
+ 1.000  -0.000  -0.000  -0.000;
+-0.000  -0.000   1.000  -36.000;
+-0.000  -1.000  -0.000   2.000;
+ 0.000   0.000   0.000   1.000;
+transformed matrix:
+ 2.000   0.000   0.000   37.000;
+ 0.000   2.000   0.000   19.000;
+ 0.000   0.000   2.000   37.000;
+ 0.000   0.000   0.000   1.000;
+INFO: writing registration matrix to ./atrophyMaps/topic2_resampled.nii.gz.reg
+To check registration, run:
+
+  tkregister2 --mov ./atrophyMaps/topic2_resampled.nii.gz --targ /data/users/xzhang/thomas/code/templates/volume/FSL_MNI152_FS4.5.0/mri/aparc+aseg.mgz --reg ./atrophyMaps/topic2_resampled.nii.gz.reg 
+
+mri_vol2vol done

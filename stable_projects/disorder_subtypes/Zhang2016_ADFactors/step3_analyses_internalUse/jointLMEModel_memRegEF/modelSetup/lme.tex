@@ -1,0 +1,171 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{bbm}
+\usepackage{amsmath}
+\usepackage{pdflscape}
+\usepackage{xcolor}
+\usepackage{amstext} % for \text macro
+\usepackage{array}   % for \newcolumntype macro
+\newcolumntype{L}{>{$}l<{$}} % math-mode version of "l" column type
+\usepackage[titletoc,title]{appendix}
+\usepackage{geometry}
+
+\title{New LME Model}
+\author{Xiuming Zhang}
+
+\begin{document}
+
+\maketitle
+
+\section{Model}
+
+We include all subjects (188 AD, 147 amyloid-positive MCI, 43 amyloid-positive healthy controls) in the model. Denote time by $t$, age by $a$, gender by $g$, education by $e$, and ICV over GM by $i$. We have two binary indicators, $d$ for AD and $m$ for MCI, at most one of which is 1. Neither being 1 implies that the subject is a normal control. We consider $K=3$, and we include subcortical factor probability $s$ and cortical factor probability $c$ in the model, implicitly modeling the temporal factor as the reference factor. For simplicity, we investigate the memory score $y_m$ while controlling for the executive function score $y_e$.
+
+For a subject's one timepoint, the LME model is as follows.
+\begin{align}
+y_m
+&=X\beta+Zb+\epsilon\\
+&=[\\
+&1\quad m\quad d\quad s\quad c\quad ms\quad mc\quad ds\quad dc\\
+&t\quad mt\quad dt\quad st\quad ct\quad mst\quad mct\quad dst\quad dct\\
+&a\quad g\quad e\quad i\quad y_e\\
+&]\beta\\
+&+[1]b\\
+&+\epsilon,
+\end{align}
+where for example, $\beta_t$, coefficient for term $t$, is the normal temporal factor's decline rate in memory.
+
+\begin{landscape}
+
+We spell out the following ``pure-factor'' cases:\newline
+
+$+$ signs between $\beta$'s are omitted for convenience.\newline
+
+\begin{tabular}{lLLLLLLLLLLLLLLLLLLLLL}
+normal temporal & \beta_1 & & & & & & & & & t\cdot( & \beta_t & & & & & & & & & )\\
+normal subcortical & \beta_1 & & & \beta_s & & & & & & t\cdot( & \beta_t & & & \beta_{st} & & & & & & )\\
+normal cortical & \beta_1 & & & & \beta_c & & & & & t\cdot( & \beta_t & & & & \beta_{ct} & & & & & )\\
+MCI temporal & \beta_1 & \beta_m & & & & & & & & t\cdot( & \beta_t & \beta_{mt} & & & & & & & & )\\
+MCI subcortical & \beta_1 & \beta_m & & \beta_s & & \beta_{ms} & & & & t\cdot( & \beta_t & \beta_{mt} & & \beta_{st} & & \beta_{mst} & & & & )\\
+MCI cortical & \beta_1 & \beta_m & & & \beta_c & & \beta_{mc} & & & t\cdot( & \beta_t & \beta_{mt} & & & \beta_{ct} & & \beta_{mct} & & & )\\
+AD temporal & \beta_1 & & \beta_d & & & & & & & t\cdot( & \beta_t & & \beta_{dt} & & & & & & & )\\
+AD subcortical & \beta_1 & & \beta_d & \beta_s & & & & \beta_{ds} & & t\cdot( & \beta_t & & \beta_{dt} & \beta_{st} & & & & \beta_{dst} & & )\\
+AD cortical & \beta_1 & & \beta_d & & \beta_c & & & & \beta_{dc} & t\cdot( & \beta_t & & \beta_{dt} & & \beta_{ct} & & & & \beta_{dct} & )\\
+\end{tabular}
+
+\end{landscape}
+
+\section{Hypothesis Testing}
+
+\subsection{Within Stages, Between Factors}
+
+We only list out baseline comparisons for brevity.
+
+Omnibus test: do factors have the same baseline scores within each cohort?
+\begin{itemize}
+\item Normal: test if $\beta_s=\beta_c=0$.
+\item MCI: test if $\beta_c+\beta_{mc}=\beta_s+\beta_{ms}=0$.
+\item AD: test if $\beta_c+\beta_{dc}=\beta_s+\beta_{ds}=0$.
+\end{itemize}
+
+Do temporal and subcortical factors have the same baseline scores?
+\begin{itemize}
+\item Normal: test if $\beta_s=0$.
+\item MCI: test if $\beta_s+\beta_{ms}=0$.
+\item AD: test if $\beta_s+\beta_{ds}=0$.
+\end{itemize}
+
+Do temporal and cortical factors have the same baseline scores?
+\begin{itemize}
+\item Normal: test if $\beta_c=0$.
+\item MCI: test if $\beta_c+\beta_{mc}=0$.
+\item AD: test if $\beta_c+\beta_{dc}=0$.
+\end{itemize}
+
+Do subcortical and cortical factors have the same baseline scores?
+\begin{itemize}
+\item Normal: test if $\beta_s=\beta_c$.
+\item MCI: test if $\beta_s+\beta_{ms}=\beta_c+\beta_{mc}$.
+\item AD: test if $\beta_s+\beta_{ds}=\beta_c+\beta_{dc}$.
+\end{itemize}
+
+\subsection{Across Stages, Within Factors}
+
+The following comparisons help plot the factor trajectories.
+
+\begin{enumerate}
+\item Does the temporal factor maintain the same decline rate from the normal stage to MCI? Test if $\beta_{mt}=0$. From MCI to AD? Test if $\beta_{dt}=\beta_{mt}$.
+\item Does the subcortical factor maintain the same decline rate from the normal stage to MCI? Test if $\beta_{mt}+\beta_{mst}=0$. From MCI to AD? Test if $\beta_{mt}+\beta_{mst}=\beta_{dt}+\beta_{dst}$.
+\item Does the cortical factor maintain the same decline rate from the normal stage to MCI? Test if $\beta_{mt}+\beta_{mct}=0$. From MCI to AD? Test if $\beta_{mt}+\beta_{mct}=\beta_{dt}+\beta_{dct}$.
+\end{enumerate}
+
+\subsection{Other Interesting Questions}
+
+\begin{enumerate}
+\item (Sanity check) Do stages affect decline rates? Normal temporal equal to MCI temporal requires $\beta_{mt}=0$, and normal subcortical equal to MCI subcortical requires $\beta_{mt}+\beta_{mst}=0$. Therefore, $\beta_{mst}=0$. Ultimately, the test is $\beta_{mt}=\beta_{dt}=\beta_{mst}=\beta_{mct}=\beta_{dst}=\beta_{dct}=0$.
+\item (Overall test for the forrest plots) Do factors affect decline rates? Test if $\beta_{st}=\beta_{ct}=\beta_{mst}=\beta_{mct}=\beta_{dst}=\beta_{dct}=0$.
+\item Do factors affect decline rates differently at different stages? Comparing normal and MCI subcortical, we have $\beta_{mst}=0$. Comparing MCI and AD subcortical, we have $\beta_{mst}=\beta_{dst}$. Ultimately, the test is $\beta_{mst}=\beta_{dst}=\beta_{mct}=\beta_{dct}=0$
+\end{enumerate}
+
+\newgeometry{left=1.8cm,bottom=2cm}
+\begin{landscape}
+\begin{appendices}
+
+\section{$K=2$}
+
+\begin{align}
+y_m
+&=X\beta+Zb+\epsilon\\
+&=[\\
+&1\quad m\quad d\quad c\quad mc\quad dc\\
+&t\quad mt\quad dt\quad ct\quad mct\quad dct\\
+&a\quad g\quad e\quad i\quad y_e\\
+&]\beta\\
+&+[1]b\\
+&+\epsilon,
+\end{align}
+
+\begin{tabular}{lLLLLLLLLLLLLLL}
+normal temporal+subcortical & \beta_1 & & & & & & t\cdot( & \beta_t & & & & & & )\\
+normal cortical & \beta_1 & & & \beta_c & & & t\cdot( & \beta_t & & & \beta_{ct} & & & )\\
+MCI temporal+subcortical & \beta_1 & \beta_m & & & & & t\cdot( & \beta_t & \beta_{mt} & & & & & )\\
+MCI cortical & \beta_1 & \beta_m & & \beta_c & \beta_{mc} & & t\cdot( & \beta_t & \beta_{mt} & & \beta_{ct} & \beta_{mct} & & )\\
+AD temporal+subcortical & \beta_1 & & \beta_d & & & & t\cdot( & \beta_t & & \beta_{dt} & & & & )\\
+AD cortical & \beta_1 & & \beta_d & \beta_c & & \beta_{dc} & t\cdot( & \beta_t & & \beta_{dt} & \beta_{ct} & & \beta_{dct} & )\\
+\end{tabular}
+
+\section{$K=4$}
+
+\begin{align}
+y_m
+&=X\beta+Zb+\epsilon\\
+&=[\\
+&1\quad m\quad d\quad s\quad f \quad p\quad ms\quad mf\quad mp\quad ds\quad df\quad dp\\
+&t\quad mt\quad dt\quad st\quad ft\quad pt\quad mst\quad mft\quad mpt\quad dst\quad dft\quad dpt\\
+&a\quad g\quad e\quad i\quad y_e\\
+&]\beta\\
+&+[1]b\\
+&+\epsilon,
+\end{align}
+
+\begin{tabular}{lLLLLLLLLLLLLLLLLLLLLLLLLLLL}
+CN T & \beta_1 & & & & & & & & & & & & t\cdot( & \beta_t & & & & & & & & & & & & )\\
+CN S & \beta_1 & & & \beta_s & & & & & & & & & t\cdot( & \beta_t & & & \beta_{st} & & & & & & & & & )\\
+CN F & \beta_1 & & & & \beta_f & & & & & & & & t\cdot( & \beta_t & & & & \beta_{ft} & & & & & & & & )\\
+CN P & \beta_1 & & & & & \beta_p & & & & & & & t\cdot( & \beta_t & & & & & \beta_{pt} & & & & & & & )\\
+MCI T & \beta_1 & \beta_m & & & & & & & & & & & t\cdot( & \beta_t & \beta_{mt} & & & & & & & & & & & )\\
+MCI S & \beta_1 & \beta_m & & \beta_s & & & \beta_{ms} & & & & & & t\cdot( & \beta_t & \beta_{mt} & & \beta_{st} & & & \beta_{mst} & & & & & & )\\
+MCI F & \beta_1 & \beta_m & & & \beta_f & & & \beta_{mf} & & & & & t\cdot( & \beta_t & \beta_{mt} & & & \beta_{ft} & & & \beta_{mft} & & & & & )\\
+MCI P & \beta_1 & \beta_m & & & & \beta_p & & & \beta_{mp} & & & & t\cdot( & \beta_t & \beta_{mt} & & & & \beta_{pt} & & & \beta_{mpt} & & & & )\\
+AD T & \beta_1 & & \beta_d & & & & & & & & & & t\cdot( & \beta_t & & \beta_{dt} & & & & & & & & & & )\\
+AD S & \beta_1 & & \beta_d & \beta_s & & & & & & \beta_{ds} & & & t\cdot( & \beta_t & & \beta_{dt}  & \beta_{st} & & & & & & \beta_{dst} & & & )\\
+AD F & \beta_1 & & \beta_d & & \beta_f & & & & & & \beta_{df} & & t\cdot( & \beta_t & & \beta_{dt} & & \beta_{ft} & & & & & & \beta_{dft} & & )\\
+AD P & \beta_1 & & \beta_d & & & \beta_p & & & & & & \beta_{dp} & t\cdot( & \beta_t & & \beta_{dt} & & & \beta_{pt} & & & & & & \beta_{dpt} & )\\
+\end{tabular}
+
+\end{appendices}
+\end{landscape}
+
+\end{document}

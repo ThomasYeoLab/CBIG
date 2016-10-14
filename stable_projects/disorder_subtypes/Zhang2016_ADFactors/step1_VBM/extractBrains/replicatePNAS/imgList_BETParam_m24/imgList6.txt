@@ -1,0 +1,2 @@
+/data/users/xzhang/storage/ADFactors_newVBM_CNReg/vbm_earlySteps/xiuming_initBET_m24/orig/0127_m24.nii.gz
+/data/users/xzhang/storage/ADFactors_newVBM_CNReg/vbm_earlySteps/xiuming_initBET_m24/orig/0626_m24.nii.gz

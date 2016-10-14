@@ -1,0 +1,1 @@
+Lines in `age_sex_icv_bl.csv` match lines in `volConcatOrder_bl.txt` (concatenation order of the baseline volumes). Similarly, lines in `age_sex_icv_m24.csv` match lines in `volConcatOrder_m24.txt` (concatenation order of the Month 24 follow-up scans). Please be mindful of the ordering while manipulating these lines.

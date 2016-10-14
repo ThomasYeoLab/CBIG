@@ -1,0 +1,7 @@
+/data/users/xzhang/storage/ADFactors_newVBM_CNReg/vbm_earlySteps/xiuming_initBET_m24/orig/0033_m24.nii.gz
+/data/users/xzhang/storage/ADFactors_newVBM_CNReg/vbm_earlySteps/xiuming_initBET_m24/orig/0093_m24.nii.gz
+/data/users/xzhang/storage/ADFactors_newVBM_CNReg/vbm_earlySteps/xiuming_initBET_m24/orig/0634_m24.nii.gz
+/data/users/xzhang/storage/ADFactors_newVBM_CNReg/vbm_earlySteps/xiuming_initBET_m24/orig/0649_m24.nii.gz
+/data/users/xzhang/storage/ADFactors_newVBM_CNReg/vbm_earlySteps/xiuming_initBET_m24/orig/0796_m24.nii.gz
+/data/users/xzhang/storage/ADFactors_newVBM_CNReg/vbm_earlySteps/xiuming_initBET_m24/orig/1066_m24.nii.gz
+/data/users/xzhang/storage/ADFactors_newVBM_CNReg/vbm_earlySteps/xiuming_initBET_m24/orig/1373_m24.nii.gz
