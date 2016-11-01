@@ -21,14 +21,14 @@ The remaining folders offer our full code, allowing you to start from scratch on
 Note that this project uses generic functions from other folders, which may be updated over time. To download the exact code utilized for the PNAS paper, you can either
 
 - visit this link:
-[https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.1-release_Zhang2016_ADFactors](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.1-release_Zhang2016_ADFactors)
+[https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.1.1-Zhang2016_ADFactors](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.1.1-Zhang2016_ADFactors)
 
 or
 
 - run the following command, if you have Git installed
  
 ```
-git checkout -b Zhang2016_ADFactors v0.1-Zhang2016_ADFactors
+git checkout -b Zhang2016_ADFactors v0.1.1-Zhang2016_ADFactors
 ```
 
 ----

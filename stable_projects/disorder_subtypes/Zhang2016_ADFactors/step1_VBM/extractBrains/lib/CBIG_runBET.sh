@@ -50,7 +50,7 @@ for img in `cat ${imgList}`; do
 		name="${tmpVar%.nii.gz}"; name="${name%.nii}" # discard the extension
 	else
 		# Name list provided -- just take the corresponding line
-		name=`sed '${lineNo}q;d' ${nameList}`
+		name=`sed "${lineNo}q;d" ${nameList}`
 	fi
 
 	# Run or submit BET job

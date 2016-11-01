@@ -29,7 +29,7 @@ imgList=""
 for brain in ${brainDir}*_brain.nii.gz; do
 	# Get path of the original volume
 	tmpVar="${brain##*/}" # discard everything before /
-	name="${name%.nii.gz}" # discard the extension
+	name="${tmpVar%_brain.nii.gz}" # discard the extension
 	orig=`cat ${brainDir}${name}_origPath.txt`
 	# Concatenate to list
  	imgList="${imgList} ${orig} ${brain}"

@@ -15,13 +15,12 @@ These folders contain the analyses that we performed after the LDA step. Almost 
 5. `factorStability` (Figs. 3 and S4). This folder compares subjects' baseline factor compositions and their factor compositions 24 months after baseline.
 6. `FDRCorrection`. This folder performs FDR correction on all of our statistical tests.
 7. `functions`. This folder contains functions that are shared across others folders.
-8. `ignoreFactors`. This folder examines diagnostic group differences in memory and executive function without considering
-factor compositions.
+8. `ignoreFactors`. This folder examines diagnostic group differences in memory and executive function without considering factor compositions.
 9. `jointGLM` (Figs. 5, 6, S6, S7 and S8). This folder utilizes GLM to explore the relationships between cross-sectional cognition and atrophy factors.
-10. `jointGLM_memRegEF`. Same as above, but this time with memory and executive function regressing out the effects of each other.
+10. `jointGLM_memRegEF` (not used for the paper). Same as above, but this time with memory and executive function regressing out the effects of each other.
 11. `jointLMEModel` (Figs. 5, 7, S6, S7 and S8). This folder utilizes the LME model to explore the relationships between longitudinal cognitive decline rates and atrophy factors.
-12. `jointLMEModel_memRegEF`. Same as above, but this time with memory and executive function regressing out the effects of each other.
-13. `MCI2ADProgression`. This folder tests whether different atrophy factors are associated with different probabilities of progressing from MCI to AD.
-14. `normalizeMemEF`. This folder normalizes the ADNI-Mem and ADNI-EF scores.
-15. `totalAtrophy`. This folder tests whether different atrophy factors are associated with different amounts of total atrophy.
+12. `jointLMEModel_memRegEF` (not used for the paper). Same as above, but this time with memory and executive function regressing out the effects of each other.
+13. `MCI2ADProgression` (not reported). This folder tests whether different atrophy factors are associated with different probabilities of progressing from MCI to AD.
+14. `normalizeMemEF` (not used for the paper). This folder normalizes the ADNI-Mem and ADNI-EF scores.
+15. `totalAtrophy` (not reported). This folder tests whether different atrophy factors are associated with different amounts of total atrophy.
 16. `validateFactorsWithFSStats` (Table S1). This folder investigates, with volume estimations by FreeSurfer, whether an atrophy factor is indeed associated with severe atrophy in the corresponding brain regions.

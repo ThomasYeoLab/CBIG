@@ -1,0 +1,1 @@
+This folder contains all helper functions that are usually shared across different folders. Most of them read in ADNI spreadsheets and then extract the data we need. Other helper functions include plotting functions.
