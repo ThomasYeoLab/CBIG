@@ -148,7 +148,7 @@ avgCorr = mean(corr);
 function beta2brain(GMMask, runDir, maxRunName, outDir)
 mask = MRIread(GMMask);
 mask = mask.vol;
-mask_1d = reshape(mask, [1 109*91*91]);
+mask_1d = reshape(mask, [1 numel(mask)]);
 beta = load([runDir maxRunName '/final.beta']);
 % For each topic
 for topicIdx = 1:size(beta, 1)
@@ -156,7 +156,7 @@ for topicIdx = 1:size(beta, 1)
     % Convert back to 3D
     betaRow_1d = mask_1d; % insert 0's
     betaRow_1d(betaRow_1d==1) = betaRow; % 1's to real values
-    betaRow_3d = reshape(betaRow_1d, [109 91 91]);
+    betaRow_3d = reshape(betaRow_1d, size(mask));
     % Write values to MRI
     dummyMRI = MRIread(GMMask);
     dummyMRI.vol = betaRow_3d;

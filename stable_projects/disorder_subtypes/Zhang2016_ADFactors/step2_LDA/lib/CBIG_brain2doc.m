@@ -88,8 +88,8 @@ for idx = 1:noImg
     vol_3d = vols(:, :, :, idx);
     % voxel coordinates (i, j, k) in FreeView corresponds to
     % matrix coordinates (j+1, i+1, k+1) in MATLAB
-    vol_1d = reshape(vol_3d, [1 109*91*91]);
-    mask_1d = reshape(mask_3d, [1 109*91*91]);
+    vol_1d = reshape(vol_3d, [1 numel(vol_3d)]);
+    mask_1d = reshape(mask_3d, [1 numel(mask_3d)]);
     vol_1d(mask_1d==0) = []; % remove voxels not in the GM mask
     vol_1d(vol_1d==0) = 1; % set voxels in non-GM area to 1, so that later log(1) = 0, i.e., no atrophy
     volMat(idx, :) = log(vol_1d)/log(10); % take log10()
