@@ -43,7 +43,7 @@ for (( r=1; r<=${noInits}; r++ )); do
 	mkdir -p ${runDir}
 	if [ -z "${queue}" ]; then
 		curDir=`pwd`/
-		export docs noTopics noInits outDir curDir
+		export docs noTopics noInits outDir curDir runDir
 		./CBIG_LDA_est_job.sh
 	else
 		# Converting relative paths to absolute for qsub

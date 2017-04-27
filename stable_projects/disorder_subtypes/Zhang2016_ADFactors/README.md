@@ -6,6 +6,8 @@ Xiuming Zhang, Elizabeth C. Mormino, Nanbo Sun, Reisa A. Sperling, Mert R. Sabun
 
 ## Updates
 
+- Release v0.1.3 (26/04/2017): fixing a bug in wrapper CBIG_LDA_est.sh
+
 - Release v0.1.2 (03/04/2017): removing hardcoded image dimensions
 
 - Release v0.1.1 (11/06/2016): adding README for each internal folder
@@ -29,14 +31,14 @@ The remaining folders offer our full code, allowing you to start from scratch on
 Note that this project uses generic functions from other folders, which may be updated over time. To download the exact code utilized for the PNAS paper, you can either
 
 - visit this link:
-[https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.1.2-Zhang2016_ADFactors](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.1.2-Zhang2016_ADFactors)
+[https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.1.3-Zhang2016_ADFactors](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.1.3-Zhang2016_ADFactors)
 
 or
 
 - run the following command, if you have Git installed
  
 ```
-git checkout -b Zhang2016_ADFactors v0.1.2-Zhang2016_ADFactors
+git checkout -b Zhang2016_ADFactors v0.1.3-Zhang2016_ADFactors
 ```
 
 ----
