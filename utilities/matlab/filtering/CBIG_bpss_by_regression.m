@@ -87,9 +87,9 @@ end
 % 0 means keeping this frequency
 fmask = ((f < low_f) | (f > high_f));
 fmask = fmask(1:nf+1);
-demean = 0;
+demean = -1;
 if(fmask(1))
-    demean = 1;
+    demean = 0;
 end
 fmask(1) = 0;
 
@@ -97,7 +97,7 @@ fmask(1) = 0;
 pp = 1:nf;
 pp = pp(fmask(2:end)==1);                      % the indices of frequencies that to be removed
 fq = 2 * pi * pp / L;                        
-rads = bsxfun(@times, [1:L]', fq);
+rads = bsxfun(@times, [0:L-1]', fq);
 cosf = cos(rads);
 sinf = sin(rads);
 if(mod(L,2) == 0 && fmask(end) == 1)
@@ -105,6 +105,7 @@ if(mod(L,2) == 0 && fmask(end) == 1)
 end
 
 % regress out the stopband frequencies
+input_matrix = double(input_matrix);
 output_matrix = CBIG_glm_regress_matrix(input_matrix, [cosf sinf], demean, censor);
 
 end

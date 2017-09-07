@@ -10,12 +10,12 @@ function h = CBIG_DrawSurfaceMaps_fslr(lh_data, rh_data, mesh_name, surf_type, m
 %        surface labels on the left and right hemisphere respectively in
 %        fslr. Each variable is a Nx1 vector, where N corresponds to the
 %        mesh defined in mesh_name.
-%        N = 163,842 for mesh_name = 'fslr_164k'
-%        N = 32,492 for mesh_name = 'fslr_32k'
+%        N = 163,842 for mesh_name = 'fs_LR_164k'
+%        N = 32,492 for mesh_name = 'fs_LR_32k'
 %
 %      - mesh_name:
 %        fslr mesh that the label data will be projected onto.
-%        fslr = 'fslr_32k' or 'fslr_164k'
+%        fslr = 'fs_LR_32k' or 'fs_LR_164k'
 %      - surf_type:
 %        surface template. Options are 'inflated', 'very_inflated', 
 %        'midthickness_mni', 'white_mni'

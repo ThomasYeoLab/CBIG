@@ -91,7 +91,7 @@ foreach sub ($subjects)
 		popd > /dev/null
 	endif
 	
-	if( $folder != "surf" ) then
+	if( $folder != "surf" && $folder != "bold") then
 		pushd ${folder} > /dev/null
 		set data_names = ""
 		foreach bold_num ($bold)
@@ -104,6 +104,24 @@ foreach sub ($subjects)
 			
 			set data_names = "${data_names} ${curr_data_name}"
 	
+		end
+		echo ${data_names} >> $output
+		popd > /dev/null
+	endif
+	
+	if( $folder == "bold" ) then
+		pushd ${folder} > /dev/null
+		set data_names = ""
+		foreach bold_num ($bold)
+			set curr_data_name = "${sub}_bld${bold_num}${data_stem}"
+			set curr_data_name = "${sub_dir}/${sub}/${folder}/${bold_num}/${curr_data_name}"
+			if( $#curr_data_name != 1 ) then
+				echo "ERROR: No data file or multiple data files with ${data_stem} for bold run number ${bold_num}. Please check file existance or the bold list."
+				exit 1;
+			endif
+			
+			set data_names = "${data_names} ${curr_data_name}"
+			
 		end
 		echo ${data_names} >> $output
 		popd > /dev/null

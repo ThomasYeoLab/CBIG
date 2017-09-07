@@ -101,15 +101,16 @@ end
 if (isempty(strfind(input_vol, '.dtseries.nii')))
     % if input_vol is a nifti file
     mri = MRIread(input_vol);
-    mri_vol = mri.vol;
+    mri_vol = single(mri.vol);
+    mri.vol = [];
     mri_size = size(mri_vol);
-    vol2d = reshape(mri_vol, [mri_size(1)*mri_size(2)*mri_size(3) mri_size(4)]);
-    data = vol2d';
+    data = transpose(reshape(mri_vol, [mri_size(1)*mri_size(2)*mri_size(3) mri_size(4)]));
 else
     % if input_vol is a cifti file
     mri = ft_read_cifti(input_vol);
     mri_size = size(mri.dtseries);
-    data = mri.dtseries';
+    data = single(transpose(mri.dtseries));
+    mri.dtseries = [];
 end
 
 %% if censor_file is not set, censor is empty
@@ -140,32 +141,31 @@ end
 %% detrend each time course before bandpass
 if (detrend)
     fprintf('Detrend each time course.\n')
-    [data_de, ~, ~, retrend_mtx] = CBIG_glm_regress_matrix(data, [], 1, []);
-else
-    data_de = data;
+    [data, ~, ~, retrend_mtx] = CBIG_glm_regress_matrix(data, [], 1, censor);
 end
 
 %% using GLM regression to do bandpass
-data_de_bp = CBIG_bpss_by_regression(data_de, low_f, high_f, sample_period, censor);
+data = CBIG_bpss_by_regression(data, low_f, high_f, sample_period, censor);
 
 %% after bandpass, retrend each time course
 if (~detrend && retrend)
     error('ERROR: retrend can not be done because detrend option is off');
 elseif (detrend && retrend)
     fprintf('Retrend each time course.\n')
-    data_de_bp = data_de_bp + retrend_mtx;
+    data = data + retrend_mtx;
 end
 
 %% write the mri into a volume
-vol_bp = reshape(data_de_bp', mri_size);
+data = transpose(data);
+data = reshape(data, mri_size);
 
 if (isempty(strfind(input_vol, '.dtseries.nii')))
     % if input_vol is a nifti file
-    mri.vol = vol_bp;
+    mri.vol = data;
     MRIwrite(mri, output_vol);
 else
     % if input_vol is a cifti file
     output_vol = regexprep(output_vol, '.dtseries.nii', '');
-    mri.dtseries = vol_bp;
+    mri.dtseries = data;
     ft_write_cifti(output_vol, mri, 'parameter', 'dtseries');
 end

@@ -69,7 +69,7 @@ function output_mesh = CBIG_read_fslr_surface(hemi, mesh_name, surf_type, label)
     output_mesh.vertexFaces = reshape(output_mesh.vertexFaces, size(output_mesh.vertices,1), num_per_vertex);
 
     % Compute Face Areas.
-    output_mesh.faceAreas = MARS_computeMeshFaceAreas(int32(size(output_mesh.faces, 2)), int32(output_mesh.faces'), single(output_mesh.vertices'));
+    output_mesh.faceAreas = MARS_computeMeshFaceAreas(int32(size(output_mesh.faces, 2)), int32(output_mesh.faces), single(output_mesh.vertices));
     
     %Read brain labels
     if (exist('annot_filename', 'var'))

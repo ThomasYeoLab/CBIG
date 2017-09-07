@@ -1,6 +1,6 @@
-function [lh_fsLR_32k_data,rh_fsLR_32k_data,lh_fsLR_164k_data,rh_fsLR_164k_data] = CBIG_project_fsaverage2fsLR(lh_FS_data,rh_FS_data,FS_mesh,type_of_data,folder_to_write)
+function [lh_fsLR_32k_data,rh_fsLR_32k_data,lh_fsLR_164k_data,rh_fsLR_164k_data] = CBIG_project_fsaverage2fsLR(lh_FS_data,rh_FS_data,FS_mesh,type_of_data,folder_to_write,registration_version)
 
-% [lh_label_fsLR_32k,rh_label_fsLR_32k,lh_label_fsLR_164k,rh_label_fsLR_164k] = CBIG_project_fsaverage2fsLR(lh_FS_data,rh_FS_data,FS_mesh,type_of_data,folder_to_write)
+% [lh_fsLR_32k_data,rh_fsLR_32k_data,lh_fsLR_164k_data,rh_fsLR_164k_data] = CBIG_project_fsaverage2fsLR(lh_FS_data,rh_FS_data,FS_mesh,type_of_data,folder_to_write,registration_version)
 %
 % This function projects label/metric data in
 % fsaverage5/fsaverage6/fsaverage to fs_LR_32k/fs_LR_164k. The projection 
@@ -22,6 +22,14 @@ function [lh_fsLR_32k_data,rh_fsLR_32k_data,lh_fsLR_164k_data,rh_fsLR_164k_data]
 %
 %      -folder_to_write:
 %       output path. e.g. '/data/Mapping_FS_fsLR'.
+%       Note: folder_to_write must be a non-existent directory or folder, 
+%             as this folder will be removed when projection is done.
+%
+%      -registration_version:
+%       '20170508' or '20160827'. HCP group provides two atlas-to-atlas  
+%       registration versions. If user doesn't pass in registration_version,
+%       default version is '20170508'.
+%
 % Output:
 %      -lh_label_fsLR_32k, rh_label_fsLR_32k:
 %       output data in fs_LR_32k after projection.
@@ -33,13 +41,21 @@ function [lh_fsLR_32k_data,rh_fsLR_32k_data,lh_fsLR_164k_data,rh_fsLR_164k_data]
 % lh_FS_data=lh_label;rh_FS_data=rh_label;
 % folder_to_write='/data/users/rkong/storage/ruby/data/HCP_relevant/Mapping_FS2fsLR'
 % [lh_label_fsLR_32k,rh_label_fsLR_32k,lh_label_fsLR_164k,rh_label_fsLR_164k]=CBIG_project_fsaverage2fsLR(lh_FS_data,rh_FS_data,'fsaverage6','label',folder_to_write);
-%
+
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 
 
 if(nargin<5)% if you dont set your own write folder
     error('Not enough inputs')
+end
+if(nargin<6)% if you dont set the atlas-to-atlas registration version
+    registration_version = '20170508';
+end
+if(exist(folder_to_write,'dir') ~= 0) % if the output folder exists
+    error('The output folder already exists, please set a non-existent output folder!');
+else
+    mkdir(folder_to_write);
 end
 
 %% input data should be 1xN vector. Nx1 vector is not allowed in MARS_NNInterpolate_kdTree, MARS_linearInterpolate_kdTree
@@ -96,7 +112,7 @@ end
 %  1) convert .mgh file to gifti format
 %  2) project to fs_LR_164k
 %  3) downsample to fs_LR_32k
-system([fullfile(getenv('CBIG_CODE_DIR'), 'utilities', 'matlab', 'fslr_matlab', 'CBIG_project_fsaverage2fsLR.sh'), ' ', folder_to_write, ' ',type_of_data]);
+system([fullfile(getenv('CBIG_CODE_DIR'), 'utilities', 'matlab', 'fslr_matlab', 'CBIG_project_fsaverage2fsLR.sh'), ' ', folder_to_write, ' ', type_of_data, ' ', registration_version]);
 
 %% Output fs_LR_32k/fs_LR_164k data
 lh_fsLR_164k_gifti = gifti(fullfile(folder_to_write, [type_of_data, '_L.fs_LR_164k.', out_extension]));
@@ -109,3 +125,5 @@ rh_fsLR_32k_gifti = gifti(fullfile(folder_to_write, [type_of_data, '_R.fs_LR_32k
 lh_fsLR_32k_data = lh_fsLR_32k_gifti.cdata;
 rh_fsLR_32k_data = rh_fsLR_32k_gifti.cdata;
 
+%% Remove the output folder
+rmdir(folder_to_write,'s');

@@ -176,7 +176,7 @@ if(num_networks > 0)
 
     [a, hostname] = system('hostname -d');
     data_path = fullfile(getenv('CBIG_CODE_DIR'), 'data', 'extras', 'surf2surf_gui_data', 'cluster_results', ['cluster' num_networks_str]);
-    colortable_path = fullfile(getenv('CBIG_CODE_DIR'), 'utilities', 'matlab', 'utilities');
+    colortable_path = fullfile(getenv('CBIG_CODE_DIR'), 'utilities', 'matlab', 'figure_utilities');
 
     if(dataset_num == 2)
         network_file = fullfile(data_path, ['Cluster' num_networks_str '.s00.tries1000.rand000.znorm0.profile.fsaverage3.smooth6.s5.t0.1.500sub.2.ref500sub.1.mat']);

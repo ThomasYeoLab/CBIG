@@ -117,21 +117,25 @@ if (per_run == 0)
     vol_2d_all = [];
     regressor_all = [];
     censor_all = [];
+    tp_length_all = [];
     for i = 1:num_of_fMRI
         if (isempty(strfind(fMRI_name{i}, '.dtseries.nii')))
             % if input volume is nifti file
             mri = MRIread(fMRI_name{i});
-            vol = mri.vol;
-            mri_size = size(vol);
-            vol_2d = reshape(vol, [mri_size(1)*mri_size(2)*mri_size(3) mri_size(4)]);        
+            vol_2d = single(mri.vol);
+            mri.vol = [];
+            mri_size = size(vol_2d);
+            vol_2d = reshape(vol_2d, [mri_size(1)*mri_size(2)*mri_size(3) mri_size(4)]);        
         else
             % if input volume is cifti file
             mri = ft_read_cifti(fMRI_name{i});
             mri_size = size(mri.dtseries);
-            vol_2d = mri.dtseries;
+            vol_2d = single(mri.dtseries);
+            mri.dtseries = [];
         end
         % time points length
         tp_length = size(vol_2d, 2);
+        tp_length_all = [tp_length_all tp_length];
         
         vol_2d_all = [vol_2d_all vol_2d];
         
@@ -146,23 +150,28 @@ if (per_run == 0)
             censor_all = [censor_all; censor_vec];
         end
     end
-    
-    [resid_mtx, ~, ~, ~] = CBIG_glm_regress_matrix(vol_2d_all', regressor_all, polynomial_fit, censor_all);
+    vol_2d_all = transpose(vol_2d_all);
+    [resid_mtx, ~, ~, ~] = CBIG_glm_regress_matrix(vol_2d_all, regressor_all, polynomial_fit, censor_all);
     
     
     for i=1:num_of_fMRI
-        res = resid_mtx((i-1)*tp_length+1:i*tp_length,:);
-        resid_mri = mri;
+        if (i == 1)
+            res = resid_mtx(1:tp_length_all(1), :);
+        elseif (i > 1)
+            res = resid_mtx(sum(tp_length_all(1:i-1))+1:sum(tp_length_all(1:i)), :);
+        end
+
+        res = transpose(res);
         
         if (isempty(strfind(fMRI_name{i}, '.dtseries.nii')))
             % if output volume is nifti file
-            resid_mri.vol = reshape(res', mri_size);
-            MRIwrite(resid_mri, output_name{i});        
+            mri.vol = reshape(res, mri_size);
+            MRIwrite(mri, output_name{i});        
         else
             % if output volume is cifti file
             output_name{i} = regexprep(output_name{i}, '.dtseries.nii', '');
-            resid_mri.dtseries = reshape(res', mri_size);
-            ft_write_cifti(output_name{i}, resid_mri, 'parameter', 'dtseries');
+            mri.dtseries = reshape(res, mri_size);
+            ft_write_cifti(output_name{i}, mri, 'parameter', 'dtseries');
         end
     end
     
@@ -174,14 +183,16 @@ elseif (per_run == 1)
         if isempty(strfind(fMRI_name{i}, '.dtseries.nii'))
             % if input volume is nifti file
             mri = MRIread(fMRI_name{i});
-            vol = mri.vol;
-            mri_size = size(vol);
-            vol_2d = reshape(vol, [mri_size(1)*mri_size(2)*mri_size(3) mri_size(4)]);        
+            vol_2d = single(mri.vol);
+            mri.vol = [];
+            mri_size = size(vol_2d);
+            vol_2d = reshape(vol_2d, [mri_size(1)*mri_size(2)*mri_size(3) mri_size(4)]);        
         else
             % if input volume is cifti file
             mri = ft_read_cifti(fMRI_name{i});
             mri_size = size(mri.dtseries);
-            vol_2d = mri.dtseries;
+            vol_2d = single(mri.dtseries);
+            mri.dtseries = [];
         end
         
         % load regressor file
@@ -193,20 +204,19 @@ elseif (per_run == 1)
         if (~isempty(censor_list))
             censor_vec = load(censor_name{i});
         end
-        [resid_mtx, ~, ~, ~] = CBIG_glm_regress_matrix(vol_2d', regressor_mtx, polynomial_fit, censor_vec);
-        
+        vol_2d = transpose(vol_2d);
+        [resid_mtx, ~, ~, ~] = CBIG_glm_regress_matrix(vol_2d, regressor_mtx, polynomial_fit, censor_vec);
+        resid_mtx = transpose(resid_mtx);
         
         if isempty(strfind(fMRI_name{i}, '.dtseries.nii'))
             % if input volume is nifti file
-            resid_mri = mri;
-            resid_mri.vol = reshape(resid_mtx', mri_size);
-            MRIwrite(resid_mri, output_name{i});
+            mri.vol = reshape(resid_mtx, mri_size);
+            MRIwrite(mri, output_name{i});
         else
             % if input volume is cifti file
             output_name{i} = regexprep(output_name{i}, '.dtseries.nii', '');
-            resid_mri = mri;
-            resid_mri.dtseries = reshape(resid_mtx', mri_size);
-            ft_write_cifti(output_name{i}, resid_mri, 'parameter', 'dtseries');
+            mri.dtseries = reshape(resid_mtx, mri_size);
+            ft_write_cifti(output_name{i}, mri, 'parameter', 'dtseries');
         end        
     end
 end

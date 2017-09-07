@@ -105,10 +105,11 @@ if (~isempty(censor))
     censor = logical(censor);
     Y_censor = Y(censor, :);
     X_censor = X(censor, :);
-    b = (X_censor'*X_censor)\(X_censor'*Y_censor);
+    b = double(X_censor'*X_censor)\double(X_censor'*Y_censor);
 else
     % if censor vector is empty
-    b = (X'*X)\(X'*Y);
+    b = double(X'*X)\double(X'*Y);
+    %b = (X'*X)\(X'*Y);
 end
 
 %% Output coefficient matrix, residual matrix and retrend_matrix
