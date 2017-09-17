@@ -13,6 +13,19 @@ CBIG_Figure7_toy_ex_bi_vs_multi.m   reproduces the results presented in Figure 7
 
 Other results of the paper were obtained by combining autoregressive and phase randomization procedures. These procedures are implemented in CBIG_get_AR_surrogate.m and CBIG_get_PR_surrogate.m. Different options are detailed in the headers of the corresponding codes. 
 
+To download the exact code utilized for the paper, you can either
+
+- visit this link:
+[https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.4.1-Liegeois2017_Surrogates](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.4.1-Liegeois2017_Surrogates)
+
+or
+
+- run the following command, if you have Git installed
+ 
+```
+git checkout -b Liegeois2017_Surrogates v0.4.1-Liegeois2017_Surrogates
+```
+
 ----
 
 ## Bugs and Questions
