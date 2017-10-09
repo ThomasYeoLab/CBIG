@@ -1,12 +1,13 @@
 #!/bin/bash
 #
 
-# CBIG_prepend_prefix_to_function_name.sh $input_function_name $folder
-# Search for all instances of a function name (without prefix) inside a given folder
-# and replace them by the new function name with the prefix prepended, if prompted
+# CBIG_replace_old_with_new_function_name.sh $old_function_name $new_function_name $folder
+# Search for all instances of old function name inside a given folder
+# and replace them by the new function name ,if prompted
 
-input_function_name=$1
-folder=$2
+old_function_name=$1
+new_function_name=$2
+folder=$3
 
 # function to join array into string
 function join_str { local IFS="$1"; shift; echo "$*"; }
@@ -23,20 +24,10 @@ function get_lines_from_file() {
 }
 
 # define prefix and file extensions that will be ignored
-PREFIX="CBIG_"
-EXCLUDED_EXTENSIONS=$(get_lines_from_file "$CBIG_CODE_DIR/setup/check_function_format/excluded_extensions.txt")
+EXCLUDED_EXTENSIONS=$(get_lines_from_file "$CBIG_CODE_DIR/setup/replace_old_with_new_func_name/excluded_extensions.txt")
 
-# define old and new function name
-if [[ $input_function_name == *"$PREFIX"* ]]; then
-  old_function_name=${input_function_name#$PREFIX}
-  new_function_name=$input_function_name
-else
-  old_function_name=$input_function_name
-  new_function_name="${PREFIX}$input_function_name"
-fi
-
-# in a given folder, find all lines containing a function name without $PREFIX (first `grep`) and ignore lines containing the function name with the $PREFIX already preprended (third `grep`)
-all_matches=(`grep -IHnR $old_function_name --exclude=\*.{$EXCLUDED_EXTENSIONS} --exclude-from="$CBIG_CODE_DIR/setup/check_function_format/excluded_files.txt" $folder | cut -d: -f1,2`)
+# in a given folder, find all lines containing old function name (first `grep`) and ignore lines containing the new function name (third `grep`)
+all_matches=(`grep -IHnR $old_function_name --exclude=\*.{$EXCLUDED_EXTENSIONS} --exclude-from="$CBIG_CODE_DIR/setup/replace_old_with_new_func_name/excluded_files.txt" $folder | cut -d: -f1,2`)
 last_file=""
 for match in "${all_matches[@]}"
 do
@@ -44,12 +35,6 @@ do
   file=$(echo $match | cut -d: -f1)
   line_number=$(echo $match | cut -d: -f2)
   line=$(sed "${line_number}q;d" $file)
-
-  # If there is any other character before $old_function_name, then skip $old_function_name to avoid false positive
-  if echo $line | grep [a-zA-Z0-9_]${old_function_name}; then
-    break
-  fi
-
   if [[ $line  != *$new_function_name* ]]; then
     echo ""
     old_line="  > Current line $line_number : $line"
@@ -61,7 +46,7 @@ do
       echo "Found this file: $file"
     fi
 
-    # replace instances of the old function name with the new function name (having $PREFIX prepended)
+    # replace instances of the old function name with the new function name 
     export GREP_COLOR='1;37;41'
     echo "$old_line" | grep --color='auto' -E "$old_function_name|$"
     export GREP_COLOR='1;32'

@@ -1,0 +1,27 @@
+# First ignore everything
+*
+
+# Except these files in the stable_projects
+!README.md
+!.gitignore
+
+# Then allow tracking sub-folders
+!*/
+
+# For each of the sub-folder under stable_projects
+# Track all files but not sub-folders in brain_parcellation folder
+!/brain_parcellation/*
+# Track everything (i.e. files, sub-folders) under Schaefer2018_LocalGlobal
+!/brain_parcellation/Schaefer2018_LocalGlobal/**
+# Track everything (i.e. files, sub-folders) under Yeo2011_fcMRI_clustering
+!/brain_parcellation/Yeo2011_fcMRI_clustering/**
+
+#Similarly
+!/disorder_subtypes/*
+!/disorder_subtypes/Zhang2016_ADFactors/**
+
+!/meta-analysis/*
+!/meta-analysis/Ngo2017_AuthorTopic/**
+
+!/fMRI_dynamics/*
+!/fMRI_dynamics/Liegeois2017_Surrogates/**

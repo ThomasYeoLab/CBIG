@@ -24,4 +24,5 @@ ehthumbs.db
 # Folder config file
 Desktop.ini
 
-
+# Anacoda
+miniconda.sh

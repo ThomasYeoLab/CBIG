@@ -27,6 +27,7 @@ log
 lta
 m3z
 mat
+md
 mgz
 mid
 midthickness_orig
@@ -37,6 +38,7 @@ orig
 pial
 pial_orig
 reg
+sh
 smoothwm
 sphere
 stats

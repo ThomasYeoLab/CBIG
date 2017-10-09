@@ -8,7 +8,7 @@ export PATH=$CBIG_BIN_DIR:$PATH
 
 # set up Matlab
 if [ -z $CBIG_MATLAB_DIR ] || [ ! -d $CBIG_MATLAB_DIR ]; then
-  echo "[WARNING]: CBIG_FSLDIR is not set or points to a non-existent directory"
+  echo "[WARNING]: CBIG_MATLAB_DIR is not set or points to a non-existent directory"
 else
   export PATH=$CBIG_MATLAB_DIR/bin:$PATH
 fi
@@ -80,4 +80,8 @@ fi
 if [ ! -f "$CBIG_CODE_DIR/.git/hooks/pre-commit" ];
 then
   ln -s "$CBIG_CODE_DIR/hooks/pre-commit" "$CBIG_CODE_DIR/.git/hooks/pre-commit"
+fi
+if [ ! -f "$CBIG_CODE_DIR/.git/hooks/pre-push" ];
+then
+  ln -s "$CBIG_CODE_DIR/hooks/pre-push" "$CBIG_CODE_DIR/.git/hooks/pre-push"
 fi

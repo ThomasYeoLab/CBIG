@@ -77,3 +77,6 @@ endif
 if (! -f "$CBIG_CODE_DIR/.git/hooks/pre-commit") then
   ln -s "$CBIG_CODE_DIR/hooks/pre-commit" "$CBIG_CODE_DIR/.git/hooks/pre-commit"
 endif
+if (! -f "$CBIG_CODE_DIR/.git/hooks/pre-push") then
+  ln -s "$CBIG_CODE_DIR/hooks/pre-push" "$CBIG_CODE_DIR/.git/hooks/pre-push"
+endif

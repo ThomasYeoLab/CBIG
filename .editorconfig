@@ -1,0 +1,9 @@
+# EditorConfig is awesome: http://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# show tab as 4 space
+[*.{sh,csh,m,py,r,pl,c,cpp,md}]
+indent_style = tab
+indent_size = 4

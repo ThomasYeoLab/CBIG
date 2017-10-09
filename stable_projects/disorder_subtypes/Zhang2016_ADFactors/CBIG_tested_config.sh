@@ -1,5 +1,5 @@
 #! /bin/sh
-#
+# Last successfully run on May 2nd 2017
 
 # DO NOT CHANGE: This clears old freesurfer variables if they previously exists
 if [ -n "$FREESURFER_HOME" ]; then
@@ -7,7 +7,7 @@ if [ -n "$FREESURFER_HOME" ]; then
 fi
 
 # PLEASE CHANGE: Please specify location of CBIG repository
-export CBIG_CODE_DIR=/data/users/ngohgia/storage/CBIG
+export CBIG_CODE_DIR=/data/users/xzhang/storage/CBIG_private
 
 # PLEASE CHANGE: define locations for these libraries
 export FREESURFER_HOME=/apps/arch/Linux_x86_64/freesurfer/5.3.0
@@ -22,12 +22,3 @@ export CBIG_FSLDIR=/apps/arch/Linux_x86_64/fsl/5.0.8
 # DO NOT CHANGE: set up your environment with the configurations above
 SETUP_PATH=$CBIG_CODE_DIR/setup/CBIG_generic_setup.sh
 source $SETUP_PATH
-
-# DO NOT CHANGE: set up temporary directory for MRIread from FS6.0
-export TMPDIR=/tmpstore
-
-# specified the default Python environment.
-# Please UNCOMMENT if you follow CBIG's set up for Python environments.
-# We use Python version 3.5 as default.
-# Please see $CBIG_CODE_DIR/setup/python_env_setup/README.md for more details.
-# source activate CBIG_py3

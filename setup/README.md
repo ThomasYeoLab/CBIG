@@ -11,7 +11,7 @@ A sample configuration script is saved at:
 
 Looking into these sample configuration scripts, you can find environmental variables that store paths to directories of various softwares. Note that we point such environmental variables to specific version of each software. We **highly recommend** this practice since different versions of a software can greatly affect outputs of your code.
 
-###a) Copy configuration script
+### a) Copy configuration script
 
 Create a new folder to keep your configuration script, for example:
 ```
@@ -27,11 +27,11 @@ cp <your-cbig-directory>/setup/CBIG_sample_config.csh ~/setup/CBIG_FS5.3_config.
 ```
 Note that we renamed the config script to clearly reflect the software version we are using. This is useful since we may want to run CBIG repository with different software versions.
 
-###b) Modify your configuration script
+### b) Modify your configuration script
 
 Open your newly copied configuration script with a text editor and change the environmental variables to point to the correct directories of the respective softwares. For example: change `CBIG_MATLAB_DIR` to point to your installation of Matlab, and `CBIG_FSLDIR` to your installation of `FreeSurfer`.
 
-###c) Source your configuration script from `.bashrc` or `.cshrc`
+### c) Source your configuration script from `.bashrc` or `.cshrc`
 
 This step is to run your configuration script every time your shell is launched.
 
@@ -46,7 +46,9 @@ source ~/setup/CBIG_FS5.3_config.csh
 
 **[IMPORTANT]** Please check that in your `.bashrc` or `.cshrc`, there is no sourcing of softwares that conflict with our configuration script.
 
-###Check if your configuration works
+**[IMPORTANT]** If you use CBIG Python setup, this line must be the last line in your `.bashrc` or `.cshrc`
+
+### Check if your configuration works
 - If you are still in BASH or C-SHELL from the previous step, exit.
 - Open a new BASH or C-SHELL.
 - If you have `FreeSurfer` path configured properly, you should see a few lines from FreeSurfer when your command-line interface is booting up. One of those lines is:
@@ -64,7 +66,7 @@ You should be in the directory of CBIG repository.
 
 We will add a `startup.m` of CBIG repository to `MATLABPATH` so that whenever you start Matlab, it will look into `MATLABPATH`, locate `startup.m` and set up your Matlab workspace to work with Matlab code under `CBIG` repository.
 
-###a) Set `MATLABPATH` in your `.bashrc` or `.cshrc`
+### a) Set `MATLABPATH` in your `.bashrc` or `.cshrc`
 In the following example, we will keep `startup.m` under a folder `matlab` in your home directory.
 
 **[IMPORTANT]**: you may already a have `startup.m` under `~/matlab` folder. If so, please **check carefully** that you are not overwriting important configurations of your existing `startup.m` with our version. We **highly recommend** that you keep an old copy of your `startup.m`.
@@ -81,7 +83,7 @@ If you use C-SHELL, add the following line to `.cshrc`:
 ```
 setenv MATLABPATH=~/matlab
 ```
-###b) Copy `startup.m` from CBIG repository
+### b) Copy `startup.m` from CBIG repository
 ```
 cp $CBIG_CODE_DIR/setup/startup.m ~/matlab
 ```

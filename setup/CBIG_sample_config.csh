@@ -22,3 +22,12 @@ setenv CBIG_FSLDIR     /apps/arch/Linux_x86_64/fsl/5.0.8
 # DO NOT CHANGE: set up your environment with the configurations above
 set SETUP_PATH = $CBIG_CODE_DIR/setup/CBIG_generic_setup.csh
 source $SETUP_PATH
+
+# DO NOT CHANGE: set up temporary directory for MRIread from FS6.0
+setenv TMPDIR /tmpstore
+
+# specified the default Python environment.
+# Please UNCOMMENT if you follow CBIG's set up for Python environments.
+# We use Python version 3.5 as default.
+# Please see $CBIG_CODE_DIR/setup/python_env_setup/README.md for more details.
+# source activate CBIG_py3

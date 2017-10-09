@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# check whether changed functions will influence other functions in our repo
+$CBIG_CODE_DIR/setup/CBIG_check_changed_functions_in_other_functions.sh

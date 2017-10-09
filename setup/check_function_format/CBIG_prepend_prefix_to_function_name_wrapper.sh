@@ -8,10 +8,17 @@
 # Input can be the function name, a file name, or full path of a file
 
 file_name=$(basename "$1")
-function_name="${file_name%.*}"
 verbose=$2
 
-DIRECTORY_NAMES=("utilities" "stable_projects" "setup" "data/templates")
+# if the input function is matlab, the function name has no extension
+# if the input function is bash or cshell, the function name has extension
+if [[ $file_name == *.m ]]; then
+	function_name="${file_name%.*}"
+elif [[ $file_name == *.sh ]] || [[ $file_name == *.csh ]]; then
+	function_name="$file_name"
+fi
+
+DIRECTORY_NAMES=("utilities" "stable_projects/preprocessing" "stable_projects/brain_parcellation/Yeo2011_fcMRI_clustering" "setup" "data/templates")
 for name in "${DIRECTORY_NAMES[@]}"
 do
   directory="$CBIG_CODE_DIR/$name"

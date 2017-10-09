@@ -1,6 +1,8 @@
 #!/bin/sh
-# Prevent 'unstable_projects', 'legacy' or 'developers' directories from being committed to 'master' branch
 
+###
+# Prevent 'unstable_projects', 'legacy' or 'developers' directories from being committed to 'master' branch
+###
 if [ "$(git symbolic-ref HEAD 2>/dev/null)" == "refs/heads/master" ]
 then
   passed=true
@@ -25,40 +27,47 @@ then
   fi
 fi
 
-# Prevent source files without a certain prefix from being committed
+###
+# Define the files that we want to check 
+###
 EXTENSIONS_TO_CHECK=("m" "c" "cpp" "sh" "csh" "py" "pl" "r")
 DIRECTORIES_TO_CHECK=("stable_projects" "utilities")
-EXCLUDED_FILES=("Surf2SurfGui.m" "Vol2SurfGui.m")
+EXCLUDED_FILES=("Surf2SurfGui.m" "Vol2SurfGui.m" "CBIG_tested_config.sh" "CBIG_tested_config.csh")
 PREFIX="CBIG_"
-
-echo -e "\n==> Checking $PREFIX prefix of files to be committed.."
 files_to_be_committed=($(git diff --cached --name-status | awk '(($1 != "R") && ($1 != "D") && ($1 != "U")) { print $2 }'))
+
+###
+# Check whether committed files have the 'CBIG_' prefix 
+###
+echo -e "\n==> Checking $PREFIX prefix of files to be committed.."
 all_with_valid_prefixes=1
+file_in_exclude=0
 for file_path in "${files_to_be_committed[@]}"
 do
-  for directory in "${DIRECTORIES_TO_CHECK[@]}"
-  do
-    file_name=$(basename $file_path)
-    if [[ $file_path == $directory/* ]] || [[ $file_path == $file_name ]]; then
-      for ext in "${EXTENSIONS_TO_CHECK[@]}"
-      do
-        if [[ $file_name != $PREFIX* ]] && [[ $file_name == *.$ext ]]; then
-          all_with_valid_prefixes=0
-          for excluded_file in "${EXCLUDED_FILES[@]}"
-          do
-            if [[ $file_name == $excluded_file ]]; then
-              all_with_valid_prefixes=1
-            fi
-          done
-
-          if [[ "$all_with_valid_prefixes" == "0" ]]; then
-            echo "$file_path does not have a $PREFIX prefix"
-            break
-          fi
-        fi
-      done
-    fi
-  done
+	file_name=$(basename $file_path)
+	for excluded_file in "${EXCLUDED_FILES[@]}"
+	do
+	    if [[ $file_name == $excluded_file ]]; then
+	      file_in_exclude=1
+	      break
+	    fi
+	done
+	if [ $file_in_exclude == 1 ]; then
+		echo "$file_name will not be checked for $PREFIX prefix"
+		break
+	fi
+    for directory in "${DIRECTORIES_TO_CHECK[@]}"
+    do 
+	    if [[ $file_path == $directory/* ]] || [[ $file_path == $file_name ]]; then
+	        for ext in "${EXTENSIONS_TO_CHECK[@]}"
+	        do
+		        if [[ $file_name != $PREFIX* ]] && [[ $file_name == *.$ext ]]; then
+		            all_with_valid_prefixes=0
+		            echo "$file_path does not have a $PREFIX prefix, please fix it manually."
+		        fi
+	        done
+	    fi
+    done
 done
 
 if [ $all_with_valid_prefixes == 0 ]; then
@@ -67,35 +76,95 @@ if [ $all_with_valid_prefixes == 0 ]; then
 fi
 echo "   [PASSED]"
 
-# TO-DO: Check license in source files other than Matlab's
-echo -e "\n==> Checking license of Matlab files to be committed.."
+###
+# check whether committed files have the MIT license 
+###
+mit_license="Written by [your name] and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md"
+all_with_license=1
+file_in_exclude=0
+echo -e "\n==> Checking MIT license of files to be committed.."
 for file_path in "${files_to_be_committed[@]}"
 do
-  file_name=$(basename $file_path)
-  for directory in "${DIRECTORIES_TO_CHECK[@]}"
-  do
-    if [[ $file_path == $directory/* ]] && [[ $file_name == *.m ]]; then
-      echo "Processing '$file_path'"
-      $CBIG_CODE_DIR/setup/check_license/CBIG_check_license_matlab_file.sh $file_path
-    fi
-  done
+    file_name=$(basename $file_path)
+	for excluded_file in "${EXCLUDED_FILES[@]}"
+	do
+	    if [[ $file_name == $excluded_file ]]; then
+	      file_in_exclude=1
+	      break
+	    fi
+	done
+	if [ $file_in_exclude == 1 ]; then
+		echo "$file_name will not be checked for MIT license"
+		break
+	fi
+	for directory in "${DIRECTORIES_TO_CHECK[@]}"
+	do
+	    if [[ $file_path == $directory/* ]] || [[ $file_path == $file_name ]]; then
+	    	for ext in "${EXTENSIONS_TO_CHECK[@]}"
+	      	do
+	      		if [[ $file_name = *.$ext ]]; then
+	      			license_line=`grep "MIT license" $file_path`
+	      			if [[ "$license_line" == "" ]]; then
+	      				all_with_license=0
+	      				echo "$file_path does not have a MIT license"
+	      			elif [[ "$license_line" == *"CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md" && "$license_line" == *"Written by"* ]]; then
+	      				# do nothing
+	      				:
+	      			else
+	      				all_with_license=0
+	      				echo "$file_path does not follow our MIT license format: "
+	      				echo "$mit_license"
+	      			fi
+	      		fi
+		    done
+	    fi
+	done
 done
 
-echo -e "\n==> Checking occurences of old function names (without CBIG prefix)"
-for file_path in "${files_to_be_committed[@]}"
+if [ $all_with_license == 0 ]; then
+    echo "   [FAILED] There are functions without or not following our MIT license. Abort committing."
+    echo "For matlab functions, you can use setup/check_license/CBIG_check_license_matlab_file.sh to add MIT license"
+    echo "For other languages, please add MIT license manually:"
+    echo "$mit_license"
+    exit 1
+fi
+echo "   [PASSED]"
+
+###
+# check whether each project subfolder contains a "CBIG_tested_config.sh" or "CBIG_tested_config.csh" file
+###
+echo -e "\n==> Checking CBIG_tested_config files of each project.."
+all_with_config=1
+for subfolder in $CBIG_CODE_DIR/stable_projects/*/*
 do
-  file_name=$(basename $file_path)
-  for ext in "${EXTENSIONS_TO_CHECK[@]}"
-  do
-    for directory in "${DIRECTORIES_TO_CHECK[@]}"
-    do
-      if [[ $file_path == $directory/* ]] && [[ $file_name == *.$ext ]]; then
-        echo -e "\n  ==> Checking $file_path"
-        $CBIG_CODE_DIR/setup/check_function_format/CBIG_prepend_prefix_to_function_name_wrapper.sh $file_path
-      fi
-    done
-  done
+	if [[ ! -e $subfolder/CBIG_tested_config.sh ]] && [[ ! -e $subfolder/CBIG_tested_config.csh ]]; then
+		all_with_config=0
+		echo "$subfolder does not have a CBIG_tested_config file"
+    else 
+        if [[ -e $subfolder/CBIG_tested_config.sh ]]; then
+            secondline=`sed -n 2p $subfolder/CBIG_tested_config.sh`
+            if [[ "$secondline" != "# Last successfully run on"* ]]; then
+                all_with_config=0
+                echo "$subfolder/CBIG_tested_config.sh does not have the time stamp"
+            fi
+        elif [[ -e $subfolder/CBIG_tested_config.csh ]]; then
+            secondline=`sed -n 2p $subfolder/CBIG_tested_config.csh`
+            if [[ "$secondline" != "# Last successfully run on"* ]]; then
+                all_with_config=0
+                echo "$subfolder/CBIG_tested_config.csh does not have the time stamp"
+            fi
+        fi
+	fi
 done
+if [ $all_with_config == 0 ]; then
+    echo "	  [FAILED] There are stable_projects without CBIG_tested_config files or these files do not have time stamp."
+	echo "Please add CBIG_tested_config.sh or CBIG_tested_config.csh to all stable_projects/*/* manually"
+	echo "Each stable project should contain a repo config file that was used when the project was last tested to work."
+	echo "The second line of the config file should be a comment:"
+	echo "# Last successfully run on <spelled out date to reduce confusion, e.g., Jan 7th, 2017>"
+	exit 1
+fi
+echo "   [PASSED]"
 
 git add .
 
