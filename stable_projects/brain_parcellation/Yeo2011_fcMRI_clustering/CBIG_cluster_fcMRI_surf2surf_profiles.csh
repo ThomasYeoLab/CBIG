@@ -18,11 +18,12 @@ set num_tries = 1000;
 set znorm = 0;
 
 set PrintHelp = 0;
-if( $#argv == 0 ) goto usage_exit;
 set n = `echo $argv | grep -e-help | wc -l`
-if( $n != 0 ) then
-	set PrintHelp = 1;
-	goto usage_exit;
+if( $#argv == 0 || $n != 0 ) then
+	echo $VERSION
+	# print help	
+	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+	exit 0;
 endif
 set n = `echo $argv | grep -e-version | wc -l`
 if( $n != 0 ) then
@@ -36,7 +37,7 @@ parse_args_return:
 goto check_params;
 check_params_return:
 
-set root_dir = `python -c "import os; print os.path.realpath('$0')"`
+set root_dir = `python -c "import os; print(os.path.realpath('$0'))"`
 set root_dir = `dirname $root_dir`
 
 set MATLAB = `which $CBIG_MATLAB_DIR/bin/matlab`
@@ -202,33 +203,50 @@ arg1err:
   exit 1
 
 
-##########################################
-# Usage exit
-##########################################
-usage_exit:
 
-	echo ""
-	echo "USAGE: CBIG_cluster_fcMRI_surf2surf_profiles.csh"
-	echo ""
-	echo "  Required arguments"
-	echo "    -lh_in       lh_profile_txt : left hemisphere profile input"
-	echo "    -rh_in       rh_profile_txt : right hemisphere profile input"
-	echo "    -n           num_clusters   : number of clusters"
-	echo "    -out         output_file    : clustering output filename (full path, without extension)"
-	echo ""
-	echo "  Optional arguments"
-	echo "    -tries       num_tries      : number of different random initialization (default is 1000)"
-	echo ""
 
-	if ( $PrintHelp == 0 ) exit 1
-	echo $VERSION
-	
-	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
 
-exit 1
+exit 0
 
 #-------- Everything below is printed as part of help --------#
 BEGINHELP
 
-  This function is called by 'CBIG_cluster_fcMRI_surf2surf_profiles_subjectlist.csh'. It needs to take in left and right hemispheres FC profiles lists. The two lists are generated inside 'CBIG_cluster_fcMRI_surf2surf_profiles.csh'. This is the main function for clustering.
+NAME:
+	CBIG_cluster_fcMRI_surf2surf_profiles.csh
+
+DESCRIPTION:
+	This function performs the group-level surface parcellation by the method of Yeo et al. 2011.
+	This function will 
+	(1) Average the correlation profiles of all subjects
+	(2) Perform clustering algorithm on the averaged correlation profile
+	(3) If the number of clusters equals to 7 or 17, the clustering results will be matched with 
+	    the parcellation in Yeo et al. 2011 by Hungarian matching.
   
+REQUIRED ARGUMENTS:
+	-lh_in       lh_profile_txt : left hemisphere correlation profile input list (full path). 
+	                              Each line in the list is the file name of the lh correlation 
+	                              profile of one subject.
+	-rh_in       rh_profile_txt : right hemisphere correlation profile input list (full path). 
+	                              Each line in the list is the file name of the rh correlation 
+	                              profile of one subject.
+	-n           num_clusters   : number of clusters
+	-out         output_file    : clustering output filename (full path). For example, if the 
+	                              output filename is <output-dir>/cluster_007.mat, then the 
+	                              user should pass in "-out <output_dir>/cluster_007". Please 
+	                              be noticed that ".mat" is not included.
+	
+OPTIONAL ARGUMENTS:
+	-tries       num_tries      : number of different random initialization (default is 1000)
+	
+OUTPUTS:
+	<output_file>.mat
+	The clustering result (.mat) file.
+	
+	In the same folder, there are averaged surface correlation profiles (NIFTI files):
+	e.g., "lh.*.avg_profiles017.nii.gz", "rh.*.avg_profiles017.nii.gz";
+	
+EXAMPLE:
+	csh CBIG_cluster_fcMRI_surf2surf_profiles.csh -lh_in ~/storage/fMRI_clustering/clustering_017_scrub_lh_profile.txt
+	-rh_in  ~/storage/fMRI_clustering/clustering_017_scrub_rh_profile.txt -n 17 -out 
+	~/storage/fMRI_clustering/clustering_017_scrub -tries 1000
+

@@ -15,11 +15,12 @@ set num_tries = 1000
 set scrub_flag = 0
 
 set PrintHelp = 0;
-if( $#argv == 0 ) goto usage_exit;
 set n = `echo $argv | grep -e -help | wc -l`
-if( $n != 0 ) then
-	set PrintHelp = 1;
-	goto usage_exit;
+if( $#argv == 0 || $n != 0 ) then
+	echo $VERSION
+	# print help	
+	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+	exit 0;
 endif
 set n = `echo $argv | grep -e -version | wc -l`
 if( $n != 0 ) then
@@ -33,7 +34,7 @@ parse_args_return:
 goto check_params;
 check_params_return:
 
-set root_dir = `python -c "import os; print os.path.realpath('$0')"`
+set root_dir = `python -c "import os; print(os.path.realpath('$0'))"`
 set root_dir = `dirname $root_dir`
 
 set output_dir = `dirname $output_file`
@@ -158,34 +159,52 @@ arg1err:
   exit 1
   
 
-##############################
-# Usage exit
-##############################
-usage_exit:
 
-	echo ""
-	echo "USAGE: CBIG_cluster_fcMRI_surf2surf_profiles_subjectlist.csh"
-	echo ""
-	echo "  Required arguments"
-	echo "    -sd          sub_dir      : fMRI subjects directory"
-	echo "    -sub_ls      sub_list     : subjects list"
-	echo "    -n           num_clusters : number of clusters"
-	echo "    -out         output_file  : clustering output filename (full path, without extension)"
-	echo ""
-	echo "  Optional arguments"
-	echo "    -tries       num_tries    : number of different random initializaiton (default is 1000)"
-	echo "    -scrub_flag  scrub_flag    : 0 or 1, 1 for ignoring high motion frames when computing profiles, default is 0"
-	echo ""
 
-	if ( $PrintHelp == 0 ) exit 1
-	echo $VERSION
-	
-	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
-
-exit 1
+exit 0
 
 #-------- Everything below is printed as part of help --------#
 BEGINHELP
 
-  This function calls 'CBIG_cluster_fcMRI_surf2surf_profiles.csh' for each subject. It is the wrapper function for clustering.
+NAME:
+	CBIG_cluster_fcMRI_surf2surf_profiles_subjectlist.csh
+
+DESCRIPTION:
+	This function is the wrapper function for clustering. It generates the lists that contain 
+	the surface profiles filenames of all subjects. And it calls 
+	"CBIG_cluster_fcMRI_surf2surf_profiles.csh" to perform clustering.
+  
+REQUIRED ARGUMENTS:
+	-sd          sub_dir      : fMRI subjects directory. This directory contains all the folders
+	                            named by the subject IDs.
+	-sub_ls      sub_list     : subjects list (full path). Each line in this file is one subject ID.
+	-n           num_clusters : number of clusters
+	-out         output_file  : clustering output filename (full path). For example, if the output 
+	                            filename is <output-dir>/cluster_007.mat, then the user should pass 
+	                            in "-out <output_dir>/cluster_007". Please be noticed that ".mat" 
+	                            is not included.
+
+OPTIONAL ARGUMENTS:
+	-tries       num_tries    : number of different random initialization for clustering (default is 1000)
+	-scrub_flag  scrub_flag   : 0 or 1, 1 for ignoring high motion frames when computing profiles; 
+	                            0 for keeping all frames when computing correlation profiles. 
+	                            Default is 0. This option is used to differentiate the filenames 
+	                            for outputs.
+
+OUTPUTS:
+	<output_file>.mat
+	The clustering result (.mat) file.
+	
+	In the same folder, there are averaged surface correlation profiles (NIFTI files):
+	e.g., "lh.*.avg_profiles017.nii.gz";
+	
+	and the input lists to create the averaged profiles:
+	e.g., "*_lh_profile.txt"
+	where each line is the correlation filename of one subject.
+	
+EXAMPLE:
+	csh CBIG_cluster_fcMRI_surf2surf_profiles_subjectlist.csh -sd ~/storage/fMRI_data -sub_ls 
+	~/storage/fMRI_data/scripts/sub_list.txt -n 17 -out ~/storage/fMRI_clustering/clustering_017_scrub 
+	-tries 1000 -scrub_flag 1
+
 

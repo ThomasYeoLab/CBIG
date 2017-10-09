@@ -13,11 +13,12 @@ set threshold = 0.1
 set scrub_flag = 0;
 
 set PrintHelp = 0;
-if( $#argv == 0 ) goto usage_exit;
 set n = `echo $argv | grep -e -help | wc -l`
-if( $n != 0 ) then
-	set PrintHelp = 1;
-	goto usage_exit;
+if( $#argv == 0 || $n != 0 ) then
+	echo $VERSION
+	# print help	
+	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+	exit 0;
 endif
 set n = `echo $argv | grep -e -version | wc -l`
 if( $n != 0 ) then
@@ -33,7 +34,7 @@ parse_args_return:
 goto check_params;
 check_params_return:
 
-set root_dir = `python -c "import os; print os.path.realpath('$0')"`
+set root_dir = `python -c "import os; print(os.path.realpath('$0'))"`
 set root_dir = `dirname $root_dir`
 
 set MATLAB = `which $CBIG_MATLAB_DIR/bin/matlab`
@@ -216,36 +217,72 @@ argerr:
   exit 1;
 
 
-############################
-# Usage exit
-############################
-usage_exit:
-
-	echo ""
-	echo "USAGE: CBIG_compute_fcMRI_surf2surf_profiles.csh"
-	echo ""
-	echo "  Required arguments"
-	echo "    -sd          sub_dir      : fMRI subejcts directory"
-	echo "    -s           subject      : subject id"
-	echo "    -surf_data   surf_data    : all surface data filenames of one specific subject (only left hemi, or only right hemi)"
-	echo "    -output_dir  output_dir   : directory to output FC profiles file"
-	echo ""
-	echo "  Optional arguments"
-	echo "    -outlier_ls  outlier_list : motion outliers files list"
-	echo "    -target        target     : the resolution of clustering (default is fsaverage5)"
-	echo "    -roi           roi        : the resolution of ROIs (defaule is fsaverage3)"
-	echo ""
 	
-	if ( $PrintHelp == 0 ) exit 1
-	echo $VERSION
-	
-	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
 
 exit 1
 
 #-------- Everything below is printed as part of help --------#
 BEGINHELP
 
-  This function compute the functional connectivity profiles on surface for the given subject. 
-  The motion outliers file is optional. If motion outliers file is passed in, the high motion frames will be ignored when computing functional connectivity. High motion frames are indicated by '0' in motion outliers files.
+NAME:
+	CBIG_compute_fcMRI_surf2surf_profiles.csh
+
+DESCRIPTION:
+	This function computes the functional connectivity profiles on surface for the given subject. 
+	The resolution of the functional connectivity is given by the inputs -taget and -roi. Default 
+	is fsaverage5 x fsaverage3.
+	
+	The motion outliers file is optional. If motion outliers file is passed in, the high motion 
+	frames will be ignored when computing functional connectivity. High-motion frames are 
+	indicated by 0 in motion outliers files, while low-motion frames are 1.
+  
+REQUIRED ARGUMENTS:
+	-sd             sub_dir       : fMRI subjects directory. This directory contains all the folders
+	                                named by the subject IDs.
+	-s              subject       : subject id
+	-surf_data      surf_data     : surface fMRI data filenames of all runs of <subject> (only left  
+	                                hemisphere, or only right hemisphere). Please use space as the 
+	                                delimiter between different runs. For example, 
+	                                -surf_data "<sub_dir>/<subject>/surf/lh.Sub0001_Ses1_bld002*.nii.gz <sub_dir>/<subject>/surf/lh.Sub0001_Ses1_bld003*.nii.gz"
+	                                NOTE: quote sign is necessary.
+	                                This function will transform all "lh" to "rh" when computing left 
+	                                hemisphere correlation, or "rh" to "lh" when computing right 
+	                                hemisphere correlation.
+	-output_dir     output_dir    : directory to output FC profiles file (full path)
+
+OPTIONAL ARGUMENTS:
+	-outlier_files  outlier_files : motion outliers files of all runs. Please use space as the delimiter 
+	                                between different runs. For example, 
+	                                -outlier_files "<sub_dir>/<subject>/qc/lh.Sub0001_Ses1_bld002*.txt <sub_dir>/<subject>/qc/lh.Sub0001_Ses1_bld003*.txt"
+	                                NOTE: quote sign is necessary.
+	-target         target        : the resolution of clustering (default is fsaverage5)
+	-roi            roi           : the resolution of ROIs (default is fsaverage3)
+
+OUTPUTS:
+	"<output_dir>/lh.<subject>.roifsaverage3.thres0.1.surf2surf_profile.input" 
+	is a text file where each line is the surface fMRI data (lh) of one run of <subject>.
+	
+	"<output_dir>/rh.<subject>.roifsaverage3.thres0.1.surf2surf_profile.input" 
+	is a text file where each line is the surface fMRI data (rh) of one run of <subject>.
+	
+	"<output_dir>/outlier.<subject>.roifsaverage3.thres0.1.surf2surf_profile.input"
+	is a text file where each line is the motion outlier filename of one run of <subject>.
+	
+	"<output_dir>/lh.<subject>.roifsaverage3.thres0.1.surf2surf_profile_scrub.nii.gz"
+	is the surface to surface correlation file (lh) of <subject>. This correlation profile
+	is computed by choosing a seed in the mesh of <target> from left hemisphere and correlated
+	with all ROIs in the mesh of <roi> from both left and right hemisphere.
+	
+	"<output_dir>/rh.<subject>.roifsaverage3.thres0.1.surf2surf_profile_scrub.nii.gz"
+	is the surface to surface correlation file (rh) of <subject>. This correlation profile
+	is computed by choosing a seed in the mesh of <target> from right hemisphere and correlated
+	with all ROIs in the mesh of <roi> from both left and right hemisphere.
+
+EXAMPLE:
+	csh CBIG_compute_fcMRI_surf2surf_profiles.csh -sd ~/storage/fMRI_data -s Sub0001_Ses1 
+	-surf_data "~/storage/fMRI_data/Sub0001_Ses1/surf/lh.Sub0001_Ses1_bld002_rest_skip4_stc_mc_resid_cen_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6_fs5.nii.gz 
+	~/storage/fMRI_data/Sub0001_Ses1/surf/lh.Sub0001_Ses1_bld003_rest_skip4_stc_mc_resid_cen_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6_fs5.nii.gz" 
+	-outlier_files "~/storage/fMRI_data/Sub0001_Ses1/qc/Sub0001_Ses1_bld002_FDRMS0.2_DVARS50_motion_outliers.txt 
+	~/storage/fMRI_data/Sub0001_Ses1/qc/Sub0001_Ses1_bld003_FDRMS0.2_DVARS50_motion_outliers.txt"
+	-target fsaverage5 -roi fsaverage3
 

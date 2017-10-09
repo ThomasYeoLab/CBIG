@@ -14,11 +14,12 @@ set out_dir = ""
 set preproc_opt = "new"
 
 set PrintHelp = 0;
-if( $#argv == 0 ) goto usage_exit;
 set n = `echo $argv | grep -e -help | wc -l`
-if( $n != 0 ) then
-	set PrintHelp = 1;
-	goto usage_exit;
+if( $#argv == 0 || $n != 0 ) then
+	echo $VERSION
+	# print help	
+	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+	exit 0;
 endif
 set n = `echo $argv | grep -e -version | wc -l`
 if( $n != 0 ) then
@@ -147,36 +148,59 @@ arg2err:
   exit 1;
 
 
-################################
-# usage
-################################
-usage_exit:
-
-	echo ""
-	echo "USAGE: CBIG_create_subject_surf_list.csh"
-	echo ""
-	echo "  Required arguments"
-	echo "    -sd            sub_dir      : fMRI subjects directory"
-	echo "    -sub_ls        sub_list     : subjects list (only contains subjects' id, but not the full path), e.g. '/mnt/eql/yeo2/CBIG_repo_tests/CBIG_fMRI_Preproc2016_test/GSP_surface_100sub/surf2surf_profile_scrub_test/scripts/Subjectlist_subset'"
-	echo "    -out_dir       out_dir      : output_directory"
-	echo "    -surf_stem     surf_stem    : a stem that can identify the surface data that you want to use (e.g. the part that behind '*bld002', '*bld003', ...; without extension)"
-	echo "  Optional arguments"
-	echo "    -outlier_stem  outlier_stem : a stem that can identify the motion outliers file (without extension), e.g. '_FDRMS0.2_DVARS50_motion_outliers' (the part after '*bld002', '*bld003'; without extension)"
-	echo "    -preproc_opt   preproc_opt  : assumption of preprocessing approach, choose from 'old' and 'new', 'old' means procsurffast file structure, 'new' means CBIG_fMRI_preprocess file structure. Default is 'new'"
-	echo ""
-
-	if ( $PrintHelp == 0 ) exit 1
-	echo $VERSION
 	
-	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
 
-exit 1
+exit 0
 
 #-------- Everything below is printed as part of help --------#
 BEGINHELP
 
-  This function creates the surface data list and motion outliers files list. In surface data list, each line contains the full paths of one subject's surface data (only lh). The output surface list is ${sub_dir}/scripts/surf_${surf_stem}.list. In motion outliers files list, each line contains the full paths of one subject's motion outlier files. The output motion outlier files list is ${sub_dir}/scripts/outlier_${outlier_stem}.list.
-  It assumes that the preprocessed surface data are located in '${sub_dir}/${subject}/surf/' and motion outliers file is located in '${sub_dir}/${subject}/qc/'. If not, the user could create symbol links to these positions.
-  -surf_stem is used to distinguish the data that you want to input from other surface data. 
-  -outlier_stem is similar to -surf_stem. It is used to identify the motion outliers file. For example, for surface data preprocessed by 'CBIG_fMRI_preprocess.csh', the file name of motion outliers is '*_bld*_FDRMS0.2_DVARS50_motion_outliers.txt', then outlier_stem can be '_FDRMS0.2_DVARS50_motion_outliers'. This flag is optional. If it is specified, high motion frames (outliers) will be ignored when compute functional connectivity profiles.
+NAME:
+	CBIG_create_subject_surf_list.csh
+
+DESCRIPTION:
+	This function creates the surface fMRI data list and motion outliers files list. 
+	In surface data list, each line contains the full paths of one subject's surface data (lh or rh). 
+	In motion outliers files list, each line contains the full paths of one subject's motion outlier files. 
+	
+	It assumes that the preprocessed surface data are located in '${sub_dir}/${subject_id}/surf/' and the
+	motion outliers file is located in '${sub_dir}/${subject_id}/qc/'. If not, the user could create symbol 
+	links to these locations.
+
+REQUIRED ARGUMENTS:
+	-sd            sub_dir      : fMRI subjects directory. This directory contains all the folders
+	                              named by the subject IDs.
+	-sub_ls        sub_list     : subject list (full path). Each line in this file is one subject ID.
+	-out_dir       out_dir      : output directory. It contains the log file, the lh & rh surface fMRI 
+	                              file lists, and the motion outlier list. 
+	-surf_stem     surf_stem    : a stem that can identify the surface data that you want to use.
+	                              For example, if the surface file name is 
+	                              "Sub0001_Ses1_bld002_rest_skip4_stc_mc_resid_cen_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6_fs5.nii.gz",
+	                              <surf_stem> = "_rest_skip4_stc_mc_resid_cen_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6_fs5".
+	
+OPTIONAL ARGUMENTS:
+	-outlier_stem  outlier_stem : a stem that can identify the motion outliers file (without extension), 
+	                              e.g. if the motion outlier file is 
+	                              'Sub0001_Ses1_bld002_FDRMS0.2_DVARS50_motion_outliers.txt',
+	                              <outlier_stem> = '_FDRMS0.2_DVARS50_motion_outliers'.
+	                              If it is not specified, the motion outlier file name list will not be created.
+	-preproc_opt   preproc_opt  : assumption of preprocessing approach, choose from 'old' and 'new', 'old' 
+	                              means procsurffast file structure, 'new' means CBIG_fMRI_preprocess file 
+	                              structure. Default is 'new'.
+
+OUTPUTS:
+	<out_dir>/lists/lh.surf<surf_stem>.list
+	Each line of this file is all the surface fMRI file names (lh) of one subject.
+	
+	<out_dir>/lists/rh.surf<surf_stem>.list
+	Each line of this file is all the surface fMRI file names (rh) of one subject.
+	
+	<out_dir>/lists/outlier<outlier_stem>.list
+	Each line of this file is all the motion outlier file names of one subject.
+	
+EXAMPLE:
+	csh CBIG_create_subject_surf_list.csh -sd ~/storage/fMRI_data -sub_ls 
+	~/storage/fMRI_data/scripts/sub_list.txt -surf_stem 
+	_rest_skip4_stc_mc_resid_cen_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6_fs5 -outlier_stem 
+	_FDRMS0.2_DVARS50_motion_outliers -out_dir ~/storage/fMRI_clustering  -preproc_opt new
   
