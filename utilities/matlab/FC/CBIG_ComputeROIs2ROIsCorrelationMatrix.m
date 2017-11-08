@@ -35,7 +35,7 @@ function CBIG_ComputeROIs2ROIsCorrelationMatrix(output_file, subj_text_list1, su
 %   '<full_path>/lh.shen_region1.label'
 %   '<full_path>/lh.shen_region2.label'
 %   
-%   2. ROIs1 and ROIs2 can also be a single .label/.nii.gz/.dlable.nii file
+%   2. ROIs1 and ROIs2 can also be a single .label/.nii.gz/.dlabel.nii/.annot file
 %   It is useful when we want to compute the correlation of a single
 %   surface ROI to a volume ROI
 %   
@@ -43,8 +43,11 @@ function CBIG_ComputeROIs2ROIsCorrelationMatrix(output_file, subj_text_list1, su
 %   ROIs1 = '<full_path>/lh.shen_region1.label'
 %   ROIs2 = '<full_path>/shen_3mm.nii.gz'
 %   or
-%   ROIs1 = '<full_path>/Thomas114_parcellation.dlable.nii'
-%   ROIs2 = '<full_path>/Thomas114_parcellation.dlable.nii'
+%   ROIs1 = '<full_path>/Thomas114_parcellation.dlabel.nii'
+%   ROIs2 = '<full_path>/Thomas114_parcellation.dlabel.nii'
+%   or
+%   ROIs1 = '<full path>/lh.Schaefer2018_400Parcels_17Networks_order.annot'
+%   ROIs2 = '<full path>/lh.Schaefer2018_400Parcels_17Networks_order.annot'
 %   
 %   -discard_frames_list: 
 %   text file which has a structure like subj_text_list1 and subj_text_list2, 
@@ -297,7 +300,7 @@ end
 
 %% sub-function to read ROI lists
 function ROI_cell = read_ROI_list(ROI_list)
-% ROI_list can be a .nii.gz/.mgz/.mgh/.dlable.nii file contains a parcellation.
+% ROI_list can be a .nii.gz/.mgz/.mgh/.dlabel.nii file contains a parcellation.
 
 % this is for an arbitrary nii.gz file
 if(~isempty(strfind(ROI_list, '.nii.gz')) || ~isempty(strfind(ROI_list, '.mgz')) || ~isempty(strfind(ROI_list, '.mgh')))
@@ -308,7 +311,7 @@ if(~isempty(strfind(ROI_list, '.nii.gz')) || ~isempty(strfind(ROI_list, '.mgz'))
         ROI_cell{i} = find(ROI_vol.vol == regions(i));
     end
     
-% this is for an arbitrary .dlable.nii file
+% this is for an arbitrary .dlabel.nii file
 elseif (~isempty(strfind(ROI_list, '.dlabel.nii')))
     ROI_vol = ft_read_cifti(ROI_list, 'mapname','array');
     regions = unique(ROI_vol.dlabel(ROI_vol.dlabel ~= 0));
@@ -320,6 +323,13 @@ elseif (~isempty(strfind(ROI_list, '.dlabel.nii')))
 elseif (~isempty(strfind(ROI_list, '.label'))) % input ROI as a single .label file
     tmp = read_label([], ROI_list);
     ROI_cell{1} = tmp(:,1) + 1;
+    
+elseif (~isempty(strfind(ROI_list, '.annot'))) % input ROI as a single .annot file
+    vertex_label = CBIG_read_annotation(ROI_list);
+    regions = unique(vertex_label(vertex_label ~= 1));   % exclude medial wall
+    for i = 1:length(regions)
+        ROI_cell{i} = find(vertex_label == regions(i));
+    end
 
 else % input ROIs is a list of its locations: either .nii.gz or .label
     fid = fopen(ROI_list, 'r');

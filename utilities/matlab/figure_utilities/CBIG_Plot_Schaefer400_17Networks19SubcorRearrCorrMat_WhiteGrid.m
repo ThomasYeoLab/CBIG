@@ -188,8 +188,14 @@ ymaj = repmat(ymaj,1,(n-1));
 function [Index, major_grid, minor_grid, subcor_grid] = LabelsRearrangebyNetwork
 
 % load original cortical networks labels
-networks_path = '/share/users/imganalysis/yeolab/data/PublicParcellations/Schaefer/400_parcels/fslr32k/cifti/Schaefer2016_400Parcels_17Networks_colors_23_05_16.dlabel.nii';
-labelname = ft_read_cifti(networks_path,'mapname','array');
+networks_path = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Parcellations/FreeSurfer5.3/fsaverage5/label/');
+lh_annot_file = [networks_path 'lh.Schaefer2018_400Parcels_17Networks_order.annot'];
+rh_annot_file = [networks_path 'rh.Schaefer2018_400Parcels_17Networks_order.annot'];
+[lh_vertex_labels, lh_colortable] = CBIG_read_annotation(lh_annot_file);
+[rh_vertex_labels, rh_colortable] = CBIG_read_annotation(rh_annot_file);
+
+lh_label = lh_colortable.struct_names(2:end);
+rh_label = rh_colortable.struct_names(2:end);
 
 % hard-coded, assuming the original input subcortical labels are in ascending order
 subcor_labelname = {'Cerebellum_Left';'Thalamus_Left';'Caudate_Left';'Putamen_Left';'Pallidum_Left';'BrainStem';'Hippocampus_Left';'Amygdala_Left';'Accumbens_Left'; ...
@@ -200,9 +206,6 @@ minor_grid = [];
 subcor_grid = [];
 major_acc_index = [1, 4, 7, 8, 10, 12, 14, 16];
 subcor_acc_index = 17:25;
-
-lh_label = labelname.dlabellabel(1:200)';
-rh_label = labelname.dlabellabel(201:400)';
 
 lhrh_label = {lh_label{:} rh_label{:}}';
 all_label = [lhrh_label; subcor_labelname];

@@ -1,23 +1,39 @@
-function vertex_label = CBIG_read_annotation(annot_file)
+function [vertex_label, colortable] = CBIG_read_annotation(annot_file)
 
-% vertex_label = CBIG_read_annotation(annot_file)
+% [vertex_label, colortable] = CBIG_read_annotation(annot_file)
 %
-% This function takes in a .annot file and converts it to a Nx1 column vector vertex_label
-% where N is the number of vertices.
-% Each entry in vertex_label represents the label of the corresponding vertex.
+% This function takes in a .annot file and converts it to a Nx1 column 
+% vector vertex_label where N is the number of vertices. The colortable
+% struct from the original read_annotation.m function is also given as an
+% output.
+% 
+% The original read_annotation.m function only outputs labels whose values
+% are derived from RGB color: R + G*2^8 + B*2^16 + flag*2^24.  
+% In this function, label of each vertex will be matched to the 5th column of colortable.table, 
+% and the corresponding row index of colortable.table will be saved in vertex_label. 
+% For example, label corresponding to the 1st row of the 5th column of colortable.table will be mapped to 1, 
+% 2nd row will be mapped to 2, etc.
+%
 % If you only wish to convert .annot file to colortable, please use the
 % original read_annotation.m function.
 %
 % Input:
 %     - annot_file:
-%       A .annot file.
+%       A .annot file
 %
 % Output:
-%     - vertex_label
-%       A Nx1 column vector where N is the number of vertices. Each entry is the label of the corresponding vertex.
+%     - vertex_label:
+%       A Nx1 column vector where N is the number of vertices
+%     - colortable:
+%       colortable is an empty struct if not embedded in .annot. Else, it will be a struct.
+%       colortable.numEntries = number of Entries
+%       colortable.orig_tab = name of original colortable
+%       colortable.struct_names = list of structure names (e.g. central sulcus and so on)
+%       colortable.table = n x 5 matrix. 1st column is R, 2nd column is G, 3rd column is B, 4th column is flag, 5th column is resultant integer values
+%       calculated from R + G*2^8 + B*2^16 + flag*2^24. Flag is expected to be all 0.
 %
 % Example:
-% vertex_label = CBIG_read_annotation('CBIG_private/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Parcellations/FreeSurfer5.3/fsaverage5/label/lh.Schaefer2018_400Parcels_17Networks_order.annot')
+% [vertex_label, colortable] = CBIG_read_annotation('CBIG_private/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Parcellations/FreeSurfer5.3/fsaverage5/label/lh.Schaefer2018_400Parcels_17Networks_order.annot')
 %
 % Original Author: Bruce Fischl
 % CVS Revision Info:
