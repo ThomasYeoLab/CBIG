@@ -50,6 +50,7 @@ set force = 0;   # Default if file exist, then skip this step.
 set nocleanup = 0; # Default clean up intermediate file
 set discard_seg = 5; # Default will remove kept segments of data lasting fewer than 5 contiguous frames
 set rm_run_th = 50; # Default will discard the run which has more than 50% of frames being removed
+set spline_final = 0; # spline_final flag in mcflirt, 0 for trilinear interpolation, 1 for spline interpolation
 
 goto parse_args;
 parse_args_return:
@@ -160,6 +161,9 @@ foreach curr_bold ($zpdbold)
 	set boldfile = $subject"_bld"$curr_bold$BOLD_stem
 	if ( (! -e  $boldfile"_mc.nii.gz") || ($force == 1) ) then
 		set cmd = "mcflirt -in ${boldfile}_merge.nii.gz -out ${boldfile}_mc -plots -refvol 0 -rmsrel -rmsabs"
+		if ($spline_final == 1) then
+			set cmd = "$cmd -spline_final"
+		endif
 		echo $cmd |& tee -a $LF
 		eval $cmd >> $LF
 		mv $boldfile"_mc.nii.gz" $boldfile"_mc_tmp.nii.gz"
@@ -375,6 +379,11 @@ while( $#argv != 0 )
 			set discard_seg = "$argv[1]"; shift;
 			breaksw
 		
+		#spline_final flag to use spline interpolation in mcflirt
+		case "-spline_final":
+			set spline_final = 1;
+			breaksw
+
 		default:
 			echo ERROR: Flag $flag unrecognized.
 			echo $cmdline
@@ -460,6 +469,8 @@ OPTIONAL ARGUMENTS:
 	-discard-run  <rm_run_th>  : discard run which has more than <rm_run_th>% frames being outliers
 	-rm-seg  <discard_seg>     : label the low-motion segments of data lasting fewer than <discard_seg> 
 	                             contiguous frames as outliers.
+	-spline_final              : interpolation method used in mcflirt, if the this option is used, the
+								 interpolation method is spline, otherwise it is trilinear
 	-help                      : help
 	-version                   : version
 
