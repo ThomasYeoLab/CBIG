@@ -1,0 +1,1 @@
+mri_segstats --seg mri/aseg.mgz --sum stats/aseg.stats --pv mri/norm.mgz --excludeid 0 --brain-vol-from-seg --brainmask mri/brainmask.mgz --in mri/norm.mgz --in-intensity-name norm --in-intensity-units MR --etiv --subject Colin27_45 --surf-wm-vol --ctab /apps/arch/Linux_x86_64/freesurfer/4.5.0/ASegStatsLUT.txt

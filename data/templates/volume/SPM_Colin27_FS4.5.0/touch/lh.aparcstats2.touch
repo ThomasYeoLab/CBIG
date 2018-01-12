@@ -1,0 +1,1 @@
+mris_anatomical_stats -mgz -f ../stats/lh.aparc.a2009s.stats -b -a ../label/lh.aparc.a2009s.annot -c ../label/aparc.annot.a2009s.ctab Colin27_45 lh

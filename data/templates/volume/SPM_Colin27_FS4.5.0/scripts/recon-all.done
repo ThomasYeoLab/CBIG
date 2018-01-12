@@ -1,0 +1,10 @@
+------------------------------
+SUBJECT Colin27_45
+DATE Wed Jun 22 10:09:08 SGT 2016
+USER jianxiaow
+HOST circuv
+PROCESSOR x86_64
+OS Linux
+Linux circuv 3.0.101-0.47.55-default #1 SMP Thu May 28 08:25:11 UTC 2015 (dc083ee) x86_64 x86_64 x86_64 GNU/Linux
+$Id: recon-all,v 1.133.2.57 2009/08/06 18:27:48 nicks Exp $
+/apps/arch/Linux_x86_64/freesurfer/4.5.0/bin/recon-all

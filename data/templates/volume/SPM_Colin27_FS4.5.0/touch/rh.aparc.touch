@@ -1,0 +1,1 @@
+mris_ca_label -aseg ../mri/aseg.mgz -seed 1234 Colin27_45 rh ../surf/rh.sphere.reg /apps/arch/Linux_x86_64/freesurfer/4.5.0/average/rh.curvature.buckner40.filled.desikan_killiany.2009-03-04.gcs ../label/rh.aparc.annot

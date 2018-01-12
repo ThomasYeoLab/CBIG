@@ -1,0 +1,1257 @@
+# Title Segmentation Statistics 
+# 
+# generating_program mri_segstats
+# cvs_version $Id: mri_segstats.c,v 1.33.2.5 2009/02/11 22:38:51 nicks Exp $
+# cmdline mri_segstats --seg mri/wmparc.mgz --sum stats/wmparc.stats --pv mri/norm.mgz --excludeid 0 --brain-vol-from-seg --brainmask mri/brainmask.mgz --in mri/norm.mgz --in-intensity-name norm --in-intensity-units MR --etiv --subject Colin27_45 --surf-wm-vol --ctab /apps/arch/Linux_x86_64/freesurfer/4.5.0/FreeSurferColorLUT.txt 
+# sysname  Linux
+# hostname circuv
+# machine  x86_64
+# user     jianxiaow
+# anatomy_type volume
+# 
+# SUBJECTS_DIR /mnt/eql/p1/users/external/jianxiaow/projects/Git_codes/data
+# subjectname Colin27_45
+# BrainMaskFile  mri/brainmask.mgz 
+# BrainMaskFileTimeStamp  2016/06/21 18:24:48 
+# Measure BrainMask, BrainMaskNVox, Number of Brain Mask Voxels, 1825594, unitless
+# Measure BrainMask, BrainMaskVol, Brain Mask Volume, 1825594.000000, mm^3
+# Measure BrainSegNotVent, BrainSegVolNotVent, Brain Segmentation Volume Without Ventricles, 276832.000000, mm^3
+# Measure BrainSeg, BrainSegNVox, Number of Brain Segmentation Voxels,  307045, unitless
+# Measure BrainSeg, BrainSegVol, Brain Segmentation Volume, 307045.000000, mm^3
+# Measure IntraCranialVol, ICV, Intracranial Volume, 1409140.567736, mm^3
+# SegVolFile mri/wmparc.mgz 
+# SegVolFileTimeStamp  2016/06/22 09:47:58 
+# ColorTable /apps/arch/Linux_x86_64/freesurfer/4.5.0/FreeSurferColorLUT.txt 
+# ColorTableTimeStamp 2009/08/11 20:24:37 
+# InVolFile  mri/norm.mgz 
+# InVolFileTimeStamp  2016/06/21 18:42:53 
+# InVolFrame 0 
+# PVVolFile  mri/norm.mgz 
+# PVVolFileTimeStamp  2016/06/21 18:42:53 
+# surface-based-volume mm3 lh-cerebral-white-matter 330270.046875
+# surface-based-volume mm3 rh-cerebral-white-matter 331462.343750
+# surface-based-volume mm3 tot-cerebral-white-matter 661732.390625
+# ExcludeSegId 0 
+# VoxelVolume_mm3 1 
+# TableCol  1 ColHeader Index 
+# TableCol  1 FieldName Index 
+# TableCol  1 Units     NA 
+# TableCol  2 ColHeader SegId 
+# TableCol  2 FieldName Segmentation Id
+# TableCol  2 Units     NA
+# TableCol  3 ColHeader NVoxels 
+# TableCol  3 FieldName Number of Voxels
+# TableCol  3 Units     unitless
+# TableCol  4 ColHeader Volume_mm3
+# TableCol  4 FieldName Volume
+# TableCol  4 Units     mm^3
+# TableCol  5 ColHeader StructName
+# TableCol  5 FieldName Structure Name
+# TableCol  5 Units     NA
+# TableCol  6 ColHeader normMean 
+# TableCol  6 FieldName Intensity normMean
+# TableCol  6 Units     MR
+# TableCol  7 ColHeader normStdDev
+# TableCol  7 FieldName Itensity normStdDev
+# TableCol  7 Units     MR
+# TableCol  8 ColHeader normMin
+# TableCol  8 FieldName Intensity normMin
+# TableCol  8 Units     MR
+# TableCol  9 ColHeader normMax
+# TableCol  9 FieldName Intensity normMax
+# TableCol  9 Units     MR
+# TableCol 10 ColHeader normRange
+# TableCol 10 FieldName Intensity normRange
+# TableCol 10 Units     MR
+# NRows 1189 
+# NTableCols 10 
+# ColHeaders  Index SegId NVoxels Volume_mm3 StructName normMean normStdDev normMin normMax normRange  
+  1   1         0        0.0  Left-Cerebral-Exterior             0.0000     0.0000     0.0000     0.0000     0.0000 
+  2   2         0        0.0  Left-Cerebral-White-Matter         0.0000     0.0000     0.0000     0.0000     0.0000 
+  3   3         0        0.0  Left-Cerebral-Cortex               0.0000     0.0000     0.0000     0.0000     0.0000 
+  4   4     12272    12272.0  Left-Lateral-Ventricle            11.2365    15.6334     0.0000    79.0000    79.0000 
+  5   5       616      616.0  Left-Inf-Lat-Vent                 32.5526    18.6629     0.0000    80.0000    80.0000 
+  6   6         0        0.0  Left-Cerebellum-Exterior           0.0000     0.0000     0.0000     0.0000     0.0000 
+  7   7     17030    17030.0  Left-Cerebellum-White-Matter      89.2717     5.9121    46.0000   104.0000    58.0000 
+  8   8     67812    67812.0  Left-Cerebellum-Cortex            64.4827     9.0187    15.0000    92.0000    77.0000 
+  9   9         0        0.0  Left-Thalamus                      0.0000     0.0000     0.0000     0.0000     0.0000 
+ 10  10      9562     9562.0  Left-Thalamus-Proper              88.1519    10.0112    49.0000   109.0000    60.0000 
+ 11  11      4663     4663.0  Left-Caudate                      73.6101     8.9979    38.0000   103.0000    65.0000 
+ 12  12      6706     6706.0  Left-Putamen                      83.5816     7.4325    64.0000   108.0000    44.0000 
+ 13  13      1988     1988.0  Left-Pallidum                     94.4516     4.6664    73.0000   109.0000    36.0000 
+ 14  14      1554     1554.0  3rd-Ventricle                     21.4868    18.9491     0.0000    66.0000    66.0000 
+ 15  15      4039     4039.0  4th-Ventricle                     13.4161    14.2874     0.0000    58.0000    58.0000 
+ 16  16     26903    26903.0  Brain-Stem                        82.5640     8.7769    27.0000   108.0000    81.0000 
+ 17  17      4871     4871.0  Left-Hippocampus                  68.3452     8.5901    30.0000   104.0000    74.0000 
+ 18  18      1456     1456.0  Left-Amygdala                     67.6192     6.8788    46.0000    92.0000    46.0000 
+ 19  19         0        0.0  Left-Insula                        0.0000     0.0000     0.0000     0.0000     0.0000 
+ 20  20         0        0.0  Left-Operculum                     0.0000     0.0000     0.0000     0.0000     0.0000 
+ 21  21         0        0.0  Line-1                             0.0000     0.0000     0.0000     0.0000     0.0000 
+ 22  22         0        0.0  Line-2                             0.0000     0.0000     0.0000     0.0000     0.0000 
+ 23  23         0        0.0  Line-3                             0.0000     0.0000     0.0000     0.0000     0.0000 
+ 24  24      1764     1764.0  CSF                               28.1616    20.4843     0.0000    77.0000    77.0000 
+ 25  25         0        0.0  Left-Lesion                        0.0000     0.0000     0.0000     0.0000     0.0000 
+ 26  26       712      712.0  Left-Accumbens-area               68.4407     6.2522    40.0000    94.0000    54.0000 
+ 27  27         0        0.0  Left-Substancia-Nigra              0.0000     0.0000     0.0000     0.0000     0.0000 
+ 28  28      4672     4672.0  Left-VentralDC                    90.5405     9.2302    36.0000   108.0000    72.0000 
+ 29  29         0        0.0  Left-undetermined                  0.0000     0.0000     0.0000     0.0000     0.0000 
+ 30  30       168      168.0  Left-vessel                       64.0888    13.1637    36.0000    98.0000    62.0000 
+ 31  31      1900     1900.0  Left-choroid-plexus               52.7554    16.7728     6.0000   100.0000    94.0000 
+ 32  32         0        0.0  Left-F3orb                         0.0000     0.0000     0.0000     0.0000     0.0000 
+ 33  33         0        0.0  Left-lOg                           0.0000     0.0000     0.0000     0.0000     0.0000 
+ 34  34         0        0.0  Left-aOg                           0.0000     0.0000     0.0000     0.0000     0.0000 
+ 35  35         0        0.0  Left-mOg                           0.0000     0.0000     0.0000     0.0000     0.0000 
+ 36  36         0        0.0  Left-pOg                           0.0000     0.0000     0.0000     0.0000     0.0000 
+ 37  37         0        0.0  Left-Stellate                      0.0000     0.0000     0.0000     0.0000     0.0000 
+ 38  38         0        0.0  Left-Porg                          0.0000     0.0000     0.0000     0.0000     0.0000 
+ 39  39         0        0.0  Left-Aorg                          0.0000     0.0000     0.0000     0.0000     0.0000 
+ 40  40         0        0.0  Right-Cerebral-Exterior            0.0000     0.0000     0.0000     0.0000     0.0000 
+ 41  41         0        0.0  Right-Cerebral-White-Matter        0.0000     0.0000     0.0000     0.0000     0.0000 
+ 42  42         0        0.0  Right-Cerebral-Cortex              0.0000     0.0000     0.0000     0.0000     0.0000 
+ 43  43     10392    10392.0  Right-Lateral-Ventricle           11.5584    15.4516     0.0000    82.0000    82.0000 
+ 44  44       858      858.0  Right-Inf-Lat-Vent                26.2043    19.7216     0.0000    81.0000    81.0000 
+ 45  45         0        0.0  Right-Cerebellum-Exterior          0.0000     0.0000     0.0000     0.0000     0.0000 
+ 46  46     17282    17282.0  Right-Cerebellum-White-Matter     88.5333     5.2468    43.0000   100.0000    57.0000 
+ 47  47     73281    73281.0  Right-Cerebellum-Cortex           63.7922     9.1531    13.0000    91.0000    78.0000 
+ 48  48         0        0.0  Right-Thalamus                     0.0000     0.0000     0.0000     0.0000     0.0000 
+ 49  49      8463     8463.0  Right-Thalamus-Proper             88.4095    10.3098    43.0000   110.0000    67.0000 
+ 50  50      4888     4888.0  Right-Caudate                     71.4901    10.1142    28.0000   104.0000    76.0000 
+ 51  51      6533     6533.0  Right-Putamen                     83.6516     6.8427    57.0000   105.0000    48.0000 
+ 52  52      2086     2086.0  Right-Pallidum                    94.4179     4.6003    78.0000   108.0000    30.0000 
+ 53  53      5060     5060.0  Right-Hippocampus                 67.7097     8.8009    26.0000   101.0000    75.0000 
+ 54  54      1661     1661.0  Right-Amygdala                    65.5170     6.8859    39.0000    89.0000    50.0000 
+ 55  55         0        0.0  Right-Insula                       0.0000     0.0000     0.0000     0.0000     0.0000 
+ 56  56         0        0.0  Right-Operculum                    0.0000     0.0000     0.0000     0.0000     0.0000 
+ 57  57         0        0.0  Right-Lesion                       0.0000     0.0000     0.0000     0.0000     0.0000 
+ 58  58       681      681.0  Right-Accumbens-area              70.3168     7.7274    47.0000    97.0000    50.0000 
+ 59  59         0        0.0  Right-Substancia-Nigra             0.0000     0.0000     0.0000     0.0000     0.0000 
+ 60  60      5587     5587.0  Right-VentralDC                   89.2770    10.0991    45.0000   114.0000    69.0000 
+ 61  61         0        0.0  Right-undetermined                 0.0000     0.0000     0.0000     0.0000     0.0000 
+ 62  62       108      108.0  Right-vessel                      61.4632    11.9189    34.0000    89.0000    55.0000 
+ 63  63      2422     2422.0  Right-choroid-plexus              52.9794    15.7942     5.0000    99.0000    94.0000 
+ 64  64         0        0.0  Right-F3orb                        0.0000     0.0000     0.0000     0.0000     0.0000 
+ 65  65         0        0.0  Right-lOg                          0.0000     0.0000     0.0000     0.0000     0.0000 
+ 66  66         0        0.0  Right-aOg                          0.0000     0.0000     0.0000     0.0000     0.0000 
+ 67  67         0        0.0  Right-mOg                          0.0000     0.0000     0.0000     0.0000     0.0000 
+ 68  68         0        0.0  Right-pOg                          0.0000     0.0000     0.0000     0.0000     0.0000 
+ 69  69         0        0.0  Right-Stellate                     0.0000     0.0000     0.0000     0.0000     0.0000 
+ 70  70         0        0.0  Right-Porg                         0.0000     0.0000     0.0000     0.0000     0.0000 
+ 71  71         0        0.0  Right-Aorg                         0.0000     0.0000     0.0000     0.0000     0.0000 
+ 72  72         0        0.0  5th-Ventricle                      0.0000     0.0000     0.0000     0.0000     0.0000 
+ 73  73         0        0.0  Left-Interior                      0.0000     0.0000     0.0000     0.0000     0.0000 
+ 74  74         0        0.0  Right-Interior                     0.0000     0.0000     0.0000     0.0000     0.0000 
+ 75  75         0        0.0  Left-Lateral-Ventricles            0.0000     0.0000     0.0000     0.0000     0.0000 
+ 76  76         0        0.0  Right-Lateral-Ventricles           0.0000     0.0000     0.0000     0.0000     0.0000 
+ 77  77       130      130.0  WM-hypointensities                73.9576     8.3792    54.0000    90.0000    36.0000 
+ 78  78         0        0.0  Left-WM-hypointensities            0.0000     0.0000     0.0000     0.0000     0.0000 
+ 79  79         0        0.0  Right-WM-hypointensities           0.0000     0.0000     0.0000     0.0000     0.0000 
+ 80  80         0        0.0  non-WM-hypointensities             0.0000     0.0000     0.0000     0.0000     0.0000 
+ 81  81         0        0.0  Left-non-WM-hypointensities        0.0000     0.0000     0.0000     0.0000     0.0000 
+ 82  82         0        0.0  Right-non-WM-hypointensities       0.0000     0.0000     0.0000     0.0000     0.0000 
+ 83  83         0        0.0  Left-F1                            0.0000     0.0000     0.0000     0.0000     0.0000 
+ 84  84         0        0.0  Right-F1                           0.0000     0.0000     0.0000     0.0000     0.0000 
+ 85  85       207      207.0  Optic-Chiasm                      60.1887    11.7931    25.0000    95.0000    70.0000 
+ 86  86         0        0.0  Corpus_Callosum                    0.0000     0.0000     0.0000     0.0000     0.0000 
+ 87  96         0        0.0  Left-Amygdala-Anterior             0.0000     0.0000     0.0000     0.0000     0.0000 
+ 88  97         0        0.0  Right-Amygdala-Anterior            0.0000     0.0000     0.0000     0.0000     0.0000 
+ 89  98         0        0.0  Dura                               0.0000     0.0000     0.0000     0.0000     0.0000 
+ 90 100         0        0.0  Left-wm-intensity-abnormality      0.0000     0.0000     0.0000     0.0000     0.0000 
+ 91 101         0        0.0  Left-caudate-intensity-abnormality     0.0000     0.0000     0.0000     0.0000     0.0000 
+ 92 102         0        0.0  Left-putamen-intensity-abnormality     0.0000     0.0000     0.0000     0.0000     0.0000 
+ 93 103         0        0.0  Left-accumbens-intensity-abnormality     0.0000     0.0000     0.0000     0.0000     0.0000 
+ 94 104         0        0.0  Left-pallidum-intensity-abnormality     0.0000     0.0000     0.0000     0.0000     0.0000 
+ 95 105         0        0.0  Left-amygdala-intensity-abnormality     0.0000     0.0000     0.0000     0.0000     0.0000 
+ 96 106         0        0.0  Left-hippocampus-intensity-abnormality     0.0000     0.0000     0.0000     0.0000     0.0000 
+ 97 107         0        0.0  Left-thalamus-intensity-abnormality     0.0000     0.0000     0.0000     0.0000     0.0000 
+ 98 108         0        0.0  Left-VDC-intensity-abnormality     0.0000     0.0000     0.0000     0.0000     0.0000 
+ 99 109         0        0.0  Right-wm-intensity-abnormality     0.0000     0.0000     0.0000     0.0000     0.0000 
+100 110         0        0.0  Right-caudate-intensity-abnormality     0.0000     0.0000     0.0000     0.0000     0.0000 
+101 111         0        0.0  Right-putamen-intensity-abnormality     0.0000     0.0000     0.0000     0.0000     0.0000 
+102 112         0        0.0  Right-accumbens-intensity-abnormality     0.0000     0.0000     0.0000     0.0000     0.0000 
+103 113         0        0.0  Right-pallidum-intensity-abnormality     0.0000     0.0000     0.0000     0.0000     0.0000 
+104 114         0        0.0  Right-amygdala-intensity-abnormality     0.0000     0.0000     0.0000     0.0000     0.0000 
+105 115         0        0.0  Right-hippocampus-intensity-abnormality     0.0000     0.0000     0.0000     0.0000     0.0000 
+106 116         0        0.0  Right-thalamus-intensity-abnormality     0.0000     0.0000     0.0000     0.0000     0.0000 
+107 117         0        0.0  Right-VDC-intensity-abnormality     0.0000     0.0000     0.0000     0.0000     0.0000 
+108 118         0        0.0  Epidermis                          0.0000     0.0000     0.0000     0.0000     0.0000 
+109 119         0        0.0  Conn-Tissue                        0.0000     0.0000     0.0000     0.0000     0.0000 
+110 120         0        0.0  SC-Fat/Muscle                      0.0000     0.0000     0.0000     0.0000     0.0000 
+111 121         0        0.0  Cranium                            0.0000     0.0000     0.0000     0.0000     0.0000 
+112 122         0        0.0  CSF-SA                             0.0000     0.0000     0.0000     0.0000     0.0000 
+113 123         0        0.0  Muscle                             0.0000     0.0000     0.0000     0.0000     0.0000 
+114 124         0        0.0  Ear                                0.0000     0.0000     0.0000     0.0000     0.0000 
+115 125         0        0.0  Adipose                            0.0000     0.0000     0.0000     0.0000     0.0000 
+116 126         0        0.0  Spinal-Cord                        0.0000     0.0000     0.0000     0.0000     0.0000 
+117 127         0        0.0  Soft-Tissue                        0.0000     0.0000     0.0000     0.0000     0.0000 
+118 128         0        0.0  Nerve                              0.0000     0.0000     0.0000     0.0000     0.0000 
+119 129         0        0.0  Bone                               0.0000     0.0000     0.0000     0.0000     0.0000 
+120 130         0        0.0  Air                                0.0000     0.0000     0.0000     0.0000     0.0000 
+121 131         0        0.0  Orbital-Fat                        0.0000     0.0000     0.0000     0.0000     0.0000 
+122 132         0        0.0  Tongue                             0.0000     0.0000     0.0000     0.0000     0.0000 
+123 133         0        0.0  Nasal-Structures                   0.0000     0.0000     0.0000     0.0000     0.0000 
+124 134         0        0.0  Globe                              0.0000     0.0000     0.0000     0.0000     0.0000 
+125 135         0        0.0  Teeth                              0.0000     0.0000     0.0000     0.0000     0.0000 
+126 136         0        0.0  Left-Caudate/Putamen               0.0000     0.0000     0.0000     0.0000     0.0000 
+127 137         0        0.0  Right-Caudate/Putamen              0.0000     0.0000     0.0000     0.0000     0.0000 
+128 138         0        0.0  Left-Claustrum                     0.0000     0.0000     0.0000     0.0000     0.0000 
+129 139         0        0.0  Right-Claustrum                    0.0000     0.0000     0.0000     0.0000     0.0000 
+130 140         0        0.0  Cornea                             0.0000     0.0000     0.0000     0.0000     0.0000 
+131 142         0        0.0  Diploe                             0.0000     0.0000     0.0000     0.0000     0.0000 
+132 143         0        0.0  Vitreous-Humor                     0.0000     0.0000     0.0000     0.0000     0.0000 
+133 144         0        0.0  Lens                               0.0000     0.0000     0.0000     0.0000     0.0000 
+134 145         0        0.0  Aqueous-Humor                      0.0000     0.0000     0.0000     0.0000     0.0000 
+135 146         0        0.0  Outer-Table                        0.0000     0.0000     0.0000     0.0000     0.0000 
+136 147         0        0.0  Inner-Table                        0.0000     0.0000     0.0000     0.0000     0.0000 
+137 148         0        0.0  Periosteum                         0.0000     0.0000     0.0000     0.0000     0.0000 
+138 149         0        0.0  Endosteum                          0.0000     0.0000     0.0000     0.0000     0.0000 
+139 150         0        0.0  R/C/S                              0.0000     0.0000     0.0000     0.0000     0.0000 
+140 151         0        0.0  Iris                               0.0000     0.0000     0.0000     0.0000     0.0000 
+141 152         0        0.0  SC-Adipose/Muscle                  0.0000     0.0000     0.0000     0.0000     0.0000 
+142 153         0        0.0  SC-Tissue                          0.0000     0.0000     0.0000     0.0000     0.0000 
+143 154         0        0.0  Orbital-Adipose                    0.0000     0.0000     0.0000     0.0000     0.0000 
+144 155         0        0.0  Left-IntCapsule-Ant                0.0000     0.0000     0.0000     0.0000     0.0000 
+145 156         0        0.0  Right-IntCapsule-Ant               0.0000     0.0000     0.0000     0.0000     0.0000 
+146 157         0        0.0  Left-IntCapsule-Pos                0.0000     0.0000     0.0000     0.0000     0.0000 
+147 158         0        0.0  Right-IntCapsule-Pos               0.0000     0.0000     0.0000     0.0000     0.0000 
+148 193         0        0.0  Left-hippocampal_fissure           0.0000     0.0000     0.0000     0.0000     0.0000 
+149 194         0        0.0  Left-CADG-head                     0.0000     0.0000     0.0000     0.0000     0.0000 
+150 195         0        0.0  Left-subiculum                     0.0000     0.0000     0.0000     0.0000     0.0000 
+151 196         0        0.0  Left-fimbria                       0.0000     0.0000     0.0000     0.0000     0.0000 
+152 197         0        0.0  Right-hippocampal_fissure          0.0000     0.0000     0.0000     0.0000     0.0000 
+153 198         0        0.0  Right-CADG-head                    0.0000     0.0000     0.0000     0.0000     0.0000 
+154 199         0        0.0  Right-subiculum                    0.0000     0.0000     0.0000     0.0000     0.0000 
+155 200         0        0.0  Right-fimbria                      0.0000     0.0000     0.0000     0.0000     0.0000 
+156 201         0        0.0  alveus                             0.0000     0.0000     0.0000     0.0000     0.0000 
+157 202         0        0.0  perforant_pathway                  0.0000     0.0000     0.0000     0.0000     0.0000 
+158 203         0        0.0  parasubiculum                      0.0000     0.0000     0.0000     0.0000     0.0000 
+159 204         0        0.0  presubiculum                       0.0000     0.0000     0.0000     0.0000     0.0000 
+160 205         0        0.0  subiculum                          0.0000     0.0000     0.0000     0.0000     0.0000 
+161 206         0        0.0  CA1                                0.0000     0.0000     0.0000     0.0000     0.0000 
+162 207         0        0.0  CA2                                0.0000     0.0000     0.0000     0.0000     0.0000 
+163 208         0        0.0  CA3                                0.0000     0.0000     0.0000     0.0000     0.0000 
+164 209         0        0.0  CA4                                0.0000     0.0000     0.0000     0.0000     0.0000 
+165 210         0        0.0  GC-DG                              0.0000     0.0000     0.0000     0.0000     0.0000 
+166 211         0        0.0  HATA                               0.0000     0.0000     0.0000     0.0000     0.0000 
+167 212         0        0.0  fimbria                            0.0000     0.0000     0.0000     0.0000     0.0000 
+168 213         0        0.0  lateral_ventricle                  0.0000     0.0000     0.0000     0.0000     0.0000 
+169 214         0        0.0  molecular_layer_HP                 0.0000     0.0000     0.0000     0.0000     0.0000 
+170 215         0        0.0  hippocampal_fissure                0.0000     0.0000     0.0000     0.0000     0.0000 
+171 216         0        0.0  entorhinal_cortex                  0.0000     0.0000     0.0000     0.0000     0.0000 
+172 217         0        0.0  molecular_layer_subiculum          0.0000     0.0000     0.0000     0.0000     0.0000 
+173 218         0        0.0  Amygdala                           0.0000     0.0000     0.0000     0.0000     0.0000 
+174 219         0        0.0  Cerebral_White_Matter              0.0000     0.0000     0.0000     0.0000     0.0000 
+175 220         0        0.0  Cerebral_Cortex                    0.0000     0.0000     0.0000     0.0000     0.0000 
+176 221         0        0.0  Inf_Lat_Vent                       0.0000     0.0000     0.0000     0.0000     0.0000 
+177 222         0        0.0  Perirhinal                         0.0000     0.0000     0.0000     0.0000     0.0000 
+178 223         0        0.0  Cerebral_White_Matter_Edge         0.0000     0.0000     0.0000     0.0000     0.0000 
+179 224         0        0.0  Background                         0.0000     0.0000     0.0000     0.0000     0.0000 
+180 225         0        0.0  Ectorhinal                         0.0000     0.0000     0.0000     0.0000     0.0000 
+181 250         0        0.0  Fornix                             0.0000     0.0000     0.0000     0.0000     0.0000 
+182 251      1118     1118.0  CC_Posterior                     104.2965     6.5576    74.0000   115.0000    41.0000 
+183 252       433      433.0  CC_Mid_Posterior                  96.9936     5.7001    50.0000   105.0000    55.0000 
+184 253       407      407.0  CC_Central                        98.8671     5.2997    80.0000   104.0000    24.0000 
+185 254       395      395.0  CC_Mid_Anterior                   99.8856     5.1730    82.0000   107.0000    25.0000 
+186 255       879      879.0  CC_Anterior                      104.4756     6.2763    80.0000   117.0000    37.0000 
+187 256         0        0.0  Voxel-Unchanged                    0.0000     0.0000     0.0000     0.0000     0.0000 
+188 331         0        0.0  Aorta                              0.0000     0.0000     0.0000     0.0000     0.0000 
+189 332         0        0.0  Left-Common-IliacA                 0.0000     0.0000     0.0000     0.0000     0.0000 
+190 333         0        0.0  Right-Common-IliacA                0.0000     0.0000     0.0000     0.0000     0.0000 
+191 334         0        0.0  Left-External-IliacA               0.0000     0.0000     0.0000     0.0000     0.0000 
+192 335         0        0.0  Right-External-IliacA              0.0000     0.0000     0.0000     0.0000     0.0000 
+193 336         0        0.0  Left-Internal-IliacA               0.0000     0.0000     0.0000     0.0000     0.0000 
+194 337         0        0.0  Right-Internal-IliacA              0.0000     0.0000     0.0000     0.0000     0.0000 
+195 338         0        0.0  Left-Lateral-SacralA               0.0000     0.0000     0.0000     0.0000     0.0000 
+196 339         0        0.0  Right-Lateral-SacralA              0.0000     0.0000     0.0000     0.0000     0.0000 
+197 340         0        0.0  Left-ObturatorA                    0.0000     0.0000     0.0000     0.0000     0.0000 
+198 341         0        0.0  Right-ObturatorA                   0.0000     0.0000     0.0000     0.0000     0.0000 
+199 342         0        0.0  Left-Internal-PudendalA            0.0000     0.0000     0.0000     0.0000     0.0000 
+200 343         0        0.0  Right-Internal-PudendalA           0.0000     0.0000     0.0000     0.0000     0.0000 
+201 344         0        0.0  Left-UmbilicalA                    0.0000     0.0000     0.0000     0.0000     0.0000 
+202 345         0        0.0  Right-UmbilicalA                   0.0000     0.0000     0.0000     0.0000     0.0000 
+203 346         0        0.0  Left-Inf-RectalA                   0.0000     0.0000     0.0000     0.0000     0.0000 
+204 347         0        0.0  Right-Inf-RectalA                  0.0000     0.0000     0.0000     0.0000     0.0000 
+205 348         0        0.0  Left-Common-IliacV                 0.0000     0.0000     0.0000     0.0000     0.0000 
+206 349         0        0.0  Right-Common-IliacV                0.0000     0.0000     0.0000     0.0000     0.0000 
+207 350         0        0.0  Left-External-IliacV               0.0000     0.0000     0.0000     0.0000     0.0000 
+208 351         0        0.0  Right-External-IliacV              0.0000     0.0000     0.0000     0.0000     0.0000 
+209 352         0        0.0  Left-Internal-IliacV               0.0000     0.0000     0.0000     0.0000     0.0000 
+210 353         0        0.0  Right-Internal-IliacV              0.0000     0.0000     0.0000     0.0000     0.0000 
+211 354         0        0.0  Left-ObturatorV                    0.0000     0.0000     0.0000     0.0000     0.0000 
+212 355         0        0.0  Right-ObturatorV                   0.0000     0.0000     0.0000     0.0000     0.0000 
+213 356         0        0.0  Left-Internal-PudendalV            0.0000     0.0000     0.0000     0.0000     0.0000 
+214 357         0        0.0  Right-Internal-PudendalV           0.0000     0.0000     0.0000     0.0000     0.0000 
+215 358         0        0.0  Pos-Lymph                          0.0000     0.0000     0.0000     0.0000     0.0000 
+216 359         0        0.0  Neg-Lymph                          0.0000     0.0000     0.0000     0.0000     0.0000 
+217 400         0        0.0  V1                                 0.0000     0.0000     0.0000     0.0000     0.0000 
+218 401         0        0.0  V2                                 0.0000     0.0000     0.0000     0.0000     0.0000 
+219 402         0        0.0  BA44                               0.0000     0.0000     0.0000     0.0000     0.0000 
+220 403         0        0.0  BA45                               0.0000     0.0000     0.0000     0.0000     0.0000 
+221 404         0        0.0  BA4a                               0.0000     0.0000     0.0000     0.0000     0.0000 
+222 405         0        0.0  BA4p                               0.0000     0.0000     0.0000     0.0000     0.0000 
+223 406         0        0.0  BA6                                0.0000     0.0000     0.0000     0.0000     0.0000 
+224 407         0        0.0  BA2                                0.0000     0.0000     0.0000     0.0000     0.0000 
+225 408         0        0.0  BA1_old                            0.0000     0.0000     0.0000     0.0000     0.0000 
+226 409         0        0.0  BAun2                              0.0000     0.0000     0.0000     0.0000     0.0000 
+227 410         0        0.0  BA1                                0.0000     0.0000     0.0000     0.0000     0.0000 
+228 411         0        0.0  BA2b                               0.0000     0.0000     0.0000     0.0000     0.0000 
+229 412         0        0.0  BA3a                               0.0000     0.0000     0.0000     0.0000     0.0000 
+230 413         0        0.0  BA3b                               0.0000     0.0000     0.0000     0.0000     0.0000 
+231 414         0        0.0  MT                                 0.0000     0.0000     0.0000     0.0000     0.0000 
+232 415         0        0.0  AIPS_AIP_l                         0.0000     0.0000     0.0000     0.0000     0.0000 
+233 416         0        0.0  AIPS_AIP_r                         0.0000     0.0000     0.0000     0.0000     0.0000 
+234 417         0        0.0  AIPS_VIP_l                         0.0000     0.0000     0.0000     0.0000     0.0000 
+235 418         0        0.0  AIPS_VIP_r                         0.0000     0.0000     0.0000     0.0000     0.0000 
+236 419         0        0.0  IPL_PFcm_l                         0.0000     0.0000     0.0000     0.0000     0.0000 
+237 420         0        0.0  IPL_PFcm_r                         0.0000     0.0000     0.0000     0.0000     0.0000 
+238 421         0        0.0  IPL_PF_l                           0.0000     0.0000     0.0000     0.0000     0.0000 
+239 422         0        0.0  IPL_PFm_l                          0.0000     0.0000     0.0000     0.0000     0.0000 
+240 423         0        0.0  IPL_PFm_r                          0.0000     0.0000     0.0000     0.0000     0.0000 
+241 424         0        0.0  IPL_PFop_l                         0.0000     0.0000     0.0000     0.0000     0.0000 
+242 425         0        0.0  IPL_PFop_r                         0.0000     0.0000     0.0000     0.0000     0.0000 
+243 426         0        0.0  IPL_PF_r                           0.0000     0.0000     0.0000     0.0000     0.0000 
+244 427         0        0.0  IPL_PFt_l                          0.0000     0.0000     0.0000     0.0000     0.0000 
+245 428         0        0.0  IPL_PFt_r                          0.0000     0.0000     0.0000     0.0000     0.0000 
+246 429         0        0.0  IPL_PGa_l                          0.0000     0.0000     0.0000     0.0000     0.0000 
+247 430         0        0.0  IPL_PGa_r                          0.0000     0.0000     0.0000     0.0000     0.0000 
+248 431         0        0.0  IPL_PGp_l                          0.0000     0.0000     0.0000     0.0000     0.0000 
+249 432         0        0.0  IPL_PGp_r                          0.0000     0.0000     0.0000     0.0000     0.0000 
+250 433         0        0.0  Visual_V3d_l                       0.0000     0.0000     0.0000     0.0000     0.0000 
+251 434         0        0.0  Visual_V3d_r                       0.0000     0.0000     0.0000     0.0000     0.0000 
+252 435         0        0.0  Visual_V4_l                        0.0000     0.0000     0.0000     0.0000     0.0000 
+253 436         0        0.0  Visual_V4_r                        0.0000     0.0000     0.0000     0.0000     0.0000 
+254 437         0        0.0  Visual_V5_b                        0.0000     0.0000     0.0000     0.0000     0.0000 
+255 438         0        0.0  Visual_VP_l                        0.0000     0.0000     0.0000     0.0000     0.0000 
+256 439         0        0.0  Visual_VP_r                        0.0000     0.0000     0.0000     0.0000     0.0000 
+257 500         0        0.0  right_CA2/3                        0.0000     0.0000     0.0000     0.0000     0.0000 
+258 501         0        0.0  right_alveus                       0.0000     0.0000     0.0000     0.0000     0.0000 
+259 502         0        0.0  right_CA1                          0.0000     0.0000     0.0000     0.0000     0.0000 
+260 503         0        0.0  right_fimbria                      0.0000     0.0000     0.0000     0.0000     0.0000 
+261 504         0        0.0  right_presubiculum                 0.0000     0.0000     0.0000     0.0000     0.0000 
+262 505         0        0.0  right_hippocampal_fissure          0.0000     0.0000     0.0000     0.0000     0.0000 
+263 506         0        0.0  right_CA4/DG                       0.0000     0.0000     0.0000     0.0000     0.0000 
+264 507         0        0.0  right_subiculum                    0.0000     0.0000     0.0000     0.0000     0.0000 
+265 508         0        0.0  right_fornix                       0.0000     0.0000     0.0000     0.0000     0.0000 
+266 550         0        0.0  left_CA2/3                         0.0000     0.0000     0.0000     0.0000     0.0000 
+267 551         0        0.0  left_alveus                        0.0000     0.0000     0.0000     0.0000     0.0000 
+268 552         0        0.0  left_CA1                           0.0000     0.0000     0.0000     0.0000     0.0000 
+269 553         0        0.0  left_fimbria                       0.0000     0.0000     0.0000     0.0000     0.0000 
+270 554         0        0.0  left_presubiculum                  0.0000     0.0000     0.0000     0.0000     0.0000 
+271 555         0        0.0  left_hippocampal_fissure           0.0000     0.0000     0.0000     0.0000     0.0000 
+272 556         0        0.0  left_CA4/DG                        0.0000     0.0000     0.0000     0.0000     0.0000 
+273 557         0        0.0  left_subiculum                     0.0000     0.0000     0.0000     0.0000     0.0000 
+274 558         0        0.0  left_fornix                        0.0000     0.0000     0.0000     0.0000     0.0000 
+275 600         0        0.0  Tumor                              0.0000     0.0000     0.0000     0.0000     0.0000 
+276 701         0        0.0  CSF-FSL-FAST                       0.0000     0.0000     0.0000     0.0000     0.0000 
+277 702         0        0.0  GrayMatter-FSL-FAST                0.0000     0.0000     0.0000     0.0000     0.0000 
+278 703         0        0.0  WhiteMatter-FSL-FAST               0.0000     0.0000     0.0000     0.0000     0.0000 
+279 999         0        0.0  SUSPICIOUS                         0.0000     0.0000     0.0000     0.0000     0.0000 
+280 1000      4391     4391.0  ctx-lh-unknown                    66.5872    10.3683    36.0000   104.0000    68.0000 
+281 1001      4176     4176.0  ctx-lh-bankssts                   73.8070     8.5016    43.0000    97.0000    54.0000 
+282 1002      2856     2856.0  ctx-lh-caudalanteriorcingulate    60.1771     7.5668    37.0000    85.0000    48.0000 
+283 1003      8400     8400.0  ctx-lh-caudalmiddlefrontal        69.2149     8.9739    40.0000    92.0000    52.0000 
+284 1004        85       85.0  ctx-lh-corpuscallosum             68.8870    10.4988    44.0000    91.0000    47.0000 
+285 1005      3291     3291.0  ctx-lh-cuneus                     73.6371     9.2253    45.0000    97.0000    52.0000 
+286 1006      1946     1946.0  ctx-lh-entorhinal                 61.3214     7.7385    31.0000    83.0000    52.0000 
+287 1007     11234    11234.0  ctx-lh-fusiform                   65.8453     8.5739    25.0000    94.0000    69.0000 
+288 1008     14804    14804.0  ctx-lh-inferiorparietal           77.4305     9.2040    45.0000   104.0000    59.0000 
+289 1009     15884    15884.0  ctx-lh-inferiortemporal           66.7257     8.9973    36.0000    97.0000    61.0000 
+290 1010      2939     2939.0  ctx-lh-isthmuscingulate           69.7955     9.0670    35.0000    94.0000    59.0000 
+291 1011     13073    13073.0  ctx-lh-lateraloccipital           76.5681     9.9653    43.0000   102.0000    59.0000 
+292 1012      8392     8392.0  ctx-lh-lateralorbitofrontal       63.7083     8.3125    26.0000    88.0000    62.0000 
+293 1013      6692     6692.0  ctx-lh-lingual                    70.0253     8.7233    40.0000    96.0000    56.0000 
+294 1014      5020     5020.0  ctx-lh-medialorbitofrontal        63.9554     8.0369    35.0000    86.0000    51.0000 
+295 1015     15062    15062.0  ctx-lh-middletemporal             69.6525     9.2072    37.0000   102.0000    65.0000 
+296 1016      2151     2151.0  ctx-lh-parahippocampal            63.5062     8.2669    39.0000    86.0000    47.0000 
+297 1017      3597     3597.0  ctx-lh-paracentral                70.4039    10.5213    42.0000    91.0000    49.0000 
+298 1018      6852     6852.0  ctx-lh-parsopercularis            67.5391     8.5568    35.0000    93.0000    58.0000 
+299 1019      2483     2483.0  ctx-lh-parsorbitalis              63.4687     8.0230    30.0000    83.0000    53.0000 
+300 1020      5738     5738.0  ctx-lh-parstriangularis           65.8138     8.6694    32.0000    87.0000    55.0000 
+301 1021      2234     2234.0  ctx-lh-pericalcarine              74.9684     9.6419    43.0000    98.0000    55.0000 
+302 1022     10441    10441.0  ctx-lh-postcentral                72.9453    10.0627    39.0000    97.0000    58.0000 
+303 1023      4213     4213.0  ctx-lh-posteriorcingulate         65.0575     8.4041    41.0000    90.0000    49.0000 
+304 1024     15997    15997.0  ctx-lh-precentral                 73.5017    10.7534    38.0000    97.0000    59.0000 
+305 1025     10667    10667.0  ctx-lh-precuneus                  71.3070     8.8032    36.0000    96.0000    60.0000 
+306 1026      3055     3055.0  ctx-lh-rostralanteriorcingulate    61.4959     8.0291    31.0000    87.0000    56.0000 
+307 1027     19675    19675.0  ctx-lh-rostralmiddlefrontal       66.2557     8.4355    38.0000    89.0000    51.0000 
+308 1028     28612    28612.0  ctx-lh-superiorfrontal            64.8214     9.1234    36.0000    89.0000    53.0000 
+309 1029     14416    14416.0  ctx-lh-superiorparietal           75.2714    10.7356    38.0000   101.0000    63.0000 
+310 1030     12428    12428.0  ctx-lh-superiortemporal           68.7539    10.4756    33.0000    97.0000    64.0000 
+311 1031     12722    12722.0  ctx-lh-supramarginal              73.8446     9.1615    38.0000    99.0000    61.0000 
+312 1032       734      734.0  ctx-lh-frontalpole                64.0087     9.2686    41.0000    82.0000    41.0000 
+313 1033      2048     2048.0  ctx-lh-temporalpole               56.9990     7.2035    32.0000    77.0000    45.0000 
+314 1034       905      905.0  ctx-lh-transversetemporal         77.1748     9.7206    50.0000    96.0000    46.0000 
+315 1035      7962     7962.0  ctx-lh-insula                     64.6995     8.3345    36.0000    92.0000    56.0000 
+316 1100         0        0.0  ctx-lh-Unknown                     0.0000     0.0000     0.0000     0.0000     0.0000 
+317 1101         0        0.0  ctx-lh-Corpus_callosum             0.0000     0.0000     0.0000     0.0000     0.0000 
+318 1102         0        0.0  ctx-lh-G_and_S_Insula_ONLY_AVERAGE     0.0000     0.0000     0.0000     0.0000     0.0000 
+319 1103         0        0.0  ctx-lh-G_cingulate-Isthmus         0.0000     0.0000     0.0000     0.0000     0.0000 
+320 1104         0        0.0  ctx-lh-G_cingulate-Main_part       0.0000     0.0000     0.0000     0.0000     0.0000 
+321 1105         0        0.0  ctx-lh-G_cuneus                    0.0000     0.0000     0.0000     0.0000     0.0000 
+322 1106         0        0.0  ctx-lh-G_frontal_inf-Opercular_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+323 1107         0        0.0  ctx-lh-G_frontal_inf-Orbital_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+324 1108         0        0.0  ctx-lh-G_frontal_inf-Triangular_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+325 1109         0        0.0  ctx-lh-G_frontal_middle            0.0000     0.0000     0.0000     0.0000     0.0000 
+326 1110         0        0.0  ctx-lh-G_frontal_superior          0.0000     0.0000     0.0000     0.0000     0.0000 
+327 1111         0        0.0  ctx-lh-G_frontomarginal            0.0000     0.0000     0.0000     0.0000     0.0000 
+328 1112         0        0.0  ctx-lh-G_insular_long              0.0000     0.0000     0.0000     0.0000     0.0000 
+329 1113         0        0.0  ctx-lh-G_insular_short             0.0000     0.0000     0.0000     0.0000     0.0000 
+330 1114         0        0.0  ctx-lh-G_and_S_occipital_inferior     0.0000     0.0000     0.0000     0.0000     0.0000 
+331 1115         0        0.0  ctx-lh-G_occipital_middle          0.0000     0.0000     0.0000     0.0000     0.0000 
+332 1116         0        0.0  ctx-lh-G_occipital_superior        0.0000     0.0000     0.0000     0.0000     0.0000 
+333 1117         0        0.0  ctx-lh-G_occipit-temp_lat-Or_fusiform     0.0000     0.0000     0.0000     0.0000     0.0000 
+334 1118         0        0.0  ctx-lh-G_occipit-temp_med-Lingual_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+335 1119         0        0.0  ctx-lh-G_occipit-temp_med-Parahippocampal_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+336 1120         0        0.0  ctx-lh-G_orbital                   0.0000     0.0000     0.0000     0.0000     0.0000 
+337 1121         0        0.0  ctx-lh-G_paracentral               0.0000     0.0000     0.0000     0.0000     0.0000 
+338 1122         0        0.0  ctx-lh-G_parietal_inferior-Angular_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+339 1123         0        0.0  ctx-lh-G_parietal_inferior-Supramarginal_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+340 1124         0        0.0  ctx-lh-G_parietal_superior         0.0000     0.0000     0.0000     0.0000     0.0000 
+341 1125         0        0.0  ctx-lh-G_postcentral               0.0000     0.0000     0.0000     0.0000     0.0000 
+342 1126         0        0.0  ctx-lh-G_precentral                0.0000     0.0000     0.0000     0.0000     0.0000 
+343 1127         0        0.0  ctx-lh-G_precuneus                 0.0000     0.0000     0.0000     0.0000     0.0000 
+344 1128         0        0.0  ctx-lh-G_rectus                    0.0000     0.0000     0.0000     0.0000     0.0000 
+345 1129         0        0.0  ctx-lh-G_subcallosal               0.0000     0.0000     0.0000     0.0000     0.0000 
+346 1130         0        0.0  ctx-lh-G_subcentral                0.0000     0.0000     0.0000     0.0000     0.0000 
+347 1131         0        0.0  ctx-lh-G_temporal_inferior         0.0000     0.0000     0.0000     0.0000     0.0000 
+348 1132         0        0.0  ctx-lh-G_temporal_middle           0.0000     0.0000     0.0000     0.0000     0.0000 
+349 1133         0        0.0  ctx-lh-G_temp_sup-G_temp_transv_and_interm_S     0.0000     0.0000     0.0000     0.0000     0.0000 
+350 1134         0        0.0  ctx-lh-G_temp_sup-Lateral_aspect     0.0000     0.0000     0.0000     0.0000     0.0000 
+351 1135         0        0.0  ctx-lh-G_temp_sup-Planum_polare     0.0000     0.0000     0.0000     0.0000     0.0000 
+352 1136         0        0.0  ctx-lh-G_temp_sup-Planum_tempolare     0.0000     0.0000     0.0000     0.0000     0.0000 
+353 1137         0        0.0  ctx-lh-G_and_S_transverse_frontopolar     0.0000     0.0000     0.0000     0.0000     0.0000 
+354 1138         0        0.0  ctx-lh-Lat_Fissure-ant_sgt-ramus_horizontal     0.0000     0.0000     0.0000     0.0000     0.0000 
+355 1139         0        0.0  ctx-lh-Lat_Fissure-ant_sgt-ramus_vertical     0.0000     0.0000     0.0000     0.0000     0.0000 
+356 1140         0        0.0  ctx-lh-Lat_Fissure-post_sgt        0.0000     0.0000     0.0000     0.0000     0.0000 
+357 1141         0        0.0  ctx-lh-Medial_wall                 0.0000     0.0000     0.0000     0.0000     0.0000 
+358 1142         0        0.0  ctx-lh-Pole_occipital              0.0000     0.0000     0.0000     0.0000     0.0000 
+359 1143         0        0.0  ctx-lh-Pole_temporal               0.0000     0.0000     0.0000     0.0000     0.0000 
+360 1144         0        0.0  ctx-lh-S_calcarine                 0.0000     0.0000     0.0000     0.0000     0.0000 
+361 1145         0        0.0  ctx-lh-S_central                   0.0000     0.0000     0.0000     0.0000     0.0000 
+362 1146         0        0.0  ctx-lh-S_central_insula            0.0000     0.0000     0.0000     0.0000     0.0000 
+363 1147         0        0.0  ctx-lh-S_cingulate-Main_part_and_Intracingulate     0.0000     0.0000     0.0000     0.0000     0.0000 
+364 1148         0        0.0  ctx-lh-S_cingulate-Marginalis_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+365 1149         0        0.0  ctx-lh-S_circular_insula_anterior     0.0000     0.0000     0.0000     0.0000     0.0000 
+366 1150         0        0.0  ctx-lh-S_circular_insula_inferior     0.0000     0.0000     0.0000     0.0000     0.0000 
+367 1151         0        0.0  ctx-lh-S_circular_insula_superior     0.0000     0.0000     0.0000     0.0000     0.0000 
+368 1152         0        0.0  ctx-lh-S_collateral_transverse_ant     0.0000     0.0000     0.0000     0.0000     0.0000 
+369 1153         0        0.0  ctx-lh-S_collateral_transverse_post     0.0000     0.0000     0.0000     0.0000     0.0000 
+370 1154         0        0.0  ctx-lh-S_frontal_inferior          0.0000     0.0000     0.0000     0.0000     0.0000 
+371 1155         0        0.0  ctx-lh-S_frontal_middle            0.0000     0.0000     0.0000     0.0000     0.0000 
+372 1156         0        0.0  ctx-lh-S_frontal_superior          0.0000     0.0000     0.0000     0.0000     0.0000 
+373 1157         0        0.0  ctx-lh-S_frontomarginal            0.0000     0.0000     0.0000     0.0000     0.0000 
+374 1158         0        0.0  ctx-lh-S_intermedius_primus-Jensen     0.0000     0.0000     0.0000     0.0000     0.0000 
+375 1159         0        0.0  ctx-lh-S_intraparietal-and_Parietal_transverse     0.0000     0.0000     0.0000     0.0000     0.0000 
+376 1160         0        0.0  ctx-lh-S_occipital_anterior        0.0000     0.0000     0.0000     0.0000     0.0000 
+377 1161         0        0.0  ctx-lh-S_occipital_middle_and_Lunatus     0.0000     0.0000     0.0000     0.0000     0.0000 
+378 1162         0        0.0  ctx-lh-S_occipital_superior_and_transversalis     0.0000     0.0000     0.0000     0.0000     0.0000 
+379 1163         0        0.0  ctx-lh-S_occipito-temporal_lateral     0.0000     0.0000     0.0000     0.0000     0.0000 
+380 1164         0        0.0  ctx-lh-S_occipito-temporal_medial_and_S_Lingual     0.0000     0.0000     0.0000     0.0000     0.0000 
+381 1165         0        0.0  ctx-lh-S_orbital-H_shapped         0.0000     0.0000     0.0000     0.0000     0.0000 
+382 1166         0        0.0  ctx-lh-S_orbital_lateral           0.0000     0.0000     0.0000     0.0000     0.0000 
+383 1167         0        0.0  ctx-lh-S_orbital_medial-Or_olfactory     0.0000     0.0000     0.0000     0.0000     0.0000 
+384 1168         0        0.0  ctx-lh-S_paracentral               0.0000     0.0000     0.0000     0.0000     0.0000 
+385 1169         0        0.0  ctx-lh-S_parieto_occipital         0.0000     0.0000     0.0000     0.0000     0.0000 
+386 1170         0        0.0  ctx-lh-S_pericallosal              0.0000     0.0000     0.0000     0.0000     0.0000 
+387 1171         0        0.0  ctx-lh-S_postcentral               0.0000     0.0000     0.0000     0.0000     0.0000 
+388 1172         0        0.0  ctx-lh-S_precentral-Inferior-part     0.0000     0.0000     0.0000     0.0000     0.0000 
+389 1173         0        0.0  ctx-lh-S_precentral-Superior-part     0.0000     0.0000     0.0000     0.0000     0.0000 
+390 1174         0        0.0  ctx-lh-S_subcentral_ant            0.0000     0.0000     0.0000     0.0000     0.0000 
+391 1175         0        0.0  ctx-lh-S_subcentral_post           0.0000     0.0000     0.0000     0.0000     0.0000 
+392 1176         0        0.0  ctx-lh-S_suborbital                0.0000     0.0000     0.0000     0.0000     0.0000 
+393 1177         0        0.0  ctx-lh-S_subparietal               0.0000     0.0000     0.0000     0.0000     0.0000 
+394 1178         0        0.0  ctx-lh-S_supracingulate            0.0000     0.0000     0.0000     0.0000     0.0000 
+395 1179         0        0.0  ctx-lh-S_temporal_inferior         0.0000     0.0000     0.0000     0.0000     0.0000 
+396 1180         0        0.0  ctx-lh-S_temporal_superior         0.0000     0.0000     0.0000     0.0000     0.0000 
+397 1181         0        0.0  ctx-lh-S_temporal_transverse       0.0000     0.0000     0.0000     0.0000     0.0000 
+398 1200         0        0.0  ctx-lh-G_cingulate-caudal_ACC      0.0000     0.0000     0.0000     0.0000     0.0000 
+399 1201         0        0.0  ctx-lh-G_cingulate-rostral_ACC     0.0000     0.0000     0.0000     0.0000     0.0000 
+400 1202         0        0.0  ctx-lh-G_cingulate-posterior       0.0000     0.0000     0.0000     0.0000     0.0000 
+401 1205         0        0.0  ctx-lh-S_cingulate-caudal_ACC      0.0000     0.0000     0.0000     0.0000     0.0000 
+402 1206         0        0.0  ctx-lh-S_cingulate-rostral_ACC     0.0000     0.0000     0.0000     0.0000     0.0000 
+403 1207         0        0.0  ctx-lh-S_cingulate-posterior       0.0000     0.0000     0.0000     0.0000     0.0000 
+404 1210         0        0.0  ctx-lh-S_pericallosal-caudal       0.0000     0.0000     0.0000     0.0000     0.0000 
+405 1211         0        0.0  ctx-lh-S_pericallosal-rostral      0.0000     0.0000     0.0000     0.0000     0.0000 
+406 1212         0        0.0  ctx-lh-S_pericallosal-posterior     0.0000     0.0000     0.0000     0.0000     0.0000 
+407 2000      4529     4529.0  ctx-rh-unknown                    66.1636    10.3882    32.0000   105.0000    73.0000 
+408 2001      2675     2675.0  ctx-rh-bankssts                   70.1671     8.1235    46.0000    93.0000    47.0000 
+409 2002      2366     2366.0  ctx-rh-caudalanteriorcingulate    60.1691     8.5737    30.0000    95.0000    65.0000 
+410 2003     10114    10114.0  ctx-rh-caudalmiddlefrontal        68.5634     8.9206    41.0000    91.0000    50.0000 
+411 2004       104      104.0  ctx-rh-corpuscallosum             69.4333    13.4076    44.0000   107.0000    63.0000 
+412 2005      3170     3170.0  ctx-rh-cuneus                     78.1942     9.6899    47.0000   102.0000    55.0000 
+413 2006      1803     1803.0  ctx-rh-entorhinal                 60.4530     7.6561    37.0000    84.0000    47.0000 
+414 2007     10684    10684.0  ctx-rh-fusiform                   65.9610     8.5205    27.0000    91.0000    64.0000 
+415 2008     18067    18067.0  ctx-rh-inferiorparietal           74.3113     9.0421    39.0000   101.0000    62.0000 
+416 2009     12262    12262.0  ctx-rh-inferiortemporal           64.9866     8.4867    37.0000    96.0000    59.0000 
+417 2010      2867     2867.0  ctx-rh-isthmuscingulate           72.4382     9.6706    38.0000    96.0000    58.0000 
+418 2011     10555    10555.0  ctx-rh-lateraloccipital           74.2074    10.0580    44.0000   102.0000    58.0000 
+419 2012      8229     8229.0  ctx-rh-lateralorbitofrontal       68.0475     8.9331    35.0000    92.0000    57.0000 
+420 2013      7453     7453.0  ctx-rh-lingual                    72.1422     9.1110    42.0000    96.0000    54.0000 
+421 2014      5011     5011.0  ctx-rh-medialorbitofrontal        63.4912     8.3133    34.0000    86.0000    52.0000 
+422 2015     16770    16770.0  ctx-rh-middletemporal             67.3813     8.5672    37.0000    93.0000    56.0000 
+423 2016      2359     2359.0  ctx-rh-parahippocampal            63.4348     8.4527    40.0000    87.0000    47.0000 
+424 2017      4364     4364.0  ctx-rh-paracentral                72.9011    10.4320    42.0000    94.0000    52.0000 
+425 2018      6022     6022.0  ctx-rh-parsopercularis            68.6969     8.6873    40.0000    92.0000    52.0000 
+426 2019      3315     3315.0  ctx-rh-parsorbitalis              68.9918     9.6691    39.0000    92.0000    53.0000 
+427 2020      6313     6313.0  ctx-rh-parstriangularis           69.0684     9.4559    35.0000    91.0000    56.0000 
+428 2021      2204     2204.0  ctx-rh-pericalcarine              76.2138     9.5988    40.0000    97.0000    57.0000 
+429 2022     10200    10200.0  ctx-rh-postcentral                71.7813    10.2018    39.0000    97.0000    58.0000 
+430 2023      3866     3866.0  ctx-rh-posteriorcingulate         67.1192     8.7390    40.0000    94.0000    54.0000 
+431 2024     15543    15543.0  ctx-rh-precentral                 71.5325    10.3752    41.0000    97.0000    56.0000 
+432 2025     10773    10773.0  ctx-rh-precuneus                  75.0391     9.0294    42.0000    98.0000    56.0000 
+433 2026      1853     1853.0  ctx-rh-rostralanteriorcingulate    61.2465     7.7157    37.0000    96.0000    59.0000 
+434 2027     15649    15649.0  ctx-rh-rostralmiddlefrontal       67.4495     8.9454    37.0000    93.0000    56.0000 
+435 2028     31024    31024.0  ctx-rh-superiorfrontal            64.2154     9.1728    32.0000    90.0000    58.0000 
+436 2029     13952    13952.0  ctx-rh-superiorparietal           77.0604    10.9674    44.0000   105.0000    61.0000 
+437 2030     14126    14126.0  ctx-rh-superiortemporal           67.7865     9.6666    34.0000    95.0000    61.0000 
+438 2031     13994    13994.0  ctx-rh-supramarginal              72.1829     9.0533    38.0000    97.0000    59.0000 
+439 2032       877      877.0  ctx-rh-frontalpole                61.8881     8.1314    39.0000    83.0000    44.0000 
+440 2033      2861     2861.0  ctx-rh-temporalpole               63.6030     7.9829    28.0000    86.0000    58.0000 
+441 2034      1185     1185.0  ctx-rh-transversetemporal         74.7483     8.9176    49.0000    95.0000    46.0000 
+442 2035      7981     7981.0  ctx-rh-insula                     64.3460     8.0901    34.0000    91.0000    57.0000 
+443 2100         0        0.0  ctx-rh-Unknown                     0.0000     0.0000     0.0000     0.0000     0.0000 
+444 2101         0        0.0  ctx-rh-Corpus_callosum             0.0000     0.0000     0.0000     0.0000     0.0000 
+445 2102         0        0.0  ctx-rh-G_and_S_Insula_ONLY_AVERAGE     0.0000     0.0000     0.0000     0.0000     0.0000 
+446 2103         0        0.0  ctx-rh-G_cingulate-Isthmus         0.0000     0.0000     0.0000     0.0000     0.0000 
+447 2104         0        0.0  ctx-rh-G_cingulate-Main_part       0.0000     0.0000     0.0000     0.0000     0.0000 
+448 2105         0        0.0  ctx-rh-G_cuneus                    0.0000     0.0000     0.0000     0.0000     0.0000 
+449 2106         0        0.0  ctx-rh-G_frontal_inf-Opercular_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+450 2107         0        0.0  ctx-rh-G_frontal_inf-Orbital_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+451 2108         0        0.0  ctx-rh-G_frontal_inf-Triangular_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+452 2109         0        0.0  ctx-rh-G_frontal_middle            0.0000     0.0000     0.0000     0.0000     0.0000 
+453 2110         0        0.0  ctx-rh-G_frontal_superior          0.0000     0.0000     0.0000     0.0000     0.0000 
+454 2111         0        0.0  ctx-rh-G_frontomarginal            0.0000     0.0000     0.0000     0.0000     0.0000 
+455 2112         0        0.0  ctx-rh-G_insular_long              0.0000     0.0000     0.0000     0.0000     0.0000 
+456 2113         0        0.0  ctx-rh-G_insular_short             0.0000     0.0000     0.0000     0.0000     0.0000 
+457 2114         0        0.0  ctx-rh-G_and_S_occipital_inferior     0.0000     0.0000     0.0000     0.0000     0.0000 
+458 2115         0        0.0  ctx-rh-G_occipital_middle          0.0000     0.0000     0.0000     0.0000     0.0000 
+459 2116         0        0.0  ctx-rh-G_occipital_superior        0.0000     0.0000     0.0000     0.0000     0.0000 
+460 2117         0        0.0  ctx-rh-G_occipit-temp_lat-Or_fusiform     0.0000     0.0000     0.0000     0.0000     0.0000 
+461 2118         0        0.0  ctx-rh-G_occipit-temp_med-Lingual_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+462 2119         0        0.0  ctx-rh-G_occipit-temp_med-Parahippocampal_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+463 2120         0        0.0  ctx-rh-G_orbital                   0.0000     0.0000     0.0000     0.0000     0.0000 
+464 2121         0        0.0  ctx-rh-G_paracentral               0.0000     0.0000     0.0000     0.0000     0.0000 
+465 2122         0        0.0  ctx-rh-G_parietal_inferior-Angular_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+466 2123         0        0.0  ctx-rh-G_parietal_inferior-Supramarginal_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+467 2124         0        0.0  ctx-rh-G_parietal_superior         0.0000     0.0000     0.0000     0.0000     0.0000 
+468 2125         0        0.0  ctx-rh-G_postcentral               0.0000     0.0000     0.0000     0.0000     0.0000 
+469 2126         0        0.0  ctx-rh-G_precentral                0.0000     0.0000     0.0000     0.0000     0.0000 
+470 2127         0        0.0  ctx-rh-G_precuneus                 0.0000     0.0000     0.0000     0.0000     0.0000 
+471 2128         0        0.0  ctx-rh-G_rectus                    0.0000     0.0000     0.0000     0.0000     0.0000 
+472 2129         0        0.0  ctx-rh-G_subcallosal               0.0000     0.0000     0.0000     0.0000     0.0000 
+473 2130         0        0.0  ctx-rh-G_subcentral                0.0000     0.0000     0.0000     0.0000     0.0000 
+474 2131         0        0.0  ctx-rh-G_temporal_inferior         0.0000     0.0000     0.0000     0.0000     0.0000 
+475 2132         0        0.0  ctx-rh-G_temporal_middle           0.0000     0.0000     0.0000     0.0000     0.0000 
+476 2133         0        0.0  ctx-rh-G_temp_sup-G_temp_transv_and_interm_S     0.0000     0.0000     0.0000     0.0000     0.0000 
+477 2134         0        0.0  ctx-rh-G_temp_sup-Lateral_aspect     0.0000     0.0000     0.0000     0.0000     0.0000 
+478 2135         0        0.0  ctx-rh-G_temp_sup-Planum_polare     0.0000     0.0000     0.0000     0.0000     0.0000 
+479 2136         0        0.0  ctx-rh-G_temp_sup-Planum_tempolare     0.0000     0.0000     0.0000     0.0000     0.0000 
+480 2137         0        0.0  ctx-rh-G_and_S_transverse_frontopolar     0.0000     0.0000     0.0000     0.0000     0.0000 
+481 2138         0        0.0  ctx-rh-Lat_Fissure-ant_sgt-ramus_horizontal     0.0000     0.0000     0.0000     0.0000     0.0000 
+482 2139         0        0.0  ctx-rh-Lat_Fissure-ant_sgt-ramus_vertical     0.0000     0.0000     0.0000     0.0000     0.0000 
+483 2140         0        0.0  ctx-rh-Lat_Fissure-post_sgt        0.0000     0.0000     0.0000     0.0000     0.0000 
+484 2141         0        0.0  ctx-rh-Medial_wall                 0.0000     0.0000     0.0000     0.0000     0.0000 
+485 2142         0        0.0  ctx-rh-Pole_occipital              0.0000     0.0000     0.0000     0.0000     0.0000 
+486 2143         0        0.0  ctx-rh-Pole_temporal               0.0000     0.0000     0.0000     0.0000     0.0000 
+487 2144         0        0.0  ctx-rh-S_calcarine                 0.0000     0.0000     0.0000     0.0000     0.0000 
+488 2145         0        0.0  ctx-rh-S_central                   0.0000     0.0000     0.0000     0.0000     0.0000 
+489 2146         0        0.0  ctx-rh-S_central_insula            0.0000     0.0000     0.0000     0.0000     0.0000 
+490 2147         0        0.0  ctx-rh-S_cingulate-Main_part_and_Intracingulate     0.0000     0.0000     0.0000     0.0000     0.0000 
+491 2148         0        0.0  ctx-rh-S_cingulate-Marginalis_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+492 2149         0        0.0  ctx-rh-S_circular_insula_anterior     0.0000     0.0000     0.0000     0.0000     0.0000 
+493 2150         0        0.0  ctx-rh-S_circular_insula_inferior     0.0000     0.0000     0.0000     0.0000     0.0000 
+494 2151         0        0.0  ctx-rh-S_circular_insula_superior     0.0000     0.0000     0.0000     0.0000     0.0000 
+495 2152         0        0.0  ctx-rh-S_collateral_transverse_ant     0.0000     0.0000     0.0000     0.0000     0.0000 
+496 2153         0        0.0  ctx-rh-S_collateral_transverse_post     0.0000     0.0000     0.0000     0.0000     0.0000 
+497 2154         0        0.0  ctx-rh-S_frontal_inferior          0.0000     0.0000     0.0000     0.0000     0.0000 
+498 2155         0        0.0  ctx-rh-S_frontal_middle            0.0000     0.0000     0.0000     0.0000     0.0000 
+499 2156         0        0.0  ctx-rh-S_frontal_superior          0.0000     0.0000     0.0000     0.0000     0.0000 
+500 2157         0        0.0  ctx-rh-S_frontomarginal            0.0000     0.0000     0.0000     0.0000     0.0000 
+501 2158         0        0.0  ctx-rh-S_intermedius_primus-Jensen     0.0000     0.0000     0.0000     0.0000     0.0000 
+502 2159         0        0.0  ctx-rh-S_intraparietal-and_Parietal_transverse     0.0000     0.0000     0.0000     0.0000     0.0000 
+503 2160         0        0.0  ctx-rh-S_occipital_anterior        0.0000     0.0000     0.0000     0.0000     0.0000 
+504 2161         0        0.0  ctx-rh-S_occipital_middle_and_Lunatus     0.0000     0.0000     0.0000     0.0000     0.0000 
+505 2162         0        0.0  ctx-rh-S_occipital_superior_and_transversalis     0.0000     0.0000     0.0000     0.0000     0.0000 
+506 2163         0        0.0  ctx-rh-S_occipito-temporal_lateral     0.0000     0.0000     0.0000     0.0000     0.0000 
+507 2164         0        0.0  ctx-rh-S_occipito-temporal_medial_and_S_Lingual     0.0000     0.0000     0.0000     0.0000     0.0000 
+508 2165         0        0.0  ctx-rh-S_orbital-H_shapped         0.0000     0.0000     0.0000     0.0000     0.0000 
+509 2166         0        0.0  ctx-rh-S_orbital_lateral           0.0000     0.0000     0.0000     0.0000     0.0000 
+510 2167         0        0.0  ctx-rh-S_orbital_medial-Or_olfactory     0.0000     0.0000     0.0000     0.0000     0.0000 
+511 2168         0        0.0  ctx-rh-S_paracentral               0.0000     0.0000     0.0000     0.0000     0.0000 
+512 2169         0        0.0  ctx-rh-S_parieto_occipital         0.0000     0.0000     0.0000     0.0000     0.0000 
+513 2170         0        0.0  ctx-rh-S_pericallosal              0.0000     0.0000     0.0000     0.0000     0.0000 
+514 2171         0        0.0  ctx-rh-S_postcentral               0.0000     0.0000     0.0000     0.0000     0.0000 
+515 2172         0        0.0  ctx-rh-S_precentral-Inferior-part     0.0000     0.0000     0.0000     0.0000     0.0000 
+516 2173         0        0.0  ctx-rh-S_precentral-Superior-part     0.0000     0.0000     0.0000     0.0000     0.0000 
+517 2174         0        0.0  ctx-rh-S_subcentral_ant            0.0000     0.0000     0.0000     0.0000     0.0000 
+518 2175         0        0.0  ctx-rh-S_subcentral_post           0.0000     0.0000     0.0000     0.0000     0.0000 
+519 2176         0        0.0  ctx-rh-S_suborbital                0.0000     0.0000     0.0000     0.0000     0.0000 
+520 2177         0        0.0  ctx-rh-S_subparietal               0.0000     0.0000     0.0000     0.0000     0.0000 
+521 2178         0        0.0  ctx-rh-S_supracingulate            0.0000     0.0000     0.0000     0.0000     0.0000 
+522 2179         0        0.0  ctx-rh-S_temporal_inferior         0.0000     0.0000     0.0000     0.0000     0.0000 
+523 2180         0        0.0  ctx-rh-S_temporal_superior         0.0000     0.0000     0.0000     0.0000     0.0000 
+524 2181         0        0.0  ctx-rh-S_temporal_transverse       0.0000     0.0000     0.0000     0.0000     0.0000 
+525 2200         0        0.0  ctx-rh-G_cingulate-caudal_ACC      0.0000     0.0000     0.0000     0.0000     0.0000 
+526 2201         0        0.0  ctx-rh-G_cingulate-rostral_ACC     0.0000     0.0000     0.0000     0.0000     0.0000 
+527 2202         0        0.0  ctx-rh-G_cingulate-posterior       0.0000     0.0000     0.0000     0.0000     0.0000 
+528 2205         0        0.0  ctx-rh-S_cingulate-caudal_ACC      0.0000     0.0000     0.0000     0.0000     0.0000 
+529 2206         0        0.0  ctx-rh-S_cingulate-rostral_ACC     0.0000     0.0000     0.0000     0.0000     0.0000 
+530 2207         0        0.0  ctx-rh-S_cingulate-posterior       0.0000     0.0000     0.0000     0.0000     0.0000 
+531 2210         0        0.0  ctx-rh-S_pericallosal-caudal       0.0000     0.0000     0.0000     0.0000     0.0000 
+532 2211         0        0.0  ctx-rh-S_pericallosal-rostral      0.0000     0.0000     0.0000     0.0000     0.0000 
+533 2212         0        0.0  ctx-rh-S_pericallosal-posterior     0.0000     0.0000     0.0000     0.0000     0.0000 
+534 3000         0        0.0  wm-lh-unknown                      0.0000     0.0000     0.0000     0.0000     0.0000 
+535 3001      4658     4658.0  wm-lh-bankssts                   107.7459     6.9829    83.0000   122.0000    39.0000 
+536 3002      3245     3245.0  wm-lh-caudalanteriorcingulate     97.8340     7.9543    58.0000   109.0000    51.0000 
+537 3003      9328     9328.0  wm-lh-caudalmiddlefrontal        100.5893     7.8903    74.0000   113.0000    39.0000 
+538 3004      1536     1536.0  wm-lh-corpuscallosum              96.6316    15.3486    32.0000   115.0000    83.0000 
+539 3005      3171     3171.0  wm-lh-cuneus                     101.2838     8.7125    77.0000   118.0000    41.0000 
+540 3006      1067     1067.0  wm-lh-entorhinal                  90.4301     8.2622    68.0000   107.0000    39.0000 
+541 3007      8827     8827.0  wm-lh-fusiform                    99.1987    10.0207    60.0000   124.0000    64.0000 
+542 3008     12665    12665.0  wm-lh-inferiorparietal           111.5777     9.0112    83.0000   128.0000    45.0000 
+543 3009     10225    10225.0  wm-lh-inferiortemporal           100.8369    10.1977    73.0000   124.0000    51.0000 
+544 3010      4064     4064.0  wm-lh-isthmuscingulate           104.7500     8.0221    56.0000   118.0000    62.0000 
+545 3011     14958    14958.0  wm-lh-lateraloccipital           105.8710     9.5076    74.0000   124.0000    50.0000 
+546 3012      7677     7677.0  wm-lh-lateralorbitofrontal        97.6532     9.5522    71.0000   112.0000    41.0000 
+547 3013      7341     7341.0  wm-lh-lingual                     97.7285    10.9383    40.0000   124.0000    84.0000 
+548 3014      4195     4195.0  wm-lh-medialorbitofrontal         97.7629    10.0418    62.0000   113.0000    51.0000 
+549 3015      7658     7658.0  wm-lh-middletemporal             103.7706     8.6137    76.0000   122.0000    46.0000 
+550 3016      2018     2018.0  wm-lh-parahippocampal             96.1180     7.3491    70.0000   113.0000    43.0000 
+551 3017      4692     4692.0  wm-lh-paracentral                 98.5243     7.8168    73.0000   114.0000    41.0000 
+552 3018      5478     5478.0  wm-lh-parsopercularis             99.6813     7.6111    78.0000   112.0000    34.0000 
+553 3019      1162     1162.0  wm-lh-parsorbitalis               92.0493     8.6807    75.0000   109.0000    34.0000 
+554 3020      4488     4488.0  wm-lh-parstriangularis            97.3558     8.2256    74.0000   110.0000    36.0000 
+555 3021      4161     4161.0  wm-lh-pericalcarine              101.8106     9.1996    76.0000   124.0000    48.0000 
+556 3022     10568    10568.0  wm-lh-postcentral                100.6515     8.2847    73.0000   119.0000    46.0000 
+557 3023      5783     5783.0  wm-lh-posteriorcingulate         100.3945     7.7212    39.0000   114.0000    75.0000 
+558 3024     17667    17667.0  wm-lh-precentral                 100.7373     6.8723    74.0000   115.0000    41.0000 
+559 3025     11084    11084.0  wm-lh-precuneus                  106.0982     9.3337    28.0000   127.0000    99.0000 
+560 3026      2141     2141.0  wm-lh-rostralanteriorcingulate    97.9134    10.1990    67.0000   113.0000    46.0000 
+561 3027     16317    16317.0  wm-lh-rostralmiddlefrontal        98.6022     8.7039    74.0000   111.0000    37.0000 
+562 3028     24466    24466.0  wm-lh-superiorfrontal             96.4541     8.0123    71.0000   111.0000    40.0000 
+563 3029     17296    17296.0  wm-lh-superiorparietal           108.0525     8.8668    79.0000   124.0000    45.0000 
+564 3030      8440     8440.0  wm-lh-superiortemporal           101.0572     9.1182    72.0000   119.0000    47.0000 
+565 3031     11357    11357.0  wm-lh-supramarginal              108.2931     8.1611    82.0000   124.0000    42.0000 
+566 3032       226      226.0  wm-lh-frontalpole                 91.3298     7.6648    75.0000   108.0000    33.0000 
+567 3033       616      616.0  wm-lh-temporalpole                85.1748     8.5148    69.0000   105.0000    36.0000 
+568 3034       662      662.0  wm-lh-transversetemporal         100.8599     6.4444    84.0000   113.0000    29.0000 
+569 3035     10878    10878.0  wm-lh-insula                      99.0842    10.2112    67.0000   116.0000    49.0000 
+570 3100         0        0.0  wm-lh-Unknown                      0.0000     0.0000     0.0000     0.0000     0.0000 
+571 3101         0        0.0  wm-lh-Corpus_callosum              0.0000     0.0000     0.0000     0.0000     0.0000 
+572 3102         0        0.0  wm-lh-G_and_S_Insula_ONLY_AVERAGE     0.0000     0.0000     0.0000     0.0000     0.0000 
+573 3103         0        0.0  wm-lh-G_cingulate-Isthmus          0.0000     0.0000     0.0000     0.0000     0.0000 
+574 3104         0        0.0  wm-lh-G_cingulate-Main_part        0.0000     0.0000     0.0000     0.0000     0.0000 
+575 3105         0        0.0  wm-lh-G_cuneus                     0.0000     0.0000     0.0000     0.0000     0.0000 
+576 3106         0        0.0  wm-lh-G_frontal_inf-Opercular_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+577 3107         0        0.0  wm-lh-G_frontal_inf-Orbital_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+578 3108         0        0.0  wm-lh-G_frontal_inf-Triangular_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+579 3109         0        0.0  wm-lh-G_frontal_middle             0.0000     0.0000     0.0000     0.0000     0.0000 
+580 3110         0        0.0  wm-lh-G_frontal_superior           0.0000     0.0000     0.0000     0.0000     0.0000 
+581 3111         0        0.0  wm-lh-G_frontomarginal             0.0000     0.0000     0.0000     0.0000     0.0000 
+582 3112         0        0.0  wm-lh-G_insular_long               0.0000     0.0000     0.0000     0.0000     0.0000 
+583 3113         0        0.0  wm-lh-G_insular_short              0.0000     0.0000     0.0000     0.0000     0.0000 
+584 3114         0        0.0  wm-lh-G_and_S_occipital_inferior     0.0000     0.0000     0.0000     0.0000     0.0000 
+585 3115         0        0.0  wm-lh-G_occipital_middle           0.0000     0.0000     0.0000     0.0000     0.0000 
+586 3116         0        0.0  wm-lh-G_occipital_superior         0.0000     0.0000     0.0000     0.0000     0.0000 
+587 3117         0        0.0  wm-lh-G_occipit-temp_lat-Or_fusiform     0.0000     0.0000     0.0000     0.0000     0.0000 
+588 3118         0        0.0  wm-lh-G_occipit-temp_med-Lingual_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+589 3119         0        0.0  wm-lh-G_occipit-temp_med-Parahippocampal_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+590 3120         0        0.0  wm-lh-G_orbital                    0.0000     0.0000     0.0000     0.0000     0.0000 
+591 3121         0        0.0  wm-lh-G_paracentral                0.0000     0.0000     0.0000     0.0000     0.0000 
+592 3122         0        0.0  wm-lh-G_parietal_inferior-Angular_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+593 3123         0        0.0  wm-lh-G_parietal_inferior-Supramarginal_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+594 3124         0        0.0  wm-lh-G_parietal_superior          0.0000     0.0000     0.0000     0.0000     0.0000 
+595 3125         0        0.0  wm-lh-G_postcentral                0.0000     0.0000     0.0000     0.0000     0.0000 
+596 3126         0        0.0  wm-lh-G_precentral                 0.0000     0.0000     0.0000     0.0000     0.0000 
+597 3127         0        0.0  wm-lh-G_precuneus                  0.0000     0.0000     0.0000     0.0000     0.0000 
+598 3128         0        0.0  wm-lh-G_rectus                     0.0000     0.0000     0.0000     0.0000     0.0000 
+599 3129         0        0.0  wm-lh-G_subcallosal                0.0000     0.0000     0.0000     0.0000     0.0000 
+600 3130         0        0.0  wm-lh-G_subcentral                 0.0000     0.0000     0.0000     0.0000     0.0000 
+601 3131         0        0.0  wm-lh-G_temporal_inferior          0.0000     0.0000     0.0000     0.0000     0.0000 
+602 3132         0        0.0  wm-lh-G_temporal_middle            0.0000     0.0000     0.0000     0.0000     0.0000 
+603 3133         0        0.0  wm-lh-G_temp_sup-G_temp_transv_and_interm_S     0.0000     0.0000     0.0000     0.0000     0.0000 
+604 3134         0        0.0  wm-lh-G_temp_sup-Lateral_aspect     0.0000     0.0000     0.0000     0.0000     0.0000 
+605 3135         0        0.0  wm-lh-G_temp_sup-Planum_polare     0.0000     0.0000     0.0000     0.0000     0.0000 
+606 3136         0        0.0  wm-lh-G_temp_sup-Planum_tempolare     0.0000     0.0000     0.0000     0.0000     0.0000 
+607 3137         0        0.0  wm-lh-G_and_S_transverse_frontopolar     0.0000     0.0000     0.0000     0.0000     0.0000 
+608 3138         0        0.0  wm-lh-Lat_Fissure-ant_sgt-ramus_horizontal     0.0000     0.0000     0.0000     0.0000     0.0000 
+609 3139         0        0.0  wm-lh-Lat_Fissure-ant_sgt-ramus_vertical     0.0000     0.0000     0.0000     0.0000     0.0000 
+610 3140         0        0.0  wm-lh-Lat_Fissure-post_sgt         0.0000     0.0000     0.0000     0.0000     0.0000 
+611 3141         0        0.0  wm-lh-Medial_wall                  0.0000     0.0000     0.0000     0.0000     0.0000 
+612 3142         0        0.0  wm-lh-Pole_occipital               0.0000     0.0000     0.0000     0.0000     0.0000 
+613 3143         0        0.0  wm-lh-Pole_temporal                0.0000     0.0000     0.0000     0.0000     0.0000 
+614 3144         0        0.0  wm-lh-S_calcarine                  0.0000     0.0000     0.0000     0.0000     0.0000 
+615 3145         0        0.0  wm-lh-S_central                    0.0000     0.0000     0.0000     0.0000     0.0000 
+616 3146         0        0.0  wm-lh-S_central_insula             0.0000     0.0000     0.0000     0.0000     0.0000 
+617 3147         0        0.0  wm-lh-S_cingulate-Main_part_and_Intracingulate     0.0000     0.0000     0.0000     0.0000     0.0000 
+618 3148         0        0.0  wm-lh-S_cingulate-Marginalis_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+619 3149         0        0.0  wm-lh-S_circular_insula_anterior     0.0000     0.0000     0.0000     0.0000     0.0000 
+620 3150         0        0.0  wm-lh-S_circular_insula_inferior     0.0000     0.0000     0.0000     0.0000     0.0000 
+621 3151         0        0.0  wm-lh-S_circular_insula_superior     0.0000     0.0000     0.0000     0.0000     0.0000 
+622 3152         0        0.0  wm-lh-S_collateral_transverse_ant     0.0000     0.0000     0.0000     0.0000     0.0000 
+623 3153         0        0.0  wm-lh-S_collateral_transverse_post     0.0000     0.0000     0.0000     0.0000     0.0000 
+624 3154         0        0.0  wm-lh-S_frontal_inferior           0.0000     0.0000     0.0000     0.0000     0.0000 
+625 3155         0        0.0  wm-lh-S_frontal_middle             0.0000     0.0000     0.0000     0.0000     0.0000 
+626 3156         0        0.0  wm-lh-S_frontal_superior           0.0000     0.0000     0.0000     0.0000     0.0000 
+627 3157         0        0.0  wm-lh-S_frontomarginal             0.0000     0.0000     0.0000     0.0000     0.0000 
+628 3158         0        0.0  wm-lh-S_intermedius_primus-Jensen     0.0000     0.0000     0.0000     0.0000     0.0000 
+629 3159         0        0.0  wm-lh-S_intraparietal-and_Parietal_transverse     0.0000     0.0000     0.0000     0.0000     0.0000 
+630 3160         0        0.0  wm-lh-S_occipital_anterior         0.0000     0.0000     0.0000     0.0000     0.0000 
+631 3161         0        0.0  wm-lh-S_occipital_middle_and_Lunatus     0.0000     0.0000     0.0000     0.0000     0.0000 
+632 3162         0        0.0  wm-lh-S_occipital_superior_and_transversalis     0.0000     0.0000     0.0000     0.0000     0.0000 
+633 3163         0        0.0  wm-lh-S_occipito-temporal_lateral     0.0000     0.0000     0.0000     0.0000     0.0000 
+634 3164         0        0.0  wm-lh-S_occipito-temporal_medial_and_S_Lingual     0.0000     0.0000     0.0000     0.0000     0.0000 
+635 3165         0        0.0  wm-lh-S_orbital-H_shapped          0.0000     0.0000     0.0000     0.0000     0.0000 
+636 3166         0        0.0  wm-lh-S_orbital_lateral            0.0000     0.0000     0.0000     0.0000     0.0000 
+637 3167         0        0.0  wm-lh-S_orbital_medial-Or_olfactory     0.0000     0.0000     0.0000     0.0000     0.0000 
+638 3168         0        0.0  wm-lh-S_paracentral                0.0000     0.0000     0.0000     0.0000     0.0000 
+639 3169         0        0.0  wm-lh-S_parieto_occipital          0.0000     0.0000     0.0000     0.0000     0.0000 
+640 3170         0        0.0  wm-lh-S_pericallosal               0.0000     0.0000     0.0000     0.0000     0.0000 
+641 3171         0        0.0  wm-lh-S_postcentral                0.0000     0.0000     0.0000     0.0000     0.0000 
+642 3172         0        0.0  wm-lh-S_precentral-Inferior-part     0.0000     0.0000     0.0000     0.0000     0.0000 
+643 3173         0        0.0  wm-lh-S_precentral-Superior-part     0.0000     0.0000     0.0000     0.0000     0.0000 
+644 3174         0        0.0  wm-lh-S_subcentral_ant             0.0000     0.0000     0.0000     0.0000     0.0000 
+645 3175         0        0.0  wm-lh-S_subcentral_post            0.0000     0.0000     0.0000     0.0000     0.0000 
+646 3176         0        0.0  wm-lh-S_suborbital                 0.0000     0.0000     0.0000     0.0000     0.0000 
+647 3177         0        0.0  wm-lh-S_subparietal                0.0000     0.0000     0.0000     0.0000     0.0000 
+648 3178         0        0.0  wm-lh-S_supracingulate             0.0000     0.0000     0.0000     0.0000     0.0000 
+649 3179         0        0.0  wm-lh-S_temporal_inferior          0.0000     0.0000     0.0000     0.0000     0.0000 
+650 3180         0        0.0  wm-lh-S_temporal_superior          0.0000     0.0000     0.0000     0.0000     0.0000 
+651 3181         0        0.0  wm-lh-S_temporal_transverse        0.0000     0.0000     0.0000     0.0000     0.0000 
+652 4000         0        0.0  wm-rh-unknown                      0.0000     0.0000     0.0000     0.0000     0.0000 
+653 4001      2959     2959.0  wm-rh-bankssts                   106.3684     7.5451    79.0000   120.0000    41.0000 
+654 4002      2916     2916.0  wm-rh-caudalanteriorcingulate     98.7255     7.6480    44.0000   108.0000    64.0000 
+655 4003     10428    10428.0  wm-rh-caudalmiddlefrontal        100.1481     7.7760    75.0000   113.0000    38.0000 
+656 4004      1839     1839.0  wm-rh-corpuscallosum              98.6658    13.6058    30.0000   117.0000    87.0000 
+657 4005      3778     3778.0  wm-rh-cuneus                     107.0631     8.9238    83.0000   123.0000    40.0000 
+658 4006       839      839.0  wm-rh-entorhinal                  88.1920     7.9200    55.0000   104.0000    49.0000 
+659 4007      8703     8703.0  wm-rh-fusiform                    98.7678     9.8519    64.0000   117.0000    53.0000 
+660 4008     15792    15792.0  wm-rh-inferiorparietal           107.1751     8.9913    80.0000   123.0000    43.0000 
+661 4009      7315     7315.0  wm-rh-inferiortemporal            96.5229     9.1323    72.0000   115.0000    43.0000 
+662 4010      4381     4381.0  wm-rh-isthmuscingulate           107.6892     8.4489    50.0000   122.0000    72.0000 
+663 4011     11804    11804.0  wm-rh-lateraloccipital           103.2102     9.2760    74.0000   122.0000    48.0000 
+664 4012      7198     7198.0  wm-rh-lateralorbitofrontal       102.3975     9.0209    74.0000   115.0000    41.0000 
+665 4013      9491     9491.0  wm-rh-lingual                    100.5810    10.2293    39.0000   120.0000    81.0000 
+666 4014      3658     3658.0  wm-rh-medialorbitofrontal         96.4853     9.7514    73.0000   114.0000    41.0000 
+667 4015      9894     9894.0  wm-rh-middletemporal             101.4189     8.3650    77.0000   117.0000    40.0000 
+668 4016      2340     2340.0  wm-rh-parahippocampal             96.0329     8.7354    47.0000   116.0000    69.0000 
+669 4017      6022     6022.0  wm-rh-paracentral                103.3593     8.6097    73.0000   121.0000    48.0000 
+670 4018      5602     5602.0  wm-rh-parsopercularis            101.5690     8.3320    73.0000   114.0000    41.0000 
+671 4019      1492     1492.0  wm-rh-parsorbitalis              100.8144     8.3634    81.0000   114.0000    33.0000 
+672 4020      4707     4707.0  wm-rh-parstriangularis           101.7296     8.3638    75.0000   114.0000    39.0000 
+673 4021      4459     4459.0  wm-rh-pericalcarine              101.8165     9.5423    67.0000   123.0000    56.0000 
+674 4022     11258    11258.0  wm-rh-postcentral                 99.8682     7.9272    76.0000   120.0000    44.0000 
+675 4023      4820     4820.0  wm-rh-posteriorcingulate         102.4551     8.1673    50.0000   118.0000    68.0000 
+676 4024     18877    18877.0  wm-rh-precentral                  99.4745     7.3570    73.0000   114.0000    41.0000 
+677 4025     11642    11642.0  wm-rh-precuneus                  110.1841     8.9016    78.0000   125.0000    47.0000 
+678 4026      1989     1989.0  wm-rh-rostralanteriorcingulate    98.6935     9.4192    74.0000   112.0000    38.0000 
+679 4027     13388    13388.0  wm-rh-rostralmiddlefrontal       101.0477     8.8805    75.0000   114.0000    39.0000 
+680 4028     26277    26277.0  wm-rh-superiorfrontal             97.1285     8.1011    71.0000   113.0000    42.0000 
+681 4029     14441    14441.0  wm-rh-superiorparietal           108.7799     8.8688    81.0000   126.0000    45.0000 
+682 4030      8993     8993.0  wm-rh-superiortemporal            98.3442     8.4922    72.0000   115.0000    43.0000 
+683 4031     13084    13084.0  wm-rh-supramarginal              106.4452     7.7308    80.0000   119.0000    39.0000 
+684 4032       252      252.0  wm-rh-frontalpole                 87.8744     7.2465    76.0000   107.0000    31.0000 
+685 4033       986      986.0  wm-rh-temporalpole                91.2077     8.0467    74.0000   109.0000    35.0000 
+686 4034       697      697.0  wm-rh-transversetemporal          97.0941     5.5548    80.0000   110.0000    30.0000 
+687 4035     10534    10534.0  wm-rh-insula                      98.5021     9.8183    62.0000   118.0000    56.0000 
+688 4100         0        0.0  wm-rh-Unknown                      0.0000     0.0000     0.0000     0.0000     0.0000 
+689 4101         0        0.0  wm-rh-Corpus_callosum              0.0000     0.0000     0.0000     0.0000     0.0000 
+690 4102         0        0.0  wm-rh-G_and_S_Insula_ONLY_AVERAGE     0.0000     0.0000     0.0000     0.0000     0.0000 
+691 4103         0        0.0  wm-rh-G_cingulate-Isthmus          0.0000     0.0000     0.0000     0.0000     0.0000 
+692 4104         0        0.0  wm-rh-G_cingulate-Main_part        0.0000     0.0000     0.0000     0.0000     0.0000 
+693 4105         0        0.0  wm-rh-G_cuneus                     0.0000     0.0000     0.0000     0.0000     0.0000 
+694 4106         0        0.0  wm-rh-G_frontal_inf-Opercular_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+695 4107         0        0.0  wm-rh-G_frontal_inf-Orbital_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+696 4108         0        0.0  wm-rh-G_frontal_inf-Triangular_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+697 4109         0        0.0  wm-rh-G_frontal_middle             0.0000     0.0000     0.0000     0.0000     0.0000 
+698 4110         0        0.0  wm-rh-G_frontal_superior           0.0000     0.0000     0.0000     0.0000     0.0000 
+699 4111         0        0.0  wm-rh-G_frontomarginal             0.0000     0.0000     0.0000     0.0000     0.0000 
+700 4112         0        0.0  wm-rh-G_insular_long               0.0000     0.0000     0.0000     0.0000     0.0000 
+701 4113         0        0.0  wm-rh-G_insular_short              0.0000     0.0000     0.0000     0.0000     0.0000 
+702 4114         0        0.0  wm-rh-G_and_S_occipital_inferior     0.0000     0.0000     0.0000     0.0000     0.0000 
+703 4115         0        0.0  wm-rh-G_occipital_middle           0.0000     0.0000     0.0000     0.0000     0.0000 
+704 4116         0        0.0  wm-rh-G_occipital_superior         0.0000     0.0000     0.0000     0.0000     0.0000 
+705 4117         0        0.0  wm-rh-G_occipit-temp_lat-Or_fusiform     0.0000     0.0000     0.0000     0.0000     0.0000 
+706 4118         0        0.0  wm-rh-G_occipit-temp_med-Lingual_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+707 4119         0        0.0  wm-rh-G_occipit-temp_med-Parahippocampal_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+708 4120         0        0.0  wm-rh-G_orbital                    0.0000     0.0000     0.0000     0.0000     0.0000 
+709 4121         0        0.0  wm-rh-G_paracentral                0.0000     0.0000     0.0000     0.0000     0.0000 
+710 4122         0        0.0  wm-rh-G_parietal_inferior-Angular_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+711 4123         0        0.0  wm-rh-G_parietal_inferior-Supramarginal_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+712 4124         0        0.0  wm-rh-G_parietal_superior          0.0000     0.0000     0.0000     0.0000     0.0000 
+713 4125         0        0.0  wm-rh-G_postcentral                0.0000     0.0000     0.0000     0.0000     0.0000 
+714 4126         0        0.0  wm-rh-G_precentral                 0.0000     0.0000     0.0000     0.0000     0.0000 
+715 4127         0        0.0  wm-rh-G_precuneus                  0.0000     0.0000     0.0000     0.0000     0.0000 
+716 4128         0        0.0  wm-rh-G_rectus                     0.0000     0.0000     0.0000     0.0000     0.0000 
+717 4129         0        0.0  wm-rh-G_subcallosal                0.0000     0.0000     0.0000     0.0000     0.0000 
+718 4130         0        0.0  wm-rh-G_subcentral                 0.0000     0.0000     0.0000     0.0000     0.0000 
+719 4131         0        0.0  wm-rh-G_temporal_inferior          0.0000     0.0000     0.0000     0.0000     0.0000 
+720 4132         0        0.0  wm-rh-G_temporal_middle            0.0000     0.0000     0.0000     0.0000     0.0000 
+721 4133         0        0.0  wm-rh-G_temp_sup-G_temp_transv_and_interm_S     0.0000     0.0000     0.0000     0.0000     0.0000 
+722 4134         0        0.0  wm-rh-G_temp_sup-Lateral_aspect     0.0000     0.0000     0.0000     0.0000     0.0000 
+723 4135         0        0.0  wm-rh-G_temp_sup-Planum_polare     0.0000     0.0000     0.0000     0.0000     0.0000 
+724 4136         0        0.0  wm-rh-G_temp_sup-Planum_tempolare     0.0000     0.0000     0.0000     0.0000     0.0000 
+725 4137         0        0.0  wm-rh-G_and_S_transverse_frontopolar     0.0000     0.0000     0.0000     0.0000     0.0000 
+726 4138         0        0.0  wm-rh-Lat_Fissure-ant_sgt-ramus_horizontal     0.0000     0.0000     0.0000     0.0000     0.0000 
+727 4139         0        0.0  wm-rh-Lat_Fissure-ant_sgt-ramus_vertical     0.0000     0.0000     0.0000     0.0000     0.0000 
+728 4140         0        0.0  wm-rh-Lat_Fissure-post_sgt         0.0000     0.0000     0.0000     0.0000     0.0000 
+729 4141         0        0.0  wm-rh-Medial_wall                  0.0000     0.0000     0.0000     0.0000     0.0000 
+730 4142         0        0.0  wm-rh-Pole_occipital               0.0000     0.0000     0.0000     0.0000     0.0000 
+731 4143         0        0.0  wm-rh-Pole_temporal                0.0000     0.0000     0.0000     0.0000     0.0000 
+732 4144         0        0.0  wm-rh-S_calcarine                  0.0000     0.0000     0.0000     0.0000     0.0000 
+733 4145         0        0.0  wm-rh-S_central                    0.0000     0.0000     0.0000     0.0000     0.0000 
+734 4146         0        0.0  wm-rh-S_central_insula             0.0000     0.0000     0.0000     0.0000     0.0000 
+735 4147         0        0.0  wm-rh-S_cingulate-Main_part_and_Intracingulate     0.0000     0.0000     0.0000     0.0000     0.0000 
+736 4148         0        0.0  wm-rh-S_cingulate-Marginalis_part     0.0000     0.0000     0.0000     0.0000     0.0000 
+737 4149         0        0.0  wm-rh-S_circular_insula_anterior     0.0000     0.0000     0.0000     0.0000     0.0000 
+738 4150         0        0.0  wm-rh-S_circular_insula_inferior     0.0000     0.0000     0.0000     0.0000     0.0000 
+739 4151         0        0.0  wm-rh-S_circular_insula_superior     0.0000     0.0000     0.0000     0.0000     0.0000 
+740 4152         0        0.0  wm-rh-S_collateral_transverse_ant     0.0000     0.0000     0.0000     0.0000     0.0000 
+741 4153         0        0.0  wm-rh-S_collateral_transverse_post     0.0000     0.0000     0.0000     0.0000     0.0000 
+742 4154         0        0.0  wm-rh-S_frontal_inferior           0.0000     0.0000     0.0000     0.0000     0.0000 
+743 4155         0        0.0  wm-rh-S_frontal_middle             0.0000     0.0000     0.0000     0.0000     0.0000 
+744 4156         0        0.0  wm-rh-S_frontal_superior           0.0000     0.0000     0.0000     0.0000     0.0000 
+745 4157         0        0.0  wm-rh-S_frontomarginal             0.0000     0.0000     0.0000     0.0000     0.0000 
+746 4158         0        0.0  wm-rh-S_intermedius_primus-Jensen     0.0000     0.0000     0.0000     0.0000     0.0000 
+747 4159         0        0.0  wm-rh-S_intraparietal-and_Parietal_transverse     0.0000     0.0000     0.0000     0.0000     0.0000 
+748 4160         0        0.0  wm-rh-S_occipital_anterior         0.0000     0.0000     0.0000     0.0000     0.0000 
+749 4161         0        0.0  wm-rh-S_occipital_middle_and_Lunatus     0.0000     0.0000     0.0000     0.0000     0.0000 
+750 4162         0        0.0  wm-rh-S_occipital_superior_and_transversalis     0.0000     0.0000     0.0000     0.0000     0.0000 
+751 4163         0        0.0  wm-rh-S_occipito-temporal_lateral     0.0000     0.0000     0.0000     0.0000     0.0000 
+752 4164         0        0.0  wm-rh-S_occipito-temporal_medial_and_S_Lingual     0.0000     0.0000     0.0000     0.0000     0.0000 
+753 4165         0        0.0  wm-rh-S_orbital-H_shapped          0.0000     0.0000     0.0000     0.0000     0.0000 
+754 4166         0        0.0  wm-rh-S_orbital_lateral            0.0000     0.0000     0.0000     0.0000     0.0000 
+755 4167         0        0.0  wm-rh-S_orbital_medial-Or_olfactory     0.0000     0.0000     0.0000     0.0000     0.0000 
+756 4168         0        0.0  wm-rh-S_paracentral                0.0000     0.0000     0.0000     0.0000     0.0000 
+757 4169         0        0.0  wm-rh-S_parieto_occipital          0.0000     0.0000     0.0000     0.0000     0.0000 
+758 4170         0        0.0  wm-rh-S_pericallosal               0.0000     0.0000     0.0000     0.0000     0.0000 
+759 4171         0        0.0  wm-rh-S_postcentral                0.0000     0.0000     0.0000     0.0000     0.0000 
+760 4172         0        0.0  wm-rh-S_precentral-Inferior-part     0.0000     0.0000     0.0000     0.0000     0.0000 
+761 4173         0        0.0  wm-rh-S_precentral-Superior-part     0.0000     0.0000     0.0000     0.0000     0.0000 
+762 4174         0        0.0  wm-rh-S_subcentral_ant             0.0000     0.0000     0.0000     0.0000     0.0000 
+763 4175         0        0.0  wm-rh-S_subcentral_post            0.0000     0.0000     0.0000     0.0000     0.0000 
+764 4176         0        0.0  wm-rh-S_suborbital                 0.0000     0.0000     0.0000     0.0000     0.0000 
+765 4177         0        0.0  wm-rh-S_subparietal                0.0000     0.0000     0.0000     0.0000     0.0000 
+766 4178         0        0.0  wm-rh-S_supracingulate             0.0000     0.0000     0.0000     0.0000     0.0000 
+767 4179         0        0.0  wm-rh-S_temporal_inferior          0.0000     0.0000     0.0000     0.0000     0.0000 
+768 4180         0        0.0  wm-rh-S_temporal_superior          0.0000     0.0000     0.0000     0.0000     0.0000 
+769 4181         0        0.0  wm-rh-S_temporal_transverse        0.0000     0.0000     0.0000     0.0000     0.0000 
+770 5001     51366    51366.0  Left-UnsegmentedWhiteMatter      105.5483     9.4284    28.0000   127.0000    99.0000 
+771 5002     50705    50705.0  Right-UnsegmentedWhiteMatter     105.9647     9.4727    19.0000   124.0000   105.0000 
+772 5050         0        0.0  Left-SLF1_waypoint                 0.0000     0.0000     0.0000     0.0000     0.0000 
+773 5051         0        0.0  Left-SLF1-Start                    0.0000     0.0000     0.0000     0.0000     0.0000 
+774 5052         0        0.0  Left-SLF1-End                      0.0000     0.0000     0.0000     0.0000     0.0000 
+775 5053         0        0.0  Right-SLF1_waypoint                0.0000     0.0000     0.0000     0.0000     0.0000 
+776 5054         0        0.0  Right-SLF1-Start                   0.0000     0.0000     0.0000     0.0000     0.0000 
+777 5055         0        0.0  Right-SLF1-End                     0.0000     0.0000     0.0000     0.0000     0.0000 
+778 5056         0        0.0  Left-SLF2_waypoint                 0.0000     0.0000     0.0000     0.0000     0.0000 
+779 5057         0        0.0  Left-SLF2-Start                    0.0000     0.0000     0.0000     0.0000     0.0000 
+780 5058         0        0.0  Left-SLF2-End                      0.0000     0.0000     0.0000     0.0000     0.0000 
+781 5059         0        0.0  Right-SLF2_waypoint                0.0000     0.0000     0.0000     0.0000     0.0000 
+782 5060         0        0.0  Right-SLF2-Start                   0.0000     0.0000     0.0000     0.0000     0.0000 
+783 5061         0        0.0  Right-SLF2-End                     0.0000     0.0000     0.0000     0.0000     0.0000 
+784 5062         0        0.0  Left-SLF3_waypoint                 0.0000     0.0000     0.0000     0.0000     0.0000 
+785 5063         0        0.0  Left-SLF3-Start                    0.0000     0.0000     0.0000     0.0000     0.0000 
+786 5064         0        0.0  Left-SLF3-End                      0.0000     0.0000     0.0000     0.0000     0.0000 
+787 5065         0        0.0  Right-SLF3_waypoint                0.0000     0.0000     0.0000     0.0000     0.0000 
+788 5066         0        0.0  Right-SLF3-Start                   0.0000     0.0000     0.0000     0.0000     0.0000 
+789 5067         0        0.0  Right-SLF3-End                     0.0000     0.0000     0.0000     0.0000     0.0000 
+790 5068         0        0.0  Left-CST_waypoint                  0.0000     0.0000     0.0000     0.0000     0.0000 
+791 5069         0        0.0  Left-CST-Start                     0.0000     0.0000     0.0000     0.0000     0.0000 
+792 5070         0        0.0  Left-CST-End                       0.0000     0.0000     0.0000     0.0000     0.0000 
+793 5071         0        0.0  Right-CST_waypoint                 0.0000     0.0000     0.0000     0.0000     0.0000 
+794 5072         0        0.0  Right-CST-Start                    0.0000     0.0000     0.0000     0.0000     0.0000 
+795 5073         0        0.0  Right-CST-End                      0.0000     0.0000     0.0000     0.0000     0.0000 
+796 5074         0        0.0  Left-Cingulum_Body_waypoint        0.0000     0.0000     0.0000     0.0000     0.0000 
+797 5075         0        0.0  Left-Cingulum_Body-Start           0.0000     0.0000     0.0000     0.0000     0.0000 
+798 5076         0        0.0  Left-Cingulum_Body-End             0.0000     0.0000     0.0000     0.0000     0.0000 
+799 5077         0        0.0  Right-Cingulum_Body_waypoint       0.0000     0.0000     0.0000     0.0000     0.0000 
+800 5078         0        0.0  Right-Cingulum_Body-Start          0.0000     0.0000     0.0000     0.0000     0.0000 
+801 5079         0        0.0  Right-Cingulum_Body-End            0.0000     0.0000     0.0000     0.0000     0.0000 
+802 5080         0        0.0  Left-Uncinate_Fasciculus_waypoint     0.0000     0.0000     0.0000     0.0000     0.0000 
+803 5081         0        0.0  Left-Uncinate_Fasciculus-Start     0.0000     0.0000     0.0000     0.0000     0.0000 
+804 5082         0        0.0  Left-Uncinate_Fasciculus-End       0.0000     0.0000     0.0000     0.0000     0.0000 
+805 5083         0        0.0  Right-Uncinate_Fasciculus_waypoint     0.0000     0.0000     0.0000     0.0000     0.0000 
+806 5084         0        0.0  Right-Uncinate_Fasciculus-Start     0.0000     0.0000     0.0000     0.0000     0.0000 
+807 5085         0        0.0  Right-Uncinate_Fasciculus-End      0.0000     0.0000     0.0000     0.0000     0.0000 
+808 5086         0        0.0  Left-Inf-Fronto-occ-Fasc_waypoint     0.0000     0.0000     0.0000     0.0000     0.0000 
+809 5087         0        0.0  Left-Inf-Fronto-occ-Fasc-Start     0.0000     0.0000     0.0000     0.0000     0.0000 
+810 5088         0        0.0  Left-Inf-Fronto-occ-Fasc-End       0.0000     0.0000     0.0000     0.0000     0.0000 
+811 5089         0        0.0  Right-Inf-Fronto-occ-Fasc_waypoint     0.0000     0.0000     0.0000     0.0000     0.0000 
+812 5090         0        0.0  Right-Inf-Fronto-occ-Fasc-Start     0.0000     0.0000     0.0000     0.0000     0.0000 
+813 5091         0        0.0  Right-Inf-Fronto-occ-Fasc-End      0.0000     0.0000     0.0000     0.0000     0.0000 
+814 5092         0        0.0  Left-Sup-Fronto-occ-Fasc_waypoint     0.0000     0.0000     0.0000     0.0000     0.0000 
+815 5093         0        0.0  Left-Sup-Fronto-occ-Fasc-Start     0.0000     0.0000     0.0000     0.0000     0.0000 
+816 5094         0        0.0  Left-Sup-Fronto-occ-Fasc-End       0.0000     0.0000     0.0000     0.0000     0.0000 
+817 5095         0        0.0  Right-Sup-Fronto-occ-Fasc_waypoint     0.0000     0.0000     0.0000     0.0000     0.0000 
+818 5096         0        0.0  Right-Sup-Fronto-occ-Fasc-Start     0.0000     0.0000     0.0000     0.0000     0.0000 
+819 5097         0        0.0  Right-Sup-Fronto-occ-Fasc-End      0.0000     0.0000     0.0000     0.0000     0.0000 
+820 5098         0        0.0  Left-Inf-Longitudinal-Fasc_waypoint     0.0000     0.0000     0.0000     0.0000     0.0000 
+821 5099         0        0.0  Left-Inf-Longitudinal-Fasc-Start     0.0000     0.0000     0.0000     0.0000     0.0000 
+822 5100         0        0.0  Left-Inf-Longitudinal-Fasc-End     0.0000     0.0000     0.0000     0.0000     0.0000 
+823 5101         0        0.0  Right-Inf-Longitudinal-Fasc_waypoint     0.0000     0.0000     0.0000     0.0000     0.0000 
+824 5102         0        0.0  Right-Inf-Longitudinal-Fasc-Start     0.0000     0.0000     0.0000     0.0000     0.0000 
+825 5103         0        0.0  Right-Inf-Longitudinal-Fasc-End     0.0000     0.0000     0.0000     0.0000     0.0000 
+826 5104         0        0.0  Right-Occipital-optic-radiation-Start     0.0000     0.0000     0.0000     0.0000     0.0000 
+827 5105         0        0.0  Right-Occipital-optic-radiation-waypoint     0.0000     0.0000     0.0000     0.0000     0.0000 
+828 5106         0        0.0  Right-Occipital-optic-radiation-End     0.0000     0.0000     0.0000     0.0000     0.0000 
+829 5107         0        0.0  Left-Occipital-optic-radiation-Start     0.0000     0.0000     0.0000     0.0000     0.0000 
+830 5108         0        0.0  Left-Occipital-optic-radiation-waypoint     0.0000     0.0000     0.0000     0.0000     0.0000 
+831 5109         0        0.0  Left-Occipital-optic-radiation-End     0.0000     0.0000     0.0000     0.0000     0.0000 
+832 5110         0        0.0  Right-Temporal-optic-radiation-start     0.0000     0.0000     0.0000     0.0000     0.0000 
+833 5111         0        0.0  Right-Temporal-optic-radiation-waypoint     0.0000     0.0000     0.0000     0.0000     0.0000 
+834 5112         0        0.0  Right-Temporal-optic-radiation-end     0.0000     0.0000     0.0000     0.0000     0.0000 
+835 5113         0        0.0  Left-Temporal-optic-radiation-start     0.0000     0.0000     0.0000     0.0000     0.0000 
+836 5114         0        0.0  Left-Temporal-optic-radiation-waypoint     0.0000     0.0000     0.0000     0.0000     0.0000 
+837 5115         0        0.0  Left-Temporal-optic-radiation-end     0.0000     0.0000     0.0000     0.0000     0.0000 
+838 6000         0        0.0  CST-orig                           0.0000     0.0000     0.0000     0.0000     0.0000 
+839 6001         0        0.0  CST-hammer                         0.0000     0.0000     0.0000     0.0000     0.0000 
+840 6002         0        0.0  CST-CVS                            0.0000     0.0000     0.0000     0.0000     0.0000 
+841 6003         0        0.0  CST-flirt                          0.0000     0.0000     0.0000     0.0000     0.0000 
+842 6010         0        0.0  Left-SLF1                          0.0000     0.0000     0.0000     0.0000     0.0000 
+843 6020         0        0.0  Right-SLF1                         0.0000     0.0000     0.0000     0.0000     0.0000 
+844 6030         0        0.0  Left-SLF3                          0.0000     0.0000     0.0000     0.0000     0.0000 
+845 6040         0        0.0  Right-SLF3                         0.0000     0.0000     0.0000     0.0000     0.0000 
+846 6050         0        0.0  Left-CST                           0.0000     0.0000     0.0000     0.0000     0.0000 
+847 6060         0        0.0  Right-CST                          0.0000     0.0000     0.0000     0.0000     0.0000 
+848 6070         0        0.0  Left-SLF2                          0.0000     0.0000     0.0000     0.0000     0.0000 
+849 6080         0        0.0  Right-SLF2                         0.0000     0.0000     0.0000     0.0000     0.0000 
+850 7001         0        0.0  Lateral-nucleus                    0.0000     0.0000     0.0000     0.0000     0.0000 
+851 7002         0        0.0  Basolateral-nucleus                0.0000     0.0000     0.0000     0.0000     0.0000 
+852 7003         0        0.0  Basal-nucleus                      0.0000     0.0000     0.0000     0.0000     0.0000 
+853 7004         0        0.0  Centromedial-nucleus               0.0000     0.0000     0.0000     0.0000     0.0000 
+854 7005         0        0.0  Central-nucleus                    0.0000     0.0000     0.0000     0.0000     0.0000 
+855 7006         0        0.0  Medial-nucleus                     0.0000     0.0000     0.0000     0.0000     0.0000 
+856 7007         0        0.0  Cortical-nucleus                   0.0000     0.0000     0.0000     0.0000     0.0000 
+857 7008         0        0.0  Accessory-Basal-nucleus            0.0000     0.0000     0.0000     0.0000     0.0000 
+858 7009         0        0.0  Corticoamygdaloid-transitio        0.0000     0.0000     0.0000     0.0000     0.0000 
+859 7010         0        0.0  Anterior-amygdaloid-area-AAA       0.0000     0.0000     0.0000     0.0000     0.0000 
+860 7011         0        0.0  Fusion-amygdala-HP-FAH             0.0000     0.0000     0.0000     0.0000     0.0000 
+861 7012         0        0.0  Hippocampal-amygdala-transition-HATA     0.0000     0.0000     0.0000     0.0000     0.0000 
+862 7013         0        0.0  Endopiriform-nucleus               0.0000     0.0000     0.0000     0.0000     0.0000 
+863 7014         0        0.0  Lateral-nucleus-olfactory-tract     0.0000     0.0000     0.0000     0.0000     0.0000 
+864 7015         0        0.0  Paralaminar-nucleus                0.0000     0.0000     0.0000     0.0000     0.0000 
+865 7016         0        0.0  Intercalated-nucleus               0.0000     0.0000     0.0000     0.0000     0.0000 
+866 7017         0        0.0  Prepiriform-cortex                 0.0000     0.0000     0.0000     0.0000     0.0000 
+867 7018         0        0.0  extra1                             0.0000     0.0000     0.0000     0.0000     0.0000 
+868 7019         0        0.0  extra2                             0.0000     0.0000     0.0000     0.0000     0.0000 
+869 7020         0        0.0  extra3                             0.0000     0.0000     0.0000     0.0000     0.0000 
+870 7100         0        0.0  Brainstem-inferior-colliculus      0.0000     0.0000     0.0000     0.0000     0.0000 
+871 7101         0        0.0  Brainstem-cochlear-nucleus         0.0000     0.0000     0.0000     0.0000     0.0000 
+872 8001         0        0.0  Thalamus-Anterior                  0.0000     0.0000     0.0000     0.0000     0.0000 
+873 8002         0        0.0  Thalamus-Ventral-anterior          0.0000     0.0000     0.0000     0.0000     0.0000 
+874 8003         0        0.0  Thalamus-Lateral-dorsal            0.0000     0.0000     0.0000     0.0000     0.0000 
+875 8004         0        0.0  Thalamus-Lateral-posterior         0.0000     0.0000     0.0000     0.0000     0.0000 
+876 8005         0        0.0  Thalamus-Ventral-lateral           0.0000     0.0000     0.0000     0.0000     0.0000 
+877 8006         0        0.0  Thalamus-Ventral-posterior-medial     0.0000     0.0000     0.0000     0.0000     0.0000 
+878 8007         0        0.0  Thalamus-Ventral-posterior-lateral     0.0000     0.0000     0.0000     0.0000     0.0000 
+879 8008         0        0.0  Thalamus-intralaminar              0.0000     0.0000     0.0000     0.0000     0.0000 
+880 8009         0        0.0  Thalamus-centromedian              0.0000     0.0000     0.0000     0.0000     0.0000 
+881 8010         0        0.0  Thalamus-mediodorsal               0.0000     0.0000     0.0000     0.0000     0.0000 
+882 8011         0        0.0  Thalamus-medial                    0.0000     0.0000     0.0000     0.0000     0.0000 
+883 8012         0        0.0  Thalamus-pulvinar                  0.0000     0.0000     0.0000     0.0000     0.0000 
+884 8013         0        0.0  Thalamus-lateral-geniculate        0.0000     0.0000     0.0000     0.0000     0.0000 
+885 8014         0        0.0  Thalamus-medial-geniculate         0.0000     0.0000     0.0000     0.0000     0.0000 
+886 11100         0        0.0  ctx_lh_Unknown                     0.0000     0.0000     0.0000     0.0000     0.0000 
+887 11101         0        0.0  ctx_lh_G_and_S_frontomargin        0.0000     0.0000     0.0000     0.0000     0.0000 
+888 11102         0        0.0  ctx_lh_G_and_S_occipital_inf       0.0000     0.0000     0.0000     0.0000     0.0000 
+889 11103         0        0.0  ctx_lh_G_and_S_paracentral         0.0000     0.0000     0.0000     0.0000     0.0000 
+890 11104         0        0.0  ctx_lh_G_and_S_subcentral          0.0000     0.0000     0.0000     0.0000     0.0000 
+891 11105         0        0.0  ctx_lh_G_and_S_transv_frontopol     0.0000     0.0000     0.0000     0.0000     0.0000 
+892 11106         0        0.0  ctx_lh_G_and_S_cingul-Ant          0.0000     0.0000     0.0000     0.0000     0.0000 
+893 11107         0        0.0  ctx_lh_G_and_S_cingul-Mid-Ant      0.0000     0.0000     0.0000     0.0000     0.0000 
+894 11108         0        0.0  ctx_lh_G_and_S_cingul-Mid-Post     0.0000     0.0000     0.0000     0.0000     0.0000 
+895 11109         0        0.0  ctx_lh_G_cingul-Post-dorsal        0.0000     0.0000     0.0000     0.0000     0.0000 
+896 11110         0        0.0  ctx_lh_G_cingul-Post-ventral       0.0000     0.0000     0.0000     0.0000     0.0000 
+897 11111         0        0.0  ctx_lh_G_cuneus                    0.0000     0.0000     0.0000     0.0000     0.0000 
+898 11112         0        0.0  ctx_lh_G_front_inf-Opercular       0.0000     0.0000     0.0000     0.0000     0.0000 
+899 11113         0        0.0  ctx_lh_G_front_inf-Orbital         0.0000     0.0000     0.0000     0.0000     0.0000 
+900 11114         0        0.0  ctx_lh_G_front_inf-Triangul        0.0000     0.0000     0.0000     0.0000     0.0000 
+901 11115         0        0.0  ctx_lh_G_front_middle              0.0000     0.0000     0.0000     0.0000     0.0000 
+902 11116         0        0.0  ctx_lh_G_front_sup                 0.0000     0.0000     0.0000     0.0000     0.0000 
+903 11117         0        0.0  ctx_lh_G_Ins_lg_and_S_cent_ins     0.0000     0.0000     0.0000     0.0000     0.0000 
+904 11118         0        0.0  ctx_lh_G_insular_short             0.0000     0.0000     0.0000     0.0000     0.0000 
+905 11119         0        0.0  ctx_lh_G_occipital_middle          0.0000     0.0000     0.0000     0.0000     0.0000 
+906 11120         0        0.0  ctx_lh_G_occipital_sup             0.0000     0.0000     0.0000     0.0000     0.0000 
+907 11121         0        0.0  ctx_lh_G_oc-temp_lat-fusifor       0.0000     0.0000     0.0000     0.0000     0.0000 
+908 11122         0        0.0  ctx_lh_G_oc-temp_med-Lingual       0.0000     0.0000     0.0000     0.0000     0.0000 
+909 11123         0        0.0  ctx_lh_G_oc-temp_med-Parahip       0.0000     0.0000     0.0000     0.0000     0.0000 
+910 11124         0        0.0  ctx_lh_G_orbital                   0.0000     0.0000     0.0000     0.0000     0.0000 
+911 11125         0        0.0  ctx_lh_G_pariet_inf-Angular        0.0000     0.0000     0.0000     0.0000     0.0000 
+912 11126         0        0.0  ctx_lh_G_pariet_inf-Supramar       0.0000     0.0000     0.0000     0.0000     0.0000 
+913 11127         0        0.0  ctx_lh_G_parietal_sup              0.0000     0.0000     0.0000     0.0000     0.0000 
+914 11128         0        0.0  ctx_lh_G_postcentral               0.0000     0.0000     0.0000     0.0000     0.0000 
+915 11129         0        0.0  ctx_lh_G_precentral                0.0000     0.0000     0.0000     0.0000     0.0000 
+916 11130         0        0.0  ctx_lh_G_precuneus                 0.0000     0.0000     0.0000     0.0000     0.0000 
+917 11131         0        0.0  ctx_lh_G_rectus                    0.0000     0.0000     0.0000     0.0000     0.0000 
+918 11132         0        0.0  ctx_lh_G_subcallosal               0.0000     0.0000     0.0000     0.0000     0.0000 
+919 11133         0        0.0  ctx_lh_G_temp_sup-G_T_transv       0.0000     0.0000     0.0000     0.0000     0.0000 
+920 11134         0        0.0  ctx_lh_G_temp_sup-Lateral          0.0000     0.0000     0.0000     0.0000     0.0000 
+921 11135         0        0.0  ctx_lh_G_temp_sup-Plan_polar       0.0000     0.0000     0.0000     0.0000     0.0000 
+922 11136         0        0.0  ctx_lh_G_temp_sup-Plan_tempo       0.0000     0.0000     0.0000     0.0000     0.0000 
+923 11137         0        0.0  ctx_lh_G_temporal_inf              0.0000     0.0000     0.0000     0.0000     0.0000 
+924 11138         0        0.0  ctx_lh_G_temporal_middle           0.0000     0.0000     0.0000     0.0000     0.0000 
+925 11139         0        0.0  ctx_lh_Lat_Fis-ant-Horizont        0.0000     0.0000     0.0000     0.0000     0.0000 
+926 11140         0        0.0  ctx_lh_Lat_Fis-ant-Vertical        0.0000     0.0000     0.0000     0.0000     0.0000 
+927 11141         0        0.0  ctx_lh_Lat_Fis-post                0.0000     0.0000     0.0000     0.0000     0.0000 
+928 11142         0        0.0  ctx_lh_Medial_wall                 0.0000     0.0000     0.0000     0.0000     0.0000 
+929 11143         0        0.0  ctx_lh_Pole_occipital              0.0000     0.0000     0.0000     0.0000     0.0000 
+930 11144         0        0.0  ctx_lh_Pole_temporal               0.0000     0.0000     0.0000     0.0000     0.0000 
+931 11145         0        0.0  ctx_lh_S_calcarine                 0.0000     0.0000     0.0000     0.0000     0.0000 
+932 11146         0        0.0  ctx_lh_S_central                   0.0000     0.0000     0.0000     0.0000     0.0000 
+933 11147         0        0.0  ctx_lh_S_cingul-Marginalis         0.0000     0.0000     0.0000     0.0000     0.0000 
+934 11148         0        0.0  ctx_lh_S_circular_insula_ant       0.0000     0.0000     0.0000     0.0000     0.0000 
+935 11149         0        0.0  ctx_lh_S_circular_insula_inf       0.0000     0.0000     0.0000     0.0000     0.0000 
+936 11150         0        0.0  ctx_lh_S_circular_insula_sup       0.0000     0.0000     0.0000     0.0000     0.0000 
+937 11151         0        0.0  ctx_lh_S_collat_transv_ant         0.0000     0.0000     0.0000     0.0000     0.0000 
+938 11152         0        0.0  ctx_lh_S_collat_transv_post        0.0000     0.0000     0.0000     0.0000     0.0000 
+939 11153         0        0.0  ctx_lh_S_front_inf                 0.0000     0.0000     0.0000     0.0000     0.0000 
+940 11154         0        0.0  ctx_lh_S_front_middle              0.0000     0.0000     0.0000     0.0000     0.0000 
+941 11155         0        0.0  ctx_lh_S_front_sup                 0.0000     0.0000     0.0000     0.0000     0.0000 
+942 11156         0        0.0  ctx_lh_S_interm_prim-Jensen        0.0000     0.0000     0.0000     0.0000     0.0000 
+943 11157         0        0.0  ctx_lh_S_intrapariet_and_P_trans     0.0000     0.0000     0.0000     0.0000     0.0000 
+944 11158         0        0.0  ctx_lh_S_oc_middle_and_Lunatus     0.0000     0.0000     0.0000     0.0000     0.0000 
+945 11159         0        0.0  ctx_lh_S_oc_sup_and_transversal     0.0000     0.0000     0.0000     0.0000     0.0000 
+946 11160         0        0.0  ctx_lh_S_occipital_ant             0.0000     0.0000     0.0000     0.0000     0.0000 
+947 11161         0        0.0  ctx_lh_S_oc-temp_lat               0.0000     0.0000     0.0000     0.0000     0.0000 
+948 11162         0        0.0  ctx_lh_S_oc-temp_med_and_Lingual     0.0000     0.0000     0.0000     0.0000     0.0000 
+949 11163         0        0.0  ctx_lh_S_orbital_lateral           0.0000     0.0000     0.0000     0.0000     0.0000 
+950 11164         0        0.0  ctx_lh_S_orbital_med-olfact        0.0000     0.0000     0.0000     0.0000     0.0000 
+951 11165         0        0.0  ctx_lh_S_orbital-H_Shaped          0.0000     0.0000     0.0000     0.0000     0.0000 
+952 11166         0        0.0  ctx_lh_S_parieto_occipital         0.0000     0.0000     0.0000     0.0000     0.0000 
+953 11167         0        0.0  ctx_lh_S_pericallosal              0.0000     0.0000     0.0000     0.0000     0.0000 
+954 11168         0        0.0  ctx_lh_S_postcentral               0.0000     0.0000     0.0000     0.0000     0.0000 
+955 11169         0        0.0  ctx_lh_S_precentral-inf-part       0.0000     0.0000     0.0000     0.0000     0.0000 
+956 11170         0        0.0  ctx_lh_S_precentral-sup-part       0.0000     0.0000     0.0000     0.0000     0.0000 
+957 11171         0        0.0  ctx_lh_S_suborbital                0.0000     0.0000     0.0000     0.0000     0.0000 
+958 11172         0        0.0  ctx_lh_S_subparietal               0.0000     0.0000     0.0000     0.0000     0.0000 
+959 11173         0        0.0  ctx_lh_S_temporal_inf              0.0000     0.0000     0.0000     0.0000     0.0000 
+960 11174         0        0.0  ctx_lh_S_temporal_sup              0.0000     0.0000     0.0000     0.0000     0.0000 
+961 11175         0        0.0  ctx_lh_S_temporal_transverse       0.0000     0.0000     0.0000     0.0000     0.0000 
+962 12100         0        0.0  ctx_rh_Unknown                     0.0000     0.0000     0.0000     0.0000     0.0000 
+963 12101         0        0.0  ctx_rh_G_and_S_frontomargin        0.0000     0.0000     0.0000     0.0000     0.0000 
+964 12102         0        0.0  ctx_rh_G_and_S_occipital_inf       0.0000     0.0000     0.0000     0.0000     0.0000 
+965 12103         0        0.0  ctx_rh_G_and_S_paracentral         0.0000     0.0000     0.0000     0.0000     0.0000 
+966 12104         0        0.0  ctx_rh_G_and_S_subcentral          0.0000     0.0000     0.0000     0.0000     0.0000 
+967 12105         0        0.0  ctx_rh_G_and_S_transv_frontopol     0.0000     0.0000     0.0000     0.0000     0.0000 
+968 12106         0        0.0  ctx_rh_G_and_S_cingul-Ant          0.0000     0.0000     0.0000     0.0000     0.0000 
+969 12107         0        0.0  ctx_rh_G_and_S_cingul-Mid-Ant      0.0000     0.0000     0.0000     0.0000     0.0000 
+970 12108         0        0.0  ctx_rh_G_and_S_cingul-Mid-Post     0.0000     0.0000     0.0000     0.0000     0.0000 
+971 12109         0        0.0  ctx_rh_G_cingul-Post-dorsal        0.0000     0.0000     0.0000     0.0000     0.0000 
+972 12110         0        0.0  ctx_rh_G_cingul-Post-ventral       0.0000     0.0000     0.0000     0.0000     0.0000 
+973 12111         0        0.0  ctx_rh_G_cuneus                    0.0000     0.0000     0.0000     0.0000     0.0000 
+974 12112         0        0.0  ctx_rh_G_front_inf-Opercular       0.0000     0.0000     0.0000     0.0000     0.0000 
+975 12113         0        0.0  ctx_rh_G_front_inf-Orbital         0.0000     0.0000     0.0000     0.0000     0.0000 
+976 12114         0        0.0  ctx_rh_G_front_inf-Triangul        0.0000     0.0000     0.0000     0.0000     0.0000 
+977 12115         0        0.0  ctx_rh_G_front_middle              0.0000     0.0000     0.0000     0.0000     0.0000 
+978 12116         0        0.0  ctx_rh_G_front_sup                 0.0000     0.0000     0.0000     0.0000     0.0000 
+979 12117         0        0.0  ctx_rh_G_Ins_lg_and_S_cent_ins     0.0000     0.0000     0.0000     0.0000     0.0000 
+980 12118         0        0.0  ctx_rh_G_insular_short             0.0000     0.0000     0.0000     0.0000     0.0000 
+981 12119         0        0.0  ctx_rh_G_occipital_middle          0.0000     0.0000     0.0000     0.0000     0.0000 
+982 12120         0        0.0  ctx_rh_G_occipital_sup             0.0000     0.0000     0.0000     0.0000     0.0000 
+983 12121         0        0.0  ctx_rh_G_oc-temp_lat-fusifor       0.0000     0.0000     0.0000     0.0000     0.0000 
+984 12122         0        0.0  ctx_rh_G_oc-temp_med-Lingual       0.0000     0.0000     0.0000     0.0000     0.0000 
+985 12123         0        0.0  ctx_rh_G_oc-temp_med-Parahip       0.0000     0.0000     0.0000     0.0000     0.0000 
+986 12124         0        0.0  ctx_rh_G_orbital                   0.0000     0.0000     0.0000     0.0000     0.0000 
+987 12125         0        0.0  ctx_rh_G_pariet_inf-Angular        0.0000     0.0000     0.0000     0.0000     0.0000 
+988 12126         0        0.0  ctx_rh_G_pariet_inf-Supramar       0.0000     0.0000     0.0000     0.0000     0.0000 
+989 12127         0        0.0  ctx_rh_G_parietal_sup              0.0000     0.0000     0.0000     0.0000     0.0000 
+990 12128         0        0.0  ctx_rh_G_postcentral               0.0000     0.0000     0.0000     0.0000     0.0000 
+991 12129         0        0.0  ctx_rh_G_precentral                0.0000     0.0000     0.0000     0.0000     0.0000 
+992 12130         0        0.0  ctx_rh_G_precuneus                 0.0000     0.0000     0.0000     0.0000     0.0000 
+993 12131         0        0.0  ctx_rh_G_rectus                    0.0000     0.0000     0.0000     0.0000     0.0000 
+994 12132         0        0.0  ctx_rh_G_subcallosal               0.0000     0.0000     0.0000     0.0000     0.0000 
+995 12133         0        0.0  ctx_rh_G_temp_sup-G_T_transv       0.0000     0.0000     0.0000     0.0000     0.0000 
+996 12134         0        0.0  ctx_rh_G_temp_sup-Lateral          0.0000     0.0000     0.0000     0.0000     0.0000 
+997 12135         0        0.0  ctx_rh_G_temp_sup-Plan_polar       0.0000     0.0000     0.0000     0.0000     0.0000 
+998 12136         0        0.0  ctx_rh_G_temp_sup-Plan_tempo       0.0000     0.0000     0.0000     0.0000     0.0000 
+999 12137         0        0.0  ctx_rh_G_temporal_inf              0.0000     0.0000     0.0000     0.0000     0.0000 
+1000 12138         0        0.0  ctx_rh_G_temporal_middle           0.0000     0.0000     0.0000     0.0000     0.0000 
+1001 12139         0        0.0  ctx_rh_Lat_Fis-ant-Horizont        0.0000     0.0000     0.0000     0.0000     0.0000 
+1002 12140         0        0.0  ctx_rh_Lat_Fis-ant-Vertical        0.0000     0.0000     0.0000     0.0000     0.0000 
+1003 12141         0        0.0  ctx_rh_Lat_Fis-post                0.0000     0.0000     0.0000     0.0000     0.0000 
+1004 12142         0        0.0  ctx_rh_Medial_wall                 0.0000     0.0000     0.0000     0.0000     0.0000 
+1005 12143         0        0.0  ctx_rh_Pole_occipital              0.0000     0.0000     0.0000     0.0000     0.0000 
+1006 12144         0        0.0  ctx_rh_Pole_temporal               0.0000     0.0000     0.0000     0.0000     0.0000 
+1007 12145         0        0.0  ctx_rh_S_calcarine                 0.0000     0.0000     0.0000     0.0000     0.0000 
+1008 12146         0        0.0  ctx_rh_S_central                   0.0000     0.0000     0.0000     0.0000     0.0000 
+1009 12147         0        0.0  ctx_rh_S_cingul-Marginalis         0.0000     0.0000     0.0000     0.0000     0.0000 
+1010 12148         0        0.0  ctx_rh_S_circular_insula_ant       0.0000     0.0000     0.0000     0.0000     0.0000 
+1011 12149         0        0.0  ctx_rh_S_circular_insula_inf       0.0000     0.0000     0.0000     0.0000     0.0000 
+1012 12150         0        0.0  ctx_rh_S_circular_insula_sup       0.0000     0.0000     0.0000     0.0000     0.0000 
+1013 12151         0        0.0  ctx_rh_S_collat_transv_ant         0.0000     0.0000     0.0000     0.0000     0.0000 
+1014 12152         0        0.0  ctx_rh_S_collat_transv_post        0.0000     0.0000     0.0000     0.0000     0.0000 
+1015 12153         0        0.0  ctx_rh_S_front_inf                 0.0000     0.0000     0.0000     0.0000     0.0000 
+1016 12154         0        0.0  ctx_rh_S_front_middle              0.0000     0.0000     0.0000     0.0000     0.0000 
+1017 12155         0        0.0  ctx_rh_S_front_sup                 0.0000     0.0000     0.0000     0.0000     0.0000 
+1018 12156         0        0.0  ctx_rh_S_interm_prim-Jensen        0.0000     0.0000     0.0000     0.0000     0.0000 
+1019 12157         0        0.0  ctx_rh_S_intrapariet_and_P_trans     0.0000     0.0000     0.0000     0.0000     0.0000 
+1020 12158         0        0.0  ctx_rh_S_oc_middle_and_Lunatus     0.0000     0.0000     0.0000     0.0000     0.0000 
+1021 12159         0        0.0  ctx_rh_S_oc_sup_and_transversal     0.0000     0.0000     0.0000     0.0000     0.0000 
+1022 12160         0        0.0  ctx_rh_S_occipital_ant             0.0000     0.0000     0.0000     0.0000     0.0000 
+1023 12161         0        0.0  ctx_rh_S_oc-temp_lat               0.0000     0.0000     0.0000     0.0000     0.0000 
+1024 12162         0        0.0  ctx_rh_S_oc-temp_med_and_Lingual     0.0000     0.0000     0.0000     0.0000     0.0000 
+1025 12163         0        0.0  ctx_rh_S_orbital_lateral           0.0000     0.0000     0.0000     0.0000     0.0000 
+1026 12164         0        0.0  ctx_rh_S_orbital_med-olfact        0.0000     0.0000     0.0000     0.0000     0.0000 
+1027 12165         0        0.0  ctx_rh_S_orbital-H_Shaped          0.0000     0.0000     0.0000     0.0000     0.0000 
+1028 12166         0        0.0  ctx_rh_S_parieto_occipital         0.0000     0.0000     0.0000     0.0000     0.0000 
+1029 12167         0        0.0  ctx_rh_S_pericallosal              0.0000     0.0000     0.0000     0.0000     0.0000 
+1030 12168         0        0.0  ctx_rh_S_postcentral               0.0000     0.0000     0.0000     0.0000     0.0000 
+1031 12169         0        0.0  ctx_rh_S_precentral-inf-part       0.0000     0.0000     0.0000     0.0000     0.0000 
+1032 12170         0        0.0  ctx_rh_S_precentral-sup-part       0.0000     0.0000     0.0000     0.0000     0.0000 
+1033 12171         0        0.0  ctx_rh_S_suborbital                0.0000     0.0000     0.0000     0.0000     0.0000 
+1034 12172         0        0.0  ctx_rh_S_subparietal               0.0000     0.0000     0.0000     0.0000     0.0000 
+1035 12173         0        0.0  ctx_rh_S_temporal_inf              0.0000     0.0000     0.0000     0.0000     0.0000 
+1036 12174         0        0.0  ctx_rh_S_temporal_sup              0.0000     0.0000     0.0000     0.0000     0.0000 
+1037 12175         0        0.0  ctx_rh_S_temporal_transverse       0.0000     0.0000     0.0000     0.0000     0.0000 
+1038 13100         0        0.0  wm_lh_Unknown                      0.0000     0.0000     0.0000     0.0000     0.0000 
+1039 13101         0        0.0  wm_lh_G_and_S_frontomargin         0.0000     0.0000     0.0000     0.0000     0.0000 
+1040 13102         0        0.0  wm_lh_G_and_S_occipital_inf        0.0000     0.0000     0.0000     0.0000     0.0000 
+1041 13103         0        0.0  wm_lh_G_and_S_paracentral          0.0000     0.0000     0.0000     0.0000     0.0000 
+1042 13104         0        0.0  wm_lh_G_and_S_subcentral           0.0000     0.0000     0.0000     0.0000     0.0000 
+1043 13105         0        0.0  wm_lh_G_and_S_transv_frontopol     0.0000     0.0000     0.0000     0.0000     0.0000 
+1044 13106         0        0.0  wm_lh_G_and_S_cingul-Ant           0.0000     0.0000     0.0000     0.0000     0.0000 
+1045 13107         0        0.0  wm_lh_G_and_S_cingul-Mid-Ant       0.0000     0.0000     0.0000     0.0000     0.0000 
+1046 13108         0        0.0  wm_lh_G_and_S_cingul-Mid-Post      0.0000     0.0000     0.0000     0.0000     0.0000 
+1047 13109         0        0.0  wm_lh_G_cingul-Post-dorsal         0.0000     0.0000     0.0000     0.0000     0.0000 
+1048 13110         0        0.0  wm_lh_G_cingul-Post-ventral        0.0000     0.0000     0.0000     0.0000     0.0000 
+1049 13111         0        0.0  wm_lh_G_cuneus                     0.0000     0.0000     0.0000     0.0000     0.0000 
+1050 13112         0        0.0  wm_lh_G_front_inf-Opercular        0.0000     0.0000     0.0000     0.0000     0.0000 
+1051 13113         0        0.0  wm_lh_G_front_inf-Orbital          0.0000     0.0000     0.0000     0.0000     0.0000 
+1052 13114         0        0.0  wm_lh_G_front_inf-Triangul         0.0000     0.0000     0.0000     0.0000     0.0000 
+1053 13115         0        0.0  wm_lh_G_front_middle               0.0000     0.0000     0.0000     0.0000     0.0000 
+1054 13116         0        0.0  wm_lh_G_front_sup                  0.0000     0.0000     0.0000     0.0000     0.0000 
+1055 13117         0        0.0  wm_lh_G_Ins_lg_and_S_cent_ins      0.0000     0.0000     0.0000     0.0000     0.0000 
+1056 13118         0        0.0  wm_lh_G_insular_short              0.0000     0.0000     0.0000     0.0000     0.0000 
+1057 13119         0        0.0  wm_lh_G_occipital_middle           0.0000     0.0000     0.0000     0.0000     0.0000 
+1058 13120         0        0.0  wm_lh_G_occipital_sup              0.0000     0.0000     0.0000     0.0000     0.0000 
+1059 13121         0        0.0  wm_lh_G_oc-temp_lat-fusifor        0.0000     0.0000     0.0000     0.0000     0.0000 
+1060 13122         0        0.0  wm_lh_G_oc-temp_med-Lingual        0.0000     0.0000     0.0000     0.0000     0.0000 
+1061 13123         0        0.0  wm_lh_G_oc-temp_med-Parahip        0.0000     0.0000     0.0000     0.0000     0.0000 
+1062 13124         0        0.0  wm_lh_G_orbital                    0.0000     0.0000     0.0000     0.0000     0.0000 
+1063 13125         0        0.0  wm_lh_G_pariet_inf-Angular         0.0000     0.0000     0.0000     0.0000     0.0000 
+1064 13126         0        0.0  wm_lh_G_pariet_inf-Supramar        0.0000     0.0000     0.0000     0.0000     0.0000 
+1065 13127         0        0.0  wm_lh_G_parietal_sup               0.0000     0.0000     0.0000     0.0000     0.0000 
+1066 13128         0        0.0  wm_lh_G_postcentral                0.0000     0.0000     0.0000     0.0000     0.0000 
+1067 13129         0        0.0  wm_lh_G_precentral                 0.0000     0.0000     0.0000     0.0000     0.0000 
+1068 13130         0        0.0  wm_lh_G_precuneus                  0.0000     0.0000     0.0000     0.0000     0.0000 
+1069 13131         0        0.0  wm_lh_G_rectus                     0.0000     0.0000     0.0000     0.0000     0.0000 
+1070 13132         0        0.0  wm_lh_G_subcallosal                0.0000     0.0000     0.0000     0.0000     0.0000 
+1071 13133         0        0.0  wm_lh_G_temp_sup-G_T_transv        0.0000     0.0000     0.0000     0.0000     0.0000 
+1072 13134         0        0.0  wm_lh_G_temp_sup-Lateral           0.0000     0.0000     0.0000     0.0000     0.0000 
+1073 13135         0        0.0  wm_lh_G_temp_sup-Plan_polar        0.0000     0.0000     0.0000     0.0000     0.0000 
+1074 13136         0        0.0  wm_lh_G_temp_sup-Plan_tempo        0.0000     0.0000     0.0000     0.0000     0.0000 
+1075 13137         0        0.0  wm_lh_G_temporal_inf               0.0000     0.0000     0.0000     0.0000     0.0000 
+1076 13138         0        0.0  wm_lh_G_temporal_middle            0.0000     0.0000     0.0000     0.0000     0.0000 
+1077 13139         0        0.0  wm_lh_Lat_Fis-ant-Horizont         0.0000     0.0000     0.0000     0.0000     0.0000 
+1078 13140         0        0.0  wm_lh_Lat_Fis-ant-Vertical         0.0000     0.0000     0.0000     0.0000     0.0000 
+1079 13141         0        0.0  wm_lh_Lat_Fis-post                 0.0000     0.0000     0.0000     0.0000     0.0000 
+1080 13142         0        0.0  wm_lh_Medial_wall                  0.0000     0.0000     0.0000     0.0000     0.0000 
+1081 13143         0        0.0  wm_lh_Pole_occipital               0.0000     0.0000     0.0000     0.0000     0.0000 
+1082 13144         0        0.0  wm_lh_Pole_temporal                0.0000     0.0000     0.0000     0.0000     0.0000 
+1083 13145         0        0.0  wm_lh_S_calcarine                  0.0000     0.0000     0.0000     0.0000     0.0000 
+1084 13146         0        0.0  wm_lh_S_central                    0.0000     0.0000     0.0000     0.0000     0.0000 
+1085 13147         0        0.0  wm_lh_S_cingul-Marginalis          0.0000     0.0000     0.0000     0.0000     0.0000 
+1086 13148         0        0.0  wm_lh_S_circular_insula_ant        0.0000     0.0000     0.0000     0.0000     0.0000 
+1087 13149         0        0.0  wm_lh_S_circular_insula_inf        0.0000     0.0000     0.0000     0.0000     0.0000 
+1088 13150         0        0.0  wm_lh_S_circular_insula_sup        0.0000     0.0000     0.0000     0.0000     0.0000 
+1089 13151         0        0.0  wm_lh_S_collat_transv_ant          0.0000     0.0000     0.0000     0.0000     0.0000 
+1090 13152         0        0.0  wm_lh_S_collat_transv_post         0.0000     0.0000     0.0000     0.0000     0.0000 
+1091 13153         0        0.0  wm_lh_S_front_inf                  0.0000     0.0000     0.0000     0.0000     0.0000 
+1092 13154         0        0.0  wm_lh_S_front_middle               0.0000     0.0000     0.0000     0.0000     0.0000 
+1093 13155         0        0.0  wm_lh_S_front_sup                  0.0000     0.0000     0.0000     0.0000     0.0000 
+1094 13156         0        0.0  wm_lh_S_interm_prim-Jensen         0.0000     0.0000     0.0000     0.0000     0.0000 
+1095 13157         0        0.0  wm_lh_S_intrapariet_and_P_trans     0.0000     0.0000     0.0000     0.0000     0.0000 
+1096 13158         0        0.0  wm_lh_S_oc_middle_and_Lunatus      0.0000     0.0000     0.0000     0.0000     0.0000 
+1097 13159         0        0.0  wm_lh_S_oc_sup_and_transversal     0.0000     0.0000     0.0000     0.0000     0.0000 
+1098 13160         0        0.0  wm_lh_S_occipital_ant              0.0000     0.0000     0.0000     0.0000     0.0000 
+1099 13161         0        0.0  wm_lh_S_oc-temp_lat                0.0000     0.0000     0.0000     0.0000     0.0000 
+1100 13162         0        0.0  wm_lh_S_oc-temp_med_and_Lingual     0.0000     0.0000     0.0000     0.0000     0.0000 
+1101 13163         0        0.0  wm_lh_S_orbital_lateral            0.0000     0.0000     0.0000     0.0000     0.0000 
+1102 13164         0        0.0  wm_lh_S_orbital_med-olfact         0.0000     0.0000     0.0000     0.0000     0.0000 
+1103 13165         0        0.0  wm_lh_S_orbital-H_Shaped           0.0000     0.0000     0.0000     0.0000     0.0000 
+1104 13166         0        0.0  wm_lh_S_parieto_occipital          0.0000     0.0000     0.0000     0.0000     0.0000 
+1105 13167         0        0.0  wm_lh_S_pericallosal               0.0000     0.0000     0.0000     0.0000     0.0000 
+1106 13168         0        0.0  wm_lh_S_postcentral                0.0000     0.0000     0.0000     0.0000     0.0000 
+1107 13169         0        0.0  wm_lh_S_precentral-inf-part        0.0000     0.0000     0.0000     0.0000     0.0000 
+1108 13170         0        0.0  wm_lh_S_precentral-sup-part        0.0000     0.0000     0.0000     0.0000     0.0000 
+1109 13171         0        0.0  wm_lh_S_suborbital                 0.0000     0.0000     0.0000     0.0000     0.0000 
+1110 13172         0        0.0  wm_lh_S_subparietal                0.0000     0.0000     0.0000     0.0000     0.0000 
+1111 13173         0        0.0  wm_lh_S_temporal_inf               0.0000     0.0000     0.0000     0.0000     0.0000 
+1112 13174         0        0.0  wm_lh_S_temporal_sup               0.0000     0.0000     0.0000     0.0000     0.0000 
+1113 13175         0        0.0  wm_lh_S_temporal_transverse        0.0000     0.0000     0.0000     0.0000     0.0000 
+1114 14100         0        0.0  wm_rh_Unknown                      0.0000     0.0000     0.0000     0.0000     0.0000 
+1115 14101         0        0.0  wm_rh_G_and_S_frontomargin         0.0000     0.0000     0.0000     0.0000     0.0000 
+1116 14102         0        0.0  wm_rh_G_and_S_occipital_inf        0.0000     0.0000     0.0000     0.0000     0.0000 
+1117 14103         0        0.0  wm_rh_G_and_S_paracentral          0.0000     0.0000     0.0000     0.0000     0.0000 
+1118 14104         0        0.0  wm_rh_G_and_S_subcentral           0.0000     0.0000     0.0000     0.0000     0.0000 
+1119 14105         0        0.0  wm_rh_G_and_S_transv_frontopol     0.0000     0.0000     0.0000     0.0000     0.0000 
+1120 14106         0        0.0  wm_rh_G_and_S_cingul-Ant           0.0000     0.0000     0.0000     0.0000     0.0000 
+1121 14107         0        0.0  wm_rh_G_and_S_cingul-Mid-Ant       0.0000     0.0000     0.0000     0.0000     0.0000 
+1122 14108         0        0.0  wm_rh_G_and_S_cingul-Mid-Post      0.0000     0.0000     0.0000     0.0000     0.0000 
+1123 14109         0        0.0  wm_rh_G_cingul-Post-dorsal         0.0000     0.0000     0.0000     0.0000     0.0000 
+1124 14110         0        0.0  wm_rh_G_cingul-Post-ventral        0.0000     0.0000     0.0000     0.0000     0.0000 
+1125 14111         0        0.0  wm_rh_G_cuneus                     0.0000     0.0000     0.0000     0.0000     0.0000 
+1126 14112         0        0.0  wm_rh_G_front_inf-Opercular        0.0000     0.0000     0.0000     0.0000     0.0000 
+1127 14113         0        0.0  wm_rh_G_front_inf-Orbital          0.0000     0.0000     0.0000     0.0000     0.0000 
+1128 14114         0        0.0  wm_rh_G_front_inf-Triangul         0.0000     0.0000     0.0000     0.0000     0.0000 
+1129 14115         0        0.0  wm_rh_G_front_middle               0.0000     0.0000     0.0000     0.0000     0.0000 
+1130 14116         0        0.0  wm_rh_G_front_sup                  0.0000     0.0000     0.0000     0.0000     0.0000 
+1131 14117         0        0.0  wm_rh_G_Ins_lg_and_S_cent_ins      0.0000     0.0000     0.0000     0.0000     0.0000 
+1132 14118         0        0.0  wm_rh_G_insular_short              0.0000     0.0000     0.0000     0.0000     0.0000 
+1133 14119         0        0.0  wm_rh_G_occipital_middle           0.0000     0.0000     0.0000     0.0000     0.0000 
+1134 14120         0        0.0  wm_rh_G_occipital_sup              0.0000     0.0000     0.0000     0.0000     0.0000 
+1135 14121         0        0.0  wm_rh_G_oc-temp_lat-fusifor        0.0000     0.0000     0.0000     0.0000     0.0000 
+1136 14122         0        0.0  wm_rh_G_oc-temp_med-Lingual        0.0000     0.0000     0.0000     0.0000     0.0000 
+1137 14123         0        0.0  wm_rh_G_oc-temp_med-Parahip        0.0000     0.0000     0.0000     0.0000     0.0000 
+1138 14124         0        0.0  wm_rh_G_orbital                    0.0000     0.0000     0.0000     0.0000     0.0000 
+1139 14125         0        0.0  wm_rh_G_pariet_inf-Angular         0.0000     0.0000     0.0000     0.0000     0.0000 
+1140 14126         0        0.0  wm_rh_G_pariet_inf-Supramar        0.0000     0.0000     0.0000     0.0000     0.0000 
+1141 14127         0        0.0  wm_rh_G_parietal_sup               0.0000     0.0000     0.0000     0.0000     0.0000 
+1142 14128         0        0.0  wm_rh_G_postcentral                0.0000     0.0000     0.0000     0.0000     0.0000 
+1143 14129         0        0.0  wm_rh_G_precentral                 0.0000     0.0000     0.0000     0.0000     0.0000 
+1144 14130         0        0.0  wm_rh_G_precuneus                  0.0000     0.0000     0.0000     0.0000     0.0000 
+1145 14131         0        0.0  wm_rh_G_rectus                     0.0000     0.0000     0.0000     0.0000     0.0000 
+1146 14132         0        0.0  wm_rh_G_subcallosal                0.0000     0.0000     0.0000     0.0000     0.0000 
+1147 14133         0        0.0  wm_rh_G_temp_sup-G_T_transv        0.0000     0.0000     0.0000     0.0000     0.0000 
+1148 14134         0        0.0  wm_rh_G_temp_sup-Lateral           0.0000     0.0000     0.0000     0.0000     0.0000 
+1149 14135         0        0.0  wm_rh_G_temp_sup-Plan_polar        0.0000     0.0000     0.0000     0.0000     0.0000 
+1150 14136         0        0.0  wm_rh_G_temp_sup-Plan_tempo        0.0000     0.0000     0.0000     0.0000     0.0000 
+1151 14137         0        0.0  wm_rh_G_temporal_inf               0.0000     0.0000     0.0000     0.0000     0.0000 
+1152 14138         0        0.0  wm_rh_G_temporal_middle            0.0000     0.0000     0.0000     0.0000     0.0000 
+1153 14139         0        0.0  wm_rh_Lat_Fis-ant-Horizont         0.0000     0.0000     0.0000     0.0000     0.0000 
+1154 14140         0        0.0  wm_rh_Lat_Fis-ant-Vertical         0.0000     0.0000     0.0000     0.0000     0.0000 
+1155 14141         0        0.0  wm_rh_Lat_Fis-post                 0.0000     0.0000     0.0000     0.0000     0.0000 
+1156 14142         0        0.0  wm_rh_Medial_wall                  0.0000     0.0000     0.0000     0.0000     0.0000 
+1157 14143         0        0.0  wm_rh_Pole_occipital               0.0000     0.0000     0.0000     0.0000     0.0000 
+1158 14144         0        0.0  wm_rh_Pole_temporal                0.0000     0.0000     0.0000     0.0000     0.0000 
+1159 14145         0        0.0  wm_rh_S_calcarine                  0.0000     0.0000     0.0000     0.0000     0.0000 
+1160 14146         0        0.0  wm_rh_S_central                    0.0000     0.0000     0.0000     0.0000     0.0000 
+1161 14147         0        0.0  wm_rh_S_cingul-Marginalis          0.0000     0.0000     0.0000     0.0000     0.0000 
+1162 14148         0        0.0  wm_rh_S_circular_insula_ant        0.0000     0.0000     0.0000     0.0000     0.0000 
+1163 14149         0        0.0  wm_rh_S_circular_insula_inf        0.0000     0.0000     0.0000     0.0000     0.0000 
+1164 14150         0        0.0  wm_rh_S_circular_insula_sup        0.0000     0.0000     0.0000     0.0000     0.0000 
+1165 14151         0        0.0  wm_rh_S_collat_transv_ant          0.0000     0.0000     0.0000     0.0000     0.0000 
+1166 14152         0        0.0  wm_rh_S_collat_transv_post         0.0000     0.0000     0.0000     0.0000     0.0000 
+1167 14153         0        0.0  wm_rh_S_front_inf                  0.0000     0.0000     0.0000     0.0000     0.0000 
+1168 14154         0        0.0  wm_rh_S_front_middle               0.0000     0.0000     0.0000     0.0000     0.0000 
+1169 14155         0        0.0  wm_rh_S_front_sup                  0.0000     0.0000     0.0000     0.0000     0.0000 
+1170 14156         0        0.0  wm_rh_S_interm_prim-Jensen         0.0000     0.0000     0.0000     0.0000     0.0000 
+1171 14157         0        0.0  wm_rh_S_intrapariet_and_P_trans     0.0000     0.0000     0.0000     0.0000     0.0000 
+1172 14158         0        0.0  wm_rh_S_oc_middle_and_Lunatus      0.0000     0.0000     0.0000     0.0000     0.0000 
+1173 14159         0        0.0  wm_rh_S_oc_sup_and_transversal     0.0000     0.0000     0.0000     0.0000     0.0000 
+1174 14160         0        0.0  wm_rh_S_occipital_ant              0.0000     0.0000     0.0000     0.0000     0.0000 
+1175 14161         0        0.0  wm_rh_S_oc-temp_lat                0.0000     0.0000     0.0000     0.0000     0.0000 
+1176 14162         0        0.0  wm_rh_S_oc-temp_med_and_Lingual     0.0000     0.0000     0.0000     0.0000     0.0000 
+1177 14163         0        0.0  wm_rh_S_orbital_lateral            0.0000     0.0000     0.0000     0.0000     0.0000 
+1178 14164         0        0.0  wm_rh_S_orbital_med-olfact         0.0000     0.0000     0.0000     0.0000     0.0000 
+1179 14165         0        0.0  wm_rh_S_orbital-H_Shaped           0.0000     0.0000     0.0000     0.0000     0.0000 
+1180 14166         0        0.0  wm_rh_S_parieto_occipital          0.0000     0.0000     0.0000     0.0000     0.0000 
+1181 14167         0        0.0  wm_rh_S_pericallosal               0.0000     0.0000     0.0000     0.0000     0.0000 
+1182 14168         0        0.0  wm_rh_S_postcentral                0.0000     0.0000     0.0000     0.0000     0.0000 
+1183 14169         0        0.0  wm_rh_S_precentral-inf-part        0.0000     0.0000     0.0000     0.0000     0.0000 
+1184 14170         0        0.0  wm_rh_S_precentral-sup-part        0.0000     0.0000     0.0000     0.0000     0.0000 
+1185 14171         0        0.0  wm_rh_S_suborbital                 0.0000     0.0000     0.0000     0.0000     0.0000 
+1186 14172         0        0.0  wm_rh_S_subparietal                0.0000     0.0000     0.0000     0.0000     0.0000 
+1187 14173         0        0.0  wm_rh_S_temporal_inf               0.0000     0.0000     0.0000     0.0000     0.0000 
+1188 14174         0        0.0  wm_rh_S_temporal_sup               0.0000     0.0000     0.0000     0.0000     0.0000 
+1189 14175         0        0.0  wm_rh_S_temporal_transverse        0.0000     0.0000     0.0000     0.0000     0.0000 

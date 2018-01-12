@@ -1,0 +1,1 @@
+mris_ca_label -aseg ../mri/aseg.mgz -seed 1234 Colin27_45 lh ../surf/lh.sphere.reg /apps/arch/Linux_x86_64/freesurfer/4.5.0/average/lh.destrieux.simple.2009-07-29.gcs ../label/lh.aparc.a2009s.annot

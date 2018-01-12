@@ -1,0 +1,1 @@
+mri_convert /mnt/eql/p1/users/external/jianxiaow/projects/Git_codes/data/Colin27_45/mri/rawavg.mgz /mnt/eql/p1/users/external/jianxiaow/projects/Git_codes/data/Colin27_45/mri/orig.mgz --conform

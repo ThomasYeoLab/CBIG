@@ -1,0 +1,1 @@
+mris_register -curv ../surf/lh.sphere /apps/arch/Linux_x86_64/freesurfer/4.5.0/average/lh.average.curvature.filled.buckner40.tif ../surf/lh.sphere.reg
