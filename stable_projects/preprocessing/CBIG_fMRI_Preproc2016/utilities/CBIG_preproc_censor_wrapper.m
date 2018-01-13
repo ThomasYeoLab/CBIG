@@ -1,6 +1,6 @@
-function CBIG_preproc_censor_wrapper(BOLD_in, outlier_file, TR, BOLD_interm_out, BOLD_final_out, low_f, high_f)
+function CBIG_preproc_censor_wrapper(BOLD_in, outlier_file, TR, BOLD_interm_out, BOLD_final_out, loose_mask, low_f, high_f)
 
-% CBIG_preproc_censor_wrapper(BOLD_in, outlier_file, TR, BOLD_interm_out, BOLD_final_out, low_f, high_f)
+% CBIG_preproc_censor_wrapper(BOLD_in, outlier_file, TR, BOLD_interm_out, BOLD_final_out, loose_mask, low_f, high_f)
 %
 % Motion scrubbing for fMRI preprocessing. Users can perform bandpass
 % filtering simultaneously by specifying low_f and high_f, where [low_f,
@@ -38,7 +38,7 @@ function CBIG_preproc_censor_wrapper(BOLD_in, outlier_file, TR, BOLD_interm_out,
 %       the BOLD file name of intermediate result (full path). The
 %       intermediate result means the signal of each time point (including
 %       low motion time points) recovered by Lomb-Scargle Periodogram.
-%       e.g. 'subject_dir/subject_name/bold/subject_name_bld002_rest_skip4_stc_mc_interp_inter_FDRMS0.2_DVARS50.nii.gz'
+%       e.g. '<subject_dir>/<subject_name>/bold/<subject_name>_bld002_rest_skip4_stc_mc_interp_inter_FDRMS0.2_DVARS50.nii.gz'
 %
 %     - BOLD_out: 
 %       the final BOLD file name after motion scrubbing (full path). 
@@ -49,7 +49,20 @@ function CBIG_preproc_censor_wrapper(BOLD_in, outlier_file, TR, BOLD_interm_out,
 %       passed in), the coefficients of frequency components outside the
 %       passband are set to be 0, and then we use the masked coefficients
 %       to recover the final signals.
-%       e.g. 'subject_dir/subject_name/bold/subject_name_bld002_rest_skip4_stc_mc_interp_FDRMS0.2_DVARS50.nii.gz'
+%       e.g. '<subject_dir>/<subject_name>/bold/<subject_name>_bld002_rest_skip4_stc_mc_interp_FDRMS0.2_DVARS50.nii.gz'
+% 
+%     - loose_mask:
+%       the filename of a loose whole brain mask (full path). The 
+%       interpolation will only be done for the voxels within this loose
+%       mask to save time (if passed in). The voxels outside the mask will
+%       be set to 0.
+%       e.g. '<subject_dir>/<subject_name>/bold/mask/<subject_name>.loosebrainmask.bin.nii.gz'
+%       In the cases that you are not able to pass in a loose mask (for
+%       instance, "BOLD_in" is a CIFTI dtseries file), you have two options:
+%       (1) if you still want to pass in the latter two parameters "low_f"
+%       and "high_f", you need to pass 'NONE' to "loose_mask" argument.
+%       (2) if you do not need "low_f" and "high_f", you can skip
+%       "loose_mask" argument as well.
 %
 %     - low_f:
 %       a string, low cut-off frequency. The passband includes cut-off
@@ -82,6 +95,15 @@ function CBIG_preproc_censor_wrapper(BOLD_in, outlier_file, TR, BOLD_interm_out,
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% check loose mask
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+mask_flag = 1;
+if(~exist('loose_mask', 'var') || strcmp(loose_mask, 'NONE'))
+    mask_flag = 0;
+end
+    
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % check low_f and high_f
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if(~exist('low_f', 'var') && ~exist('high_f', 'var'))
@@ -100,6 +122,13 @@ end
 % Read BOLD data and outliers
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 [input, in_vol, in_size] = read_fmri(BOLD_in);
+
+% Read loose mask and apply it, if there is one.
+if(mask_flag == 1)
+    [~, mask_vol, ~] = read_fmri(loose_mask);
+    mask_ind = find(mask_vol ~= 0);
+    in_vol = in_vol(mask_ind, :);
+end
 
 outliers = dlmread(outlier_file);                    % N (number of timepoints) x 1 binary vector, 0 means censored (high-motion) frames.
 outliers = ~outliers;                                % N x 1 binary vector, 0 means uncensored (low-motion) frames.
@@ -135,17 +164,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % divide voxels into branches, to reduce memory usage
-if(N <= 150)
-    voxbinsize = 4000;
-elseif(N > 150 && N <= 500)
-    voxbinsize = 1000;
-elseif(N > 500 && N <= 1000)
-    voxbinsize = 500;
-elseif(N > 1000 && N <= 3000)
-    voxbinsize = 200;
-else
-    voxbinsize = 100;
-end
+voxbinsize = floor(20 * size(in_vol, 1) / N / (oversample_fac/2));
 voxbin = 1:voxbinsize:size(in_vol,1);
 voxbin = [voxbin size(in_vol,1)+1];         % voxbin is the starting voxels in each branch
 
@@ -177,6 +196,19 @@ if(bandpass_flag == 0)
     out_vol(:, outliers==0) = in_vol(:, outliers==0);
 end
 
+
+% If there is a loose mask, construct output volumes
+if(mask_flag == 1)
+    tmp_interm_out = interm_out_vol;
+    interm_out_vol = zeros(prod(in_size(1:3)), in_size(4));
+    interm_out_vol(mask_ind, :) = tmp_interm_out;
+    clear tmp_interm_out
+    
+    tmp_out = out_vol;
+    out_vol = zeros(prod(in_size(1:3)), in_size(4));
+    out_vol(mask_ind, :) = tmp_out;
+    clear tmp_out
+end
 
 % write out output volumes
 write_fmri(BOLD_interm_out, input, interm_out_vol, in_size);
@@ -219,7 +251,11 @@ if (isempty(strfind(fmri_name, '.dtseries.nii')))
     fmri = MRIread(fmri_name);
     vol = single(fmri.vol);
     vol_size = size(vol);
-    vol = reshape(vol, prod(vol_size(1:3)), vol_size(4));
+    if(length(vol_size) < 4)
+        vol = reshape(vol, prod(vol_size(1:3)), 1);
+    else
+        vol = reshape(vol, prod(vol_size(1:3)), vol_size(4));
+    end
     fmri.vol = [];
 else
     % if input file is CIFTI file

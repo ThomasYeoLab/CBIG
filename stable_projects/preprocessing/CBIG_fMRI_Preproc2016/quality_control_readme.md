@@ -27,10 +27,14 @@ Power et al. "Methods to detect, characterize, and remove motion artifact in res
 - Motion correction parameters figures.
 
   Please take a look at the framewise displacement (FD) and DVARS figure to see if too many frames exceed the threshold, which is:
-  `${sub_dir}/${subject}/qc/${subject}_bld${run_folder}_FDRMS${FD_thres}_DVARS${DVARS_thres}.jpg`
+  `${sub_dir}/${subject}/qc/${subject}_bld${run_folder}_FDRMS${FD_thres}_DVARS${DVARS_thres}.png`
 
   Another figure the user can refer to is the correlation between FD and DVARS, to see if these two parameters are consistent:
-  `${sub_dir}/${subject}/qc/${subject}_bld${run_folder}_DVARS_FDRMS_correlation.jpg` (correlation between FD and DVARS)
+  `${sub_dir}/${subject}/qc/${subject}_bld${run_folder}_DVARS_FDRMS_correlation.png` (correlation between FD and DVARS)
+  
+  Furthermore, the user can view the MCFLIRT estimated rotation, translation, and mean displacement:
+  `${sub_dir}/${subject}/qc/${subject}_bld${run_folder}${BOLD_stem}_mc_rot_trans_disp.png`
+  where ${BOLD_stem} is the filename stem right before motion correction step.
 
 - Motion correction quantitative numbers
 
@@ -85,6 +89,14 @@ Power et al. "Methods to detect, characterize, and remove motion artifact in res
 
   Fractional difference within whole brain mask:
   `${sub_dir}/${subject}/qc/censor_interp/${subject}_bld${run_folder}_interp_FracDiff_GM.nii.gz`
+  
+## Grey matter signal intensity plots
+
+If you are using our default configuration file, the pipeline will generate a "grey plot" for each run just before any projection from subject-specific space to standard spaces (fsaverage or MNI spaces). The grey plot contains four panels: (1) framewise displacement with its censoring threshold; (2) DVARS with its censoring threshold; (3) global signal of input fMRI volume; (4) signal intensity of all grey matter voxels of the input fMRI volume. You can check the existence of global artifacts by viewing panel 4, and relating the global artifacts to any abnormal spike in framewise displacement and DVARS. This "grey plot" will be stored as:
+
+`${sub_dir}/${subject}/qc/${subject}_bld${run_folder}${BOLD_stem}_greyplot.png`
+
+If you want to check the "grey plot" after different preprocessing steps, you can specify `CBIG_preproc_QC_greyplot -FD_th ${your_FD_threshold} -DV_th ${your_DVARS_threshold}` multiple times in the configuration file (but must be after `CBIG_preproc_bbregister` step because it needs intra-subject registration information to create masks).
 	
 ## Volumetric projection (inter-subject registration):
 

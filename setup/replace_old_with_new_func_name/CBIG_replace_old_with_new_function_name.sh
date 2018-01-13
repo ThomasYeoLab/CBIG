@@ -39,7 +39,7 @@ do
     echo ""
     old_line="  > Current line $line_number : $line"
     proposed_line="  > Proposed line $line_number: $line"
-    proposed_line=${proposed_line/$old_function_name/$new_function_name}
+    proposed_line=${proposed_line//$old_function_name/$new_function_name}
 
     if [ "$file" != "$last_file" ]; then
       echo ""
@@ -54,7 +54,7 @@ do
     read -r -p "  Replace? [y/N] " response </dev/tty
     if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]
     then
-      replacement_line=${line/$old_function_name/$new_function_name}
+      replacement_line=${line//$old_function_name/$new_function_name}
       sed -i "${line_number}s~.*~$replacement_line~g" $file
       new_line=$(sed "${line_number}q;d" $file)
       new_line="  >> NEW line $line_number:     $new_line"

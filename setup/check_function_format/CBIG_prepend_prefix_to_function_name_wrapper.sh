@@ -18,7 +18,12 @@ elif [[ $file_name == *.sh ]] || [[ $file_name == *.csh ]]; then
 	function_name="$file_name"
 fi
 
-DIRECTORY_NAMES=("utilities" "stable_projects/preprocessing" "stable_projects/brain_parcellation/Yeo2011_fcMRI_clustering" "setup" "data/templates")
+DIRECTORY_NAMES=("utilities" \
+"stable_projects/preprocessing" \
+"stable_projects/brain_parcellation/Yeo2011_fcMRI_clustering" \
+"setup" \
+"data/templates" \
+"external_packages")
 for name in "${DIRECTORY_NAMES[@]}"
 do
   directory="$CBIG_CODE_DIR/$name"

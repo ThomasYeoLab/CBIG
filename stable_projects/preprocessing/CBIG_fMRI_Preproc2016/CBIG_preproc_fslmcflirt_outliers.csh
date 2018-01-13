@@ -184,6 +184,29 @@ end
 echo "=======================mcflirt and split done!=======================" |& tee -a $LF
 echo "" |& tee -a $LF
 
+
+#############################################
+# Plot mcflirt parameters
+#############################################
+echo "=========================== Plot mcflirt parameters =============================" |& tee -a $LF
+foreach curr_bold ($zpdbold)
+	pushd $curr_bold
+	
+	pwd |& tee -a $LF
+	set mc_par_file = "${subject}_bld${curr_bold}${BOLD_stem}_mc.par"
+	set mc_abs_rms_file = "${subject}_bld${curr_bold}${BOLD_stem}_mc_abs.rms"
+	set mc_rel_rms_file = "${subject}_bld${curr_bold}${BOLD_stem}_mc_rel.rms"
+	set outname_prefix = "${subject}_bld${curr_bold}${BOLD_stem}_mc"
+	
+	set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; CBIG_preproc_plot_mcflirt_par $mc_par_file $mc_abs_rms_file $mc_rel_rms_file $qc $outname_prefix; exit; '"' );
+	echo $cmd |& tee -a $LF
+	eval $cmd |& tee -a $LF
+	
+	popd
+end
+echo "=========================== Plot mcflirt parameters done =============================" |& tee -a $LF
+
+
 #############################################
 #compute FDRMS and DVARS
 #############################################
@@ -496,6 +519,9 @@ OUTPUTS:
 	    ${sub_dir}/${subject}/qc/${subject}_bld${run_folder}_FDRMS0.2_DVARS50_motion_outliers.txt
 	
 	(5) QC figures
+	    
+	    The traces of mcflirt estimated rotations (radians), translations (mm), and mean displacement (mm)
+	    <subject_dir>/<subject_id>/qc/<subject_id>_bld<run_number><BOLD_stem>_mc_rot_trans_disp.png
 	    
 	    The scatter plot indicating the correlation between DVARS and FDRMS
 	    <subject_dir>/<subject_id>/qc/<subject_id>_bld<run_number>_DVARS_FDRMS_correlation.png

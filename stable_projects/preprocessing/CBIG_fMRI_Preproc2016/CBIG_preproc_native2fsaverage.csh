@@ -33,6 +33,9 @@ set proj_mesh = fsaverage6
 set down_mesh = fsaverage5
 set sm = 6;
 
+set all_out_stem = ""
+set all_out_mesh = ""
+
 ########################
 # Print help and version
 ########################
@@ -119,6 +122,8 @@ endif
 ### project data to proj_mesh
 ############################################################################
 echo "============ Project fMRI volumes to surface $proj_mesh ============" |& tee -a $LF
+set all_out_stem = "$all_out_stem ${BOLD_stem}_${proj_short}"
+set all_out_mesh = ($all_out_mesh $proj_mesh)
 foreach runfolder ($bold)
 	pushd $runfolder
 	set BOLD = ${subject}"_bld${runfolder}${BOLD_stem}"
@@ -162,6 +167,8 @@ echo "" |& tee -a $LF
 ### smooth
 ########################################################
 echo "================== Smooth surface data, fwhm $sm =================" |& tee -a $LF
+set all_out_stem = "$all_out_stem ${BOLD_stem}_${proj_short}_sm${sm}"
+set all_out_mesh = ($all_out_mesh $proj_mesh)
 foreach runfolder ($bold)
 	pushd $runfolder
 	set BOLD = ${subject}"_bld${runfolder}${BOLD_stem}"
@@ -222,6 +229,8 @@ echo "" |& tee -a $LF
 ### downsample
 ###################################################
 echo "==================== Downsample to $down_mesh ==================" |& tee -a $LF
+set all_out_stem = "$all_out_stem ${BOLD_stem}_${proj_short}_sm${sm}_${down_short}"
+set all_out_mesh = ($all_out_mesh $down_mesh)
 
 if($proj_res < $down_res) then
 	echo "ERROR: projection mesh ($proj_mesh) < downsampling mesh ($down_mesh)" |& tee -a $LF
@@ -269,6 +278,37 @@ foreach runfolder ($bold)
 	popd
 end
 echo "=================== Downsampling finished ==================" |& tee -a $LF
+
+
+#########################
+# Set medial values to be NaN
+#########################
+foreach runfolder ($bold)
+	set i = 1;
+	foreach out_stem ($all_out_stem)
+		set out_mesh = $all_out_mesh[$i];
+		# for debugging
+		echo "out_stem: $out_stem" |& tee -a $LF
+		echo "out_mesh: $out_mesh" |& tee -a $LF
+		foreach hemi (lh rh)
+			set before_NaN_name = $surffolder/$hemi.${subject}_bld${runfolder}${out_stem}.nii.gz
+			set after_NaN_name = $surffolder/$hemi.${subject}_bld${runfolder}${out_stem}_medialwallNaN.nii.gz
+			
+			$MATLAB -nodesktop -nodisplay -nosplash -r "addpath(fullfile('$root_dir', 'utilities'));CBIG_preproc_set_medialwall_NaN '$hemi' '$out_mesh' '$before_NaN_name' '$after_NaN_name';exit" |& tee -a $LF
+			
+			if ( -e $after_NaN_name ) then
+				echo "[SURF]: $after_NaN_name is successfully generated. Move it to $before_NaN_name." |& tee -a $LF
+				mv $after_NaN_name $before_NaN_name
+			else
+				echo "ERROR: $after_NaN_name is not generated." |& tee -a $LF
+				exit 1
+			endif
+		end
+		
+		set i = `expr $i + 1`
+	end
+end
+
 
 #########################
 # Output last commit of current function 
@@ -469,7 +509,7 @@ DESCRIPTION:
 	       --cortex flag will set vertices within medial wall mask to be zero, we put the medial wall 
 	       values back after smoothing.
 	    3. Downsample smoothed data to down_mesh, e.g. fsaverage5, using mri_surf2surf
-
+	    4. Set the medial wall to be NaN for all output files.
 
 
 

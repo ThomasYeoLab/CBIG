@@ -10,7 +10,7 @@ files_to_be_checked=($(git diff --name-status $curr_branch..upstream/develop | a
 # define files to be checked
 ###
 EXTENSIONS_TO_CHECK=("m" "sh" "csh")
-DIRECTORIES_TO_CHECK=("stable_projects" "utilities")
+DIRECTORIES_TO_CHECK=("stable_projects" "utilities" "external_packages")
 EXCLUDED_FILES=("Surf2SurfGui.m" "Vol2SurfGui.m" "CBIG_tested_config.sh" "CBIG_tested_config.csh")
 
 ###

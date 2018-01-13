@@ -87,6 +87,15 @@ function CBIG_preproc_CensorQC(QC_dir, subject, run_num, before_cen, interm_cen,
 [~, vol1, ] = read_fmri(before_cen);
 [~, vol_m, ~] = read_fmri(interm_cen);
 [fMRI2, vol2, ~] = read_fmri(after_cen);
+
+% all operations are done within whole brain mask
+fprintf('All computation is done within whole brain mask.\n')
+WB_ind = find(whole_mask_vol ~= 0);
+GM_mask_vol = GM_mask_vol(WB_ind);
+vol1 = vol1(WB_ind, :);
+vol_m = vol_m(WB_ind, :);
+vol2 = vol2(WB_ind, :);
+
 N = size(vol1, 1);
 T = size(vol1, 2);
 
@@ -94,41 +103,12 @@ T = size(vol1, 2);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % compute correlation and fractional difference
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-corr = single(zeros(N, 1));
-frac_diff = single(zeros(N, 1));
+[corr_whole, frac_diff_whole] = CBIG_preproc_CensorCorrAndFracDiff(vol1, vol2);
 
-% divide voxels into branches, to reduce memory usage
-if(T <= 150)
-    voxbinsize = 4000;
-elseif(T > 150 && T <= 500)
-    voxbinsize = 1000;
-elseif(T > 500 && T <= 1000)
-    voxbinsize = 500;
-elseif(T > 1000 && T <= 3000)
-    voxbinsize = 200;
-else
-    voxbinsize = 100;
-end
-voxbin = 1:voxbinsize:N;
-voxbin = [voxbin N+1];
-
-for v = 1:length(voxbin)-1
-    % compute correlation and fractional difference
-    fprintf('Dealing with voxels from %d to %d ...\n', voxbin(v), voxbin(v+1)-1);
-    [corr(voxbin(v):(voxbin(v+1)-1)), frac_diff(voxbin(v):(voxbin(v+1)-1))] = ...
-        CBIG_preproc_CensorCorrAndFracDiff(vol1(voxbin(v):(voxbin(v+1)-1),:), vol2(voxbin(v):(voxbin(v+1)-1),:));
-end
 
 % mask correlation and framctional difference
-corr_whole = corr;
-corr_whole(whole_mask_vol==0) = 0;
-frac_diff_whole = frac_diff;
-frac_diff_whole(whole_mask_vol==0) = 0;
-
-corr_GM = corr;
-corr_GM(GM_mask_vol==0) = 0;
-frac_diff_GM = frac_diff;
-frac_diff_GM(GM_mask_vol==0) = 0;
+corr_GM = corr_whole(GM_mask_vol ~= 0);
+frac_diff_GM = frac_diff_whole(GM_mask_vol ~= 0);
 
 
 
@@ -148,43 +128,28 @@ vol1_GM_inmask = vol1(GM_mask_vol~=0,:);
 vol_m_GM_inmask = vol_m(GM_mask_vol~=0,:);
 vol2_GM_inmask = vol2(GM_mask_vol~=0,:);
 
-corr_GM_inmask = corr_GM(GM_mask_vol~=0);
-frac_diff_GM_inmask = frac_diff_GM(GM_mask_vol~=0);
-
 % rank by fractional difference and plot
 CBIG_preproc_CensorQC_sort_plot(vol1_GM_inmask, vol_m_GM_inmask, vol2_GM_inmask, N_GM_inmask, outliers, ...
-    frac_diff_GM_inmask, corr_GM_inmask, [QC_dir '/' subject '_bld' run_num '_interp_FracDiff_GM_6plots'], 'FRAC_DIFF');
+    frac_diff_GM, corr_GM, [QC_dir '/' subject '_bld' run_num '_interp_FracDiff_GM_6plots'], 'FRAC_DIFF');
 
 % rank by correlation and plot
 CBIG_preproc_CensorQC_sort_plot(vol1_GM_inmask, vol_m_GM_inmask, vol2_GM_inmask, N_GM_inmask, outliers, ...
-    frac_diff_GM_inmask, corr_GM_inmask, [QC_dir '/' subject '_bld' run_num '_interp_corr_GM_6plots'], 'CORR');
+    frac_diff_GM, corr_GM, [QC_dir '/' subject '_bld' run_num '_interp_corr_GM_6plots'], 'CORR');
 
-clear N_GM_inmask vol1_GM_inmask vol2_GM_inmask corr_GM_inmask frac_diff_GM_inmask frac_diff_percent corr_percent
-clear vol_m_GM_inmask
+clear N_GM_inmask vol1_GM_inmask vol_m_GM_inmask vol2_GM_inmask 
 
 
 
 %%%%%% Within whole brain mask
-N_whole_inmask = length(find(whole_mask_vol~=0));
-
-% pick voxels within whole brain mask
-vol1_whole_inmask = vol1(whole_mask_vol~=0,:);
-vol_m_whole_inmask = vol_m(whole_mask_vol~=0,:);
-vol2_whole_inmask = vol2(whole_mask_vol~=0,:);
-
-corr_whole_inmask = corr_whole(whole_mask_vol~=0);
-frac_diff_whole_inmask = frac_diff_whole(whole_mask_vol~=0);
 
 % rank by fractional difference and plot
-CBIG_preproc_CensorQC_sort_plot(vol1_whole_inmask, vol_m_whole_inmask, vol2_whole_inmask, N_whole_inmask, outliers, ...
-    frac_diff_whole_inmask, corr_whole_inmask, [QC_dir '/' subject '_bld' run_num '_interp_FracDiff_whole_6plots'], 'FRAC_DIFF');
+CBIG_preproc_CensorQC_sort_plot(vol1, vol_m, vol2, N, outliers, frac_diff_whole, corr_whole, ...
+    [QC_dir '/' subject '_bld' run_num '_interp_FracDiff_whole_6plots'], 'FRAC_DIFF');
 
 % rank by correlation and plot
-CBIG_preproc_CensorQC_sort_plot(vol1_whole_inmask, vol_m_whole_inmask, vol2_whole_inmask, N_whole_inmask, outliers, ...
-    frac_diff_whole_inmask, corr_whole_inmask, [QC_dir '/' subject '_bld' run_num '_interp_corr_whole_6plots'], 'CORR');
+CBIG_preproc_CensorQC_sort_plot(vol1, vol_m, vol2, N, outliers, frac_diff_whole, corr_whole, ...
+    [QC_dir '/' subject '_bld' run_num '_interp_corr_whole_6plots'], 'CORR');
 
-clear N_whole_inmask vol1_whole_inmask vol2_whole_inmask corr_whole_inmask frac_diff_whole_inmask frac_diff_percent corr_percent
-clear vol_m_whole_inmask
 
 
 
@@ -199,6 +164,9 @@ max_corr = max(corr_whole(corr_whole~=0));
 min_corr = min(corr_whole(corr_whole~=0));
 
 % write into nifti file
+tmp_corr = corr_whole;
+corr_whole = nan(prod(vol_sz(1:3)), 1);
+corr_whole(WB_ind) = tmp_corr;
 write_fmri([QC_dir '/' subject '_bld' run_num '_interp_corr_whole.nii.gz'], fMRI2, corr_whole, vol_sz);
 
 % write into text file
@@ -208,7 +176,7 @@ fprintf(fid, '%s  %f\n', 'min', min_corr);
 fprintf(fid, '%s  %f\n', 'mean', mean_corr);
 fprintf(fid, '%s  %f', 'median', median_corr);
 fclose(fid);
-clear corr_whole
+clear corr_whole tmp_corr
 
 
 %%% fractional difference, whole brain mask
@@ -218,6 +186,9 @@ max_frac = max(frac_diff_whole(frac_diff_whole~=0));
 min_frac = min(frac_diff_whole(frac_diff_whole~=0));
 
 % write into nifti file
+tmp_frac_diff = frac_diff_whole;
+frac_diff_whole = nan(prod(vol_sz(1:3)), 1);
+frac_diff_whole(WB_ind) = tmp_frac_diff;
 write_fmri([QC_dir '/' subject '_bld' run_num '_interp_FracDiff_whole.nii.gz'], fMRI2, frac_diff_whole, vol_sz);
 
 % write into text file
@@ -227,7 +198,7 @@ fprintf(fid, '%s  %f\n', 'min', min_frac);
 fprintf(fid, '%s  %f\n', 'mean', mean_frac);
 fprintf(fid, '%s  %f', 'median', median_frac);
 fclose(fid);
-clear frac_diff_whole
+clear frac_diff_whole tmp_frac_diff
 
 
 %%% correlation, GM mask
@@ -237,6 +208,9 @@ max_corr = max(corr_GM(corr_GM~=0));
 min_corr = min(corr_GM(corr_GM~=0));
 
 % write into nifti file
+tmp_corr = corr_GM;
+corr_GM = nan(prod(vol_sz(1:3)), 1);
+corr_GM(WB_ind(GM_mask_vol~=0)) = tmp_corr;
 write_fmri([QC_dir '/' subject '_bld' run_num '_interp_corr_GM.nii.gz'], fMRI2, corr_GM, vol_sz);
 
 % write into text file
@@ -246,7 +220,7 @@ fprintf(fid, '%s  %f\n', 'min', min_corr);
 fprintf(fid, '%s  %f\n', 'mean', mean_corr);
 fprintf(fid, '%s  %f', 'median', median_corr);
 fclose(fid);
-clear corr_GM
+clear corr_GM tmp_corr
 
 
 %%% fractional difference, GM mask
@@ -256,6 +230,9 @@ max_frac = max(frac_diff_GM(frac_diff_GM~=0));
 min_frac = min(frac_diff_GM(frac_diff_GM~=0));
 
 % write into nifti file
+tmp_frac_diff = frac_diff_GM;
+frac_diff_GM = nan(prod(vol_sz(1:3)), 1);
+frac_diff_GM(WB_ind(GM_mask_vol~=0)) = tmp_frac_diff;
 write_fmri([QC_dir '/' subject '_bld' run_num '_interp_FracDiff_GM.nii.gz'], fMRI2, frac_diff_GM, vol_sz);
 
 % write into text file
@@ -265,7 +242,7 @@ fprintf(fid, '%s  %f\n', 'min', min_frac);
 fprintf(fid, '%s  %f\n', 'mean', mean_frac);
 fprintf(fid, '%s  %f', 'median', median_frac);
 fclose(fid);
-clear frac_diff_GM
+clear frac_diff_GM tmp_frac_diff
 
 end
 

@@ -140,10 +140,16 @@ foreach runfolder ($bold)
 	else
 		set final_output = $output_MNI2mm
 	endif
+
+	# if final mask is applied, the final output should have _finalmask postfix
+        if( $?final_mask ) then
+		set final_output_mask = `basename $final_output .nii.gz`
+		set final_output_mask = "$volfolder/${final_output_mask}_finalmask.nii.gz"
+	endif
 	
 	# check if final output already exists
-	if(-e $final_output) then
-		echo "[native2mni]: final output: $final_output already exists." |& tee -a $LF
+	if(-e $final_output_mask) then
+		echo "[native2mni]: final output: $final_output_mask already exists." |& tee -a $LF
 		popd
 		continue
 	endif
@@ -320,8 +326,7 @@ foreach runfolder ($bold)
 	if( $?final_mask ) then
 		echo "======== Applying final mask for $runfolder ========" |& tee -a $LF
 		set input = $final_output
-		set output = `basename $final_output .nii.gz`
-		set output = "$volfolder/${output}_finalmask.nii.gz"
+		set output = $final_output_mask
 		
 		if( -e $output ) then
 			echo "[native2mni]: $output already exists" |& tee -a $LF
@@ -587,12 +592,15 @@ REQUIRED ARGUMENTS:
 	                        
 OPTIONAL ARGUMENTS:
 	-sm         sm        : smooth fwhm (mm), e.g. 6. Even if the user does not use this option, 
-	                        the scripts will automatically smooth the volume by 6mm.
+	                        the scripts will automatically smooth the volume by 6mm. If the user 
+	                        does not want to do smoothing, he/she needs to pass in -sm 0.
 	-sm_mask    sm_mask   : mask for smoothing (e.g. a grey matter mask in MNI152 2mm). An example 
 	                        of the smooth mask is: 
 	                        ${CBIG_CODE_DIR}/data/templates/volume/FSL_MNI152_masks/SubcorticalLooseMask_MNI1mm_sm6_MNI2mm_bin0.2.nii.gz
+	                        If <sm_mask> is not passed in, the smoothing step will smooth everything
+	                        by the FWHM as specified by -sm flag.
 	-down       down      : downsample space, choose from FSL_MNI_FS_2mm (size: 128 x 128 x 128)
-	                        or FSL_MNI_2mm (size: 91 x 109 x 91). Default is FSL_MRI_FS_2mm
+	                        or FSL_MNI_2mm (size: 91 x 109 x 91). Default is FSL_MNI_2mm
 	-final_mask final_mask: a loose mask in MNI152 2mm space applied to the volume in the
 	                        last step to reduce space. An example of the final mask is:
 	                        ${FSL_DIR}/data/standard/MNI152_T1_2mm_brain_mask_dil.nii.gz

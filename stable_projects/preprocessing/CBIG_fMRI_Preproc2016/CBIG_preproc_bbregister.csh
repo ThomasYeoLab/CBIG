@@ -46,6 +46,9 @@ set intrasub_best = 1; # Default use intrasub best run to create registration fi
 set intrasub_best_flag = 0; # To judge whether -intrasub_best flag is passed in
 set force = 0		# Default if file exist, skip the step
 
+set root_dir = `python -c "import os; print(os.path.realpath('$0'))"`
+set root_dir = `dirname $root_dir`
+
 goto parse_args;
 parse_args_return:
 
@@ -157,6 +160,26 @@ if ($intrasub_best == 1) then
 endif
 
 #########################
+# Create loose brain mask and apply it to current fMRI volumes
+#########################
+echo "=======================Create loose whole brain mask for saving space=======================" |& tee -a $LF
+set REG_stem = $BOLD_stem"_reg"
+set MASK_stem = $BOLD_stem
+echo $root_dir |& tee -a $LF
+set cmd = "$root_dir/CBIG_preproc_create_mask.csh -s $subject -d $subject_dir -anat_s $anat -anat_d $anat_dir"
+set cmd = "$cmd -bld '$zpdbold' -REG_stem $REG_stem -MASK_stem $MASK_stem -loose_whole_brain"
+echo $cmd |& tee -a $LF
+eval $cmd
+
+echo "=======================Apply loose whole brain mask to current fMRI volumes=======================" |& tee -a $LF
+foreach curr_bold ($zpdbold)
+	set boldfile = $subject"_bld"$curr_bold$BOLD_stem
+	set cmd = "fslmaths $curr_bold/$boldfile -mas mask/$subject.loosebrainmask.bin.nii.gz $curr_bold/$boldfile"
+	echo $cmd |& tee -a $LF
+	eval $cmd
+end
+
+#########################
 # Output last commit of current function 
 #########################
 # check if git exists
@@ -200,6 +223,7 @@ while( $#argv != 0 )
 		#anatomical directory	
 		case "-anat_d":
 			if ($#argv == 0) goto arg1err;
+			set anat_dir = $argv[1];
 			setenv SUBJECTS_DIR $argv[1]; shift;
 			breaksw
 			
@@ -295,6 +319,9 @@ DESCRIPTION:
 	This function 
 	1) Applies bbregister with FSL initialization to each bold run  
 	2) Chooses the best run with lowest FSL cost
+	3) Create a loose whole brain mask and apply it to fMRI volumes, which were used to do bbregister. 
+	PS: The aim of Step3 is to save space because .nii.gz file will compress more if many voxels in the
+	volume are 0s.
 
 REQUIRED ARGUMENTS:
 	-s  subject_id           : name of the subject

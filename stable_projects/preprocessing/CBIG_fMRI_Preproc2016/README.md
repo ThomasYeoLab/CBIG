@@ -5,6 +5,23 @@
 ## Updates
 
 - Release v0.4.4 (20/10/2017): Initial release of CBIG fMRI preprocessing pipeline.
+- Release v0.4.5 (01/12/2017):
+
+	1. Change motion correction (mcflirt) interpolation method from default **trilinear** to **spline**.
+	
+	2. Add an optional preprocessing step to perform despiking by **AFNI 3dDespike**.
+	
+	3. Add a preprocessing step to generate ROIs2ROIs functional connectivity matrix for input subject. 
+	
+- Release v0.4.6 (04/01/2018): 
+    
+    1. Add functionality: projecting fMRI data from subject-specific space to MNI 2mm space using ANTs. 
+    
+    2. Speed up censoring interpolation step by applying loose whole brain mask and optimizing the number of voxels processed each time. 
+    
+    3. Add some functionality to generate more QC plots (plots of mcflirt parameters; grey plots reflecting signal intensity in grey matter). 
+    
+    4. Force medial wall vertices to be NaN for the data in fsaverage surface space.
 
 ----
 
@@ -36,6 +53,11 @@
   We provide the instruction of how to do the unit test: `unit_test_clustering_100_subjects_readme.md` in this folder. 
   Remark: Since the unit test includes data and scripts which are specific for our server, it is only applicable within CBIG lab.
   
+- ANTs version
+
+  There is a bug in early builds of ANTs (before Aug 2014) that causes resampling for timeseries to be wrong. We have tested that our
+codes would work on ANTs version 2.2.0. 
+
 ----
 
 ## Bugs and Questions

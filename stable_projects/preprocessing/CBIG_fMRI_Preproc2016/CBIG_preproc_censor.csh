@@ -118,12 +118,14 @@ pushd $boldfolder
 # Make whole brain and grey matter mask
 ###############################################
 echo "========================= Make whole brain & Grey Matter Mask =========================" |& tee -a $LF
-if( -e $boldfolder/mask/${subject}.func.gm.nii.gz && -e $boldfolder/mask/${subject}.brainmask.bin.nii.gz ) then
+if( -e $boldfolder/mask/${subject}.func.gm.nii.gz && -e $boldfolder/mask/${subject}.brainmask.bin.nii.gz && \
+    -e $boldfolder/mask/${subject}.loosebrainmask.bin.nii.gz ) then
 	# if grey matter mask and whole brain mask already exist, do nothing
 	echo "[CENSOR]: Grey mask and whole brain mask of subject $subject already exist." |& tee -a $LF
 else
 	# if one or both of GM and whole brain masks does not exist, create them.
-	set cmd = "${root_dir}/CBIG_preproc_create_mask.csh -s $subject -d $sub_dir -anat_s ${anat_s} -anat_d ${anat_dir} -bld '${bold}' -REG_stem ${reg_stem} -MASK_stem ${BOLD_stem} -whole_brain -gm"
+	set cmd = "${root_dir}/CBIG_preproc_create_mask.csh -s $subject -d $sub_dir -anat_s ${anat_s} -anat_d ${anat_dir}"
+	set cmd = "$cmd -bld '${bold}' -REG_stem ${reg_stem} -MASK_stem ${BOLD_stem} -whole_brain -gm -loose_whole_brain"
 	echo $cmd |& tee -a $LF
 	eval $cmd
 endif
@@ -141,6 +143,7 @@ foreach runfolder ($bold)
 	
 	set BOLD = ${subject}"_bld${runfolder}${BOLD_stem}"
 	set outlier_file = "../../qc/${subject}"_bld"${runfolder}${outlier_stem}"
+	set loose_mask = "$boldfolder/mask/${subject}.loosebrainmask.bin.nii.gz"
 	
 	if ( "$bandpass_flag" == "0" ) then
 		# if do not perform bandpass filtering, the output stems do not contain information of passband
@@ -163,10 +166,21 @@ foreach runfolder ($bold)
 		# if one or both of the two outputs does not exist, call interpolation function
 		if ( "$bandpass_flag" == 0 ) then
 			# if do not perform bandpass filtering, do not pass in low_f and high_f
-			$MATLAB -nojvm -nodesktop -nodisplay -nosplash -r "addpath(fullfile('${root_dir}','utilities')); CBIG_preproc_censor_wrapper('${BOLD}.nii.gz', '${outlier_file}', '$TR', '${output_inter}', '${output}'); exit " |& tee -a $LF
+			set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r)
+			set cmd = ($cmd '"''addpath(fullfile('"'"${root_dir}"'"',' "'"utilities"'"'))';)
+			set cmd = ($cmd 'CBIG_preproc_censor_wrapper('"'"${BOLD}.nii.gz"'"',' "'"${outlier_file}"'"',' "'"$TR"'"',' )
+			set cmd = ($cmd "'"${output_inter}"'"',' "'"${output}"'"',' "'"${loose_mask}"'"')'; exit '"')
+			echo $cmd |& tee -a $LF
+			eval $cmd |& tee -a $LF
 		else
 			# if perform bandpass filtering, pass in low_f and high_f
-			$MATLAB -nojvm -nodesktop -nodisplay -nosplash -r "addpath(fullfile('${root_dir}','utilities')); CBIG_preproc_censor_wrapper('${BOLD}.nii.gz', '${outlier_file}', '$TR', '${output_inter}', '${output}', '${low_f}', '${high_f}'); exit " |& tee -a $LF
+			set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r)
+			set cmd = ($cmd '"''addpath(fullfile('"'"${root_dir}"'"',' "'"utilities"'"'))';)
+			set cmd = ($cmd 'CBIG_preproc_censor_wrapper('"'"${BOLD}.nii.gz"'"',' "'"${outlier_file}"'"',' "'"$TR"'"',' )
+			set cmd = ($cmd "'"${output_inter}"'"',' "'"${output}"'"',' "'"${loose_mask}"'"',' "'"${low_f}"'"',')
+			set cmd = ($cmd "'"${high_f}"'"')'; exit '"' )
+			echo $cmd |& tee -a $LF
+			eval $cmd |& tee -a $LF
 		endif
 		
 		# check whether censoring interpolation successfully exited.

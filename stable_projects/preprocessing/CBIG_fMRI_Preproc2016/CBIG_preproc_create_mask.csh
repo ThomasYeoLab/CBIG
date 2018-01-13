@@ -42,6 +42,7 @@ set anat_dir = ""
 set REG_stem = ""
 set MASK_stem = ""
 set whole_brain = 0       # Default not create whole_brain mask
+set loose_whole_brain = 0 # Default not create loose_whole_brain mask
 set wm = 0 			      # Default not create wm mask
 set wm_max_erode = ""
 set csf = 0			      # Default not create csf mask
@@ -143,6 +144,27 @@ if( $whole_brain == 1 ) then
 		echo "[MASK]: The mask file mask/$subject.brainmask.bin.nii.gz already exists" |& tee -a $LF
 	endif
 endif
+
+# create loose whole brain mask
+if( $loose_whole_brain == 1 ) then
+	echo "=======================Create loose whole brain mask=======================" |& tee -a $LF
+	if( (! -e mask/$subject.loosebrainmask.bin.nii.gz) || ( $force == 1 ) ) then
+		set cmd = "mri_vol2vol --reg $mask_bold/$reg --targ $anat_dir/$anat/mri/brainmask.mgz "
+		set cmd = "$cmd --mov $mask_bold/$boldfile.nii.gz --inv --o mask/$subject.loosebrainmask.nii.gz"
+		echo $cmd |& tee -a $LF
+		eval $cmd |& tee -a $LF
+
+		set cmd = "mri_binarize --i mask/$subject.loosebrainmask.nii.gz --o mask/$subject.loosebrainmask.bin.nii.gz "
+		set cmd = "$cmd --dilate 2 --min .0001"
+		echo $cmd |& tee -a $LF
+		eval $cmd |& tee -a $LF
+		
+		echo "[MASK]: The mask file is mask/$subject.loosebrainmask.bin.nii.gz" |& tee -a $LF
+	else
+		echo "[MASK]: The mask file mask/$subject.loosebrainmask.bin.nii.gz already exists" |& tee -a $LF
+	endif
+endif
+
 
 # create wm mask
 if( $wm == 1 ) then
@@ -366,6 +388,11 @@ while( $#argv != 0 )
 		case "-whole_brain":
 			set whole_brain = 1;
 			breaksw	
+
+		#create loose whole brain mask
+		case "-loose_whole_brain":
+			set loose_whole_brain = 1;
+			breaksw
 			
 		#create wm mask
 		case "-wm":
@@ -486,7 +513,8 @@ DESCRIPTION:
 
 	The whole brain mask is created by mri_vol2vol using anatomical volume 
 	<anat_dir>/<anat_src>/mri/brainmask.mgz as target. It is binarized by a 
-	threshold of 0.0001.
+	threshold of 0.0001. The loose whole brain mask is created by dilating 
+	the whole brain mask 2 voxels.
 
 	The white matter mask is created from aseg 2 and 41. The ventricles mask 
 	is created from aseg ventricles + choroid (not include 4). The grey matter 
@@ -532,6 +560,8 @@ REQUIRED ARGUMENTS:
 
 OPTIONAL ARGUMENTS:
 	-whole_brain                   : if this option is used, create whole brain mask
+	-loose_whole_brain             : if this option is used, create loose whole brain mask by dilating 
+	                                 whole brain mask 2 voxels
 	-wm                            : if this option is used, create white matter mask
 	-wm_max_erode  wm_max_erode    : the maximal voxels to be eroded for WM mask. If erode in functional 
 	                                 space, default is 1; if erode in anatomical space, default is 3.

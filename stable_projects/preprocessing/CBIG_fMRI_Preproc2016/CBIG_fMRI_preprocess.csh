@@ -261,6 +261,7 @@ foreach step ( "`cat $config`" )
 		#update stem 	
 		set curr_stem = "mc"
 		echo "[$curr_step]: bold_stem = $curr_stem" >> $LF
+		set mc_stem = $BOLD_stem
 		set BOLD_stem = $BOLD_stem"_$curr_stem"
 		
 		set FD_stem = (`echo $curr_flag | awk -F "-FD_th" '{print $2}' | awk -F " " '{print $1}'`)
@@ -315,7 +316,7 @@ foreach step ( "`cat $config`" )
 	
 	else if ( "$curr_step" == "CBIG_preproc_bbregister" ) then
 		
-		set cmd = "$root_dir/CBIG_preproc_bbregister.csh -s $subject -d $output_dir -anat_s $anat -bld '$zpdbold' -BOLD_stem $BOLD_stem $curr_flag"
+		set cmd = "$root_dir/CBIG_preproc_bbregister.csh -s $subject -d $output_dir -anat_s $anat -anat_d $anat_dir -bld '$zpdbold' -BOLD_stem $BOLD_stem $curr_flag"
 		echo "[$curr_step]: $cmd" >> $LF
 		eval $cmd >&  /dev/null	
 		
@@ -475,6 +476,24 @@ foreach step ( "`cat $config`" )
 				exit 1
 			endif
 		end	
+	
+	##########################################
+	# Preprocess step: Create greyplot (quality control)
+	##########################################
+	else if ( $curr_step == "CBIG_preproc_QC_greyplot" ) then
+		
+		set cmd = "$root_dir/CBIG_preproc_QC_greyplot.csh -s $subject -d $output_dir -anat_s $anat -anat_d $SUBJECTS_DIR"
+		set cmd = "$cmd  -bld '$zpdbold' -BOLD_stem $BOLD_stem -REG_stem $REG_stem -MC_stem $mc_stem $curr_flag"
+		echo "[$curr_step]: $cmd" >> $LF
+		eval $cmd >&  /dev/null
+		
+		foreach curr_bold ($zpdbold)
+			if ( ! -e $output_dir/$subject/qc/$subject"_bld"$curr_bold$BOLD_stem"_greyplot.png" ) then
+				echo "[ERROR]: file $output_dir/$subject/qc/${subject}_bld${curr_bold}${BOLD_stem}_greyplot.png can not be found" >> $LF
+				echo "[ERROR]: CBIG_preproc_QC_greyplot fail!" >> $LF
+				exit 1
+			endif
+		end
 
 	##########################################
 	# Preprocess step: Porjection to fsaverage surface (project to high resolution => smooth => downsample to low resolution)
@@ -565,13 +584,17 @@ The intermediate files will be removed." >> $LF
 		eval $cmd >&  /dev/null 	
 		
 		#update stem
-		if ( $inputflag != 1 ) then
-			set sm = ( `echo $curr_flag | awk -F "-sm" '{print $2}' | awk -F " " '{print $1}'` )
-			set curr_stem = "FS1mm_MNI1mm_MNI2mm_sm"$sm
+		set sm = ( `echo $curr_flag | awk -F "-sm " '{print $2}' | awk -F " " '{print $1}'` )
+		if ( $sm != "" ) then
+			if ( $sm <= 0 ) then
+				set curr_stem = "FS1mm_MNI1mm_MNI2mm"
+			else
+				set curr_stem = "FS1mm_MNI1mm_MNI2mm_sm"$sm
+			endif
 		else
 			set curr_stem = "FS1mm_MNI1mm_MNI2mm_sm6"
 		endif
-		set final_mask = (`echo $curr_flag | awk -F "-final_mask" '{print $2}' | awk -F " " '{print $1}'`)
+		set final_mask = (`echo $curr_flag | awk -F "-final_mask " '{print $2}' | awk -F " " '{print $1}'`)
 		if ( $final_mask != "" ) then
 			set curr_stem = ${curr_stem}_finalmask
 		endif
@@ -582,6 +605,43 @@ The intermediate files will be removed." >> $LF
 			if ( ! -e $output_dir/$subject/vol/$subject"_bld"$curr_bold$VOL_stem.nii.gz ) then
 				echo "[ERROR]: file $output_dir/$subject/vol/${subject}_bld$curr_bold$VOL_stem.nii.gz can not be found" >> $LF
 				echo "[ERROR]: CBIG_preproc_native2mni fail!" >> $LF
+				exit 1
+			endif
+		end
+
+	##########################################
+	# Preprocess step: Porjection to MNI volume space using ANTs (Project to FS1mm => MNI2mm => Smooth)
+	##########################################
+	
+	else if ( $curr_step == "CBIG_preproc_native2mni_ants" ) then
+		set cmd = "$root_dir/CBIG_preproc_native2mni_ants.csh -s $subject -d $output_dir -anat_s $anat -anat_d"
+		set cmd = "$cmd $SUBJECTS_DIR -bld '$zpdbold' -BOLD_stem $BOLD_stem -REG_stem $REG_stem $curr_flag"
+		echo "[$curr_step]: $cmd" >> $LF
+		eval $cmd >&  /dev/null 	
+		
+		#update stem
+		set sm = ( `echo $curr_flag | awk -F "-sm " '{print $2}' | awk -F " " '{print $1}'` )
+		if ( $sm != "" ) then
+			if ( $sm <= 0 ) then
+				set curr_stem = "MNI2mm"
+			else
+				set curr_stem = "MNI2mm_sm"$sm
+			endif
+		else
+			set curr_stem = "MNI2mm_sm6"
+		endif
+		set final_mask = (`echo $curr_flag | awk -F "-final_mask " '{print $2}' | awk -F " " '{print $1}'`)
+		if ( $final_mask != "" ) then
+			set curr_stem = ${curr_stem}_finalmask
+		endif
+		echo "[$curr_step]: bold_stem = $curr_stem" >> $LF
+		set VOL_stem = $BOLD_stem"_$curr_stem"
+		#check existence of output
+		foreach curr_bold ($zpdbold)
+			if ( ! -e $output_dir/$subject/vol/$subject"_bld"$curr_bold$VOL_stem.nii.gz ) then
+				echo "[ERROR]: file $output_dir/$subject/vol/${subject}_bld$curr_bold$VOL_stem.nii.gz" >> $LF
+				echo "         can not be found" >> $LF
+				echo "[ERROR]: CBIG_preproc_native2mni_ants fail!" >> $LF
 				exit 1
 			endif
 		end
@@ -754,36 +814,53 @@ DESCRIPTION:
 	    runs where the number of outliers are more than the threshold set by -discard-run option.
 	(4) [CBIG_preproc_bbregister -intrasub_best] 
 	    does bbregister with fsl initialization for each run and chooses the best run to generate registration file.
-	(5) [CBIG_preproc_regress -whole_brain -wm -csf -motion12_itamar -detrend_method detrend -per_run -censor \
-	    -polynomial_fit 1] 
+	    To save disk space, it also generates a loose whole brain mask and applies it to input fMRI volumes. If you follow
+	    the default config file, then the input fMRI volumes are motion corrected volumes.
+	(5) [CBIG_preproc_regress -whole_brain -wm -csf -motion12_itamar -detrend_method detrend -per_run -censor -polynomial_fit 1] 
 	    regresses out motion, whole brain, white matter, ventricle, linear regressors for each run seperately. 
 	    If the data have censored frames, this function will first estimate the beta coefficients ignoring the 
 	    censored frames and then apply the beta coefficients to all frames to regress out those regressors.  
 	(6) [CBIG_preproc_censor -nocleanup] 
 	    removes (ax+b) trend of censored frames, then does censoring with interpolation. For interpolation method, 
 	    please refer to (Power et al. 2014).
-	(7) [CBIG_preproc_bandpass -low_f 0.009 -high_f 0.08 -detrend] 
+	(7) [CBIG_preproc_despiking]
+	    uses AFNI 3dDespike to conduct despiking. This function can be used to replace censoring interpolation step (6),  
+	    depending on the requirement of users.
+	(8) [CBIG_preproc_bandpass -low_f 0.009 -high_f 0.08 -detrend] 
 	    does bandpass filtering with passband = [0.009, 0.08] (boundaries are included). This step applies FFT 
 	    on timeseries and cuts off the frequencies in stopbands (rectanguluar filter), then performs inverse FFT 
 	    to get the result.
-	(8) [CBIG_preproc_native2fsaverage -proj fsaverage6 -down fsaverage5 -sm 6] 
+	(9) [CBIG_preproc_QC_greyplot -FD_th 0.2 -DV_th 50]
+	    creates greyplots for quality control purpose. Greyplots contain 4 subplots: framewise displacement trace (with 
+	    censoring threshold), DVARS trace (with censoring threshold), global signal, and grey matter timeseries.
+	    In our default config file, we only create the grey plots just before projecting the data to surface/volumetric 
+	    spaces because our aim is to see how much artifacts are there after all data cleaning steps. If the users want to 
+	    compare the greyplots after different steps, they can insert this step multiple times in the config file (but must be
+	    after CBIG_preproc_bbregister step because it needs intra-subject registration information to create masks).
+	(10) [CBIG_preproc_native2fsaverage -proj fsaverage6 -down fsaverage5 -sm 6] 
 	    projects fMRI to fsaverage6, smooths it with fwhm = 6mm and downsamples it to fsaverage5.
-	(9) [CBIG_preproc_FC_metrics -Pearson_r -censor -lh_cortical_ROIs_file <lh_cortical_ROIs_file> -rh_cortical_ROIS_file \
+	(11) [CBIG_preproc_FC_metrics -Pearson_r -censor -lh_cortical_ROIs_file <lh_cortical_ROIs_file> -rh_cortical_ROIS_file \
 	    <rh_cortical_ROIs_file>]
 	    computes FC (functional connectivity) metrics based on both cortical and subcortical ROIs. The cortical ROIs 
 	    can be passed in by -lh_cortical_ROIs and -rh_cortical_ROIs. The subcortical ROIs are 19 labels extracted 
 	    from aseg in subject-specific functional space. This function will support for multiple types of FC metrics
 	    in the future, but currently we only support static Pearson's correlation by using "-Pearson_r" flag. 
 	    If "-censor" flag is used, the censored frames are ignored when computing FC metrics.
-	(10) [CBIG_preproc_native2mni -down FSL_MNI_2mm -sm 6 -sm_mask <sm_mask> -final_mask <final_mask>] 
-	    first, projects fMRI to FreeSurfer nonlinear space; second, projects from FreeSurfer nolinear space to 
-	    FSL MNI 1mm space; third, downsamples from FSL MNI 1mm space to FSL MNI 2mm space; fourth, smooths it by 
-	    fwhm = 6mm within <sm_mask>; and last, masks the result by <final_mask> to save disk space.
+	(12) [CBIG_preproc_native2mni_ants -sm_mask \
+	    ${CBIG_CODE_DIR}/data/templates/volume/FSL_MNI152_masks/SubcorticalLooseMask_MNI1mm_sm6_MNI2mm_bin0.2.nii.gz \
+	    -final_mask ${FSL_DIR}/data/standard/MNI152_T1_2mm_brain_mask_dil.nii.gz]
+	    first, projects fMRI to FSL MNI 2mm space using ANTs registration; second, smooth it by fwhm = 6mm within <sm_mask>; 
+	    and last, masks the result by <final_mask> to save disk space.
+	    Caution: if you want to use this step, please check your ANTs software version. There is a bug in early builds of 
+	    ANTs (before Aug 2014) that causes resampling for timeseries to be wrong. We have tested that our codes would work on 
+	    ANTs version 2.2.0. 
+	(13) [CBIG_preproc_native2mni -down FSL_MNI_2mm -sm 6 -sm_mask <sm_mask> -final_mask <final_mask>] 
+	    it has the similar functionality as (12) but using FreeSurfer with talairach.m3z, not ANTs. We suggest the users 
+	    use (12) instead of (13).
+	    First, this step projects fMRI to FreeSurfer nonlinear space; second, projects the image from FreeSurfer nonlinear 
+	    space to FSL MNI 1mm space; third, downsamples the image from FSL MNI 1mm space to FSL MNI 2mm space; fourth, smooths 
+	    it by fwhm = 6mm within <sm_mask>; and last, masks the result by <final_mask> to save disk space.
 	
-	There is a despiking function which is not used in the default config file:
-	[CBIG_preproc_despiking]
-	It uses AFNI 3dDespike to conduct despiking. This function can be used to replace censoring interpolation step, depended  
-	on the requirement of users.
 
 	Note: this pipeline assumes the user has finished FreeSurfer recon-all T1 preprocessing.
 	
@@ -847,7 +924,7 @@ OUTPUTS:
 		For example, 
 		surf/lh.Sub0033_Ses1_bld002_rest_skip4_stc_mc_resid_interp_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6_fs5.nii.gz 
 		is bold data from run 002 ("bld002") of subject "Sub0033_Ses1" that has been projected to the left hemisphere ("lh"). 
-		The remaining descriptors in the filename describes the ordering of the processing that has occurred. In particular,
+		The remaining descriptors in the filename describe the order of the processing steps. In particular,
 		"rest" = resting state fmri
 		"skip" = first four frames have been removed for T1 equilibrium
 		"stc" = slice time correction
@@ -861,11 +938,12 @@ OUTPUTS:
 		"fsaverage5" = data downsampled to fsaverage5 surface
 
 	2. vol folder contains the intermediate and final preprocessed fMRI data in the MNI152 and freesurfer nonlinear 
-	   volumetric space.
+	   volumetric spaces.
 		For example, 
-		vol/Sub0033_Ses1_bld002_rest_skip4_stc_mc_resid_interp_FDRMS0.2_DVARS50_bp_0.009_0.08_FS1mm_MNI1mm_MNI2mm_sm6.nii.gz 
-		is bold data from run 002 ("bld002") subject "Sub0033_Ses1". The remaining descriptors in the filename describes the 
-		ordering of the processing that has occurred. In particular,
+		a. 
+		vol/Sub0033_Ses1_bld002_rest_skip4_stc_mc_residc_interp_FDRMS0.2_DVARS50_bp_0.009_0.08_MNI2mm_sm6_finalmask.nii.gz
+		is the BOLD data of run 002 ("bld002") in subject "Sub0033_Ses1", generated after CBIG_preproc_native2mni_ants step. 
+		The remaining descriptors in the filename describe the order of the processing steps. In particular,
 		"rest" = resting state fmri
 		"skip" = first four frames have been removed for T1 equilibrium
 		"stc" = slice time correction
@@ -874,10 +952,17 @@ OUTPUTS:
 		"interp_FDRMS0.2_DVARS50" = do interpolation for the censored frames defined by Framewise Displacement > 0.2, 
 		                            DVARS > 50, 
 		"bp_0.009_0.08" = bandpass filtering with passband = [0.009, 0.08] (boundary inclusive).
+		"MNI2mm" = projecting the data to MNI152 nonlinear 2mm volumetric space by ANTs
+		"sm6" = data smoothed with a FWHM = 6mm kernel
+		"finalmask" = masking the final image to save space.
+		b. 
+		vol/Sub0033_Ses1_bld002_rest_skip4_stc_mc_resid_interp_FDRMS0.2_DVARS50_bp_0.009_0.08_FS1mm_MNI1mm_MNI2mm_sm6_finalmask.nii.gz 
+		is the BOLD data of run 002 ("bld002") in subject "Sub0033_Ses1", generated after CBIG_preproc_native2mni step. 
+		The remaining descriptors in the filename describe the order of the processing steps. In particular,
 		"FS1mm" = projection of data to freesurfer nonlinear 1mm volumetric space
 		"MNI1mm" = projection of data to MNI152 nonlinear 1mm volumetric space
 		"MNI2mm" = downsampling of data to MNI152 nonlinear 2mm volumetric space
-		"sm6" = data smoothed with a FWHM = 6mm kernel
+		Other stems are same as in subsection a.
 		
 	3. logs folder contains all log files for our preprocessing.
 		CBIG_fMRI_preprocess.log contains the log info of CBIG_fMRI_preprocess.csh function, which is a wrapper script.
@@ -909,7 +994,7 @@ OUTPUTS:
 		Sub0033_Ses1_bld002_mc_abs.rms, Sub0033_Ses1_bld002_mc_abs_mean.rms, Sub0033_Ses1_bld002_mc_rel.rms, and 
 		Sub0033_Ses1_bld002_mc_rel_mean.rms are motion parameters.
 		Sub0033_Ses1_bld002_FDRMS0.2_DVARS50_motion_outliers.txt contains the outlier labels of frames (1-keep, 0-censored)
-		For introduction of more qc files, please refer to README.md in the same folder of this script.
+		For introduction of more qc files, please refer to quality_control_readme.md in the same folder of this script.
 		
 	6. FC_metrics folder contains all files related to this subject's FC (functional connectivity) metrics.
 	   It contains three subfolders currently"
