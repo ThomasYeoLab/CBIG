@@ -29,7 +29,7 @@
 
 - How to run our preprocessing pipeline?
 
-  The main function is `CBIG_fMRI_preprocess.csh`. Type `CBIG_fMRI_preprocess.csh -help` in command line to see the details.
+  The main function is `CBIG_preproc_fMRI_preprocess.csh`. Type `CBIG_preproc_fMRI_preprocess.csh -help` in command line to see the details.
   
   To use the script, the user needs to pass in a configuration file. An example of the configuration file is given in this file: `example_config.txt`.
   
@@ -53,9 +53,11 @@
   We provide the instruction of how to do the unit test: `unit_test_clustering_100_subjects_readme.md` in this folder. 
   Remark: Since the unit test includes data and scripts which are specific for our server, it is only applicable within CBIG lab.
   
-- ANTs version
+- Software versions
+  
+  The compulsory softwares include FreeSurfer (5.3 or 4.5), FSL (5.0.8), Matlab (2014a), and Python (2 or 3, only build-in functions are needed). If the user wants to use `CBIG_preproc_despiking` step, then AFNI is needed. If the user wants to use `CBIG_preproc_native2mni_ants` step, then ANTs (2.2.0) is needed.
 
-  There is a bug in early builds of ANTs (before Aug 2014) that causes resampling for timeseries to be wrong. We have tested that our
+  NOTE: There is a bug in early builds of ANTs (before Aug 2014) that causes resampling for timeseries to be wrong. We have tested that our
 codes would work on ANTs version 2.2.0. 
 
 ----

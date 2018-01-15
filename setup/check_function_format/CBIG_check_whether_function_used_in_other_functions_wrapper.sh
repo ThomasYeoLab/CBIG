@@ -19,11 +19,8 @@ fi
 
 # search for all instances of a function name
 DIRECTORY_NAMES=("utilities" \
-"stable_projects/preprocessing" \
-"stable_projects/brain_parcellation/Yeo2011_fcMRI_clustering" \
-"setup" \
-"data/templates" \
-"external_packages")
+"stable_projects" \
+"data/templates")
 all_matches=""
 i=0
 for name in "${DIRECTORY_NAMES[@]}"

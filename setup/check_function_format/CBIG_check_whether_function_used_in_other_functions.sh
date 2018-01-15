@@ -26,7 +26,7 @@ function get_lines_from_file() {
 EXCLUDED_EXTENSIONS=$(get_lines_from_file "$CBIG_CODE_DIR/setup/check_function_format/excluded_extensions.txt")
 
 # in a given folder, find all lines containing a function name without $PREFIX (first `grep`) and ignore lines containing the function name with the $PREFIX already preprended (third `grep`)
-all_matches=$(grep -IHnRl $input_function_name --exclude=\*.{$EXCLUDED_EXTENSIONS} --exclude-from="$CBIG_CODE_DIR/setup/check_function_format/excluded_files.txt" $folder)
+all_matches=$(grep -IHnRl $input_function_name --exclude=\*.{$EXCLUDED_EXTENSIONS} --exclude="${input_function_name}" --exclude-from="$CBIG_CODE_DIR/setup/check_function_format/excluded_files.txt" $folder)
 
 if [ ! -z "$all_matches" ]; then   
    echo "$all_matches"

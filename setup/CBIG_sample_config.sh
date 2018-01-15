@@ -26,6 +26,9 @@ source $SETUP_PATH
 # DO NOT CHANGE: set up temporary directory for MRIread from FS6.0
 export TMPDIR=/tmpstore
 
+# Do NOT CHANGE: set up MATLABPATH so that MATLAB can find startup.m in our repo 
+export MATLABPATH=$CBIG_CODE_DIR/setup
+
 # specified the default Python environment.
 # Please UNCOMMENT if you follow CBIG's set up for Python environments.
 # We use Python version 3.5 as default.

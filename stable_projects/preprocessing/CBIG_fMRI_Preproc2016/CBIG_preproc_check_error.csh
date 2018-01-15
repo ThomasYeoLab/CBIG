@@ -89,7 +89,7 @@ foreach s ($subjects)
 		end
 		
 		# check main log file if there is successful message
-		set main_log = "${log_dir}/CBIG_fMRI_preprocess.log"
+		set main_log = "${log_dir}/CBIG_preproc_fMRI_preprocess.log"
 		set find_succ = `egrep -c 'Preprocessing Completed!' ${main_log}`
 		if ( "$find_succ" != "0" ) then
 			set succ_flag = 1
@@ -200,7 +200,7 @@ NAME:
 	CBIG_preproc_check_error.csh
 	
 DESCRIPTION:
-	Check error message in log files generated through CBIG_fMRI_preprocess preprocessing pipeline. 
+	Check error message in log files generated through CBIG_preproc_fMRI_preprocess preprocessing pipeline. 
 
 	This function takes in the subjects directory and subjects list and output a text file contains 
 	the information of unsuccessful subjects. 
@@ -214,7 +214,7 @@ DESCRIPTION:
 REQUIRED ARGUMENTS:
     -sd        sub_dir     : absolute path to fMRI subjects' folders. E.g. the preprocessed 
                              data of subject Sub0001_Ses1 are stored in <sub_dir>/Sub0001_Ses1. 
-                             The folder structure follows the one given by CBIG_fMRI_preprocess.csh
+                             The folder structure follows the one given by CBIG_preproc_fMRI_preprocess.csh
     -sub_ls    sub_list    : subjects list (full path), each line is one subject ID.
     -out_list  out_list    : output subject list (full path)
     -out_msg   out_msg     : output message file name (full path)

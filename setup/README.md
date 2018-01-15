@@ -59,32 +59,35 @@ cd $CBIG_CODE_DIR
 ```
 You should be in the directory of CBIG repository.
 
-# 2) Set `MATLABPATH` and `startup.m`
+# 2) Set `MATLABPATH` and `startup.m` 
 `MATLABPATH` is a variable containing paths that Matlab will search (when it is launched) to locate files being used by Matlab. 
 
 `startup.m` is a Matlab script that executes a set of commands of your choosing to set up your workspace in Matlab (when it is launched). We use `startup.m` to define paths to functions inside CBIG repository so that you can call them directly in Matlab.
 
 We will add a `startup.m` of CBIG repository to `MATLABPATH` so that whenever you start Matlab, it will look into `MATLABPATH`, locate `startup.m` and set up your Matlab workspace to work with Matlab code under `CBIG` repository.
 
-### a) Set `MATLABPATH` in your `.bashrc` or `.cshrc`
-In the following example, we will keep `startup.m` under a folder `matlab` in your home directory.
+### a) Set `MATLABPATH` in config file
 
-**[IMPORTANT]**: you may already a have `startup.m` under `~/matlab` folder. If so, please **check carefully** that you are not overwriting important configurations of your existing `startup.m` with our version. We **highly recommend** that you keep an old copy of your `startup.m`.
+**[IMPORTANT]**: If you already setup the `MATLABPATH` in your `.bashrc` or `.cshrc`, please **remove** it.
 
+The `MATLABPATH` has already been set in the configuration file as following:
+In `CBIG_FS5.3_config.sh`,
+```bash
+export MATLABPATH=$CBIG_CODE_DIR/setup
 ```
-mkdir ~/matlab
-```
+or
+In `CBIG_FS5.3_config.csh`,
+```csh
+setenv MATLABPATH = $CBIG_CODE_DIR/setup
+``` 
 
-If you use BASH, add the following line to `.bashrc`:
-```
-export MATLABPATH=~/matlab
-```
-If you use C-SHELL, add the following line to `.cshrc`:
-```
-setenv MATLABPATH=~/matlab
-```
-### b) Copy `startup.m` from CBIG repository
-```
-cp $CBIG_CODE_DIR/setup/startup.m ~/matlab
-```
+### b) Set `startup.m` in CBIG repository
+**[IMPORTANT]**: If you have `startup.m` under `~/matlab` folder, please **remove** it.
 
+In our CBIG lab, we use the same `startup.m` in our repo for everyone. This is useful because others can replicate our work easily.
+If you want to use some packages written by people outside our lab, you can follow the following steps.
+1. Check whether it exists in `external_packages/matlab/default_packages`
+If it exists, then you can just use it.
+2. Check whether it exists in `external_packages/matlab/non_default_packges`
+If it exists, you can use the package by `addpath` of this package in your function, but remember to `rmpath` of this package at the bottom of your function. For the format, see [License-and-Comment-Convention](https://github.com/YeoPrivateLab/CBIG_private/wiki/License-and-Comment-Convention).
+3. If the package doesn't exist, you can discuss with the admin [minh, ruby, jingwei, nanbo] and make a pull request to add this package into our CBIG repo. See [Level 2 User](https://github.com/YeoPrivateLab/CBIG_private/wiki/Level-2-User:--Contribute-to-CBIG_private-repository) about how to make a pull request. 

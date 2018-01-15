@@ -1,9 +1,10 @@
 #!/bin/csh -f
 
 # Given the subjects directory, the subjects list, a relative data folder (e.g. bold, vol, surf), and the data stem, this function create a list (or two lists for surface data) where each line is one subject with different runs.
-# This function assumes the fMRI data are preprocessed by CBIG_fMRI_preprocess.csh.
+# This function assumes the fMRI data are preprocessed by CBIG_preproc_fMRI_preprocess.csh.
 # The user needs to specify the output directory and output list stem.
-# Author: Jingwei Li, Date: 2016/07/17
+# Date: 2016/07/17
+# Written by Jingwei Li and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 set VERSION = '$ID: CBIG_fMRI_create_data_list.csh, v 1.0 2016/06/18'
 
@@ -284,7 +285,7 @@ usage_exit:
 	echo "    -data_stem    data_stem   : data stem (after *bld002, with extension)"
 	echo "    -out_dir      out_dir     : output directory"
 	echo "    -out_stem     out_stem    : output list stem"
-	echo "    -preproc_opt  preproc_opt : assumption of preprocessing approach, choose from 'old' and 'new', 'old' means procsurffast file structure, 'new' means CBIG_fMRI_preprocess file structure. Default is 'new'"
+	echo "    -preproc_opt  preproc_opt : assumption of preprocessing approach, choose from 'old' and 'new', 'old' means procsurffast file structure, 'new' means CBIG_preproc_fMRI_preprocess file structure. Default is 'new'"
 	echo ""	
 
 	if ( $PrintHelp == 0 ) exit 1
@@ -298,6 +299,6 @@ exit 1
 BEGINHELP
 
   Given the subjects directory, the subjects list, a relative data folder (e.g. bold, vol, surf), and the data stem, this function create a list (or two lists for surface data) where each line is one subject with different runs.
-  This function assumes the fMRI data are preprocessed by CBIG_fMRI_preprocess.csh.
+  This function assumes the fMRI data are preprocessed by CBIG_preproc_fMRI_preprocess.csh.
   The user needs to specify the output directory and output list stem.
 	
