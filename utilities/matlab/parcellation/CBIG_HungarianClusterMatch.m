@@ -29,7 +29,7 @@ num_input_labels = max(input_labels(:));
 mat = zeros(num_input_labels, num_ref_labels);
 for i = 1:num_ref_labels
    for j = 1:num_input_labels
-	mat(j, i) = -sum(double(ref_labels(:) == i) .* double(input_labels == j));
+	mat(j, i) = -sum(double(ref_labels(:) == i) .* double(input_labels(:) == j));
    end
 end
 

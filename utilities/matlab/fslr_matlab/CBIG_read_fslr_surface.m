@@ -64,7 +64,7 @@ function output_mesh = CBIG_read_fslr_surface(hemi, mesh_name, surf_type, label)
     
     
     %Find vertexFaces
-    output_mesh.vertexFaces =  MARS_convertFaces2FacesOfVert(output_mesh.faces, int32(size(output_mesh.vertices, 2)));
+    output_mesh.vertexFaces =  MARS_convertFaces2FacesOfVert(output_mesh.faces', int32(size(output_mesh.vertices, 2)));
     num_per_vertex = length(output_mesh.vertexFaces)/size(output_mesh.vertices,1);
     output_mesh.vertexFaces = reshape(output_mesh.vertexFaces, size(output_mesh.vertices,1), num_per_vertex);
 

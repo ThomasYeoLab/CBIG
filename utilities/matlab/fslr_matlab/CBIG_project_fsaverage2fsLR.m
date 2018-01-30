@@ -68,10 +68,10 @@ end
 
 %% upsample from fsaverage5/6 to fsaverage
 if (~strcmp(FS_mesh, 'fsaverage'))% if its fsaverage5/6 data, we upsample from fsaverag5/6 to fsaverage
-    lh_mesh7 = CBIG_ReadNCAvgMesh('lh', 'fsaverage', 'white', 'cortex');
-    rh_mesh7 = CBIG_ReadNCAvgMesh('rh', 'fsaverage', 'white', 'cortex');
-    lh_FS_mesh = CBIG_ReadNCAvgMesh('lh', FS_mesh, 'white', 'cortex');
-    rh_FS_mesh = CBIG_ReadNCAvgMesh('rh', FS_mesh, 'white', 'cortex');
+    lh_mesh7 = CBIG_ReadNCAvgMesh('lh', 'fsaverage', 'sphere', 'cortex');
+    rh_mesh7 = CBIG_ReadNCAvgMesh('rh', 'fsaverage', 'sphere', 'cortex');
+    lh_FS_mesh = CBIG_ReadNCAvgMesh('lh', FS_mesh, 'sphere', 'cortex');
+    rh_FS_mesh = CBIG_ReadNCAvgMesh('rh', FS_mesh, 'sphere', 'cortex');
     
     if(strcmp(type_of_data, 'label')) % if type_of_data is label
         lh_data7 = MARS_NNInterpolate_kdTree(lh_mesh7.vertices, lh_FS_mesh, lh_FS_data);

@@ -1,1 +1,0 @@
-../stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_fMRI_preprocess.csh
