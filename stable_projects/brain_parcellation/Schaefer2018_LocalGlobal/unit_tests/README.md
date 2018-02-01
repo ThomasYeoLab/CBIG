@@ -1,17 +1,21 @@
-This README includes the instructions on how to run CBIG_gwMRF unit test.
-
-Notice that all filenames and directories in this unit test work for CBIG lab only.
+This README includes the instructions on how to run CBIG_gwMRF unit test. Notice that all filenames and directories in this unit test **work for CBIG lab only**.
 
 ----
 
-## Data
+References
+==========
++ Schaefer A, Kong R, Gordon EM, Zuo XN, Holmes AJ, Eickhoff SB, Yeo BT, (accepted), Local-Global Parcellation of the Human Cerebral Cortex From Intrinsic Functional Connectivity MRI, Cerebral Cortex
 
+----
+
+Data
+====
 We use 10 preprocessed subjects from the GSP dataset for this unit test. The data can be found under `/mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/data`.
 
 ----
 
-## Run
-
+Run
+===
 In terminal, call the unit test script:
 ```
 /mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/scripts/CBIG_gwMRF_unit_test.sh <your_output_folder>
@@ -25,14 +29,14 @@ A log file will be created in `<your_output_folder>/logs`, containing detailed i
 
 ----
 
-## Input
-
+Input
+=====
 You need to specify `<your_output_folder>` when you call `CBIG_gwMRF_unit_test.sh`. Unit test parcellation results and log files will be stored there.
 
 ----
 
-## Output
-
+Output
+======
 - Two concatenated time matrices in `<your_output_folder>/time_data`.
  
 - Two premultiplied product matrices in `<your_output_folder>/mult_mat`.
@@ -48,4 +52,8 @@ You need to specify `<your_output_folder>` when you call `CBIG_gwMRF_unit_test.s
 
   All you need to do is to check this log file after the unit test is ended. A `[FAILED]` message indicates something wrong with the codes. The unit test is successful only if all messages are `[PASSED]`.
 
+----
 
+Bugs and Questions
+==================
+Please contact Alexander Schaefer at alexschaefer83@gmail.com and Thomas Yeo at yeoyeo02@gmail.com.

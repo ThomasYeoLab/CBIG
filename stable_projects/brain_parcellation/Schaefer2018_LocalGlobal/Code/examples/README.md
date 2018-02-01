@@ -2,9 +2,15 @@ Here we provide an example for you to run so that you can have a brief sense abo
 
 ----
 
+References
+==========
++ Schaefer A, Kong R, Gordon EM, Zuo XN, Holmes AJ, Eickhoff SB, Yeo BT, (accepted), Local-Global Parcellation of the Human Cerebral Cortex From Intrinsic Functional Connectivity MRI, Cerebral Cortex
++ Zuo, X.N., et al (2014), An open science resource for establishing reliability and reproducibility in functional connectomics, Sci data, 1:140049
 
-## Install
+----
 
+Install
+=======
 **Set up your enviroment**
 
 The configuration scripts `CBIG_gwMRF_tested_config.sh` and `CBIG_gwMRF_tested_startup.m` can be found under `<your-cbig-repo-direcotry>/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/config` folder. 
@@ -13,23 +19,20 @@ Please follow the instructions in `<your-cbig-repo-direcotry>/setup/README.md` t
 
 ----
 
-
-## Example data
-
+Example data
+============
 We use two subjects from the preprocessed Hangzhou Normal University (HNU) dataset as example data. The example data can be found here: `${CBIG_CODE_DIR}/data/example_data`.
 
 ----
 
-
-## Run example code
-
+Run example code
+================
 1) In terminal, run following command:
 
 ```
 sh ${CBIG_CODE_DIR}/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Code/examples/example_input/CBIG_gwMRF_create_example_input_fullpaths.sh <your_output_folder>
 ```
 This will generate a file `example_input_fullpaths.csv` needed for the next step. The file will be stored in `<your_output_folder>`.
-
 
 
 2) In MATLAB, `cd` to the `Code` folder containing the wrapper function
@@ -47,9 +50,8 @@ It may take 2-3 hours with 1 CPU for the example code to finish running.
 
 ----
 
-
-## Example results
-
+Example results
+===============
 After you finish running the code, there should be two `.mat` files in `<your_output_folder>/clustering` with names `*_seed_1.mat` and `*_seed_2.mat`.
 
 These are the final clustering output files. You can compare your results with our results to see whether the codes work properly. Our results are provided in `./example_results`.
@@ -67,6 +69,7 @@ CBIG_DrawSurfaceMaps(my_seed.results.lh_label, my_seed.results.rh_label, 'fsaver
 ```
 
 If your results are exactly the same as ours, the message printed in the MATLAB command window should be:
+
 ```
 Overlap = 37476, total_voxels 37476
 Overlap = 37471, total_voxels 37471
@@ -88,8 +91,6 @@ In our paper we use 1489 subjects' resting state fMRI data from the GSP dataset.
 
 ----
 
-
-## References
-
-+ Schaefer A, Kong R, Gordon EM, Zuo XN, Holmes AJ, Eickhoff SB, Yeo BT, (accepted), Local-Global Parcellation of the Human Cerebral Cortex From Intrinsic Functional Connectivity MRI, Cerebral Cortex
-
+Bugs and Questions
+==================
+Please contact Alexander Schaefer at alexschaefer83@gmail.com and Thomas Yeo at yeoyeo02@gmail.com.

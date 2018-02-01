@@ -6,6 +6,8 @@ Krienen FM, Yeo BTT, Buckner RL. [**Reconfigurable state-dependent functional co
 
 Yeo BTT, Tandi J, Chee MWL. [**Functional connectivity during rested wakefulness predicts vulnerability to sleep deprivation**](http://people.csail.mit.edu/ythomas/publications/2015SleepDeprivation-NeuroImage.pdf). Neuroimage 111:147-158, 2015. 
 
+Zuo, X.N., et al. [**An open science resource for establishing reliability and reproducibility in functional connectomics**](https://www.nature.com/articles/sdata201449.pdf), Sci data, 1:140049, 2014.
+
 ----
 
 ## Updates
@@ -23,6 +25,12 @@ Yeo BTT, Tandi J, Chee MWL. [**Functional connectivity during rested wakefulness
 	2. Add an optional preprocessing step to perform despiking by **AFNI 3dDespike**.
 	
 	3. Add a preprocessing step to generate ROIs2ROIs functional connectivity matrix for input subject. 
+	
+- Release v0.4.10 (01/02/2018):
+
+    1. Add project-specific prefix `Yeo2011` in all scripts names.
+    
+    2. Add `config`, `unit_tests`, and `examples` folders.
  
 ----
 
@@ -38,8 +46,11 @@ A connected component analysis was performed on the original 7/17-network brain 
 
 ## Code Release
 The code utilized in this study are released in `Yeo2011_fcMRI_clustering` folder. Specifically, the code include:
-- **CBIG_general_cluster_fcMRI_surf2surf_profiles.csh**
-This function is the main function that calls other scripts in sequence. It assumes that the preprocessed surface data are located in `sub_dir/subject/surf/`. Try `./CBIG_general_cluster_fcMRI_surf2surf_profiles.csh -help` for more information.
+- **CBIG_Yeo2011_general_cluster_fcMRI_surf2surf_profiles.csh**
+This function is the main function that calls other scripts in sequence. It assumes that the preprocessed surface data are located in `sub_dir/subject/surf/`. Try `./CBIG_Yeo2011_general_cluster_fcMRI_surf2surf_profiles.csh -help` for more information.
+
+- **Examples**
+There is a simple example in `examples` folder. Check how to run the example code and compare the results by reading `examples/README.md`.
 
 Note that this project uses generic functions from other folders, which may be updated over time. To download the version of the code that was last tested, you can either
 

@@ -1,5 +1,11 @@
-## Install
+References
+==========
++ Schaefer A, Kong R, Gordon EM, Zuo XN, Holmes AJ, Eickhoff SB, Yeo BT, (accepted), Local-Global Parcellation of the Human Cerebral Cortex From Intrinsic Functional Connectivity MRI, Cerebral Cortex
 
+----
+
+Install
+=======
 **Set up your enviroment**
 
 The configuration scripts `CBIG_gwMRF_tested_config.sh` and `CBIG_gwMRF_tested_startup.m` can be found under `../config` folder. 
@@ -8,8 +14,8 @@ Please follow the instructions in `<your-cbig-repo-direcotry>/setup/README.md` t
 
 ----
 
-## Code
-
+Code
+====
 Schaefer2018 clustering code consists of a wrapper function and several lib functions it calls. Here we will briefly explain some core funtions:
 1) Wrapper function:
 ```
@@ -45,8 +51,8 @@ This function performs the actual clustering for the premulitiplied input data.
 
 ----  
 
-## Parameters
-
+Parameters
+==========
 1) Input arguments for the wrapper function `CBIG_gwMRF_build_data_and_perform_clustering.m`
 
   * `input_fullpaths`=	a file containing full paths to all subjects' surf data, each line represents a subject with different runs;
@@ -77,8 +83,8 @@ Here we will explain some of the most commonly changed parameters, the rest you 
 
 ----
 
-## Output
-
+Output
+======
 The clustering results will be under `<output_path>/clustering`, each random seed will create two output mat files in this folder.
 
 For example for seed 1:
@@ -90,26 +96,22 @@ For example for seed 1:
 
 ----
 
-## Examples
-
+Examples
+========
 We provide a simple example under `examples` folder. You can check how to run the example code and compare the results by reading `examples/README.md`.
 
 ----
 
-## Graph Cut optimizer
-
+Graph Cut optimizer
+===================
 We use the graph cut optimizer by Delong et al. from http://vision.csd.uwo.ca/code/ named gco-v3.0. 
 More information can be found in the following paper "Fast Approximate Energy Minimization with Label Costs" International Journal of Computer Vision, vol. 96, no. 1, pp. 1–27, January 2012".
 
 ----
 
-## Bugs and Questions
-
+Bugs and Questions
+==================
 Please contact Alexander Schaefer at alexschaefer83@gmail.com and Thomas Yeo at yeoyeo02@gmail.com.
 
----
 
-## References
-
-+ Schaefer A, Kong R, Gordon EM, Zuo XN, Holmes AJ, Eickhoff SB, Yeo BT, (accepted), Local-Global Parcellation of the Human Cerebral Cortex From Intrinsic Functional Connectivity MRI, Cerebral Cortex
 
