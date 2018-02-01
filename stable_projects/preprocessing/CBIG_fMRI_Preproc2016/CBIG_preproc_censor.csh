@@ -30,6 +30,7 @@ set bold = ""              # bold number, like '002 003'
 set BOLD_stem = ""         # BOLD stem, e.g. _rest_stc_mc
 set reg_stem = ""          # registration stem, e.g. _rest_stc_mc_reg
 set outlier_stem = ""      # outlier vector file name
+set max_mem = "NONE"       # Do not specify maximal memory usage
 set low_f = ""             # low cut-off frequency
 set high_f = ""            # high cut-off frequency
 
@@ -169,7 +170,7 @@ foreach runfolder ($bold)
 			set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r)
 			set cmd = ($cmd '"''addpath(fullfile('"'"${root_dir}"'"',' "'"utilities"'"'))';)
 			set cmd = ($cmd 'CBIG_preproc_censor_wrapper('"'"${BOLD}.nii.gz"'"',' "'"${outlier_file}"'"',' "'"$TR"'"',' )
-			set cmd = ($cmd "'"${output_inter}"'"',' "'"${output}"'"',' "'"${loose_mask}"'"')'; exit '"')
+			set cmd = ($cmd "'"${output_inter}"'"',' "'"${output}"'"',' "'"${loose_mask}"'"',' "'"${max_mem}"'"')'; exit '"')
 			echo $cmd |& tee -a $LF
 			eval $cmd |& tee -a $LF
 		else
@@ -177,8 +178,8 @@ foreach runfolder ($bold)
 			set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r)
 			set cmd = ($cmd '"''addpath(fullfile('"'"${root_dir}"'"',' "'"utilities"'"'))';)
 			set cmd = ($cmd 'CBIG_preproc_censor_wrapper('"'"${BOLD}.nii.gz"'"',' "'"${outlier_file}"'"',' "'"$TR"'"',' )
-			set cmd = ($cmd "'"${output_inter}"'"',' "'"${output}"'"',' "'"${loose_mask}"'"',' "'"${low_f}"'"',')
-			set cmd = ($cmd "'"${high_f}"'"')'; exit '"' )
+			set cmd = ($cmd "'"${output_inter}"'"',' "'"${output}"'"',' "'"${loose_mask}"'"',' "'"${max_mem}"'"',')
+			set cmd = ($cmd "'"${low_f}"'"',' "'"${high_f}"'"')'; exit '"' )
 			echo $cmd |& tee -a $LF
 			eval $cmd |& tee -a $LF
 		endif
@@ -302,6 +303,11 @@ while( $#argv != 0 )
 		case "-OUTLIER_stem":
 			if ( $#argv == 0 ) goto arg1err;
 			set outlier_stem = $argv[1]; shift;
+			breaksw
+		
+		case "-max_mem":
+			if ( $#argv == 0 ) goto arg1err;
+			set max_mem = $argv[1]; shift;
 			breaksw
 			
 		case "-low_f":
@@ -460,6 +466,13 @@ REQUIRED ARGUMENTS:
 	                              then <outlier_stem> = _FDRMS0.2_DVARS50_motion_outliers.txt. 
 	                              The outlier file is assumed to be stored in <sub_dir>/<subject>/qc.
 OPTIONAL ARGUMENTS:
+	-max_mem       max_mem      : the maximal memory allowed to use (in Gigabytes), e.g. 30.
+	                              We suggest the users to pass in a number that is 1G less than the 
+	                              memory you will require from your job scheduler.
+	                              If the user does not want to specify max_mem, he/she can ignore 
+	                              this option, and the maximal memory usage will be linearly 
+	                              proportional to the size of input fMRI file (~50 times, excluding 
+	                              non-brain part).
 	-low_f         low_f        : the low cut-off frequency if bandpass filtering is performed.
 	                              E.g., if the passband is [0.009, 0.08], then low_f is 0.009.
 	                              Note: the cut-off frequency is also included in the passband. 

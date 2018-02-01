@@ -104,3 +104,15 @@ For checking purpose, our pipeline also projects the subject anatomical image to
 ```
 freeview ${sub_dir}/${subject}/vol/norm_MNI152_1mm.nii.gz ${CBIG_CODE_DIR}/data/templates/volume/FSL_MNI152_FS4.5.0/mri/norm.nii.gz
 ```
+
+## Group-level QC plot:
+
+- QC-RSFC correlation vs ROIs to ROIs distance
+
+  The users can use our function `$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/utilities/CBIG_preproc_plot_QC_RSFC_corr_vs_distance_wrapper.m` to plot the correlation between QC metric and functional connectivity, versus the distance between pairs of ROIs. This plot can be used to determine how much residual motion/respiratory effects on RSFC exists in the data, and its relationship with ROIs to ROIs distance. The users can check the usage of this function in MATLAB command line:
+```
+addpath([getenv('CBIG_CODE_DIR') '/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/utilities']);
+help CBIG_preproc_plot_QC_RSFC_corr_vs_distance_wrapper.m
+rmpath([getenv('CBIG_CODE_DIR') '/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/utilities']);
+```
+  Notice that `$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/utilities/CBIG_preproc_plot_QC_RSFC_corr_vs_distance_wrapper.m` is specific to our preprocessing pipeline because it depends on the assumed folder structures. If the users want to plot this figure for some data not processed by our pipeline, they need to write their own wrappers to read in data and call `$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/utilities/CBIG_plot_QC_RSFC_corr_vs_distance_matrix.m` to do the plotting.

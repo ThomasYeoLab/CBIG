@@ -22,6 +22,23 @@
     3. Add some functionality to generate more QC plots (plots of mcflirt parameters; grey plots reflecting signal intensity in grey matter). 
     
     4. Force medial wall vertices to be NaN for the data in fsaverage surface space.
+    
+- Release v0.4.7 (16/01/2018):
+
+    1. Add `cofig` and `unit_tests` folders.
+    
+    2. Add project-specific prefix `preproc` for preprocessing scripts.
+
+- Release v0.4.9 (31/01/2018):
+
+    1. Fix broken symbolic link under `bin` folder.
+    
+    2. Add preprocessing scripts to plot QC-FC correlation versus ROIs to ROIs distance.
+    
+    3. Add an option to specify maximal memory usage in censoring interpolation step.
+    
+    4. Add `examples` folder.
+    
 
 ----
 

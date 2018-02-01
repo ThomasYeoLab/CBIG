@@ -1,6 +1,6 @@
-function CBIG_preproc_censor_wrapper(BOLD_in, outlier_file, TR, BOLD_interm_out, BOLD_final_out, loose_mask, low_f, high_f)
+function CBIG_preproc_censor_wrapper(BOLD_in, outlier_file, TR, BOLD_interm_out, BOLD_final_out, loose_mask, max_mem, low_f, high_f)
 
-% CBIG_preproc_censor_wrapper(BOLD_in, outlier_file, TR, BOLD_interm_out, BOLD_final_out, loose_mask, low_f, high_f)
+% CBIG_preproc_censor_wrapper(BOLD_in, outlier_file, TR, BOLD_interm_out, BOLD_final_out, loose_mask, max_mem, low_f, high_f)
 %
 % Motion scrubbing for fMRI preprocessing. Users can perform bandpass
 % filtering simultaneously by specifying low_f and high_f, where [low_f,
@@ -63,6 +63,29 @@ function CBIG_preproc_censor_wrapper(BOLD_in, outlier_file, TR, BOLD_interm_out,
 %       and "high_f", you need to pass 'NONE' to "loose_mask" argument.
 %       (2) if you do not need "low_f" and "high_f", you can skip
 %       "loose_mask" argument as well.
+% 
+%     - max_mem:
+%       a string of numbers to specify the maximal memory usage, or 'NONE'
+%       (does not specify maximal memory usage). The unit is in Gigabyte.
+%       In our code, we use a parameter k to adjust the maximal memory
+%       usage, which is calculated according to this equation (concluded
+%       from our tests)
+%                max_mem (G) = 1 + (8e-4) * k * T
+%       k is defined to determine the number of voxels processed each
+%       time under this equation
+%                V0 = floor(k * V / T / (oversample_fac/2))
+%       where V0 is the number of voxels processed each time, V is the
+%       total number of voxels within the whole brain (or within grey
+%       matter, if "loose_mask" is passed in), T is the number of frames,
+%       oversample_fac is an oversampling factor used in the Lomb-Scargle
+%       algorithm, which is set to be 8.
+%       We define this complicated equation is because we found the maximal
+%       memory ussage is linearly proportional to the number of voxels
+%       processed each time, and quadractically proportional to the number
+%       of frames. 
+%       We suggest the users to pass in a number that is 1G less than the
+%       memory you will require from your job scheduler.
+%       If 'NONE' is passed in, we use the default k = 20.
 %
 %     - low_f:
 %       a string, low cut-off frequency. The passband includes cut-off
@@ -81,6 +104,8 @@ function CBIG_preproc_censor_wrapper(BOLD_in, outlier_file, TR, BOLD_interm_out,
 %                             '3000',
 %                             'subject_dir/subject_name/bold/subject_name_bld002_rest_skip4_stc_mc_interp_inter_FDRMS0.2_DVARS50.nii.gz',
 %                             'subject_dir/subject_name/bold/subject_name_bld002_rest_skip4_stc_mc_interp_FDRMS0.2_DVARS50.nii.gz',
+%                             'subject_dir/subject_name/bold/mask/subject_name.loosebrainmask.nii.gz'
+%                             '5'
 %                             '0', '0.08')
 % 
 % Reference:
@@ -101,7 +126,7 @@ mask_flag = 1;
 if(~exist('loose_mask', 'var') || strcmp(loose_mask, 'NONE'))
     mask_flag = 0;
 end
-    
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % check low_f and high_f
@@ -142,10 +167,21 @@ if(length(outliers)~=in_size(end))
 end
 
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % parameters setup
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 N = size(in_vol, 2);
+
+% check maximal memory usage
+if(~exist('max_mem') || strcmp(max_mem, 'NONE'))
+    k = 20;
+else
+    max_mem = str2num(max_mem);
+    k = (max_mem - 1) / (8e-4) / N;                  % Tests show that 1 + (8e-4) * k * num_frames = max_mem (G)
+end
+fprintf('The factor used to split voxel batches is k = %f.\n', k);
+
 TR = str2num(TR);
 TR = TR/1000;
 t = (1:N)' * TR;                                     % N x 1 vector, time of all frames
@@ -164,7 +200,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % divide voxels into branches, to reduce memory usage
-voxbinsize = floor(20 * size(in_vol, 1) / N / (oversample_fac/2));
+voxbinsize = floor(k * size(in_vol, 1) / N / (oversample_fac/2));
 voxbin = 1:voxbinsize:size(in_vol,1);
 voxbin = [voxbin size(in_vol,1)+1];         % voxbin is the starting voxels in each branch
 

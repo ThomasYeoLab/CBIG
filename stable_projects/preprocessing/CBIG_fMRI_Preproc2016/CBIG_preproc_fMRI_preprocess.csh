@@ -820,9 +820,11 @@ DESCRIPTION:
 	    regresses out motion, whole brain, white matter, ventricle, linear regressors for each run seperately. 
 	    If the data have censored frames, this function will first estimate the beta coefficients ignoring the 
 	    censored frames and then apply the beta coefficients to all frames to regress out those regressors.  
-	(6) [CBIG_preproc_censor -nocleanup] 
+	(6) [CBIG_preproc_censor -nocleanup -max_mem NONE] 
 	    removes (ax+b) trend of censored frames, then does censoring with interpolation. For interpolation method, 
-	    please refer to (Power et al. 2014).
+	    please refer to (Power et al. 2014). In our example_config.txt, "-max_mem NONE" means the maximal memory usage is not 
+	    specified, the actual memory usage will vary according to the size of input fMRI file (linearly proportional). If you 
+	    want to ensure the memory usage does not exceed 10G, for example, you can pass in "-max_mem 9".
 	(7) [CBIG_preproc_despiking]
 	    uses AFNI 3dDespike to conduct despiking. This function can be used to replace censoring interpolation step (6),  
 	    depending on the requirement of users.
