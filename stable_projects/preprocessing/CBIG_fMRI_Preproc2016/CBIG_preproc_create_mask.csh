@@ -180,8 +180,8 @@ if( $wm == 1 ) then
 				echo $cmd |& tee -a $LF
 				eval $cmd |& tee -a $LF
 				
-				set num_wm = `fslstats mask/${subject}.func.wm_erode${i}.nii.gz -V`
-				echo $num_wm[1] > mask/${subject}_func_wm_erode${i}_num_vox.txt
+				set wm_vol = `fslstats mask/${subject}.func.wm_erode${i}.nii.gz -V`
+				echo $wm_vol[2] > mask/${subject}_func_wm_erode${i}_vol.txt
 			end
 			
 			echo "Final white matter mask is eroded by 1 times in functional space."
@@ -199,12 +199,14 @@ if( $wm == 1 ) then
 				echo $cmd |& tee -a $LF
 				eval $cmd |& tee -a $LF
 				
-				set num_wm = `fslstats mask/${subject}.func.wm_erode${i}.nii.gz -V`
-				set num_wm = $num_wm[1]
-				echo $num_wm > mask/${subject}_func_wm_erode${i}_num_vox.txt
-				if ( $num_wm > 100 ) then
+				set wm_vol = `fslstats mask/${subject}.func.wm_erode${i}.nii.gz -V`
+				set wm_vol = $wm_vol[2]
+				echo $wm_vol > mask/${subject}_func_wm_erode${i}_vol.txt
+				set cmp_result = `echo "$wm_vol > 2700" | bc`
+				if ( $cmp_result == 1 ) then
 					set wm_erode = "$i"
 				endif
+				unset cmp_result
 			end
 			
 			echo "Final white matter mask is eroded by $wm_erode times in anatomical space." |& tee -a $LF
@@ -229,14 +231,15 @@ if( $csf == 1 ) then
 			eval $cmd
 			
 			set vent_erode = 0
-			foreach i (`seq 0 1 ${csf_max_erode}`) 
+			foreach i (`seq 0 1 ${csf_max_erode}`)  # When erode_space="func", default csf_max_erode=0. 
+			                                        # Actually $subject.func.ventricles_erode1.nii.gz, ... won't be generated.
 				set cmd = "mri_binarize --i mask/$subject.func.aseg.nii --ventricles --erode ${i} --o mask/$subject.func.ventricles_erode${i}.nii.gz"
 				echo $cmd |& tee -a $LF
 				eval $cmd
 				
-				set num_vent = `fslstats mask/${subject}.func.ventricles_erode${i}.nii.gz -V`
-				set num_vent = "$num_vent[1]"
-				echo $num_vent > mask/${subject}_func_ventricles_erode${i}_num_vox.txt
+				set vent_vol = `fslstats mask/${subject}.func.ventricles_erode${i}.nii.gz -V`
+				set vent_vol = "$num_vent[2]"
+				echo $num_vent > mask/${subject}_func_ventricles_erode${i}_vol.txt
 			end
 			
 			echo "Final ventricles mask is eroded by 0 times in functional space." |& tee -a $LF
@@ -245,6 +248,7 @@ if( $csf == 1 ) then
 			eval $cmd |& tee -a $LF
 		
 		else
+			set vent_erode = 0
 			foreach i (`seq 0 1 $csf_max_erode`)
 				set cmd = "mri_binarize --i $anat_dir/$anat/mri/aparc+aseg.mgz --ventricles --erode ${i} --o mask/${subject}.anat.ventricles_erode${i}.nii.gz"
 				echo $cmd |& tee -a $LF
@@ -254,12 +258,14 @@ if( $csf == 1 ) then
 				echo $cmd |& tee -a $LF
 				eval $cmd |& tee -a $LF
 				
-				set num_vent = `fslstats mask/${subject}.func.ventricles_erode${i}.nii.gz -V`
-				set num_vent = "$num_vent[1]"
-				echo $num_vent > mask/${subject}_func_ventricles_erode${i}_num_vox.txt
-				if ( $num_vent > 100 ) then
+				set vent_vol = `fslstats mask/${subject}.func.ventricles_erode${i}.nii.gz -V`
+				set vent_vol = "$vent_vol[2]"
+				echo $vent_vol > mask/${subject}_func_ventricles_erode${i}_vol.txt
+				set cmp_result = `echo "$vent_vol > 2700" | bc`
+				if ( $cmp_result == 1 ) then
 					set vent_erode = "$i"
 				endif
+				unset cmp_result
 			end
 			
 			echo "Final ventricles mask is eroded by $vent_erode times in anatomical space." |& tee -a $LF

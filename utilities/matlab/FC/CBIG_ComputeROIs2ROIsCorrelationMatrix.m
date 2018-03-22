@@ -192,19 +192,19 @@ for i = 1:length(subj_list_1) % loop through each subject
         % create time_courses based on ROIs
         t_series1 = zeros(size(time_course1, 1), length(ROIs1_cell));
         for k = 1:length(ROIs1_cell)
-            t_series1(:,k) = nanmean(time_course1(:, ROIs1_cell{k}), 2);
+            t_series1(:,k) = CBIG_nanmean(time_course1(:, ROIs1_cell{k}), 2);
         end
 
         t_series2 = zeros(size(time_course2, 1), length(ROIs2_cell));       
         for k = 1: length(ROIs2_cell)
-            t_series2(:,k) = nanmean(time_course2(:, ROIs2_cell{k}), 2);
+            t_series2(:,k) = CBIG_nanmean(time_course2(:, ROIs2_cell{k}), 2);
         end
 
         % regression
         if(regress1)
             regress_signal = zeros(size(time_course1, 1), length(regress_cell1));
             for k = 1:length(regress_cell1)
-               regress_signal(:, k) = nanmean(time_course1(:, regress_cell1{k} == 1), 2); 
+               regress_signal(:, k) = CBIG_nanmean(time_course1(:, regress_cell1{k} == 1), 2); 
             end
 
             % faster than using glmfit in which we need to loop through

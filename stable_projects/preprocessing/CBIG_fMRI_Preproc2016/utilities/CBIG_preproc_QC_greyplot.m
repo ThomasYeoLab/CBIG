@@ -198,7 +198,9 @@ wbs_mean = wbs_mean - avg_wbs_mean;
 
 %% Normalize grey matter signals
 STD_gm = mean(std(vol_gm, [], 2));
-norm_gm = zscore(vol_gm')' * STD_gm;
+vol_gm_zscore = bsxfun(@minus, vol_gm, mean(vol_gm, 2));
+vol_gm_zscore = bsxfun(@rdivide, vol_gm_zscore, std(vol_gm, [], 2));
+norm_gm = vol_gm_zscore * STD_gm;
 
 
 %% Start plotting

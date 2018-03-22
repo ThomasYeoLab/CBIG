@@ -118,6 +118,7 @@ if (per_run == 0)
     regressor_all = [];
     censor_all = [];
     tp_length_all = [];
+    reg_name_str = regressor_name{1};
     for i = 1:num_of_fMRI
         if (isempty(strfind(fMRI_name{i}, '.dtseries.nii')))
             % if input volume is nifti file
@@ -141,6 +142,9 @@ if (per_run == 0)
         
         % concatenate all regressors
         regressor_mtx = load(regressor_name{i});
+        if(i>1)
+            reg_name_str = [reg_name_str ', ' regressor_name{i}];
+        end
         regressor_all = [regressor_all; regressor_mtx];
         
         
@@ -151,6 +155,15 @@ if (per_run == 0)
         end
     end
     vol_2d_all = transpose(vol_2d_all);
+    zero_ind = find(sum(abs(regressor_all), 1)==0);
+    if(~isempty(zero_ind))
+        regressor_all(:, zero_ind) = [];
+        zero_ind_str = num2str(zero_ind(1));
+        for c = 2:length(zero_ind)
+            zero_ind_str = [zero_ind_str ', ' num2str(zero_ind(c))];
+        end
+        warning('The columns %s in files %s are all zeros. They will be excluded from the regressors matrix.', zero_ind_str, reg_name_str);
+    end
     [resid_mtx, ~, ~, ~] = CBIG_glm_regress_matrix(vol_2d_all, regressor_all, polynomial_fit, censor_all);
     
     
@@ -205,6 +218,15 @@ elseif (per_run == 1)
             censor_vec = load(censor_name{i});
         end
         vol_2d = transpose(vol_2d);
+        zero_ind = find(sum(abs(regressor_mtx), 1)==0);
+        if(~isempty(zero_ind))
+            regressor_mtx(:, zero_ind) = [];
+            zero_ind_str = num2str(zero_ind(1));
+            for c = 2:length(zero_ind)
+                zero_ind_str = [zero_ind_str ', ' num2str(zero_ind(c))];
+            end
+            warning('The columns %s in file %s are all zeros. They will be excluded from the regressors matrix.', zero_ind_str, regressor_name{i});
+        end
         [resid_mtx, ~, ~, ~] = CBIG_glm_regress_matrix(vol_2d, regressor_mtx, polynomial_fit, censor_vec);
         resid_mtx = transpose(resid_mtx);
         
