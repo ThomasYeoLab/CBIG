@@ -1,12 +1,12 @@
 #!/bin/csh
 # Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
-set orig_data_dir = "$CBIG_CODE_DIR/data/example_data"
+set orig_data_dir = "$CBIG_CODE_DIR/data/example_data/CoRR_HNU"
 set output_dir = $1
 set sub_list = "$CBIG_CODE_DIR/stable_projects/brain_parcellation/Yeo2011_fcMRI_clustering/examples/scripts/example_sub_list.txt"
 set subjects = `cat $sub_list`
 set code_dir = "${CBIG_CODE_DIR}/stable_projects/brain_parcellation/Yeo2011_fcMRI_clustering"
-set surf_stem = "_rest_skip4_stc_mc_resid_cen_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6_fs5"
+set surf_stem = "_rest_skip4_stc_mc_residc_interp_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6_fs5"
 set outlier_stem = "_FDRMS0.2_DVARS50_motion_outliers"
 
 ## Create folder structure within output_dir, and make soft links of input files to orig_data_dir

@@ -5,7 +5,6 @@ Here we provide an example for you to run so that you can have a brief sense abo
 References
 ==========
 + Schaefer A, Kong R, Gordon EM, Zuo XN, Holmes AJ, Eickhoff SB, Yeo BT, (accepted), Local-Global Parcellation of the Human Cerebral Cortex From Intrinsic Functional Connectivity MRI, Cerebral Cortex
-+ Zuo, X.N., et al (2014), An open science resource for establishing reliability and reproducibility in functional connectomics, Sci data, 1:140049
 
 ----
 
@@ -21,7 +20,8 @@ Please follow the instructions in `<your-cbig-repo-direcotry>/setup/README.md` t
 
 Example data
 ============
-We use two subjects from the preprocessed Hangzhou Normal University (HNU) dataset as example data. The example data can be found here: `${CBIG_CODE_DIR}/data/example_data`.
+We use two subjects from the preprocessed CoRR_HNU dataset as example data. The example data can be found here: `<your-cbig-repo-direcotry>/data/example_data/CoRR_HNU`. 
+For more information on the CoRR_HNU dataset, you may refer to this paper by Xi-Nian Zuo et al.: [An open science resource for establishing reliability and reproducibility in functional connectomics](https://www.nature.com/articles/sdata201449.pdf).
 
 ----
 
@@ -87,7 +87,7 @@ Our figure for seed 2 is provided here:
 
 Please note that the example clustering results may not look good since only two subjects are applied. The parameter settings are also simple to achieve shorter running time.
 
-In our paper we use 1489 subjects' resting state fMRI data from the GSP dataset. Please refer to the paper and supplementary data for more information about the data and parameters we use.
+In our paper we use 1489 subjects' resting state fMRI data from the GSP data set. Please refer to the paper and [supplementary material](https://academic.oup.com/cercor/advance-article/doi/10.1093/cercor/bhx179/3978804?searchresult=1) for more information about the data and parameters we use.
 
 ----
 

@@ -6,41 +6,27 @@ Krienen FM, Yeo BTT, Buckner RL. [**Reconfigurable state-dependent functional co
 
 Yeo BTT, Tandi J, Chee MWL. [**Functional connectivity during rested wakefulness predicts vulnerability to sleep deprivation**](http://people.csail.mit.edu/ythomas/publications/2015SleepDeprivation-NeuroImage.pdf). Neuroimage 111:147-158, 2015. 
 
-Zuo, X.N., et al. [**An open science resource for establishing reliability and reproducibility in functional connectomics**](https://www.nature.com/articles/sdata201449.pdf), Sci data, 1:140049, 2014.
 
-----
-
-## Updates
-- Release v0.4.3 (09/10/2017): Release Yeo2011 brain parcellation.
-- Release v0.4.5 (01/12/2017):
-
-	**Yeo2011_fcMRI_clustering**
-	
-	1. Add Yeo2011 parcellations with split labels.
-	
-	**CBIG_fMRI_preprocessing**
-	
-	1. Change motion correction (mcflirt) interpolation method from default **trilinear** to **spline**.
-	
-	2. Add an optional preprocessing step to perform despiking by **AFNI 3dDespike**.
-	
-	3. Add a preprocessing step to generate ROIs2ROIs functional connectivity matrix for input subject. 
-	
-- Release v0.4.10 (01/02/2018):
-
-    1. Add project-specific prefix `Yeo2011` in all scripts names.
-    
-    2. Add `config`, `unit_tests`, and `examples` folders.
- 
 ----
 
 ## Parcellation Release
-The pacellations are released in `1000subjects_reference` folder. Specifically, the pacellations include:
+The pacellations are released in `1000subjects_reference` folder. Specifically, the parcellations include:
+
 - **1000subjects_clusters007_ref.mat, 1000subjects_clusters017_ref.mat**
-7/17-network brain pacellation
+7/17 network brain parcellation using resting state fMRI data from 1000 subjects
+
+    Below is a visualization of the 7/17 network parcellation in FreeSurfer fsaverage5 surface space:
+
+
+    <img src="readme_figures/Yeo2011_network_parcellation_fs5.png" height="300" />
 
 - **Yeo_JNeurophysiol11_SplitLabels**
-A connected component analysis was performed on the original 7/17-network brain parcellations. For more information, please check `Yeo_JNeurophysiol11_SplitLabels_README` under `Yeo_JNeurophysiol11_SplitLabels` folder
+The original networks in 7/17 network brain parcellations were spatially distributed, so in this version we further splitted them into spatially connected components. For example, 51 components were obtained from the original 7 network parcellation and 114 components were obtained from the original 17 network parcellation. For more information, please check the `README.md` file under `Yeo_JNeurophysiol11_SplitLabels` folder.
+
+    Below is a visualization of the 7/17 network parcellation splitted into 51/114 components.
+
+
+    <img src="readme_figures/Yeo2011_network_parcellation_splitlabels_fs5.png" height="300" />
 
 ----
 
@@ -52,19 +38,46 @@ This function is the main function that calls other scripts in sequence. It assu
 - **Examples**
 There is a simple example in `examples` folder. Check how to run the example code and compare the results by reading `examples/README.md`.
 
+
 Note that this project uses generic functions from other folders, which may be updated over time. To download the version of the code that was last tested, you can either
 
 - visit this link:
-[https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.4.5-Yeo2011_fcMRI_clustering](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.4.5-Yeo2011_fcMRI_clustering)
+- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.4.12-Brain_Parcellations](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.4.12-Brain_Parcellations)
 
 or
 
 - run the following command, if you have Git installed
  
 ```
-git checkout -b v0.4.5-Yeo2011_fcMRI_clustering v0.4.5-Yeo2011_fcMRI_clustering
+git checkout -b Yeo2011_fcMRI_clustering v0.4.12-Brain_Parcellations
 ```
 
+----
+
+## Updates
+- Release v0.4.3 (09/10/2017): Release Yeo2011 brain parcellation.
+- Release v0.4.5 (01/12/2017):
+
+	**Yeo2011_fcMRI_clustering**
+	
+	1. Add Yeo2011 parcellations with split labels.
+	
+- Release v0.4.10 (01/02/2018):
+
+    1. Add project-specific prefix `Yeo2011` in all scripts names.
+    
+    2. Add `config`, `unit_tests`, and `examples` folders.
+    
+- Release v0.4.12 (09/04/2018): 
+
+    1. Add project-specific prefix `Yeo2011` for two scripts of **Yeo2011_fcMRI_clustering**: `1000subjects_reference/Yeo_JNeurophysiol11_SplitLabels/scripts/CBIG_DownsampleMNI1mmParcellationTo2mm.csh` and `1000subjects_reference/Yeo_JNeurophysiol11_SplitLabels/scripts/CBIG_ProjectSplitLabels2MNI1mm.m`, which were missing in release v0.4.10.
+    
+    2. Move example subjects from `$CBIG_CODE_DIR/data/example_data/${subj_ID}` to `$CBIG_CODE_DIR/data/example_data/Corr_HNU/${subj_ID}`.
+    
+    3. The example subjects are re-processed by a newer version of our preprocessing pipeline ([v0.4.9](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.4.9-CBIG_fMRI_Preprocessing)). Hence results in `./examples` are updated.
+    
+    4. Update some README.md files.
+ 
 ----
 
 ## Bugs and Questions

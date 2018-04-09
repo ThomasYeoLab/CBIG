@@ -4,11 +4,6 @@ Zhang XM, Mormino EC, Sun N, Sperling RA, Sabuncu MR, Yeo BTT. [**Bayesian model
 
 ----
 
-## Updates
-- Release vx.x.x (dd/mm/yyyy): Description
-
-----
-
 ## Data Release [This section is Optional]
 The data utilized in this study are released in `XXXXDataRelease` folder. Specifically, the data include:
 - Describe your data
@@ -33,6 +28,11 @@ or
 ```
 git checkout -b LastName20yy_ProjectName vx.x.x-LastName20yy_ProjectName
 ```
+
+----
+
+## Updates
+- Release vx.x.x (dd/mm/yyyy): Description
 
 ----
 

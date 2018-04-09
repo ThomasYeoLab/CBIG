@@ -9,7 +9,7 @@ function [lh_fsLR_32k_data,rh_fsLR_32k_data,lh_fsLR_164k_data,rh_fsLR_164k_data]
 % Input:
 %      -lh_FS_data, rh_FS_data:
 %       a 1 x N vector, where N is the number of vertices. ?h_FS_data can
-%       be metric data (float) or label data (integer) in 
+%       be metric data (float) or label data (integer). 
 %
 %      -FS_mesh:
 %       'fsaverage5'/'fsaverage6'/'fsaverage'. Mesh name of lh_FS_data, 
@@ -26,9 +26,10 @@ function [lh_fsLR_32k_data,rh_fsLR_32k_data,lh_fsLR_164k_data,rh_fsLR_164k_data]
 %             as this folder will be removed when projection is done.
 %
 %      -registration_version:
-%       '20170508' or '20160827'. HCP group provides two atlas-to-atlas  
-%       registration versions. If user doesn't pass in registration_version,
-%       default version is '20170508'.
+%       '20170508' or '20160827'. Human Connectome Project (HCP) group  
+%       provides two atlas-to-atlas registration versions. If user
+%       doesn't pass in registration_version, default version is 
+%       '20170508'.
 %
 % Output:
 %      -lh_label_fsLR_32k, rh_label_fsLR_32k:

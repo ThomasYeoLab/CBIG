@@ -11,22 +11,17 @@ More details can be found in Schaefer et al. 2018.
 
 ---
 
-Updates
-=======
-- Release v0.4.8 (30/01/2018): release clustering code
-
-- Release v0.3.2 (14/09/2017): fix a labeling bug in cifti files
-
-- Release v0.3.1 (07/09/2017): update utilities code
-
-- Release v0.3.0 (21/07/2017): release the parcellations in MNI, fsLR and fsaverage space
-
----
-
 Parcellations Release
 =====================
 The parcellations can be found in ```Parcellations``` folder. There are three subfolders corresponding to three different spaces ```Freesurfer5.3```, ```MNI``` and ```HCP```. 
-The parcellations were computed in Freesurfer ```fsaverage6``` space and projected to HCP ```fslr32k``` and FSL ```MNI``` space. Each parcel is matched to a corresponding network in the 7 and 17 network parcellation by Yeo et al. 2011.  
+
+The parcellations were computed in Freesurfer ```fsaverage6``` space and sampled to ```fsaverage5``` and ```fsaverage``` space. The parcellations were also projected to HCP ```fslr32k``` and FSL ```MNI``` space. Each parcel is matched to a corresponding network in the 7 and 17 network parcellation by Yeo et al. 2011.([The organization of the human cerebral cortex estimated by intrinsic functional connectivity](http://www.ncbi.nlm.nih.gov/pubmed/21653723)).
+
+Here we provide a visualization of the 400 parcel parcellation in ```fslr32k``` space, parcels were colored to match Yeo 7/17 network parcellation:
+
+<img src="readme_figures/Schaefer2018_400parcel_parcellation_match_Yeo_7_network_fslr32k.png" height="300" />
+
+<img src="readme_figures/Schaefer2018_400parcel_parcellation_match_Yeo_17_network_fslr32k.png" height="300" />
 
 ---
 
@@ -43,17 +38,39 @@ The code utilized in this study is under `Code` folder. Specifically, the `Code`
 * **README.md** -- You can check this file to find out more about our clustering code.
 
 
+
 To download the version of the code that is last tested, you can either
 
-- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.4.8-Schaefer2018_LocalGlobal](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.4.8-Schaefer2018_LocalGlobal)
+- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.4.12-Brain_Parcellations](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.4.12-Brain_Parcellations)
 
 or
 
 - run the following command, if you have Git installed
 
 ```
-git checkout -b Schaefer2018_LocalGlobal v0.4.8-Schaefer2018_LocalGlobal
+git checkout -b Schaefer2018_LocalGlobal v0.4.12-Brain_Parcellations
 ```
+
+---
+
+Updates
+=======
+
+- Release v0.3.0 (21/07/2017): release the parcellations in MNI, fsLR and fsaverage space
+
+- Release v0.3.1 (07/09/2017): update utilities code
+
+- Release v0.3.2 (14/09/2017): fix a labeling bug in cifti files
+
+- Release v0.4.8 (30/01/2018): release clustering code
+
+- Release v0.4.12 (09/04/2018): 
+
+    1. Move example subjects from `$CBIG_CODE_DIR/data/example_data/${subj_ID}` to `$CBIG_CODE_DIR/data/example_data/Corr_HNU/${subj_ID}`. 
+    
+    2. The example subjects are re-processed by a newer version of our preprocessing pipeline ([v0.4.9](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.4.9-CBIG_fMRI_Preprocessing)). Hence results in `./Code/examples` are updated.
+    
+    3. Update some README.md files.
 
 ---
 

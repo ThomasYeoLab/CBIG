@@ -238,7 +238,7 @@ echo "  [PASSED]"
 # 4.  (files in stable_projects/xxx/xxx (exclude Thomas, Alex, Gia, Xiuming, Raphael))[.m, .c, .cpp, .sh, .csh, .py, .pl, .r]
 ######
 EXTENSIONS_TO_CHECK=("m" "c" "cpp" "sh" "csh" "py" "pl" "r")
-EXCLUDED_DIRECTORIES=("Yeo2011_fcMRI_clustering" "Schaefer2018_LocalGlobal" "Zhang2016_ADFactors" "Liegeois2017_Surrogates")
+EXCLUDED_DIRECTORIES=("Zhang2016_ADFactors")
 
 echo -e "\n==> [Check 4] Checking stable_projects/xxx/xxx"
 for project_path in $CBIG_CODE_DIR/stable_projects/*/*
@@ -358,6 +358,18 @@ tested to work."
         fi
         echo "    [PASSED]"
     fi
+
+    ###
+    # check whether all projects have the unit_tests folder
+    ###
+    echo -e "\n====> Check whether this project has unit_tests folder"
+    if [ ! -d "$project_path/unit_tests" ]; then
+        echo "    [FAILED] $project_path does not have a unit_tests folder"
+        echo "Please add a unit_tests folder under $project_path manually"
+        exit 1
+    fi
+    echo "    [PASSED]"
+ 
 done
 exit 0
 

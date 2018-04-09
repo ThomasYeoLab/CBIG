@@ -8,7 +8,7 @@ function [lh_FS7_data,rh_FS7_data] = CBIG_project_fsLR2fsaverage(lh_fsLR_data,rh
 % Input:
 %      -lh_fsLR_data, rh_fsLR_data:
 %       a 1 x N vector, where N is the number of vertices. ?h_fsLR_data can
-%       be metric data (float) or label data (integer) in 
+%       be metric data (float) or label data (integer).
 %
 %      -fsLR_mesh:
 %       'fs_LR_32k'/'fs_LR_164k'. Mesh name of lh_fsLR_data, rh_fsLR_data.
@@ -24,9 +24,10 @@ function [lh_FS7_data,rh_FS7_data] = CBIG_project_fsLR2fsaverage(lh_fsLR_data,rh
 %             as this folder will be removed when projection is done.
 %
 %      -registration_version:
-%       '20170508' or '20160827'. HCP group provides two atlas-to-atlas  
-%       registration versions. If user doesn't pass in registration_version,
-%       default version is '20170508'.
+%       '20170508' or '20160827'. Human Connectome Project (HCP) group  
+%       provides two atlas-to-atlas registration versions. If user
+%       doesn't pass in registration_version, default version is 
+%       '20170508'.
 %
 % Output:
 %      -lh_FS7_data, rh_FS7_data:
