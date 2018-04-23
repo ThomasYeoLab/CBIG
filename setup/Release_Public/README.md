@@ -3,6 +3,11 @@
 Zhang XM, Mormino EC, Sun N, Sperling RA, Sabuncu MR, Yeo BTT. [**Bayesian model reveals latent atrophy factors with dissociable cognitive trajectories in Alzheimer's disease**](http://dx.doi.org/10.1073/pnas.1611073113). *Proceedings of the National Academy of Sciences USA*, 113:E6535-E6544, 2016.
 
 ----
+## Background
+
+Put some attractive background information for your project here.
+
+----
 
 ## Data Release [This section is Optional]
 The data utilized in this study are released in `XXXXDataRelease` folder. Specifically, the data include:

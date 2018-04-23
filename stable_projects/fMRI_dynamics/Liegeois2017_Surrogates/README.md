@@ -3,6 +3,11 @@
 Raphael Liegeois, Timothy Laumann, Avi Snyder, Juan Zhou and B. T. Thomas Yeo. [**Interpreting Temporal Fluctuations In Resting-State Functional Connectivity MRI**](http://www.biorxiv.org/content/early/2017/08/08/135681) *Neuroimage*, 2017.
 
 ----
+## Background
+
+We show that (1) the space of stationary models is bigger than expected, and includes hidden Markov models (HMM), (2) Phase & autoregressive randomizations test for stationarity, linearity, Gaussianity, (3) Resting-state fMRI is mostly stationary, linear, and Gaussian. (4) 1st order autoregressive (AR) model encodes static & one-lag functional connectivity, and (5) 1st order AR model explains sliding window correlations very well, better than HMM.
+
+----
 
 ## Code Release
 

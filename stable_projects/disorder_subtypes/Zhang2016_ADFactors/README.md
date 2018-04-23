@@ -4,13 +4,9 @@ Xiuming Zhang, Elizabeth C. Mormino, Nanbo Sun, Reisa A. Sperling, Mert R. Sabun
 
 ----
 
-## Updates
+## Background
 
-- Release v0.1.3 (26/04/2017): fixing a bug in wrapper CBIG_LDA_est.sh
-
-- Release v0.1.2 (03/04/2017): removing hardcoded image dimensions
-
-- Release v0.1.1 (11/06/2016): adding README for each internal folder
+Alzheimer’s disease (AD) affects 10% of the elderly population. The disease remains poorly understood with no cure. The main symptom is memory loss, but other symptoms might include impaired executive function (ability to plan and accomplish goals; e.g., grocery shopping). The severity of behavioral symptoms and brain atrophy (gray matter loss) can vary widely across patients. This variability complicates diagnosis, treatment, and prevention. A mathematical model reveals distinct brain atrophy patterns, explaining variation in gray matter loss among AD dementia patients. The atrophy patterns can also explain variation in memory and executive function decline among dementia patients and at-risk nondemented participants. This model can potentially be applied to understand brain disorders with varying symptoms, including autism and schizophrenia.
 
 ----
 
@@ -43,6 +39,16 @@ git checkout -b Zhang2016_ADFactors v0.1.3-Zhang2016_ADFactors
 
 ----
 
+## Updates
+
+- Release v0.1.3 (26/04/2017): fixing a bug in wrapper CBIG_LDA_est.sh
+
+- Release v0.1.2 (03/04/2017): removing hardcoded image dimensions
+
+- Release v0.1.1 (11/06/2016): adding README for each internal folder
+
+----
+
 ## Bugs and Questions
 
-Please contact Xiuming Zhang at (firstname)6(lastname)@gmail.com and Thomas Yeo at yeoyeo02@gmail.com.
+Please contact xiuming Zhang at xiuming6zhang@gmail.com and Thomas Yeo at yeoyeo02@gmail.com.

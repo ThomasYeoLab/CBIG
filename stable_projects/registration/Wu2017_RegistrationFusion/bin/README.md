@@ -1,0 +1,24 @@
+## Stand-alone Usage
+
+To use volume-to-fsaverage mappings without the trouble of downloading our entire repository, just download the `standalone_scripts_for_MNI_fsaverage_projection.zip` file; then follow the README.md inside.
+
+Note that FreeSurfer and Matlab need to be installed before the stand-alone scripts can be run.
+
+----
+
+## Folder Contents
+
+This directory contains the following folders and files:
+
+- `final_warps_FS5.3`: final mappings for RF approaches (RF-M3Z and RF-ANTs) using FreeSurfer 5.3
+
+- `liberal_cortex_masks_FS5.3`: liberal cortical masks used in surface-to-volume projections
+
+- `scripts_final_proj`: scripts to directly use final mappings for RF approaches (RF-M3Z and RF-ANTs). Refer to README.md in this folder for how to use these scripts.
+
+- `standalone_scripts_for_MNI_fsaverage_projection`: stand-alone scripts for using the final mapping without downloading the other folders in the CBIG repository. Refer to README.md in this folder further for how to use these scripts.
+
+- `GSP_subjectid.csv`: list of subject IDs for GSP subjects, used by RF approaches (RF-M3Z and RF-ANTs) by default
+
+- `colin27.register.dat`: linear registration warp between Colin27 template and fsaverage volume (used by Affine approach). This is generated using FSL, similar to FreeSurfer's own mni152.register.dat.
+

@@ -175,7 +175,8 @@ do
                     while read addpath_match
                     do
                         rmpath_line=${addpath_match//addpath/rmpath}
-                        rmpath_match=(`grep "$rmpath_line" $file_path`)
+                        rmpath_line_backslash=`echo $rmpath_line | sed -e 's/[][]/\\&/g'`
+                        rmpath_match=(`grep "$rmpath_line_backslash" $file_path`)
                         if [[ "$rmpath_match" == "" ]]; then
                             all_with_valid_rmpath=0
                             echo "$file_path does not have a '$rmpath_line' at the end, please fix it manually."

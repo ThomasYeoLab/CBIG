@@ -32,3 +32,5 @@ rmpath([getenv('CBIG_CODE_DIR') '/stable_projects/preprocessing/CBIG_fMRI_Prepro
 
 The output figure is:
 `$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/utilities/unit_test_plot_QC_RSFC_vs_distance_GSP100sub.png`.
+
+<img src="unit_test_plot_QC_RSFC_vs_distance_GSP100sub.png" height="600" />

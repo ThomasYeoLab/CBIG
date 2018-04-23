@@ -11,8 +11,10 @@
 # 1. Extract the 19 subcortical ROIs from aseg in subject-specific 
 #    functional space.
 # 2. Generate input lists for the Matlab function
-# 3. Call the Matlab function to compute FC (functional connectivity)
-#    metrics.
+# 3. Call the Matlab function to compute FC metrics of cortical 
+#    and 19 subcortical ROIs. Currently we only support to compute
+#    static Pearson's correlation by using "-Pearson_r" option.
+#    In the future we will include other types of metrics.
 ###################################################################
 # Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
@@ -409,8 +411,15 @@ NAME:
 	CBIG_preproc_FCmetrics_wrapper.csh
 
 DESCRIPTION:
-	Compute FC (functional connectivity) metrics for cortical and subcortical ROIs.
+	Compute FC (functional connectivity) metrics for cortical and 19 subcortical ROIs.
 	The cortical ROIs can be passed in by -lh_cortical_ROIs_file and -rh_cortical_ROIs_file.
+	The default lh_cortical_ROIs_file is 
+	"$CBIG_CODE_DIR/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Parcellations/FreeSurfer5.3/fsaverage6/
+	 label/lh.Schaefer2018_400Parcels_17Networks_order.annot"
+	The default rh_cortical_ROIs_file is
+	"$CBIG_CODE_DIR/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Parcellations/FreeSurfer5.3/fsaverage6/
+	 label/rh.Schaefer2018_400Parcels_17Networks_order.annot"
+	
 	The subcortical ROIs are 19 labels extracted from aseg in subject-specific functional
 	space. The 19 labels include:
 		8   Left-Cerebellum-Cortex
@@ -438,9 +447,9 @@ DESCRIPTION:
 	This function does the following three steps:
 		1. Extract the 19 subcortical ROIs from aseg in subject-specific functional space.
 		2. Generate input lists for the Matlab function
-		3. Call the Matlab function to compute FC metrics. Currently we only support to 
-		   compute static Pearson's correlation by using "-Pearson_r" option. In the future
-		   we will include more types of metrics.
+		3. Call the Matlab function to compute FC metrics for both cortical and subcortical ROIs. 
+		   Currently we only support compute static Pearson's correlation by using "-Pearson_r" 
+		   option. In the future we will include other types of metrics.
 		
 REQUIRED ARGUMENTS:
 	-s  subject :
@@ -463,7 +472,8 @@ REQUIRED ARGUMENTS:
 	 like: lh(/rh).Sub0001_Ses1_bld002_rest_skip4_stc_mc_residc_interp_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6.nii.gz,
 	 then <surf_stem> = _rest_skip4_stc_mc_residc_interp_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6. The surface files are 
 	 assumed to be stored in <sub_dir>/<subject>/surf, and should be in the same space as "lh_cortical_ROIs_file" and
-	 "rh_cortical_ROIs_file".
+	 "rh_cortical_ROIs_file" (i.e. if your "surf_stem" is xxx_fs5, your "lh_cortical_ROIs_file" and "rh_cortical_ROIs_file"
+	 need to be in fsaverage5 space as well).
 	 
 	-OUTLIER_stem  outlier_stem : 
 	 outlier text file stem. The number of lines in this file is equal to the total number of frames. Each line is a number 

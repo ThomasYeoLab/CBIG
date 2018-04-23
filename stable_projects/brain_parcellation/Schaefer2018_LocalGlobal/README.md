@@ -1,19 +1,19 @@
 References
 ==========
-+ Schaefer A, Kong R, Gordon EM, Zuo XN, Holmes AJ, Eickhoff SB, Yeo BT, (accepted), Local-Global Parcellation of the Human Cerebral Cortex From Intrinsic Functional Connectivity MRI, Cerebral Cortex
++ Schaefer A, Kong R, Gordon EM, Laumann TO, Zuo XN, Holmes AJ, Eickhoff SB, Yeo BT, [**Local-Global Parcellation of the Human Cerebral Cortex From Intrinsic Functional Connectivity MRI**](https://doi.org/10.1101/135632), *Cerebral Cortex*, 2017
 
 ----
 
 Background
 ==========
-Resting state fMRI data from 1489 subjects were registered using surface-based alignment. A gradient weighted markov random field approach was employed to identify cortical parcels.
+Resting state fMRI data from 1489 subjects were registered using surface-based alignment. A gradient weighted markov random field approach was employed to identify cortical parcels ranging from 100 to 1000 parcels.
 More details can be found in Schaefer et al. 2018.
 
 ---
 
 Parcellations Release
 =====================
-The parcellations can be found in ```Parcellations``` folder. There are three subfolders corresponding to three different spaces ```Freesurfer5.3```, ```MNI``` and ```HCP```. 
+The parcellations are available at multiple resolution (100 parcels to 1000 parcels), and can be found under ```Parcellations``` folder. There are three subfolders corresponding to three different spaces ```Freesurfer5.3```, ```MNI``` and ```HCP```. 
 
 The parcellations were computed in Freesurfer ```fsaverage6``` space and sampled to ```fsaverage5``` and ```fsaverage``` space. The parcellations were also projected to HCP ```fslr32k``` and FSL ```MNI``` space. Each parcel is matched to a corresponding network in the 7 and 17 network parcellation by Yeo et al. 2011.([The organization of the human cerebral cortex estimated by intrinsic functional connectivity](http://www.ncbi.nlm.nih.gov/pubmed/21653723)).
 

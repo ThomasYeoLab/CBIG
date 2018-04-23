@@ -36,5 +36,7 @@ CBIG_preproc_QC_greyplot -FD_th 0.2 -DV_th 50
 The standard output figure is 
 `${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/utilities/Sub1058_Ses1_bld002_rest_skip4_stc_mc_residc_interp_FDRMS0.2_DVARS50_bp_0.009_0.08_greyplot.png`
 
+<img src="Sub1058_Ses1_bld002_rest_skip4_stc_mc_residc_interp_FDRMS0.2_DVARS50_bp_0.009_0.08_greyplot.png" height="600" />
+
 You need to compare your output figure with the standard output figure. Your output figure should be stored in
 `${your_outdir}/Sub1058_Ses1/qc/Sub1058_Ses1_bld002_rest_skip4_stc_mc_residc_interp_FDRMS0.2_DVARS50_bp_0.009_0.08_greyplot.png`

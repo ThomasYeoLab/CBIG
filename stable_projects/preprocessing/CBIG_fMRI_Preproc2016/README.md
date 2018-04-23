@@ -1,5 +1,30 @@
 ## Reference
 
+Li J, Kong R, Liegeois R, Sun N, Holmes AJ, Sabuncu MR, Ge T, Yeo BTT, [**Global signal regression strengthens association between resting-state functional connectivity and behavior**], in preparation.
+
+Kong R, Li J, Orban C, Sabuncu MR, Liu H, Schaefer A, Sun N, Zuo XN, Holmes AJ, Eickhoff SB, Yeo BTT, [**Spatial Topography of Individual-Specific Cortical Networks Predicts Human Cognition, Personality and Emotion**](https://doi.org/10.1101/213041), under review.
+
+----
+
+## Background
+
+This folder contains a resting-state fMRI preprocessing pipeline written by CBIG group. Our preprocessing pipeline allows flexible preprocessing order by specifying the order of preprocessing steps in a configuration text file. The preprocessing steps include:
+- slice-time correction
+- motion correction
+- intra-subject registration between T1 and T2* images
+- nuisance regression
+- temporal interpolation of censored frames
+- bandpass filtering
+- projections to standard surface & volumetric spaces
+- functional connectivity (FC) matrix computation
+
+We also provide multiple types of quality control (QC) figures for data inspection. For example:
+
+- grey-scale timeseries intensity plot for voxels within grey matter (e.g. left subfigure)
+- group-level dependency between QC-FC correlation and ROI-to-ROI Euclidean distance (e.g. right subfigure)
+
+<img src="utilities/README_figure.png" height="400" />
+
 ----
 
 ## Code Release

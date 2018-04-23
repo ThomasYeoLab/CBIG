@@ -124,7 +124,7 @@ do
                 for target_dir in "${TARGET_DIRECTORIES[@]}"
                 do
                     i=$((i+1))
-                    matches=$(find $CBIG_CODE_DIR/$target_dir -name "$file_name" ! \
+                    matches=$(find $CBIG_CODE_DIR/$target_dir -type f -name "$file_name" ! \
                     -samefile $CBIG_CODE_DIR/$file_path ! -path "*/@*/*" ! -path "*/matlab_bgl_mac64/*")
                     if [[ $matches ]]; then
                         if [ $i == 1 ]; then

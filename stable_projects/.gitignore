@@ -28,3 +28,6 @@
 
 !/preprocessing/*
 !/preprocessing/CBIG_fMRI_Preproc2016/**
+
+!/registration/*
+!/registration/Wu2017_RegistrationFusion/**
