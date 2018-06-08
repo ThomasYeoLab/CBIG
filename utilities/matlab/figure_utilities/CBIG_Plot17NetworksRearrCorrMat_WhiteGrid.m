@@ -142,7 +142,7 @@ ymaj = repmat(ymaj,1,(n-1));
 function Index = LabelsRearrangebyNetwork
 
 % Load original labels
-labeldir = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'brain_parcellation', 'Yeo2011_fcMRI_clustering', '1000subjects_reference');
+labeldir = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'brain_parcellation', 'Yeo2011_fcMRI_clustering', '1000subjects_reference', 'Yeo_JNeurophysiol11_SplitLabels', 'fsaverage5', 'label');
 
 lh_fid = fopen(fullfile(labeldir, 'lh.Yeo2011_17Networks_N1000.split_components.txt'));
 rh_fid = fopen(fullfile(labeldir, 'rh.Yeo2011_17Networks_N1000.split_components.txt'));

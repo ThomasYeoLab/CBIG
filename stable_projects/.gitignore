@@ -15,6 +15,7 @@
 !/brain_parcellation/Schaefer2018_LocalGlobal/**
 # Track everything (i.e. files, sub-folders) under Yeo2011_fcMRI_clustering
 !/brain_parcellation/Yeo2011_fcMRI_clustering/**
+!/brain_parcellation/Kong2019_MSHBM/**
 
 #Similarly
 !/disorder_subtypes/*

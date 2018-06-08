@@ -155,8 +155,15 @@ fclose(fp);
 
 %% match annotation labels with labels of vertices
 vertex_label = zeros(size(label));
+% display warning messages if there is 0 in label
+if sum(label==0) ~= 0
+    warning('There should not be any 0 value in label. Please check your annot file.Medial wall area in lh.aparc.annot & rh.aparc.annot for fsaverage in FreeSurfer 5.3.0 & FreeSurfer 6.0.0 were wrongly labeled, we suggest you use lh.aparc.annot/rh.aparc.annot for fsaverage in FreeSurfer 4.5.0 instead.Please refer to "/data/apps/arch/Linux_x86_64/freesurfer/FreeSurfer_aparc_annot_bug_readme/FreeSurfer_aparc_annot_bug_readme"');
+end
+
 for i = 1:numel(label)
-    vertex_label(i) = find(colortable.table(:,5)==label(i));
+    if label(i) ~= 0
+        vertex_label(i) = find(colortable.table(:,5)==label(i));
+    end
 end
 
 end

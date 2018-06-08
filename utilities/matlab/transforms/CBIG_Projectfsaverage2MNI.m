@@ -1,9 +1,8 @@
-
-
-
 function output = CBIG_Projectfsaverage2MNI(lh_surf, rh_surf, MNI_mask, index_volume, delimiter)
 
 % Usage: output = CBIG_Projectfsaverage2MNI(lh_surf, rh_surf, MNI_mask, index_volume, delimiter)
+%
+% Warning! This function is obsolete. Please use CBIG_Projectfsaverage2MNI_Ants instead.
 %
 % Function projects surface data to the volume
 % Also see reverse transform CBIG_ProjectMNI2fsaverage2
@@ -12,8 +11,8 @@ function output = CBIG_Projectfsaverage2MNI(lh_surf, rh_surf, MNI_mask, index_vo
 % ------------------------------------------------------------
 % EXAMPLE USAGE: Project cortical gyral labels to MNI template
 % ------------------------------------------------------------
-% >> lh_avg_mesh = CBIG_ReadNCAvgMesh('lh', 'fsaverage', 'inflated', 'aparc.annot');
-% >> rh_avg_mesh = CBIG_ReadNCAvgMesh('rh', 'fsaverage', 'inflated', 'aparc.annot');
+% >> lh_avg_mesh = CBIG_ReadNCAvgMesh('lh', 'fsaverage', 'inflated', 'aparc.a2009s.annot');
+% >> rh_avg_mesh = CBIG_ReadNCAvgMesh('rh', 'fsaverage', 'inflated', 'aparc.a2009s.annot');
 % >> output = CBIG_Projectfsaverage2MNI(lh_avg_mesh.MARS_label', rh_avg_mesh.MARS_label');
 % >> MRIwrite(output, 'test.nii.gz');
 % 
@@ -91,6 +90,7 @@ function output = CBIG_Projectfsaverage2MNI(lh_surf, rh_surf, MNI_mask, index_vo
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
+warning('This function is obsolete. Please use CBIG_Projectfsaverage2MNI_Ants instead.');
 
 if(nargin < 3)
     % loose mask

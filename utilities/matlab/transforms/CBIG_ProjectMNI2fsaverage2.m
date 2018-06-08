@@ -1,8 +1,8 @@
-
-
 function [lh_proj_data, rh_proj_data] = CBIG_ProjectMNI2fsaverage2(data, average, interp_type, lh_index_mat, rh_index_mat)
 
 % Usage: [lh_proj_data, rh_proj_data] = CBIG_ProjectMNI2fsaverage2(data, average, interp_type, lh_index_mat, rh_index_mat)
+%
+% Warning! This function is obsolete. Please use CBIG_ProjectMNI2fsaverage_Ants instead.
 %
 % Function projects MNI data to fsaverage
 % Also see reverse transform CBIG_Projectfsaverage2MNI
@@ -11,9 +11,9 @@ function [lh_proj_data, rh_proj_data] = CBIG_ProjectMNI2fsaverage2(data, average
 % ---------------------------------------------------------------------
 % EXAMPLE USAGE: Project cortical gyral labels to MNI template and back
 % ---------------------------------------------------------------------
-% >> lh_avg_mesh = CBIG_ReadNCAvgMesh('lh', 'fsaverage', 'inflated', 'aparc.annot');
-% >> rh_avg_mesh = CBIG_ReadNCAvgMesh('rh', 'fsaverage', 'inflated', 'aparc.annot');
-% >> CBIG_DrawSurfaceMaps(lh_avg_mesh.MARS_label, rh_avg_mesh.MARS_label, 'fsaverage', 'inflated', 0, 36));
+% >> lh_avg_mesh = CBIG_ReadNCAvgMesh('lh', 'fsaverage', 'inflated', 'aparc.a2009s.annot');
+% >> rh_avg_mesh = CBIG_ReadNCAvgMesh('rh', 'fsaverage', 'inflated', 'aparc.a2009s.annot');
+% >> CBIG_DrawSurfaceMaps(lh_avg_mesh.MARS_label, rh_avg_mesh.MARS_label, 'fsaverage', 'inflated', 0, 36);
 % >> data = CBIG_Projectfsaverage2MNI(lh_avg_mesh.MARS_label', rh_avg_mesh.MARS_label');
 % >> [lh_proj_data, rh_proj_data] = CBIG_ProjectMNI2fsaverage2(data, 'fsaverage', 'nearest'); 
 % >> CBIG_DrawSurfaceMaps(lh_proj_data(1, :), rh_proj_data(1, :), 'fsaverage', 'inflated', 0, 36);
@@ -81,6 +81,7 @@ function [lh_proj_data, rh_proj_data] = CBIG_ProjectMNI2fsaverage2(data, average
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
+warning('This function is obsolete. Please use CBIG_ProjectMNI2fsaverage_Ants instead.');
 
 if(nargin < 3)
    interp_type = 'linear'; 
