@@ -18,7 +18,7 @@ Run
 ===
 In terminal, call the unit test script:
 ```
-/mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/scripts/CBIG_gwMRF_unit_test.sh <your_output_folder>
+$CBIG_CODE_DIR/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/unit_tests/scripts/CBIG_gwMRF_unit_test.sh <your_output_folder>
 ```
 
 This will submit a job to `circ-spool` to create two parcellation randomizations with 50 left and 50 right hemisphere cluster in your output folder.

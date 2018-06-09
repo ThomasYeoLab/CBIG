@@ -14,7 +14,9 @@ Resting state fMRI data from 1000 subjects were registered using surface-based a
 ----
 
 ## Parcellation Release
-The pacellations are released in `1000subjects_reference` folder. Specifically, the parcellations include:
+The pacellations are released in `1000subjects_reference` folder. To use the parcellations without the trouble of downloading our entire repository, you can just click on this link: [download 1000subjects_reference](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/ThomasYeoLab/CBIG/tree/master/stable_projects/brain_parcellation/Yeo2011_fcMRI_clustering/1000subjects_reference)
+
+Specifically, the parcellations include:
 
 - **1000subjects_clusters007_ref.mat, 1000subjects_clusters017_ref.mat**
 7/17 network brain parcellation using resting state fMRI data from 1000 subjects
@@ -45,7 +47,6 @@ There is a simple example in `examples` folder. Check how to run the example cod
 
 Note that this project uses generic functions from other folders, which may be updated over time. To download the version of the code that was last tested, you can either
 
-- visit this link:
 - visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.4.12-Brain_Parcellations](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.4.12-Brain_Parcellations)
 
 or

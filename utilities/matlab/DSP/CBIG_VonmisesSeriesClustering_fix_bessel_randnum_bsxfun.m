@@ -1,28 +1,32 @@
-function CBIG_VonmisesSeriesClustering_fix_bessel_randnum_bsxfun(mesh_name, mask, num_clusters, output_file, profile1, profile2, num_smooth, num_tries, normalize, max_iter)
+function CBIG_VonmisesSeriesClustering_fix_bessel_randnum_bsxfun(mesh_name, mask, num_clusters, output_file, profile1, profile2, num_smooth, num_tries, normalize, max_iter, no_silhouette)
 
 % CBIG_VonmisesSeriesClustering_fix_bessel_randnum_bsxfun(mesh_name, mask, num_clusters, output_file, profile1, profile2, num_smooth, num_tries, normalize, max_iter)
 %
 % Von Mises-Fisher clustering on surface data.
 % 
 % Input arguments:
-%     - mesh_name    : e.g. 'fsaverage5'
-%     - mask         : e.g. 'cortex' if mesh_name is 'fsaverage*';
-%                      otherwise, pass in empty string or 'NONE'
-%     - num_clusters : number of clusters
-%     - output_file  : output file name
-%     - profile1     : group average profile on left hemisphere for data in
-%                      fsaverage* space; 
-%                      or group average profile on entire
-%                      cortex for data in fs_LR_32k space.
-%     - profile2     : group average profile on right hemisphere for data
-%                      in fsaverage* space;
-%                      it is not useful for data in fs_LR_32k space. You
-%                      can pass in empty string or 'NONE'.
-%     - num_smooth   : how many times that smoothing is performed. It is
-%                      only used when mesh_name is 'fsaverage*'
-%     - num_tries    : number of difference random initialization
-%     - normailize   : 0 or 1, whether z-normalization is performed across vertices
-%     - max_iter     : maximum number of iterations for one random initialization
+%     - mesh_name     : e.g. 'fsaverage5'
+%     - mask          : e.g. 'cortex' if mesh_name is 'fsaverage*';
+%                       otherwise, pass in empty string or 'NONE'
+%     - num_clusters  : number of clusters
+%     - output_file   : output file name
+%     - profile1      : group average profile on left hemisphere for data in
+%                       fsaverage* space; 
+%                       or group average profile on entire
+%                       cortex for data in fs_LR_32k space.
+%     - profile2      : group average profile on right hemisphere for data
+%                       in fsaverage* space;
+%                       it is not useful for data in fs_LR_32k space. You
+%                       can pass in empty string or 'NONE'.
+%     - num_smooth    : how many times that smoothing is performed. It is
+%                       only used when mesh_name is 'fsaverage*'
+%     - num_tries     : number of difference random initialization
+%     - normailize    : 0 or 1, whether z-normalization is performed across vertices
+%     - max_iter      : maximum number of iterations for one random initialization
+%     - no_silhouette : if 1 is passed in for this flag, silhouette step
+%                       will be skipped. Default is 0, meaning silhouette
+%                       step will be performed when num_clusters>1 and data
+%                       are in fsaverage* space.
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
@@ -41,6 +45,10 @@ else
    if(ischar(max_iter))
        max_iter = str2num(max_iter);
    end
+end
+
+if(~exist('no_silhouette', 'var'))
+    no_silhouette = 0;     % silouette step will be performed 
 end
 
 
@@ -146,7 +154,7 @@ rh_labels(l2) = cidx(length(l1)+1:end);
 save(output_file, 'lh_labels', 'rh_labels', 'lambda', 'mtc', 'lowerbound');
 
 
-if(num_clusters > 1 && ~isempty(strfind(mesh_name, 'fsaverage')))
+if(num_clusters > 1 && ~isempty(strfind(mesh_name, 'fsaverage')) && no_silhouette==0)
     tic; s = silhouette(series, cidx(non_zero_corr_index), 'correlation'); toc
     if(sum(non_zero_corr_index) < length(non_zero_corr_index)) %there are vertices with no correlation
         new_s = ones(length(non_zero_corr_index), 1);

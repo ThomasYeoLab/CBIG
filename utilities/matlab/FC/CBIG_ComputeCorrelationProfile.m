@@ -2,36 +2,66 @@ function CBIG_ComputeCorrelationProfile(seed_mesh, target, output_file1, output_
 
 % CBIG_ComputeCorrelationProfile(seed_mesh, target, output_file1, output_file2, threshold, varargin_text1, varargin_text2, outlier_text)
 %
-% seed_mesh:      resolution of seed regions, e.g. 'fsaverage5', 'fs_LR_32k'
-% target:         resolution of target resions, e.g. 'fsaverage3', 'fs_LR_900'
-% output_file1:   left hemisphere output correlation profile for input in
-%                 'fsaverage*' spaces;
-%                 or entire cortical output correlation profile for input
-%                 in 'fs_LR*' spaces.
-% output_file2:   right hemisphere output correlation profile for input in
-%                 'fsaverage*' spaces;
-%                 not useful for input in 'fs_LR*' spaces (you can pass in
-%                 'NONE' or empty string).
-% threshold:      relative correlation threshold for binarization
-% varargin_text1: the text file containing left hemisphere surface data
-%                 list for input in 'fsaverage*' spaces;
-%                 or the text file containing entire cortical surface data
-%                 list for input in 'fs_LR*' spaces.
-% varargin_text2: the text file containing right hemisphere surface data
-%                 list for input in 'fsaverage*' spaces;
-%                 not useful for input in 'fs_LR*' spaces (you can pass in
-%                 'NONE' or empty string).
-% outlier_text:   the text file containing outlier file naame
-% split_data:     string ('0' / '1') or scalar (0 / 1).
-%                 If this flag is 1, for subject with only one run, this
-%                 function will split it into two fake runs with equal
-%                 length. For subject with multiple runs, it will not split
-%                 any run.
-%                 If this flag is 0, whether the input subject is with one
-%                 run or multiple runs, this function will not split any
-%                 run.
+% Compute surface correlation profiles of a single subject. The correlation
+% profile will be computed for each run and then averaged across runs.
+% 
+% Inputs:
+%     - seed_mesh
+%       resolution of seed regions, e.g. 'fsaverage3', 'fs_LR_900'
+% 
+%     - target
+%       resolution of target regions, e.g. 'fsaverage5', 'fs_LR_32k'
+% 
+%     - output_file1
+%       left hemisphere output correlation profile for input in
+%       'fsaverage*' spaces,
+%       e.g. <path>/lh.Sub0033_Ses1.roifsaverage3.thres0.1.surf2surf_profile_scrub.nii.gz;
+%       or entire cortical output correlation profile for input in 'fs_LR*'
+%       spaces,
+%       e.g. <path>/100206.roifs_LR_900.thres0.1.surf2surf_profile_scrub.mat.
+% 
+%     - output_file2  
+%       right hemisphere output correlation profile for input in
+%       'fsaverage*' spaces,
+%       e.g. <path>/rh.Sub0033_Ses1.roifsaverage3.thres0.1.surf2surf_profile_scrub.nii.gz;
+%       not useful for input in 'fs_LR*' spaces (you can pass in 'NONE' or
+%       empty string).
+% 
+%     - threshold
+%       threshold for binarization (string, e.g. '0.1'). "threshold" = 0.1
+%       means indices with the highest 10% correlations will be set to 1,
+%       others will be set to 0.
+% 
+%     - varargin_text1
+%       the text file containing left hemisphere surface data list if input
+%       data are in 'fsaverage*' spaces,
+%       e.g. <path>/lh.Sub0033_Ses1.input;
+%       or the text file containing entire cortical surface data list if
+%       input data are in 'fs_LR*' spaces,
+%       e.g. <path>/100206.dtseries_list.txt.
+%       Each line in this file corresponds to a single run of this subject.
+% 
+%     - varargin_text2
+%       the text file containing right hemisphere surface data list if
+%       input data are in 'fsaverage*' spaces,
+%       e.g. <path>/lh.Sub0033_Ses1.input;
+%       not useful for input in 'fs_LR*' spaces (you can pass in 'NONE' or
+%       empty string).
+%       Each line in this file corresponds to a single run of this subject.
+% 
+%     - outlier_text
+%       the text file containing outlier file name, 
+%       e.g. <path>/outlier.Sub0033_Ses1.input
+%       Each line in this list corresponds to a single run of this subject.
+% 
+%     - split_data
+%       string ('0' / '1') or scalar (0 / 1).
+%       If this flag is 1, for subject with only one run, this function
+%       will split it into two fake runs with equal length. For subject
+%       with multiple runs, it will not split any run.
+%       If this flag is 0, whether the input subject is with one run or
+%       multiple runs, this function will not split any run.
 %
-% Compute surface correlation profiles.
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 

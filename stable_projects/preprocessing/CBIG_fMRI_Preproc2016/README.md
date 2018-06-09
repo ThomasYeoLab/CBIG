@@ -1,8 +1,8 @@
 ## Reference
 
-Li J, Kong R, Liegeois R, Sun N, Holmes AJ, Sabuncu MR, Ge T, Yeo BTT, [**Global signal regression strengthens association between resting-state functional connectivity and behavior**], in preparation.
+Li J, Kong R, Liegeois R, Sun N, Holmes AJ, Sabuncu MR, Ge T, Yeo BTT, Global signal regression strengthens association between resting-state functional connectivity and behavior, under review.
 
-Kong R, Li J, Orban C, Sabuncu MR, Liu H, Schaefer A, Sun N, Zuo XN, Holmes AJ, Eickhoff SB, Yeo BTT, [**Spatial Topography of Individual-Specific Cortical Networks Predicts Human Cognition, Personality and Emotion**](https://doi.org/10.1101/213041), under review.
+Kong R, Li J, Orban C, Sabuncu MR, Liu H, Schaefer A, Sun N, Zuo XN, Holmes AJ, Eickhoff SB, Yeo BTT, [**Spatial Topography of Individual-Specific Cortical Networks Predicts Human Cognition, Personality and Emotion**](https://academic.oup.com/cercor/advance-article/doi/10.1093/cercor/bhy123/5033556?guestAccessKey=2fa23bc8-59c7-4ff1-9360-1846d472c6dd), Cerebral Cortex, 2018.
 
 ----
 
