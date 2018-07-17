@@ -40,17 +40,23 @@ The code utilized in this study is under `Code` folder. Specifically, the `Code`
 * **README.md** -- You can check this file to find out more about our clustering code.
 
 
+### Download stand-alone repository
+Since the whole Github repository is too big, we provide a stand-alone version of only this project and its dependencies. To download this stand-alone repository, visit this link: [https://github.com/ThomasYeoLab/Standalone_Schaefer2018_LocalGlobal](https://github.com/ThomasYeoLab/Standalone_Schaefer2018_LocalGlobal)
+
+
+### Download whole repository
+Except for this project, if you want to use the code for other stable projects from out lab as well, you need to download the whole repository.
 
 To download the version of the code that is last tested, you can either
 
-- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.4.12-Brain_Parcellations](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.4.12-Brain_Parcellations)
+- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.6.3-Schaefer2018_LocalGlobal](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.6.3-Schaefer2018_LocalGlobal)
 
 or
 
 - run the following command, if you have Git installed
 
 ```
-git checkout -b Schaefer2018_LocalGlobal v0.4.12-Brain_Parcellations
+git checkout -b Schaefer2018_LocalGlobal v0.6.3-Schaefer2018_LocalGlobal
 ```
 
 ---
@@ -73,6 +79,14 @@ Updates
     2. The example subjects are re-processed by a newer version of our preprocessing pipeline ([v0.4.9](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.4.9-CBIG_fMRI_Preprocessing)). Hence results in `./Code/examples` are updated.
     
     3. Update some README.md files.
+
+- Release v0.6.3 (17/07/2018):
+
+    1. Release Schaefer2018 300 parcels and 500 parcels parcellation.
+
+    2. Add unit test scripts to `unit_tests` folder.
+
+    3. Update README.md, add links for people to directly download the Parcellations and this project's standalone repository: `Standalone_CBIG_Schaefer2018_LocalGlobal`.
 
 ---
 

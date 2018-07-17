@@ -17,22 +17,27 @@ The data utilized in this study are released in `XXXXDataRelease` folder. Specif
 ----
 
 ## Code Release
-The code utilized in this study are released in `XXXX` folder. Specifically, the code include:
-- Describe your code
-- Describe your code
+### Download stand-alone repository
+Since the whole Github repository is too big, we provide a stand-alone version of only this project and its dependencies. To download this stand-alone repository, visit this link: [https://github.com/ThomasYeoLab/Standalone_LastName20yy_ProjectName](https://github.com/ThomasYeoLab/Standalone_LastName20yy_ProjectName)
 
-Note that this project uses generic functions from other folders, which may be updated over time. To download the version of the code that was last tested, you can either
+### Download whole repository
+Except for this project, if you want to use the code for other stable projects from out lab as well, you need to download the whole repository.
 
-- visit this link:
-[https://github.com/ThomasYeoLab/CBIG/releases/tag/vx.x.x-LastName20yy_ProjectName](https://github.com/ThomasYeoLab/CBIG/releases/tag/vx.x.x-LastName20yy_ProjectName)
+- To download the version of the code that was last tested, you can either
 
-or
+    - visit this link:
+    [https://github.com/ThomasYeoLab/CBIG/releases/tag/vx.x.x-LastName20yy_ProjectName](https://github.com/ThomasYeoLab/CBIG/releases/tag/vx.x.x-LastName20yy_ProjectName)
 
-- run the following command, if you have Git installed
+    or
+
+    - run the following command, if you have Git installed
  
-```
-git checkout -b LastName20yy_ProjectName vx.x.x-LastName20yy_ProjectName
-```
+    ```
+    git checkout -b LastName20yy_ProjectName vx.x.x-LastName20yy_ProjectName
+    ```
+
+### Usage
+- Describe how to use 
 
 ----
 
