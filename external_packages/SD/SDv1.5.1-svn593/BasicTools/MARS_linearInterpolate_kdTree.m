@@ -39,5 +39,5 @@ function [vals, NViF, NF] = MARS_linearInterpolate_kdTree(points, mesh, data)
 %MARS Project (Thomas Yeo and Mert Sabuncu), MIT, CSAIL, (c) 2008
 %Author: Mert
 [nearest_vertex_guess, d] =  MARS_findNV_kdTree(points, mesh.vertices);
-[vals, NViF, NF] = MARS_linearInterpolateAux(single(points), mesh.vertices, mesh.faces, mesh.vertexNbors,... 
-                                      mesh.vertexFaces, nearest_vertex_guess, data);
+[vals, NViF, NF] = MARS_linearInterpolateAux(single(points), single(mesh.vertices), int32(mesh.faces), int32(mesh.vertexNbors),... 
+                                      int32(mesh.vertexFaces), int32(nearest_vertex_guess), single(data));

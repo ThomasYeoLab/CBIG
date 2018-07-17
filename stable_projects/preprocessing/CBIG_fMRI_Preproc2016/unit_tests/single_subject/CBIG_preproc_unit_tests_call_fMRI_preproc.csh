@@ -3,7 +3,7 @@
 
 set outdir = $1   # Your output directory
 set fmrinii_dir = "/mnt/eql/yeo3/data/GSP2016/CBIG_preproc_global_cen_bp/GSP_single_session/scripts/fmrinii"
-set config_file = "/mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/single_subject/scripts/prepro.config"
+set config_file = "$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/unit_tests/single_subject/prepro.config"
 set anat_dir = "/share/users/imganalysis/yeolab/data/GSP_release"
 
 set curr_sub = "Sub1116_Ses1"

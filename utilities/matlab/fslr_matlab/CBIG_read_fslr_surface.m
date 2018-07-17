@@ -14,7 +14,10 @@ function output_mesh = CBIG_read_fslr_surface(hemi, mesh_name, surf_type, label)
 %      - label: 
 %        If label is not defined, then there is no 'MARS_label' and
 %        'MARS_ct' structure fields in the output structure. label can ONLY
-%        be set to 'aparc.annot', which is the Desikan parcellation in fslr.
+%        be set to 'aparc.annot' or 'medialwall.annot'.
+%        'aparc.annot' is the Desikan parcellation in fslr.
+%        'medialwall.annot' is used to look up medial wall vertices 
+%        (output_mesh.MARS_label will be 1 for medial wall vertices, and 2 for cortical vertices.)
 % Output:
 %      - output_mesh:
 %        output mesh structure.

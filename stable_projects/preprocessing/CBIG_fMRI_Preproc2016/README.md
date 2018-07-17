@@ -29,18 +29,30 @@ We also provide multiple types of quality control (QC) figures for data inspecti
 
 ## Code Release
 
+### Download stand-alone repository
+
+Since the whole GitHub repository is too big, we provide a stand-alone version of only this project and its dependencies. To download this stand-alone repository, visit this link:
+[https://github.com/ThomasYeoLab/Standalone_CBIG_fMRI_Preproc2016](https://github.com/ThomasYeoLab/Standalone_CBIG_fMRI_Preproc2016)
+
+
+### Download whole repository
+
+Except for this project, if you want to use the code for other stable projects from our lab as well, you need to download the whole repository.
+
 - To download the version of the code that was last tested, you can either
 
   - visit this link:
-  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.4.11-CBIG_fMRI_Preprocessing](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.4.11-CBIG_fMRI_Preprocessing)
+  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.6.2-CBIG_fMRI_Preprocessing](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.6.2-CBIG_fMRI_Preprocessing)
   
   or
   
   - run the following command, if you have Git installed
   
   ```
-  git checkout -b CBIG_fMRI_Preprocessing v0.4.11-CBIG_fMRI_Preprocessing
+  git checkout -b CBIG_fMRI_Preprocessing v0.6.2-CBIG_fMRI_Preprocessing
   ```
+
+### Usage 
 
 - How to run our preprocessing pipeline?
 
@@ -123,6 +135,14 @@ codes would work on ANTs version 2.2.0.
     3. Modify functions `CBIG_ComputeROIs2ROIsCorrelationMatrix.m` (used by `CBIG_preproc_FCmetrics.m`) and `CBIG_preproc_QC_greyplot.m` so that they do not need matlab statistics toolbox now.
     
     4. In regression step, remove the exact zero columns of regressors.
+    
+- Release v0.6.2 (15/07/2018):
+
+    1. Update README.md for creating stand-alone repo.
+    
+    2. Add unit test: check correctness of 419x419 function connectivity matrix.
+    
+    3. Add scripts for all unit tests.
     
 
 ----
