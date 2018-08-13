@@ -1,6 +1,6 @@
 ## Reference
 
-Jianxiao Wu, Gia H. Ngo, Alexander Schaefer, Douglas Greve, Jingwei Li, Tong He, Bruce Fischl, Simon B. Eickhoff, B.T. Thomas Yeo. **Accurate Nonlinear Mapping between MNI Volumetric and FreeSurfer Surface Coordinate Systems**. Under review.
+Jianxiao Wu, Gia H. Ngo, Alexander Schaefer, Douglas Greve, Jingwei Li, Tong He, Bruce Fischl, Simon B. Eickhoff, B.T. Thomas Yeo. [**Accurate Nonlinear Mapping between MNI152/Colin27 Volumetric and FreeSurfer Surface Coordinate Systems**](http://people.csail.mit.edu/ythomas/publications/2018VolSurfMapping-HBM.pdf), *Human Brain Mapping*, 2018.
 
 ---
 
@@ -22,7 +22,7 @@ Make sure that FreeSurfer and Matlab are already installed. In addition, please 
 
 ## Example
 
-Run `CBIG_RF_example.sh` for an example using `CBIG_RF_projectVol2fsaverage.sh`. This projects a probabilistic map of central sulcus from MNI152 to fsaverage.
+Run `CBIG_RF_MNI_example.sh` for an example using `CBIG_RF_projectMNI2fsaverage.sh`. This projects a probabilistic map of central sulcus from MNI152 to fsaverage.
 
 (Note that you may need to manually provide your Matlab path to the script using -m option. Use -h option for more information)
 
@@ -30,10 +30,10 @@ Run `CBIG_RF_example.sh` for an example using `CBIG_RF_projectVol2fsaverage.sh`.
 - the lh output is compared to `lh.MNI_probMap_ants.central_sulc.demo.nii.gz` in Freeview. Check out the 2 files in `Overlay`. These 2 files should be the same, like shown below.
 
 <p align="center">
-<img src="stand_alone_example.png" height="300" />
+<img src="stand_alone_MNI_example.png" height="300" />
 </p>
 
-The commands to run the same example are also included in the help message of the `CBIG_RF_projectVol2fsaverage.sh` and `CBIG_RF_projectVol2fsaverage.m`. 
+The commands to run the same example are also included in the help message of the `CBIG_RF_projectMNI2fsaverage.sh` and `CBIG_RF_projectMNI2fsaverage.m`. 
 
 --- 
 
@@ -42,7 +42,7 @@ The commands to run the same example are also included in the help message of th
 To project data (A.nii.gz) in MNI152 space to fsaverage and save the outputs directly to folder (B_dir), use the Bash script with the command:
 
 ```bash
-./CBIG_RF_projectVol2fsaverage.sh -s full/path/to/A.nii.gz -o full/path/to/B_dir
+./CBIG_RF_projectMNI2fsaverage.sh -s full/path/to/A.nii.gz -o full/path/to/B_dir
 ```
 
 (Note that you may need to manually provide your Matlab path to the script using -m option. Use -h option for more information)
@@ -51,7 +51,7 @@ To project data (A.nii.gz) in MNI152 space to fsaverage and save the outputs dir
 
 - Otherwise, to get the outputs in Matlab, use the Matlab script with the command:
 ```objective
-[lh_proj_data, rh_proj_data] = CBIG_RF_ProjectVol2fsaverage('full/path/to/A.nii.gz');
+[lh_proj_data, rh_proj_data] = CBIG_RF_ProjectMNI2fsaverage('full/path/to/A.nii.gz');
 ```
   (Note that the outputs are not saved in this case)
 

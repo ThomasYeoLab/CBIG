@@ -1,6 +1,6 @@
 ## Reference
 
-Jianxiao Wu, Gia H. Ngo, Alexander Schaefer, Douglas Greve, Jingwei Li, Tong He, Bruce Fischl, Simon B. Eickhoff, B.T. Thomas Yeo. [**Accurate Nonlinear Mapping between MNI152/Colin27 Volumetric and FreeSurfer Surface Coordinate Systems**](https://doi.org/10.1101/302794), Under review.
+Jianxiao Wu, Gia H. Ngo, Alexander Schaefer, Douglas Greve, Jingwei Li, Tong He, Bruce Fischl, Simon B. Eickhoff, B.T. Thomas Yeo. [**Accurate Nonlinear Mapping between MNI152/Colin27 Volumetric and FreeSurfer Surface Coordinate Systems**](http://people.csail.mit.edu/ythomas/publications/2018VolSurfMapping-HBM.pdf), *Human Brain Mapping*, 2018.
 
 ----
 
@@ -18,7 +18,7 @@ The visualisation of three anatomical regions (represented as probabilistic maps
 
 ## Stand-alone Usage
 
-To use volume-to-fsaverage mappings without the trouble of downloading our entire repository, just download the `bin/final_warps_FS5.3` and `bin/scripts_stand_alone` folders. Put them in the same directory; then follow the README.md in `bin/scripts_stand_alone`.
+To use volume-to-fsaverage mappings without the trouble of downloading our entire repository, just download the `bin/final_warps_FS5.3` and `bin/scripts_stand_alone_for_MNI_fsaverage_projection` (or `bin/scripts_stand_alone_for_Colin_fsaverage_projection`) folders. Put them in the same directory; then follow the README.md in `bin/scripts_stand_alone_for_MNI_fsaverage_projection` (or `bin/scripts_stand_alone_for_Colin_fsaverage_projection`).
 
 Note that FreeSurfer and Matlab need to be installed before the stand-alone scripts can be run.
 
@@ -30,7 +30,7 @@ The folder `bin` contains data files necessary for this project, as well as the 
 
 - `bin/GSP_subjectid.csv` is a file listing all 1490 GSP subject IDs used in this project
 
-- `bin/liberal_cortex_masks` folder: contains the liberal cortical masks of MNI152 and Colin27, which are used in fsaverage-to-volume atlas projections
+- `bin/liberal_cortex_masks_FS5.3` folder: contains the liberal cortical masks of MNI152 and Colin27, which are used in fsaverage-to-volume atlas projections
 
 - `bin/final_warps_FS5.3` folder: contains the MNI152-fsaverage and Colin27-fsaverage mappings generated in this project, for both RF-M3Z and RF-ANTs approaches, using 1490 GSP subjects. These mappings can be used by calling scripts from `bin/scripts_final_proj_FS5.3`
 
@@ -60,6 +60,7 @@ git checkout -b Wu2017_RegistrationFusion v0.5.0-Wu2017_RegistrationFusion
 ## Updates
 
 - Release v0.5.0 (15/04/2018): Initial release of Wu2017 Registration Fusion project.
+- Release v0.6.4 (13/08/2018): Added stand-alone scripts for Colin27-to-fsaverage projections; added example.
 
 ----
 

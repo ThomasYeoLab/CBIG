@@ -23,7 +23,8 @@ export CBIG_FSLDIR=/apps/arch/Linux_x86_64/fsl/5.0.8
 SETUP_PATH=$CBIG_CODE_DIR/setup/CBIG_generic_setup.sh
 source $SETUP_PATH
 
-# DO NOT CHANGE: set up temporary directory for MRIread from FS6.0
+# DO NOT CHANGE: set up temporary directory for MRIread from FS6.0 for CBIG 
+# members using the HPC, Other users should comment this out
 export TMPDIR=/tmpstore
 
 # Do NOT CHANGE: set up MATLABPATH so that MATLAB can find startup.m in our repo 

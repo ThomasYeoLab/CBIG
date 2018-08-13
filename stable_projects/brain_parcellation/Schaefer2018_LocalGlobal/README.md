@@ -86,7 +86,7 @@ Updates
 
     2. Add unit test scripts to `unit_tests` folder.
 
-    3. Update README.md, add links for people to directly download the Parcellations and this project's standalone repository: `Standalone_CBIG_Schaefer2018_LocalGlobal`.
+    3. Update README.md, add links for people to directly download the Parcellations and this project's standalone repository: `Standalone_Schaefer2018_LocalGlobal`.
 
 ---
 
