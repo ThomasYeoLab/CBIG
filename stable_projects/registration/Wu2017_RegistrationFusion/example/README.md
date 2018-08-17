@@ -4,7 +4,7 @@ This README includes the instruction on how to run an example for Wu2017_Registr
 
 ## Reference
 
-Jianxiao Wu, Gia H. Ngo, Alexander Schaefer, Douglas Greve, Jingwei Li, Tong He, Bruce Fischl, Simon B. Eickhoff, B.T. Thomas Yeo. [**Accurate Nonlinear Mapping between MNI152/Colin27 Volumetric and FreeSurfer Surface Coordinate Systems**](http://people.csail.mit.edu/ythomas/publications/2018VolSurfMapping-HBM.pdf), *Human Brain Mapping*, 2018.
+Wu J, Ngo GH, Greve DN, Li J, He T, Fischl B, Eickhoff SB, Yeo BTT. [**Accurate nonlinear mapping between MNI volumetric and FreeSurfer surface coordinate systems**](http://people.csail.mit.edu/ythomas/publications/2018VolSurfMapping-HBM.pdf), *Human Brain Mapping* 39:3793–3808, 2018.
 
 ----
 

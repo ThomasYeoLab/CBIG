@@ -4,7 +4,7 @@ Here we provide an example for you to run so that you can have a brief sense abo
 
 References
 ==========
-+ Schaefer A, Kong R, Gordon EM, Zuo XN, Holmes AJ, Eickhoff SB, Yeo BT, (accepted), Local-Global Parcellation of the Human Cerebral Cortex From Intrinsic Functional Connectivity MRI, Cerebral Cortex
++ Schaefer A, Kong R, Gordon EM, Laumann TO, Zuo XN, Holmes AJ, Eickhoff SB, Yeo BTT. [**Local-Global parcellation of the human cerebral cortex from intrinsic functional connectivity MRI**](http://people.csail.mit.edu/ythomas/publications/2018LocalGlobal-CerebCor.pdf), *Cerebral Cortex*, 29:3095-3114, 2018
 
 ----
 
@@ -30,7 +30,7 @@ Run example code
 1) In terminal, run following command:
 
 ```
-sh ${CBIG_CODE_DIR}/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Code/examples/example_input/CBIG_gwMRF_create_example_input_fullpaths.sh <your_output_folder>
+sh ${CBIG_CODE_DIR}/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/examples/example_input/CBIG_gwMRF_create_example_input_fullpaths.sh <your_output_folder>
 ```
 This will generate a file `example_input_fullpaths.csv` needed for the next step. The file will be stored in `<your_output_folder>`.
 

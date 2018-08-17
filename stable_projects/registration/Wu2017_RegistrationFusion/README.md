@@ -1,6 +1,6 @@
 ## Reference
 
-Jianxiao Wu, Gia H. Ngo, Alexander Schaefer, Douglas Greve, Jingwei Li, Tong He, Bruce Fischl, Simon B. Eickhoff, B.T. Thomas Yeo. [**Accurate Nonlinear Mapping between MNI152/Colin27 Volumetric and FreeSurfer Surface Coordinate Systems**](http://people.csail.mit.edu/ythomas/publications/2018VolSurfMapping-HBM.pdf), *Human Brain Mapping*, 2018.
+Wu J, Ngo GH, Greve DN, Li J, He T, Fischl B, Eickhoff SB, Yeo BTT. [**Accurate nonlinear mapping between MNI volumetric and FreeSurfer surface coordinate systems**](http://people.csail.mit.edu/ythomas/publications/2018VolSurfMapping-HBM.pdf), *Human Brain Mapping* 39:3793–3808, 2018.
 
 ----
 
@@ -46,13 +46,13 @@ The folder `bin` contains data files necessary for this project, as well as the 
 
 Note that this project uses generic functions from other folders, which may be updated over time. To download the version of the code that was last tested, you can either
 
-- visit this link: https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.5.0-Wu2017_RegistrationFusion
+- visit this link: https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.6.5-FixPublicationDetail_Wu2017_Schaefer2018
 
 or
 
 - run the following command, if you have Git installed
 ```
-git checkout -b Wu2017_RegistrationFusion v0.5.0-Wu2017_RegistrationFusion
+git checkout -b Wu2017_RegistrationFusion v0.6.5-FixPublicationDetail_Wu2017_Schaefer2018
 ```
 
 ----
@@ -61,6 +61,7 @@ git checkout -b Wu2017_RegistrationFusion v0.5.0-Wu2017_RegistrationFusion
 
 - Release v0.5.0 (15/04/2018): Initial release of Wu2017 Registration Fusion project.
 - Release v0.6.4 (13/08/2018): Added stand-alone scripts for Colin27-to-fsaverage projections; added example.
+- Release v0.6.5 (17/08/2018): Updated publication details
 
 ----
 
