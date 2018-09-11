@@ -26,6 +26,7 @@
 
 !/fMRI_dynamics/*
 !/fMRI_dynamics/Liegeois2017_Surrogates/**
+!/fMRI_dynamics/Wang2018_MFMem/**
 
 !/preprocessing/*
 !/preprocessing/CBIG_fMRI_Preproc2016/**
