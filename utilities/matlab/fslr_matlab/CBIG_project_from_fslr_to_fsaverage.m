@@ -36,7 +36,7 @@ end
 lh_mri.vol = int16(lh_label_fslr);
 rh_mri.vol = int16(rh_label_fslr);
 
-CBIG_CODE_DIR = getevn('CBIG_CODE_DIR');
+CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
 
 % get gifti struct
 CIFTI_FUNC_DIR = fullfile(CBIG_CODE_DIR, 'data/templates/surface/fs_LR_32k/example_func');

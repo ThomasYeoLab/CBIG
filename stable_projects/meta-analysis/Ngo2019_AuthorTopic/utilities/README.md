@@ -1,0 +1,5 @@
+ - `preprocessing` folder contains the functions for preprocessing coordinate-based meta-analytic data saved in text file and convert them to Matlab input data for the Collapsed Variational Bayes (CVB) algorithm.
+ - `inference` folder contains the functions to estimate the model parameters of the author-topic model using CVB algorithm.
+ - `visualization` folder contains functions for visualizing the author-topic model parameter estimates on the brain surface.
+ - `BIC` folder contains functions for computing Bayesian Information Criterion measure of the author-topic model parameter estimates.
+ - `mask` folder contains the 2-mm brain mask used by the all the functions in this folder.

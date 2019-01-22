@@ -100,11 +100,13 @@ function CBIG_DrawSurfaceDataAsAnnotation(lh_data, rh_data, ...
     if nargin < 9
         colorscale = CBIG_GenerateClearbrainColorscale(discretization_res, min_thresh, max_thresh, abs_path_to_output_dir);
     elseif ~isnumeric(colorscheme)
-        if strcmp(colorscheme, 'hsv')
+        if strcmp(colorscheme, 'truncated')
+            colorscale = CBIG_GenerateTruncatedClearbrainColorscale(discretization_res, min_thresh, max_thresh, abs_path_to_output_dir);
+        elseif strcmp(colorscheme, 'hsv')
             colorscale = CBIG_GenerateHSVColorscale(discretization_res, min_thresh, max_thresh, abs_path_to_output_dir);
         elseif strcmp(colorscheme, 'parula')
             colorscale = CBIG_GenerateParulaColorscale(discretization_res, min_thresh, max_thresh, abs_path_to_output_dir);
-        elseif strcmp(colorschme, 'clear_brain') || strcmp(colorscheme, 'default')
+        elseif strcmp(colorscheme, 'clear_brain') || strcmp(colorscheme, 'default')
             colorscale = CBIG_GenerateClearbrainColorscale(discretization_res, min_thresh, max_thresh, abs_path_to_output_dir);
         end
     end

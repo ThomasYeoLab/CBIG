@@ -1,4 +1,16 @@
-Please read the following instructions **carefully** in order to have your local environment compatible with CBIG repository.
+Please read the following instructions **carefully** in order to have your local environment compatible with CBIG repository. 
+
+# 0) Prerequisites
+Linux system needs to be installed.
+The Linux distribution needs to be supported by the software used by this repository, which are
+[FreeSurfer](https://surfer.nmr.mgh.harvard.edu/fswiki/DownloadAndInstall),
+[FSL](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FslInstallation),
+[SPM](https://www.fil.ion.ucl.ac.uk/spm/),
+[AFNI](https://afni.nimh.nih.gov/pub/dist/doc/htmldoc/background_install/install_instructs/index.html),
+[ANTs](http://stnava.github.io/ANTs/),
+[Connectome Workbench](https://www.humanconnectome.org/software/connectome-workbench),
+[Caret](http://brainvis.wustl.edu/wiki/index.php/Caret:About), and Matlab.
+Linux distribution choices include but are not limited to RedHat, SuSE, Ubuntu and their derivatives.
 
 # 1) Copy and modify configuration file
 `CBIG` repository uses many external softwares. In order to easily use and manage these softwares, we use a script to configure the necessary paths and variables.

@@ -31,7 +31,7 @@ function CBIG_VonmisesSeriesClustering_fix_bessel_randnum_bsxfun(mesh_name, mask
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 if(~isempty(strfind(mesh_name, 'fsaverage')))
-    lambda = 0;            % function direcClus_fix_bessel_bxfun() treats 0 as not specified, lambda will be set as its default (500)
+    lambda = 500;            % function direcClus_fix_bessel_bxfun() treats 0 as not specified, lambda will be set as its default (500)
 elseif(strcmp(mesh_name, 'fs_LR_32k'))
     lambda = 650;          % For data in fs_LR_32k space, lambda is set to be 650
 else
@@ -139,7 +139,7 @@ if(num_clusters > 1)
         cidx = new_cidx; 
     end
 else
-    cidx = ones(size(series, 1), 1);
+    cidx = ones(length(l), 1);
     lambda = 0;
     mtc = 0;
     p = 0;
@@ -162,7 +162,7 @@ if(num_clusters > 1 && ~isempty(strfind(mesh_name, 'fsaverage')) && no_silhouett
         s = new_s; 
     end
 else
-    s = zeros(size(series, 1), 1);
+    s = zeros(length(l), 1);
 end
 lh_s = ones(lh_num_verts, 1);
 lh_s(l1) = s(1:length(l1));

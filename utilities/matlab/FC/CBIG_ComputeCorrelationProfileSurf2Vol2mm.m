@@ -49,9 +49,9 @@ if(regress_bool > 0)
         for k = 1:length(areas)
             
             if(strcmp(areas{k}, 'Cerebellum'))
-                regress_target = MRIread([SUBJECTS_DIR '/scripts/downsample_data/LooseCerebellum.dist1.Mask.GCA.t0.5.nii.gz']);
+                regress_target = MRIread([SUBJECTS_DIR '/LooseCerebellum.dist1.Mask.GCA.t0.5.nii.gz']);
             elseif(strcmp(areas{k}, 'Striatum'))
-                regress_target = MRIread([SUBJECTS_DIR '/scripts/downsample_data/LooseStriatum.dist1.Mask.GCA.t0.5.nii.gz']);
+                regress_target = MRIread([SUBJECTS_DIR '/LooseStriatum.dist1.Mask.GCA.t0.5.nii.gz']);
             else
                 error('Does not handle non cerebellum or striatum'); 
             end
@@ -64,7 +64,7 @@ if(regress_bool > 0)
         cortex_dt = [4; ...
                      4.5];
                  
-        regress_target = MRIread([SUBJECTS_DIR '/scripts/downsample_data/LooseStriatum.dist1.Mask.GCA.t0.5.nii.gz']);         
+        regress_target = MRIread([SUBJECTS_DIR '/LooseStriatum.dist1.Mask.GCA.t0.5.nii.gz']);         
         regress_target_cell{1} = find(regress_target.vol == 1); 
     else
         error('No other regression for now!');
@@ -198,6 +198,6 @@ if(str2num(threshold) < 1)
 end
 
 surf2vol_correlation_profile = transpose(corr_mat); % result is N voxels x # ROI 
-save(output_file, 'surf2vol_correlation_profile');
+save(output_file, 'surf2vol_correlation_profile', '-v7.3');
 
-exit
+%exit

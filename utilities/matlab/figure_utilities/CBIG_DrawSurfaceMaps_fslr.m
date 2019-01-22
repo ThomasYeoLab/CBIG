@@ -18,7 +18,7 @@ function h = CBIG_DrawSurfaceMaps_fslr(lh_data, rh_data, mesh_name, surf_type, m
 %        fslr = 'fs_LR_32k' or 'fs_LR_164k'
 %      - surf_type:
 %        surface template. Options are 'inflated', 'very_inflated', 
-%        'midthickness_mni', 'white_mni'
+%        'midthickness_orig', 'white_orig', 'pial_orig', 'sphere'.
 %      - min_thresh, max_thresh (optional):
 %        minimum and maximum threshold for the colorscale of the projected
 %        values.

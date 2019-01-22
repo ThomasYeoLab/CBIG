@@ -105,5 +105,5 @@ if(str2num(threshold) < 1)
 end
 
 surf2vol_correlation_profile = transpose(corr_mat); % result is N voxels x # ROI 
-save(output_file, 'surf2vol_correlation_profile');
+save(output_file, 'surf2vol_correlation_profile', '-v7.3');
 

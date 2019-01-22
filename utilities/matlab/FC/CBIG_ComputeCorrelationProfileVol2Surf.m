@@ -94,6 +94,6 @@ size_input(4) = size(corr_mat, 1);
 output_series.vol = reshape(transpose(corr_mat), size_input);
 MRIwrite(output_series, output_file); 
 
-exit
+% exit
 
 

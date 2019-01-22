@@ -7,7 +7,7 @@ function [lh_FS7_data,rh_FS7_data] = CBIG_project_fsLR2fsaverage(lh_fsLR_data,rh
 % is in fs_LR_32k, the data will upsample to fs_LR_164k.
 % Input:
 %      -lh_fsLR_data, rh_fsLR_data:
-%       a 1 x N vector, where N is the number of vertices. ?h_fsLR_data can
+%       a N x 1 vector, where N is the number of vertices. ?h_fsLR_data can
 %       be metric data (float) or label data (integer).
 %
 %      -fsLR_mesh:
@@ -50,6 +50,15 @@ if(exist(folder_to_write,'dir') ~= 0) % if the output folder exists
 else
     mkdir(folder_to_write);
 end
+
+%% input data should be Nx1 vector, if not, rotate it to be Nx1
+if(size(lh_fsLR_data,2) ~= 1);
+    lh_fsLR_data = lh_fsLR_data';
+end
+if(size(rh_fsLR_data,2) ~= 1);
+    rh_fsLR_data = rh_fsLR_data';
+end 
+
 
 %% Save input ?h_fsLR_data as a cifti file
 % set gifti file extension

@@ -109,4 +109,4 @@ for i = 1:size(corr_mat, 1)
 end
 MRIwrite(output_series, output_file); 
 
-exit
+% exit

@@ -10,7 +10,7 @@ function output_mesh = CBIG_read_fslr_surface(hemi, mesh_name, surf_type, label)
 %        mesh structure. mesh_name = 'fs_LR_32k' or 'fs_LR_164k'.
 %      - surf_type: 
 %        surface template. Options are 'inflated', 'very_inflated', 
-%        'midthickness_mni', 'white_mni'.
+%        'midthickness_orig', 'white_orig', 'pial_orig', 'sphere'.
 %      - label: 
 %        If label is not defined, then there is no 'MARS_label' and
 %        'MARS_ct' structure fields in the output structure. label can ONLY

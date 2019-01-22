@@ -25,11 +25,18 @@ if [ "$resample_mesh" == "fs_LR_164k" ]; then
 	standard_resample_mesh=164k_fs_LR;
 fi
 	
+if [ "$data_type" == "metric" ]; then
+	fsLR_extension=func;
+fi
+if [ "$data_type" == "label" ]; then
+	fsLR_extension=label;
+fi
+
 for hemi in {L,R}; do
-	resample_in=${project_dir}/${data_type}_${hemi}.${orig_mesh}.${data_type}.gii
+	resample_in=${project_dir}/${data_type}_${hemi}.${orig_mesh}.${fsLR_extension}.gii
 	resample_sphere=$fsLR_surface_dir/${resample_mesh}/cifti/standard.$hemi.sphere.${standard_resample_mesh}.surf.gii
 	orig_sphere=$fsLR_surface_dir/${orig_mesh}/cifti/standard.$hemi.sphere.${standard_orig_mesh}.surf.gii
-	resample_out=${project_dir}/${data_type}_${hemi}.${resample_mesh}.${data_type}.gii
+	resample_out=${project_dir}/${data_type}_${hemi}.${resample_mesh}.${fsLR_extension}.gii
 	resample_area=$fsLR_surface_dir/standard_mesh_atlases_${version}/resample_fsaverage/fs_LR.$hemi.midthickness_va_avg.${standard_resample_mesh}.shape.gii
 	orig_area=$fsLR_surface_dir/standard_mesh_atlases_${version}/resample_fsaverage/fs_LR.$hemi.midthickness_va_avg.${standard_orig_mesh}.shape.gii
 	
