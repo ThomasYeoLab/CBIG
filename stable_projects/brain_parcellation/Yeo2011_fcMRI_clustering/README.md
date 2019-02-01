@@ -34,6 +34,11 @@ The original networks in 7/17 network brain parcellations were spatially distrib
 
     <img src="readme_figures/Yeo2011_network_parcellation_splitlabels_fs5.png" height="300" />
 
+
+    We also provide RAS centroid coordinates of the 7/17 network components in MNI 1mm and 2mm space. If you are interested, please check the csv files in:
+
+    `1000subjects_reference/Yeo_JNeurophysiol11_SplitLabels/MNI152/Centroid_coordinates`
+
 ----
 
 ## Code Release
@@ -47,14 +52,14 @@ There is a simple example in `examples` folder. Check how to run the example cod
 
 Note that this project uses generic functions from other folders, which may be updated over time. To download the version of the code that was last tested, you can either
 
-- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.4.12-Brain_Parcellations](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.4.12-Brain_Parcellations)
+- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.8.2-Yeo2011_fcMRI_clustering](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.8.2-Yeo2011_fcMRI_clustering)
 
 or
 
 - run the following command, if you have Git installed
  
 ```
-git checkout -b Yeo2011_fcMRI_clustering v0.4.12-Brain_Parcellations
+git checkout -b Yeo2011_fcMRI_clustering v0.8.2-Yeo2011_fcMRI_clustering
 ```
 
 ----
@@ -82,7 +87,11 @@ git checkout -b Yeo2011_fcMRI_clustering v0.4.12-Brain_Parcellations
     3. The example subjects are re-processed by a newer version of our preprocessing pipeline ([v0.4.9](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.4.9-CBIG_fMRI_Preprocessing)). Hence results in `./examples` are updated.
     
     4. Update some README.md files.
- 
+
+- Release v0.8.2 (01/02/2019):
+
+    1. Release RAS centroid coordinates of Yeo2011 parcellations in MNI 1mm and 2mm space. The coordinate csv files can be found under `1000subjects_reference/Yeo_JNeurophysiol11_SplitLabels/MNI152.` 
+
 ----
 
 ## Bugs and Questions
