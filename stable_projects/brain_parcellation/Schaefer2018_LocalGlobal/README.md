@@ -25,6 +25,9 @@ Here we provide a visualization of the 400 parcel parcellation in ```fslr32k``` 
 
 <img src="readme_figures/Schaefer2018_400parcel_parcellation_match_Yeo_17_network_fslr32k.png" height="300" />
 
+
+We also provide RAS centroid coordinates of the parcellations in MNI 1mm and 2mm space. If you are interested, please check the csv files in: `Parcellations/MNI/Centroid_coordinates`
+
 ---
 
 Code Release
@@ -48,14 +51,14 @@ Except for this project, if you want to use the code for other stable projects f
 
 To download the version of the code that is last tested, you can either
 
-- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.6.5-FixPublicationDetail_Wu2017_Schaefer2018](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.6.5-FixPublicationDetail_Wu2017_Schaefer2018)
+- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.8.1-Schaefer2018_LocalGlobal](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.8.1-Schaefer2018_LocalGlobal)
 
 or
 
 - run the following command, if you have Git installed
 
 ```
-git checkout -b Schaefer2018_LocalGlobal v0.6.5-FixPublicationDetail_Wu2017_Schaefer2018
+git checkout -b Schaefer2018_LocalGlobal v0.8.1-Schaefer2018_LocalGlobal
 ```
 
 ---
@@ -94,6 +97,10 @@ Updates
     2. Update publication details in README files.
 
     3. Fix a bug related to creating `Standalone_Schaefer2018_LocalGlobal`.
+
+- Release v0.8.1 (01/02/2019):
+
+    1. Release RAS centroid coordinates of Schaefer2018 parcellations in MNI 1mm and 2mm space. The coordinate csv files can be found under `Parcellations/MNI/Centroid_coordinates`.
 
 ---
 
