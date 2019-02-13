@@ -1,0 +1,190 @@
+function [y_p, y_t, acc, acc_concat] = CBIG_KRR_innerloop_cv( bin_flag, num_inner_folds, ...
+    kernel, y_resid, y_orig, num_valid_sub, lambda, threshold )
+
+% [y_p, y_t, acc, acc_concat] = CBIG_KRR_innerloop_cv( bin_flag, num_inner_folds, ...
+%     kernel, y_resid, y_orig, num_valid_sub, lambda, threshold )
+% 
+% This function performs innner-loop cross-validation of kernel ridge
+% regression with only one hyperparamter combination (kernel type and
+% scale, regularization, threshold for binary cases (if necessary, e.g.
+% sex)).
+% 
+% Inputs:
+%   - bin_flag
+%     0 or 1. 1 means the target variables to be predicted (i.e. y_orig)
+%     are binary. 0 means none of them are binary.
+%     If the target variables consist of both binary and non-binary
+%     variables, you need to call this function twice and predict them
+%     separately with different "bin_flag".
+% 
+%   - num_inner_folds
+%     A scalar, the number of inner-loop cross-validation folds for
+%     hyperparameter selection.
+%     If there are enough data so that cross-validation is not needed, set
+%     num_inner_folds = 1.
+% 
+%   - kernel
+%     An S x S kernel matrix.
+%     For cross-validation case, S is the number of training subjects. The
+%     ordering of training subjects needs to be matched with the ordering
+%     of the target variable y.
+%     If data were split into training, validation, and test sets, then S
+%     is the number of training subject + the number of validation
+%     subjects. The first S1 subjects of S will be the training subjects
+%     and the last S2 = S - S1 subjects will be the validation subjects
+% 
+%   - y_resid
+%     An S x #VariableToPredict matrix of the target variable y after
+%     regressing out nuisance regressors. 
+%     If cross-validation is not used, the first S1 rows of y_resid will
+%     correspond to the training subjects and the last S2 = S - S1 rows of
+%     y_resid will correspond to the validation subjects.
+% 
+%   - y_orig (optional)
+%     An S x #VariableToPredict vector of the target variable y before
+%     regression of covariates. This vector is needed for binary (0 or 1) case (e.g. sex)
+%     for accuracy calculation.
+%     If y is not a binary variable, specify y_orig = [].
+%     If cross-validation is not used, the first S1 rows of y_orig will
+%     correspond to the training subjects and the last S2 = S - S1 rows of
+%     y_orig will correspond to the validation subjects.
+%   
+%   - num_valid_sub (optional)
+%     A scalar, the number of validation subjects for non-cross-validation
+%     case. It is assumed that the last "num_valid_sub" subjects in
+%     "kernel", "y_resid" and "y_orig" are the validation subjects.
+%     For cross-validation case, this argument is not needed, set 
+%     num_valid_sub = [].
+%     
+%   - lambda
+%     A scalar, the l2-regularization parameter.
+% 
+%   - threshold (optional)
+%     A scalar, it is a threshold required to determine the prediction (1
+%     or 0) for binary target variables (e.g. sex). Ignore this parameter
+%     if y is not binary.
+% 
+% Outputs:
+%   - y_p
+%     A cell array of length #TargetVariables. Each cell array contains the
+%     predicted target values of all training subjects (using the
+%     inner-loop CV manner) or validation subjects (using the
+%     training-validation-test manner). Within each cell, the predicted
+%     values follow the same ordering of y_resid. 
+%     For cross-validation case, each cell array is an S x 1 vector.
+%     For training-validation-test case, each cell array is an S2 x 1 vector.
+% 
+%   - y_t
+%     A cell array of length #TargetVariables. Each cell array contains the
+%     groud truth (actual) target values of all training subjects (using
+%     the inner-loop CV manner) or validation subject (using
+%     training-validation-test manner). Within each cell, the ground-truth
+%     values follow the same ordering of y_resid.
+%     If y is binary (e.g. sex), y_t will be the original y before
+%     regression of nuisace covariates. If y is not binary, y_t will be the
+%     y after regression of nuisance covariates.
+%     For cross-validation case, each cell array is an S x size(y_resid, 2)
+%     matrix.
+%     For training-valdation-test case, each cell array is an S2 x
+%     size(y_resid, 2) matrix.
+% 
+%   - acc
+%     A 1 x size(y_resid,2) vector, the accuracy of the prediction of each
+%     target variable, averaged across all inner-loop folds.
+%     For binary case, acc are the average of (true positive & negative) /
+%     #subjects; for continuous variables, acc measures how correlated the
+%     predicted and actual values are.
+% 
+%   - acc_concat
+%     A 1 x size(y_resid,2) vector, the accuracy of each variable. the
+%     accuracy is computed based on the concatenated predicted scores of
+%     all inner-loop folds.
+% 
+% Written by Jingwei Li, Ru(by) Kong and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+
+%% setting up
+num_sub = size(kernel, 1);
+
+if(bin_flag==1 && (~exist('y_orig', 'var') || isempty(y_orig)) )
+    error('"y_orig" variable is needed when y is binary (e.g. sex)')
+end
+
+% training and test indices for each inner-loop fold
+if(num_inner_folds == 1)
+    % all subjects were split into training, validation and test sets
+    assert(~isempty(num_valid_sub), ...
+        '''num_valid_sub'' needs to be passed in since cross-validation is not performed.')
+    fold_index.training = 1:(num_sub - num_valid_sub);
+    fold_index.test = (num_sub - num_valid_sub + 1):num_sub;
+else
+    % cross-validation case
+    rng(1);
+    cv_idx = cvpartition(num_sub, 'kfold', num_inner_folds);
+    
+    for fold = 1:num_inner_folds
+        fold_index(fold).training = cv_idx.training(fold);
+        fold_index(fold).test = cv_idx.test(fold);
+    end
+end
+
+%% kernel regression for each inner-loop fold
+for fold = 1:num_inner_folds
+    curr_train_idx = fold_index(fold).training;
+    curr_test_idx = fold_index(fold).test;
+    
+    curr_ker_train = kernel(curr_train_idx, curr_train_idx);
+    curr_ker_test = kernel(curr_test_idx, curr_train_idx);
+    
+    curr_y_train = y_resid(curr_train_idx, :);
+    curr_y_test = y_resid(curr_test_idx, :);
+    if(bin_flag==1)
+        curr_y_true = y_orig(curr_test_idx, :);
+    end
+    
+    for i = 1:size(y_resid, 2)
+        %% Training
+        % alpha = (K + lambda * I)^-1 * y
+        %  Nx1    NxN   1x1    NxN      Nx1
+        nan_index = isnan(curr_y_train(:,i));
+        alpha{fold,i} = (curr_ker_train(~nan_index,~nan_index) + lambda*eye(sum(~nan_index))) ...
+            \ curr_y_train(~nan_index,i);
+        
+        %% Test
+        y_predict{fold,i} = curr_ker_test(~isnan(curr_y_test(:,i)), ~nan_index) * alpha{fold,i};
+        if(bin_flag==1)
+            y_true{fold, i} = curr_y_true(~isnan(curr_y_true(:,i)), i);
+            TP = length(find((y_predict{fold,i} > threshold) & (y_true{fold,i}==1) == 1));
+            TN = length(find((y_predict{fold,i} < threshold) & (y_true{fold,i}==0) == 1));
+            acc_fold{fold,i} = (TP + TN) / length(y_true{fold,i});
+        else
+            y_true{fold, i} = curr_y_test(~isnan(curr_y_test(:,i)), i);
+            acc_fold{fold,i} = CBIG_corr(y_predict{fold,i}, y_true{fold,i});
+        end
+    end
+end
+
+%% concatenate
+for i = 1:size(y_resid, 2)
+    y_predict_concat = [];
+    y_true_concat = [];
+    acc_all = 0;
+    for fold = 1:num_inner_folds
+        y_predict_concat = [y_predict_concat; y_predict{fold,i}];
+        y_true_concat = [y_true_concat; y_true{fold,i}];
+        acc_all = acc_all +  acc_fold{fold,i};
+    end
+    acc(i) = acc_all/num_inner_folds;
+    if(bin_flag==1)
+        TP = length(find((y_predict_concat > threshold) & (y_true_concat==1) == 1));
+        TN = length(find((y_predict_concat < threshold) & (y_true_concat==0) == 1));
+        acc_concat = (TP + TN) / length(y_true_concat);
+    else
+        acc_concat(i) = CBIG_corr(y_predict_concat,y_true_concat);
+    end
+    y_p{i} = y_predict_concat;
+    y_t{i} = y_true_concat;
+end
+
+
+end
+

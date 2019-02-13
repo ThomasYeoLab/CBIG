@@ -1,0 +1,188 @@
+function [acc] = CBIG_KRR_test_cv_allparams( test_fold, sub_fold, ...
+    data_dir, y_resid_stem, ker_param, lambda_set, threshold_set )
+
+% [acc] = CBIG_KRR_test_cv_allparams( test_fold, sub_fold, ...
+%     data_dir, y_resid_stem, ker_param, lambda_set, threshold_set )
+% 
+% For a given test fold, this function calculates the test accuracies of
+% all target variables with all possible combinations of hyperparameters,
+% including the kernel parameters, the regularizaiton parameter lambda,
+% and/or the threshold used for binary target variable.
+% 
+% Note: if your target variables contain both binary and non-binary
+% measures, please deal with them separately.
+% 
+% Inputs:
+%   - test_fold
+%     A string or a scalar, current test fold.
+% 
+%   - sub_fold
+%     The data split for cross-validation.
+%     It is a num_test_folds x 1 structure with a field "fold_index".
+%     sub_fold(i).fold_index is a #subjects x 1 binary vector, where 1
+%     refers to the test subjects in the i-th fold; 0 refers to the
+%     training subjects in the i-th fold.
+%     If the user does not need cross-validation, the length of sub_fold
+%     will be 1. In this case, sub_fold.fold_index has 3 unique values: 
+%     0 - training set;
+%     1 - test set;
+%     2 - validation set.
+% 
+%   - data_dir
+%     Full path of the input/output directory.
+%     A subfolder [data_dir '/test_cv/fold_' num2str(test_fold)] will
+%     be created to save the test cross-validation results.
+% 
+%   - y_resid_stem
+%     A string that was used to describe the .mat file of the target
+%     variable y after regression. For example, if the filename is
+%     <path_to_file>/y_regress_58behaviors.mat,
+%     "y_resid_stem" will be '58behaviors'.
+%     See the description of "outstem" parameter of function
+%     CBIG_crossvalid_regress_covariates_from_y.m
+%   
+%   - ker_param (optional)
+%     A K x 1 structure with two fields: type and scale. K denotes the
+%     number of kernels.
+%     ker_param(k).type is a string that specifies the type of k-th kernel.
+%                       Choose from
+%                       'corr'        - Pearson's correlation;
+%                       'Gaussian'    - Gaussian kernel;
+%                       'Exponential' - exponential kernel.
+%     ker_param(k).scale is a scalar specifying the scale of k-th kernel
+%     (for Gaussian kernel or exponential kernel). If ker_param(k).type == 'corr',
+%     ker_param(k).scale = NaN.
+%     If "ker_param" is not passed in, only correlation kernel will be
+%     calculated.
+% 
+%   - lambda_set (optional)
+%     A vector of numbers for grid search of lambda (the regularization
+%     parameter). If "lambda_set" is not passed in or is 'NONE', it will be
+%     set as default:
+%     [ 0 0.00001 0.0001 0.001 0.004 0.007 0.01 0.04 0.07 0.1 0.4 0.7 1 1.5 2 2.5 3 3.5 4 ...
+%        5 10 15 20 30 40 50 60 70 80 100 150 200 300 500 700 1000 10000 100000 1000000]
+% 
+%   - threshold_set (optional)
+%     A vector of numbers (thresholds). Different thresholds used will
+%     affect the accuracy of the target variable (binary) predictions. To
+%     be used when the target variable to predict is binary (e.g. sex). The
+%     threshold is used as a point (between -1 and 1) to divide the
+%     prediction into the two classes (e.g. Male or Female).
+%     If "threshold_set" is not passed in or is 'NONE', it will be set as
+%     default: [-1:0.1:1].
+% 
+% Outputs:
+%   - acc
+%     A cell with dimension of #kernels x #lambda x #thresholds of
+%     test CV accuracy for each hyperparameter combination.
+% 
+% Written by Jingwei Li, Ru(by) Kong and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+
+%% setting up
+if(ischar(test_fold))
+    test_fold = str2num(test_fold);
+end
+
+if(~isempty(y_resid_stem))
+    y_resid_stem = ['_' y_resid_stem];
+end
+y_resid_file = fullfile(data_dir, 'y', ['fold_' num2str(test_fold)], ...
+    ['y_regress' y_resid_stem '.mat']);
+load(y_resid_file)
+
+% set default hyperparamters if not passed in
+if(~exist('ker_param', 'var') || strcmpi(ker_param, 'none'))
+    ker_param.type = 'corr';
+    ker_param.scale = NaN;
+end
+
+if(~exist('lambda_set', 'var') || strcmpi(lambda_set, 'none'))
+    lambda_set = [ 0 0.00001 0.0001 0.001 0.004 0.007 0.01 0.04 0.07 0.1 0.4 0.7 1 1.5 2 2.5 3 3.5 4 ...
+        5 10 15 20 30 40 50 60 70 80 100 150 200 300 500 700 1000 10000 100000 1000000];
+end
+
+for i = 1:size(y_orig, 2)
+    if(length(unique(y_orig(:,i))) > 2)
+        % not binary
+        bin_flag(i) = 0;
+    else
+        % binary case
+        bin_flag(i) = 1;
+    end
+    if(any(bin_flag==1) && any(bin_flag==0))
+        error('Mixture of binary (e.g. sex) and continuous cases. Please run them separately.')
+    elseif(~any(bin_flag==1))    % all y are continuous
+        bin_flag = 0;
+        threshold_set = NaN;
+    else                         % all y are binary
+        bin_flag = 1;
+        if(~exist('threshold_set', 'var') || strcmpi(threshold_set, 'none'))
+            threshold_set = [-1:0.1:1];
+        end
+    end
+end
+
+% check if using cross-validation
+if(length(sub_fold)>1)
+    % cross-validation
+    kernel_dir = fullfile(data_dir, 'FSM_test', ['fold_' num2str(test_fold)]);
+    train_ind = sub_fold(test_fold).fold_index==0;
+    test_ind = sub_fold(test_fold).fold_index==1;
+else
+    kernel_dir = fullfile(data_dir, 'FSM_test');
+    train_ind = 1:length(find(sub_fold.fold_index==0));
+    test_ind = (length(find(sub_fold.fold_index==0))+1):(length(find(sub_fold.fold_index==0)) ...
+        + length(find(sub_fold.fold_index==1)) );
+end
+
+
+%% test CV for each parameter combination
+outdir = fullfile(data_dir, 'test_cv', ['fold_' num2str(test_fold)]);
+
+if(~exist(fullfile(outdir, ['acc' y_resid_stem '.mat']), 'file'))
+    curr_y_resid_train = y_resid(train_ind, :);
+    curr_y_resid_test = y_resid(test_ind, :);
+    curr_y_orig_test = y_orig(test_ind, :);
+    
+    for k = 1:length(ker_param)
+        fprintf('Kernel type: %s, scale: %f\n', ker_param(k).type, ker_param(k).scale)
+        if(strcmp(ker_param(k).type, 'corr'))
+            kernel = [kernel_dir '/FSM_' ker_param(k).type '.mat'];
+        else
+            kernel = [kernel_dir '/FSM_' ker_param(k).type num2str(ker_param(k).scale) '.mat'];
+        end
+        load(kernel)
+        
+        FSM_train = FSM(train_ind, train_ind);
+        FSM_test = FSM(test_ind, train_ind);
+        
+        for l = 1:length(lambda_set)
+            lambda = lambda_set(l);
+            fprintf('  lambda: %f\n', lambda);
+            
+            for t = 1:length(threshold_set)
+                threshold = threshold_set(t);
+                fprintf('    threshold: %f\n', threshold)
+                [y_p{k,l,t}, y_t{k,l,t}, acc{k,l,t}] = CBIG_KRR_test_cv( bin_flag, FSM_train, FSM_test, ...
+                    curr_y_resid_train, curr_y_resid_test, curr_y_orig_test, lambda, threshold );
+                clear threshold
+            end
+            clear lambda
+        end
+        clear FSM FSM_train FSM_test
+    end
+    
+    if(~exist(outdir, 'dir'))
+        mkdir(outdir)
+    end
+    save(fullfile(outdir, ['acc' y_resid_stem '.mat']), 'acc', 'y_p', 'y_t');
+else
+    load(fullfile(outdir, ['acc' y_resid_stem '.mat']))
+    if(size(acc,1)~=length(ker_param) || size(acc,2)~=length(lambda_set) || size(acc,3)~=length(threshold_set))
+        error('Wrong size of ''acc'' in existing file %s. Please remove it and rerun this script.', ...
+            fullfile(outdir, ['acc' y_resid_stem '.mat']))
+    end
+end
+
+end
+

@@ -36,3 +36,6 @@
 
 !/meta-analysis/*
 !/meta-analysis/Ngo2019_AuthorTopic/**
+
+!/preprocessing/*
+!/preprocessing/Li2019_GSR/**
