@@ -4,7 +4,7 @@ function [theta, beta] = CBIG_AuthorTopic_EstimateParams(params)
 % Compute estimates of the author-topic model's parameters (theta and
 % beta) using the current estimate of the parameters of the variational
 % distribution produced by the Collapsed Variational Bayes (CVB)
-% algoirthm.
+% algorithm.
 %
 % Input:
 %  - params: struct containing parameters of the author-topic model and
@@ -25,8 +25,8 @@ function [theta, beta] = CBIG_AuthorTopic_EstimateParams(params)
 %
 % Reference:
 %   1) Eq(16) and (17) of the Supplemental S1 of Ngo et al., 2019,
-%   "Beyond Consensus: Embracing Heterogeneity in Neuroimaging
-%    Meta-Analysis"
+%   "Beyond Consensus: Embracing Heterogeneity in Curated
+%    Neuroimaging Meta-Analysis"
 %
 % Written by Gia H. Ngo and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 

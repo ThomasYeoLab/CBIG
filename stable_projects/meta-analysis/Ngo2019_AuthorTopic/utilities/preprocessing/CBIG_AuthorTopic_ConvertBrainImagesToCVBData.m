@@ -9,7 +9,7 @@ function CBIG_AuthorTopic_ConvertBrainImagesToCVBData(dataDir, cvbDataFile)
 % Input:
 %  - dataDir: path to the base directory containing the preprocessed data.
 %      "<processedDir>/BinarySmoothedVolumes" contains the brain images of
-%      acitvation foci smoothed with a binary smoothing kernel.
+%      activation foci smoothed with a binary smoothing kernel.
 %      All brain images have 1mm resolution.
 %  - cvbDataFile: path to the input data file for the CVB algorithm.
 %

@@ -1,12 +1,23 @@
 # Discover cognitive components of self-generated thought
 
+---- 
+
+## Data Release
+
+[MNI152_ActivationCoordinates]('./MNI152_ActivationCoordinates') directory contains activation coordinates of 7 tasks of self-generated thought, which were provided by the following studies:
+
+- Spreng, R.N., Mar, R.A. and Kim, A.S., 2009. The common neural basis of autobiographical memory, prospection, navigation, theory of mind, and the default mode: a quantitative meta-analysis. Journal of Cognitive Neuroscience.
+- Mar, R.A., 2011. The neural bases of social cognition and story comprehension. Annual Review of Psychology.
+- Sevinc, G. and Spreng, R.N., 2014. Contextual and perceptual brain processes underlying moral cognition: a quantitative meta-analysis of moral reasoning and moral emotions. PloS One.
+
+Please cite the 3 papers above when using the activation coordinates.
+
+---- 
+
 ## Reference
-Gia H. Ngo, Simon B. Eickhoff, Minh Nguyen, Peter T. Fox,  R. Nathan Spreng, B. T. Thomas Yeo. [Beyond Consensus: Embracing Heterogeneity in Neuroimaging Meta-Analysis](https://www.biorxiv.org/content/early/2017/06/19/149567). BioRxiv preprint
+Gia H. Ngo, Simon B. Eickhoff, Minh Nguyen, Peter T. Fox,  R. Nathan Spreng, B. T. Thomas Yeo. [Beyond Consensus: Embracing Heterogeneity in Curated Neuroimaging Meta-Analysis](https://www.biorxiv.org/content/early/2017/06/19/149567). BioRxiv preprint
 
----
-
-## Note on co-activation mapping
-The exact same procedure below can be used for co-activation mapping experiment, such as to discover co-activation patterns of the inferior frontal junction (IFJ) discussed in the reference paper above.
+Gia H. Ngo, Simon B. Eickhoff, Peter T. Fox, B. T. Thomas Yeo. [Collapsed variational Bayesian inference of the author-topic model: application to large-scale coordinate-based meta-analysis](https://ieeexplore.ieee.org/document/7552332). PRNI2016.
 
 ---
 
@@ -35,11 +46,11 @@ addpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'meta-analysis', 'N
 
 ## Pre-process MNI152 coordinates of activation foci in raw text input data
 
-The self-generated thought data is saved under `./MNI152_ActivationCoordinates/SelfGeneratedThought_AllCoordinates.txt` in text format. Please see `./MNI152_ActivationCoordinates/README.md` for explanation of the data format.
+The self-generated thought data is saved at `./MNI152_ActivationCoordinates/SelfGeneratedThought_AllCoordinates.txt` in text format. Please see `./MNI152_ActivationCoordinates/README.md` for explanation of the data format.
 
 From Matlab, run the following commands to convert data in the text file to suitable Matlab format for the Collapsed Variational Bayes (CVB) algorithm:
 ```
-textFilePath = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'meta-analysis', 'Ngo2019_AuthorTopic', 'SelfGenerated_thought', 'MNI152_ActivationCoordinates', 'SelfGeneratedThought_AllCoordinates.txt');
+textFilePath = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'meta-analysis', 'Ngo2019_AuthorTopic', 'SelfGeneratedThought', 'MNI152_ActivationCoordinates', 'SelfGeneratedThought_AllCoordinates.txt');
 dataDirPath = fullfile(pwd, 'data');
 dataFileName = 'SelfGeneratedThought_CVBData.mat';
 system(['mkdir -p ' dataDirPath]);
@@ -48,18 +59,17 @@ CBIG_AuthorTopic_GenerateCVBDataFromText(textFilePath, dataDirPath, dataFileName
 ```
 
 The command above would do the following:
-- Data of the experiments (MNI152 coordinates and task label) are saved in `<dataDirPath>/ExperimentsData.mat`.
-- Writing the activation foci into brain images under the folder `<dataDirPath>/ActivationVolumes`.
-- Performs binary smoothing of the brain images of activation and save the resulting images under `<dataDirPath>/BinarySmoothedVolumes`.
+- Save data of the experiments (MNI152 coordinates and task label) at `<dataDirPath>/ExperimentsData.mat`.
+- Write the activation foci into brain images under the folder `<dataDirPath>/ActivationVolumes`.
+- Perform binary smoothing of the brain images of activation and save the resulting images under `<dataDirPath>/BinarySmoothedVolumes`.
 - Combine all smoothed brain images into a brain mask of activation across all experiments and save at `<dataDirPath>/mask/expMask.nii.gz`. This brain mask is necessary for computing Bayesian Information Criterion (BIC) measure of the model estimates.
-- The input data for the CVB algorithm is saved at `<dataDirPath>/dataFileName`, i.e. `<dataDirPath>/SelfGeneratedThought_CVBData.mat`.
+- Save input data for the CVB algorithm at `<dataDirPath>/dataFileName`, i.e. `<dataDirPath>/SelfGeneratedThought_CVBData.mat`.
 
 ---
 
 ## Inference
 To estimate the model parameters with K = 1 to 4 cognitive components using 1000 random re-initialization for each K, run the following commands:
 ```
-K = 2;
 alpha = 100;
 eta = 0.01;
 doSmoothing = 1;

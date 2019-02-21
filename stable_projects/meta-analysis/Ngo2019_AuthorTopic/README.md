@@ -1,33 +1,47 @@
 ## Reference
-Gia H. Ngo, Simon B. Eickhoff, Minh Nguyen, Peter T. Fox,  R. Nathan Spreng, B. T. Thomas Yeo. [Beyond Consensus: Embracing Heterogeneity in Neuroimaging Meta-Analysis](https://www.biorxiv.org/content/early/2017/06/19/149567). BioRxiv preprint
+Gia H. Ngo, Simon B. Eickhoff, Minh Nguyen, Peter T. Fox,  R. Nathan Spreng, B. T. Thomas Yeo. [Beyond Consensus: Embracing Heterogeneity in Curated Neuroimaging Meta-Analysis](https://www.biorxiv.org/content/early/2017/06/19/149567). BioRxiv preprint
 
-----
-
-## Data Release
-The activation coordinates used in our experiment for discovering cognitive components of self-generated thought are included under `SelfGeneratedThought/MNI152_ActivationCoordinates`. Explanation of the data format is included the folder's README.
+Gia H. Ngo, Simon B. Eickhoff, Peter T. Fox, B. T. Thomas Yeo. [Collapsed variational Bayesian inference of the author-topic model: application to large-scale coordinate-based meta-analysis](https://ieeexplore.ieee.org/document/7552332). PRNI2016.
 
 ----
 
 ## Overview
 
-This project provides all functions necessary to perform a coordinate-based meta-analysis using the author-topic model, such as to estimate cognitive components of a functional domain like self-generated thought (Figure 1) or co-activation patterns of a seed region like the inferior frontal junction (Figure 2).
+This project provides all functions necessary to perform a coordinate-based meta-analysis using the author-topic model, such as to estimate cognitive components of a functional domain (e.g. self-generated thought) or estimate the co-activation patterns of a seed region (e.g. inferior frontal junction).
 
-1. `utilities` folder contains function to perform inference using Collapsed Variational Bayes (CVB) algorithm, compute Bayesian Information Criterion of the estimate, and visualize the estimates.
-2. `SelfGeneratedThought` folder contains data and instruction necessary to reproduce the cognitive components of self-generated thought estimated in our paper.
-3. `config` folder contains example configuration files compatbile with this project.
-4. `unit_tests` folder contains a unit test for this project.
+1. [SelfGeneratedThought](./SelfGeneratedThought) folder contains data and instruction to discover cognitive components of the functional domain of self-generated thought.
+2. [CoactivationMappingIFJ](./CoactivationMappingIFJ) folder contains instruction to estimate the co-activation patterns of a seed region such as the inferior frontal junction (IFJ).
+3. [utilities](./utilities) folder contains function to perform inference using Collapsed Variational Bayes (CVB) algorithm, compute Bayesian Information Criterion of the estimate, and visualize the estimates.
+4. [config](./config) folder contains example configuration files compatible with this project.
+5. [unit_tests](./unit_tests) folder contains a unit test for this project.
+
+----
+
+## Functional Sub-domains Discovery
+
+Given the activation coordinates of 7 tasks engaging self-generated thought, the author-topic model was applied to discover 2 components fractionating the default mode network (Figure 1).
+
+`SelfGeneratedThought/MNI152_ActivationCoordinates` contains the activation coordinates from 167 studies of self-generated thought used in our study, including the description of the input format required for our functions.
+
+`SelfGeneratedThought/README.md` has the instructions for replicating our experiment to discover the cognitive components of self-generated thought.
 
 <img src="readme_figures/self_generated_thought.png" width="100%"/>
-
-<img src="readme_figures/ifj.png" width="100%" style="padding-top: 20px"/>
 
 ----
 
 ## Co-activation Mapping
-The author-topic model can be used for co-activation mapping (such as to discover co-activation patterns of the IFJ in our paper (Figure 2 above)).
-Users can apply the same data preparation and procedure found under `SelfGeneratedThought/README.md`.
-Please note that the acitvatation coordinates used in our IFJ co-activation mapping experiemnt can only be made available after a data sharing agreement has been obtained with [BrainMap](http://brainmap.org).
+
+Given the activation coordinates of 323 experiments activating the left inferior frontal junction (IFJ), the author topic model was applied to revealed 3 task-dependent co-activation patterns of the IFJ (Figure 2).
+
+For co-activation mapping of the IFJ, the author-topic model was applied in the same way as it was for discovering components of self-generated thought,
+except that while there were 179 experiments of self-generated thought employing 7 behavioral tasks, each of the 323 experiments activating the IFJ was considered as employing its own unique task category.
+
+`CoactivationMappingIFJ/README` describes the required input format for co-activation mapping meta-analysis, and instructions for replicating our experiment to estimate the co-activation patterns of the IFJ.
+
+Please note that the activation coordinates used in our IFJ co-activation mapping experiment can only be made available after a data sharing agreement has been obtained with [BrainMap](http://brainmap.org).
 We are happy to share the IFJ dataset with any user with the agreement.
+
+<img src="readme_figures/ifj.png" width="100%" style="padding-top: 20px"/>
 
 ----
 
@@ -39,7 +53,7 @@ At the time of release, this project was implemented with specific versions of o
 * [AFNI](https://afni.nimh.nih.gov/pub/dist/tgz/AFNI_ARCHIVE) 16.0.0
 * Matlab R2014a
 
-Please see [CBIG repository setup instruction](https://github.com/ThomasYeoLab/CBIG/tree/master/setup) to make your local environment compatible with CBIG repository. The configuration file `setup/CBIG_Ngo2019AuthorTopic_config.sh` or `setup/CBIG_Ngo2019AuthorTopic_config.csh` are example configuration files compatible with this project.
+Please see [CBIG repository setup instruction](https://github.com/ThomasYeoLab/CBIG/tree/master/setup) to make your local environment compatible with CBIG repository. Please see `config` folder for example configuration files.
 
 ----
 
@@ -57,15 +71,22 @@ Except for this project, if you want to use the code for other stable projects f
 - To download the version of the code that was last tested, you can either
 
   - visit this link:
-  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.8.0-Ngo2019_AuthorTopic](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.8.0-Ngo2019_AuthorTopic)
+  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.9.1-Ngo2019_AuthorTopic](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.9.1-Ngo2019_AuthorTopic)
 
   or
 
   - run the following command, if you have Git installed
 
   ```
-  git checkout -b Ngo2019_AuthorTopic v0.8.0-Ngo2019_AuthorTopic
+  git checkout -b Ngo2019_AuthorTopic v0.9.1-Ngo2019_AuthorTopic
   ```
+
+----
+
+## Updates
+
+- Release v0.8.0 (21/01/2019): Initial release of Ngo2019 Author-Topic Model for Curated Meta-analysis project.
+- Release v0.9.1 (21/02/2019): Added instruction for performing co-activation mapping experiment and references of the self-generated thought dataset.
 
 ----
 

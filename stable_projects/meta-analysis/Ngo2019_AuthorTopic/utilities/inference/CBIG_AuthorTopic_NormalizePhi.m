@@ -5,7 +5,7 @@ function newPhi = CBIG_AuthorTopic_NormalizePhi(phi, params)
 %
 % Input:
 %  - phi   : current estimate of the parameters of the variational
-%            distribuction.
+%            distribution.
 %  - params: struct containing parameters of the author-topic model and
 %            the Collapsed Variational Bayes (CVB) algorithm.
 % Output:

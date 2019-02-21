@@ -4,14 +4,14 @@ function [newPhi, newVarBound] = ...
 % [newPhi, newVarBound] = CBIG_AuthorTopic_ComputeVariationalTerm__N_c(
 %    params, newPhi, newVarBound, varBoundFlag)
 %
-% Compute the expectation and variance of the the count N_{..c.}^{-ef} in
+% Compute the expectation and variance of the count N_{..c.}^{-ef} in
 % the update equation for the parameters of the variation distribution phi
 % Optionally update the lower bound of the data log likelihood.
 %
 % Input:
 %  - params      : struct containing parameters of the author-topic model
 %                  and the Collapsed Variational Bayes (CVB) algorithm.
-%  - newPhi      : current estimate of the paramters of the variational
+%  - newPhi      : current estimate of the parameters of the variational
 %                  distribution.
 %  - newVarBound : current estimate of the variational bound of the data
 %                  log likelihood.
@@ -32,8 +32,8 @@ function [newPhi, newVarBound] = ...
 %
 % Reference:
 %   1) Eq(14) of the Supplemental S1 of Ngo et al., 2019,
-%   "Beyond Consensus: Embracing Heterogeneity in Neuroimaging
-%    Meta-Analysis"
+%   "Beyond Consensus: Embracing Heterogeneity in Curated
+%   Neuroimaging Meta-Analysis"
 %
 % Written by Gia H. Ngo and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 

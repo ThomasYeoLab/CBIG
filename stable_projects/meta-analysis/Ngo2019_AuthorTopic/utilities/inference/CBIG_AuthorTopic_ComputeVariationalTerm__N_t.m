@@ -5,7 +5,7 @@ function [newPhi, newVarBound] = ...
 % CBIG_AuthorTopic_ComputeVariationalTerm__N_t(params, newPhi, ...
 % newVarBound, varBoundFlag)
 %
-% Compute the expectation and variance of the the count N_{.t..}^{-ef}
+% Compute the expectation and variance of the count N_{.t..}^{-ef}
 % in the update equation for the parameter of the variation distribution
 % phi.
 % Optionally update the variational bound of the data log likelihood.
@@ -13,7 +13,7 @@ function [newPhi, newVarBound] = ...
 % Input:
 %  - params      : struct containing parameters of the author-topic model
 %                  and the Collapsed Variational Bayes (CVB) algorithm.
-%  - newPhi      : current estimate of the paramters of the variational
+%  - newPhi      : current estimate of the parameters of the variational
 %                  distribution.
 %  - newVarBound : current estimate of the variational bound of the data
 %                  log likelihood.

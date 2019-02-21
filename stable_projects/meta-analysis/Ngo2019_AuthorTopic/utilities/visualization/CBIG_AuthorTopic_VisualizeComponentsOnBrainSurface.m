@@ -13,7 +13,7 @@ function CBIG_AuthorTopic_VisualizeComponentsOnBrainSurface(paramsPath, ...
 %  - paramsPath: absolute path to the .mat file containing the model
 %                parameter estimates
 %  - outputDir: absolute path to the directory containing the output
-%               images and intermedia files. The final images are saved
+%               images and intermediate files. The final images are saved
 %               under <outputDir>/<colorscaleName>_min<minThresh>_max<maxThresh>
 %  - discretizationRes: the probabilities of brain voxles being activated
 %               by components (Pr(voxel | component)) are discretized for
@@ -25,7 +25,7 @@ function CBIG_AuthorTopic_VisualizeComponentsOnBrainSurface(paramsPath, ...
 %               Default: 5e-5
 %  - colorscaleName: name of the colorscale being used for visualization.
 %    Possible values are:
-%    + clear_brain: Human Connectome Workbench's clear_brain color pallete.
+%    + clear_brain: Human Connectome Workbench's clear_brain color palette.
 %    + hsv: Matlab's HSV colorscale.
 %    + parula: Matlab's parula colorscale.
 %    Default: clear_brain

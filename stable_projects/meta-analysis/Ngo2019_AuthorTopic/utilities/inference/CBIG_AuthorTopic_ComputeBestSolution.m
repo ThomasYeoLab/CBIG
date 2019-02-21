@@ -18,7 +18,7 @@ function bestSeed = CBIG_AuthorTopic_ComputeBestSolution(rootDir, K, ...
 %  <rootDir>/K<K>/alpha<alpha>_eta<eta>/params_K<K>_SEED<seed number>.mat
 %  - K: number of cognitive components/ co-activation patterns.
 %  - seeds      : array of numbers denoting the indices of the
-%                 initialiations (seeds).
+%                 initializations (seeds).
 %  - alpha & eta: hyperparameters of the author topic model's Dirichlet
 %                 priors.
 % Output:

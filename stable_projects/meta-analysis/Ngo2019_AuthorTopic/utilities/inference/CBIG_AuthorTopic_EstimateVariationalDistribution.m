@@ -6,7 +6,7 @@ function [newPhi, newVarBound] = ...
 %   newVarBound, varBoundFlag)
 %
 % Update the parameters of the variation distribution phi of the
-% Collapsed Variational Bayes (CVB) algoirthm.
+% Collapsed Variational Bayes (CVB) algorithm.
 % Optionally update the lower bound of the data log likelihood.
 %
 % Input:
@@ -18,7 +18,7 @@ function [newPhi, newVarBound] = ...
 % Output:
 %  - newPhi      : updated estimate of the parameters of the variational
 %                  distribution.
-%  - newVarBound : updated estimate of te lower bound.
+%  - newVarBound : updated estimate of the variational log likelihood.
 %
 % Example:
 %   [newPhi, newVarBound] = ...
@@ -29,8 +29,8 @@ function [newPhi, newVarBound] = ...
 %
 % Reference:
 %   1) Eq(14) of the Supplemental S1 of Ngo et al., 2019,
-%      "Beyond Consensus: Embracing Heterogeneity in Neuroimaging
-%       Meta-Analysis"
+%      "Beyond Consensus: Embracing Heterogeneity in Curated
+%       Neuroimaging Meta-Analysis"
 %
 % Written by Gia H. Ngo and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
