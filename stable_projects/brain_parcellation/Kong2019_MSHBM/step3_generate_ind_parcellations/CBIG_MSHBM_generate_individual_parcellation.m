@@ -1,4 +1,5 @@
-function [lh_labels, rh_labels] = CBIG_MSHBM_generate_individual_parcellation(project_dir,mesh,num_sess,num_clusters,subid,w,c)
+function [lh_labels, rh_labels] = CBIG_MSHBM_generate_individual_parcellation( ...
+         project_dir, mesh, num_sess, num_clusters, subid, w, c, subject_set)
 % [lh_labels, rh_labels] = CBIG_MSHBM_generate_individual_parcellation(project_dir,mesh,num_sess,num_clusters,subid,w,c)
 %
 % This script will estimate the individual-level parcellation with 
@@ -14,11 +15,11 @@ function [lh_labels, rh_labels] = CBIG_MSHBM_generate_individual_parcellation(pr
 % We also assume the functional connectivity profiles of test subjects with 
 % num_sess sessions are already generated. The lists of functional 
 % connectivity profiles should be saved in 
-% project_dir/profile_list/test_set/lh_sess<?>.txt
-% project_dir/profile_list/test_set/rh_sess<?>.txt
+% project_dir/profile_list/<subject_set>/lh_sess<?>.txt
+% project_dir/profile_list/<subject_set>/rh_sess<?>.txt
 % for data in 'fsaverage4/fsaverage5/fsaverage6/fsaverage'
 % or
-% project_dir/profile_list/test_set/sess<?>.txt
+% project_dir/profile_list/<subject_set>/sess<?>.txt
 % for data in 'fs_LR_32k'.
 %
 % Input:
@@ -40,8 +41,8 @@ function [lh_labels, rh_labels] = CBIG_MSHBM_generate_individual_parcellation(pr
 %           Spatial prior which denotes the probability of each network 
 %           occurring at each location. 
 %                                                          
-%     2) project_dir/profile_list/test_set/lh_sess<?>.txt
-%        project_dir/profile_list/test_set/rh_sess<?>.txt
+%     2) project_dir/profile_list/<subject_set>/lh_sess<?>.txt
+%        project_dir/profile_list/<subject_set>/rh_sess<?>.txt
 %        contain the functional connectivity profile lists of left
 %        hemisphere and right hemisphere for each session. The functional
 %        connectivity profiles are assumed to be pre-computed before run
@@ -51,13 +52,13 @@ function [lh_labels, rh_labels] = CBIG_MSHBM_generate_individual_parcellation(pr
 %        'fsaverage4/fsaverage5/fsaverage6/fsaverage', or T sess<?>.txt
 %        lists for data in 'fs_LR_32k'.
 %        For example:
-%        project_dir/profile_list/test_set/lh_sess1.txt
-%        project_dir/profile_list/test_set/rh_sess1.txt
-%        project_dir/profile_list/test_set/lh_sess2.txt
-%        project_dir/profile_list/test_set/rh_sess2.txt
+%        project_dir/profile_list/<subject_set>/lh_sess1.txt
+%        project_dir/profile_list/<subject_set>/rh_sess1.txt
+%        project_dir/profile_list/<subject_set>/lh_sess2.txt
+%        project_dir/profile_list/<subject_set>/rh_sess2.txt
 %        or
-%        project_dir/profile_list/test_set/sess1.txt
-%        project_dir/profile_list/test_set/sess2.txt
+%        project_dir/profile_list/<subject_set>/sess1.txt
+%        project_dir/profile_list/<subject_set>/sess2.txt
 %        for 2 sessions. Each list should contain S rows, where each row 
 %        is the full file path of the functional connectivity profile for 
 %        each test subject.
@@ -78,8 +79,8 @@ function [lh_labels, rh_labels] = CBIG_MSHBM_generate_individual_parcellation(pr
 %   - subid: (string)
 %
 %     The test subject number. For example, '4' indicates the 4-th
-%     subject in the project_dir/profile_list/test_set/?h_sess<?>.txt or 
-%     project_dir/profile_list/test_set/sess<?>.txt.
+%     subject in the project_dir/profile_list/<subject_set>/?h_sess<?>.txt or 
+%     project_dir/profile_list/<subject_set>/sess<?>.txt.
 %
 %   - w: (string)
 %   
@@ -94,6 +95,12 @@ function [lh_labels, rh_labels] = CBIG_MSHBM_generate_individual_parcellation(pr
 %     indicates more penalty for neighboring vertices being assigned to
 %     different networks.
 %
+%   - subject_set: (string)
+%
+%     'validation_set' or 'test_set'. If this input argument is not given,
+%     the default value will be 'test_set'. This argument is used if the
+%     user has a validation set to determine parameters w and c.
+%
 % Output:
 %   
 %   - lh_labels, rh_labels:
@@ -101,11 +108,15 @@ function [lh_labels, rh_labels] = CBIG_MSHBM_generate_individual_parcellation(pr
 %     The labels of left and right hemisphere of individual parcellation. 
 %
 % Example:
-%   [lh_labels, rh_labels] = CBIG_MSHBM_generate_individual_parcellation(project_dir,'fsaverage5','5','17','4','100','50')
+% [lh_labels, rh_labels] = CBIG_MSHBM_generate_individual_parcellation(project_dir,'fsaverage5','5','17','4','100','50')
 %
 % Written by Ru(by) Kong and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 addpath('../lib/');
+
+if(nargin < 8)
+    subject_set = 'test_set';
+end
 
 %% setting parameters
 setting_params.num_sub = '1'; 
@@ -115,15 +126,16 @@ setting_params.mesh = mesh;
 setting_params.subid=str2double(subid);
 setting_params.w=str2double(w); % weight of spatial prior theta
 setting_params.c=str2double(c); % weight of MRF smoothness prior
-setting_params.num_sub=1; % When generating individual parcellation, each time we will only generate the parcellation for one subject.
+% When generating individual parcellation, each time we will only generate the parcellation for one subject.
+setting_params.num_sub=1; 
 setting_params.num_session=str2double(num_sess);
-
+   
 %% read group priors
 group_prior_file = fullfile(project_dir, 'priors', 'Params_Final.mat');   
 Ini=load(group_prior_file);
 
 %% read data
-data = fetch_data(project_dir, setting_params.num_session, setting_params.subid, setting_params.mesh);
+data = fetch_data(project_dir, setting_params.num_session, setting_params.subid, setting_params.mesh,subject_set);
 fprintf('read data...DONE!\n');
 setting_params.dim = size(data.series,2) - 1;
 setting_params.num_verts = size(data.series,1);
@@ -133,7 +145,9 @@ if(setting_params.dim < 1200)
 elseif(setting_params.dim >= 1200 && setting_params.dim < 1800 )
     setting_params.ini_concentration = 650;                                          
 else
-    error('Data dimension is higher than 1800, please set the minimal concentration parameter value ini_concentration, where besseli((D/2-1),ini_concentration) > 0 and relatively small\n');
+    error(['Data dimension is higher than 1800,' ...
+          'please set the minimal concentration parameter value ini_concentration,' ...
+          'where besseli((D/2-1),ini_concentration) > 0 and relatively small\n']);
 end    
 
 %% setting estimated group priors
@@ -258,7 +272,9 @@ while(stop_intra_em==0)
     update_cost=bsxfun(@times,Params.s_psi,permute(Params.s_t_nu,[1,2,4,3]));
     update_cost=sum(bsxfun(@times,Params.sigma,update_cost),1);
     update_cost=bsxfun(@plus,Cdln(Params.sigma,setting_params.dim),update_cost);
-    update_cost=sum(sum(sum(update_cost,2),3),4)+sum(sum(bsxfun(@plus,sum(bsxfun(@times,bsxfun(@times,Params.mu,Params.s_psi),Params.epsil),1),Cdln(Params.epsil,setting_params.dim)),2),3);
+    update_cost=sum(sum(sum(update_cost,2),3),4) ...
+               + sum(sum(bsxfun(@plus,sum(bsxfun(@times,bsxfun(@times,Params.mu,Params.s_psi),Params.epsil),1), ...
+                 Cdln(Params.epsil,setting_params.dim)),2),3);
     update_cost=update_cost+sum(Params.cost_em);
     Params.Record(iter_intra_em)=update_cost;
     if(abs(abs(update_cost-cost)./cost)<=setting_params.epsilon)
@@ -277,10 +293,14 @@ labels=zeros(setting_params.num_verts,1);
 [~,labels(sum(Params.s_lambda,2)~=0)]=max(Params.s_lambda(sum(Params.s_lambda,2)~=0,:),[],2);
 lh_labels=labels(1:setting_params.num_verts/2);
 rh_labels=labels((setting_params.num_verts/2 + 1):end);
-out_dir=fullfile(project_dir,'ind_parcellation');
+out_dir=fullfile(project_dir,'ind_parcellation', subject_set);
 
-mkdir(out_dir);
-save(fullfile(out_dir, ['Ind_parcellation_MSHBM_sub',num2str(subid),'_w',num2str(setting_params.w),'_MRF',num2str(c),'.mat']),'lh_labels','rh_labels');
+if(~exist(out_dir))
+    mkdir(out_dir);
+end
+save(fullfile(out_dir, ...
+    ['Ind_parcellation_MSHBM_sub',num2str(subid),'_w',num2str(setting_params.w),'_MRF',num2str(c),'.mat']), ...
+    'lh_labels','rh_labels');
 
 rmpath('../lib/');
 
@@ -297,7 +317,8 @@ iter_intra=iter_intra+1;
 fprintf('It is inter interation %d intra iteration %d..update s_psi and sigma..\n',Params.iter_inter,iter_intra);
 
 % update s_psi
-s_psi_update=sum(bsxfun(@times,Params.s_t_nu,repmat(Params.sigma,size(Params.s_t_nu,1),1,size(Params.s_t_nu,3),size(Params.s_t_nu,4))),3);
+s_psi_update=sum(bsxfun(@times,Params.s_t_nu,repmat(Params.sigma,size(Params.s_t_nu,1), ...
+             1,size(Params.s_t_nu,3),size(Params.s_t_nu,4))),3);
 s_psi_update=reshape(s_psi_update,size(s_psi_update,1),size(s_psi_update,2),size(s_psi_update,3)*size(s_psi_update,4));
 s_psi_update=bsxfun(@plus,s_psi_update,bsxfun(@times,Params.epsil,Params.mu));
 s_psi_update=bsxfun(@times,s_psi_update,1./sqrt(sum((s_psi_update).^2)));
@@ -349,7 +370,8 @@ while(stop_em==0)
                 
             end
         end
-        if((sum(sum(flag_nu))==setting_params.num_sub*setting_params.num_session)&&(mean(abs(Params.kappa-kappa_update)./Params.kappa)<setting_params.epsilon))
+        if((sum(sum(flag_nu))==setting_params.num_sub*setting_params.num_session) ...
+          && (mean(abs(Params.kappa-kappa_update)./Params.kappa) < setting_params.epsilon))
             stop_m=1;
         end
         Params.kappa=kappa_update;
@@ -365,12 +387,15 @@ while(stop_em==0)
         log_vmf=permute(Params.s_t_nu,[1,2,4,3]);
         log_vmf=mtimesx(data.series,log_vmf);%NxLxSxT
         log_vmf=bsxfun(@times,permute(log_vmf,[2,1,3,4]),transpose(Params.kappa));%LxNxSxT
-        log_vmf(:,sum(log_vmf==0,1)==0)=bsxfun(@plus,Cdln(transpose(Params.kappa),setting_params.dim),log_vmf(:,sum(log_vmf==0,1)==0));%LxNxSxT
+        log_vmf(:,sum(log_vmf==0,1)==0)=bsxfun(@plus, ...
+                                        Cdln(transpose(Params.kappa),setting_params.dim), ...
+                                        log_vmf(:,sum(log_vmf==0,1)==0));%LxNxSxT
         log_vmf=sum(log_vmf,4);%NxLxS
         idx=sum(log_vmf==0,1)~=0;
 
         tmp_lambda=Params.s_lambda(sum(Params.s_lambda,2)~=0,:);
-        V_lambda=CBIG_MSHBM_V_lambda_Product(setting_params.neighborhood,setting_params.V_same,setting_params.V_diff,double(tmp_lambda));
+        V_lambda=CBIG_MSHBM_V_lambda_Product(setting_params.neighborhood, ...
+                 setting_params.V_same, setting_params.V_diff, double(tmp_lambda));
         V_temp=zeros(size(Params.s_lambda));
         V_temp(sum(Params.s_lambda,2)~=0,:)=single(V_lambda);
         log_vmf=bsxfun(@plus,permute(log_vmf,[2,1,3]),setting_params.w*log(Params.theta)-2*setting_params.c*V_temp);
@@ -416,7 +441,10 @@ while(stop_em==0)
         log_s_lambda_cost = log(s_lambda_cost);
         log_s_lambda_cost(isinf(log_s_lambda_cost)) = log(eps.^20);
 
-        update_cost(:,s) = sum(sum(s_lambda_cost.*log_lambda_prop))+sum(sum(s_lambda_cost.*setting_params.w.*log_theta_cost))-sum(sum(s_lambda_cost.*log_s_lambda_cost))- sum(sum(s_lambda_cost.*setting_params.c.*V_temp));    
+        update_cost(:,s) = sum(sum(s_lambda_cost.*log_lambda_prop)) ...
+                         + sum(sum(s_lambda_cost.*setting_params.w.*log_theta_cost)) ...
+                         - sum(sum(s_lambda_cost.*log_s_lambda_cost)) ...
+                         - sum(sum(s_lambda_cost.*setting_params.c.*V_temp));    
     
     end
     sub_set=find((abs(abs(update_cost-cost)./cost)>1e-4)==0);
@@ -516,13 +544,13 @@ end
 end
 
 
-function data = fetch_data(project_dir,num_session,subid,mesh)
+function data = fetch_data(project_dir,num_session,subid,mesh,subject_set)
 
 % read in input functional connectivity profiles
 if(~isempty(strfind(mesh,'fs_LR_32k')))
     load('../lib/fs_LR_32k_medial_mask.mat');
     for t = 1:num_session
-        data_profile = fullfile(project_dir,'profile_list','test_set',['sess' num2str(t) '.txt']);
+        data_profile = fullfile(project_dir,'profile_list',subject_set,['sess' num2str(t) '.txt']);
         profile_name = table2cell(readtable(data_profile,'Delimiter',' ','ReadVariableNames',false));
         for i = 1
             fprintf('Session %d...It is subj %d...\n',t,subid);
@@ -532,7 +560,8 @@ if(~isempty(strfind(mesh,'fs_LR_32k')))
             series(~medial_mask, :) = 0;
 
             series = bsxfun(@minus,series,mean(series, 2));
-            series(all(series,2)~=0,:) = bsxfun(@rdivide,series(all(series,2)~=0,:), sqrt(sum(series(all(series,2)~=0,:).^2,2)));
+            series(all(series,2)~=0,:) = bsxfun(@rdivide,series(all(series,2)~=0,:), ...
+                                         sqrt(sum(series(all(series,2)~=0,:).^2,2)));
             data.series(:,:,i,t) = series;
         end
     end
@@ -541,8 +570,8 @@ elseif(~isempty(strfind(mesh,'fsaverage')))
     lh_avg_mesh = CBIG_ReadNCAvgMesh('lh', mesh, 'inflated','cortex');
     rh_avg_mesh = CBIG_ReadNCAvgMesh('rh', mesh, 'inflated', 'cortex'); 
     for t = 1:num_session
-        lh_data_profile = fullfile(project_dir,'profile_list','test_set',['lh_sess' num2str(t) '.txt']);
-        rh_data_profile = fullfile(project_dir,'profile_list','test_set',['rh_sess' num2str(t) '.txt']);
+        lh_data_profile = fullfile(project_dir,'profile_list',subject_set,['lh_sess' num2str(t) '.txt']);
+        rh_data_profile = fullfile(project_dir,'profile_list',subject_set,['rh_sess' num2str(t) '.txt']);
         lh_profile_name = table2cell(readtable(lh_data_profile,'Delimiter',' ','ReadVariableNames',false));
         rh_profile_name = table2cell(readtable(rh_data_profile,'Delimiter',' ','ReadVariableNames',false));
         for i = 1
@@ -559,7 +588,8 @@ elseif(~isempty(strfind(mesh,'fsaverage')))
             series = [lh_series;rh_series];
 
             series = bsxfun(@minus,series,mean(series, 2));
-            series(all(series,2)~=0,:) = bsxfun(@rdivide,series(all(series,2)~=0,:), sqrt(sum(series(all(series,2)~=0,:).^2,2)));
+            series(all(series,2)~=0,:) = bsxfun(@rdivide,series(all(series,2)~=0,:), ...
+                                         sqrt(sum(series(all(series,2)~=0,:).^2,2)));
             data.series(:,:,i,t) = series;
         end
     end

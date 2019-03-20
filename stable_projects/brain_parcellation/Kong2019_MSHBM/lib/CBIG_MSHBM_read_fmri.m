@@ -31,7 +31,7 @@ function [fmri, vol, vol_size] = CBIG_MSHBM_read_fmri(fmri_name)
 %
 % Written by Ru(by) Kong and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
-if (~isempty(strfind(fmri_name, 'profile.mat')))
+if (~isempty(strfind(fmri_name, '.mat')))
     load(fmri_name);
     vol = single(profile_mat);
     vol_size = size(vol);

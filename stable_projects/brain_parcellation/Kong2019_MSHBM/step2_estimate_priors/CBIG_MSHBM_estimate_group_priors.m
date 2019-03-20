@@ -1,6 +1,6 @@
-function Params = CBIG_MSHBM_estimate_group_priors(project_dir,mesh,num_sub,num_sess,num_clusters)
+function Params = CBIG_MSHBM_estimate_group_priors(project_dir,mesh,num_sub,num_sess,num_clusters,max_iter)
 
-% Params = CBIG_MSHBM_generate_individual_parcellation_FS(project_dir,mesh,sub,sess,num_clusters)
+% Params = CBIG_MSHBM_generate_individual_parcellation_FS(project_dir,mesh,sub,sess,num_clusters,max_iter)
 %
 % This script will estimate group priors for individual-level parcellation
 % generation. The estimated group priors include:
@@ -73,6 +73,10 @@ function Params = CBIG_MSHBM_estimate_group_priors(project_dir,mesh,num_sub,num_
 %
 %     The number of networks of the parcellations. For example, '17'.
 %
+%   - max_iter: (string)
+%     
+%     The maximum iteration of the algorithm. Default is '50'.
+%
 % Output:
 %   
 %   - Params: (struct)
@@ -127,6 +131,14 @@ function Params = CBIG_MSHBM_estimate_group_priors(project_dir,mesh,num_sub,num_
 
 addpath('../lib/');
 
+
+if(nargin == 6)
+    max_iter = str2num(max_iter);
+else
+    max_iter = 50;
+end
+
+
 %% setting parameters
 setting_params.num_sub = str2double(num_sub); 
 setting_params.num_session = str2double(num_sess);
@@ -143,7 +155,9 @@ if(setting_params.dim < 1200)
 elseif(setting_params.dim >= 1200 && setting_params.dim < 1800 )
     setting_params.ini_concentration = 650;                                          
 else
-    error('Data dimension is higher than 1800, please set the minimal concentration parameter value ini_concentration, where besseli((D/2-1),ini_concentration) > 0 and relatively small\n');
+    error(['Data dimension is higher than 1800,' ...
+          'please set the minimal concentration parameter value ini_concentration,' ...
+          'where besseli((D/2-1),ini_concentration) > 0 and relatively small\n']);
 end    
 
 %% paramter initialization
@@ -227,7 +241,10 @@ while(stop_inter == 0)
         update_cost = bsxfun(@times, Params.s_psi, permute(Params.s_t_nu, [1,2,4,3]));
         update_cost = sum(bsxfun(@times, Params.sigma, update_cost), 1);
         update_cost = bsxfun(@plus, Cdln(Params.sigma, setting_params.dim), update_cost);
-        update_cost = sum(sum(sum(update_cost, 2), 3), 4) + sum(sum(bsxfun(@plus, sum(bsxfun(@times, bsxfun(@times, Params.mu, Params.s_psi),Params.epsil), 1), Cdln(Params.epsil, setting_params.dim)), 2), 3);
+        update_cost = sum(sum(sum(update_cost, 2), 3), 4) ...
+                    + sum(sum(bsxfun(@plus, ...
+                      sum(bsxfun(@times, bsxfun(@times, Params.mu, Params.s_psi),Params.epsil), 1), ...
+                      Cdln(Params.epsil, setting_params.dim)), 2), 3);
         update_cost = update_cost + sum(Params.cost_em);
         if(abs(abs(update_cost - cost)./cost) <= setting_params.epsilon)
             stop_intra_em = 1;
@@ -246,7 +263,7 @@ while(stop_inter == 0)
 
     update_cost_inter = Params.cost_intra;    
     Params.Record(Params.iter_inter) = update_cost_inter;
-    if(abs(abs(update_cost_inter - cost_inter)./cost_inter) <= 1e-6 || Params.iter_inter >= 50)
+    if(abs(abs(update_cost_inter - cost_inter)./cost_inter) <= 1e-6 || Params.iter_inter >= max_iter)
         stop_inter = 1;
         Params.cost_inter = update_cost_inter;
 
@@ -257,7 +274,9 @@ while(stop_inter == 0)
         save(fullfile(project_dir, 'priors', 'Params_Final.mat'), 'Params');
     end
     cost_inter = update_cost_inter;
-    mkdir(fullfile(project_dir, 'priors'));
+    if(~exist(fullfile(project_dir, 'priors')))
+	    mkdir(fullfile(project_dir, 'priors'));
+    end
     save(fullfile(project_dir, 'priors', ['Params_iteration',num2str(Params.iter_inter),'.mat']), 'Params');
 end
 
@@ -306,8 +325,10 @@ while(stop_intra == 0)
     iter_intra = iter_intra + 1;
     fprintf('It is inter interation %d intra iteration %d..update s_psi and sigma..\n',Params.iter_inter,iter_intra);
     % update s_psi
-    s_psi_update = sum(bsxfun(@times,Params.s_t_nu,repmat(Params.sigma,size(Params.s_t_nu,1),1,size(Params.s_t_nu,3),size(Params.s_t_nu,4))),3);
-    s_psi_update = reshape(s_psi_update,size(s_psi_update,1),size(s_psi_update,2),size(s_psi_update,3)*size(s_psi_update,4));
+    s_psi_update = sum(bsxfun(@times,Params.s_t_nu,repmat(Params.sigma,size(Params.s_t_nu,1), ...
+                   1,size(Params.s_t_nu,3),size(Params.s_t_nu,4))),3);
+    s_psi_update = reshape(s_psi_update,...
+                   size(s_psi_update,1),size(s_psi_update,2),size(s_psi_update,3)*size(s_psi_update,4));
     s_psi_update = bsxfun(@plus,s_psi_update,bsxfun(@times,Params.epsil,Params.mu));
     s_psi_update = bsxfun(@times,s_psi_update,1./sqrt(sum((s_psi_update).^2)));
    
@@ -327,7 +348,8 @@ while(stop_intra == 0)
         sigma_update(i) = invAd(setting_params.dim,sigma_update(i));
     end
     
-    if((sum(flag_psi) == setting_params.num_sub) && (mean(abs(Params.sigma-sigma_update)./Params.sigma) < setting_params.epsilon))
+    if((sum(flag_psi) == setting_params.num_sub) && (mean(abs(Params.sigma-sigma_update)./Params.sigma) ...
+       < setting_params.epsilon))
         stop_intra = 1;
     end
     Params.sigma = sigma_update;
@@ -390,7 +412,8 @@ while(stop_em == 0)
                 
             end
         end
-        if((sum(sum(flag_nu)) == setting_params.num_sub*setting_params.num_session)&&(mean(abs(Params.kappa-kappa_update)./Params.kappa)<setting_params.epsilon))
+        if((sum(sum(flag_nu)) == setting_params.num_sub*setting_params.num_session) ...
+           && (mean(abs(Params.kappa-kappa_update)./Params.kappa) < setting_params.epsilon))
             stop_m=1;
         end
         Params.kappa = kappa_update;
@@ -402,7 +425,8 @@ while(stop_em == 0)
     log_vmf = permute(Params.s_t_nu,[1,2,4,3]);
     log_vmf = mtimesx(data.series,log_vmf);%NxLxSxT
     log_vmf = bsxfun(@times,permute(log_vmf,[2,1,3,4]),transpose(Params.kappa));%LxNxSxT
-    log_vmf(:,sum(log_vmf==0,1)==0) = bsxfun(@plus,Cdln(transpose(Params.kappa),setting_params.dim),log_vmf(:,sum(log_vmf==0,1)==0));%LxNxSxT
+    log_vmf(:,sum(log_vmf==0,1)==0) = bsxfun(@plus,Cdln(transpose(Params.kappa),setting_params.dim), ...
+                                      log_vmf(:,sum(log_vmf==0,1)==0));%LxNxSxT
     log_vmf = sum(log_vmf,4);%NxLxS
     idx = sum(log_vmf == 0,1) ~= 0;
     
@@ -437,7 +461,9 @@ while(stop_em == 0)
         log_s_lambda_cost = log(s_lambda_cost);
         log_s_lambda_cost(isinf(log_s_lambda_cost)) = log(eps.^20);
 
-        update_cost(:,s) = sum(sum(s_lambda_cost.*log_lambda_prop))+sum(sum(s_lambda_cost.*log_theta_cost))-sum(sum(s_lambda_cost.*log_s_lambda_cost));    
+        update_cost(:,s) = sum(sum(s_lambda_cost.*log_lambda_prop)) ...
+                           + sum(sum(s_lambda_cost.*log_theta_cost)) ...
+                           - sum(sum(s_lambda_cost.*log_s_lambda_cost));    
     end
     sub_set=find((abs(abs(update_cost-cost)./cost) > setting_params.epsilon) == 0);
     if(length(sub_set) == setting_params.num_sub)
@@ -549,7 +575,8 @@ if(~isempty(strfind(mesh,'fs_LR_32k')))
             series(~medial_mask, :) = 0;
 
             series = bsxfun(@minus,series,mean(series, 2));
-            series(all(series,2)~=0,:) = bsxfun(@rdivide,series(all(series,2)~=0,:), sqrt(sum(series(all(series,2)~=0,:).^2,2)));
+            series(all(series,2)~=0,:) = bsxfun(@rdivide,series(all(series,2)~=0,:), ...
+                                         sqrt(sum(series(all(series,2)~=0,:).^2,2)));
             data.series(:,:,i,t) = series;
         end
     end
@@ -576,7 +603,8 @@ elseif(~isempty(strfind(mesh,'fsaverage')))
             series = [lh_series;rh_series];
 
             series = bsxfun(@minus,series,mean(series, 2));
-            series(all(series,2)~=0,:) = bsxfun(@rdivide,series(all(series,2)~=0,:), sqrt(sum(series(all(series,2)~=0,:).^2,2)));
+            series(all(series,2)~=0,:) = bsxfun(@rdivide,series(all(series,2)~=0,:), ...
+                                         sqrt(sum(series(all(series,2)~=0,:).^2,2)));
             data.series(:,:,i,t) = series;
         end
     end
