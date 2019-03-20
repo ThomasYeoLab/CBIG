@@ -75,10 +75,10 @@ if nargin < 2
     interp = 'linear';
 end
 if nargin < 3
-    lh_map = fullfile(dir_uti, ['final_warps_FS' fs_ver], 'lh.avgMapping_allSub_RF_ANTs_MNI152_norm_to_fsaverage.mat');
+    lh_map = fullfile(dir_uti, ['final_warps_FS' fs_ver], 'lh.avgMapping_allSub_RF_ANTs_MNI152_orig_to_fsaverage.mat');
 end
 if nargin < 4
-    rh_map = fullfile(dir_uti, ['final_warps_FS' fs_ver], 'rh.avgMapping_allSub_RF_ANTs_MNI152_norm_to_fsaverage.mat');
+    rh_map = fullfile(dir_uti, ['final_warps_FS' fs_ver], 'rh.avgMapping_allSub_RF_ANTs_MNI152_orig_to_fsaverage.mat');
 end
 if nargin < 5
     average = 'fsaverage';

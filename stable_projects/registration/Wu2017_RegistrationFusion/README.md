@@ -46,13 +46,13 @@ The folder `bin` contains data files necessary for this project, as well as the 
 
 Note that this project uses generic functions from other folders, which may be updated over time. To download the version of the code that was last tested, you can either
 
-- visit this link: https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.6.5-FixPublicationDetail_Wu2017_Schaefer2018
+- visit this link: https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.9.3-Wu2017_RegistrationFusion
 
 or
 
 - run the following command, if you have Git installed
 ```
-git checkout -b Wu2017_RegistrationFusion v0.6.5-FixPublicationDetail_Wu2017_Schaefer2018
+git checkout -b Wu2017_RegistrationFusion v0.9.3-Wu2017_RegistrationFusion
 ```
 
 ----
@@ -62,6 +62,10 @@ git checkout -b Wu2017_RegistrationFusion v0.6.5-FixPublicationDetail_Wu2017_Sch
 - Release v0.5.0 (15/04/2018): Initial release of Wu2017 Registration Fusion project.
 - Release v0.6.4 (13/08/2018): Added stand-alone scripts for Colin27-to-fsaverage projections; added example.
 - Release v0.6.5 (17/08/2018): Updated publication details
+- Release v0.9.3 (20/03/2019): 
+  1. Fix typos in `CBIG_RF_projectVol2fsaverage_single.m` that set wrong file names for default warps
+  2. Rename subfolder `example` to `examples` to pass CBIG pre-push hooks
+  3. Fix typos in `examples/README.md` that set wrong file names in freeview visualization command
 
 ----
 

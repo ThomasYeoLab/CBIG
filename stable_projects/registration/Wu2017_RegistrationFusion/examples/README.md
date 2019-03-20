@@ -86,7 +86,7 @@ Compare your results with the example results:
 
 - For fsaverage-to-Colin27 results, use the following command:
 
-```freeview $CBIG_CODE_DIR/data/templates/volume/SPM_Colin27_FS4.5.0/mri/norm.nii.gz "path_to_output_dir/projected_fsaverage2vol/prob_map_central_sulc.1Sub_fsaverage_to_SPM_Colin27_FS4.5_RF_ANTs.nii.gz":colormap=lut```
+```freeview $CBIG_CODE_DIR/data/templates/volume/SPM_Colin27_FS4.5.0/mri/norm.mgz "path_to_output_dir/projected_fsaverage2vol/surface_parcel.1Sub_fsaverage_to_SPM_Colin27_FS4.5.0_RF_ANTs.nii.gz":colormap=lut```
 
 Compare your results with the example results:
 
