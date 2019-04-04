@@ -1,8 +1,9 @@
 #!/bin/sh
 #
-# There are two subjects (with two sessions of data) in the CoRR_HNU dataset involved in the example. To be able to separate 
-# the data into training and test sets, these two subjects will be treated as 4 subjects (each session is considered as a
-# subject). Then the RSFC of each session will be duplicated with some randome noise, resulting in 8 fake subjects.
+# There are two subjects (with two sessions of data) in the CoRR_HNU dataset involved in the example. To be able to 
+# separate the data into training and test sets, these two subjects will be treated as 4 subjects (each session is 
+# considered as a subject). Then the RSFC of each session will be duplicated with some random noise, resulting in 
+# 8 fake subjects.
 # Note that the behavioral and demographic data are faked as well.
 # 
 # This script will do the following things:
@@ -16,8 +17,14 @@
 fmri_dir="$CBIG_CODE_DIR/data/example_data/CoRR_HNU"
 eg_dir="$CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSR/examples"
 input_dir="$eg_dir/input"
-prepare_dir="$eg_dir/output/preparation"
-KRR_dir="$eg_dir/output/KernelRidgeRegression"
+##### The following two lines were used when creating the ground-truth example results
+#prepare_dir="$eg_dir/output/preparation"
+#KRR_dir="$eg_dir/output/KernelRidgeRegression"
+################################
+output_dir=$1
+prepare_dir="$output_dir/preparation"
+KRR_dir="$output_dir/KernelRidgeRegression"
+gt_dir="$eg_dir/output/KernelRidgeRegression"
 mkdir -p $prepare_dir
 subjects=$(cat $input_dir/subject_list.txt)
 
@@ -51,8 +58,8 @@ fi
 # Compute RSFC matrix
 
 echo "Computing RSFC matrix ..."
-ROI_dir="$CBIG_CODE_DIR/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Parcellations/FreeSurfer5.3/fsaverage6\
-/label/"
+ROI_dir="$CBIG_CODE_DIR/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Parcellations/FreeSurfer5.3/\
+fsaverage6/label/"
 lh_ROI="$ROI_dir/lh.Schaefer2018_400Parcels_17Networks_order.annot"
 rh_ROI="$ROI_dir/rh.Schaefer2018_400Parcels_17Networks_order.annot"
 RSFC_prefix="$prepare_dir/RSFC"
@@ -81,7 +88,8 @@ if [ ! -f $RSFC_prefix.mat ]; then
 	lr = load(['${RSFC_prefix}' '_lr.mat']); \
 	rr = load(['${RSFC_prefix}' '_rr.mat']); \
 	
-	corr_mat = zeros(size(ll.corr_mat,1)+size(rr.corr_mat,1), size(ll.corr_mat,2)+size(rr.corr_mat,2), size(ll.corr_mat,3));\
+	corr_mat = zeros(size(ll.corr_mat,1)+size(rr.corr_mat,1), size(ll.corr_mat,2)+size(rr.corr_mat,2), \
+	   size(ll.corr_mat,3));
 	corr_mat(1:size(ll.corr_mat, 1), 1:size(ll.corr_mat, 2), :) = ll.corr_mat; \
 	corr_mat(1:size(ll.corr_mat, 1), size(ll.corr_mat, 2)+1:size(ll.corr_mat, 2)+size(rr.corr_mat, 2), :) = lr.corr_mat; \
 	corr_mat(size(ll.corr_mat, 1)+1:size(ll.corr_mat, 1)+size(rr.corr_mat, 1), 1:size(ll.corr_mat, 2), :) = \
@@ -114,7 +122,8 @@ fake_sub_list="$input_dir/Faked_subject_list.txt"
 
 if [ ! -f $KRR_dir/setup_file.mat ]; then
 	cmd="matlab -nosplash -nodesktop -nodisplay -r \" 
-	param.sub_fold = CBIG_cross_validation_data_split( '$fake_sub_list', 'NONE', 'Subject', 'NONE', 2, 1, '$KRR_dir', ',' ); \
+	param.sub_fold = CBIG_cross_validation_data_split( '$fake_sub_list', 'NONE', 'Subject', 'NONE', 2, 1, \
+	   '$KRR_dir', ',' ); \
 	
 	y_names = {'Behavior_1', 'Behavior_2'}; \
 	y_types = {'continuous', 'continuous'}; \
@@ -127,7 +136,7 @@ if [ ! -f $KRR_dir/setup_file.mat ]; then
 	   '$fake_sub_list', 'NONE', 'NONE', fullfile('$KRR_dir', ['covariates.mat']), ',' ); \
 	
 	load(['${RSFC_prefix}' '.mat']); \
-	param.feature = corr_mat; \
+	param.feature_mat = corr_mat; \
 	
 	param.num_inner_folds = 2; \
 	param.outdir = '$KRR_dir'; \
@@ -149,6 +158,24 @@ fi
 ####################################################
 # Run kernel regression workflow
 
-cmd="matlab -nodesktop -nosplash -nodisplay -r \" CBIG_KRR_workflow( fullfile('$KRR_dir', 'setup_file.mat'), 0); exit; \" "
+cmd="matlab -nodesktop -nosplash -nodisplay -r \" CBIG_KRR_workflow( fullfile('$KRR_dir', 'setup_file.mat'), 0); \
+ exit; \" "
+eval $cmd
+
+####################################################
+# Compare final results
+
+echo "Comparing your results with the ground truth ..."
+cmd="matlab -nosplash -nodesktop -nodisplay -r \"
+your_results = load(fullfile('$KRR_dir', 'final_result.mat')); \
+ground_truth = load(fullfile('$gt_dir', 'final_result.mat')); \
+dif = your_results.optimal_acc - ground_truth.optimal_acc; \
+
+if(max(abs(dif(:))) < 1e-7) \
+	fprintf('Your optimal accuracies replicated the ground truth.\n');
+else
+	fprintf('Your optimal accuracies were different from the ground truth. Maximal difference: %f\n', max(abs(dif(:)))); \
+end; \
+exit; \" "
 eval $cmd
 

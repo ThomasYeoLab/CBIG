@@ -1,8 +1,9 @@
 #!/bin/sh
 #
-# There are two subjects (with two sessions of data) in the CoRR_HNU dataset involved in the example. To be able to separate 
-# the data into training and test sets, these two subjects will be treated as 4 subjects (each session is considered as a
-# subject). Then the RSFC of each session will be duplicated with some randome noise, resulting in 8 fake subjects.
+# There are two subjects (with two sessions of data) in the CoRR_HNU dataset involved in the example. To be able to 
+# separate the data into training and test sets, these two subjects will be treated as 4 subjects (each session is 
+# considered as a subject). Then the RSFC of each session will be duplicated with some random noise, resulting in 
+# 8 fake subjects.
 # Note that the behavioral and demographic data are faked as well.
 #
 # This script will do the following things:
@@ -12,7 +13,8 @@
 #    CBIG_LiGSR_compute_FSM_from_FC.m to compute functional similarity matrix across subjects.
 # 4. Call $CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSR/VarianceComponentModel/scripts/utilities/
 #    CBIG_LiGSR_NchooseD_families.m to randomly generate 10 delete-2 jackknife samples.
-# 5. Call $CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSRexamples/scripts'/CBIG_LiGSR_example_explained_variance.m
+# 5. Call 
+#    $CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSRexamples/scripts/CBIG_LiGSR_example_explained_variance.m
 #    to estimate the explained variance on the full set as well as on each jackknife sample.
 #
 # Written by Jingwei Li and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
@@ -20,8 +22,14 @@
 fmri_dir="$CBIG_CODE_DIR/data/example_data/CoRR_HNU"
 eg_dir="$CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSR/examples"
 input_dir="$eg_dir/input"
-prepare_dir="$eg_dir/output/preparation"
-LME_dir="$eg_dir/output/VarianceComponentModel"
+##### The following two lines were used when creating the ground-truth example results
+#prepare_dir="$eg_dir/output/preparation"
+#LME_dir="$eg_dir/output/VarianceComponentModel"
+################################
+output_dir=$1
+prepare_dir="$output_dir/preparation"
+LME_dir="$output_dir/VarianceComponentModel"
+gt_dir="$eg_dir/output/VarianceComponentModel"
 mkdir -p $prepare_dir
 subjects=$(cat $input_dir/subject_list.txt)
 
@@ -59,8 +67,8 @@ fi
 # Compute RSFC matrix
 
 echo "Computing RSFC matrix ..."
-ROI_dir="$CBIG_CODE_DIR/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Parcellations/FreeSurfer5.3/fsaverage6\
-/label/"
+ROI_dir="$CBIG_CODE_DIR/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Parcellations/FreeSurfer5.3/\
+fsaverage6/label/"
 lh_ROI="$ROI_dir/lh.Schaefer2018_400Parcels_17Networks_order.annot"
 rh_ROI="$ROI_dir/rh.Schaefer2018_400Parcels_17Networks_order.annot"
 RSFC_prefix="$prepare_dir/RSFC"
@@ -89,7 +97,8 @@ if [ ! -f $RSFC_prefix.mat ]; then
 	lr = load(['${RSFC_prefix}' '_lr.mat']); \
 	rr = load(['${RSFC_prefix}' '_rr.mat']); \
 	
-	corr_mat = zeros(size(ll.corr_mat,1)+size(rr.corr_mat,1), size(ll.corr_mat,2)+size(rr.corr_mat,2), size(ll.corr_mat,3));\
+	corr_mat = zeros(size(ll.corr_mat,1)+size(rr.corr_mat,1), size(ll.corr_mat,2)+size(rr.corr_mat,2), \
+	   size(ll.corr_mat,3));\
 	corr_mat(1:size(ll.corr_mat, 1), 1:size(ll.corr_mat, 2), :) = ll.corr_mat; \
 	corr_mat(1:size(ll.corr_mat, 1), size(ll.corr_mat, 2)+1:size(ll.corr_mat, 2)+size(rr.corr_mat, 2), :) = lr.corr_mat; \
 	corr_mat(size(ll.corr_mat, 1)+1:size(ll.corr_mat, 1)+size(rr.corr_mat, 1), 1:size(ll.corr_mat, 2), :) = \
@@ -130,9 +139,9 @@ fi
 ########################################
 # Estimate explained trait variance on the full set
 echo "Estimating explained variance on the full set ..."
-cmd="matlab -nodesktop -nosplash -nodisplay -r \" addpath(fullfile('$CBIG_CODE_DIR', 'stable_projects', 'preprocessing', \
-   'Li2019_GSR', 'examples', 'scripts')); CBIG_LiGSR_example_explained_variance( '$fake_csv1', '$fake_csv2', \
-   '$fake_sub_list', 'NONE', '$FSM_file', '$LME_dir', 'fullset' ) ; exit;\" "
+cmd="matlab -nodesktop -nosplash -nodisplay -r \" addpath(fullfile('$CBIG_CODE_DIR', 'stable_projects', \
+   'preprocessing', 'Li2019_GSR', 'examples', 'scripts')); CBIG_LiGSR_example_explained_variance( '$fake_csv1', \
+   '$fake_csv2', '$fake_sub_list', 'NONE', '$FSM_file', '$LME_dir', 'fullset' ) ; exit;\" "
 eval $cmd
 
 ########################################
@@ -155,4 +164,54 @@ cmd="matlab -nodesktop -nosplash -nodisplay -r \"
    end; \
    exit; \" "
 eval $cmd
+
+#########################################
+# Compare your results with ground truth
+echo "Comparing your results with the ground truth ..."
+cmd="matlab -nodesktop -nosplash -nodisplay -r \" 
+for n = 1:2 
+	yours = load(fullfile('$LME_dir', 'fullset', sprintf('m2_QuantileNorm_Behavior_%d.mat', n))); 
+	gt = load(fullfile('$gt_dir', 'fullset', sprintf('m2_QuantileNorm_Behavior_%d.mat', n))); 
+	
+	if((yours.morpho.m2 - gt.morpho.m2) < 1e-15) || (isnan(yours.morpho.m2) && isnan(gt.morpho.m2))
+		fprintf('Your estimation of explained variance of behavior %d using the full set was correct.\n', n); 
+	else 
+		fprintf('Your estimation of explained variance of behavior %d using the full set was different from the \
+ground truth by %f.\n', n, yours.morpho.m2 - gt.morpho.m2); 
+	end; 
+	
+	if((yours.morpho.SE - gt.morpho.SE) < 1e-15) || (isnan(yours.morpho.SE) && isnan(gt.morpho.SE))
+		fprintf('Your estimation of standard deviation for behavior %d using the full set was correct.\n', n); \
+	else 
+		fprintf('Your estimation of standard deviation for behavior %d using the full set was different from the \
+ground truth by %f.\n', n, yours.morpho.SE - gt.morpho.SE); 
+	end; 
+end; 
+
+for set = 1:10
+	for n = 1:2 
+		yours = load(fullfile('$LME_dir', sprintf('del2_set%d', set), sprintf('m2_QuantileNorm_Behavior_%d.mat', n))); 
+		gt = load(fullfile('$gt_dir', sprintf('del2_set%d', set), sprintf('m2_QuantileNorm_Behavior_%d.mat', n))); 
+		
+		if((yours.morpho.m2 - gt.morpho.m2) < 1e-15) || (isnan(yours.morpho.m2) && isnan(gt.morpho.m2))
+			fprintf('Your estimation of explained variance of behavior %d using the jackknife sample %d was \
+correct.\n', n, set); 
+		else 
+			fprintf('Your estimation of explained variance of behavior %d using the jackknife sample %d was \
+different from the ground truth by %f.\n', n, set, yours.morpho.m2 - gt.morpho.m2); \
+		end; 
+		
+		if((yours.morpho.SE - gt.morpho.SE) < 1e-15) || (isnan(yours.morpho.SE) && isnan(gt.morpho.SE))
+			fprintf('Your estimation of standard deviation for behavior %d using the jackknife sample %d was \
+correct.\n', n, set); 
+		else 
+			fprintf('Your estimation of standard deviation for behavior %d using the jackknife sample %d was \
+different from the ground truth by %f.\n', n, set, yours.morpho.SE - gt.morpho.SE); 
+		end; 
+	end; 
+end; \
+
+exit; \" "
+eval $cmd
+
 

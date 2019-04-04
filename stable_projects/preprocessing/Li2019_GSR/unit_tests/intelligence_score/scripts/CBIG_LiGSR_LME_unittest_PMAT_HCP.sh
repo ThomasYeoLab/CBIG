@@ -27,12 +27,13 @@ cd $work_dir
 project_dir="$CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSR"
 replication_dir="$project_dir/unit_tests/intelligence_score"
 
-test_dir=/mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/preprocessing/Li2019_GSR/intelligence_score/VarianceComponentModel/HCP
+test_dir=/mnt/eql/yeo1/CBIG_private_data/unit_tests/stable_projects/preprocessing/Li2019_GSR/intelligence_score/\
+VarianceComponentModel/HCP
 subject_list="$test_dir/lists/subject_list_953_unrelated_419.txt"
 FD_file="$test_dir/lists/FD_regressor_953_unrelated_419.txt"
 DVARS_file="$test_dir/lists/DV_regressor_953_unrelated_419.txt"
 d=209
-num_samples=1000
+num_samples=5
 rmsub_prefix="subjects953_unrelated419"
 
 top_outdir=$1

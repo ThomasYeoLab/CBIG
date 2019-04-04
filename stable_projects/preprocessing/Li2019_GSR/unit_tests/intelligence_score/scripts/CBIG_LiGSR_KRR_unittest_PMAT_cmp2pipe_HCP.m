@@ -36,7 +36,7 @@ end
 
 stem = {'PMAT24'};
 
-for seed = 1:20
+for seed = 1:3
     GSR = load(fullfile(KRR_dir, 'GSR', ['randseed_' num2str(seed)], ...
         ['final_result_' stem{1} '.mat']));
     Baseline = load(fullfile(KRR_dir, 'Baseline', ['randseed_' num2str(seed)], ...

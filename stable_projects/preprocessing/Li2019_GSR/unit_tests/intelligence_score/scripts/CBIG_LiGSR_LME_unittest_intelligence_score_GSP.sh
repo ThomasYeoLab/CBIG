@@ -27,12 +27,13 @@ cd $work_dir
 project_dir="$CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSR"
 replication_dir="$project_dir/unit_tests/intelligence_score"
 
-test_dir=/mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/preprocessing/Li2019_GSR/intelligence_score/VarianceComponentModel/GSP
+test_dir=/mnt/eql/yeo1/CBIG_private_data/unit_tests/stable_projects/preprocessing/Li2019_GSR/intelligence_score/\
+VarianceComponentModel/GSP
 subject_list="$test_dir/lists/subject_list_862.txt"
 FD_file="$test_dir/lists/FD_regressor_862.txt"
 DVARS_file="$test_dir/lists/DV_regressor_862.txt"
 d=431
-num_samples=1000
+num_samples=5
 rmsub_prefix="subjects862"
 
 top_outdir=$1
@@ -42,7 +43,7 @@ for pipeline in GSR Baseline ; do
 	outdir=$top_outdir/$pipeline
 	
 	##########################
-	# 23 behavioral measures
+	# 2 behavioral measures
 	##########################
 	cog_list="$replication_dir/scripts/GSP_lists/intelligence_score.txt"
 	covariate_list="$replication_dir/scripts/GSP_lists/covariates.txt"

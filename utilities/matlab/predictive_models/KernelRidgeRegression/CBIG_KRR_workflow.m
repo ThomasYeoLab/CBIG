@@ -30,7 +30,7 @@ function CBIG_KRR_workflow( setup_file, save_setup, varargin )
 %     3. covariates
 %        A matrix of the covariates to be regressed out from y. See the
 %        description of varargin{3}.
-%     4. feature
+%     4. feature_mat
 %        A matrix of the features used as the independent variable in the
 %        prediction. See the description of varargin{4}.
 %     5. num_inner_folds
@@ -96,14 +96,14 @@ function CBIG_KRR_workflow( setup_file, save_setup, varargin )
 %  
 %   - varargin{4}   (feature_file)
 %     Full path of the feature file used to calculate the kernels. A matrix
-%     "feature" is assumed to be saved in this file. "feature" can be a 2-D
-%     matrix with dimension of #features x #subjects or a 3-D matrix with
-%     dimension of #ROIs1 x #ROIs2 x #subjects. If "feature" is 3-D, it is a
-%     connectivity matrix between two sets of ROIs, and only the
-%     lower-triangular off-diagonal entries will be considered as features
-%     because the connectivity matrix is symmetric.
-%     If this file is not passed in, then the matrix "feature" is assumed
-%     to be stored in "setup_file".
+%     "feature_mat" is assumed to be saved in this file. "feature_mat" can
+%     be a 2-D matrix with dimension of #features x #subjects or a 3-D
+%     matrix with dimension of #ROIs1 x #ROIs2 x #subjects. If
+%     "feature_mat" is 3-D, it is a connectivity matrix between two sets of
+%     ROIs, and only the lower-triangular off-diagonal entries will be
+%     considered as features because the connectivity matrix is symmetric.
+%     If this file is not passed in, then the matrix "feature_mat" is
+%     assumed to be stored in "setup_file".
 % 
 %   - varargin{5}   (num_inner_folds)
 %     A string or a scalar. The number of inner-loop folds within each
@@ -196,7 +196,7 @@ CBIG_crossvalid_regress_covariates_from_y( ...
 
 %% step 2. Generate kernels
 fprintf('# Step 2: generate kernels.\n')
-CBIG_KRR_generate_kernels( param.feature, param.sub_fold, param.outdir, param.ker_param )
+CBIG_KRR_generate_kernels( param.feature_mat, param.sub_fold, param.outdir, param.ker_param )
 
 %% step 3. Inner-loop cross-validation
 fprintf('# Step 3: inner-loop cross-validation.\n')
@@ -224,7 +224,7 @@ CBIG_KRR_pick_optima( param.sub_fold, param.outdir, param.outstem, param.bin_fla
 
 function param = CBIG_KRRworkflow_parseInput(var)
 
-varnames = {'sub_fold', 'y', 'covariates', 'feature', 'num_inner_folds', 'outdir', ...
+varnames = {'sub_fold', 'y', 'covariates', 'feature_mat', 'num_inner_folds', 'outdir', ...
     'outstem', 'ker_param', 'lambda_set', 'threshold_set'};
 
 for i = 1:(numel(varnames)-3)
@@ -232,7 +232,7 @@ for i = 1:(numel(varnames)-3)
         error('Variable ''%s'' is needed.', varnames{i})
     else
         if(i~=5 && i~=6 && i~=7)
-            % sub_fold, y, covariates, feature are loaded from .mat files.
+            % sub_fold, y, covariates, feature_mat are loaded from .mat files.
             currvar = load(var{i});
             names = fieldnames(currvar);
             if(any(strcmp(names, varnames{i})))

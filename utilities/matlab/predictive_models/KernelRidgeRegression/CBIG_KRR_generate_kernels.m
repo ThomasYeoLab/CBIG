@@ -1,18 +1,18 @@
-function CBIG_KRR_generate_kernels( feature, sub_fold, outdir, ker_param, similarity_mat )
+function CBIG_KRR_generate_kernels( feature_mat, sub_fold, outdir, ker_param, similarity_mat )
 
-% CBIG_KRR_generate_kernels( feature, sub_fold, outdir, ker_param, similarity_mat )
+% CBIG_KRR_generate_kernels( feature_mat, sub_fold, outdir, ker_param, similarity_mat )
 % 
 % This function calculates the inner-loop and training-test kernels for
 % kernel ridge regression. 
 % 
 % Inputs:
-%   - feature
+%   - feature_mat
 %     Feature matrix.
-%     Generally, "feature" is a #features x #subjects matrix.
+%     Generally, "feature_mat" is a #features x #subjects matrix.
 %     However if the user input a 3-D matrix, this function will assume
 %     that the feature matrix is the connectivity matrix (eg. functional
-%     connectivity across ROIs). Specifically, "feature" will be a #ROIs1 x
-%     #ROIs2 x #subjects matrix.
+%     connectivity across ROIs). Specifically, "feature_mat" will be a
+%     #ROIs1 x #ROIs2 x #subjects matrix.
 % 
 %   - sub_fold
 %     The data split for cross-validation.
@@ -60,8 +60,8 @@ function CBIG_KRR_generate_kernels( feature, sub_fold, outdir, ker_param, simila
 %     A #subjects x #subjects inter-subject similarity matrix pre-computed
 %     by the user. If this argument is passed in, this function will only
 %     split this similarity matrix into kernels for different folds without
-%     further operations. By passing in this argument, "feature" is not
-%     needed (you can pass in an empty matrix for the "feature" input).
+%     further operations. By passing in this argument, "feature_mat" is not
+%     needed (you can pass in an empty matrix for the "feature_mat" input).
 % 
 % Outputs:
 %     Case 1. (cross-validation)
@@ -71,7 +71,7 @@ function CBIG_KRR_generate_kernels( feature, sub_fold, outdir, ker_param, simila
 %     Meanwhile, a #AllSubjects x #AllSubjects kernel matrix will be saved
 %     in [outdir '/FSM_test'] folder for the training-test
 %     cross-validation. (The ordering of subjects follows the original
-%     subject list, i.e. the ordering in "feature" or "similarity_mat".)
+%     subject list, i.e. the ordering in "feature_mat" or "similarity_mat".)
 % 
 %     Case 2 (training, validation, and test)
 %     In this case, cross-validation is not performed. Instead, the data
@@ -88,12 +88,12 @@ function CBIG_KRR_generate_kernels( feature, sub_fold, outdir, ker_param, simila
 % 
 % Written by Jingwei Li, Ru(by) Kong and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
-% If feature is a connectivity matrix, extract the lower triangular entries
-% and construct feature as a #features x #subjects matrix.
-if(size(feature, 3) > 1)
-    tril_ind = find(tril(ones(size(feature,1), size(feature,2)), -1) == 1);
-    feature = reshape(feature, size(feature,1)*size(feature,2), size(feature,3));
-    feature = feature(tril_ind,:);
+% If feature_mat is a connectivity matrix, extract the lower triangular
+% entries and construct feature_mat as a #features x #subjects matrix.
+if(size(feature_mat, 3) > 1)
+    tril_ind = find(tril(ones(size(feature_mat,1), size(feature_mat,2)), -1) == 1);
+    feature_mat = reshape(feature_mat, size(feature_mat,1)*size(feature_mat,2), size(feature_mat,3));
+    feature_mat = feature_mat(tril_ind,:);
 end
 
 if(~exist('ker_param', 'var'))
@@ -126,7 +126,7 @@ if(num_test_folds == 1)
         curr_outname = fullfile(curr_outdir, ['FSM_' ker_param(k).type outstem{k} '.mat']);
         if(~exist(curr_outname, 'file'))
             if(~exist('similarity_mat', 'var') || isempty(similarity_mat))
-                FSM = CBIG_crossvalid_kernel_with_scale(feature(:, train_ind), feature(:, valid_ind), ...
+                FSM = CBIG_crossvalid_kernel_with_scale(feature_mat(:, train_ind), feature_mat(:, valid_ind), ...
                     [], [], ker_param(k).type, ker_param(k).scale);
             else
                 FSM = similarity_mat(train_ind+valid_ind, train_ind+valid_ind);
@@ -148,7 +148,7 @@ if(num_test_folds == 1)
         curr_outname = fullfile(curr_outdir, ['FSM_' ker_param(k).type outstem{k} '.mat']);
         if(~exist(curr_outname, 'file'))
             if(~exist('similarity_mat', 'var') || isempty(similarity_mat))
-                FSM = CBIG_crossvalid_kernel_with_scale(feature(:, train_ind), feature(:, test_ind), ...
+                FSM = CBIG_crossvalid_kernel_with_scale(feature_mat(:, train_ind), feature_mat(:, test_ind), ...
                     [], [], ker_param(k).type, ker_param(k).scale);
             else
                 FSM = similarity_mat(train_ind+test_ind, train_ind+test_ind);
@@ -175,7 +175,7 @@ else
             curr_outname = fullfile(curr_outdir, ['FSM_' ker_param(k).type outstem{k} '.mat']);
             if(~exist(curr_outname, 'file'))
                 if(~exist('similarity_mat', 'var') || isempty(similarity_mat))
-                    FSM = CBIG_crossvalid_kernel_with_scale(feature(:, train_ind), [], [], [], ...
+                    FSM = CBIG_crossvalid_kernel_with_scale(feature_mat(:, train_ind), [], [], [], ...
                         ker_param(k).type, ker_param(k).scale);
                 else
                     FSM = similarity_mat(train_ind, train_ind);
@@ -195,7 +195,7 @@ else
             curr_outname = fullfile(curr_outdir, ['FSM_' ker_param(k).type outstem{k} '.mat']);
             if(~exist(curr_outname, 'file'))
                 if(~exist('similarity_mat', 'var') || isempty(similarity_mat))
-                    FSM = CBIG_crossvalid_kernel_with_scale(feature(:, train_ind), feature(:, test_ind), ...
+                    FSM = CBIG_crossvalid_kernel_with_scale(feature_mat(:, train_ind), feature_mat(:, test_ind), ...
                         train_ind, test_ind, ker_param(k).type, ker_param(k).scale);
                 else
                     train_test_ind = train_ind + test_ind;

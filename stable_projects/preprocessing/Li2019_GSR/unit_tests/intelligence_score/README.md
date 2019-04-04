@@ -16,9 +16,9 @@ It assumes that the user has obtained the CSV file with all behavioral and demog
 
 It is also assumed that the resting-state functional connectivity matrix was pre-computed:
 
-`/mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/preprocessing/Li2019_GSR/intelligence_score/VarianceComponentModel/GSP/RSFC_862_Fisher_Baseline.mat` using the baseline preprocessing;
+`/mnt/eql/yeo1/CBIG_private_data/unit_tests/stable_projects/preprocessing/Li2019_GSR/intelligence_score/VarianceComponentModel/GSP/RSFC_862_Fisher_Baseline.mat` using the baseline preprocessing;
 
-`/mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/preprocessing/Li2019_GSR/intelligence_score/VarianceComponentModel/GSP/RSFC_862_Fisher_GSR.mat` using the preprocessing pipeline with GSR.
+`/mnt/eql/yeo1/CBIG_private_data/unit_tests/stable_projects/preprocessing/Li2019_GSR/intelligence_score/VarianceComponentModel/GSP/RSFC_862_Fisher_GSR.mat` using the preprocessing pipeline with GSR.
 
 #### Code
 - Step 1. Perform variance component model for each preprocessing pipeline
@@ -64,9 +64,9 @@ unrestricted CSV: `/share/users/imganalysis/yeolab/data/HCP/S1200/scripts/subjec
 
 It is also assumed that the resting-state functional connectivity matrix was pre-computed:
 
-`/mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/preprocessing/Li2019_GSR/replication/VarianceComponentModel/HCP/RSFC_953_unrelated_419_Fisher_Baseline.mat` using the baseline preprocessing;
+`/mnt/eql/yeo1/CBIG_private_data/unit_tests/stable_projects/preprocessing/Li2019_GSR/replication/VarianceComponentModel/HCP/RSFC_953_unrelated_419_Fisher_Baseline.mat` using the baseline preprocessing;
 
-`/mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/preprocessing/Li2019_GSR/replication/VarianceComponentModel/HCP/RSFC_953_unrelated_419_Fisher_GSR.mat` using the preprocessing pipeline with GSR.
+`/mnt/eql/yeo1/CBIG_private_data/unit_tests/stable_projects/preprocessing/Li2019_GSR/replication/VarianceComponentModel/HCP/RSFC_953_unrelated_419_Fisher_GSR.mat` using the preprocessing pipeline with GSR.
 
 #### Code
 - Step 1. Perform variance component model for each preprocessing pipeline
@@ -115,9 +115,9 @@ It assumes that the user has obtained the CSV file with all behavioral and demog
 
 It is also assumed that the resting-state functional connectivity matrix was pre-computed:
 
-`/mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/preprocessing/Li2019_GSR/intelligence_score/KernelRidgeRegression/GSP/RSFC_862_Fisher_Baseline.mat` using the baseline preprocessing;
+`/mnt/eql/yeo1/CBIG_private_data/unit_tests/stable_projects/preprocessing/Li2019_GSR/intelligence_score/KernelRidgeRegression/GSP/RSFC_862_Fisher_Baseline.mat` using the baseline preprocessing;
 
-`/mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/preprocessing/Li2019_GSR/intelligence_score/KernelRidgeRegression/GSP/RSFC_862_Fisher_GSR.mat` using the preprocessing pipeline with GSR.
+`/mnt/eql/yeo1/CBIG_private_data/unit_tests/stable_projects/preprocessing/Li2019_GSR/intelligence_score/KernelRidgeRegression/GSP/RSFC_862_Fisher_GSR.mat` using the preprocessing pipeline with GSR.
 
 #### Code
 - Step 1. Perform kernel ridge regression using the resting-state functional connectivity matrix generated using each of the preprocessing pipeline
@@ -163,9 +163,9 @@ unrestricted CSV: `/share/users/imganalysis/yeolab/data/HCP/S1200/scripts/subjec
 
 It is also assumed that the resting-state functional connectivity matrix was pre-computed:
 
-`/mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/preprocessing/Li2019_GSR/intelligence_score/KernelRidgeRegression/HCP/cort+subcort_new_S1200_953_Fisher_Baseline.mat` using the baseline preprocessing;
+`/mnt/eql/yeo1/CBIG_private_data/unit_tests/stable_projects/preprocessing/Li2019_GSR/intelligence_score/KernelRidgeRegression/HCP/cort+subcort_new_S1200_953_Fisher_Baseline.mat` using the baseline preprocessing;
 
-`/mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/preprocessing/Li2019_GSR/intelligence_score/KernelRidgeRegression/HCP/cort+subcort_new_S1200_953_Fisher_GSR.mat` using the preprocessing pipeline with GSR.
+`/mnt/eql/yeo1/CBIG_private_data/unit_tests/stable_projects/preprocessing/Li2019_GSR/intelligence_score/KernelRidgeRegression/HCP/cort+subcort_new_S1200_953_Fisher_GSR.mat` using the preprocessing pipeline with GSR.
 
 
 #### Code

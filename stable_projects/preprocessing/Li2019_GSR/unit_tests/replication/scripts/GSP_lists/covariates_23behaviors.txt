@@ -1,4 +1,0 @@
-Age_Bin
-Sex
-FD
-DVARS

@@ -93,7 +93,8 @@ OPTIONAL ARGUMENTS:
 	-unrelated         unrelated        : 0 or 1. 1 means all subjects in the \$subject_list are unrelated. 0 means there is 
 	                                      a family structure within the subjects in \$subject_list, and the family 
 	                                      information will be read from \$restricted_csv. Default is 1.
-	-ystem             ystem            : The trait values will be read from '"'data_csv'"' and saved in a .mat file: 
+	-ystem             ystem            : The trait values will be read from '"'restricted_csv'"' and '"'unrestricted_csv'"',
+	                                      and saved in a .mat file: 
 	                                      \${outdir}/y_\${ystem}.mat. For example, if '"'trait_list'"' contains 13 
 	                                      cognitive behavioral names, you can set ystem = 13cognitive.
 

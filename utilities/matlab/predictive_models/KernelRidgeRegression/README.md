@@ -110,10 +110,10 @@ If the user decided to pass in the setup file, then `varargin` is not needed. Th
     delimiter = ',';
     covariates = CBIG_generate_covariates_from_csv( csv_files, subject_header, covariate_names, covariate_types, subject_list, FD_file, DVARS_file, outname, delimiter );
     ```
-* `param.feature`
+* `param.feature_mat`
   * It is a matrix of the features used as the explanatory variables in the prediction.
-  * `feature` can be a 2-D matrix with dimension of F x N, where F is the number of features and N is the number of subjects. In this case, each column is a feature vector of a single subject.
-  * `feature` can also be a 3-D matrix with dimension of R1 x R2 x N, where R1 is the number of ROIs_1, R2 is the number of ROIs_2, and N is the number of subjects. In this case, it is a connectivity matrix between ROIs_1 and ROIs_2. Only the lower-triangular off-diagonal entries will be considered.
+  * `feature_mat` can be a 2-D matrix with dimension of F x N, where F is the number of features and N is the number of subjects. In this case, each column is a feature vector of a single subject.
+  * `feature_mat` can also be a 3-D matrix with dimension of R1 x R2 x N, where R1 is the number of ROIs_1, R2 is the number of ROIs_2, and N is the number of subjects. In this case, it is a connectivity matrix between ROIs_1 and ROIs_2. Only the lower-triangular off-diagonal entries will be considered.
 * `param.num_inner_folds`
   * A scalar, the number of inner-loop cross-validation folds. For example, `20`.
 * `param.outdir`
@@ -220,10 +220,10 @@ If the user did not prepare the setup file, he/she needs to pass in the paramete
     covariates = CBIG_generate_covariates_from_csv( csv_files, subject_header, covariate_names, covariate_types, subject_list, FD_file, DVARS_file, outname, delimiter );
     ```
 * `varargin{4}` (feature_file)
-  * A string, which is the full-path name of a `.mat` file. The `.mat` file contains a matrix called `feature`.
-  * `feature` is a matrix of the features used as the explanatory variables in the prediction.
-  * `feature` can be a 2-D matrix with dimension of F x N, where F is the number of features and N is the number of subjects. In this case, each column is a feature vector of a single subject.
-  * `feature` can also be a 3-D matrix with dimension of R1 x R2 x N, where R1 is the number of ROIs_1, R2 is the number of ROIs_2, and N is the number of subjects. In this case, it is a connectivity matrix between ROIs_1 and ROIs_2. Only the lower-triangular off-diagonal entries will be considered.
+  * A string, which is the full-path name of a `.mat` file. The `.mat` file contains a matrix called `feature_mat`.
+  * `feature_mat` is a matrix of the features used as the explanatory variables in the prediction.
+  * `feature_mat` can be a 2-D matrix with dimension of F x N, where F is the number of features and N is the number of subjects. In this case, each column is a feature vector of a single subject.
+  * `feature_mat` can also be a 3-D matrix with dimension of R1 x R2 x N, where R1 is the number of ROIs_1, R2 is the number of ROIs_2, and N is the number of subjects. In this case, it is a connectivity matrix between ROIs_1 and ROIs_2. Only the lower-triangular off-diagonal entries will be considered.
 * `varargin{5}` (num_inner_folds)
   * A scalar, the number of inner-loop cross-validation folds. For example, `20`.
 * `varargin{6}` (outdir)
