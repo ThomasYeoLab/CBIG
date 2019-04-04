@@ -53,6 +53,16 @@ function Params = CBIG_MSHBM_estimate_group_priors(project_dir,mesh,num_sub,num_
 %        for 2 sessions. Each list should contain S rows, where each row 
 %        is the full file path of the functional connectivity profile for 
 %        each test subject.
+%        Note that the script allows for varied number of sessions across
+%        subjects. If the user wants to use varied number of
+%        sessions, please put the corresponding row of the missing session
+%        as 'NONE'. For example, subject 1 can has 2 sessions, and subject 2
+%        can have 3 sessions. For the 3rd session of subject 1, it can be
+%        denoted as NONE instead of the real path.
+%        project_dir/profile_list/training_set/lh_sess3.txt should be:
+%        NONE
+%        <path_to_profile>/sub2_sess3_profile.nii.gz
+%        <path_to_profile>/sub3_sess3_profile.nii.gz 
 %
 %   - mesh: (string)
 %     
@@ -201,7 +211,7 @@ log_vmf = permute(Params.s_t_nu, [1,2,4,3]);
 log_vmf = mtimesx(data.series, log_vmf);%NxLxSxT
 log_vmf = bsxfun(@times, permute(log_vmf,[2,1,3,4]), transpose(Params.kappa));%LxNxSxT
 log_vmf = bsxfun(@plus,Cdln(transpose(Params.kappa), setting_params.dim), log_vmf);%LxNxSxT
-log_vmf = sum(log_vmf, 4);
+log_vmf = CBIG_nansum(log_vmf, 4);
 log_vmf = permute(log_vmf, [2,1,3]);
 s_lambda = bsxfun(@minus, log_vmf, max(log_vmf,[],2));
 mask = repmat((sum(s_lambda,2)==0), 1, setting_params.num_clusters, 1);
@@ -241,7 +251,7 @@ while(stop_inter == 0)
         update_cost = bsxfun(@times, Params.s_psi, permute(Params.s_t_nu, [1,2,4,3]));
         update_cost = sum(bsxfun(@times, Params.sigma, update_cost), 1);
         update_cost = bsxfun(@plus, Cdln(Params.sigma, setting_params.dim), update_cost);
-        update_cost = sum(sum(sum(update_cost, 2), 3), 4) ...
+        update_cost = CBIG_nansum(sum(sum(update_cost, 2), 3), 4) ...
                     + sum(sum(bsxfun(@plus, ...
                       sum(bsxfun(@times, bsxfun(@times, Params.mu, Params.s_psi),Params.epsil), 1), ...
                       Cdln(Params.epsil, setting_params.dim)), 2), 3);
@@ -271,6 +281,9 @@ while(stop_inter == 0)
         Params.s_lambda = [];
         Params.s_psi = [];
         Params.s_t_nu = [];
+        if(~exist(fullfile(project_dir, 'priors')))
+            mkdir(fullfile(project_dir, 'priors'));
+        end
         save(fullfile(project_dir, 'priors', 'Params_Final.mat'), 'Params');
     end
     cost_inter = update_cost_inter;
@@ -325,7 +338,7 @@ while(stop_intra == 0)
     iter_intra = iter_intra + 1;
     fprintf('It is inter interation %d intra iteration %d..update s_psi and sigma..\n',Params.iter_inter,iter_intra);
     % update s_psi
-    s_psi_update = sum(bsxfun(@times,Params.s_t_nu,repmat(Params.sigma,size(Params.s_t_nu,1), ...
+    s_psi_update = CBIG_nansum(bsxfun(@times,Params.s_t_nu,repmat(Params.sigma,size(Params.s_t_nu,1), ...
                    1,size(Params.s_t_nu,3),size(Params.s_t_nu,4))),3);
     s_psi_update = reshape(s_psi_update,...
                    size(s_psi_update,1),size(s_psi_update,2),size(s_psi_update,3)*size(s_psi_update,4));
@@ -343,7 +356,7 @@ while(stop_intra == 0)
     
     % update sigma
     sigma_update = bsxfun(@times,Params.s_psi,permute(Params.s_t_nu,[1,2,4,3]));
-    sigma_update = sum(sum(sum(sigma_update,1),3),4)./(setting_params.num_sub*setting_params.num_session);%1xLxSxT=>1xL
+    sigma_update = CBIG_nanmean(mean(sum(sigma_update,1),3),4);%1xLxSxT=>1xL
     for i = 1:setting_params.num_clusters
         sigma_update(i) = invAd(setting_params.dim,sigma_update(i));
     end
@@ -379,8 +392,8 @@ while(stop_em == 0)
         s_lambda = Params.s_lambda;%NxLxS
         kappa_update = mtimesx(data.series,permute(Params.s_t_nu,[1,2,4,3]));
         kappa_update = bsxfun(@times,s_lambda,kappa_update);
-        kappa_update = sum(sum(sum(sum(kappa_update,1),4),3));
-        kappa_update = kappa_update./sum((setting_params.num_session.*sum(sum(s_lambda,1),3)));
+        kappa_update = sum(sum(CBIG_nanmean(sum(kappa_update,1),4),3));
+        kappa_update = kappa_update./sum(sum(sum(s_lambda,1),3));
         kappa_update = invAd(setting_params.dim,kappa_update);
         kappa_update = repmat(kappa_update,1,setting_params.num_clusters);
 
@@ -403,6 +416,7 @@ while(stop_em == 0)
                 lambda_X = bsxfun(@times,kappa_update,X'*s_lambda) + bsxfun(@times,Params.sigma,Params.s_psi(:,:,s));
                 s_t_nu_update = bsxfun(@times,lambda_X,1./sqrt(sum((lambda_X).^2)));
                 checknu = diag(s_t_nu_update'*Params.s_t_nu(:,:,t,s));
+                checknu(isnan(checknu)) = 1;
                 checknu_flag = (sum(1-checknu < setting_params.epsilon) < setting_params.num_clusters);
                 Params.s_t_nu(:,:,t,s) = s_t_nu_update;
 
@@ -427,7 +441,7 @@ while(stop_em == 0)
     log_vmf = bsxfun(@times,permute(log_vmf,[2,1,3,4]),transpose(Params.kappa));%LxNxSxT
     log_vmf(:,sum(log_vmf==0,1)==0) = bsxfun(@plus,Cdln(transpose(Params.kappa),setting_params.dim), ...
                                       log_vmf(:,sum(log_vmf==0,1)==0));%LxNxSxT
-    log_vmf = sum(log_vmf,4);%NxLxS
+    log_vmf =   CBIG_nansum(log_vmf,4);%NxLxS
     idx = sum(log_vmf == 0,1) ~= 0;
     
     log_vmf = bsxfun(@plus,permute(log_vmf,[2,1,3]),log(Params.theta));
@@ -450,7 +464,7 @@ while(stop_em == 0)
             if(t == 1)
                 log_lambda_prop = log_vmf;
             else
-                log_lambda_prop = log_lambda_prop + log_vmf;
+                log_lambda_prop = CBIG_nansum(cat(3,log_lambda_prop,log_vmf),3);
             end
         end
         theta_cost = Params.theta;
@@ -559,7 +573,7 @@ else
 end
 end
 
-function data = fetch_data(project_dir,num_session,num_sub,mesh)
+function data = fetch_data(project_dir,num_session,num_sub,mesh)    
 
 % read in input functional connectivity profiles
 if(~isempty(strfind(mesh,'fs_LR_32k')))
@@ -567,17 +581,26 @@ if(~isempty(strfind(mesh,'fs_LR_32k')))
     for t = 1:num_session
         data_profile = fullfile(project_dir,'profile_list','training_set',['sess' num2str(t) '.txt']);
         profile_name = table2cell(readtable(data_profile,'Delimiter',' ','ReadVariableNames',false));
+        if(t==1)
+            if(strcmp(profile_name{1,1},'NONE'))
+                error('The first session of the first subject can not be empty');
+            end
+        end
         for i = 1:num_sub
             fprintf('Session %d...It is subj %d...\n',t,i);
             avg_file = profile_name{i,1};
+            if(strcmp(avg_file,'NONE'))
+                data.series(:,:,i,t) = zeros(size(data.series,1),size(data.series,2))*NaN;
+            else
 
-            [~, series, ~] = CBIG_MSHBM_read_fmri(avg_file);       
-            series(~medial_mask, :) = 0;
+                [~, series, ~] = CBIG_MSHBM_read_fmri(avg_file);       
+                series(~medial_mask, :) = 0;
 
-            series = bsxfun(@minus,series,mean(series, 2));
-            series(all(series,2)~=0,:) = bsxfun(@rdivide,series(all(series,2)~=0,:), ...
-                                         sqrt(sum(series(all(series,2)~=0,:).^2,2)));
-            data.series(:,:,i,t) = series;
+                series = bsxfun(@minus,series,mean(series, 2));
+                series(all(series,2)~=0,:) = bsxfun(@rdivide,series(all(series,2)~=0,:), ...
+                                             sqrt(sum(series(all(series,2)~=0,:).^2,2)));
+                data.series(:,:,i,t) = series;
+            end
         end
     end
 
@@ -589,23 +612,36 @@ elseif(~isempty(strfind(mesh,'fsaverage')))
         rh_data_profile = fullfile(project_dir,'profile_list','training_set',['rh_sess' num2str(t) '.txt']);
         lh_profile_name = table2cell(readtable(lh_data_profile,'Delimiter',' ','ReadVariableNames',false));
         rh_profile_name = table2cell(readtable(rh_data_profile,'Delimiter',' ','ReadVariableNames',false));
+        if(t==1)
+            if(strcmp(lh_profile_name{1,1},'NONE'))
+                error('The first session of the first subject can not be empty');
+            end
+        end
+        
         for i = 1:num_sub
             fprintf('Session %d...It is subj %d...\n',t,i);
             lh_avg_file = lh_profile_name{i,1};
             rh_avg_file = rh_profile_name{i,1};
+            
+            if(strcmp(lh_avg_file,'NONE')&&strcmp(rh_avg_file,'NONE'))
+                data.series(:,:,i,t) = zeros(size(data.series,1),size(data.series,2))*NaN;
+            elseif(~strcmp(lh_avg_file,'NONE')&&~strcmp(rh_avg_file,'NONE'))
+                
+                [~, lh_series, ~] = CBIG_MSHBM_read_fmri(lh_avg_file);
+                [~, rh_series, ~] = CBIG_MSHBM_read_fmri(rh_avg_file);
 
-            [~, lh_series, ~] = CBIG_MSHBM_read_fmri(lh_avg_file);
-            [~, rh_series, ~] = CBIG_MSHBM_read_fmri(rh_avg_file);
+                lh_series(lh_avg_mesh.MARS_label == 1,:) = 0;
+                rh_series(rh_avg_mesh.MARS_label == 1,:) = 0;
 
-            lh_series(lh_avg_mesh.MARS_label == 1,:) = 0;
-            rh_series(rh_avg_mesh.MARS_label == 1,:) = 0;
+                series = [lh_series;rh_series];
 
-            series = [lh_series;rh_series];
-
-            series = bsxfun(@minus,series,mean(series, 2));
-            series(all(series,2)~=0,:) = bsxfun(@rdivide,series(all(series,2)~=0,:), ...
-                                         sqrt(sum(series(all(series,2)~=0,:).^2,2)));
-            data.series(:,:,i,t) = series;
+                series = bsxfun(@minus,series,mean(series, 2));
+                series(all(series,2)~=0,:) = bsxfun(@rdivide,series(all(series,2)~=0,:), ...
+                                             sqrt(sum(series(all(series,2)~=0,:).^2,2)));
+                data.series(:,:,i,t) = series;
+            else
+                error('One of the left and right hemisphere profiles is NONE');
+            end
         end
     end
     

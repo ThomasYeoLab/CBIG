@@ -53,7 +53,7 @@ The individual 17-network parcellations of HCP data are not included in the curr
 
 To download the version of the code that is last tested, you can either
 
-- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.9.2-Kong2019_MSHBM](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.9.2-Kong2019_MSHBM)
+- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.9.5-Kong2019_MSHBM](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.9.5-Kong2019_MSHBM)
 
 or
 
@@ -241,6 +241,8 @@ Start Matlab, in Matlab command window, the user need to specify the following i
 + `num_sessions`: number of sessions the user want to use to estimate the priors.
 + `num_clusters`: number of networks.
 
+Please note that the script allows varied number of sessions across training subjects. The user should use `NONE` to indicate the path to profile of the missing sessions. For example, if the user put `num_sessions` as `3` but subject 1 only 2 sessions, while other subjects all have 3 sessions. Then the user can use NONE to indicate the path to the profile of subject 1 during session 3. 
+
 run the following commands:
 
 ```
@@ -250,7 +252,7 @@ Params = CBIG_MSHBM_estimate_group_priors(output_dir, mesh, num_sub, num_session
 The results will be saved into **`priors`** folder, the results of each iteration will be saved as `Params_iteration?.mat`, the final estimated group priors will be saved as `Params_Final.mat`, each file contains a struct variable `Params`.
 
 **Output**
-+ `<output_dir>/estimate_group_priors/priors/Params_Final.mat`
++ `<output_dir>/priors/Params_Final.mat`
 
 The estimated group priors include:
 1) Inter-subject functional connectivity variability -- `Params.epsil`
@@ -276,7 +278,7 @@ Assuming each validation subject has `T` sessions, the individual parcellation w
     
     for data in `fsaverage5`  or
     
-    + `<output_dir>/estimate_group_priors/profile_list/test_set/sess?.txt`
+    + `<output_dir>/profile_list/test_set/sess?.txt`
 
 	for data in `fs_LR_32k`.
     
@@ -390,6 +392,8 @@ Updates
 - Release v0.6.1 (10/6/2018): Release code of Kong2019_MSHBM
 
 - Release v0.9.2 (19/3/2019): Add validation scripts
+
+- Release v0.9.5 (4/4/2019): Allow training subjects to have different number of sessions
 
 Bugs and Questions
 ====

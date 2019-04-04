@@ -112,7 +112,7 @@ for sub = 1:str2num(num_sub)
                 end
             else
                 fprintf('Skip: %s \n',lh_profile_file);
-                fprintf('Skip: %s \n',lh_profile_file);
+                fprintf('Skip: %s \n',rh_profile_file);
            
             end
                 
