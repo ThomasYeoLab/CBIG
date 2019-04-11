@@ -87,7 +87,13 @@ echo "[MASK]: zpdbold = $zpdbold" |& tee -a $LF
 
 # use the first run to create masks
 cd $boldfolder
-set mask_bold = $zpdbold[1]
+
+set best_run_file = "$subject_dir/$subject/qc/CBIG_preproc_bbregister_best_run.dat"
+if (-e $best_run_file) then
+	set mask_bold = `cat ${best_run_file}`
+else
+	set mask_bold = $zpdbold[1]
+endif
 echo "[MASK]: mask_bold = $mask_bold" |& tee -a $LF
 
 if (! -e mask) then

@@ -14,7 +14,7 @@
 #Example: 
 #	$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_bbregister.csh 
 #	-s Sub0001_Ses1 -d ~/storage/fMRI_preprocessing -anat_s Sub0001_Ses1_FS
-#	-anat_d ~/storage/sMRI_preprocess -bld '002 003' -BOLD_stem _rest_skip4_stc_mc -intrasub_best
+#	-anat_d ~/storage/sMRI_preprocess -bld '002 003' -BOLD_stem _rest_skip4_stc_mc
 ##########################################
 # Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
@@ -42,8 +42,6 @@ set subject_dir = ""
 set anat = ""
 set zpdbold = ""
 set BOLD_stem = ""
-set intrasub_best = 1; # Default use intrasub best run to create registration file
-set intrasub_best_flag = 0; # To judge whether -intrasub_best flag is passed in
 set force = 0		# Default if file exist, skip the step
 
 set root_dir = `python -c "import os; print(os.path.realpath('$0'))"`
@@ -92,17 +90,17 @@ cd $boldfolder
 
 foreach curr_bold ($zpdbold)
 	pushd $curr_bold
-	mkdir -p init-fsl
+	mkdir -p bbr_orig
 	set boldfile = $subject"_bld"$curr_bold$BOLD_stem
-	if ( (! -e init-fsl/$boldfile'_reg.dat') || ($force == 1)) then
+	if ( (! -e bbr_orig/$boldfile'_reg.dat') || ($force == 1)) then
 		echo "[REG]: boldfile = $boldfile" |& tee -a $LF
-		set cmd = "bbregister --bold --s $anat --init-fsl --mov $boldfile.nii.gz --reg init-fsl/$boldfile'_reg.dat'"
+		set cmd = "bbregister --bold --s $anat --init-fsl --mov $boldfile.nii.gz --reg bbr_orig/$boldfile'_reg.dat'"
 		echo $cmd |& tee -a $LF
 		eval $cmd >> $LF
-		cp init-fsl/$boldfile"_reg.dat" $boldfile"_reg.dat" 
 	else
-		echo "init-fsl/$boldfile'_reg.dat' already exists"|& tee -a $LF 
+		echo "bbr_orig/$boldfile'_reg.dat' already exists"|& tee -a $LF 
 	endif
+	cp bbr_orig/$boldfile"_reg.dat" $boldfile"_reg.dat" 
 	popd
 end
 echo "=======================FSL initialization done!=======================" |& tee -a $LF
@@ -114,50 +112,87 @@ echo "" |& tee -a $LF
 #############################################
 
 echo "=======================choose the best run =======================" |& tee -a $LF
-if ($intrasub_best == 1) then
-	# grab registration cost function values
-	set reg_cost_file = $qc/CBIG_preproc_bbregister_intra_sub_reg.cost
-	if (-e $reg_cost_file) then
-		rm $reg_cost_file
-	endif
-	foreach curr_bold ($zpdbold)
-		set boldfile = $subject"_bld"$curr_bold$BOLD_stem
-		cat $curr_bold/init-fsl/$boldfile'_reg.dat.mincost' | awk '{print $1}' >> $reg_cost_file
-	end
-
-	# compute best fsl cost
-	set init_fsl = `cat $reg_cost_file`
-	set min_fsl_cost = 100000
-	set count = 1;
-	while ($count <= $#init_fsl)
-		set comp = `echo "$init_fsl[$count] < $min_fsl_cost" | bc`
-		if ($comp == 1) then
-			set best_fsl_index = $count
-			set min_fsl_cost = $init_fsl[$count]
-		endif
-		@ count = $count + 1;
-	end
-	echo "Best fsl register is run $zpdbold[$best_fsl_index] with cost = $min_fsl_cost" |& tee -a $LF
-
-	# use best registration
-	foreach curr_bold ($zpdbold)
-		set boldfile = $subject"_bld"$curr_bold$BOLD_stem
-		set bestboldfile = $subject"_bld"$zpdbold[$best_fsl_index]$BOLD_stem
-		set cmd = "cp $zpdbold[$best_fsl_index]/init-fsl/$bestboldfile'_reg.dat' $curr_bold/$boldfile'_reg.dat'"
-		echo $cmd |& tee -a $LF
-		eval $cmd
-		set cmd = "cp $zpdbold[$best_fsl_index]/init-fsl/$bestboldfile'_reg.dat.log' $curr_bold/$boldfile'_reg.dat.log'"
-		echo $cmd |& tee -a $LF
-		eval $cmd
-		set cmd = "cp $zpdbold[$best_fsl_index]/init-fsl/$bestboldfile'_reg.dat.sum' $curr_bold/$boldfile'_reg.dat.sum'"
-		echo $cmd |& tee -a $LF
-		eval $cmd
-		set cmd = "cp $zpdbold[$best_fsl_index]/init-fsl/$bestboldfile'_reg.dat.mincost' $curr_bold/$boldfile'_reg.dat.mincost'"
-		echo $cmd |& tee -a $LF
-		eval $cmd
-	end
-
+# grab registration cost function values
+set reg_cost_file = $qc/CBIG_preproc_bbregister_intra_sub_reg.cost
+if (-e $reg_cost_file) then
+	rm $reg_cost_file
 endif
+foreach curr_bold ($zpdbold)
+	set boldfile = $subject"_bld"$curr_bold$BOLD_stem
+	cat $curr_bold/bbr_orig/$boldfile'_reg.dat.mincost' | awk '{print $1}' >> $reg_cost_file
+end
+
+# compute best fsl cost
+set init_fsl = `cat $reg_cost_file`
+set min_fsl_cost = 100000
+set count = 1;
+while ($count <= $#init_fsl)
+	set comp = `echo "$init_fsl[$count] < $min_fsl_cost" | bc`
+	if ($comp == 1) then
+		set best_fsl_index = $count
+		set min_fsl_cost = $init_fsl[$count]
+	endif
+	@ count = $count + 1;
+end
+echo "Best fsl register is run $zpdbold[$best_fsl_index] with cost = $min_fsl_cost" |& tee -a $LF
+set best_run = $zpdbold[$best_fsl_index]
+
+# save best run number in the qc folder
+set best_run_file = $qc/CBIG_preproc_bbregister_best_run.dat
+if (-e $best_run_file) then
+	rm $best_run_file
+endif
+echo $best_run >> $best_run_file
+
+# check if the best registration reduce the bbr cost of other run. If so, use that registration
+set bestboldfile = $subject"_bld"$best_run$BOLD_stem
+foreach curr_bold ($zpdbold)
+	if ($curr_bold != $best_run) then
+		set boldfile = $subject"_bld"$curr_bold$BOLD_stem
+		set cmd = "bbregister --bold --s $anat --init-reg $best_run/bbr_orig/$bestboldfile'_reg.dat'"
+		set cmd = "$cmd --mov $curr_bold/$boldfile.nii.gz --reg $curr_bold/bbr_use_best_run/$boldfile'_reg.dat'"
+		set cmd = "$cmd --initcost $curr_bold/bbr_use_best_run/$boldfile'_use_best_run_initcost.dat'"
+		echo $cmd |& tee -a $LF
+		eval $cmd
+		set use_best_run_cost = `cat $curr_bold/bbr_use_best_run/$boldfile'_use_best_run_initcost.dat' | awk '{print $1}'`
+		set original_cost = `cat $curr_bold/bbr_orig/$boldfile'_reg.dat.mincost' | awk '{print $1}'`
+		echo "[REG]: BBR cost of run $curr_bold using transformation matrix from the best run: $use_best_run_cost" >> $LF
+		echo "[REG]: BBR cost of run $curr_bold using its own transformation matrix: $original_cost" |& tee -a $LF
+		set comp = `echo "$use_best_run_cost < $original_cost" | bc`
+		if ($comp == 1) then
+			echo "[Reg] Registration from best run (run$best_run) reduces the bbr cost of run$curr_bold" |& tee -a $LF
+			echo "[Reg]: Registration from the best run will be applied to run$curr_bold" |& tee -a $LF
+			set cmd = "cp $best_run/bbr_orig/$bestboldfile'_reg.dat' $curr_bold/$boldfile'_reg.dat'"
+			echo $cmd |& tee -a $LF
+			eval $cmd
+			set cmd = "cp $curr_bold/bbr_use_best_run/$boldfile'_use_best_run_initcost.dat'"
+			set cmd = "$cmd $curr_bold/$boldfile'_reg.dat.mincost'"
+			echo $cmd |& tee -a $LF
+			eval $cmd
+		else
+			echo "[Reg]: Registration from best run (run$best_run) doesn't reduces the bbr cost of run$curr_bold" |& tee -a $LF
+			echo "[REG]: BBR cost of run $curr_bold will keep using its original transformation matrix" |& tee -a $LF
+			set cmd = "cp $curr_bold/bbr_orig/$boldfile'_reg.dat.mincost' $curr_bold/$boldfile'_reg.dat.mincost'"
+			echo $cmd |& tee -a $LF
+			eval $cmd
+		endif
+		if ($boldfolder != "" && $curr_bold != "") then
+			rm $boldfolder/$curr_bold/bbr_use_best_run/${subject}*
+			rmdir $boldfolder/$curr_bold/bbr_use_best_run/
+		endif
+	endif
+end
+#copy the bbr cost of the best run to its bold run folder
+set cmd = "cp $best_run/bbr_orig/$bestboldfile'_reg.dat.mincost' $best_run/$bestboldfile'_reg.dat.mincost'"
+echo $cmd |& tee -a $LF
+eval $cmd
+
+#update bbr cost in the qc folder
+rm $reg_cost_file
+foreach curr_bold ($zpdbold)
+	set boldfile = $subject"_bld"$curr_bold$BOLD_stem
+	cat $curr_bold/$boldfile'_reg.dat.mincost' | awk '{print $1}' >> $reg_cost_file
+end
 
 #########################
 # Create loose brain mask and apply it to current fMRI volumes
@@ -239,12 +274,6 @@ while( $#argv != 0 )
 			set BOLD_stem = $argv[1]; shift;
 			breaksw	
 		
-		#use the best run as registration file		
-		case "-intrasub_best":
-			set intrasub_best = 1;
-			set intrasub_best_flag = 1;
-			breaksw
-		
 		#update results, if exist then overwrite	
 		case "-force":
 			set force = 1;
@@ -286,9 +315,6 @@ if ( "$BOLD_stem" == "" ) then
 	echo "ERROR: input file stem not specified"
 	exit 1;
 endif	
-if ( $intrasub_best_flag == 0 )	then
-	echo "WARNING: Only -intrasub_best is allowed in this pipeline. No matter -intrasub_best is passed in or not, we will choose the best registration (lowest registration cost) across runs."
-endif
 goto check_params_return;
 
 			
@@ -317,10 +343,21 @@ DESCRIPTION:
 	i.e. the 1st frame.
 	
 	This function 
-	1) Applies bbregister with FSL initialization to each bold run  
-	2) Chooses the best run with lowest FSL cost
-	3) Create a loose whole brain mask and apply it to fMRI volumes, which were used to do bbregister. 
-	PS: The aim of Step3 is to save space because .nii.gz file will compress more if many voxels in the
+	1) Applies bbregister with FSL initialization to each bold run. 
+	2) Chooses the best run with lowest bbr cost
+	3) Applies the registration matrix from best run to all other runs and computes the bbr cost.
+	Therefore, for each run, we have two bbr costs: one cost computed using original regitration 
+	matrix from step 1 and one cost computed using the best run registration matrix.
+	Then compare the two cost. If the cost using best run registration is lower, the final
+	registration of this run 
+	<subject_dir>/<subject_id>/bold/<run_number>/<subject_id>_bld<run_number><BOLD_stem>_reg.dat
+	will be the best run registration and the final cost
+	<subject_dir>/<subject_id>/bold/<run_number>/<subject_id>_bld<run_number><BOLD_stem>_reg.dat.mincost
+	will be the cost computed using the best run registration. Else, they will be the original 
+	registration and cost from step 1
+	4) Create a loose whole brain mask using the bold run with lowest bbr cost and apply the maske to 
+	fMRI volumes that were used to do bbregister. 
+	PS: The aim of Step4 is to save space because .nii.gz file will compress more if many voxels in the
 	volume are 0s.
 
 REQUIRED ARGUMENTS:
@@ -340,8 +377,6 @@ REQUIRED ARGUMENTS:
 	                           <subject_dir>/<subject_id>/bold/<run_number>.
 
 OPTIONAL ARGUMENTS:
-	-intrasub_best           : use the best run to create registration file. "The best run" is 
-	                           defined by the lowest cost given by bbregister.
 	-force                   : update results, if exist then overwrite
 	-help                    : help
 	-version                 : version
@@ -349,17 +384,9 @@ OPTIONAL ARGUMENTS:
 OUTPUTS:
 	Files generated by bbregister:
 	<subject_dir>/<subject_id>/bold/<run_number>/<subject_id>_bld<run_number><BOLD_stem>_reg.dat
-	<subject_dir>/<subject_id>/bold/<run_number>/<subject_id>_bld<run_number><BOLD_stem>_reg.dat.log
-	<subject_dir>/<subject_id>/bold/<run_number>/<subject_id>_bld<run_number><BOLD_stem>_reg.dat.sum
 	<subject_dir>/<subject_id>/bold/<run_number>/<subject_id>_bld<run_number><BOLD_stem>_reg.dat.mincost
-	
-	If a subject has 2 runs 002 and 003, and 002 is the best one (lower bbregister cost), then the files
-	<subject_dir>/<subject_id>/bold/003/<subject_id>_bld003<BOLD_stem>*
-	are the copies of 
-	<subject_dir>/<subject_id>/bold/002/<subject_id>_bld002<BOLD_stem>*
 	
 EXAMPLE:
 	$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_bbregister.csh 
 	-s Sub0001_Ses1 -d ~/storage/fMRI_preprocessing -anat_s Sub0001_Ses1_FS
-	-anat_d ~/storage/sMRI_preprocess -bld '002 003' -BOLD_stem _rest_skip4_stc_mc -intrasub_best
-
+	-anat_d ~/storage/sMRI_preprocess -bld '002 003' -BOLD_stem _rest_skip4_stc_mc

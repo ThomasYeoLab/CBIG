@@ -23,7 +23,7 @@ We also provide multiple types of quality control (QC) figures for data inspecti
 - grey-scale timeseries intensity plot for voxels within grey matter (e.g. left subfigure)
 - group-level dependency between QC-FC correlation and ROI-to-ROI Euclidean distance (e.g. right subfigure)
 
-<img src="utilities/README_figure.png" height="400" />
+<img src="readme_figures/README_figure.png" height="400" />
 
 ----
 
@@ -42,14 +42,14 @@ Except for this project, if you want to use the code for other stable projects f
 - To download the version of the code that was last tested, you can either
 
   - visit this link:
-  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.6.2-CBIG_fMRI_Preprocessing](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.6.2-CBIG_fMRI_Preprocessing)
+  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.9.6-CBIG_fMRI_Preprocessing](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.9.6-CBIG_fMRI_Preprocessing)
   
   or
   
   - run the following command, if you have Git installed
   
   ```
-  git checkout -b CBIG_fMRI_Preprocessing v0.6.2-CBIG_fMRI_Preprocessing
+  git checkout -b CBIG_fMRI_Preprocessing v0.9.6-CBIG_fMRI_Preprocessing
   ```
 
 ### Usage 
@@ -143,6 +143,21 @@ codes would work on ANTs version 2.2.0.
     2. Add unit test: check correctness of 419x419 function connectivity matrix.
     
     3. Add scripts for all unit tests.
+    
+- Release v0.9.6 (12/04/2019):
+    1. Update censoring interpolation step to avoid crashing when there are vetices whose timeseries are all NaNs and to reduce run time if no frame needs to be censored.
+    
+    2. Update QC greyplot step: global signal to be plotted is now computed from the input volume of the nuisance regression step (e.g. after T1-T2* registration and before censoring interpolation, if you use the default config file), whereas previously it was computed from the input volume of the QC greyplot step (e.g. after bandpass filtering, if you use the default config file).
+    
+    3. Fix a bug to avoid crashing when -final_mask option is not passed into `CBIG_preproc_native2mni.csh` and `CBIG_preproc_native2mni_ants.csh`
+    
+    4. Save out motion correction transformation matrices for future distortion correction usage (distortion correction scripts have not been added in this release. They will be added in a future release.)
+    
+    5. Change the rule-of-thumb of choosing bbregister transformation matrix. In previous versions, the registration matrix for each run was replaced with the registration matrix of the run who had the lowest BBR cost (i.e. the best run) in the same subject. From this release onwards, the BBR registration of the best run is applied to other runs only if the registration can improve the BBR cost of other runs. 
+    
+    6. Use the run with lowest BBR cost, instead of the first run, to create all the masks in the functional native volumetric space.
+    
+    7. Remove `-censor` option in `CBIG_preproc_bandpass_fft.csh` and options of `-low_f` and `-high_f` in `CBIG_preproc_censor.csh`. Include a readme about bandpass filtering and censoring (i.e. `$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/Recommendation_of_bandpass_censoring.md`).
     
 
 ----

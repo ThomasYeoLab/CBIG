@@ -799,23 +799,31 @@ DESCRIPTION:
 	by changing the config file:
 	(1) [CBIG_preproc_skip -skip 4] 
 	    skips first 4 frames of resting data. 
-	(2) [CBIG_preproc_fslslicetimer -slice_order <so_file>] 
+	(2) [CBIG_preproc_fslslicetimer -slice_timing <st_file>] or [CBIG_preproc_fslslicetimer -slice_order <so_file>]
 	    does slice time correction using FSL slicetimer. If the user does not pass in the slice acquisition direction 
 	    -direction <direction>, this step will use "Siemens" acquisition direction Superior-Inferior as default. 
 	    If the direction is Right-Left, <direction> should be 1 representing x axis.
 	    If the direction is Anterior-Posterior, <direction> should be 2 representing y axis.
 	    If the direction is Superior-Inferior, <direction> should be 3 representing z axis.
-	    If the user does not pass in the slice order file <so_file>, this step will use "Siemens" ordering as default. 
-	    If the number of slices is odd, the ordering is 1, 3, 5, ..., 2, 4, 6, ...; 
+	    We recommend the users to pass in the slice timing information <st_file> instead of slice order <so_file>
+	    (especially for multi-band data). The slice timing file can contain multiple columns (separated by a space) 
+	    if the slice timing is different for different runs (checkout this example: example_slice_timing.txt).
+	    If the user does not pass in both the slice timing file <st_file> and the slice order file <so_file>, 
+	    this step will use "Siemens" ordering as default:
+	    if the number of slices is odd, the ordering is 1, 3, 5, ..., 2, 4, 6, ...; 
 	    if the number of slices is even, the ordering is 2, 4, 6, ..., 1, 3, 5, ....
 	(3) [CBIG_preproc_fslmcflirt_outliers -FD_th 0.2 -DV_th 50 -discard-run 50 -rm-seg 5 -spline_final] 
 	    does motion correction with spline interpolation and calculates Framewise Displacement and DVARS, 
 	    then generates a vector indicating censored frames (1:keep 0:censored). This step throws away the
 	    runs where the number of outliers are more than the threshold set by -discard-run option.
-	(4) [CBIG_preproc_bbregister -intrasub_best] 
-	    does bbregister with fsl initialization for each run and chooses the best run to generate registration file.
-	    To save disk space, it also generates a loose whole brain mask and applies it to input fMRI volumes. If you follow
-	    the default config file, then the input fMRI volumes are motion corrected volumes.
+	(4) [CBIG_preproc_bbregister] 
+	    a) Do bbregister with fsl initialization for each run. 
+	    b) Choose the best run with lowest bbr cost. Apply the registration matrix of the best run to 
+	    other runs and recompute the bbr cost. If the cost computed using best run registration is 
+	    lower than the cost computed using the original registration generated in step a), use the best 
+	    run registration as the final registration of this run. Otherwise, use the original registration.
+	    c) To save disk space, it also generates a loose whole brain mask and applies it to input fMRI 
+	    volumes. If you follow the default config file, then the input fMRI volumes are motion corrected volumes.
 	(5) [CBIG_preproc_regress -whole_brain -wm -csf -motion12_itamar -detrend_method detrend -per_run -censor -polynomial_fit 1] 
 	    regresses out motion, whole brain, white matter, ventricle, linear regressors for each run seperately. 
 	    If the data have censored frames, this function will first estimate the beta coefficients ignoring the 
@@ -901,7 +909,7 @@ REQUIRED ARGUMENTS:
 	                            ###CBIG fMRI preprocessing configuration file
 	                            ###The order of preprocess steps is listed below
 	                            CBIG_preproc_skip -skip 4
-	                            CBIG_preproc_fslslicetimer -slice_order ${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/example_slice_order.txt
+	                            CBIG_preproc_fslslicetimer -slice_timing ${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/example_slice_timing.txt
 	                            CBIG_preproc_fslmcflirt_outliers -FD_th 0.2 -DV_th 50 -discard-run 50 -rm-seg 5
 
 	                            The symbol # in the config file also means comment, you can write anything you want if you 

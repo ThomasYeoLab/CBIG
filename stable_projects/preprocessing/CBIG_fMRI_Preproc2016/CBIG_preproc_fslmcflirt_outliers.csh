@@ -160,7 +160,7 @@ foreach curr_bold ($zpdbold)
 	
 	set boldfile = $subject"_bld"$curr_bold$BOLD_stem
 	if ( (! -e  $boldfile"_mc.nii.gz") || ($force == 1) ) then
-		set cmd = "mcflirt -in ${boldfile}_merge.nii.gz -out ${boldfile}_mc -plots -refvol 0 -rmsrel -rmsabs"
+		set cmd = "mcflirt -in ${boldfile}_merge.nii.gz -out ${boldfile}_mc -plots -refvol 0 -rmsrel -rmsabs -mats"
 		if ($spline_final == 1) then
 			set cmd = "$cmd -spline_final"
 		endif
@@ -173,7 +173,8 @@ foreach curr_bold ($zpdbold)
 	else
 		echo "=======================mcflirt and split already done!=======================" |& tee -a $LF
 	endif
-	
+	rm ${boldfile}_mc.mat/MAT_0000
+	cat ${boldfile}_mc.mat/MAT* > ${boldfile}_mc.cat
 	ln -s $boldfolder/$curr_bold/${boldfile}_mc_rel.rms $qc/${subject}_bld${curr_bold}_mc_rel.rms
 	ln -s $boldfolder/$curr_bold/${boldfile}_mc_abs.rms $qc/${subject}_bld${curr_bold}_mc_abs.rms
 	ln -s $boldfolder/$curr_bold/${boldfile}_mc_rel_mean.rms $qc/${subject}_bld${curr_bold}_mc_rel_mean.rms

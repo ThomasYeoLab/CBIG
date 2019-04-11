@@ -142,16 +142,24 @@ foreach runfolder ($bold)
 	endif
 
 	# if final mask is applied, the final output should have _finalmask postfix
-        if( $?final_mask ) then
+	if( $?final_mask ) then
 		set final_output_mask = `basename $final_output .nii.gz`
 		set final_output_mask = "$volfolder/${final_output_mask}_finalmask.nii.gz"
 	endif
 	
 	# check if final output already exists
-	if(-e $final_output_mask) then
-		echo "[native2mni]: final output: $final_output_mask already exists." |& tee -a $LF
-		popd
-		continue
+	if( $?final_mask ) then
+		if(-e $final_output_mask) then
+			echo "[native2mni]: final output: $final_output_mask already exists." |& tee -a $LF
+			popd
+			continue
+		endif
+	else
+		if(-e $final_output) then
+			echo "[native2mni]: final output: $final_output already exists." |& tee -a $LF
+			popd
+			continue
+		endif
 	endif
 	
 	# check if registraton file exists

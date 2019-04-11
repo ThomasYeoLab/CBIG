@@ -10,7 +10,7 @@
 # Example: 
 #	$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_bandpass_fft.csh 
 #	-s Sub0060_Ses1 -d ~/storage/fMRI_preprocess -bld "002 003"	-BOLD_stem _rest_skip_stc_mc_cen_resid 
-#	-low_f 0 -high_f 0.08 -detrend -censor
+#	-low_f 0 -high_f 0.08 -detrend 
 #############################################
 # Written by Nanbo Sun and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 #############################################
@@ -86,6 +86,16 @@ set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
 if ($status) then
     echo "ERROR: could not find matlab"
     exit 1;
+endif
+
+#############################################
+# Print an error if the user use -censor flag
+#############################################
+if (censor == 1) then
+	echo "ERROR: We do not recommend you to use -censor flag. For reasons, please check \
+$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/Recommendation_of_bandpass_censoring.md" \
+|& tee -a $LF
+	exit 1
 endif
 
 
@@ -316,8 +326,6 @@ OPTIONAL ARGUMENTS:
 	-detrend                     : demean and remove the linear trend before bandpass filtering (optional)
 	-retrend                     : add back the linear trend after bandpass filtering (optional), retrend 
 	                               is ignored if detrend is off
-	-censor                      : fit beta coefficients in regression without the censored frames, then 
-	                               apply the beta to all frames.
 	-force                       : update results, if exist then overwrite
 	-help                        : help
 	-version                     : version
@@ -329,5 +337,5 @@ OUTPUTS:
 EXAMPLE:
 	$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_bandpass_fft.csh 
 	-s Sub0060_Ses1 -d ~/storage/fMRI_preprocess -bld "002 003"	-BOLD_stem _rest_skip_stc_mc_cen_resid 
-	-low_f 0 -high_f 0.08 -detrend -censor
+	-low_f 0 -high_f 0.08 -detrend 
 	

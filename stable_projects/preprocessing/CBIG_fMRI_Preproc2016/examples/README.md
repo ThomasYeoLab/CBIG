@@ -1,1 +1,3 @@
-The preprocessing example is the same as `../unit_tests/unit_test_single_sub_preproc_readme.md` because releasing all preprocessing files of a subject in our repository will make the size of the repo too big. Note the example can only be run on our lab's server.
+FMRI preprocessing project depends on real fMRI data, but these data are too large to be released in our GitHub repository. Therefore, we do not provide examples to run the scripts of this project.
+
+However, you can check our `unit_tests` folder for your reference, note that the `unit_tests` example can only run within CBIG lab.

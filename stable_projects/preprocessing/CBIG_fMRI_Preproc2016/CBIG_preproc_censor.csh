@@ -107,6 +107,18 @@ set DVARS = (`echo $outlier_stem | awk -F "DVARS" '{print $2}' | awk -F "_" '{pr
 echo "FD = $FD"
 echo "DVARS = $DVARS"
 
+###############################
+# print an error if the user used -low_f and -high_f flags
+###############################
+if ( "$low_f" != "" || "$high_f" != "") then
+	echo "low_f = $low_f" |& tee -a $LF
+	echo "high_f = $high_f" |& tee -a $LF
+	echo "ERROR: We do not recommend you to use -low_f and -high_f flags. For reasons, please check \
+$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/Recommendation_of_bandpass_censoring.md" \
+|& tee -a $LF
+	exit 1
+endif
+
 
 ##############################
 # push to bold folder
@@ -473,15 +485,6 @@ OPTIONAL ARGUMENTS:
 	                              this option, and the maximal memory usage will be linearly 
 	                              proportional to the size of input fMRI file (~50 times, excluding 
 	                              non-brain part).
-	-low_f         low_f        : the low cut-off frequency if bandpass filtering is performed.
-	                              E.g., if the passband is [0.009, 0.08], then low_f is 0.009.
-	                              Note: the cut-off frequency is also included in the passband. 
-	                              However, since this function always to demean on uncensored 
-	                              frames and never add it back, if low_f = 0, it is not included 
-	                              in passband.
-	-high_f        high_f       : the high cut-off frequency if bandpass filtering is performed.
-	                              E.g., if the passband is [0.009, 0.08], then high_f is 0.08.
-	                              Note: the cut-off frequency is also included in the passband.
 	-nocleanup                  : do not remove intermediate result (interpolated volume without 
 	                              bandpass filtering and without replacement.
 

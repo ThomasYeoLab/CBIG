@@ -9,7 +9,7 @@
 ```
 cd ${sub_dir}/${subject}/bold/${run_folder}
 setenv SUBJECTS_DIR ${anat_d}
-tkregister2 --mov ${subject}_bld${run_folder}${REG_stem}.nii.gz --reg init-fsl/${subject}_bld${run_folder}${REG_stem}_reg.dat --surf
+tkregister2 --mov ${subject}_bld${run_folder}${REG_stem}.nii.gz --reg ${subject}_bld${run_folder}${REG_stem}_reg.dat --surf
 ```
 	  
 ----

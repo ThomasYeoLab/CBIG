@@ -148,6 +148,15 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 [input, in_vol, in_size] = read_fmri(BOLD_in);
 
+outliers = dlmread(outlier_file);                    % N (number of timepoints) x 1 binary vector, 0 means censored (high-motion) frames.
+outliers = ~outliers;                                % N x 1 binary vector, 0 means uncensored (low-motion) frames.
+% if no frame to be censored, skip whole procedure 
+if(~any(outliers==1))
+    write_fmri(BOLD_interm_out, input, in_vol, in_size);
+    write_fmri(BOLD_final_out, input, in_vol, in_size);
+    return
+end
+
 % Read loose mask and apply it, if there is one.
 if(mask_flag == 1)
     [~, mask_vol, ~] = read_fmri(loose_mask);
@@ -155,8 +164,12 @@ if(mask_flag == 1)
     in_vol = in_vol(mask_ind, :);
 end
 
-outliers = dlmread(outlier_file);                    % N (number of timepoints) x 1 binary vector, 0 means censored (high-motion) frames.
-outliers = ~outliers;                                % N x 1 binary vector, 0 means uncensored (low-motion) frames.
+% remove voxels with 0 signal
+zero_ind = sum(abs(in_vol(:, outliers==0)), 2)==0;
+if(~isempty(zero_ind==1))
+    in_vol(zero_ind==1, :) = [];
+end
+
 
 % detrend, trend is computed from uncensored frames
 [in_vol, ~, ~, retrend] = CBIG_glm_regress_matrix(in_vol', [], 1, ~outliers);
@@ -232,6 +245,24 @@ if(bandpass_flag == 0)
     out_vol(:, outliers==0) = in_vol(:, outliers==0);
 end
 
+% check if output timeseries contain NaN
+if(any(isnan(interm_out_vol)))
+    fprintf('ERROR: intermediate output volume contains NaN.\n'); return;
+end
+if(any(isnan(out_vol)))
+    fprintf('ERROR: final output volume contains NaN.\n'); return;
+end
+
+% recover voxels with 0 signal
+if(~isempty(zero_ind==1))
+    tmp_interm_out = interm_out_vol;
+    interm_out_vol = zeros(length(zero_ind), in_size(4));
+    interm_out_vol(zero_ind==0, :) = tmp_interm_out;
+    
+    tmp_out = out_vol;
+    out_vol = zeros(length(zero_ind), in_size(4));
+    out_vol(zero_ind==0, :) = tmp_out;
+end
 
 % If there is a loose mask, construct output volumes
 if(mask_flag == 1)

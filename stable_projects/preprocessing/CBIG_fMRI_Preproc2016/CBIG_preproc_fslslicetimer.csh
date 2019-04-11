@@ -5,7 +5,8 @@
 #	-s Sub0001_Ses1 -d ~/storage/fMRI_preprocess -bld '002 003' -BOLD_stem _rest_skip4 -slice_order
 #	${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/example_slice_order.txt
 #
-# This function uses FSL slicetimer to conduct slice timing correction. One slice order file is needed. If no one is passed in, the programme will generate one automatically. The default one is odd.
+# This function uses FSL slicetimer to conduct slice timing correction. One slice timing file or slice order file is needed. 
+# If no one is passed in, the programme will generate a slice order file automatically. The default one is Siemens.
 #
 # Written by Jingwei Li.
 # Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
@@ -75,11 +76,11 @@ echo "[STC]: boldfolder = $boldfolder" |& tee -a $LF
 pushd $boldfolder
 
 echo "===================== Slice time correction, using fsl ======================" |& tee -a $LF
-echo "=====(if the slice order is arbiturary, you need to pass in a text file)=====" |& tee -a $LF
-echo "=====================(default is 1,3,5, ... ,2,4,6, ...)=====================" |& tee -a $LF
 
+set run_count = 0
 foreach runfolder ($bold)
 	echo ">>> Run: $runfolder"
+	set run_count = `expr $run_count + 1`
 	pushd $runfolder
 	set BOLD = ${subject}"_bld${runfolder}${BOLD_stem}"
 	set output = "${BOLD}_stc.nii.gz"
@@ -94,12 +95,36 @@ foreach runfolder ($bold)
 		if(! $?direction ) then
 			set direction = 3; 
 		endif
+		
+		##########################
+		# if slice-timing file in passed in, check how many columns are there
+		# if > 1, split multiple columns into multiple files
+		##########################
+		set auto_st_file_flag = 0;
+		if( $?st_file_in ) then
+			set num_col = `awk -F ' ' '{print NF; exit}' $st_file_in`
+			set num_run = `echo $#bold`
+			if( $num_col == 1 ) then
+				set st_file = $st_file_in
+			else if ( $num_col == $num_run ) then
+				set st_file = $boldfolder/$runfolder/tmp_stc/tmp_st.txt
+				mkdir -p tmp_stc
+				cut -f $run_count -d ' ' $st_file_in > $st_file
+				set auto_st_file_flag = 1
+			else
+				echo "ERROR: Number of columns in slice-timing file is not consistent with total number of runs." \
+				|& tee -a $LF
+				exit 1
+			endif
+		endif
+
 	
 		#########################
-		# if slice order file is not passed in, create a default one (odd)
+		# if neither slice order file nor slice timing file is passed in, 
+		# create a default slice order file (Siemens)
 		#########################
-		if(! $?so_file ) then
-			set so_file_flag = 0;
+		if( ! $?st_file && ! $?so_file ) then
+			set auto_so_file_flag = 1;
 			echo "  WARNNING: Slice order file not specified, create a temporary one" |& tee -a $LF
 			mkdir -p tmp_stc
 			set so_file = $boldfolder/$runfolder/tmp_stc/tmp_so.txt
@@ -132,27 +157,43 @@ foreach runfolder ($bold)
 				end
 			endif
 		else
-			set so_file_flag = 1;
+			set auto_so_file_flag = 0;
 		endif
-    	
-		echo "  ---------------------- Slice Order --------------------------------" |& tee -a $LF
-		cat $so_file | tr '\n' ' ' |& tee -a $LF
-		echo "" |& tee -a $LF
-		echo "  -------------------------------------------------------------------" |& tee -a $LF
+		
 		
 		#########################
 		# slice timing correction now!
 		#########################
-		set cmd = (slicetimer -i ${BOLD}.nii.gz -o ${BOLD}${stc_suffix}.nii.gz -d $direction --ocustom=$so_file)
-		echo $cmd |& tee -a $LF
-		eval $cmd >> $LF
+		set cmd = (slicetimer -i ${BOLD}.nii.gz -o ${BOLD}${stc_suffix}.nii.gz -d $direction)
+		
+		if( $?st_file ) then
+			echo "  ---------------------- Slice Timing -------------------------------" |& tee -a $LF
+			cat $st_file | tr '\n' ' ' |& tee -a $LF
+			echo "" |& tee -a $LF
+			echo "  -------------------------------------------------------------------" |& tee -a $LF
+			
+			set cmd = ($cmd --tcustom=$st_file)
+			echo $cmd |& tee -a $LF
+			eval $cmd >> $LF
+		else
+			echo "  ---------------------- Slice Order --------------------------------" |& tee -a $LF
+			cat $so_file | tr '\n' ' ' |& tee -a $LF
+			echo "" |& tee -a $LF
+			echo "  -------------------------------------------------------------------" |& tee -a $LF
+			
+			set cmd = ($cmd --ocustom=$so_file)
+			echo $cmd |& tee -a $LF
+			eval $cmd >> $LF
+		endif
 		
 		#########################
-		# remove the tmp default slice order file, if there is one
+		# remove the automatically generated default slice order file, if there is one
+		# remove the split slice timing file of current run, if input slice-timing file contains multiple columns 
 		#########################
-		if ( $so_file_flag == 0 ) then
+		if ( $auto_so_file_flag == 1 || $auto_st_file_flag == 1 ) then
 			rm -r tmp_stc
 			unset so_file
+			unset st_file
 		endif
 	endif
 	popd
@@ -221,6 +262,11 @@ while( $#argv != 0 )
 		case "-slice_order":
 			if ( $#argv == 0 ) goto arg1err;
 			set so_file = $argv[1]; shift;
+			breaksw
+			
+		case "-slice_timing":
+			if ( $#argv == 0 ) goto arg1err;
+			set st_file_in = $argv[1]; shift;
 			breaksw
 		
 		default:
@@ -310,12 +356,20 @@ REQUIRED ARGUMENTS:
 OPTIONAL ARGUMENTS:
 	-direction    <direction> : slice aquisition direction. 1 means x axis representing Right-Left, 
 	                            2 means y axis representing Anterior-Posterior, 3 means z axis representing Superior-Inferior.
+	-slice_timing <st_file>   : slice timing file (absolute path). It can contain one column or multiple columns  
+	                            (separated by a space, see example_slice_timing.txt within the same folder). 
+	                            If there is only one column, it is assumed that every run follows the same slice timing;  
+	                            if there are multiple columns, each column corresponds to one of the runs given by -bld option.
+	                            N-th row corresponds to the time point when N-th slice was sampled.
+	                            If both -slice_timing and -slice_order options are not used, this script will generate a 
+	                            default slice order file following Siemens slice order 
+	                            (see description of -slice_order option).
 	-slice_order  <so_file>   : slice order file (absolute path), where each row is one number. 
-	                            If the user did not pass in a slice order file, this function 
-	                            will create a default one where the slice order is following 
-	                            Siemens: if the number of slices is odd, the ordering is 1, 3, 5, 
-	                            ..., 2, 4, 6, ...; if the number of slices is even, the ordering 
-	                            is 2, 4, 6, ..., 1, 3, 5, ....
+	                            If the user did not pass in a slice order file or a slice timing file,  
+	                            this function will create a default one where the slice order is 
+	                            following Siemens: if the number of slices is odd, the ordering is 
+	                            1, 3, 5, ..., 2, 4, 6, ...; if the number of slices is even, the 
+	                            ordering is 2, 4, 6, ..., 1, 3, 5, ....
 	                            For the example of slice order file, please see 
 	                            ${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/example_slice_order.txt
 

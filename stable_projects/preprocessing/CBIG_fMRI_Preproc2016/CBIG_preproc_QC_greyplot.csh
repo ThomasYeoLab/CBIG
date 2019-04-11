@@ -105,6 +105,83 @@ echo "" |& tee -a $LF
 
 
 ###############################
+# generate global signal text file
+###############################
+echo "================================ Generate global signal text file ==============================" |& tee -a $LF
+set regress_folder = "$boldfolder/regression"
+set ROI_regressors_list = "$regress_folder/ROI_regressors_list.txt"
+# if nuisance regression step was performed, global signal should be computed on the volume before nuisance regression
+if( -e $ROI_regressors_list ) then   
+	set regression_done = 1    
+	echo "[Greyplot]: Nuisance regression was one of previous preprocessing steps." |& tee -a $LF
+	echo "[Greyplot]: Global signal in the plot will be generated from the input volume of regression step." |& tee -a $LF
+	
+	foreach curr_run ($bold)
+		if ( -e $qc/$subject"_bld"${curr_run}_WB.txt ) then
+			rm $qc/$subject"_bld"${curr_run}_WB.txt
+		endif
+	end
+	
+	set ROI_regressors_files = (`cat $ROI_regressors_list`)
+	set bold_list = ($bold)
+	set first_run = `echo $bold_list[1]`
+	set first_file = `echo $ROI_regressors_files[1]`
+	# check if global signal was included in the nuisance regression
+	set prefix = "$regress_folder/$subject"_bld"${first_run}_WB"
+	set status1 = 0;
+	set status2 = 0;
+	set status3 = 0;
+	set status4 = 0;
+	if( "$first_file" == "${prefix}_regressors.txt" ) then 
+		set status1 = 1; 
+	endif
+	if( "$first_file" == "${prefix}_WM_regressors.txt" ) then 
+		set status2 = 1; 
+	endif
+	if( "$first_file" == "${prefix}_CSF_regressors.txt" ) then 
+		set status3 = 1; 
+	endif
+	if( "$first_file" == "${prefix}_WM_CSF_regressors.txt" ) then
+		set status4 = 1; 
+	endif
+	if( $status1 || $status2 || $status3 || $status4 ) then   # GS was one of the regressor
+		echo "[Greyplot]: global signal was generated in regression step. Extract it for later plotting." |& tee -a $LF
+		foreach curr_ROI_file ($ROI_regressors_files)
+			echo $curr_ROI_file
+			set curr_run = `echo $curr_ROI_file | xargs basename | sed -e "s/^${subject}_bld//" | awk '{print substr($0, 0, 3)}'`
+			echo $qc/$subject"_bld"${curr_run}_WB.txt
+			awk -F " " '{print $1}' $curr_ROI_file >> $qc/$subject"_bld"${curr_run}_WB.txt
+		end
+	else                                                       # GS was not in the regressor, generate now
+		echo "[Greyplot]: global signal (GS) was NOT included in regression step. Generate GS text now." |& tee -a $LF
+		set wb_mask = "$boldfolder/mask/$subject.brainmask.bin.nii.gz"
+		set GS_list = "$qc/GS_list.txt"
+		if( -e $GS_list ) then
+			rm $GS_list
+		endif
+		touch $GS_list
+		foreach curr_run ($bold)
+			echo $qc/$subject"_bld"${curr_run}_WB.txt >> $GS_list
+		end
+		
+		set fMRI_list = "$regress_folder/fMRI_list.txt"
+		set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r )
+		set cmd = ($cmd '"' 'addpath(fullfile('"'"$root_dir"'"','"'"utilities"'"'))'; )
+		set cmd = ($cmd CBIG_preproc_create_ROI_regressors "'"$fMRI_list"'" "'"$GS_list"'" )
+		set cmd = ($cmd "'"$wb_mask"'" "'""'" "'""'" "'"0"'"; exit '"' );
+		echo $cmd |& tee -a $LF
+		eval $cmd |& tee -a $LF
+		rm $GS_list
+	endif
+# if nuisance regression step was not performed, global signal can be computed on the final volume
+else 
+	set regression_done = 0
+	echo "[Greyplot]: Nuisance regression was not one of previous preprocessing steps." |& tee -a $LF
+	echo "[Greyplot]: Global signal in the plot will be generated based on the volume from last preprocessing step." |& tee -a $LF
+endif
+
+
+###############################
 # call matlab function to plot
 ###############################
 echo "================================ Create greyplot ==============================" |& tee -a $LF
@@ -116,10 +193,19 @@ foreach runfolder ($bold)
 	set DV_file = $mc/${subject}_bld${runfolder}${mc_stem}_motion_outliers_DVARS
 	set output = $qc/${subject}_bld${runfolder}${BOLD_stem}_greyplot.png
 	
-	set cmd = ( $MATLAB -nodesktop  -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; )
-	set cmd = ($cmd CBIG_preproc_QC_greyplot "'"$fmri_file"'"  "'"$FD_file"'"  "'"$DV_file"'"  "'"$output"'" "'"GM_mask"'")  
-	set cmd = ($cmd "'"$gm_mask"'"  "'"WB_mask"'" "'"$wb_mask"'" "'"grey_vox_factor"'" "'"$grey_vox_fac"'")
-	set cmd = ($cmd "'"tp_factor"'" "'"$tp_fac"'" "'"FD_thres"'" "'"$FD_th"'" "'"DV_thres"'" "'"$DV_th"'"; exit; '"')
+	if ( "$regression_done" == 0 ) then
+		set cmd = ( $MATLAB -nodesktop  -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; )
+		set cmd = ($cmd CBIG_preproc_QC_greyplot "'"$fmri_file"'"  "'"$FD_file"'"  "'"$DV_file"'"  "'"$output"'" )  
+		set cmd = ($cmd "'"GM_mask"'" "'"$gm_mask"'"  "'"WB_mask"'" "'"$wb_mask"'" "'"grey_vox_factor"'" "'"$grey_vox_fac"'")
+		set cmd = ($cmd "'"tp_factor"'" "'"$tp_fac"'" "'"FD_thres"'" "'"$FD_th"'" "'"DV_thres"'" "'"$DV_th"'"; exit; '"')
+	else
+		set GS_txt = $qc/$subject"_bld"${runfolder}_WB.txt
+		
+		set cmd = ( $MATLAB -nodesktop  -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; )
+		set cmd = ($cmd CBIG_preproc_QC_greyplot "'"$fmri_file"'"  "'"$FD_file"'"  "'"$DV_file"'"  "'"$output"'" )  
+		set cmd = ($cmd "'"GM_mask"'" "'"$gm_mask"'"  "'"WBS_text"'" "'"$GS_txt"'" "'"grey_vox_factor"'" "'"$grey_vox_fac"'")
+		set cmd = ($cmd "'"tp_factor"'" "'"$tp_fac"'" "'"FD_thres"'" "'"$FD_th"'" "'"DV_thres"'" "'"$DV_th"'"; exit; '"')
+	endif
 	echo $cmd |& tee -a $LF
 	eval $cmd |& tee -a $LF
 end

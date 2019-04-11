@@ -28,6 +28,8 @@ set anat_s = ""       # recon-all folder
 set bold = ""         # bold number, e.g. '002 003'
 set BOLD_stem = ""    # BOLD stem, e.g. _rest_stc_mc_cen_FDRMS0.2_DVARS50_resid_lp0.08
 set reg_stem = ""     # registration stem, e.g. _rest_stc_mc
+set iter_affine = "100x100x200"  # number of iterations for the affine transformation in ANTs registration step
+set iter_SyN = "100x100x50"      # number of iterations for the SyN nonlinear transformation in ANTs registration step
 
 set nocleanup = 0;
 set warp_4d = 0;
@@ -100,7 +102,7 @@ else
 	echo $cmd |& tee -a $LF
 	eval $cmd |& tee -a $LF
 
-	set cmd = (CBIG_antsReg_vol2vol.sh -r $temp_1mm -i $mri_nii -d $volfolder -p $warp_prefix)
+	set cmd = (CBIG_antsReg_vol2vol.sh -r $temp_1mm -i $mri_nii -d $volfolder -p $warp_prefix  -j $iter_affine -k $iter_SyN)
 	echo $cmd |& tee -a $LF
 	eval $cmd |& tee -a $LF
 
@@ -133,16 +135,24 @@ foreach runfolder ($bold)
 	endif
 
 	# if final mask is applied, the final output should have _finalmask postfix
-        if( $?final_mask ) then
+	if( $?final_mask ) then
 		set final_output_mask = `basename $final_output .nii.gz`
 		set final_output_mask = $volfolder/${final_output_mask}_finalmask.nii.gz
 	endif
 	
 	# check if final output already exists
-	if(-e $final_output_mask) then
-		echo "[native2mni_ants]: final output: $final_output_mask already exists." |& tee -a $LF
-		popd
-		continue
+	if( $?final_mask ) then
+		if(-e $final_output_mask) then
+			echo "[native2mni_ants]: final output: $final_output_mask already exists." |& tee -a $LF
+			popd
+			continue
+		endif
+	else
+		if(-e $final_output) then
+			echo "[native2mni_ants]: final output: $final_output already exists." |& tee -a $LF
+			popd
+			continue
+		endif
 	endif
 	
 	# if warp_4d is not set (default=0), then split the frames
@@ -524,6 +534,16 @@ while( $#argv != 0 )
 			set final_mask = $argv[1]; shift;
 			breaksw
 			
+		case "-iter_affine":
+			if ( $#argv == 0 ) goto arg1err;
+			set iter_affine = $argv[1]; shift;
+			breaksw
+			
+		case "-iter_SyN":
+			if ( $#argv == 0 ) goto arg1err;
+			set iter_SyN = $argv[1]; shift;
+			breaksw
+			
 		# if nocleanup is turned on, it won't delete the folders with single frames, otherwise they will be removed
 		case "-nocleanup":
 			set nocleanup = 1
@@ -647,14 +667,20 @@ REQUIRED ARGUMENTS:
 	                        is assumed to be stored in <sub_dir>/<subject>/bold/<run_number>.
 	                        
 OPTIONAL ARGUMENTS:
-	-sm         sm        : smooth fwhm in mm (default: 6)
-	-sm_mask    sm_mask   : mask for smoothing (e.g. a grey matter mask in MNI152 2mm)
-	-final_mask final_mask: define the loose mask in MNI152 2mm space applied to the volume in the
-	                        last step. An example of the final mask is: 
-				${FSL_DIR}/data/standard/MNI152_T1_2mm_brain_mask_dil.nii.gz
-	-nocleanup            : do not remove intermediate results.
-	-warp_4d              : use this flag to project the 4D volume of frames without splitting. 
-				otherwise, the frames are split and projected separately by default.
+	-sm           sm          : smooth fwhm in mm (default: 6)
+	-sm_mask      sm_mask     : mask for smoothing (e.g. a grey matter mask in MNI152 2mm)
+	-final_mask   final_mask  : define the loose mask in MNI152 2mm space applied to the volume in the
+	                            last step. An example of the final mask is: 
+				  ${FSL_DIR}/data/standard/MNI152_T1_2mm_brain_mask_dil.nii.gz
+	-iter_affine  iter_affine : number of iterations used for the affine transformation by antsRegistration 
+	                            function. Check the help of antsRegistration command on how to specify 
+	                            this parameter. Our default is 100x100x200.
+	-iter_SyN     iter_SyN    : number of iterations used for the SyN nonlinear transformation by antsRegistration
+	                            function. Check the help of antsRegistration command on how to specify
+	                            this parameter. Our default is 100x100x50. 
+	-nocleanup                : do not remove intermediate results.
+	-warp_4d                  : use this flag to project the 4D volume of frames without splitting. 
+				                otherwise, the frames are split and projected separately by default.
 	
 OUTPUTS:	
 	(1) The fMRI volume after projection (in MNI152 2mm space):
