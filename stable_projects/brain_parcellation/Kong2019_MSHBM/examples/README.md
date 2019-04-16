@@ -47,7 +47,7 @@ We will then provide examples for each task separately.
 ### Generating profiles and initialization parameters
 ----
 
-After [**Generating input data**](https://github.com/YeoPrivateLab/CBIG_private/tree/develop/stable_projects/brain_parcellation/Kong2019_MSHBM/examples#generating-input-data),
+After [**Generating input data**](#generating-input-data),
 
 the `data_list` folder under `<output_dir>/generate_profiles_and_ini_params`:
 
@@ -132,7 +132,7 @@ Note that there are only 2 random initializations and averaged profiles of 2 sub
 
 Note that the functional connectivity profiles and the initialization parameters from the Yeo2011 group clustering are already generated. There is no need to re-generate the profiles. 
 
-After [**Generating input data**](https://github.com/YeoPrivateLab/CBIG_private/tree/develop/stable_projects/brain_parcellation/Kong2019_MSHBM/examples#generating-input-data),
+After [**Generating input data**](#generating-input-data),
 
 the `group` folder under `<output_dir>/estimate_group_priors`:
 + `<output_dir>/estimate_group_priors/group/group.mat`
@@ -186,7 +186,7 @@ These two parameters can be selected by validation set. Assuming subjects in val
 
 In this example, we will use the CoRR-HNU subjects 1 and 2 as the validation set. Note that even though in this example, the validation set and test set is the same, in practice, they should be **different** sets of subjects. Here, we will use session 1 of subject 1 and 2 to generate parcellations, and apply them on session 2 to compute the homogeneity.
 
-After [**Generating input data**](https://github.com/YeoPrivateLab/CBIG_private/tree/develop/stable_projects/brain_parcellation/Kong2019_MSHBM/examples#generating-input-data),
+After [**Generating input data**](#generating-input-data),
 
 the `data_list` folder under `<output_dir>/generate_individual_parcellations`:
 
