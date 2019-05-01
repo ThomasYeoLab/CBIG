@@ -114,10 +114,10 @@ for j = 1: length(corr_label_array)
     % check each element's difference between the 2 matrices
     test_equality = abs(true_corr_mat - test_corr_mat);
         
-    % if the max difference between the 2 matrices is more than 1e-15, then
+    % if the max difference between the 2 matrices is more than 1e-6, then
     % increment num_ineq by 1 and print the corresponding subject and the
     % specific correlation type into the textfile
-    if max(max(test_equality)) > 1e-15
+    if max(max(test_equality)) > 1e-6
 		num_ineq = num_ineq + 1;
 		fprintf(fid, [corr_label_array{1,j} ': '  ...
                 num2str(max(max(test_equality)))  '\n']);

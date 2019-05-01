@@ -12,18 +12,20 @@ main(){
   # of iterations at affine stage reduced.
 
   output=$output_dir/${output_prefix} 
-  ${ANTs_dir}/antsRegistration -d 3 -r [ $fixed, $moving, 1 ] \
+  cmd="${ANTs_dir}/antsRegistration -d 3 -r [ $fixed, $moving, 1 ] \
       -m mattes[ $fixed, $moving, 1, 32, regular, 0.3] \
         -t affine[ 0.1 ] \
-        -c [100x100x200, 1.e-8,20] \
+        -c [ $iter_affine, 1.e-8, 20 ] \
         -s 4x2x1vox \
         -f 3x2x1 -l 1 \
       -m cc[ $fixed, $moving, 1, 4] \
         -t SyN[ .20, 3, 0] \
-        -c [100x100x50, 0, 5] \
+        -c [ $iter_SyN, 0, 5 ] \
         -s 1x0.5x0vox \
         -f 4x2x1 -l 1 -u 1 -z 1\
-      -o ${output}
+      -o ${output}"
+   echo $cmd
+   eval $cmd
 }
 
 ##################################################################
@@ -47,6 +49,10 @@ OPTIONAL ARGUMENTS:
 				[ default: $(pwd)/results ]
 	-a <ANTs_dir> 		directory where ANTs is installed 
 				[ default: $CBIG_ANTS_DIR ]
+	-j <iterations_of_affine_transform>
+				[ default: 100x100x200 ]
+	-k <iterations_of_SyN_transform>
+				[ default: 100x100x50 ]
 	-h			display help message
 
 OUTPUTS:
@@ -75,19 +81,26 @@ fi
 # Default parameter
 output_dir=$(pwd)/results
 ANTs_dir=$CBIG_ANTS_DIR
+iter_affine=100x100x200
+iter_SyN=100x100x50
 
 # Assign parameter
-while getopts "r:i:d:p:a:h" opt; do
+while getopts "r:i:d:p:a:h:j:k:" opt; do
   case $opt in
     r) fixed=${OPTARG} ;;
     i) moving=${OPTARG} ;;
     d) output_dir=${OPTARG} ;;
     p) output_prefix=${OPTARG} ;;
     a) ANTs_dir=${OPTARG} ;;
+    j) iter_affine=${OPTARG} ;;
+    k) iter_SyN=${OPTARG} ;;
     h) usage; exit ;;
     *) usage; 1>&2; exit 1 ;;
   esac
 done
+
+echo "iter_affine = $iter_affine"
+echo "iter_SyN = $iter_SyN"
 
 ##################################################################
 # Check parameter

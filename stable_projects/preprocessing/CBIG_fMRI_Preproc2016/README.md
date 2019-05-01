@@ -42,14 +42,14 @@ Except for this project, if you want to use the code for other stable projects f
 - To download the version of the code that was last tested, you can either
 
   - visit this link:
-  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.9.6-CBIG_fMRI_Preprocessing](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.9.6-CBIG_fMRI_Preprocessing)
+  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.9.8-CBIG_fMRI_Preprocessing](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.9.8-CBIG_fMRI_Preprocessing)
   
   or
   
   - run the following command, if you have Git installed
   
   ```
-  git checkout -b CBIG_fMRI_Preprocessing v0.9.6-CBIG_fMRI_Preprocessing
+  git checkout -b CBIG_fMRI_Preprocessing v0.9.8-CBIG_fMRI_Preprocessing
   ```
 
 ### Usage 
@@ -159,6 +159,8 @@ codes would work on ANTs version 2.2.0.
     
     7. Remove `-censor` option in `CBIG_preproc_bandpass_fft.csh` and options of `-low_f` and `-high_f` in `CBIG_preproc_censor.csh`. Include a readme about bandpass filtering and censoring (i.e. `$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/Recommendation_of_bandpass_censoring.md`).
     
+- Release v0.9.8 (30/04/2019):
+    1. Bug fix: the script `$CBIG_CODE_DIR/utilities/scripts/CBIG_antsReg_vol2vol.sh` was supposed to be released in v0.9.6 but not released, causing crash of `CBIG_preproc_native2mni_ants` step. In this version, the updated `$CBIG_CODE_DIR/utilities/scripts/CBIG_antsReg_vol2vol.sh` will be released.
 
 ----
 
