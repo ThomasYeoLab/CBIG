@@ -1,0 +1,106 @@
+#!/bin/bash
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# PALM -- Permutation Analysis of Linear Models
+# Copyright (C) 2015 Anderson M. Winkler
+# FMRIB / Univ. of Oxford
+# Mar/2014
+# http://brainder.org
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# This is a wrapper to call PALM in Octave or Matlab, depending
+# on the user's preferences and what is available in the system.
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# =========================================================================
+# Do you prefer Matlab or Octave? Octave is free (it doesn't need licences),
+# is faster to load, but somewhat slower to run. Matlab uses licenses (this
+# may bother other users in a network), is slower to load, but runs faster
+# once loaded. In the variable below, use 1 for Octave, 2 for Matlab:
+WHICH_TO_RUN=1
+
+# If Octave isn't in the path, or to use a specific version, add here the
+# path to the directory that contains the Octave executable binary:
+OCTAVEPATH=/usr/bin
+
+# If Matlab isn't in the path, or to use a specific version, add here the
+# path to the directory that contains Matlab executable binary:
+#MATLABPATH=/Applications/MATLAB_R2013b.app/bin/
+#MATLABPATH=/opt/11b/MATLAB_R2011b.app/bin/
+MATLABPATH=/opt/r16b/bin/
+#MATLABPATH=/usr/local/bin/
+
+# If you are intending to run PALM in a cluster, for some environments
+# it may be necessary to change the variable below to 1.
+# In this case, also, provide the path to a temporary directory where
+# a tiny temporary file can be saved.
+IS_CLUSTER=0
+TEMP_DIR=/tmp
+
+# =========================================================================
+# Normally there is no need to edit below this line:
+
+# Locate PALM
+cmdfull=${BASH_SOURCE[0]}
+PALMDIR=$(dirname ${cmdfull})
+rlink=$(readlink ${cmdfull})
+cnt=1
+while [[ ${rlink} != "" ]] && [[ ${cnt} -lt 100 ]]; do
+  dirnam=$(dirname ${rlink})
+  if [[ ${dirnam:0} == "/" ]] ; then
+    PALMDIR=${dirnam}
+  else
+    PALMDIR="${PALMDIR}/${dirnam}"
+  fi
+  rlink=$(readlink ${rlink})
+  cnt=$(expr ${cnt} + 1)
+done
+if [[ ${cnt} -eq 100 ]] ; then
+  echo "Error: Too many levels."
+  exit 1
+fi
+
+# Command to run inside either Octave or Matlab. It varies slightly
+# depending whether it's a cluster environment or not.
+if [[ ${IS_CLUSTER} -eq 0 ]] ; then
+   RUNCMD="addpath('$PALMDIR'); palm $@ ; exit" 
+else
+   TEMP_NAME=$(tr -cd '[:alnum:]' < /dev/urandom | fold -w10 | head -n 1)
+   echo "addpath('$PALMDIR'); palm $@ ; exit" > ${TEMP_DIR}/palm_temp_${TEMP_NAME}.m
+   RUNCMD=${TEMP_DIR}/palm_temp_${TEMP_NAME}.m
+fi
+
+# Call either Octave or Matlab depending on the user's choice
+if [[ ${WHICH_TO_RUN} -eq 1 ]] ; then
+   if [[ ${OCTAVEPATH} == "" ]] || [[ ! -e ${OCTAVEPATH}/octave ]] ; then
+      OCTAVECMD=octave
+   else
+      OCTAVECMD=${OCTAVEPATH}/octave
+   fi
+   ${OCTAVECMD} -q --eval "${RUNCMD}"
+elif [[ ${WHICH_TO_RUN} -eq 2 ]] ; then
+   if [[ ${MATLABPATH} == "" ]] || [[ ! -e ${MATLABPATH}/matlab ]]; then
+      MATLABCMD=matlab
+   else
+      MATLABCMD=${MATLABPATH}/matlab
+   fi
+   ${MATLABCMD} -nodesktop -nosplash -singleCompThread -r "${RUNCMD}" \
+     | sed -e '1,/^.......................................................................$/ d'
+fi
+
+# If a temp file was created earlier, delete it now:
+rm -rf ${TEMP_DIR}/palm_temp_${TEMP_NAME}.m
+
+# That's it!

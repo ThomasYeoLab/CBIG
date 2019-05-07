@@ -32,6 +32,9 @@ function [labels, colortable] = CBIG_ConvertSingleHemiSurfaceDataToDiscretizedAn
     if max_thresh < max(data)
         data(data >= max_thresh) = max_thresh;
     end
+    if min(data) < min_thresh
+        data(data <= min_thresh) = min_thresh;
+    end
     
     % discretize non-zero values
     nonzero_values = data(data >= min_thresh);

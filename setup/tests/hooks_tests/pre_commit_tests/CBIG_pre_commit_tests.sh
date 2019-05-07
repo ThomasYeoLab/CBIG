@@ -23,6 +23,12 @@ do
 			;;
 		D_check_CBIG_prefix_matlab_class/)
 			echo "   [FAILED] There are Matlab classes without CBIG_ prefix. Abort committing."
+			;;
+		E_check_character_limit/)
+			echo "   [FAILED] There are scripts which does not follow 120 characters limit of each line. Abort committing."
+			;;
+		F_check_pep8_format/)
+			echo "   [FAILED] There are python scripts which does not follow yapf pep8 format. Abort committing."
 	esac
 	echo "[TEST](end) $folder"
 	echo ""

@@ -35,7 +35,7 @@ function colorscale = CBIG_GenerateParulaColorscale(res, min_val, max_val, outpu
     min_label = num2str(min_val);
     max_label = num2str(max_val);
     label_y = round(Y_OFFSET + 0.4 * HEIGHT);
-    label_font_size = 100;
+    label_font_size = 25;
     text(40, label_y, min_label, 'FontSize', label_font_size);
     text(X_OFFSET + size(colorscale, 1) * WIDTH + 30, label_y, max_label, 'FontSize', label_font_size);
     

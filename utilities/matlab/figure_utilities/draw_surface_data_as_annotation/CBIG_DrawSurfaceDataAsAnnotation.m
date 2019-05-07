@@ -106,6 +106,8 @@ function CBIG_DrawSurfaceDataAsAnnotation(lh_data, rh_data, ...
             colorscale = CBIG_GenerateHSVColorscale(discretization_res, min_thresh, max_thresh, abs_path_to_output_dir);
         elseif strcmp(colorscheme, 'parula')
             colorscale = CBIG_GenerateParulaColorscale(discretization_res, min_thresh, max_thresh, abs_path_to_output_dir);
+        elseif strcmp(colorscheme, 'jet')
+            colorscale = CBIG_GenerateJetColorscale(discretization_res, min_thresh, max_thresh, abs_path_to_output_dir);
         elseif strcmp(colorscheme, 'clear_brain') || strcmp(colorscheme, 'default')
             colorscale = CBIG_GenerateClearbrainColorscale(discretization_res, min_thresh, max_thresh, abs_path_to_output_dir);
         end

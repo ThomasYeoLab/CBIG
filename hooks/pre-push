@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# create log file
+logfile=$(mktemp)
+
 ###
 # Ask the user whether he wants to continue or not
 ###
@@ -29,7 +32,7 @@ EXCLUDED_FILES=("Surf2SurfGui.m" "Vol2SurfGui.m" "CBIG_tested_config.sh" "CBIG_t
 ###
 # Check whether function CBIG_xxx has been used in other functions
 ###
-echo -e "\n==> [Check 1] Checking whether function CBIG_xxx has been used in other functions"
+echo -e "\n==> [Check 1] Checking whether function CBIG_xxx has been used in other functions" | tee -a $logfile
 for file_path in "${files_to_be_checked[@]}"
 do
     file_name=( $(basename "$file_path") )
@@ -52,22 +55,22 @@ do
         for directory in "${DIRECTORIES_TO_CHECK[@]}"
         do
             if [[ $file_path == $directory/* ]] && [[ $file_name == *.$ext ]]; then
-                echo -e "\n  ==> Checking $file_path"
+                echo -e "\n  ==> Checking $file_path" | tee -a $logfile
                 $CBIG_CODE_DIR/setup/check_function_format/CBIG_check_whether_function_used_in_other_functions_wrapper.sh \
                 $file_path silent
             fi
         done
     done
 done
-echo "  [DONE]"
+echo "  [DONE]" | tee -a $logfile
 
 ###
 # comments about replacing function name
 ###
-echo -e "\n==> [Useful function] Replace old function name with new function name"
-echo "If you have renamed a function and want to change all instances of old function to the new function, you can use: "
-echo "setup/replace_old_with_new_func_name/CBIG_replace_old_with_new_function_name_wrapper.sh"
-echo ""
+echo -e "\n==> [Useful function] Replace old function name with new function name" | tee -a $logfile
+echo "If you have renamed a function and want to change all instances of old function to the new function, you can use: " | tee -a $logfile
+echo "setup/replace_old_with_new_func_name/CBIG_replace_old_with_new_function_name_wrapper.sh" | tee -a $logfile
+echo "" | tee -a $logfile
 
 ###
 # Ask the user whether he wants to continue or not
@@ -91,7 +94,7 @@ TARGET_DIRECTORIES=("utilities" "stable_projects" "data" "external_packages")
 ###
 # Check whether function name xxx has conflict with other function names
 ###
-echo -e "\n==> [Check 2] Checking whether function name xxx has conflict with other function names"
+echo -e "\n==> [Check 2] Checking whether function name xxx has conflict with other function names" | tee -a $logfile
 for file_path in "${files_to_be_checked[@]}"
 do
     file_name=( $(basename "$file_path") )
@@ -145,14 +148,13 @@ do
                         if [[ $match == */non_default_packages/* ]] || [[ $file_path == */non_default_packages/* ]]; then
                             file_in_nondefault=1 
                         fi
-                        echo "$match"
+                        echo "$match" | tee -a $logfile
                     done
                     if [[ $filename_with_conflict == 1 ]]; then
-                        echo "[FAILED] Abort pushing."
-                        exit 1
+                        echo "[FAILED] Abort pushing." | tee -a $logfile
                     fi
                     if [[ $file_in_nondefault == 1 ]]; then
-                        echo "[WARNING] The user should discuss with the admin about how to handle the conflicts."
+                        echo "[WARNING] The user should discuss with the admin about how to handle the conflicts." | tee -a $logfile
                         push_or_not
                     fi
                 fi
@@ -160,7 +162,9 @@ do
         done
     done
 done
-echo "  [PASSED]"
+if [ $filename_with_conflict == 0 -a $file_in_nondefault == 0 ]; then
+    echo "  [PASSED]" | tee -a $logfile
+fi
 
 ######
 # 3.  (folders of different files between upstream/develop and current branch)[@xxx]
@@ -184,7 +188,7 @@ unique_folders_to_be_checked=($(echo ${folders_to_be_checked[@]} | tr ' ' '\n' |
 ###
 # Check whether class name @xxx has conflict with other class names
 ###
-echo -e "\n==> [Check 3] Checking whether Matlab class name @xxx has conflict with other class names"
+echo -e "\n==> [Check 3] Checking whether Matlab class name @xxx has conflict with other class names" | tee -a $logfile
 for folder_path in "${unique_folders_to_be_checked[@]}"
 do
     folder_name=( $(basename "$folder_path") )
@@ -218,29 +222,32 @@ do
                     if [[ $match == */non_default_packages/* ]] || [[ $folder_path == */non_default_packages/* ]]; then
                         class_in_nondefault=1 
                     fi
-                    echo "!!!Find conflict: $match"
+                    echo "!!!Find conflict: $match" | tee -a $logfile
                 done
                 if [[ $classname_with_conflict == 1 ]]; then
-                    echo "[FAILED] Abort pushing."
-                    exit 1
+                    echo "[FAILED] Abort pushing." | tee -a $logfile
                 fi
                 if [[ $class_in_nondefault == 1 ]]; then
-                    echo "[WARNING] The user should discuss with the admin about how to handle the conflicts."
+                    echo "[WARNING] The user should discuss with the admin about how to handle the conflicts." | tee -a $logfile
                     push_or_not
                 fi
             fi
         fi
     done
 done
-echo "  [PASSED]"
+if [ $classname_with_conflict == 0 -a $class_in_nondefault == 0 ]; then
+    echo "  [PASSED]" | tee -a $logfile
+fi
 
 ######
 # 4.  (files in stable_projects/xxx/xxx (exclude Thomas, Alex, Gia, Xiuming, Raphael))[.m, .c, .cpp, .sh, .csh, .py, .pl, .r]
 ######
-EXTENSIONS_TO_CHECK=("m" "c" "cpp" "sh" "csh" "py" "pl" "r")
+exit_flag=0
+EXTENSIONS_TO_CHECK=("m" "c" "cpp" "sh" "csh" "pl" "r")
 EXCLUDED_DIRECTORIES=("Zhang2016_ADFactors")
+STANDALONE_EX_DIR=("Zhang2016_ADFactors" "Liegeois2017_Surrogates" "Wu2017_RegistrationFusion")
 
-echo -e "\n==> [Check 4] Checking stable_projects/xxx/xxx"
+echo -e "\n==> [Check 4] Checking stable_projects/xxx/xxx" | tee -a $logfile
 for project_path in $CBIG_CODE_DIR/stable_projects/*/*
 do
     project_in_exclude_directory=0
@@ -280,7 +287,7 @@ do
     ###
     # check whether function name follows CBIG_<project_name>_xxx
     ###
-    echo -e "\n====> Check whether all function names follow CBIG_<project_name>_xxx"
+    echo -e "\n====> Check whether all function names follow CBIG_<project_name>_xxx" | tee -a $logfile
     i=0
     for file_path in "${files_in_project[@]}"
     do
@@ -288,47 +295,51 @@ do
         if [[ "$i" != "1" ]]; then
             filename=( $(basename "$file_path"))
             if [[ "$filename" != "CBIG_${project_name}_"* ]]; then
-                echo "!!!Find problematic file: $file_path"
+                echo "!!!Find problematic file: $file_path" | tee -a $logfile
                 all_with_valid_prefix=0
             fi
         fi
         
     done
     if [[ $all_with_valid_prefix == 0 ]]; then
-        echo "[FAILED] Please make sure all scripts have filename CBIG_<project_name>_xxx"
-        exit 1
+        exit_flag=1
+        echo "[FAILED] Please make sure all scripts have filename CBIG_<project_name>_xxx" | tee -a $logfile
+    else
+        echo "    [PASSED]" | tee -a $logfile
     fi
 
     ###
     # check whether all projects have the config/CBIG_<project_name>_tested_config.sh
     ###
-    echo -e "\n====> Check whether this project has config/CBIG_<project_name>_tested_config.sh"
+    echo -e "\n====> Check whether this project has config/CBIG_<project_name>_tested_config.sh" | tee -a $logfile
     all_with_config=1
     if [[ -e $project_path/config/CBIG_${project_name}_tested_config.sh ]]; then
         secondline=`sed -n 2p $project_path/config/CBIG_${project_name}_tested_config.sh`
         if [[ "$secondline" != "# Last successfully run on"* ]]; then
             all_with_config=0
-            echo "$project_path/config/CBIG_${project_name}_tested_config.sh does not have the time stamp"
+            echo "$project_path/config/CBIG_${project_name}_tested_config.sh does not have the time stamp" | tee -a $logfile
         fi
     elif [[ -e $project_path/config/CBIG_${project_name}_tested_config.csh ]]; then
         secondline=`sed -n 2p $project_path/config/CBIG_${project_name}_tested_config.csh`
         if [[ "$secondline" != "# Last successfully run on"* ]]; then
             all_with_config=0
-            echo "$project_path/config/CBIG_${project_name}_tested_config.csh does not have the time stamp"
+            echo "$project_path/config/CBIG_${project_name}_tested_config.csh does not have the time stamp" | tee -a $logfile
         fi
     else
-        echo "$project_path does not have a CBIG_${project_name}_tested_config file"
+        echo "$project_path does not have a CBIG_${project_name}_tested_config file" | tee -a $logfile
     fi
     if [ $all_with_config == 0 ]; then
+        exit_flag=1
         echo "    [FAILED] Stable_project $project_path does not have CBIG_${project_name}_tested_config files \
-or these files do not have time stamp."
+or these files do not have time stamp." | tee -a $logfile
         echo "Please add CBIG_${project_name}_tested_config.sh or CBIG_${project_name}_tested_config.csh to \
-$project_path/config/ manually"
+$project_path/config/ manually" | tee -a $logfile
         echo "Each stable project should contain a repo config file that was used when the project was last \
-tested to work."
-        echo "The second line of the config file should be a comment:"
-        echo "# Last successfully run on <spelled out date to reduce confusion, e.g., Jan 7th, 2017>"
-        exit 1
+tested to work." | tee -a $logfile
+        echo "The second line of the config file should be a comment:" | tee -a $logfile
+        echo "# Last successfully run on <spelled out date to reduce confusion, e.g., Jan 7th, 2017>" | tee -a $logfile
+    else
+        echo "    [PASSED]" | tee -a $logfile
     fi
 
     ###
@@ -336,13 +347,14 @@ tested to work."
     ###
     m_files=$(find $project_path -name "*.m")
     if [[ ${m_files} ]]; then
-        echo -e "\n====> Check whether this project has config/CBIG_<project_name>_tested_startup.m"
+        echo -e "\n====> Check whether this project has config/CBIG_<project_name>_tested_startup.m" | tee -a $logfile
         if [[ ! -e $project_path/config/CBIG_${project_name}_tested_startup.m ]]; then
-            echo "    [FAILED] $project_path does not have a CBIG_${project_name}_tested_startup.m file"
-            echo "Please add CBIG_${project_name}_tested_startup.m to $project_path/config/ manually"
-            exit 1
+            exit_flag=1
+            echo "    [FAILED] $project_path does not have a CBIG_${project_name}_tested_startup.m file" | tee -a $logfile
+            echo "Please add CBIG_${project_name}_tested_startup.m to $project_path/config/ manually" | tee -a $logfile
+        else
+            echo "    [PASSED]" | tee -a $logfile
         fi
-        echo "    [PASSED]"
     fi
 
     ###
@@ -350,27 +362,87 @@ tested to work."
     ###
     py_files=$(find $project_path -name "*.py")
     if [[ ${py_files} ]]; then
-        echo -e "\n====> Check whether this project has config/CBIG_<project_name>_python_env.txt"
-        if [[ ! -e $project_path/config/CBIG_${project_name}_python_env.txt ]]; then
-            echo "    [FAILED] $project_path does not have a CBIG_${project_name}_python_env.txt file"
-            echo "Please add CBIG_${project_name}_python_env.txt to $project_path/config/ manually"
-            exit 1
+        echo -e "\n====> Check whether this project has config/CBIG_<project_name>_python_env.yml" | tee -a $logfile
+        count=`ls -1 $project_path/config/*.yml 2>/dev/null | wc -l`
+        if [[ $count == 0 ]]; then
+            exit_flag=1
+            echo "    [FAILED] $project_path does not have a CBIG_\${project_name}_python_env.yml file" | tee -a $logfile
+            echo "Please add CBIG_${project_name}_python_env.yml to $project_path/config/ manually" | tee -a $logfile
+        else
+            echo "    [PASSED]" | tee -a $logfile
         fi
-        echo "    [PASSED]"
+        # check keras.json
+        yml_file=$(ls -1 $project_path/config/*.yml)
+        keras_line=$(grep keras $yml_file)
+        if [[ ! -z "$keras_line" ]]; then
+            echo -e "\n====> Check whether this project has config/keras.json" | tee -a $logfile
+            if [[ ! -e $project_path/config/keras.json ]]; then
+                exit_flag=1
+                echo "    [FAILED] $project_path does not have keras.json file" | tee -a $logfile
+                echo "Please add keras.json to $project_path/config/ manually" | tee -a $logfile
+            else
+                echo "    [PASSED]" | tee -a $logfile
+            fi
+        fi
+    fi
+
+    ###
+    # check whether the project has config/CBIG_<project_name>_generate_standalone.sh
+    ###
+    project_in_standalone_ex_dir=0
+    for exclude_directory in "${STANDALONE_EX_DIR[@]}" 
+    do
+        if [[ "$project_path" == */${exclude_directory} ]]; then
+            project_in_standalone_ex_dir=1
+            break
+        fi
+    done
+    if [[ $project_in_standalone_ex_dir == 0 ]]; then
+        echo -e "\n====> Check whether this project has config/CBIG_<project_name>_generate_standalone.sh" | tee -a $logfile
+        if [[ ! -e $project_path/config/CBIG_${project_name}_generate_standalone.sh ]]; then
+            exit_flag=1
+            echo "    [FAILED] $project_path does not have a CBIG_${project_name}_generate_standalone.sh" | tee -a $logfile
+            echo "Please add CBIG_${project_name}_generate_standalone.sh to $project_path/config/ manually" | tee -a $logfile
+        else
+            echo "    [PASSED]" | tee -a $logfile
+        fi
     fi
 
     ###
     # check whether all projects have the unit_tests folder
     ###
-    echo -e "\n====> Check whether this project has unit_tests folder"
+    echo -e "\n====> Check whether this project has unit_tests folder" | tee -a $logfile
     if [ ! -d "$project_path/unit_tests" ]; then
-        echo "    [FAILED] $project_path does not have a unit_tests folder"
-        echo "Please add a unit_tests folder under $project_path manually"
-        exit 1
+        exit_flag=1
+        echo "    [FAILED] $project_path does not have a unit_tests folder" | tee -a $logfile
+        echo "Please add a unit_tests folder under $project_path manually" | tee -a $logfile
+    else
+        echo "    [PASSED]" | tee -a $logfile
     fi
-    echo "    [PASSED]"
- 
+
+    ###
+    # check whether all projects have the examples folder
+    ###
+    echo -e "\n====> Check whether this project has examples folder" | tee -a $logfile
+    if [ ! -d "$project_path/examples" ]; then
+        exit_flag=1
+        echo "    [FAILED] $project_path does not have a examples folder" | tee -a $logfile
+        echo "Please add a examples folder under $project_path manually" | tee -a $logfile
+    else
+        echo "    [PASSED]" | tee -a $logfile
+    fi
 done
+
+if [ $exit_flag == 1 ]; then
+    echo "[FAILED] Some checks failed." | tee -a $logfile
+    echo "Check pre-push hook log file: $logfile" | tee -a $logfile
+    exit 1
+else
+    echo "[PASSED]" | tee -a $logfile
+    echo "Check pre-commit hook log file: $logfile" | tee -a $logfile
+fi
+
+
 exit 0
 
 

@@ -1,0 +1,6 @@
+var max iter -1
+var convergence 1e-12
+em max iter 200
+em convergence 1e-12
+alpha estimate
+

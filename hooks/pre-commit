@@ -27,23 +27,27 @@ then
     fi
 fi
 
+# create log file
+logfile=$(mktemp)
+
 ######
 # 1. (committed files)[.m, .c, .cpp, .sh, .csh, .py, .pl, .r]{stable_projects, utilities, data}
 ######
 ###
 # Find the committed files that we want to check 
 ###
-files_to_be_committed=($(git diff --cached --name-status | awk '(($1 != "D") && ($1 != "U")) { print $2 }'))
-
-EXTENSIONS_TO_CHECK=("m" "c" "cpp" "sh" "csh" "py" "pl" "r")
-DIRECTORIES_TO_CHECK=("stable_projects" "utilities" "data")
-EXCLUDED_FILES=("Surf2SurfGui.m" "Vol2SurfGui.m" "CBIG_tested_config.sh" "CBIG_tested_config.csh")
+files_to_be_committed=($(git diff --cached --name-status | awk '(($1 != "D") && ($1 != "U")) {if ($1 ~ /^R/) print $3; else print $2}'))
 
 ###
 # Check whether committed files have the 'CBIG_' prefix 
 ###
+# do not check CBIG_ prefix for python scripts
+EXTENSIONS_TO_CHECK=("m" "c" "cpp" "sh" "csh" "pl" "r")
+DIRECTORIES_TO_CHECK=("stable_projects" "utilities" "data")
+EXCLUDED_FILES=("Surf2SurfGui.m" "Vol2SurfGui.m" "CBIG_tested_config.sh" "CBIG_tested_config.csh")
+
 PREFIX="CBIG_"
-echo -e "\n==> [Check] Checking that committed files have $PREFIX prefix.."
+echo -e "\n==> [Check] Checking that committed files have $PREFIX prefix.." | tee -a $logfile
 
 all_with_valid_prefixes=1
 for file_path in "${files_to_be_committed[@]}"
@@ -58,7 +62,7 @@ do
         fi
     done
     if [ $file_in_exclude == 1 ]; then
-        echo "$file_name will not be checked for $PREFIX prefix"
+        echo "$file_name will not be checked for $PREFIX prefix" | tee -a $logfile
         continue
     fi
     for directory in "${DIRECTORIES_TO_CHECK[@]}"
@@ -68,7 +72,7 @@ do
             do
                 if [[ $file_name != $PREFIX* ]] && [[ $file_name == *.$ext ]]; then
                     all_with_valid_prefixes=0
-                    echo "$file_path does not have a $PREFIX prefix, please fix it manually."
+                    echo "$file_path does not have a $PREFIX prefix, please fix it manually." | tee -a $logfile
                 fi
             done
         fi
@@ -76,17 +80,20 @@ do
 done
 
 if [ $all_with_valid_prefixes == 0 ]; then
-    echo "   [FAILED] There are functions without $PREFIX prefix. Abort committing."
-    exit 1
+    echo "   [FAILED] There are functions without $PREFIX prefix. Abort committing." | tee -a $logfile
+else
+    echo "   [PASSED]" | tee -a $logfile
 fi
-echo "   [PASSED]"
 
 ###
 # check whether committed files have the MIT license 
 ###
+# include python scripts
+EXTENSIONS_TO_CHECK=("m" "c" "cpp" "sh" "csh" "py" "pl" "r")
+
 mit_license="Written by [your name] and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md"
 all_with_license=1
-echo -e "\n==> [Check] Checking that committed files have MIT license.."
+echo -e "\n==> [Check] Checking that committed files have MIT license.." | tee -a $logfile
 for file_path in "${files_to_be_committed[@]}"
 do
     file_in_exclude=0
@@ -99,7 +106,7 @@ do
         fi
     done
     if [ $file_in_exclude == 1 ]; then
-        echo "$file_name will not be checked for MIT license"
+        echo "$file_name will not be checked for MIT license" | tee -a $logfile
         continue
     fi
     for directory in "${DIRECTORIES_TO_CHECK[@]}"
@@ -111,14 +118,14 @@ do
                     license_line=`grep "MIT license" $file_path`
                     if [[ "$license_line" == "" ]]; then
                         all_with_license=0
-                        echo "$file_path does not have a MIT license"
+                        echo "$file_path does not have a MIT license" | tee -a $logfile
                     elif [[ "$license_line" == *"CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md" && "$license_line" == *"Written by"* ]]; then
                         # do nothing
                         :
                     else
                         all_with_license=0
-                        echo "$file_path does not follow our MIT license format: "
-                        echo "$mit_license"
+                        echo "$file_path does not follow our MIT license format: " | tee -a $logfile
+                        echo "$mit_license" | tee -a $logfile
                     fi
                 fi
             done
@@ -127,18 +134,65 @@ do
 done
 
 if [ $all_with_license == 0 ]; then
-    echo "   [FAILED] There are functions without or not following our MIT license. Abort committing."
-    echo "For matlab functions, you can use setup/check_license/CBIG_check_license_matlab_file.sh to add MIT license"
-    echo "For other languages, please add MIT license manually:"
-    echo "$mit_license"
-    exit 1
+    echo "   [FAILED] There are functions without or not following our MIT license. Abort committing." | tee -a $logfile
+    echo "For matlab functions, you can use setup/check_license/CBIG_check_license_matlab_file.sh to add MIT license" | tee -a $logfile
+    echo "For other languages, please add MIT license manually:" | tee -a $logfile
+    echo "$mit_license" | tee -a $logfile
+else
+    echo "   [PASSED]" | tee -a $logfile
 fi
-echo "   [PASSED]"
+
+###
+# check whether committed files have lines whose length is more than 120 characters 
+###
+all_within_120=1
+echo -e "\n==> [Check] Checking that committed files have lines whose length is within 120 characters .." | tee -a $logfile
+for file_path in "${files_to_be_committed[@]}"
+do
+    file_in_exclude=0
+    file_name=$(basename $file_path)
+    for excluded_file in "${EXCLUDED_FILES[@]}"
+    do
+        if [[ $file_name == $excluded_file ]]; then
+            file_in_exclude=1
+            break
+        fi
+    done
+    if [ $file_in_exclude == 1 ]; then
+        echo "$file_name will not be checked for character limit" | tee -a $logfile
+        continue
+    fi
+    for directory in "${DIRECTORIES_TO_CHECK[@]}"
+    do
+        if [[ $file_path == $directory/* ]] || [[ $file_path == $file_name ]]; then
+            for ext in "${EXTENSIONS_TO_CHECK[@]}"
+            do
+                if [[ $file_name = *.$ext ]]; then
+                    line_lengths=`awk '{print length}' $file_path`
+                    i=1
+                    for line_length in ${line_lengths}; do
+                        if [ $line_length -gt 120 ]; then
+                            echo "$file_name: Line $i: has $line_length characters > 120 characters. Shorten it." | tee -a $logfile
+                            all_within_120=0
+                        fi
+                        i=$(($i+1))
+                    done
+                fi
+            done
+        fi
+    done
+done
+
+if [ $all_within_120 == 0 ]; then
+    echo "   [FAILED] There are scripts which does not follow 120 characters limit of each line. Abort committing." | tee -a $logfile
+else
+    echo "   [PASSED]"
+fi
 
 ######
 # 2. (committed files)[.m]{stable_projects, utilities, data}
 ######
-files_to_be_committed=($(git diff --cached --name-status | awk '(($1 != "D") && ($1 != "U")) { print $2 }'))
+files_to_be_committed=($(git diff --cached --name-status | awk '(($1 != "D") && ($1 != "U")) {if ($1 ~ /^R/) print $3; else print $2}'))
 
 EXTENSIONS_TO_CHECK=("m")
 DIRECTORIES_TO_CHECK=("stable_projects" "utilities" "data")
@@ -161,7 +215,7 @@ do
         fi
     done
     if [ $file_in_exclude == 1 ]; then
-        echo "$file_name will not be checked for rmpath"
+        echo "$file_name will not be checked for rmpath" | tee -a $logfile
         continue
     fi
     for directory in "${DIRECTORIES_TO_CHECK[@]}"
@@ -180,7 +234,7 @@ do
                         rmpath_match=(`grep "$rmpath_line_backslash" $file_path`)
                         if [[ "$rmpath_match" == "" ]]; then
                             all_with_valid_rmpath=0
-                            echo "$file_path does not have a '$rmpath_line' at the end, please fix it manually."
+                            echo "$file_path does not have a '$rmpath_line' at the end, please fix it manually." | tee -a $logfile
                         fi
                     done < $tmpfile
                     rm $tmpfile
@@ -191,15 +245,15 @@ do
 done
 
 if [ $all_with_valid_rmpath == 0 ]; then
-    echo "   [FAILED] There are functions without 'rmpath' at the end. Abort committing."
-    exit 1
+    echo "   [FAILED] There are functions without 'rmpath' at the end. Abort committing." | tee -a $logfile
+else
+    echo "   [PASSED]"
 fi
-echo "   [PASSED]"
 
 ######
 # 3. (folders of committed files)[@xxx]{stable_projects, utilities, data}
 ######
-files_to_be_committed=($(git diff --cached --name-status | awk '(($1 != "D") && ($1 != "U")) { print $2 }'))
+files_to_be_committed=($(git diff --cached --name-status | awk '(($1 != "D") && ($1 != "U")) {if ($1 ~ /^R/) print $3; else print $2}'))
 
 # find the folders of comitted files
 cnt=${#files_to_be_committed[@]}
@@ -215,7 +269,7 @@ DIRECTORIES_TO_CHECK=("stable_projects" "utilities" "data")
 # check whether matlab classes have CBIG_ prefix
 ###
 PREFIX="CBIG_"
-echo -e "\n==> [Check] Checking that matlab classes have $PREFIX prefix.."
+echo -e "\n==> [Check] Checking that matlab classes have $PREFIX prefix.." | tee -a $logfile
 
 all_with_valid_prefixes=1
 for folder in "${folders_to_be_committed[@]}"
@@ -225,16 +279,81 @@ do
         if [[ $folder == $directory/* ]] && [[ $folder == *@* ]]; then
             if [[ $folder != *@${PREFIX}* ]]; then
                 all_with_valid_prefixes=0
-                echo "Matlab class $folder does not have a $PREFIX prefix, please fix it manually." 
+                echo "Matlab class $folder does not have a $PREFIX prefix, please fix it manually." | tee -a $logfile
             fi
         fi
     done
 done
 if [ $all_with_valid_prefixes == 0 ]; then
-    echo "   [FAILED] There are Matlab classes without $PREFIX prefix. Abort committing."
-    exit 1
+    echo "   [FAILED] There are Matlab classes without $PREFIX prefix. Abort committing." | tee -a $logfile
+else
+    echo "   [PASSED]" | tee -a $logfile
 fi
-echo "   [PASSED]"
+
+######
+# 4. (committed files)[.py]{stable_projects, utilities, data}
+######
+files_to_be_committed=($(git diff --cached --name-status | awk '(($1 != "D") && ($1 != "U")) {if ($1 ~ /^R/) print $3; else print $2}'))
+
+EXTENSIONS_TO_CHECK=("py")
+DIRECTORIES_TO_CHECK=("stable_projects" "utilities" "data")
+EXCLUDED_FILES=("Surf2SurfGui.m" "Vol2SurfGui.m" "CBIG_tested_config.sh" "CBIG_tested_config.csh" "tested_startup.m")
+
+all_yapf_format=1
+echo -e "\n==> [Check] Checking that committed python files follow yapf pep8 format .." | tee -a $logfile
+for file_path in "${files_to_be_committed[@]}"
+do
+    file_in_exclude=0
+    file_name=$(basename $file_path)
+    for excluded_file in "${EXCLUDED_FILES[@]}"
+    do
+        if [[ $file_name == $excluded_file ]]; then
+            file_in_exclude=1
+            break
+        fi
+    done
+    if [ $file_in_exclude == 1 ]; then
+        echo "$file_name will not be checked for pep8 format" | tee -a $logfile
+        continue
+    fi
+    for directory in "${DIRECTORIES_TO_CHECK[@]}"
+    do
+        if [[ $file_path == $directory/* ]] || [[ $file_path == $file_name ]]; then
+            for ext in "${EXTENSIONS_TO_CHECK[@]}"
+            do
+                if [[ $file_name = *.$ext ]]; then
+                    yapf_output=$(PYTHONPATH=${CBIG_CODE_DIR}/external_packages/python/yapf-master \
+                    python ${CBIG_CODE_DIR}/external_packages/python/yapf-master/yapf -d ${file_path})
+                    if [ ! -z "$yapf_output" ]; then
+                        echo "$file_path does not follow yapf pep8 format please use following command to format it." | tee -a $logfile
+                        echo "PYTHONPATH=\${CBIG_CODE_DIR}/external_packages/python/yapf-master \
+python \${CBIG_CODE_DIR}/external_packages/python/yapf-master/yapf -i ${file_path}" | tee -a $logfile
+                        all_yapf_format=0
+                    fi
+                fi
+            done
+        fi
+    done
+done
+
+if [ $all_yapf_format == 0 ]; then
+    echo "   [FAILED] There are python scripts which does not follow yapf pep8 format. Abort committing." | tee -a $logfile
+else
+    echo "   [PASSED]" | tee -a $logfile
+fi
+
+###
+# if any checks failed,exit the program
+###
+if [ $all_with_valid_prefixes == 0 -o $all_with_license == 0 -o $all_within_120 == 0 -o \
+    $all_with_valid_rmpath == 0 -o $all_with_valid_prefixes == 0 -o $all_yapf_format == 0 ]; then
+    echo "[FAILED] Some checks failed." | tee -a $logfile
+    echo "Check pre-commit hook log file: $logfile" | tee -a $logfile
+    exit 1
+else
+    echo "[PASSED]" | tee -a $logfile
+    echo "Check pre-commit hook log file: $logfile" | tee -a $logfile
+fi
 
 
 git add .

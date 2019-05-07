@@ -1,6 +1,8 @@
-function CBIG_Plot17NetworksRearrCorrMat_WhiteGrid(lh2lhcorrmat, lh2rhcorrmat, rh2rhcorrmat, scalelim, filename_prefix)
+function CBIG_Plot17NetworksRearrCorrMat_WhiteGrid(lh2lhcorrmat, ...
+    lh2rhcorrmat, rh2rhcorrmat, scalelim, filename_prefix)
 
-% CBIG_Plot17NetworksRearrCorrMat_WhiteGrid(lh2lhcorrmat, lh2rhcorrmat, rh2rhcorrmat, scalelim, filename_prefix)
+% CBIG_Plot17NetworksRearrCorrMat_WhiteGrid(lh2lhcorrmat, ...
+%     lh2rhcorrmat, rh2rhcorrmat, scalelim, filename_prefix)
 % Example : CBIG_Plot17NetworksRearrCorrMat_WhiteGrid(lhlh, lhrh, rhrh, [], 'corrmat') 
 %               Max scale depends on maximum of correlation matrix value
 %               Save figure as corrmat_minsc-1_maxsc1.jpg
@@ -14,8 +16,10 @@ function CBIG_Plot17NetworksRearrCorrMat_WhiteGrid(lh2lhcorrmat, lh2rhcorrmat, r
 %               2) LeftHemisphere to RightHemisphere correlation matrix
 %               3) RightHemisphere to RightHemisphere correlation matrix
 %               4) Scale limit : min and max scale limit
-%                  If not specified, or specified as [], scale limit is -1*max(abs(corr_mat)) to max(abs(corr_mat))
-%               5) Filename : basename. E.g. 'RWRestingCorrMat', final filename = RWRestingCorrMat_min-3_max3.jpg
+%                  If not specified, or specified as [],
+%                  scale limit will be -1*max(abs(corr_mat)) to max(abs(corr_mat))
+%               5) Filename : basename. 
+%                  E.g. 'RWRestingCorrMat', final filename = RWRestingCorrMat_min-3_max3.jpg
 %                  If not specified, figure will not be saved
 %
 % Major networks separated by thick white grid lines
@@ -97,7 +101,16 @@ if ((nargin < 4) || (isempty(scalelim)))
 end
 
 set(gca, 'CLim', scalelim);
-
+if(~strcmp(version(), '8.3.0.532 (R2014a)'))
+    hcol.Ticks = linspace(scalelim(1), scalelim(2), 7);
+    hcol.TickLabels = num2cell(hcol.Ticks);
+    hcol.FontSize = 8;
+else
+    set(hcol, 'XTick', linspace(scalelim(1), scalelim(2), 7));
+    set(hcol, 'XTickLabel', num2str(linspace(scalelim(1), scalelim(2), 7)'));
+    set(hcol, 'FontSize', 8);
+end
+ 
 axis equal;
 grid off;
 axis([-5 size(corr_mat, 1)+5.5 -5 size(corr_mat, 1)+5.5]);
@@ -108,10 +121,14 @@ set(gcf, 'color', 'white');
 	minor_grid = [2 8 17 30 41 54 88 102 110];
 	major_grid = [26 52 56 69 80 94 104];
 
-	patch(xline(:,minor_grid), yline(:,minor_grid),'w', 'edgecolor', 'w', 'Linewidth', 0.3, 'EdgeAlpha', 0.9)
-	patch(yline(:,minor_grid), xline(:,minor_grid),'w', 'edgecolor', 'w', 'Linewidth', 0.3, 'EdgeAlpha', 0.9)
-	patch(xline(:,major_grid), ymaj(:,major_grid),'w', 'edgecolor', 'w', 'Linewidth', 1.1)
-	patch(ymaj(:,major_grid), xline(:,major_grid),'w', 'edgecolor', 'w', 'Linewidth', 1.1)
+	patch(xline(:,minor_grid), yline(:,minor_grid),'w', ...
+        'edgecolor', 'w', 'Linewidth', 0.3, 'EdgeAlpha', 0.9)
+	patch(yline(:,minor_grid), xline(:,minor_grid),'w', ...
+        'edgecolor', 'w', 'Linewidth', 0.3, 'EdgeAlpha', 0.9)
+	patch(xline(:,major_grid), ymaj(:,major_grid),'w', ...
+        'edgecolor', 'w', 'Linewidth', 1.1)
+	patch(ymaj(:,major_grid), xline(:,major_grid),'w', ...
+        'edgecolor', 'w', 'Linewidth', 1.1)
 
 % save figure
 if ((nargin == 5) && ~isempty(filename_prefix))
@@ -142,7 +159,8 @@ ymaj = repmat(ymaj,1,(n-1));
 function Index = LabelsRearrangebyNetwork
 
 % Load original labels
-labeldir = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'brain_parcellation', 'Yeo2011_fcMRI_clustering', '1000subjects_reference', 'Yeo_JNeurophysiol11_SplitLabels', 'fsaverage5', 'label');
+labeldir = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'brain_parcellation', ...
+    'Yeo2011_fcMRI_clustering', '1000subjects_reference', 'Yeo_JNeurophysiol11_SplitLabels', 'fsaverage5', 'label');
 
 lh_fid = fopen(fullfile(labeldir, 'lh.Yeo2011_17Networks_N1000.split_components.txt'));
 rh_fid = fopen(fullfile(labeldir, 'rh.Yeo2011_17Networks_N1000.split_components.txt'));
@@ -165,7 +183,9 @@ end
 
 
 % Arrange new label based on template order
-tmplate = {'TempPar'; 'DefaultC'; 'DefaultB';'DefaultA'; 'ContC'; 'ContB'; 'ContA'; 'Limbic'; 'SalVentAttnB'; 'SalVentAttnA'; 'DorsAttnB'; 'DorsAttnA'; 'SomMotB'; 'SomMotA'; 'VisPeri'; 'VisCent'};
+tmplate = {'TempPar'; 'DefaultC'; 'DefaultB';'DefaultA'; 'ContC'; 'ContB'; ...
+    'ContA'; 'Limbic'; 'SalVentAttnB'; 'SalVentAttnA'; 'DorsAttnB'; 'DorsAttnA'; ...
+    'SomMotB'; 'SomMotA'; 'VisPeri'; 'VisCent'};
 tmplate2 = {'TempPole'; 'OFC'};
 % initiate new label
 newlabel = [];

@@ -1,0 +1,96 @@
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+===================================================================
+The GNU General Public License (gpl.txt) is available from:
+    http://www.gnu.org/copyleft/gpl.html
+
+Note: The niftilib matlab files are taken, with permission,  from the 
+      SPM8 software package (http://www.fil.ion.ucl.ac.uk/spm/).  
+      Please note that this license pertains only to the files listed below, 
+      dealing with nifti1 i/o methods, and has no bearing at all on the SPM
+      software package.
+===================================================================
+matlab/Makefile
+matlab/@file_array/numel.m
+matlab/@file_array/permute.m
+matlab/@file_array/reshape.m
+matlab/@file_array/subsasgn.m
+matlab/@file_array/subsref.m
+matlab/@file_array/vertcat.m
+matlab/@file_array/private/src/README
+matlab/@file_array/private/src/file2mat.c
+matlab/@file_array/private/src/mat2file.c
+matlab/@file_array/private/datatypes.m
+matlab/@file_array/private/dim.m
+matlab/@file_array/private/dtype.m
+matlab/@file_array/private/file2mat.m
+matlab/@file_array/private/fname.m
+matlab/@file_array/private/mat2file.m
+matlab/@file_array/private/mystruct.m
+matlab/@file_array/private/offset.m
+matlab/@file_array/private/permission.m
+matlab/@file_array/private/resize_scales.m
+matlab/@file_array/private/scl_inter.m
+matlab/@file_array/private/scl_slope.m
+matlab/@file_array/cat.m
+matlab/@file_array/Contents.m
+matlab/@file_array/ctranspose.m
+matlab/@file_array/display.m
+matlab/@file_array/disp.m
+matlab/@file_array/double.m
+matlab/@file_array/end.m
+matlab/@file_array/fieldnames.m
+matlab/@file_array/file_array.m
+matlab/@file_array/horzcat.m
+matlab/@file_array/isnan.m
+matlab/@file_array/length.m
+matlab/@file_array/loadobj.m
+matlab/@file_array/ndims.m
+matlab/@file_array/numeric.m
+matlab/@file_array/size.m
+matlab/@file_array/transpose.m
+matlab/@nifti/private/spm_fileparts.m
+matlab/@nifti/private/decode_qform0.m
+matlab/@nifti/private/empty_hdr.m
+matlab/@nifti/private/encode_qform0.m
+matlab/@nifti/private/findindict.m
+matlab/@nifti/private/getdict.m
+matlab/@nifti/private/M2Q.m
+matlab/@nifti/private/mayo2nifti1.m
+matlab/@nifti/private/mayostruc.m
+matlab/@nifti/private/nifti_stats.m
+matlab/@nifti/private/niftistruc.m
+matlab/@nifti/private/Q2M.m
+matlab/@nifti/private/read_extras.m
+matlab/@nifti/private/read_hdr.m
+matlab/@nifti/private/read_hdr_raw.m
+matlab/@nifti/private/write_extras.m
+matlab/@nifti/private/write_hdr_raw.m
+matlab/@nifti/private/src/nifti_stats.c
+matlab/@nifti/private/src/nifti_stats_mex.c
+matlab/@nifti/private/src/nifti1.h
+matlab/@nifti/private/src/README
+matlab/@nifti/private/spm_existfile.m
+matlab/@nifti/Contents.m
+matlab/@nifti/create.m
+matlab/@nifti/display.m
+matlab/@nifti/disp.m
+matlab/@nifti/fieldnames.m
+matlab/@nifti/nifti.m
+matlab/@nifti/structn.m
+matlab/@nifti/subsasgn.m
+matlab/@nifti/subsref.m
+matlab/spm_flip_analyze_images.m
+

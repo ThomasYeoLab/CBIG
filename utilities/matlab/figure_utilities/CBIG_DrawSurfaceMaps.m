@@ -1,6 +1,8 @@
-function h = CBIG_DrawSurfaceMaps(lh_data, rh_data, mesh_name, surf_type, min_thresh, max_thresh, colors)
+function h = CBIG_DrawSurfaceMaps(lh_data, rh_data, ...
+    mesh_name, surf_type, min_thresh, max_thresh, colors)
 
-% h = CBIG_DrawSurfaceMaps(lh_data, rh_data, mesh_name, surf_type, min_thresh, max_thresh, colors)
+% h = CBIG_DrawSurfaceMaps(lh_data, rh_data, mesh_name, ...
+%    surf_type, min_thresh, max_thresh, colors)
 %
 % This function visualizes a given surface data in freesurfer space. 
 % Threshold can be defined by min_thresh and max_thresh.
@@ -16,6 +18,10 @@ function h = CBIG_DrawSurfaceMaps(lh_data, rh_data, mesh_name, surf_type, min_th
 %      -surf_type:
 %       Freesurfer surface template. Can be 'inflated', 'sphere', or
 %       'white'.
+%
+%      -data_type:
+%       Can be 'label' or 'metric', 'label' type is discrete parcellation
+%       labels while 'metric' type can be continuous value.
 %
 %      -min_thresh, max_thresh:
 %       min and max threshold for lh_data and rh_data. If they are not
@@ -36,6 +42,7 @@ function h = CBIG_DrawSurfaceMaps(lh_data, rh_data, mesh_name, surf_type, min_th
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
+warning('off', 'MATLAB:warn_r14_stucture_assignment');
 
 if(~exist('mesh_name', 'var'))
    mesh_name = 'fsaverage'; 
@@ -45,23 +52,32 @@ if(~exist('surf_type', 'var'))
    surf_type = 'inflated'; 
 end
 
-pos = [0.1 0.58 0.16 0.34; ...
-    0.4 0.58 0.16 0.34; ...
-    0.7 0.80 0.16 0.14; ...
-    0.7 0.58 0.16 0.14; ...
-    0.1 0.11 0.16 0.34; ...
-    0.4 0.11 0.16 0.34; ...
-    0.7 0.33 0.16 0.14; ...
-    0.7 0.11 0.16 0.14];
+pos = [0.020, 0.510, 0.325, 0.470;...
+    0.355, 0.510, 0.325, 0.470;...
+    0.720, 0.760, 0.240, 0.230;...
+    0.720, 0.510, 0.240, 0.230;...
+    0.020, 0.020, 0.325, 0.470;...
+    0.355, 0.020, 0.325, 0.470;...
+    0.720, 0.260, 0.240, 0.230;...
+    0.720, 0.010, 0.240, 0.230];
 
 h = figure; gpos = get(h, 'Position');
 gpos(3) = 1200; gpos(4) = 600; set(h, 'Position', gpos);
+
+if(exist('colors', 'var'))
+    m = colors/max(colors(:));
+    colormap(m);
+else
+    m = jet;
+    colormap(m);
+end
+
 for hemis = {'lh' 'rh'}
-    
+
     hemi = hemis{1};
     mesh = CBIG_ReadNCAvgMesh(hemi, mesh_name, surf_type, 'cortex');
     non_cortex = find(mesh.MARS_label == 1);  
-    
+
     if(strcmp(hemi, 'lh'))
         data = single(lh_data);
     elseif(strcmp(hemi, 'rh'))
@@ -86,38 +102,110 @@ for hemis = {'lh' 'rh'}
     
     % threshold
     if(exist('min_thresh', 'var'))
-       data(data < min_thresh) = min_thresh;
-       data(data > max_thresh) = max_thresh;
-       data(non_cortex(1)) = min_thresh;
-       data(non_cortex(2)) = max_thresh;
+        data(data < min_thresh) = min_thresh;
+        data(data > max_thresh) = max_thresh;
+        data(non_cortex(1)) = min_thresh;
+        data(non_cortex(2)) = max_thresh;
     end
-
+    
     % draw
     if(strcmp(hemi, 'lh'))
-        subplot('Position', pos(1, :)); TrisurfMeshData(mesh, data); shading interp; 
-        view(-90, 0); axis off; zoom(1.85);
-        subplot('Position', pos(2, :)); TrisurfMeshData(mesh, data); shading interp; 
-        view(90, 0); axis off; zoom(1.85);
-        subplot('Position', pos(3, :)); TrisurfMeshData(mesh, data); shading interp; 
-        view(90, 90); axis off; zoom(3.3);
-        subplot('Position', pos(8, :)); TrisurfMeshData(mesh, data); shading interp; 
-        view(90, -90); axis off; zoom(3.3);
-    else
-        subplot('Position', pos(5, :)); TrisurfMeshData(mesh, data); shading interp; 
-        view(90, 0); axis off; zoom(1.85);
-        subplot('Position', pos(6, :)); TrisurfMeshData(mesh, data); shading interp; 
-        view(-90, 0); axis off; zoom(1.85);
-        subplot('Position', pos(4, :)); TrisurfMeshData(mesh, data); shading interp; 
-        view(90, 90); axis off; zoom(3.3);
-        subplot('Position', pos(7, :)); TrisurfMeshData(mesh, data); shading interp; 
-        view(90, -90); axis off; zoom(3.3);
-    end
-end
+        subplot('Position', pos(1, :)); 
+        s = TrisurfMeshData(mesh, data);
+        shading interp;
+        ncd = revert_shading_interp_behaviour(s, m);
+        s.CData = ncd;
+        view(-90, 0);
+        axis off; 
+        
+        subplot('Position', pos(2, :));
+        s = TrisurfMeshData(mesh, data);
+        shading interp;
+        ncd = revert_shading_interp_behaviour(s, m);
+        s.CData = ncd;
+        view(90, 0);
+        axis off;
+        
+        subplot('Position', pos(3, :));
+        s = TrisurfMeshData(mesh, data);
+        shading interp;
+        ncd = revert_shading_interp_behaviour(s, m);
+        s.CData = ncd;
+        view(90, 90);
+        axis off;
 
-if(exist('colors', 'var'))
-    colormap(colors/max(colors(:))); 
+        subplot('Position', pos(8, :)); 
+        s = TrisurfMeshData(mesh, data);
+        shading interp;
+        ncd = revert_shading_interp_behaviour(s, m);
+        s.CData = ncd;
+        view(90, -90);
+        axis off;  
+        
+    else
+
+        subplot('Position', pos(5, :));
+        s = TrisurfMeshData(mesh, data);
+        shading interp;
+        ncd = revert_shading_interp_behaviour(s, m);
+        s.CData = ncd;
+        view(90, 0);
+        axis off;
+
+        subplot('Position', pos(6, :));
+        s = TrisurfMeshData(mesh, data);
+        shading interp;
+        ncd = revert_shading_interp_behaviour(s, m);
+        s.CData = ncd;
+        view(-90, 0);
+        axis off;
+
+        subplot('Position', pos(4, :));
+        s = TrisurfMeshData(mesh, data);
+        shading interp;
+        ncd = revert_shading_interp_behaviour(s, m);
+        s.CData = ncd;
+        view(90, 90);
+        axis off;
+
+        subplot('Position', pos(7, :));
+        s = TrisurfMeshData(mesh, data);
+        shading interp;
+        ncd = revert_shading_interp_behaviour(s, m);
+        s.CData = ncd;
+        view(90, -90);
+        axis off;
+    end
 end
 
 if(exist('min_thresh', 'var'))
-    colorbar('horiz', 'Position', [0.28 0.5 0.1 0.02]);
+    cbax = axes('Position', [0.29 0.5 0.1 0.02], 'visible', 'off');
+    data = [lh_data; rh_data]; 
+    data(data < min_thresh) = min_thresh; 
+    data(data > max_thresh) = max_thresh;
+    caxis(cbax, [min(min(data)), max(max(data))]);
+    colorbar('peer', cbax, 'horiz', 'Position', [0.29 0.5 0.1 0.02]);
+end
+
+end
+  
+
+function ncd = revert_shading_interp_behaviour(s, m)
+% shading interp behaviour is different across matlab versions
+% we revert the shading interp behaviour to be like r2014a 
+
+s = get(s);
+cdat = s.FaceVertexCData;
+cl = get(gca, 'CLim');
+sz = cl(2) - cl(1);
+idxf = zeros(length(cdat), 1);
+ncd = zeros(length(cdat), 1, 3);
+
+for x = 1: length(cdat)
+    for y = 1
+        c = cdat(x, y);
+        idxf(x, y) = ((c - cl(1)) / sz) * (size(m, 1) - 1);
+        ncd(x, y, 1: 3) = m(floor(idxf(x, y)) + 1, :);
+    end
+end
 end

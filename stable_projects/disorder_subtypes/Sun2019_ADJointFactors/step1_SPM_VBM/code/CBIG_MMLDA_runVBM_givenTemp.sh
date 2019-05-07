@@ -1,0 +1,109 @@
+#!/bin/bash
+
+# Written by Nanbo Sun and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+
+###########################################
+# Usage and Reading in Parameters
+###########################################
+
+# Usage
+usage() { echo "
+Usage: $0 -i <imgList> -d <idList> -s <step> -t <newTemp> -c <scriptDir> \
+    -p <spmDir> -o <outDir> [-r <reorient>] [-q <queue>]
+    Given template, run VBM with 4 stages. For the 1st stage, it convert raw 
+    image to nifti file. For the 2nd stage, the user need to reorient the images 
+    until all images have origins in AC. And the author need to update the idList. 
+    For the 3rd stage, it runs initial segmentation and the user should check the 
+    segmentation results by ${outDir}/slicesdir/index.html. After checking, the 
+    user should update the ${idList}. For the 4th stage, it runs remaining 7 to 12 steps.
+
+    - imgList       Text file with each line being the path to a T1 image 
+    - idList        Text file with each line being the ID to a subject. The 
+                    id list should correspond to the img list line by line. 
+    - step          Run steps from 1, 1a, 6_2a, 7_12
+    - newTemp       The given template used for segmentation.
+    - scriptDir     Directory of current script
+    - spmDir        Director of spm software
+    - outDir        Output directory; e.g., ~/outputs/VBM/
+    - reorient      If step = 1a, this is a single reorientation matrix.
+                    If step = 1b, this is a list of reorientation matrix.
+    - queue         (Optional) if you have a cluster, use it to specify the 
+                    queue to which you want to qsub these jobs; if not provided,
+                    jobs will run serially (potentially very slow!)
+" 1>&2; exit 1; }
+
+# Reading in parameters
+while getopts ":i:d:s:t:c:p:o:r:q:" opt; do
+    case "${opt}" in
+            i) imgList=${OPTARG};;
+            d) idList=${OPTARG};;
+            s) step=${OPTARG};;
+            t) newTemp=${OPTARG};;
+            c) scriptDir=${OPTARG};;
+            p) spmDir=${OPTARG};;
+            o) outDir=${OPTARG};;
+            r) reorient=${OPTARG};;
+            q) queue=${OPTARG};;
+            *) usage;;
+        esac
+done
+shift $((OPTIND-1))
+if [ -z "${imgList}" ] || [ -z "${idList}" ] || [ -z "${step}" ] || \
+    [ -z "${newTemp}" ] || [ -z "${scriptDir}" ] || [ -z "${spmDir}" ] || [ -z "${outDir}" ]; then
+    echo Missing Parameters!
+    usage
+fi
+if [ -z "${queue}" ]; then
+    queue=""
+fi
+
+###########################################
+# Main
+###########################################
+cd ${scriptDir}
+
+if [ ${step} == "1" ]; then
+    ###### Step 1: Convert raw image to nifti file 
+    ./CBIG_MMLDA_step1_raw2nii.sh -i ${imgList} -d ${idList} -o ${outDir} -q ${queue}
+
+elif [ ${step} == "1a" ]; then
+    ###### Step 1a: Reorient the T1 image 
+    if [ ! -z ${reorient} ]; then
+        ./CBIG_MMLDA_step1a_reorient.sh -i ${outDir} -d ${idList} -r ${reorient} \
+        -s ${scriptDir} -p ${spmDir} -q ${queue}
+    fi
+
+elif [ ${step} == "1b" ]; then
+    ###### Step 1b: Apply reorientation matrix to T1 images.
+    if [ ! -z ${reorient} ]; then
+        ./CBIG_MMLDA_step1b_apply_reorient_matrix.sh -i ${outDir} -d ${idList} \
+        -r ${reorient} -s ${scriptDir} -p ${spmDir} -q ${queue}
+    fi
+
+elif [ ${step} == "6_2a" ]; then
+    ###### Step 6: Segmentation using new templates. 
+    ./CBIG_MMLDA_step6_seg_new_template.sh -i ${outDir} -d ${idList} -t ${newTemp} \
+    -s ${scriptDir} -p ${spmDir} -q ${queue}
+
+    ###### Step 2a: Check segmentation results.
+    ./CBIG_MMLDA_step2a_check_segment.sh -i ${outDir} -d ${idList} -s ${scriptDir} -p ${spmDir} -q ${queue}
+
+elif [ ${step} == "7_12" ]; then
+    ###### Step 7: Smoothing. 
+    ./CBIG_MMLDA_step7_smooth.sh -i ${outDir} -d ${idList} -s ${scriptDir} -p ${spmDir} -q ${queue}
+
+    ###### Step 8: Merge and create mask. 
+    ./CBIG_MMLDA_step8_merge_create_mask.sh -i ${outDir} -d ${idList} -s ${scriptDir} -p ${spmDir} -q ${queue}
+
+    ###### Step 9: Compute GM and ICV.
+    ./CBIG_MMLDA_step9_compute_GM_ICV.sh -i ${outDir} -d ${idList} -s ${scriptDir} -p ${spmDir} -q ${queue}
+
+    ###### Step 10: Downsample to MNI 2mm.
+    ./CBIG_MMLDA_step10_downsample_2mm.sh -i ${outDir} -d ${idList} -s ${scriptDir} -p ${spmDir} -q ${queue}
+
+    ###### Step 11: Smoothing 2mm. 
+    ./CBIG_MMLDA_step11_smooth_2mm.sh -i ${outDir} -d ${idList} -s ${scriptDir} -p ${spmDir} -q ${queue}
+
+    ###### Step 12: Merge and create mask 2mm. 
+    ./CBIG_MMLDA_step12_merge_create_mask_2mm.sh -i ${outDir} -d ${idList} -s ${scriptDir} -p ${spmDir} -q ${queue}
+fi

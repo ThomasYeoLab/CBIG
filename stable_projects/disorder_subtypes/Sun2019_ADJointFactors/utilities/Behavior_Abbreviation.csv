@@ -1,0 +1,29 @@
+Behavioral_Names,Behavioral_Cate,Behavioral_Name_Short
+ADAS: Word Recall,MEM,ADAS: Word Recall
+ADAS: Commands,NONE,ADAS: Commands
+ADAS: Construction,NONE,ADAS: Construction
+ADAS: Delayed Word Recall,MEM,ADAS: Del. Recall
+ADAS: Naming + MMSE: Language,NONE,ADAS: Nam. MMSE: Lan.
+ADAS: Ideational Praxis,NONE,ADAS: Ide. Praxis
+ADAS: Orientation,NONE,ADAS: Orientation
+ADAS: Word Recognition,MEM,ADAS: Word Recog.
+ADAS: Spoken Language + Comprehension,NONE,ADAS: Spo. Com.
+ADAS: Word Finding,NONE,ADAS: Word Find.
+ADAS: Number Cancellation,NONE,ADAS: Num. Can.
+MMSE: Orientation to time,NONE,MMSE: Ori. Time
+MMSE: Orientation to place,NONE,MMSE: Ori. Place
+MMSE: Immediate Recall + Delayed Recall,MEM,MMSE: Imm. Del. 
+MMSE: Attention,NONE,MMSE: Attention
+MMSE: Repetition,NONE,MMSE: Repetition
+MMSE: Complex Commands,NONE,MMSE: Com. Com.
+BNT: without cue + semantic cue,NONE,BNT
+CFT: animal,EF,CFT: Animal
+Clock Drawing Test,EF,Clock Drawing Test
+Clock Copying Test,EF,Clock Copying  Test
+LM: Immediate Recall,MEM,LM: Imm. Recall
+LM: Delayed Recall,MEM,LM: Del. Recall
+RAVLT: Trail 6,MEM,RAVLT: Trail 6
+RAVLT: 30 min delay,MEM,RAVLT: 30 min delay
+RAVLT: Recognition,MEM,RAVLT: Recognition
+TMT: Part A,EF,TMT: Part A
+TMT: Part B,EF,TMT: Part B

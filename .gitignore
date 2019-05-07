@@ -26,3 +26,9 @@ Desktop.ini
 
 # Anacoda
 miniconda.sh
+
+
+
+# Unit test intermediate output folder
+unit_tests/**/output/**
+stable_projects/**/unit_tests/**/output

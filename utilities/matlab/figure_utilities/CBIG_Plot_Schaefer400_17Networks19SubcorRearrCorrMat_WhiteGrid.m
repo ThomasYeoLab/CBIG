@@ -1,6 +1,10 @@
-function CBIG_Plot_Schaefer400_17Networks19SubcorRearrCorrMat_WhiteGrid(lh2lh_corrmat, lh2rh_corrmat, rh2rh_corrmat, lh2subcor_corrmat, rh2subcor_corrmat, subcor2subcor_corrmat, scalelim, filename_prefix)
+function CBIG_Plot_Schaefer400_17Networks19SubcorRearrCorrMat_WhiteGrid(lh2lh_corrmat, ...
+    lh2rh_corrmat, rh2rh_corrmat, lh2subcor_corrmat, rh2subcor_corrmat, ...
+    subcor2subcor_corrmat, scalelim, filename_prefix)
 
-% CBIG_Plot_Schaefer400_17Networks19SubcorRearrCorrMat_WhiteGrid(lh2lh_corrmat, lh2rh_corrmat, rh2rh_corrmat, lh2subcor_corrmat, rh2subcor_corrmat, subcor2subcor_corrmat, scalelim, filename_prefix)
+% CBIG_Plot_Schaefer400_17Networks19SubcorRearrCorrMat_WhiteGrid(lh2lh_corrmat, ...
+%     lh2rh_corrmat, rh2rh_corrmat, lh2subcor_corrmat, rh2subcor_corrmat, ...
+%     subcor2subcor_corrmat, scalelim, filename_prefix)
 %
 % This function draws the 419x419 correlation matrix (400 cortical ROIs +
 % 19 subcortical ROIs). 
@@ -100,19 +104,22 @@ function CBIG_Plot_Schaefer400_17Networks19SubcorRearrCorrMat_WhiteGrid(lh2lh_co
 %       If not specified, figure will not be saved.
 %
 % Example:
-% CBIG_Plot_Schaefer400_17Networks19SubcorRearrCorrMat_WhiteGrid(lh2lh, lh2rh, rh2rh, lh2subcor, rh2subcor, subcor2subcor, [], 'corrmat') 
-% The max/min scales depend on the maximum absolute value of the 
-% correlation matrix. 
+% CBIG_Plot_Schaefer400_17Networks19SubcorRearrCorrMat_WhiteGrid(lh2lh, ...
+%     lh2rh, rh2rh, lh2subcor, rh2subcor, subcor2subcor, [], 'corrmat') 
+% The max/min scales depend on the maximum absolute value of the correlation matrix. 
 % Save figure as 'corrmat_minsc-1_maxsc1.jpg'.
 %
-% CBIG_Plot_Schaefer400_17Networks19SubcorRearrCorrMat_WhiteGrid(lh2lh, lh2rh, rh2rh, lh2subcor, rh2subcor, subcor2subcor, [-0.5 0.5])
+% CBIG_Plot_Schaefer400_17Networks19SubcorRearrCorrMat_WhiteGrid(lh2lh, ...
+%     lh2rh, rh2rh, lh2subcor, rh2subcor, subcor2subcor, [-0.5 0.5])
 % Will not save figure.
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 
 %% rearrange input correlation matrices into a 419x419 correlation matrix
-corr_mat = [lh2lh_corrmat lh2rh_corrmat lh2subcor_corrmat; lh2rh_corrmat' rh2rh_corrmat rh2subcor_corrmat; lh2subcor_corrmat' rh2subcor_corrmat' subcor2subcor_corrmat];
+corr_mat = [lh2lh_corrmat lh2rh_corrmat lh2subcor_corrmat; ...
+    lh2rh_corrmat' rh2rh_corrmat rh2subcor_corrmat; ...
+    lh2subcor_corrmat' rh2subcor_corrmat' subcor2subcor_corrmat];
 corr_mat = (corr_mat+corr_mat')/2;
 [Index, major_grid, minor_grid, subcor_grid] = LabelsRearrangebyNetwork;
 % get re-indexing of ROIs
@@ -149,6 +156,15 @@ if ((nargin < 7) || (isempty(scalelim)))
 end
 
 set(gca, 'CLim', scalelim);
+if(~strcmp(version(), '8.3.0.532 (R2014a)'))
+    hcol.Ticks = linspace(scalelim(1), scalelim(2), 7);
+    hcol.TickLabels = num2cell(hcol.Ticks);
+    hcol.FontSize = 8;
+else
+    set(hcol, 'XTick', linspace(scalelim(1), scalelim(2), 7));
+    set(hcol, 'XTickLabel', num2str(linspace(scalelim(1), scalelim(2), 7)'));
+    set(hcol, 'FontSize', 8);
+end
 
 axis equal;
 grid off;
@@ -158,16 +174,22 @@ set(gcf, 'color', 'white');
 
 %% generate major and minor grid lines
 % subcortical
-patch(xline(:,subcor_grid), yline(:,subcor_grid),'w', 'edgecolor', 'w', 'Linewidth', 0.005, 'EdgeAlpha', 0.2);
-patch(yline(:,subcor_grid), xline(:,subcor_grid),'w', 'edgecolor', 'w', 'Linewidth', 0.005, 'EdgeAlpha', 0.2);
+patch(xline(:,subcor_grid), yline(:,subcor_grid),'w', ...
+    'edgecolor', 'w', 'Linewidth', 0.005, 'EdgeAlpha', 0.2);
+patch(yline(:,subcor_grid), xline(:,subcor_grid),'w', ...
+    'edgecolor', 'w', 'Linewidth', 0.005, 'EdgeAlpha', 0.2);
 
 % cortical sub-networks
-patch(xline(:,minor_grid), yline(:,minor_grid),'w', 'edgecolor', 'w', 'Linewidth', 0.3, 'EdgeAlpha', 0.9);
-patch(yline(:,minor_grid), xline(:,minor_grid),'w', 'edgecolor', 'w', 'Linewidth', 0.3, 'EdgeAlpha', 0.9);
+patch(xline(:,minor_grid), yline(:,minor_grid),'w', ...
+    'edgecolor', 'w', 'Linewidth', 0.3, 'EdgeAlpha', 0.9);
+patch(yline(:,minor_grid), xline(:,minor_grid),'w', ...
+    'edgecolor', 'w', 'Linewidth', 0.3, 'EdgeAlpha', 0.9);
 
 % cortical major networks
-patch(xline(:,major_grid), ymaj(:,major_grid),'w', 'edgecolor', 'w', 'Linewidth', 1.1);
-patch(ymaj(:,major_grid), xline(:,major_grid),'w', 'edgecolor', 'w', 'Linewidth', 1.1);
+patch(xline(:,major_grid), ymaj(:,major_grid),'w', ...
+    'edgecolor', 'w', 'Linewidth', 1.1);
+patch(ymaj(:,major_grid), xline(:,major_grid),'w', ...
+    'edgecolor', 'w', 'Linewidth', 1.1);
 
 %% save figure
 if ((nargin == 8) && ~isempty(filename_prefix))
@@ -193,7 +215,8 @@ ymaj = repmat(ymaj,1,(n-1));
 function [Index, major_grid, minor_grid, subcor_grid] = LabelsRearrangebyNetwork
 
 % load original cortical networks labels
-networks_path = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Parcellations/FreeSurfer5.3/fsaverage5/label/');
+networks_path = fullfile(getenv('CBIG_CODE_DIR'), ...
+    'stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Parcellations/FreeSurfer5.3/fsaverage5/label/');
 lh_annot_file = [networks_path 'lh.Schaefer2018_400Parcels_17Networks_order.annot'];
 rh_annot_file = [networks_path 'rh.Schaefer2018_400Parcels_17Networks_order.annot'];
 [lh_vertex_labels, lh_colortable] = CBIG_read_annotation(lh_annot_file);
@@ -203,8 +226,11 @@ lh_label = lh_colortable.struct_names(2:end);
 rh_label = rh_colortable.struct_names(2:end);
 
 % hard-coded, assuming the original input subcortical labels are in ascending order
-subcor_labelname = {'Cerebellum_Left';'Thalamus_Left';'Caudate_Left';'Putamen_Left';'Pallidum_Left';'BrainStem';'Hippocampus_Left';'Amygdala_Left';'Accumbens_Left'; ...
-    'DiencephalonVentral_Left';'Cerebellum_Right';'Thalamus_Right';'Caudate_Right';'Putamen_Right';'Pallidum_Right';'Hippocampus_Right';'Amygdala_Right';'Accumbens_Right';'DiencephalonVentral_Right'};
+subcor_labelname = {'Cerebellum_Left';'Thalamus_Left';'Caudate_Left';'Putamen_Left';...
+    'Pallidum_Left';'BrainStem';'Hippocampus_Left';'Amygdala_Left';'Accumbens_Left'; ...
+    'DiencephalonVentral_Left';'Cerebellum_Right';'Thalamus_Right';'Caudate_Right';...
+    'Putamen_Right';'Pallidum_Right';'Hippocampus_Right';'Amygdala_Right';...
+    'Accumbens_Right';'DiencephalonVentral_Right'};
 
 major_grid = [];
 minor_grid = [];
@@ -236,8 +262,11 @@ for i = 1:numel(all_label)
 end
 
 % arrange new labels based on template order
-tmplate = {'TempPar'; 'DefaultC'; 'DefaultB';'DefaultA'; 'ContC'; 'ContB'; 'ContA'; 'Limbic'; 'SalVentAttnB'; 'SalVentAttnA'; 'DorsAttnB'; 'DorsAttnA'; 'SomMotB'; 'SomMotA'; 'VisPeri'; 'VisCent'; ...
-    'Accumbens'; 'Caudate'; 'Pallidum'; 'Putamen'; 'Thalamus'; 'Amygdala'; 'Hippocampus'; 'BrainStem'; 'DiencephalonVentral'; 'Cerebellum'};
+tmplate = {'TempPar'; 'DefaultC'; 'DefaultB';'DefaultA'; 'ContC'; 'ContB'; ...
+    'ContA'; 'Limbic'; 'SalVentAttnB'; 'SalVentAttnA'; 'DorsAttnB'; ...
+    'DorsAttnA'; 'SomMotB'; 'SomMotA'; 'VisPeri'; 'VisCent'; ...
+    'Accumbens'; 'Caudate'; 'Pallidum'; 'Putamen'; 'Thalamus'; ...
+    'Amygdala'; 'Hippocampus'; 'BrainStem'; 'DiencephalonVentral'; 'Cerebellum'};
 tmplate2 = {'TempPole'; 'OFC'};
 
 newlabel = [];

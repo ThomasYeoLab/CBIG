@@ -8,9 +8,10 @@ The Linux distribution needs to be supported by the software used by this reposi
 [SPM](https://www.fil.ion.ucl.ac.uk/spm/),
 [AFNI](https://afni.nimh.nih.gov/pub/dist/doc/htmldoc/background_install/install_instructs/index.html),
 [ANTs](http://stnava.github.io/ANTs/),
-[Connectome Workbench](https://www.humanconnectome.org/software/connectome-workbench),
-[Caret](http://brainvis.wustl.edu/wiki/index.php/Caret:About), and Matlab.
+[Connectome Workbench](https://www.humanconnectome.org/software/connectome-workbench),and Matlab.
 Linux distribution choices include but are not limited to RedHat, SuSE, Ubuntu and their derivatives.
+
+If you want to use a specific stable project, you may not need to install all the above mentioned softwares and may need to download some other packages. Please refer to the project's README page for more information on software requirements.
 
 # 1) Copy and modify configuration file
 `CBIG` repository uses many external softwares. In order to easily use and manage these softwares, we use a script to configure the necessary paths and variables.
@@ -38,6 +39,15 @@ or
 cp <your-cbig-directory>/setup/CBIG_sample_config.csh ~/setup/CBIG_FS5.3_config.csh` (C-SHELL)
 ```
 Note that we renamed the config script to clearly reflect the software version we are using. This is useful since we may want to run CBIG repository with different software versions.
+
+**[IMPORTANT]** The above mentioned sample configuration script is a general setup for the whole CBIG repository. Since different projects may have different software configurations, each stable project has its own config file saved under its `config` folder.
+
+For example, a tested configuration script for `Kong2019_MSHBM` projecs is saved at:
+```
+<your-cbig-directory>/stable_projects/brain_parcellation/Kong2019_MSHBM/config/CBIG_MSHBM_tested_config.sh
+```
+
+If you want to use a specific stable project, you need to copy that project's tested config file instead of the CBIG sample config file into your `~/setup` folder 
 
 ### b) Modify your configuration script
 
