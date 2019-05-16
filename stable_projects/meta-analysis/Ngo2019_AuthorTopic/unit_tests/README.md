@@ -6,7 +6,8 @@ Gia H. Ngo, Simon B. Eickhoff, Minh Nguyen, Peter T. Fox,  R. Nathan Spreng, B. 
 ----
 
 ## Data
-For this unit test, we used activation coordinates from the self-generated thought dataset included under `../SelfGeneratedThought/MNI152_ActivationCoordinates`.
+For this unit test, we used activation coordinates from 30 experiments of self-generated thought dataset (`./unit_test_sample_coordinates.txt`).
+The original self-generated thought dataset can be found at`../SelfGeneratedThought/MNI152_ActivationCoordinates`.
 
 ----
 

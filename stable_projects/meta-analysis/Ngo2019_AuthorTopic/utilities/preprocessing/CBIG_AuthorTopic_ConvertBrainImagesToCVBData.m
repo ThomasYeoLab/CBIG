@@ -24,8 +24,11 @@ function CBIG_AuthorTopic_ConvertBrainImagesToCVBData(dataDir, cvbDataFile)
 %
 % Written by Gia H. Ngo and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
+  disp('Converting brain images to CVB input format');
+
   % Read brain mask
-  brainMask = MRIread(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'meta-analysis', 'Ngo2019_AuthorTopic', 'utilities', 'mask', 'MNI_mask_conformed.2mm.0.1.nii.gz'));
+  baseBrainMaskPath = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'meta-analysis', 'Ngo2019_AuthorTopic', 'utilities', 'mask', 'MNI_mask_conformed.2mm.0.1.nii.gz');
+  brainMask = MRIread(baseBrainMaskPath);
   brainIndex = brainMask.vol(:) == 1;
 
   experimentsFile = fullfile(dataDir, 'ExperimentsData.mat');
@@ -54,9 +57,6 @@ function CBIG_AuthorTopic_ConvertBrainImagesToCVBData(dataDir, cvbDataFile)
   % read task activation
   binVolumesDir = fullfile(dataDir, 'BinarySmoothedVolumes');
   for i = 1:numStudies
-    if (rem(i, 100) == 1)
-      disp(['Exp #', num2str(i)]);
-    end
     x = MRIread(fullfile(binVolumesDir, ['BinVolume' num2str(i, '%06d') '.nii.gz']));
     x = x.vol(1:2:end, 1:2:end, 1:2:end);
     act(i, :) = x(brainIndex)';
@@ -69,6 +69,13 @@ function CBIG_AuthorTopic_ConvertBrainImagesToCVBData(dataDir, cvbDataFile)
 
     expMask.vol(x ~= 0) = 1;
   end
+
+  outlyingVoxels = ((brainMask.vol == 0) & (expMask.vol ~= 0));
+  assert(sum(outlyingVoxels(:)) < 10, ['Activated voxels lie outside of ', ...
+      baseBrainMaskPath, ...
+      '.Please check that the 1-mm mask used in CBIG_AuthorTopic_PreprocessExpDataFromText.m ', ...
+      'corresponds to the 2-mm mask in CBIG_AuthorTopic_ConvertBrainImagesToCVBData.m and CBIG_AuthorTopic_SetupParameters']);
+  expMask.vol(brainMask.vol == 0) = 0;
 
   act = logical(act);
   save(cvbDataFile, 'corpus', 'act', 'taskByExp', 'uniqueTasks', 'uniqueTaskCount', '-v7.3');

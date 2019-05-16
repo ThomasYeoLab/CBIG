@@ -59,8 +59,8 @@ function CBIG_AuthorTopic_PreprocessExpDataFromText(textDataPath, ...
       expCount = expCount + 1;
       expTasks{expCount} = tasks;
 
-      if(mod(expCount, 100) == 1)
-        disp(['Reading experiment ' num2str(expCount)]);
+      if(mod(expCount, 10) == 1)
+        disp(['  - Finished reading experiment ' num2str(expCount)]);
       end
       coordBegin = 1;
       continue
@@ -109,8 +109,8 @@ function CBIG_AuthorTopic_PreprocessExpDataFromText(textDataPath, ...
   activationVolumesDir = fullfile(dataDir, 'ActivationVolumes');
   system(['mkdir -p ', activationVolumesDir]);
   for i = 1:expCount
-    if(mod(i, 100) == 1)
-      disp(['Experiment #' num2str(i)]);
+    if(mod(i, 10) == 1)
+      disp(['  - Finished processing experiment #' num2str(i)]);
     end
 
     outputFile = fullfile(activationVolumesDir, ['ActVolume' num2str(i, '%06d') '.nii.gz']);
@@ -128,12 +128,12 @@ function CBIG_AuthorTopic_PreprocessExpDataFromText(textDataPath, ...
   end
   disp(' ');
 
-  disp('Smoothed by binary smoothing kernel');
+  disp('Binary Smoothing the Activation Volumes');
   binVolumesDir = fullfile(dataDir, 'BinarySmoothedVolumes');
   system(['mkdir -p ', binVolumesDir]);
   for i = 1:expCount
-    if(mod(i, 100) == 1)
-      disp(['Experiment #' num2str(i)]);
+    if(mod(i, 10) == 1)
+      disp(['  - Finished processing experiment #' num2str(i)]);
     end
 
     inputFile = fullfile(activationVolumesDir, ['ActVolume' num2str(i, '%06d') '.nii.gz']);

@@ -55,9 +55,13 @@ function params = CBIG_AuthorTopic_InitializeParams(params, alpha, eta)
     Te                          = params.expByNumTasks(e);
     params.phi{e}               = rand(Ne, params.K, Te, 'single');
     params.phi{e}               = bsxfun(@times, params.phi{e}, 1./ sum(sum(params.phi{e},3), 2));
-
-    params.totalFociCount     = params.totalFociCount + sum(params.Fc{e});
-    logicalIndices             = params.Fb(e,:);
+    
+    expFc                        = sum(params.Fc{e});
+    assert(isfinite(expFc) && (floor(expFc) == expFc), ...
+        ['Non-integer number of activate brain voxels  in exp ' num2str(e)])
+    
+    params.totalFociCount       = params.totalFociCount + expFc;
+    logicalIndices              = params.Fb(e,:);
     indices                     = find(logicalIndices);
     Nv(indices)                 = Nv(indices) + params.Fc{e};
     for t = 1:params.T
