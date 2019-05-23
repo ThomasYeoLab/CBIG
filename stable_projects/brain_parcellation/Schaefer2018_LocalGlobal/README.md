@@ -51,14 +51,14 @@ Except for this project, if you want to use the code for other stable projects f
 
 To download the version of the code that is last tested, you can either
 
-- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.8.1-Schaefer2018_LocalGlobal](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.8.1-Schaefer2018_LocalGlobal)
+- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.10.2-Schaefer2018_LocalGlobal](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.10.2-Schaefer2018_LocalGlobal)
 
 or
 
 - run the following command, if you have Git installed
 
 ```
-git checkout -b Schaefer2018_LocalGlobal v0.8.1-Schaefer2018_LocalGlobal
+git checkout -b Schaefer2018_LocalGlobal v0.10.2-Schaefer2018_LocalGlobal
 ```
 
 ---
@@ -101,6 +101,18 @@ Updates
 - Release v0.8.1 (01/02/2019):
 
     1. Release RAS centroid coordinates of Schaefer2018 parcellations in MNI 1mm and 2mm space. The coordinate csv files can be found under `Parcellations/MNI/Centroid_coordinates`.
+
+- Release v0.10.2 (23/05/2019):
+
+    1. Release Schaefer2018 700 parcels and 900 parcels parcellation.
+
+    2. Release RAS centroid coordinates of Schaefer2018 700 parcels and 900 parcels parcellations in MNI 1mm and 2mm space.
+
+    3. Add instruction and lookup tables for projecting Schaefer2018 parcellation to individual subjects under `Parcellations/project_to_individual`.
+
+    4. Fix label name for rh medial wall in parcellation annot files.
+
+    5. Update unit test.
 
 ---
 

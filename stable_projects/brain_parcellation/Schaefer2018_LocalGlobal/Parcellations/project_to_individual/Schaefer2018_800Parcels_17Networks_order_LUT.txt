@@ -1,0 +1,1223 @@
+#No.    Label Name:                                   R   G   B   A
+   0    Unknown                                       0   0   0   0
+   1    Left-Cerebral-Exterior                        70  130 180 0
+   2    Left-Cerebral-White-Matter                    245 245 245 0
+   3    Left-Cerebral-Cortex                          205 62  78  0
+   4    Left-Lateral-Ventricle                        120 18  134 0
+   5    Left-Inf-Lat-Vent                             196 58  250 0
+   6    Left-Cerebellum-Exterior                      0   148 0   0
+   7    Left-Cerebellum-White-Matter                  220 248 164 0
+   8    Left-Cerebellum-Cortex                        230 148 34  0
+   9    Left-Thalamus                                 0   118 14  0
+  10    Left-Thalamus-Proper                          0   118 14  0
+  11    Left-Caudate                                  122 186 220 0
+  12    Left-Putamen                                  236 13  176 0
+  13    Left-Pallidum                                 12  48  255 0
+  14    3rd-Ventricle                                 204 182 142 0
+  15    4th-Ventricle                                 42  204 164 0
+  16    Brain-Stem                                    119 159 176 0
+  17    Left-Hippocampus                              220 216 20  0
+  18    Left-Amygdala                                 103 255 255 0
+  19    Left-Insula                                   80  196 98  0
+  20    Left-Operculum                                60  58  210 0
+  21    Line-1                                        60  58  210 0
+  22    Line-2                                        60  58  210 0
+  23    Line-3                                        60  58  210 0
+  24    CSF                                           60  60  60  0
+  25    Left-Lesion                                   255 165 0   0
+  26    Left-Accumbens-a                              255 165 0   0
+  27    Left-Substancia-Nigra                         0   255 127 0
+  28    Left-VentralDC                                165 42  42  0
+  29    Left-undetermined                             135 206 235 0
+  30    Left-vessel                                   160 32  240 0
+  31    Left-choroid-plexus                           0   200 200 0
+  32    Left-F3orb                                    100 50  100 0
+  33    Left-lOg                                      135 50  74  0
+  34    Left-aOg                                      122 135 50  0
+  35    Left-mOg                                      51  50  135 0
+  36    Left-pOg                                      74  155 60  0
+  37    Left-Stellate                                 120 62  43  0
+  38    Left-Porg                                     74  155 60  0
+  39    Left-Aorg                                     122 135 50  0
+  40    Right-Cerebral-Exterior                       70  130 180 0
+  41    Right-Cerebral-White-Matter                   245 245 245 0
+  42    Right-Cerebral-Cortex                         205 62  78  0
+  43    Right-Lateral-Ventricle                       120 18  134 0
+  44    Right-Inf-Lat-Vent                            196 58  250 0
+  45    Right-Cerebellum-Exterior                     0   148 0   0
+  46    Right-Cerebellum-White-Matter                 220 248 164 0
+  47    Right-Cerebellum-Cortex                       230 148 34  0
+  48    Right-Thalamus                                0   118 14  0
+  49    Right-Thalamus-Proper                         0   118 14  0
+  50    Right-Caudate                                 122 186 220 0
+  51    Right-Putamen                                 236 13  176 0
+  52    Right-Pallidum                                13  48  255 0
+  53    Right-Hippocampus                             220 216 20  0
+  54    Right-Amygdala                                103 255 255 0
+  55    Right-Insula                                  80  196 98  0
+  56    Right-Operculum                               60  58  210 0
+  57    Right-Lesion                                  255 165 0   0
+  58    Right-Accumbens-area                          255 165 0   0
+  59    Right-Substancia-Nigra                        0   255 127 0
+  60    Right-VentralDC                               165 42  42  0
+  61    Right-undetermined                            135 206 235 0
+  62    Right-vessel                                  160 32  240 0
+  63    Right-choroid-plexus                          0   200 221 0
+  64    Right-F3orb                                   100 50  100 0
+  65    Right-lOg                                     135 50  74  0
+  66    Right-aOg                                     122 135 50  0
+  67    Right-mOg                                     51  50  135 0
+  68    Right-pOg                                     74  155 60  0
+  69    Right-Stellate                                120 62  43  0
+  70    Right-Porg                                    74  155 60  0
+  71    Right-Aorg                                    122 135 50  0
+  72    5th-Ventricle                                 120 190 150 0
+  73    Left-Interior                                 122 135 50  0
+  74    Right-Interior                                122 135 50  0
+# 75/76 removed. duplicates of 4/43
+  77    WM-hypointensities                            200 70  255 0
+  78    Left-WM-hypointensities                       255 148 10  0
+  79    Right-WM-hypointensities                      255 148 10  0
+  80    non-WM-hypointensities                        164 108 226 0
+  81    Left-non-WM-hypointensities                   164 108 226 0
+  82    Right-non-WM-hypointensities                  164 108 226 0
+  83    Left-F1                                       255 218 185 0
+  84    Right-F1                                      255 218 185 0
+  85    Optic-Chiasm                                  234 169 30  0
+ 192    Corpus_Callosum                               250 255 50  0
+
+  86    Left_future_WMSA                              200 120 255 0
+  87    Right_future_WMSA                             200 121 255 0
+  88    future_WMSA                                   200 122 255 0
+
+  96    Left-Amygdala-Anterior                        205 10  125 0
+  97    Right-Amygdala-Anterior                       205 10  125 0
+  98    Dura                                          160 32  240 0
+
+ 100    Left-wm-intensity-abnormality                 124 140 178 0
+ 101    Left-caudate-intensity-abnormality            125 140 178 0
+ 102    Left-putamen-intensity-abnormality            126 140 178 0
+ 103    Left-accumbens-intensity-abnormality          127 140 178 0
+ 104    Left-pallidum-intensity-abnormality           124 141 178 0
+ 105    Left-amygdala-intensity-abnormality           124 142 178 0
+ 106    Left-hippocampus-intensity-abnormality        124 143 178 0
+ 107    Left-thalamus-intensity-abnormality           124 144 178 0
+ 108    Left-VDC-intensity-abnormality                124 140 179 0
+ 109    Right-wm-intensity-abnormality                124 140 178 0
+ 110    Right-caudate-intensity-abnormality           125 140 178 0
+ 111    Right-putamen-intensity-abnormality           126 140 178 0
+ 112    Right-accumbens-intensity-abnormality         127 140 178 0
+ 113    Right-pallidum-intensity-abnormality          124 141 178 0
+ 114    Right-amygdala-intensity-abnormality          124 142 178 0
+ 115    Right-hippocampus-intensity-abnormality       124 143 178 0
+ 116    Right-thalamus-intensity-abnormality          124 144 178 0
+ 117    Right-VDC-intensity-abnormality               124 140 179 0
+
+ 118    Epidermis                                     255 20  147 0
+ 119    Conn-Tissue                                   205 179 139 0
+ 120    SC-Fat-Muscle                                 238 238 209 0
+ 121    Cranium                                       200 200 200 0
+ 122    CSF-SA                                        74  255 74  0
+ 123    Muscle                                        238 0   0   0
+ 124    Ear                                           0   0   139 0
+ 125    Adipose                                       173 255 47  0
+ 126    Spinal-Cord                                   133 203 229 0
+ 127    Soft-Tissue                                   26  237 57  0
+ 128    Nerve                                         34  139 34  0
+ 129    Bone                                          30  144 255 0
+ 130    Air                                           147 19  173 0
+ 131    Orbital-Fat                                   238 59  59  0
+ 132    Tongue                                        221 39  200 0
+ 133    Nasal-Structures                              238 174 238 0
+ 134    Globe                                         255 0   0   0
+ 135    Teeth                                         72  61  139 0
+ 136    Left-Caudate-Putamen                          21  39  132 0
+ 137    Right-Caudate-Putamen                         21  39  132 0
+ 138    Left-Claustrum                                65  135 20  0
+ 139    Right-Claustrum                               65  135 20  0
+ 140    Cornea                                        134 4   160 0
+ 142    Diploe                                        221 226 68  0
+ 143    Vitreous-Humor                                255 255 254 0
+ 144    Lens                                          52  209 226 0
+ 145    Aqueous-Humor                                 239 160 223 0
+ 146    Outer-Table                                   70  130 180 0
+ 147    Inner-Table                                   70  130 181 0
+ 148    Periosteum                                    139 121 94  0
+ 149    Endosteum                                     224 224 224 0
+ 150    R-C-S                                         255 0   0   0
+ 151    Iris                                          205 205 0   0
+ 152    SC-Adipose-Muscle                             238 238 209 0
+ 153    SC-Tissue                                     139 121 94  0
+ 154    Orbital-Adipose                               238 59  59  0
+
+ 155    Left-IntCapsule-Ant                           238 59  59  0
+ 156    Right-IntCapsule-Ant                          238 59  59  0
+ 157    Left-IntCapsule-Pos                           62  10  205 0
+ 158    Right-IntCapsule-Pos                          62  10  205 0
+
+# These labels are for babies/children
+ 159    Left-Cerebral-WM-unmyelinated                 0   118 14  0
+ 160    Right-Cerebral-WM-unmyelinated                0   118 14  0
+ 161    Left-Cerebral-WM-myelinated                   220 216 21  0
+ 162    Right-Cerebral-WM-myelinated                  220 216 21  0
+ 163    Left-Subcortical-Gray-Matter                  122 186 220 0
+ 164    Right-Subcortical-Gray-Matter                 122 186 220 0
+ 165    Skull                                         120 120 120 0
+ 166    Posterior-fossa                               14  48  255 0
+ 167    Scalp                                         166 42  42  0
+ 168    Hematoma                                      121 18  134 0
+ 169    Left-Basal-Ganglia                            236 13  127 0
+ 176    Right-Basal-Ganglia                           236 13  126 0
+
+# Label names and colors for Brainstem consituents
+ 170    brainstem                                     119 159 176 0
+ 171    DCG                                           119 0   176 0
+ 172    Vermis                                        119 100 176 0
+ 173    Midbrain                                      242 104 76  0
+ 174    Pons                                          206 195 58  0
+ 175    Medulla                                       119 159 176 0
+ 177    Vermis-White-Matter                           119 50  176 0
+ 178    SCP                                           142 182 0   0
+ 179    Floculus                                      19  100 176 0
+
+ 180    Left-Cortical-Dysplasia                       73  61  139 0
+ 181    Right-Cortical-Dysplasia                      73  62  139 0
+ 182    CblumNodulus                                  10  100 176 0
+
+ 193    Left-hippocampal_fissure                      0   196 255 0
+ 194    Left-CADG-head                                255 164 164 0
+ 195    Left-subiculum                                196 196 0   0
+ 196    Left-fimbria                                  0   100 255 0
+ 197    Right-hippocampal_fissure                     128 196 164 0
+ 198    Right-CADG-head                               0   126 75  0
+ 199    Right-subiculum                               128 96  64  0
+ 200    Right-fimbria                                 0   50  128 0
+ 201    alveus                                        255 204 153 0
+ 202    perforant_pathway                             255 128 128 0
+ 203    parasubiculum                                 255 255 0   0
+ 204    presubiculum                                  64  0   64  0
+ 205    subiculum                                     0   0   255 0
+ 206    CA1                                           255 0   0   0
+ 207    CA2                                           128 128 255 0
+ 208    CA3                                           0   128 0   0
+ 209    CA4                                           196 160 128 0
+ 210    GC-DG                                         32  200 255 0
+ 211    HATA                                          128 255 128 0
+ 212    fimbria                                       204 153 204 0
+ 213    lateral_ventricle                             121 17  136 0
+ 214    molecular_layer_HP                            128 0   0   0
+ 215    hippocampal_fissure                           128 32  255 0
+ 216    entorhinal_cortex                             255 204 102 0
+ 217    molecular_layer_subiculum                     128 128 128 0
+ 218    Amygdala                                      104 255 255 0
+ 219    Cerebral_White_Matter                         0   226 0   0
+ 220    Cerebral_Cortex                               205 63  78  0
+ 221    Inf_Lat_Vent                                  197 58  250 0
+ 222    Perirhinal                                    33  150 250 0
+ 223    Cerebral_White_Matter_Edge                    226 0   0   0
+ 224    Background                                    100 100 100 0
+ 225    Ectorhinal                                    197 150 250 0
+ 226    HP_tail                                       170 170 255 0
+
+ 250    Fornix                                        255 0   0   0
+ 251    CC_Posterior                                  0   0   64  0
+ 252    CC_Mid_Posterior                              0   0   112 0
+ 253    CC_Central                                    0   0   160 0
+ 254    CC_Mid_Anterior                               0   0   208 0
+ 255    CC_Anterior                                   0   0   255 0
+
+# This is for keeping track of voxel changes
+ 256    Voxel-Unchanged                               0   0   0   0
+
+ 257    CSF-ExtraCerebral                             60  60  60  0
+ 258    Head-ExtraCerebral                            150 150 200 0
+ 259    SkullApprox                                   120 120 120 0
+ 260    BoneOrAir                                     119 159 176 0
+ 261    PossibleFluid                                 120 18  134 0
+ 262    Sinus                                         119 159 176 0
+ 263    Left-Eustachian                               119 159 176 0
+ 264    Right-Eustachian                              119 159 176 0
+
+# lymph node and vascular labels
+ 331    Aorta                                         255 0   0   0
+ 332    Left-Common-IliacA                            255 80  0   0
+ 333    Right-Common-IliacA                           255 160 0   0
+ 334    Left-External-IliacA                          255 255 0   0
+ 335    Right-External-IliacA                         0   255 0   0
+ 336    Left-Internal-IliacA                          255 0   160 0
+ 337    Right-Internal-IliacA                         255 0   255 0
+ 338    Left-Lateral-SacralA                          255 50  80  0
+ 339    Right-Lateral-SacralA                         80  255 50  0
+ 340    Left-ObturatorA                               160 255 50  0
+ 341    Right-ObturatorA                              160 200 255 0
+ 342    Left-Internal-PudendalA                       0   255 160 0
+ 343    Right-Internal-PudendalA                      0   0   255 0
+ 344    Left-UmbilicalA                               80  50  255 0
+ 345    Right-UmbilicalA                              160 0   255 0
+ 346    Left-Inf-RectalA                              255 210 0   0
+ 347    Right-Inf-RectalA                             0   160 255 0
+ 348    Left-Common-IliacV                            255 200 80  0
+ 349    Right-Common-IliacV                           255 200 160 0
+ 350    Left-External-IliacV                          255 80  200 0
+ 351    Right-External-IliacV                         255 160 200 0
+ 352    Left-Internal-IliacV                          30  255 80  0
+ 353    Right-Internal-IliacV                         80  200 255 0
+ 354    Left-ObturatorV                               80  255 200 0
+ 355    Right-ObturatorV                              195 255 200 0
+ 356    Left-Internal-PudendalV                       120 200 20  0
+ 357    Right-Internal-PudendalV                      170 10  200 0
+ 358    Pos-Lymph                                     20  130 180 0
+ 359    Neg-Lymph                                     20  180 130 0
+
+ 400    V1                                            206 62  78  0
+ 401    V2                                            121 18  134 0
+ 402    BA44                                          199 58  250 0
+ 403    BA45                                          1   148 0   0
+ 404    BA4a                                          221 248 164 0
+ 405    BA4p                                          231 148 34  0
+ 406    BA6                                           1   118 14  0
+ 407    BA2                                           120 118 14  0
+ 408    BA1_old                                       123 186 221 0
+ 409    BAun2                                         238 13  177 0
+ 410    BA1                                           123 186 220 0
+ 411    BA2b                                          138 13  206 0
+ 412    BA3a                                          238 130 176 0
+ 413    BA3b                                          218 230 76  0
+ 414    MT                                            38  213 176 0
+ 415    AIPS_AIP_l                                    1   225 176 0
+ 416    AIPS_AIP_r                                    1   225 176 0
+ 417    AIPS_VIP_l                                    200 2   100 0
+ 418    AIPS_VIP_r                                    200 2   100 0
+ 419    IPL_PFcm_l                                    5   200 90  0
+ 420    IPL_PFcm_r                                    5   200 90  0
+ 421    IPL_PF_l                                      100 5   200 0
+ 422    IPL_PFm_l                                     25  255 100 0
+ 423    IPL_PFm_r                                     25  255 100 0
+ 424    IPL_PFop_l                                    230 7   100 0
+ 425    IPL_PFop_r                                    230 7   100 0
+ 426    IPL_PF_r                                      100 5   200 0
+ 427    IPL_PFt_l                                     150 10  200 0
+ 428    IPL_PFt_r                                     150 10  200 0
+ 429    IPL_PGa_l                                     175 10  176 0
+ 430    IPL_PGa_r                                     175 10  176 0
+ 431    IPL_PGp_l                                     10  100 255 0
+ 432    IPL_PGp_r                                     10  100 255 0
+ 433    Visual_V3d_l                                  150 45  70  0
+ 434    Visual_V3d_r                                  150 45  70  0
+ 435    Visual_V4_l                                   45  200 15  0
+ 436    Visual_V4_r                                   45  200 15  0
+ 437    Visual_V5_b                                   227 45  100 0
+ 438    Visual_VP_l                                   227 45  100 0
+ 439    Visual_VP_r                                   227 45  100 0
+
+# wm lesions
+ 498    wmsa                                          143 188 143 0
+ 499    other_wmsa                                    255 248 220 0
+
+# HiRes Hippocampus labeling
+ 500    right_CA2_3                                   17  85  136 0
+ 501    right_alveus                                  119 187 102 0
+ 502    right_CA1                                     204 68  34  0
+ 503    right_fimbria                                 204 0   255 0
+ 504    right_presubiculum                            221 187 17  0
+ 505    right_hippocampal_fissure                     153 221 238 0
+ 506    right_CA4_DG                                  51  17  17  0
+ 507    right_subiculum                               0   119 85  0
+ 508    right_fornix                                  20  100 200 0
+
+ 550    left_CA2_3                                    17  85  137 0
+ 551    left_alveus                                   119 187 103 0
+ 552    left_CA1                                      204 68  35  0
+ 553    left_fimbria                                  204 0   254 0
+ 554    left_presubiculum                             221 187 16  0
+ 555    left_hippocampal_fissure                      153 221 239 0
+ 556    left_CA4_DG                                   51  17  18  0
+ 557    left_subiculum                                0   119 86  0
+ 558    left_fornix                                   20  100 201 0
+
+ 600    Tumor                                         254 254 254 0
+
+# Cerebellar parcellation labels from SUIT (matches labels in cma.h)
+ 601    Cbm_Left_I_IV                                 70  130 180 0
+ 602    Cbm_Right_I_IV                                245 245 245 0
+ 603    Cbm_Left_V                                    205 62  78  0
+ 604    Cbm_Right_V                                   120 18  134 0
+ 605    Cbm_Left_VI                                   196 58  250 0
+ 606    Cbm_Vermis_VI                                 0   148 0   0
+ 607    Cbm_Right_VI                                  220 248 164 0
+ 608    Cbm_Left_CrusI                                230 148 34  0
+ 609    Cbm_Vermis_CrusI                              0   118 14  0
+ 610    Cbm_Right_CrusI                               0   118 14  0
+ 611    Cbm_Left_CrusII                               122 186 220 0
+ 612    Cbm_Vermis_CrusII                             236 13  176 0
+ 613    Cbm_Right_CrusII                              12  48  255 0
+ 614    Cbm_Left_VIIb                                 204 182 142 0
+ 615    Cbm_Vermis_VIIb                               42  204 164 0
+ 616    Cbm_Right_VIIb                                119 159 176 0
+ 617    Cbm_Left_VIIIa                                220 216 20  0
+ 618    Cbm_Vermis_VIIIa                              103 255 255 0
+ 619    Cbm_Right_VIIIa                               80  196 98  0
+ 620    Cbm_Left_VIIIb                                60  58  210 0
+ 621    Cbm_Vermis_VIIIb                              60  58  210 0
+ 622    Cbm_Right_VIIIb                               60  58  210 0
+ 623    Cbm_Left_IX                                   60  58  210 0
+ 624    Cbm_Vermis_IX                                 60  60  60  0
+ 625    Cbm_Right_IX                                  255 165 0   0
+ 626    Cbm_Left_X                                    255 165 0   0
+ 627    Cbm_Vermis_X                                  0   255 127 0
+ 628    Cbm_Right_X                                   165 42  42  0
+
+# Cerebellar lobule parcellations
+ 640    Cbm_Right_I_V_med                             204 0   0   0
+ 641    Cbm_Right_I_V_mid                             255 0   0   0
+ 642    Cbm_Right_VI_med                              0   0   255 0
+ 643    Cbm_Right_VI_mid                              30  144 255 0
+ 644    Cbm_Right_VI_lat                              100 212 237 0
+ 645    Cbm_Right_CrusI_med                           218 165 32  0
+ 646    Cbm_Right_CrusI_mid                           255 215 0   0
+ 647    Cbm_Right_CrusI_lat                           255 255 166 0
+ 648    Cbm_Right_CrusII_med                          153 0   204 0
+ 649    Cbm_Right_CrusII_mid                          153 141 209 0
+ 650    Cbm_Right_CrusII_lat                          204 204 255 0
+ 651    Cbm_Right_7med                                31  212 194 0
+ 652    Cbm_Right_7mid                                3   255 237 0
+ 653    Cbm_Right_7lat                                204 255 255 0
+ 654    Cbm_Right_8med                                86  74  147 0
+ 655    Cbm_Right_8mid                                114 114 190 0
+ 656    Cbm_Right_8lat                                184 178 255 0
+ 657    Cbm_Right_PUNs                                126 138 37  0
+ 658    Cbm_Right_TONs                                189 197 117 0
+ 659    Cbm_Right_FLOs                                240 230 140 0
+ 660    Cbm_Left_I_V_med                              204 0   0   0
+ 661    Cbm_Left_I_V_mid                              255 0   0   0
+ 662    Cbm_Left_VI_med                               0   0   255 0
+ 663    Cbm_Left_VI_mid                               30  144 255 0
+ 664    Cbm_Left_VI_lat                               100 212 237 0
+ 665    Cbm_Left_CrusI_med                            218 165 32  0
+ 666    Cbm_Left_CrusI_mid                            255 215 0   0
+ 667    Cbm_Left_CrusI_lat                            255 255 166 0
+ 668    Cbm_Left_CrusII_med                           153 0   204 0
+ 669    Cbm_Left_CrusII_mid                           153 141 209 0
+ 670    Cbm_Left_CrusII_lat                           204 204 255 0
+ 671    Cbm_Left_7med                                 31  212 194 0
+ 672    Cbm_Left_7mid                                 3   255 237 0
+ 673    Cbm_Left_7lat                                 204 255 255 0
+ 674    Cbm_Left_8med                                 86  74  147 0
+ 675    Cbm_Left_8mid                                 114 114 190 0
+ 676    Cbm_Left_8lat                                 184 178 255 0
+ 677    Cbm_Left_PUNs                                 126 138 37  0
+ 678    Cbm_Left_TONs                                 189 197 117 0
+ 679    Cbm_Left_FLOs                                 240 230 140 0
+
+ 690    CbmWM_Gyri_Left                               122 135 50  0
+ 691    CbmWM_Gyri_Right                              122 135 50  0
+
+ 701    CSF-FSL-FAST                                  120 18  134 0
+ 702    GrayMatter-FSL-FAST                           205 62  78  0
+ 703    WhiteMatter-FSL-FAST                          0   225 0   0
+
+ 999    SUSPICIOUS                                    255 100 100 0
+
+1000    LH_Background+FreeSurfer_Defined_Medial_Wall  1   1   1   0
+1001    17Networks_LH_VisCent_ExStr_1                 120 17  132 0
+1002    17Networks_LH_VisCent_ExStr_2                 120 17  133 0
+1003    17Networks_LH_VisCent_ExStr_3                 120 17  134 0
+1004    17Networks_LH_VisCent_ExStr_4                 120 17  135 0
+1005    17Networks_LH_VisCent_ExStr_5                 120 18  128 0
+1006    17Networks_LH_VisCent_ExStr_6                 120 18  129 0
+1007    17Networks_LH_VisCent_ExStr_7                 120 18  130 0
+1008    17Networks_LH_VisCent_ExStr_8                 120 18  131 0
+1009    17Networks_LH_VisCent_ExStr_9                 120 18  132 0
+1010    17Networks_LH_VisCent_ExStr_10                120 18  133 0
+1011    17Networks_LH_VisCent_ExStr_11                120 18  134 0
+1012    17Networks_LH_VisCent_ExStr_12                120 18  136 0
+1013    17Networks_LH_VisCent_ExStr_13                120 18  137 0
+1014    17Networks_LH_VisCent_ExStr_14                120 18  138 0
+1015    17Networks_LH_VisCent_ExStr_15                120 18  139 0
+1016    17Networks_LH_VisCent_ExStr_16                120 18  140 0
+1017    17Networks_LH_VisCent_ExStr_17                120 18  141 0
+1018    17Networks_LH_VisCent_ExStr_18                120 18  142 0
+1019    17Networks_LH_VisCent_ExStr_19                120 19  135 0
+1020    17Networks_LH_VisCent_ExStr_20                120 19  136 0
+1021    17Networks_LH_VisCent_ExStr_21                120 19  137 0
+1022    17Networks_LH_VisCent_ExStr_22                120 19  138 0
+1023    17Networks_LH_VisCent_ExStr_23                120 19  139 0
+1024    17Networks_LH_VisCent_ExStr_24                120 19  140 0
+1025    17Networks_LH_VisCent_ExStr_25                120 19  141 0
+1026    17Networks_LH_VisCent_ExStr_26                120 19  142 0
+1027    17Networks_LH_VisPeri_ExStrSup_1              255 0   0   0
+1028    17Networks_LH_VisPeri_ExStrSup_2              255 1   1   0
+1029    17Networks_LH_VisPeri_ExStrSup_3              255 1   2   0
+1030    17Networks_LH_VisPeri_ExStrSup_4              255 1   3   0
+1031    17Networks_LH_VisPeri_ExStrSup_5              255 1   4   0
+1032    17Networks_LH_VisPeri_ExStrSup_6              255 1   5   0
+1033    17Networks_LH_VisPeri_ExStrSup_7              255 1   6   0
+1034    17Networks_LH_VisPeri_ExStrSup_8              255 1   7   0
+1035    17Networks_LH_VisPeri_ExStrSup_9              255 2   0   0
+1036    17Networks_LH_VisPeri_ExStrSup_10             255 2   1   0
+1037    17Networks_LH_VisPeri_ExStrSup_11             255 2   2   0
+1038    17Networks_LH_VisPeri_ExStrSup_12             255 2   3   0
+1039    17Networks_LH_VisPeri_ExStrSup_13             255 2   4   0
+1040    17Networks_LH_VisPeri_ExStrSup_14             255 2   5   0
+1041    17Networks_LH_VisPeri_ExStrSup_15             255 2   6   0
+1042    17Networks_LH_VisPeri_ExStrSup_16             255 2   7   0
+1043    17Networks_LH_VisPeri_ExStrSup_17             255 3   0   0
+1044    17Networks_LH_VisPeri_ExStrSup_18             255 3   1   0
+1045    17Networks_LH_VisPeri_ExStrSup_19             255 3   2   0
+1046    17Networks_LH_VisPeri_ExStrSup_20             255 3   3   0
+1047    17Networks_LH_VisPeri_ExStrSup_21             255 3   4   0
+1048    17Networks_LH_VisPeri_ExStrSup_22             255 3   5   0
+1049    17Networks_LH_VisPeri_ExStrSup_23             255 3   6   0
+1050    17Networks_LH_VisPeri_ExStrSup_24             255 3   7   0
+1051    17Networks_LH_VisPeri_ExStrSup_25             255 4   0   0
+1052    17Networks_LH_VisPeri_ExStrSup_26             255 4   1   0
+1053    17Networks_LH_VisPeri_ExStrSup_27             255 4   2   0
+1054    17Networks_LH_VisPeri_ExStrSup_28             255 4   3   0
+1055    17Networks_LH_VisPeri_ExStrSup_29             255 4   4   0
+1056    17Networks_LH_VisPeri_ExStrSup_30             255 4   5   0
+1057    17Networks_LH_SomMotA_1                       70  128 176 0
+1058    17Networks_LH_SomMotA_2                       70  128 177 0
+1059    17Networks_LH_SomMotA_3                       70  128 178 0
+1060    17Networks_LH_SomMotA_4                       70  128 179 0
+1061    17Networks_LH_SomMotA_5                       70  128 180 0
+1062    17Networks_LH_SomMotA_6                       70  129 173 0
+1063    17Networks_LH_SomMotA_7                       70  129 174 0
+1064    17Networks_LH_SomMotA_8                       70  129 175 0
+1065    17Networks_LH_SomMotA_9                       70  129 176 0
+1066    17Networks_LH_SomMotA_10                      70  129 177 0
+1067    17Networks_LH_SomMotA_11                      70  129 178 0
+1068    17Networks_LH_SomMotA_12                      70  129 179 0
+1069    17Networks_LH_SomMotA_13                      70  129 180 0
+1070    17Networks_LH_SomMotA_14                      70  130 173 0
+1071    17Networks_LH_SomMotA_15                      70  130 174 0
+1072    17Networks_LH_SomMotA_16                      70  130 175 0
+1073    17Networks_LH_SomMotA_17                      70  130 176 0
+1074    17Networks_LH_SomMotA_18                      70  130 177 0
+1075    17Networks_LH_SomMotA_19                      70  130 178 0
+1076    17Networks_LH_SomMotA_20                      70  130 179 0
+1077    17Networks_LH_SomMotA_21                      70  130 181 0
+1078    17Networks_LH_SomMotA_22                      70  130 182 0
+1079    17Networks_LH_SomMotA_23                      70  130 183 0
+1080    17Networks_LH_SomMotA_24                      70  130 184 0
+1081    17Networks_LH_SomMotA_25                      70  130 185 0
+1082    17Networks_LH_SomMotA_26                      70  130 186 0
+1083    17Networks_LH_SomMotA_27                      70  130 187 0
+1084    17Networks_LH_SomMotA_28                      70  131 180 0
+1085    17Networks_LH_SomMotA_29                      70  131 181 0
+1086    17Networks_LH_SomMotA_30                      70  131 182 0
+1087    17Networks_LH_SomMotA_31                      70  131 183 0
+1088    17Networks_LH_SomMotA_32                      70  131 184 0
+1089    17Networks_LH_SomMotA_33                      70  131 185 0
+1090    17Networks_LH_SomMotA_34                      70  131 186 0
+1091    17Networks_LH_SomMotA_35                      70  131 187 0
+1092    17Networks_LH_SomMotA_36                      70  132 180 0
+1093    17Networks_LH_SomMotA_37                      70  132 181 0
+1094    17Networks_LH_SomMotA_38                      70  132 182 0
+1095    17Networks_LH_SomMotA_39                      70  132 183 0
+1096    17Networks_LH_SomMotA_40                      70  132 184 0
+1097    17Networks_LH_SomMotA_41                      70  132 185 0
+1098    17Networks_LH_SomMotA_42                      70  132 186 0
+1099    17Networks_LH_SomMotA_43                      70  132 187 0
+1100    17Networks_LH_SomMotB_Aud_1                   43  203 159 0
+1101    17Networks_LH_SomMotB_Aud_2                   43  203 160 0
+1102    17Networks_LH_SomMotB_Aud_3                   43  203 161 0
+1103    17Networks_LH_SomMotB_Aud_4                   43  203 162 0
+1104    17Networks_LH_SomMotB_Aud_5                   43  203 163 0
+1105    17Networks_LH_SomMotB_Aud_6                   43  203 164 0
+1106    17Networks_LH_SomMotB_Aud_7                   43  204 157 0
+1107    17Networks_LH_SomMotB_Aud_8                   43  204 158 0
+1108    17Networks_LH_SomMotB_Aud_9                   43  204 159 0
+1109    17Networks_LH_SomMotB_Aud_10                  43  204 160 0
+1110    17Networks_LH_SomMotB_Aud_11                  43  204 161 0
+1111    17Networks_LH_SomMotB_Aud_12                  43  204 162 0
+1112    17Networks_LH_SomMotB_Aud_13                  43  204 163 0
+1113    17Networks_LH_SomMotB_Aud_14                  43  204 165 0
+1114    17Networks_LH_SomMotB_Aud_15                  43  204 166 0
+1115    17Networks_LH_SomMotB_Aud_16                  43  204 167 0
+1116    17Networks_LH_SomMotB_Aud_17                  43  204 168 0
+1117    17Networks_LH_SomMotB_Aud_18                  43  204 169 0
+1118    17Networks_LH_SomMotB_Aud_19                  43  204 170 0
+1119    17Networks_LH_SomMotB_Aud_20                  43  204 171 0
+1120    17Networks_LH_SomMotB_Aud_21                  43  205 164 0
+1121    17Networks_LH_SomMotB_Aud_22                  43  205 165 0
+1122    17Networks_LH_SomMotB_Aud_23                  43  205 166 0
+1123    17Networks_LH_SomMotB_Aud_24                  43  205 167 0
+1124    17Networks_LH_SomMotB_Aud_25                  43  205 168 0
+1125    17Networks_LH_SomMotB_Aud_26                  43  205 169 0
+1126    17Networks_LH_SomMotB_Aud_27                  43  205 170 0
+1127    17Networks_LH_SomMotB_Aud_28                  43  205 171 0
+1128    17Networks_LH_SomMotB_Aud_29                  43  206 164 0
+1129    17Networks_LH_DorsAttnA_TempOcc_1             74  155 57  0
+1130    17Networks_LH_DorsAttnA_TempOcc_2             74  155 58  0
+1131    17Networks_LH_DorsAttnA_TempOcc_3             74  155 59  0
+1132    17Networks_LH_DorsAttnA_TempOcc_4             74  155 61  0
+1133    17Networks_LH_DorsAttnA_TempOcc_5             74  155 62  0
+1134    17Networks_LH_DorsAttnA_TempOcc_6             74  155 63  0
+1135    17Networks_LH_DorsAttnA_TempOcc_7             74  155 64  0
+1136    17Networks_LH_DorsAttnA_TempOcc_8             74  155 65  0
+1137    17Networks_LH_DorsAttnA_TempOcc_9             74  155 66  0
+1138    17Networks_LH_DorsAttnA_SPL_1                 74  156 55  0
+1139    17Networks_LH_DorsAttnA_SPL_2                 74  156 56  0
+1140    17Networks_LH_DorsAttnA_SPL_3                 74  156 57  0
+1141    17Networks_LH_DorsAttnA_SPL_4                 74  156 58  0
+1142    17Networks_LH_DorsAttnA_SPL_5                 74  156 59  0
+1143    17Networks_LH_DorsAttnA_SPL_6                 74  156 61  0
+1144    17Networks_LH_DorsAttnA_SPL_7                 74  156 62  0
+1145    17Networks_LH_DorsAttnA_SPL_8                 74  156 63  0
+1146    17Networks_LH_DorsAttnA_SPL_9                 74  156 64  0
+1147    17Networks_LH_DorsAttnA_SPL_10                74  156 65  0
+1148    17Networks_LH_DorsAttnA_SPL_11                74  156 66  0
+1149    17Networks_LH_DorsAttnA_SPL_12                74  156 67  0
+1150    17Networks_LH_DorsAttnA_SPL_13                74  157 60  0
+1151    17Networks_LH_DorsAttnA_SPL_14                74  157 61  0
+1152    17Networks_LH_DorsAttnB_TempOcc_1             0   118 15  0
+1153    17Networks_LH_DorsAttnB_PostC_1               0   118 10  0
+1154    17Networks_LH_DorsAttnB_PostC_2               0   118 11  0
+1155    17Networks_LH_DorsAttnB_PostC_3               0   118 12  0
+1156    17Networks_LH_DorsAttnB_PostC_4               0   118 13  0
+1157    17Networks_LH_DorsAttnB_PostC_5               0   118 14  0
+1158    17Networks_LH_DorsAttnB_PostC_6               0   118 16  0
+1159    17Networks_LH_DorsAttnB_PostC_7               0   118 17  0
+1160    17Networks_LH_DorsAttnB_PostC_8               0   118 18  0
+1161    17Networks_LH_DorsAttnB_PostC_9               0   118 19  0
+1162    17Networks_LH_DorsAttnB_PostC_10              0   118 20  0
+1163    17Networks_LH_DorsAttnB_PostC_11              0   118 21  0
+1164    17Networks_LH_DorsAttnB_PostC_12              0   118 22  0
+1165    17Networks_LH_DorsAttnB_PostC_13              0   119 15  0
+1166    17Networks_LH_DorsAttnB_PostC_14              0   119 16  0
+1167    17Networks_LH_DorsAttnB_FEF_1                 0   119 13  0
+1168    17Networks_LH_DorsAttnB_FEF_2                 0   119 17  0
+1169    17Networks_LH_DorsAttnB_FEF_3                 0   119 18  0
+1170    17Networks_LH_DorsAttnB_FEF_4                 0   119 19  0
+1171    17Networks_LH_DorsAttnB_FEF_5                 0   119 20  0
+1172    17Networks_LH_DorsAttnB_FEF_6                 0   119 21  0
+1173    17Networks_LH_SalVentAttnA_ParOper_1          196 58  249 0
+1174    17Networks_LH_SalVentAttnA_ParOper_2          196 58  251 0
+1175    17Networks_LH_SalVentAttnA_ParOper_3          196 58  252 0
+1176    17Networks_LH_SalVentAttnA_ParOper_4          196 58  253 0
+1177    17Networks_LH_SalVentAttnA_ParOper_5          196 58  254 0
+1178    17Networks_LH_SalVentAttnA_ParOper_6          196 58  255 0
+1179    17Networks_LH_SalVentAttnA_Ins_1              196 59  247 0
+1180    17Networks_LH_SalVentAttnA_Ins_2              196 59  248 0
+1181    17Networks_LH_SalVentAttnA_Ins_3              196 59  249 0
+1182    17Networks_LH_SalVentAttnA_Ins_4              196 59  251 0
+1183    17Networks_LH_SalVentAttnA_Ins_5              196 59  252 0
+1184    17Networks_LH_SalVentAttnA_Ins_6              196 59  253 0
+1185    17Networks_LH_SalVentAttnA_Ins_7              196 59  254 0
+1186    17Networks_LH_SalVentAttnA_Ins_8              196 59  255 0
+1187    17Networks_LH_SalVentAttnA_Ins_9              193 52  250 0
+1188    17Networks_LH_SalVentAttnA_Ins_10             193 53  243 0
+1189    17Networks_LH_SalVentAttnA_ParMed_1           196 59  250 0
+1190    17Networks_LH_SalVentAttnA_ParMed_2           193 52  249 0
+1191    17Networks_LH_SalVentAttnA_ParMed_3           193 52  251 0
+1192    17Networks_LH_SalVentAttnA_ParMed_4           193 53  244 0
+1193    17Networks_LH_SalVentAttnA_ParMed_5           193 53  245 0
+1194    17Networks_LH_SalVentAttnA_ParMed_6           193 53  246 0
+1195    17Networks_LH_SalVentAttnA_ParMed_7           193 53  247 0
+1196    17Networks_LH_SalVentAttnA_ParMed_8           193 53  248 0
+1197    17Networks_LH_SalVentAttnA_FrMed_1            197 58  248 0
+1198    17Networks_LH_SalVentAttnA_FrMed_2            197 58  249 0
+1199    17Networks_LH_SalVentAttnA_FrMed_3            197 58  251 0
+1200    17Networks_LH_SalVentAttnA_FrMed_4            197 58  252 0
+1201    17Networks_LH_SalVentAttnA_FrMed_5            197 58  253 0
+1202    17Networks_LH_SalVentAttnA_FrMed_6            197 58  254 0
+1203    17Networks_LH_SalVentAttnA_FrMed_7            197 58  255 0
+1204    17Networks_LH_SalVentAttnB_IPL_1              255 152 214 0
+1205    17Networks_LH_SalVentAttnB_PFCd_1             255 152 215 0
+1206    17Networks_LH_SalVentAttnB_PFCl_1             255 153 212 0
+1207    17Networks_LH_SalVentAttnB_PFCl_2             255 153 214 0
+1208    17Networks_LH_SalVentAttnB_PFCl_3             255 153 215 0
+1209    17Networks_LH_SalVentAttnB_PFCl_4             255 153 216 0
+1210    17Networks_LH_SalVentAttnB_PFCl_5             255 153 217 0
+1211    17Networks_LH_SalVentAttnB_PFCl_6             255 153 218 0
+1212    17Networks_LH_SalVentAttnB_PFCv_1             255 153 213 0
+1213    17Networks_LH_SalVentAttnB_PFCv_2             255 153 219 0
+1214    17Networks_LH_SalVentAttnB_PFCv_3             255 153 220 0
+1215    17Networks_LH_SalVentAttnB_PFCv_4             255 153 221 0
+1216    17Networks_LH_SalVentAttnB_PFCv_5             255 154 214 0
+1217    17Networks_LH_SalVentAttnB_PFCmp_1            255 151 214 0
+1218    17Networks_LH_SalVentAttnB_PFCmp_2            255 151 215 0
+1219    17Networks_LH_SalVentAttnB_PFCmp_3            255 151 216 0
+1220    17Networks_LH_SalVentAttnB_PFCmp_4            255 151 217 0
+1221    17Networks_LH_Limbic_OFC_1                    122 135 45  0
+1222    17Networks_LH_Limbic_OFC_2                    122 135 46  0
+1223    17Networks_LH_Limbic_OFC_3                    122 135 47  0
+1224    17Networks_LH_Limbic_OFC_4                    122 135 48  0
+1225    17Networks_LH_Limbic_OFC_5                    122 135 49  0
+1226    17Networks_LH_Limbic_OFC_6                    122 135 51  0
+1227    17Networks_LH_Limbic_OFC_7                    122 135 52  0
+1228    17Networks_LH_Limbic_OFC_8                    122 135 53  0
+1229    17Networks_LH_Limbic_OFC_9                    122 135 54  0
+1230    17Networks_LH_Limbic_OFC_10                   122 135 55  0
+1231    17Networks_LH_Limbic_OFC_11                   122 135 56  0
+1232    17Networks_LH_Limbic_OFC_12                   122 135 57  0
+1233    17Networks_LH_Limbic_OFC_13                   122 136 50  0
+1234    17Networks_LH_Limbic_TempPole_1               220 248 159 0
+1235    17Networks_LH_Limbic_TempPole_2               220 248 160 0
+1236    17Networks_LH_Limbic_TempPole_3               220 248 161 0
+1237    17Networks_LH_Limbic_TempPole_4               220 248 162 0
+1238    17Networks_LH_Limbic_TempPole_5               220 248 163 0
+1239    17Networks_LH_Limbic_TempPole_6               220 248 165 0
+1240    17Networks_LH_Limbic_TempPole_7               220 248 166 0
+1241    17Networks_LH_Limbic_TempPole_8               220 248 167 0
+1242    17Networks_LH_Limbic_TempPole_9               220 248 168 0
+1243    17Networks_LH_Limbic_TempPole_10              220 248 169 0
+1244    17Networks_LH_Limbic_TempPole_11              220 248 170 0
+1245    17Networks_LH_Limbic_TempPole_12              220 248 171 0
+1246    17Networks_LH_Limbic_TempPole_13              220 249 164 0
+1247    17Networks_LH_Limbic_TempPole_14              220 249 165 0
+1248    17Networks_LH_ContA_Temp_1                    230 148 35  0
+1249    17Networks_LH_ContA_IPS_1                     230 148 31  0
+1250    17Networks_LH_ContA_IPS_2                     230 148 32  0
+1251    17Networks_LH_ContA_IPS_3                     230 148 33  0
+1252    17Networks_LH_ContA_IPS_4                     230 148 34  0
+1253    17Networks_LH_ContA_IPS_5                     230 148 36  0
+1254    17Networks_LH_ContA_IPS_6                     230 148 37  0
+1255    17Networks_LH_ContA_IPS_7                     230 148 38  0
+1256    17Networks_LH_ContA_IPS_8                     230 148 39  0
+1257    17Networks_LH_ContA_IPS_9                     230 148 40  0
+1258    17Networks_LH_ContA_IPS_10                    230 148 41  0
+1259    17Networks_LH_ContA_IPS_11                    230 148 42  0
+1260    17Networks_LH_ContA_PFCd_1                    230 149 35  0
+1261    17Networks_LH_ContA_PFCd_2                    230 149 36  0
+1262    17Networks_LH_ContA_PFCl_1                    230 149 32  0
+1263    17Networks_LH_ContA_PFCl_2                    230 149 33  0
+1264    17Networks_LH_ContA_PFCl_3                    230 149 34  0
+1265    17Networks_LH_ContA_PFCl_4                    230 149 37  0
+1266    17Networks_LH_ContA_PFCl_5                    230 149 38  0
+1267    17Networks_LH_ContA_PFCl_6                    230 149 39  0
+1268    17Networks_LH_ContA_PFCl_7                    230 149 40  0
+1269    17Networks_LH_ContA_PFCl_8                    230 149 41  0
+1270    17Networks_LH_ContA_PFCl_9                    230 149 42  0
+1271    17Networks_LH_ContA_PFCl_10                   230 150 35  0
+1272    17Networks_LH_ContA_Cinga_1                   231 148 36  0
+1273    17Networks_LH_ContB_Temp_1                    135 50  75  0
+1274    17Networks_LH_ContB_Temp_2                    135 50  76  0
+1275    17Networks_LH_ContB_Temp_3                    135 50  77  0
+1276    17Networks_LH_ContB_IPL_1                     135 50  74  0
+1277    17Networks_LH_ContB_IPL_2                     135 50  78  0
+1278    17Networks_LH_ContB_IPL_3                     135 50  79  0
+1279    17Networks_LH_ContB_IPL_4                     135 50  80  0
+1280    17Networks_LH_ContB_IPL_5                     135 50  81  0
+1281    17Networks_LH_ContB_IPL_6                     135 50  82  0
+1282    17Networks_LH_ContB_PFCd_1                    135 51  75  0
+1283    17Networks_LH_ContB_PFCl_1                    135 51  76  0
+1284    17Networks_LH_ContB_PFCl_2                    135 51  77  0
+1285    17Networks_LH_ContB_PFCl_3                    135 51  78  0
+1286    17Networks_LH_ContB_PFClv_1                   136 50  75  0
+1287    17Networks_LH_ContB_PFClv_2                   136 50  76  0
+1288    17Networks_LH_ContB_PFClv_3                   136 50  77  0
+1289    17Networks_LH_ContB_PFClv_4                   136 50  78  0
+1290    17Networks_LH_ContB_PFCmp_1                   136 50  79  0
+1291    17Networks_LH_ContC_pCun_1                    119 140 172 0
+1292    17Networks_LH_ContC_pCun_2                    119 140 173 0
+1293    17Networks_LH_ContC_pCun_3                    119 140 174 0
+1294    17Networks_LH_ContC_pCun_4                    119 140 175 0
+1295    17Networks_LH_ContC_pCun_5                    119 140 177 0
+1296    17Networks_LH_ContC_pCun_6                    119 140 178 0
+1297    17Networks_LH_ContC_pCun_7                    119 140 179 0
+1298    17Networks_LH_ContC_pCun_8                    119 140 180 0
+1299    17Networks_LH_ContC_pCun_9                    119 140 181 0
+1300    17Networks_LH_ContC_pCun_10                   119 140 182 0
+1301    17Networks_LH_ContC_pCun_11                   119 140 183 0
+1302    17Networks_LH_ContC_Cingp_1                   119 140 184 0
+1303    17Networks_LH_ContC_Cingp_2                   119 141 177 0
+1304    17Networks_LH_ContC_Cingp_3                   119 141 178 0
+1305    17Networks_LH_ContC_Cingp_4                   119 141 179 0
+1306    17Networks_LH_DefaultA_IPL_1                  255 255 1   0
+1307    17Networks_LH_DefaultA_IPL_2                  255 255 2   0
+1308    17Networks_LH_DefaultA_IPL_3                  255 255 3   0
+1309    17Networks_LH_DefaultA_IPL_4                  255 255 4   0
+1310    17Networks_LH_DefaultA_IPL_5                  255 255 5   0
+1311    17Networks_LH_DefaultA_PFCd_1                 255 255 0   0
+1312    17Networks_LH_DefaultA_PFCd_2                 255 255 6   0
+1313    17Networks_LH_DefaultA_PFCd_3                 255 255 7   0
+1314    17Networks_LH_DefaultA_PFCd_4                 255 255 8   0
+1315    17Networks_LH_DefaultA_PFCd_5                 252 249 0   0
+1316    17Networks_LH_DefaultA_PFCd_6                 252 249 1   0
+1317    17Networks_LH_DefaultA_PCC_1                  255 254 1   0
+1318    17Networks_LH_DefaultA_PCC_2                  255 254 2   0
+1319    17Networks_LH_DefaultA_PCC_3                  255 254 3   0
+1320    17Networks_LH_DefaultA_PCC_4                  255 254 4   0
+1321    17Networks_LH_DefaultA_PCC_5                  255 254 5   0
+1322    17Networks_LH_DefaultA_PCC_6                  255 254 6   0
+1323    17Networks_LH_DefaultA_PCC_7                  255 254 7   0
+1324    17Networks_LH_DefaultA_PCC_8                  252 250 0   0
+1325    17Networks_LH_DefaultA_PCC_9                  252 251 0   0
+1326    17Networks_LH_DefaultA_PCC_10                 252 252 0   0
+1327    17Networks_LH_DefaultA_PCC_11                 252 253 0   0
+1328    17Networks_LH_DefaultA_PCC_12                 252 254 0   0
+1329    17Networks_LH_DefaultA_PCC_13                 253 247 0   0
+1330    17Networks_LH_DefaultA_PCC_14                 253 248 0   0
+1331    17Networks_LH_DefaultA_PCC_15                 253 249 0   0
+1332    17Networks_LH_DefaultA_PCC_16                 253 250 0   0
+1333    17Networks_LH_DefaultA_PCC_17                 253 251 0   0
+1334    17Networks_LH_DefaultA_PCC_18                 253 252 0   0
+1335    17Networks_LH_DefaultA_PFCm_1                 254 255 1   0
+1336    17Networks_LH_DefaultA_PFCm_2                 254 255 2   0
+1337    17Networks_LH_DefaultA_PFCm_3                 254 255 3   0
+1338    17Networks_LH_DefaultA_PFCm_4                 254 255 4   0
+1339    17Networks_LH_DefaultA_PFCm_5                 254 255 5   0
+1340    17Networks_LH_DefaultA_PFCm_6                 254 255 6   0
+1341    17Networks_LH_DefaultA_PFCm_7                 254 255 7   0
+1342    17Networks_LH_DefaultA_PFCm_8                 251 249 0   0
+1343    17Networks_LH_DefaultB_Temp_1                 205 62  74  0
+1344    17Networks_LH_DefaultB_Temp_2                 205 62  75  0
+1345    17Networks_LH_DefaultB_Temp_3                 205 62  76  0
+1346    17Networks_LH_DefaultB_Temp_4                 205 62  77  0
+1347    17Networks_LH_DefaultB_Temp_5                 205 62  79  0
+1348    17Networks_LH_DefaultB_Temp_6                 205 62  80  0
+1349    17Networks_LH_DefaultB_Temp_7                 205 62  81  0
+1350    17Networks_LH_DefaultB_Temp_8                 205 62  82  0
+1351    17Networks_LH_DefaultB_Temp_9                 205 62  83  0
+1352    17Networks_LH_DefaultB_Temp_10                205 62  84  0
+1353    17Networks_LH_DefaultB_Temp_11                205 62  85  0
+1354    17Networks_LH_DefaultB_IPL_1                  205 62  78  0
+1355    17Networks_LH_DefaultB_IPL_2                  205 62  86  0
+1356    17Networks_LH_DefaultB_IPL_3                  205 63  79  0
+1357    17Networks_LH_DefaultB_IPL_4                  205 63  80  0
+1358    17Networks_LH_DefaultB_IPL_5                  205 63  81  0
+1359    17Networks_LH_DefaultB_PFCd_1                 205 63  74  0
+1360    17Networks_LH_DefaultB_PFCd_2                 205 63  75  0
+1361    17Networks_LH_DefaultB_PFCd_3                 205 63  76  0
+1362    17Networks_LH_DefaultB_PFCd_4                 205 63  77  0
+1363    17Networks_LH_DefaultB_PFCd_5                 205 63  82  0
+1364    17Networks_LH_DefaultB_PFCd_6                 205 63  83  0
+1365    17Networks_LH_DefaultB_PFCd_7                 205 63  84  0
+1366    17Networks_LH_DefaultB_PFCd_8                 205 63  85  0
+1367    17Networks_LH_DefaultB_PFCd_9                 205 64  78  0
+1368    17Networks_LH_DefaultB_PFCd_10                205 64  79  0
+1369    17Networks_LH_DefaultB_PFCd_11                205 64  80  0
+1370    17Networks_LH_DefaultB_PFCd_12                205 64  81  0
+1371    17Networks_LH_DefaultB_PFCl_1                 205 63  86  0
+1372    17Networks_LH_DefaultB_PFCl_2                 205 64  82  0
+1373    17Networks_LH_DefaultB_PFCv_1                 206 62  77  0
+1374    17Networks_LH_DefaultB_PFCv_2                 206 62  79  0
+1375    17Networks_LH_DefaultB_PFCv_3                 206 62  80  0
+1376    17Networks_LH_DefaultB_PFCv_4                 206 62  81  0
+1377    17Networks_LH_DefaultB_PFCv_5                 206 62  82  0
+1378    17Networks_LH_DefaultB_PFCv_6                 206 62  83  0
+1379    17Networks_LH_DefaultC_IPL_1                  0   0   131 0
+1380    17Networks_LH_DefaultC_IPL_2                  0   0   132 0
+1381    17Networks_LH_DefaultC_Rsp_1                  0   0   133 0
+1382    17Networks_LH_DefaultC_Rsp_2                  0   0   134 0
+1383    17Networks_LH_DefaultC_Rsp_3                  0   0   135 0
+1384    17Networks_LH_DefaultC_Rsp_4                  0   0   136 0
+1385    17Networks_LH_DefaultC_PHC_1                  0   1   129 0
+1386    17Networks_LH_DefaultC_PHC_2                  0   1   131 0
+1387    17Networks_LH_DefaultC_PHC_3                  0   1   132 0
+1388    17Networks_LH_DefaultC_PHC_4                  0   1   133 0
+1389    17Networks_LH_DefaultC_PHC_5                  0   1   134 0
+1390    17Networks_LH_TempPar_1                       12  48  251 0
+1391    17Networks_LH_TempPar_2                       12  48  252 0
+1392    17Networks_LH_TempPar_3                       12  48  253 0
+1393    17Networks_LH_TempPar_4                       12  48  254 0
+1394    17Networks_LH_TempPar_5                       9   41  249 0
+1395    17Networks_LH_TempPar_6                       9   41  250 0
+1396    17Networks_LH_TempPar_7                       9   41  251 0
+1397    17Networks_LH_TempPar_8                       9   41  252 0
+1398    17Networks_LH_TempPar_9                       9   41  253 0
+1399    17Networks_LH_TempPar_10                      9   41  254 0
+1400    17Networks_LH_TempPar_11                      9   41  255 0
+
+2000    RH_Background+FreeSurfer_Defined_Medial_Wall  1   1   1   0
+2001    17Networks_RH_VisCent_ExStr_1                 124 18  129 0
+2002    17Networks_RH_VisCent_ExStr_2                 124 18  130 0
+2003    17Networks_RH_VisCent_ExStr_3                 124 18  131 0
+2004    17Networks_RH_VisCent_ExStr_4                 124 18  132 0
+2005    17Networks_RH_VisCent_ExStr_5                 124 18  133 0
+2006    17Networks_RH_VisCent_ExStr_6                 124 18  134 0
+2007    17Networks_RH_VisCent_ExStr_7                 124 18  135 0
+2008    17Networks_RH_VisCent_ExStr_8                 124 19  128 0
+2009    17Networks_RH_VisCent_ExStr_9                 124 19  129 0
+2010    17Networks_RH_VisCent_ExStr_10                124 19  130 0
+2011    17Networks_RH_VisCent_ExStr_11                124 19  131 0
+2012    17Networks_RH_VisCent_ExStr_12                124 19  132 0
+2013    17Networks_RH_VisCent_ExStr_13                124 19  133 0
+2014    17Networks_RH_VisCent_ExStr_14                124 19  134 0
+2015    17Networks_RH_VisCent_ExStr_15                124 19  136 0
+2016    17Networks_RH_VisCent_ExStr_16                124 19  137 0
+2017    17Networks_RH_VisCent_ExStr_17                124 19  138 0
+2018    17Networks_RH_VisCent_ExStr_18                124 19  139 0
+2019    17Networks_RH_VisCent_ExStr_19                124 19  140 0
+2020    17Networks_RH_VisCent_ExStr_20                124 19  141 0
+2021    17Networks_RH_VisCent_ExStr_21                124 19  142 0
+2022    17Networks_RH_VisCent_ExStr_22                124 20  135 0
+2023    17Networks_RH_VisCent_ExStr_23                124 20  136 0
+2024    17Networks_RH_VisCent_ExStr_24                124 20  137 0
+2025    17Networks_RH_VisCent_ExStr_25                124 20  138 0
+2026    17Networks_RH_VisCent_ExStr_26                124 20  139 0
+2027    17Networks_RH_VisCent_ExStr_27                124 20  140 0
+2028    17Networks_RH_VisCent_ExStr_28                124 20  141 0
+2029    17Networks_RH_VisCent_ExStr_29                124 20  142 0
+2030    17Networks_RH_VisCent_ExStr_30                124 21  135 0
+2031    17Networks_RH_VisCent_ExStr_31                124 21  136 0
+2032    17Networks_RH_VisPeri_ExStrSup_1              250 0   0   0
+2033    17Networks_RH_VisPeri_ExStrSup_2              250 0   2   0
+2034    17Networks_RH_VisPeri_ExStrSup_3              250 0   3   0
+2035    17Networks_RH_VisPeri_ExStrSup_4              250 0   4   0
+2036    17Networks_RH_VisPeri_ExStrSup_5              250 0   5   0
+2037    17Networks_RH_VisPeri_ExStrSup_6              250 0   6   0
+2038    17Networks_RH_VisPeri_ExStrSup_7              250 0   7   0
+2039    17Networks_RH_VisPeri_ExStrSup_8              250 0   8   0
+2040    17Networks_RH_VisPeri_ExStrSup_9              250 1   1   0
+2041    17Networks_RH_VisPeri_ExStrSup_10             250 1   2   0
+2042    17Networks_RH_VisPeri_ExStrSup_11             250 1   3   0
+2043    17Networks_RH_VisPeri_ExStrSup_12             250 1   4   0
+2044    17Networks_RH_VisPeri_ExStrSup_13             250 1   5   0
+2045    17Networks_RH_VisPeri_ExStrSup_14             250 1   6   0
+2046    17Networks_RH_VisPeri_ExStrSup_15             250 1   7   0
+2047    17Networks_RH_VisPeri_ExStrSup_16             250 1   8   0
+2048    17Networks_RH_VisPeri_ExStrSup_17             250 2   1   0
+2049    17Networks_RH_VisPeri_ExStrSup_18             250 2   2   0
+2050    17Networks_RH_VisPeri_ExStrSup_19             250 2   3   0
+2051    17Networks_RH_VisPeri_ExStrSup_20             250 2   4   0
+2052    17Networks_RH_VisPeri_ExStrSup_21             250 2   5   0
+2053    17Networks_RH_VisPeri_ExStrSup_22             250 2   6   0
+2054    17Networks_RH_VisPeri_ExStrSup_23             250 2   7   0
+2055    17Networks_RH_VisPeri_ExStrSup_24             250 2   8   0
+2056    17Networks_RH_VisPeri_ExStrSup_25             250 3   1   0
+2057    17Networks_RH_VisPeri_ExStrSup_26             250 3   2   0
+2058    17Networks_RH_SomMotA_1                       74  129 181 0
+2059    17Networks_RH_SomMotA_2                       74  130 174 0
+2060    17Networks_RH_SomMotA_3                       74  130 175 0
+2061    17Networks_RH_SomMotA_4                       74  130 176 0
+2062    17Networks_RH_SomMotA_5                       74  130 177 0
+2063    17Networks_RH_SomMotA_6                       74  130 178 0
+2064    17Networks_RH_SomMotA_7                       74  130 179 0
+2065    17Networks_RH_SomMotA_8                       74  130 180 0
+2066    17Networks_RH_SomMotA_9                       74  130 181 0
+2067    17Networks_RH_SomMotA_10                      74  131 174 0
+2068    17Networks_RH_SomMotA_11                      74  131 175 0
+2069    17Networks_RH_SomMotA_12                      74  131 176 0
+2070    17Networks_RH_SomMotA_13                      74  131 177 0
+2071    17Networks_RH_SomMotA_14                      74  131 178 0
+2072    17Networks_RH_SomMotA_15                      74  131 179 0
+2073    17Networks_RH_SomMotA_16                      74  131 180 0
+2074    17Networks_RH_SomMotA_17                      74  131 182 0
+2075    17Networks_RH_SomMotA_18                      74  131 183 0
+2076    17Networks_RH_SomMotA_19                      74  131 184 0
+2077    17Networks_RH_SomMotA_20                      74  131 185 0
+2078    17Networks_RH_SomMotA_21                      74  131 186 0
+2079    17Networks_RH_SomMotA_22                      74  131 187 0
+2080    17Networks_RH_SomMotA_23                      74  131 188 0
+2081    17Networks_RH_SomMotA_24                      74  132 181 0
+2082    17Networks_RH_SomMotA_25                      74  132 182 0
+2083    17Networks_RH_SomMotA_26                      74  132 183 0
+2084    17Networks_RH_SomMotA_27                      74  132 184 0
+2085    17Networks_RH_SomMotA_28                      74  132 185 0
+2086    17Networks_RH_SomMotA_29                      74  132 186 0
+2087    17Networks_RH_SomMotA_30                      74  132 187 0
+2088    17Networks_RH_SomMotA_31                      74  132 188 0
+2089    17Networks_RH_SomMotA_32                      74  133 181 0
+2090    17Networks_RH_SomMotA_33                      74  133 182 0
+2091    17Networks_RH_SomMotA_34                      74  133 183 0
+2092    17Networks_RH_SomMotA_35                      74  133 184 0
+2093    17Networks_RH_SomMotA_36                      74  133 185 0
+2094    17Networks_RH_SomMotB_S2_1                    47  204 161 0
+2095    17Networks_RH_SomMotB_S2_2                    47  204 162 0
+2096    17Networks_RH_SomMotB_S2_3                    47  204 163 0
+2097    17Networks_RH_SomMotB_S2_4                    47  204 164 0
+2098    17Networks_RH_SomMotB_S2_5                    47  205 157 0
+2099    17Networks_RH_SomMotB_S2_6                    47  205 158 0
+2100    17Networks_RH_SomMotB_S2_7                    47  205 159 0
+2101    17Networks_RH_SomMotB_S2_8                    47  205 160 0
+2102    17Networks_RH_SomMotB_S2_9                    47  205 161 0
+2103    17Networks_RH_SomMotB_S2_10                   47  205 162 0
+2104    17Networks_RH_SomMotB_S2_11                   47  205 163 0
+2105    17Networks_RH_SomMotB_S2_12                   47  205 165 0
+2106    17Networks_RH_SomMotB_S2_13                   47  205 166 0
+2107    17Networks_RH_SomMotB_S2_14                   47  205 167 0
+2108    17Networks_RH_SomMotB_S2_15                   47  205 168 0
+2109    17Networks_RH_SomMotB_S2_16                   47  205 169 0
+2110    17Networks_RH_SomMotB_S2_17                   47  205 170 0
+2111    17Networks_RH_SomMotB_S2_18                   47  205 171 0
+2112    17Networks_RH_SomMotB_S2_19                   47  206 164 0
+2113    17Networks_RH_SomMotB_S2_20                   47  206 165 0
+2114    17Networks_RH_SomMotB_S2_21                   47  206 166 0
+2115    17Networks_RH_SomMotB_S2_22                   47  206 167 0
+2116    17Networks_RH_SomMotB_S2_23                   47  206 168 0
+2117    17Networks_RH_SomMotB_S2_24                   47  206 169 0
+2118    17Networks_RH_SomMotB_S2_25                   47  206 170 0
+2119    17Networks_RH_SomMotB_S2_26                   47  206 171 0
+2120    17Networks_RH_DorsAttnA_TempOcc_1             78  156 58  0
+2121    17Networks_RH_DorsAttnA_TempOcc_2             78  156 59  0
+2122    17Networks_RH_DorsAttnA_TempOcc_3             78  156 60  0
+2123    17Networks_RH_DorsAttnA_TempOcc_4             78  156 62  0
+2124    17Networks_RH_DorsAttnA_TempOcc_5             78  156 63  0
+2125    17Networks_RH_DorsAttnA_TempOcc_6             78  156 64  0
+2126    17Networks_RH_DorsAttnA_TempOcc_7             78  156 65  0
+2127    17Networks_RH_DorsAttnA_TempOcc_8             78  156 66  0
+2128    17Networks_RH_DorsAttnA_TempOcc_9             78  156 67  0
+2129    17Networks_RH_DorsAttnA_TempOcc_10            78  156 68  0
+2130    17Networks_RH_DorsAttnA_SPL_1                 79  155 56  0
+2131    17Networks_RH_DorsAttnA_SPL_2                 79  155 57  0
+2132    17Networks_RH_DorsAttnA_SPL_3                 79  155 58  0
+2133    17Networks_RH_DorsAttnA_SPL_4                 79  155 59  0
+2134    17Networks_RH_DorsAttnA_SPL_5                 79  155 60  0
+2135    17Networks_RH_DorsAttnA_SPL_6                 79  155 62  0
+2136    17Networks_RH_DorsAttnA_SPL_7                 79  155 63  0
+2137    17Networks_RH_DorsAttnA_SPL_8                 79  155 64  0
+2138    17Networks_RH_DorsAttnA_SPL_9                 79  155 65  0
+2139    17Networks_RH_DorsAttnA_SPL_10                79  155 66  0
+2140    17Networks_RH_DorsAttnA_SPL_11                79  155 67  0
+2141    17Networks_RH_DorsAttnA_SPL_12                79  155 68  0
+2142    17Networks_RH_DorsAttnA_SPL_13                79  156 61  0
+2143    17Networks_RH_DorsAttnA_SPL_14                79  156 62  0
+2144    17Networks_RH_DorsAttnB_TempOcc_1             5   118 15  0
+2145    17Networks_RH_DorsAttnB_PostC_1               5   118 10  0
+2146    17Networks_RH_DorsAttnB_PostC_2               5   118 11  0
+2147    17Networks_RH_DorsAttnB_PostC_3               5   118 12  0
+2148    17Networks_RH_DorsAttnB_PostC_4               5   118 13  0
+2149    17Networks_RH_DorsAttnB_PostC_5               5   118 14  0
+2150    17Networks_RH_DorsAttnB_PostC_6               5   118 16  0
+2151    17Networks_RH_DorsAttnB_PostC_7               5   118 17  0
+2152    17Networks_RH_DorsAttnB_PostC_8               5   118 18  0
+2153    17Networks_RH_DorsAttnB_PostC_9               5   118 19  0
+2154    17Networks_RH_DorsAttnB_PostC_10              5   118 20  0
+2155    17Networks_RH_DorsAttnB_PostC_11              5   118 21  0
+2156    17Networks_RH_DorsAttnB_PostC_12              5   118 22  0
+2157    17Networks_RH_DorsAttnB_PostC_13              5   119 15  0
+2158    17Networks_RH_DorsAttnB_FEF_1                 5   119 13  0
+2159    17Networks_RH_DorsAttnB_FEF_2                 5   119 16  0
+2160    17Networks_RH_DorsAttnB_FEF_3                 5   119 17  0
+2161    17Networks_RH_DorsAttnB_FEF_4                 5   119 18  0
+2162    17Networks_RH_DorsAttnB_FEF_5                 5   119 19  0
+2163    17Networks_RH_DorsAttnB_FEF_6                 5   119 20  0
+2164    17Networks_RH_DorsAttnB_PrCv_1                5   119 21  0
+2165    17Networks_RH_DorsAttnB_PrCv_2                5   119 22  0
+2166    17Networks_RH_SalVentAttnA_ParOper_1          200 58  246 0
+2167    17Networks_RH_SalVentAttnA_ParOper_2          200 58  247 0
+2168    17Networks_RH_SalVentAttnA_ParOper_3          200 58  248 0
+2169    17Networks_RH_SalVentAttnA_ParOper_4          200 58  250 0
+2170    17Networks_RH_SalVentAttnA_ParOper_5          200 58  251 0
+2171    17Networks_RH_SalVentAttnA_ParOper_6          200 58  252 0
+2172    17Networks_RH_SalVentAttnA_ParOper_7          200 58  253 0
+2173    17Networks_RH_SalVentAttnA_ParOper_8          200 58  254 0
+2174    17Networks_RH_SalVentAttnA_ParOper_9          200 58  255 0
+2175    17Networks_RH_SalVentAttnA_PrC_1              200 57  251 0
+2176    17Networks_RH_SalVentAttnA_Ins_1              199 58  245 0
+2177    17Networks_RH_SalVentAttnA_Ins_2              199 58  246 0
+2178    17Networks_RH_SalVentAttnA_Ins_3              199 58  247 0
+2179    17Networks_RH_SalVentAttnA_Ins_4              199 58  248 0
+2180    17Networks_RH_SalVentAttnA_Ins_5              199 58  249 0
+2181    17Networks_RH_SalVentAttnA_Ins_6              199 58  251 0
+2182    17Networks_RH_SalVentAttnA_Ins_7              199 58  252 0
+2183    17Networks_RH_SalVentAttnA_Ins_8              199 58  253 0
+2184    17Networks_RH_SalVentAttnA_Ins_9              199 58  254 0
+2185    17Networks_RH_SalVentAttnA_Ins_10             199 58  255 0
+2186    17Networks_RH_SalVentAttnA_Ins_11             196 51  250 0
+2187    17Networks_RH_SalVentAttnA_Ins_12             196 52  243 0
+2188    17Networks_RH_SalVentAttnA_Ins_13             196 52  244 0
+2189    17Networks_RH_SalVentAttnA_Ins_14             196 52  245 0
+2190    17Networks_RH_SalVentAttnA_FrMed_1            199 56  250 0
+2191    17Networks_RH_SalVentAttnA_FrMed_2            199 57  243 0
+2192    17Networks_RH_SalVentAttnA_FrMed_3            199 57  244 0
+2193    17Networks_RH_SalVentAttnA_FrMed_4            199 57  245 0
+2194    17Networks_RH_SalVentAttnA_FrMed_5            199 57  246 0
+2195    17Networks_RH_SalVentAttnA_FrMed_6            199 57  247 0
+2196    17Networks_RH_SalVentAttnA_FrMed_7            199 57  248 0
+2197    17Networks_RH_SalVentAttnA_FrMed_8            199 57  249 0
+2198    17Networks_RH_SalVentAttnA_FrMed_9            199 57  251 0
+2199    17Networks_RH_SalVentAttnA_FrMed_10           199 57  252 0
+2200    17Networks_RH_SalVentAttnA_FrMed_11           199 57  253 0
+2201    17Networks_RH_SalVentAttnA_FrMed_12           199 57  254 0
+2202    17Networks_RH_SalVentAttnA_FrMed_13           199 57  255 0
+2203    17Networks_RH_SalVentAttnA_FrMed_14           196 50  250 0
+2204    17Networks_RH_SalVentAttnA_FrMed_15           196 51  243 0
+2205    17Networks_RH_SalVentAttnA_FrMed_16           196 51  244 0
+2206    17Networks_RH_SalVentAttnA_FrMed_17           196 51  245 0
+2207    17Networks_RH_SalVentAttnA_FrMed_18           196 51  246 0
+2208    17Networks_RH_SalVentAttnA_FrMed_19           196 51  247 0
+2209    17Networks_RH_SalVentAttnB_IPL_1              250 152 214 0
+2210    17Networks_RH_SalVentAttnB_IPL_2              250 152 215 0
+2211    17Networks_RH_SalVentAttnB_IPL_3              250 152 216 0
+2212    17Networks_RH_SalVentAttnB_PFCd_1             250 152 213 0
+2213    17Networks_RH_SalVentAttnB_PFCl_1             250 151 212 0
+2214    17Networks_RH_SalVentAttnB_PFCl_2             250 151 214 0
+2215    17Networks_RH_SalVentAttnB_PFCl_3             250 151 215 0
+2216    17Networks_RH_SalVentAttnB_PFCl_4             250 151 216 0
+2217    17Networks_RH_SalVentAttnB_PFCl_5             250 151 217 0
+2218    17Networks_RH_SalVentAttnB_PFCv_1             250 152 212 0
+2219    17Networks_RH_SalVentAttnB_PFCv_2             250 152 217 0
+2220    17Networks_RH_SalVentAttnB_PFCv_3             250 152 218 0
+2221    17Networks_RH_SalVentAttnB_PFCv_4             250 152 219 0
+2222    17Networks_RH_SalVentAttnB_PFCv_5             250 152 220 0
+2223    17Networks_RH_SalVentAttnB_PFCv_6             250 152 221 0
+2224    17Networks_RH_SalVentAttnB_PFCv_7             250 153 214 0
+2225    17Networks_RH_SalVentAttnB_PFCv_8             250 153 215 0
+2226    17Networks_RH_SalVentAttnB_PFCmp_1            250 153 216 0
+2227    17Networks_RH_SalVentAttnB_PFCmp_2            250 153 217 0
+2228    17Networks_RH_SalVentAttnB_PFCmp_3            250 153 218 0
+2229    17Networks_RH_SalVentAttnB_PFCmp_4            250 153 219 0
+2230    17Networks_RH_Limbic_OFC_1                    126 135 46  0
+2231    17Networks_RH_Limbic_OFC_2                    126 135 47  0
+2232    17Networks_RH_Limbic_OFC_3                    126 135 48  0
+2233    17Networks_RH_Limbic_OFC_4                    126 135 49  0
+2234    17Networks_RH_Limbic_OFC_5                    126 135 50  0
+2235    17Networks_RH_Limbic_OFC_6                    126 135 52  0
+2236    17Networks_RH_Limbic_OFC_7                    126 135 53  0
+2237    17Networks_RH_Limbic_OFC_8                    126 135 54  0
+2238    17Networks_RH_Limbic_OFC_9                    126 135 55  0
+2239    17Networks_RH_Limbic_OFC_10                   126 135 56  0
+2240    17Networks_RH_Limbic_OFC_11                   126 135 57  0
+2241    17Networks_RH_Limbic_OFC_12                   126 135 58  0
+2242    17Networks_RH_Limbic_OFC_13                   126 136 51  0
+2243    17Networks_RH_Limbic_TempPole_1               224 248 160 0
+2244    17Networks_RH_Limbic_TempPole_2               224 248 161 0
+2245    17Networks_RH_Limbic_TempPole_3               224 248 162 0
+2246    17Networks_RH_Limbic_TempPole_4               224 248 163 0
+2247    17Networks_RH_Limbic_TempPole_5               224 248 164 0
+2248    17Networks_RH_Limbic_TempPole_6               224 248 166 0
+2249    17Networks_RH_Limbic_TempPole_7               224 248 167 0
+2250    17Networks_RH_Limbic_TempPole_8               224 248 168 0
+2251    17Networks_RH_Limbic_TempPole_9               224 248 169 0
+2252    17Networks_RH_Limbic_TempPole_10              224 248 170 0
+2253    17Networks_RH_Limbic_TempPole_11              224 248 171 0
+2254    17Networks_RH_Limbic_TempPole_12              224 248 172 0
+2255    17Networks_RH_Limbic_TempPole_13              224 249 165 0
+2256    17Networks_RH_ContA_Temp_1                    234 148 34  0
+2257    17Networks_RH_ContA_Temp_2                    234 148 35  0
+2258    17Networks_RH_ContA_Temp_3                    234 148 36  0
+2259    17Networks_RH_ContA_IPS_1                     234 147 31  0
+2260    17Networks_RH_ContA_IPS_2                     234 147 32  0
+2261    17Networks_RH_ContA_IPS_3                     234 147 33  0
+2262    17Networks_RH_ContA_IPS_4                     234 147 35  0
+2263    17Networks_RH_ContA_IPS_5                     234 147 36  0
+2264    17Networks_RH_ContA_IPS_6                     234 147 37  0
+2265    17Networks_RH_ContA_IPS_7                     234 147 38  0
+2266    17Networks_RH_ContA_IPS_8                     234 147 39  0
+2267    17Networks_RH_ContA_IPS_9                     234 147 40  0
+2268    17Networks_RH_ContA_PFCd_1                    234 147 34  0
+2269    17Networks_RH_ContA_PFCl_1                    233 148 30  0
+2270    17Networks_RH_ContA_PFCl_2                    233 148 31  0
+2271    17Networks_RH_ContA_PFCl_3                    233 148 32  0
+2272    17Networks_RH_ContA_PFCl_4                    233 148 33  0
+2273    17Networks_RH_ContA_PFCl_5                    233 148 35  0
+2274    17Networks_RH_ContA_PFCl_6                    233 148 36  0
+2275    17Networks_RH_ContA_PFCl_7                    233 148 37  0
+2276    17Networks_RH_ContA_PFCl_8                    233 148 38  0
+2277    17Networks_RH_ContA_PFCl_9                    233 148 39  0
+2278    17Networks_RH_ContA_PFCl_10                   233 148 40  0
+2279    17Networks_RH_ContA_PFCl_11                   233 148 41  0
+2280    17Networks_RH_ContA_Cinga_1                   233 148 34  0
+2281    17Networks_RH_ContB_Temp_1                    140 51  76  0
+2282    17Networks_RH_ContB_Temp_2                    140 51  77  0
+2283    17Networks_RH_ContB_Temp_3                    140 51  78  0
+2284    17Networks_RH_ContB_IPL_1                     139 50  71  0
+2285    17Networks_RH_ContB_IPL_2                     139 50  72  0
+2286    17Networks_RH_ContB_IPL_3                     139 50  74  0
+2287    17Networks_RH_ContB_IPL_4                     139 50  75  0
+2288    17Networks_RH_ContB_IPL_5                     139 50  76  0
+2289    17Networks_RH_ContB_IPL_6                     139 50  77  0
+2290    17Networks_RH_ContB_IPL_7                     139 50  78  0
+2291    17Networks_RH_ContB_PFCld_1                   139 49  72  0
+2292    17Networks_RH_ContB_PFCld_2                   139 49  73  0
+2293    17Networks_RH_ContB_PFCld_3                   139 49  75  0
+2294    17Networks_RH_ContB_PFCld_4                   139 49  76  0
+2295    17Networks_RH_ContB_PFCld_5                   139 49  77  0
+2296    17Networks_RH_ContB_PFCld_6                   139 49  78  0
+2297    17Networks_RH_ContB_PFCld_7                   139 49  79  0
+2298    17Networks_RH_ContB_PFCld_8                   139 49  80  0
+2299    17Networks_RH_ContB_PFClv_1                   139 49  71  0
+2300    17Networks_RH_ContB_PFClv_2                   139 49  74  0
+2301    17Networks_RH_ContB_PFClv_3                   139 50  73  0
+2302    17Networks_RH_ContB_PFClv_4                   139 50  79  0
+2303    17Networks_RH_ContB_PFClv_5                   139 50  80  0
+2304    17Networks_RH_ContB_PFClv_6                   139 51  73  0
+2305    17Networks_RH_ContB_PFClv_7                   139 51  74  0
+2306    17Networks_RH_ContB_PFClv_8                   139 51  75  0
+2307    17Networks_RH_ContB_PFCmp_1                   138 50  75  0
+2308    17Networks_RH_ContB_PFCmp_2                   138 50  76  0
+2309    17Networks_RH_ContC_pCun_1                    123 141 172 0
+2310    17Networks_RH_ContC_pCun_2                    123 141 173 0
+2311    17Networks_RH_ContC_pCun_3                    123 141 174 0
+2312    17Networks_RH_ContC_pCun_4                    123 141 175 0
+2313    17Networks_RH_ContC_pCun_5                    123 141 177 0
+2314    17Networks_RH_ContC_pCun_6                    123 141 178 0
+2315    17Networks_RH_ContC_pCun_7                    123 141 179 0
+2316    17Networks_RH_ContC_pCun_8                    123 141 180 0
+2317    17Networks_RH_ContC_pCun_9                    123 141 181 0
+2318    17Networks_RH_ContC_pCun_10                   123 141 182 0
+2319    17Networks_RH_ContC_pCun_11                   123 141 183 0
+2320    17Networks_RH_ContC_Cingp_1                   123 141 184 0
+2321    17Networks_RH_ContC_Cingp_2                   123 142 177 0
+2322    17Networks_RH_ContC_Cingp_3                   123 142 178 0
+2323    17Networks_RH_DefaultA_Temp_1                 250 255 2   0
+2324    17Networks_RH_DefaultA_IPL_1                  251 254 0   0
+2325    17Networks_RH_DefaultA_IPL_2                  251 254 2   0
+2326    17Networks_RH_DefaultA_IPL_3                  251 254 3   0
+2327    17Networks_RH_DefaultA_IPL_4                  251 254 4   0
+2328    17Networks_RH_DefaultA_IPL_5                  251 254 5   0
+2329    17Networks_RH_DefaultA_IPL_6                  251 254 6   0
+2330    17Networks_RH_DefaultA_PFCd_1                 251 255 3   0
+2331    17Networks_RH_DefaultA_PFCd_2                 251 255 4   0
+2332    17Networks_RH_DefaultA_PFCd_3                 251 255 5   0
+2333    17Networks_RH_DefaultA_PFCd_4                 251 255 6   0
+2334    17Networks_RH_DefaultA_PCC_1                  251 253 1   0
+2335    17Networks_RH_DefaultA_PCC_2                  251 253 2   0
+2336    17Networks_RH_DefaultA_PCC_3                  251 253 3   0
+2337    17Networks_RH_DefaultA_PCC_4                  251 253 4   0
+2338    17Networks_RH_DefaultA_PCC_5                  251 253 5   0
+2339    17Networks_RH_DefaultA_PCC_6                  251 253 6   0
+2340    17Networks_RH_DefaultA_PCC_7                  251 253 7   0
+2341    17Networks_RH_DefaultA_PCC_8                  251 254 1   0
+2342    17Networks_RH_DefaultA_PCC_9                  251 254 7   0
+2343    17Networks_RH_DefaultA_PCC_10                 251 255 0   0
+2344    17Networks_RH_DefaultA_PCC_11                 251 255 1   0
+2345    17Networks_RH_DefaultA_PCC_12                 251 255 2   0
+2346    17Networks_RH_DefaultA_PCC_13                 251 255 7   0
+2347    17Networks_RH_DefaultA_PCC_14                 248 249 0   0
+2348    17Networks_RH_DefaultA_PFCm_1                 249 255 1   0
+2349    17Networks_RH_DefaultA_PFCm_2                 249 255 2   0
+2350    17Networks_RH_DefaultA_PFCm_3                 249 255 3   0
+2351    17Networks_RH_DefaultA_PFCm_4                 249 255 4   0
+2352    17Networks_RH_DefaultA_PFCm_5                 249 255 5   0
+2353    17Networks_RH_DefaultA_PFCm_6                 249 255 6   0
+2354    17Networks_RH_DefaultA_PFCm_7                 249 255 7   0
+2355    17Networks_RH_DefaultA_PFCm_8                 254 249 0   0
+2356    17Networks_RH_DefaultA_PFCm_9                 254 250 0   0
+2357    17Networks_RH_DefaultA_PFCm_10                254 251 0   0
+2358    17Networks_RH_DefaultA_PFCm_11                254 252 0   0
+2359    17Networks_RH_DefaultB_Temp_1                 210 62  80  0
+2360    17Networks_RH_DefaultB_Temp_2                 210 62  81  0
+2361    17Networks_RH_DefaultB_Temp_3                 210 62  82  0
+2362    17Networks_RH_DefaultB_AntTemp_1              210 63  79  0
+2363    17Networks_RH_DefaultB_AntTemp_2              210 63  80  0
+2364    17Networks_RH_DefaultB_PFCd_1                 210 63  77  0
+2365    17Networks_RH_DefaultB_PFCd_2                 210 63  78  0
+2366    17Networks_RH_DefaultB_PFCd_3                 210 63  81  0
+2367    17Networks_RH_DefaultB_PFCd_4                 210 63  82  0
+2368    17Networks_RH_DefaultB_PFCd_5                 210 63  83  0
+2369    17Networks_RH_DefaultB_PFCd_6                 210 63  84  0
+2370    17Networks_RH_DefaultB_PFCd_7                 210 63  85  0
+2371    17Networks_RH_DefaultB_PFCv_1                 209 62  78  0
+2372    17Networks_RH_DefaultB_PFCv_2                 209 62  79  0
+2373    17Networks_RH_DefaultB_PFCv_3                 209 62  80  0
+2374    17Networks_RH_DefaultC_IPL_1                  4   1   132 0
+2375    17Networks_RH_DefaultC_IPL_2                  4   1   133 0
+2376    17Networks_RH_DefaultC_Rsp_1                  5   0   131 0
+2377    17Networks_RH_DefaultC_Rsp_2                  5   0   132 0
+2378    17Networks_RH_DefaultC_Rsp_3                  5   0   133 0
+2379    17Networks_RH_DefaultC_PHC_1                  5   0   134 0
+2380    17Networks_RH_DefaultC_PHC_2                  5   0   135 0
+2381    17Networks_RH_DefaultC_PHC_3                  5   0   136 0
+2382    17Networks_RH_DefaultC_PHC_4                  5   0   137 0
+2383    17Networks_RH_TempPar_1                       16  48  247 0
+2384    17Networks_RH_TempPar_2                       16  48  248 0
+2385    17Networks_RH_TempPar_3                       16  48  249 0
+2386    17Networks_RH_TempPar_4                       16  48  250 0
+2387    17Networks_RH_TempPar_5                       16  48  251 0
+2388    17Networks_RH_TempPar_6                       16  48  252 0
+2389    17Networks_RH_TempPar_7                       16  48  253 0
+2390    17Networks_RH_TempPar_8                       16  48  255 0
+2391    17Networks_RH_TempPar_9                       13  41  250 0
+2392    17Networks_RH_TempPar_10                      13  41  251 0
+2393    17Networks_RH_TempPar_11                      13  41  252 0
+2394    17Networks_RH_TempPar_12                      13  41  253 0
+2395    17Networks_RH_TempPar_13                      13  41  254 0
+2396    17Networks_RH_TempPar_14                      13  42  247 0
+2397    17Networks_RH_TempPar_15                      13  42  248 0
+2398    17Networks_RH_TempPar_16                      13  42  249 0
+2399    17Networks_RH_TempPar_17                      13  42  250 0
+2400    17Networks_RH_TempPar_18                      13  42  251 0
