@@ -1,8 +1,10 @@
-## Infer factor compositions of new subjects
+# Infer factor compositions of new subjects
 Even though we provide the factor compositions of ADNI2 bl/m12 and ADNI1 bl subjects, the user
 may want to infer factor compositions of an unseen subject by using our estimated factors. 
 
-## Usage
+----
+
+# Usage
 The main function `CBIG_MMLDA_infer_new.sh` will do the following things
 1. SPM VBM preprocessing of new subjects by using our ADNI2 bl custom template.
 2. Convert grey matter probability maps and behavioral scores to documents by 
@@ -38,7 +40,8 @@ Lateral Temporal-Language, Posterior Cortical-Executive factor compositions resp
 
 ### Missing data
 If the user have few missing data in the behavioral scores, the user can impute the scores by using
-GLM or other methods. 
+GLM or other methods. The matlab function for imputing behavioral scores using GLM can be found in 
+`Sun2019_ADJointFactors/utilities/CBIG_MMLDA_matrix_completion_GLM.m`.  
 If the user have a lot of missing data in the behavioral scores, the user
 can infer factor loadings by only using atrophy maps. This means the user can fill in arbitrary
 values in the behavioral scores and only check the `k3_inf1_mmlda_prob.csv` for factor loadings.
