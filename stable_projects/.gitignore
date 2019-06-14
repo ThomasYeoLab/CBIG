@@ -21,6 +21,7 @@
 !/disorder_subtypes/*
 !/disorder_subtypes/Zhang2016_ADFactors/**
 !/disorder_subtypes/Sun2019_ADJointFactors/**
+!/disorder_subtypes/Kebets2019_TransdiagnosticComponents/**
 
 !/meta-analysis/*
 !/meta-analysis/Ngo2017_AuthorTopic/**
