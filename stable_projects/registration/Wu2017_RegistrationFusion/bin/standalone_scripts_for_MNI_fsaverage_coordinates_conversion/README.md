@@ -48,7 +48,7 @@ For multiple sets of coordinates, the input should be a matrix of size 3 x N, wh
 
 ---
 
-## fsaverage vertices to MNI152 coordiantes
+## fsaverage vertices to MNI152 coordinates
 
 To convert fsaverage vertex numbers (e.g. vertex number x in left hemisphere) to RAS coordinates in MNI152 space, use the Matlab script with the command:
 

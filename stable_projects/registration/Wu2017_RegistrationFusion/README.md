@@ -18,7 +18,9 @@ The visualisation of three anatomical regions (represented as probabilistic maps
 
 ## Stand-alone Usage
 
-To use volume-to-fsaverage mappings without the trouble of downloading our entire repository, just download the `bin/final_warps_FS5.3` and `bin/scripts_stand_alone_for_MNI_fsaverage_projection` (or `bin/scripts_stand_alone_for_Colin_fsaverage_projection`) folders. Put them in the same directory; then follow the README.md in `bin/scripts_stand_alone_for_MNI_fsaverage_projection` (or `bin/scripts_stand_alone_for_Colin_fsaverage_projection`).
+There are 3 stand-alone folders: `bin/standalone_scripts_for_MNI_fsaverage_projection` for MNI152-to-fsavearge mapping, `bin/standalone_scripts_for_Colin_fsaverage_projection` for Colin27-to-fsaverage mapping, and `bin/standalone_scripts_for_MNI_fsaverage_coordinates_conversion` for conversion between MNI152 voxels and fsaverage vertices.
+
+To use the stand-alone codes without the trouble of downloading our entire repository, download the corresponding zip file, i.e. `bin/standalone_scripts_for_MNI_fsaverage_projection.zip`, `bin/standalone_scripts_for_Colin_fsaverage_projection.zip`, or `bin/standalone_scripts_for_MNI_fsaverage_coordinates_conversion.zip`. Unzip the file; then follow the REAME.md in the stand-alone scripts folder.
 
 Note that FreeSurfer and Matlab need to be installed before the stand-alone scripts can be run.
 
@@ -46,13 +48,13 @@ The folder `bin` contains data files necessary for this project, as well as the 
 
 Note that this project uses generic functions from other folders, which may be updated over time. To download the version of the code that was last tested, you can either
 
-- visit this link: https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.10.3-Wu2017_RegistrationFusion
+- visit this link: https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.11.1-Wu2017_RegistrationFusion
 
 or
 
 - run the following command, if you have Git installed
 ```
-git checkout -b Wu2017_RegistrationFusion v0.10.3-Wu2017_RegistrationFusion
+git checkout -b Wu2017_RegistrationFusion v0.11.1-Wu2017_RegistrationFusion
 ```
 
 ----
@@ -67,6 +69,7 @@ git checkout -b Wu2017_RegistrationFusion v0.10.3-Wu2017_RegistrationFusion
   2. Rename subfolder `example` to `examples` to pass CBIG pre-push hooks
   3. Fix typos in `examples/README.md` that set wrong file names in freeview visualization command
 - Release v0.10.3 (26/05/2019): Added stand-alone scripts for conversion between MNI152 coordinates and fsaverage vertices
+- Release v0.11.1 (18/06/2019): Added information for stand-alone scripts in relevant README files
 
 ----
 

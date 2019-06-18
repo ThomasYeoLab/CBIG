@@ -20,9 +20,15 @@ This directory contains the following folders and files:
 
 - `standalone_scripts_for_MNI_fsaverage_coordinates_conversion` and `standalone_scripts_for_MNI_fsaverage_coordinates_conversion.zip`: stand-alone scripts for converting between MNI152 coordinates and fsavearge vertices downloading the other folders in the CBIG repository. Refer to README.md in this folder further for how to use these scripts.
 
+    - `standalone_scripts_for_MNI_fsaverage_coordinates_conversion.zip` contains the following folders: `standalone_scripts_for_MNI_fsaverage_coordinates_conversion`, `liberal_cortex_masks_FS5.3`, and `final_warps_FS5.3` 
+
 - `standalone_scripts_for_MNI_fsaverage_projection` and `standalone_scripts_for_MNI_fsaverage_projection.zip`: stand-alone scripts for using the final MNI152-to-fsaverage mapping without downloading the other folders in the CBIG repository. Refer to README.md in this folder further for how to use these scripts.
 
+    - `standalone_scripts_for_MNI_fsaverage_projection.zip` contains the following folders: `standalone_scripts_for_MNI_fsaverage_projection` and `final_warps_FS5.3` 
+
 - `standalone_scripts_for_Colin_fsaverage_projection` and `standalone_scripts_for_Colin_fsaverage_projection.zip`: stand-alone scripts for using the final Colin27-to-fsaverage mapping without downloading the other folders in the CBIG repository. Refer to README.md in this folder further for how to use these scripts.
+
+    - `standalone_scripts_for_Colin_fsaverage_projection.zip` contains the following folders: `standalone_scripts_for_Colin_fsaverage_projection` and `final_warps_FS5.3`
 
 - `GSP_subjectid.csv`: list of subject IDs for GSP subjects, used by RF approaches (RF-M3Z and RF-ANTs) by default
 
