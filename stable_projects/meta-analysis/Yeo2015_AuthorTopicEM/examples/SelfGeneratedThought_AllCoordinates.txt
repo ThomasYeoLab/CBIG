@@ -1,0 +1,2381 @@
+//Denkova 2006a: ABM > Semantic recognition
+//Task: ABM
+16 -54   8
+-6 -74  48
+-30   6  56
+48 -72  32
+-34 -88  30
+28  10  54
+-42 -50  38
+-42  28  28
+20 -32 -20
+12  18 -16
+10  22   0
+-12  10  -6
+-10  16   0
+-22 -40 -20
+-12 -24 -16
+-30 -34 -16
+-4  44   4
+4  38   6
+-30  48  12
+-34  14 -14
+-42   8  32
+8  10  54
+12  18  44
+14  28  44
+4 -28 -14
+6 -26  -2
+
+//Denkova 2006b: R > K famous faces
+//Task: ABM
+-38 -84  28
+-32 -82  38
+-10 -58   8
+-6 -52   0
+-6  32  28
+-26  12  58
+-6 -64  44
+-30 -34 -20
+-20 -38 -18
+-22  22  44
+-40  50  16
+-48  16  -2
+-6 -40  36
+-26 -18 -28
+-46  28   2
+
+//Tsukiura 2002: ABM cued word > word meaning
+//Task: ABM
+37  25  -1
+44  -5 -15
+25 -32 -13
+5 -47  31
+10 -54 -40
+-18  40  18
+-1 -44   8
+-2 -62  23
+
+//Viard 2007: ABM > letter detection
+//Task: ABM
+-2  10  60
+-8 -56  10
+-6 -52   0
+10 -50   4
+10 -54  14
+-48 -74  28
+-44 -70  32
+
+//Vandekerckhove 2005: ABM retreival > baseline
+//Task: ABM
+-36  25  -6
+-45  26  -6
+53  29  -7
+45  26  -4
+-39  45  20
+15  57  28
+-53  -7 -22
+-48 -38  -8
+-18 -18 -17
+-27 -13 -17
+48  16 -28
+-39  16 -34
+-6  20  42
+-6 -58  10
+-39 -68  36
+-48 -63  23
+-15 -70  49
+6 -83 -21
+
+//Andreasen, 1995: AM>sem
+//Task: ABM
+-46   7  45
+-49  -9  30
+57  -5  27
+2  48 -28
+1 -54  26
+-39 -35  13
+59 -28   2
+
+//Markowitsch, 2000: AM emot>fictitious
+//Task: ABM
+30   0 -20
+26   0 -26
+26  16 -12
+-50 -12 -10
+-44   2  10
+-46  -2  -2
+-4  34  24
+-6  36   8
+
+//Levine, 2004: AM>Sem+AM facts+AM other
+//Task: ABM
+-4   8  64
+-16  60  24
+48  12  35
+-56  24  -8
+20  28 -20
+-16 -32  76
+4 -4  4
+-4 -28   8
+4 -36 -32
+-44 -56  16
+52 -60  28
+-60   0   0
+-56 -36  16
+28 -36 -16
+-32 -40 -24
+4 -52   1
+0 -52  40
+-48 -44  60
+-4 -88   0
+-8 -88 -40
+
+//Gilboa, 2004: AM>other photo
+//Task: ABM
+-9  61   8
+-4 -58  25
+44 -55  28
+-34 -20 -19
+55 -64  -3
+
+//Piefke, 2003: AM emot>read text
+//Task: ABM
+-10  62  34
+40  18  23
+-46  22  23
+-42   3  57
+-2   9  61
+-51  33 -10
+55  18 -37
+-53  16 -40
+61   1 -29
+-57   3 -28
+-24 -20 -23
+-30 -58  49
+-6 -58   1
+36 -65 -32
+-28 -67 -25
+46 -85  -3
+-42 -81   0
+14 -82 -55
+
+//Addis, 2004: AM>Sem
+//Task: ABM
+-4  52  -2
+-8 -42  32
+4 -38  36
+-10 -56  18
+-6 -60  32
+6 -46  18
+-46 -69  33
+-60  -6 -19
+16 -10 -14
+-24 -36 -14
+22 -32 -14
+-24 -22 -16
+34 -26 -12
+-40 -78  39
+2 -14  10
+-7 -42 -44
+
+//Maddock, 2001:AM sem>fictitious
+//Task: ABM
+1 -42  11
+1 -66  20
+1 -67   9
+4 -50  -8
+1  61 -25
+2  17  59
+-24   8  49
+12 -13   8
+-35  43  19
+-47  37 -10
+-57   7  34
+-43  53   8
+-24  35  55
+-52   8  45
+-50  -2  58
+-61  22 -13
+-14   5  11
+-65 -14  -5
+-50 -35  61
+-25 -52 -23
+57  -5  54
+60 -19  58
+50 -50  50
+31 -63 -37
+
+//Maguire, 2003: ABM>General Knowledge OLD
+//Task: ABM
+-6  51   0
+-21 -15 -15
+21 -15 -18
+-51  -9 -12
+57  -3 -18
+
+//Maguire, 2003: ABM>General Knowledge YOUNG
+//Task: ABM
+-3  54   0
+-33 -18 -15
+-3 -60  27
+0 -9  0
+
+//Maguire, 1999: AM>pronoun/1 syllable
+//Task: ABM
+-4  64  20
+-60  -4 -18
+-48  12 -28
+-22 -12 -14
+-30 -36 -18
+-4 -56  24
+-48 -64  24
+52 -66  26
+
+//Maguire, 2000: AM>pronoun/1 syllable
+//Task: ABM
+-3  57   3
+-33  18 -39
+-24 -12 -18
+-69  -6 -21
+-27 -39 -21
+0 -45  24
+-57 -54  24
+42  24 -39
+24 -81 -42
+
+//Graham, 2003: AM>Sem
+//Task: ABM
+-4  56  -7
+-60 -12 -19
+-6 -58  32
+0  32 -14
+-52 -70  30
+4  58  22
+51   6 -43
+64 -10 -22
+56 -58  28
+26  38  48
+
+//Rekkas, 2005: AM recent>Sem
+//Task: ABM
+-4  33  60
+14  41  48
+-31  20  37
+-41   7  59
+49   7  54
+-49  27  18
+42  31  -2
+-1  43  -3
+15  44   8
+-7   4  18
+12   4  20
+-60   1  -9
+-61 -43  -1
+58  -5 -15
+-22 -25 -12
+-24 -28 -20
+20 -28 -15
+-6 -47  33
+9 -47  33
+-52 -58  20
+50 -60  27
+-2 -45 -50
+-16 -77 -32
+37 -69 -47
+
+//Fink, 1996: AM emot>AM-other
+//Task: ABM
+14 -53   9
+31  20 -11
+55 -53   9
+42   7 -18
+46  -4 -22
+
+//Greenberg, 2005: AM>Sem
+//Task: ABM
+-8 -68  15
+8 -60  19
+-8  15  64
+23 -30 -19
+56 -15 -19
+45 -68  15
+-45   4  45
+-49 -60  15
+-45 -53  19
+56  30   4
+19  -4  23
+26 -15 -19
+-28 -20 -17
+-11  53  23
+-38 -83  23
+-26 -45 -19
+-22  -6 -21
+25 -10 -21
+-49 -49  45
+30  56 -11
+
+//Berthoz 2002: intentional > unintentional violation
+//Task: TOMstory
+-22  34  48
+-24  24  60
+-10  58   8
+-18  48   4
+0   0  40
+-32 -22  42
+-44 -32  52
+36  -6 -32
+12 -50  52
+-40 -72  32
+
+//ferstl & von Cramon 2002: ToM Sentences > nonword judgements
+//Task: TOMstory
+-19  55  25
+-9 -58  24
+8 -56  14
+-52 -66  30
+-62 -60  11
+-57 -14 -11
+50  -2 -22
+-32 -35 -11
+31 -26 -16
+-19  36  47
+-50  19  -5
+33 -96  18
+45 -79  15
+
+//Fletcher et al 1995: ToM Stories > physical stories
+//Task: TOMstory
+-12  42  33
+8 -57  18
+1  43  19
+46 -49  26
+
+//Gallagher 2000: ToM > nToM stories
+//Task: TOMstory
+-8  50  10
+-48  14 -36
+54  12 -44
+-46 -56  26
+66 -52   8
+
+//Kobayashi et al 2006: ToM > nToM stories, English
+//Task: TOMstory
+42   5  55
+50 -42  19
+32  34  32
+26 -61  18
+18  30  24
+
+//Kobayashi et al 2006: ToM > nToM stories, Japanese
+//Task: TOMstory
+-22  30  22
+20  24  23
+34  25  26
+16  44  20
+
+//Mitchell 2008b: Belief > Photo
+//Task: TOMstory
+54 -51  27
+3 -57  24
+24  27  57
+6  60  30
+
+//Nieminen-Von Wendt 2003: ToM story > physical causality
+//Task: TOMstory
+-6  61  15
+-4  27  -1
+-24 -47  37
+-16 -68   0
+-6 -10  -1
+-12 -22  -1
+8  56  27
+32   8 -31
+48 -80  -1
+
+//Perner et al 2006: False belief stories > false photograph
+//Task: TOMstory
+54 -57  27
+48 -21  -9
+-48 -57  30
+39 -30  12
+9 -54  33
+-15  54  36
+
+//Saxe & Kanwisher 2003: Tom>mechanical inference
+//Task: TOMstory
+-54 -60  21
+-57 -27 -12
+-9 -51  33
+51 -54  27
+66 -18 -15
+
+//Saxe & Powell 2006: false belief stories > false photographs
+//Task: TOMstory
+12 -66  21
+60 -57  15
+-9  51   3
+0  45  48
+60 -18 -21
+30   6 -15
+-51 -57  27
+-27   0 -21
+51  12 -33
+
+//Saxe et al 2006: ToM stories > Physical Stories
+//Task: TOMstory
+0 -60  30
+57 -57  18
+0  57  12
+54 -18 -21
+-54 -12  12
+-45 -72  39
+24   3 -12
+-24  -6 -24
+
+//Saxe & Wexler 2005: false belief stories > false photographs
+//Task: TOMstory
+54 -54  24
+-48 -69  21
+0  60  12
+3  60  24
+
+//Vogeley 2001: ToM > nToM
+//Task: TOMstory
+6  56   2
+-58  10 -10
+-62   4  26
+6  56  26
+4  28  30
+22  46  46
+-56  26  16
+
+//Aichorn et al. 2009: False belief > false photo
+//Task: TOMstory
+57 -54  15
+51 -18 -15
+-57 -54  24
+-54 -30  -6
+-51  -3 -27
+-45  30 -15
+-9  30  60
+
+//Gobbini et al. 2007: False Belief > Physical Stories
+//Task: TOMstory
+-2  58   6
+8  58  30
+12  63  -5
+-21  54  31
+-44  35  17
+-44   5  24
+39  22 -22
+11  29  55
+-55 -60  28
+38  14 -40
+-53  11 -33
+57 -49  -6
+-50 -51 -10
+-35 -29 -19
+7 -14  34
+-10 -49  36
+-26 -72  45
+-51 -40  51
+-11 -94  -3
+
+//jenkins & mitchell in press: ToM stories > nonsocial stories
+//Task: TOMstory
+0  54  32
+-8  50  -2
+56 -10 -20
+-68 -34  -4
+54 -56  22
+-48 -62  36
+-8 -60  18
+12 -102    8
+-24 -100    6
+
+//Spengler et al. 2009: ToM stories > physical stories
+//Task: TOMstory
+-1  56  18
+-10 -51  37
+50  -5 -34
+-55 -49  27
+-53  -6 -33
+25 -81 -28
+
+//Young et al. 2007: ToM stories > false photographs
+//Task: TOMstory
+56 -52  30
+4 -62  38
+-42 -62  26
+2  52  28
+2  58  12
+0  46  -2
+
+//Young et al. 2007: ToM stories > false photographs
+//Task: TOMstory
+56 -54  28
+0 -54  32
+-52 -58  26
+2  60  28
+-4  56   8
+0  54  -8
+
+//Baron-cohen et al 1999: Mental state > gender
+//Task: TOMnonstory
+-27 -11 -11
+22  -8 -11
+-26 -67  36
+26 -59 -14
+-14 -83 -11
+8   8  42
+-2  39 -10
+-2 -42  41
+1 -31  33
+1  49   9
+32 -61  -7
+-39 -46  -8
+-51  14  18
+63  11  11
+-48  18  30
+54  19  23
+-45  28  -1
+57  23  16
+-33 -55  48
+54 -55  -2
+35 -16   1
+-36 -16   8
+14 -75   0
+-2 -89   8
+23 -55  -2
+-14 -32  -3
+8  12  54
+1  52   2
+-45   8  43
+42  11  36
+-48  19  36
+36 -74   6
+47 -33   3
+-48 -19  39
+-23 -40  65
+39 -17  56
+-23   0  62
+57   9   5
+-2 -41  58
+2 -43  65
+-17   4  -6
+32 -22  -5
+-30  44  15
+-32 -54  54
+-57 -40  10
+57 -50  16
+50  12 -13
+44 -58  23
+-51 -57  18
+-36 -24  15
+-48 -43  29
+-14  -9  14
+1 -31   3
+
+//Bhatt, 2005: 2nd order belief > belief
+//Task: TOMnonstory
+-42   3   0
+45  33   0
+
+//Blakemore et al 2003: intxn of attention to animate contingent shapes
+//Task: TOMnonstory
+24  40  50
+-64 -24   5
+
+//Brunet et al 2000:attribute intentions>physical cause
+//Task: TOMnonstory
+4  56  44
+16  44  20
+8  32  -4
+32  22 -14
+28  12  26
+50  12  54
+12   6  16
+54 -10 -38
+14 -20  60
+52 -46   0
+-8  36   0
+-44  16  48
+-38   8 -16
+-4 -36  82
+-64 -42   2
+-20 -80  32
+-10 -86 -44
+
+//Brunet, 2003: intersect AI - PC-CH and [AI - PC-Ob]
+//Task: TOMnonstory
+34  22 -20
+20  48  20
+
+//Castelli et al 2000:Tom > random shapes
+//Task: TOMnonstory
+-58 -48   4
+-38 -44 -22
+-38  -4 -32
+-30 -94 -12
+-32 -82 -24
+-4  60  32
+60 -56  12
+36 -56 -20
+34   6 -26
+38 -96 -10
+
+//decety et al 2004: competition > independent play
+//Task: TOMnonstory
+-16 -66  64
+22 -74  58
+50 -36  56
+-28   4  56
+26   4  52
+-8  36  40
+10  30  36
+40  52  24
+-32  18   4
+42  24 -12
+
+//elliott et al 2006: cooperation > independent play
+//Task: TOMnonstory
+-6  51  28
+3  51  25
+-48 -60  31
+48  17 -16
+-56 -32  -6
+-3 -57  30
+6 -65  36
+-21  37  48
+3  18  65
+
+//Fukui, 2006: human mind > computer
+//Task: TOMnonstory
+-8  43  35
+-57 -51  28
+
+//Gallagher & Frith 2004: expressive > instrumental gestures
+//Task: TOMnonstory
+2  48 -16
+22   0 -20
+16  -4 -28
+-14  -6 -22
+48 -44  -4
+24 -98  14
+-24 -100    6
+
+//Gallagher et al 2000: ToM Cartoon > Non-ToM Cartoon
+//Task: TOMnonstory
+4  26  46
+40   8  42
+58 -44  24
+12 -52  58
+46 -44 -24
+
+//Gallagher et al 2002: competitive game against other > against computer
+//Task: TOMnonstory
+8  55  16
+-10  50  35
+
+//German et al 2004: pretense > real actions
+//Task: TOMnonstory
+6  31  32
+-9  57  25
+-3  52  -3
+33  20 -11
+56  18  10
+-39  14 -13
+-48  10  16
+-30  53   6
+-45  40 -12
+-50 -52   3
+59 -58  14
+48 -70  -2
+42 -53 -12
+-18  -4 -12
+21 -10 -22
+21 -11  12
+-3  9  9
+12 -60 -40
+
+//Grezes 2004a: False > True expectation
+//Task: TOMnonstory
+50  22  10
+-56  34   0
+40  30  -4
+-32  24 -10
+-2  26  52
+16  10  10
+-48 -46  14
+60 -44   2
+-54 -48   0
+-22 -76 -42
+
+//Grezes 2004b: Judged deceitful > Judged honest
+//Task: TOMnonstory
+52 -56  34
+-42 -60  30
+-8  42  20
+52  32   6
+50  46  -6
+-46  34 -10
+-26  -4 -20
+26   0 -22
+-46 -50 -22
+-24 -80 -24
+-42   8 -34
+
+//Marjoram et al 2006: ToM cartoons > physical cartoons
+//Task: TOMnonstory
+-6 -52  46
+52 -44  30
+-60 -58   6
+
+//Mitchell et al 2005: judge mental state > judge symmetry
+//Task: TOMnonstory
+-9  51  36
+-45  12  18
+-36   6  51
+-24  -3 -27
+45  -6 -15
+-30 -18   6
+0 -21  48
+-24 -42  69
+24 -57  69
+-51 -48   3
+57 -51   9
+-9 -102   12
+9 -96  15
+
+//Ochsner, 2005: other about you>you about self
+//Task: TOMnonstory
+-54   0 -26
+-54 -10 -20
+46   0 -34
+46 -16 -18
+6 -32 -32
+
+//Platek et al 2004: MIE > fixation
+//Task: TOMnonstory
+42  22  47
+39  22  49
+5  34  57
+-46  28  19
+-46  20 -18
+
+//Rilling, 2004: human partners v control
+//Task: TOMnonstory
+61 -10 -18
+53 -54  30
+0 -83   3
+10 -11  -8
+23  34  43
+4  49  14
+1 -57  39
+1 -10   6
+-16 -27  -4
+-23  17  -9
+
+//Russell, 2000: Infer mental state from picture > Judge gender
+//Task: TOMnonstory
+-55  19  -1
+-45  11  25
+-57 -49   5
+-57 -31   9
+
+//Sommer et al 2007: false belief > true belief
+//Task: TOMnonstory
+-8  16  46
+42   4  58
+46  28  40
+34  64   6
+34 -54  24
+64 -54  -4
+38 -64  46
+4 -74  52
+
+//Spiers & Maguire 2006: ToM > non-ToM events
+//Task: TOMnonstory
+60 -36   0
+3  57   6
+6 -84 -12
+60  24  27
+30 -39  60
+-6  30  36
+-45  36  30
+18  15  63
+-51 -72  15
+-39 -81 -18
+-33 -60 -27
+-60  -3 -27
+-42  27 -15
+-18 -66  63
+6 -93   0
+6   6  42
+3  12  27
+-27  45  36
+30 -57  60
+51 -72   9
+48 -63 -15
+12  39  18
+-3 -87  27
+-12 -69   6
+
+//Vollm  2006: ToM > physical causality one
+//Task: TOMnonstory
+-48  28 -17
+-59 -57  22
+-59 -21  -7
+-50  -7 -27
+0 -51  25
+-36 -45 -18
+-15 -102    0
+-15 -89 -26
+18  49  -8
+45 -78  18
+62   6  -5
+62 -15 -17
+39 -72 -32
+
+//Walter et al 2004a: communicative intent > physical causality
+//Task: TOMnonstory
+9 -57  42
+-6 -54  45
+51 -42  12
+-36 -51  21
+54 -60  12
+48 -27   0
+54   0 -21
+-63 -15 -15
+54  33  -9
+-51  30 -12
+57  27   3
+24  42  45
+-12  39  39
+6  60  24
+-9  51  36
+0  54  12
+-36 -27 -12
+-3 -57  -9
+
+//Walter et al 2004b: communicative intent > physical causality
+//Task: TOMnonstory
+3 -54  51
+-6 -51  30
+54 -48  18
+-57 -48  18
+45  12 -39
+45 -51  12
+-51 -27  -3
+51  -3  27
+-54   0 -24
+51 -18 -15
+-54 -15 -18
+54  24  -9
+-48  30 -12
+3  54 -15
+0  60  18
+
+//Bahneman et al (in press): ToM judgment > Appearance judgment
+//Task: TOMnonstory
+-46  28 -10
+54  32   0
+-4  56  28
+-6  12  60
+-52   4 -26
+54   0 -24
+-58 -44   4
+-56 -58  22
+52 -36   2
+
+//Brune et al. 2008: ToM cartoon sequencing > non-ToM cartoon sequencing
+//Task: TOMnonstory
+-2   6  20
+38 -22  24
+-58 -40  16
+-56 -68  18
+-50 -32   0
+62  -6 -16
+60 -64   6
+46 -70  10
+-6 -54  36
+34  10  34
+40  20 -20
+-10  18  16
+24 -26  26
+4 -28   0
+
+//Ciaramidaro et al. 2007: ToM cartoon judgment > physical cartoon
+//Task: TOMnonstory
+51 -42  21
+3 -54  42
+
+//Gilbert et al. 2007: Task with human > task with computer
+//Task: TOMnonstory
+-8  54  30
+48   8 -34
+
+//Hooker et al. 2008: infer emotion > recognize emotion
+//Task: TOMnonstory
+-42   4  36
+-42  24 -10
+54  18   8
+-42  -2  58
+-18  50  38
+-10  18  54
+2  56  18
+-54 -58  16
+-58 -14 -16
+-12 -54  30
+-18 -72  -4
+18 -52   8
+-8 -18  12
+-10  12 -12
+38  18  24
+32  22  -6
+6 -12  12
+
+//Kana et al. 2009: ToM animated shapes > randomly moving shapes
+//Task: TOMnonstory
+-10  56  42
+-50 -72  28
+-54  20   8
+44 -48  18
+0 -62  32
+-42  18  48
+60 -10 -18
+44 -46 -22
+-54 -12 -24
+-42 -56 -14
+-54 -34 -10
+60  24  22
+
+//Kircher et al. 2009: game against human > against computer
+//Task: TOMnonstory
+4  52  44
+4  36   4
+4  56  16
+12 -28   0
+4 -24   0
+-8 -20  -8
+4   4 -16
+-24 -88 -33
+-36 -80 -32
+
+//Krach et al. 2009: game against human > computer
+//Task: TOMnonstory
+12  60  28
+16  56  40
+-4  51  24
+60 -56  20
+52 -64  24
+-32 -80 -40
+-8 -48  36
+0 -52  36
+-8 -48  44
+
+//Malhi et al. 2008: ToM animations > random animations
+//Task: TOMnonstory
+57  52   9
+-57  50  10
+52  28   6
+-54 -19   9
+40  23   2
+-34  19   6
+66 -50  40
+-60 -48  48
+53 -64  39
+-48 -65  40
+63 -10 -13
+-57 -10 -11
+33 -29 -12
+14 -17  13
+-7 -14  12
+18   4   4
+
+//Rabin et al. in press: infer mental state > recollect memory
+//Task: TOMnonstory
+43  20  44
+-49  34   3
+-50 -10  45
+-37 -51  30
+
+//Rilling et al. 2008, ex.1: prisoner's dilemma > gamble task
+//Task: TOMnonstory
+3 -18  22
+1  33  40
+27  61  18
+-31  61   0
+-30   2  62
+47  16  44
+-68 -26  -6
+51 -54  38
+-48 -63  43
+0 -59  49
+6 -79   0
+-32  19 -13
+33  21 -13
+
+//Lombardo et al. in press: other mentalizing > self mentalizing
+//Task: TOMnonstory
+8 -44  14
+8 -58  28
+50 -60  14
+
+//Samson et al. 2008: ToM cartoon > Semantic cartoon
+//Task: TOMnonstory
+-16 -66  55
+12 -68  58
+-49 -78  20
+44 -60  -6
+-39 -49 -16
+-30 -87 -13
+-11 -85 -30
+
+//Spreng & Grady in press: ToM > Past, Future
+//Task: TOMnonstory
+48 -36  -4
+48 -48  20
+-52 -48  12
+
+//Sripada et al. (2009): play against human > computer
+//Task: TOMnonstory
+0 -80   0
+-46 -80  -6
+46 -80  -4
+50  26  28
+48 -70   8
+-14  10  -8
+-64  -2  20
+-24 -86  12
+8  52  24
+
+//Vanderwal et al. (2008): ToM Cartoon > Physical cartoon
+//Task: TOMnonstory
+49 -43  10
+62  -7 -16
+-50 -53  19
+59  -4 -20
+56 -31  -1
+-40 -69  13
+-53 -54   9
+36 -39 -19
+49  26   1
+13  60  22
+-47  35  -9
+-34 -39  -9
+8 -57  35
+27   4  14
+-12  48  33
+
+//Wolf et al. (2010): ToM Scenes > Physical Scenes
+//Task: TOMnonstory
+-10 -98   0
+12 -88   4
+24 -96  18
+-48   4  46
+0 -68  30
+
+//Binder 1999: rest > tone
+//Task: DMN
+-44 -71  31
+-8 -55  27
+-20  37  42
+-27 -37 -14
+-9  36 -15
+-27  30 -15
+11 -53  26
+-53  30  10
+
+//Fransson 2006: Rest > WM
+//Task: DMN
+-39 -75  45
+-3 -63  48
+3 -66  30
+-33  18  57
+33  33  51
+-6  39  39
+9  45 -12
+-12  45 -12
+-60 -27 -15
+-57 -36  -6
+-27 -27 -24
+-42   9 -42
+63 -18 -21
+48   9 -42
+63 -27 -12
+39 -72 -42
+6 -60 -51
+-6 -57 -48
+30 -18 -24
+-24 -90 -27
+-27  27 -24
+
+//Mason 2007: rest > task
+//Task: DMN
+7  68   2
+1  68   8
+-12  57  41
+14  57  43
+24  47  42
+-39  26  48
+-8 -37  38
+8 -11  40
+27  -8 -26
+7  45  -3
+-18 -38 -15
+-46 -68  43
+-8 -50  34
+46 -10   0
+49 -27  18
+-44 -18  -4
+-47 -63  36
+-47  -6 -11
+55 -56  37
+-31 -41 -15
+
+//McKiernan 2003: rest > difficult
+//Task: DMN
+-5  48  -7
+-5  54  13
+-12  50  38
+-23  31  45
+-26  17  52
+-6 -49  34
+-7 -47 -50
+9 -58  22
+9 -55  68
+-5 -61  57
+33 -41  63
+-24 -44  70
+-15 -84  50
+11 -85  46
+-38 -83  37
+54 -70   9
+-51 -76   7
+-49 -73  26
+-29 -45 -21
+17 -21  79
+
+//Wicker 2003 rest > task
+//Task: DMN
+4  44  -2
+2  32  10
+-24  46  14
+32  50   4
+22  36  34
+-28  24  42
+
+//Mazoyer 2001: rest > tasks
+//Task: DMN
+-52 -74  18
+-40 -82  34
+46 -68  26
+48 -72  16
+-8 -36  42
+-8 -40  60
+-4 -34  56
+-6 -50  26
+-20  30  58
+-18  40  48
+-24  24  52
+-32  22  42
+-46  36  18
+-4  58  12
+0  38  -2
+-4  46  -4
+-4  50  -6
+-46  48   0
+-26  36 -10
+-18  64  10
+24 -34  64
+32 -40  60
+44 -24  34
+24 -22  66
+
+//Schulman 1997: fixation > tasks
+//Task: DMN
+3 -39  62
+56 -36  45
+17  36  46
+-41  46  13
+-36 -13   0
+43 -10   1
+23  61   6
+-36  14 -18
+30  16 -21
+53 -16 -23
+56 -34 -15
+52 -55  18
+-26 -28 -13
+-22 -10 -27
+
+//Raichle 2001a: Rest > region/global (CMRO2)
+//Task: DMN
+-4 -47  45
+-55 -37  46
+-46 -67  42
+-15  61  20
+0  51 -13
+-51 -21 -22
+
+//Raichle 2001b: Rest > region/global (CBF)
+//Task: DMN
+-4 -47  45
+-46 -67  42
+-15  61  20
+0  51 -13
+-34  48 -14
+4  33 -18
+-51 -21 -22
+
+//D'Argembeau 2005: rest>reflection
+//Task: DMN
+29  59 -27
+50  33  28
+46  49 -17
+-42  59 -17
+27  52  17
+62 -38  44
+65 -42  30
+19 -74  37
+-7 -60  53
+
+//Gould 2006: rest>learning
+//Task: DMN
+14  46  39
+46  30 -10
+48  26   0
+0  54  10
+2  60 -14
+2  66  20
+60 -40   2
+-52 -70  24
+62 -18  -8
+-51 -14  -4
+-56  -4 -16
+-44 -24  -3
+-44 -16  -8
+0  26  22
+2 -50  28
+-4 -54  12
+10 -32  38
+34 -17   0
+
+//Christoff 2004: rest>arrows
+//Task: DMN
+40  12 -28
+-38   8 -20
+-14 -44 -16
+12 -40 -12
+24 -18 -36
+-40  50  20
+72 -24  28
+-38 -26   8
+24 -34  52
+-16 -60  12
+-4 -98   4
+-40 -88  16
+-6 -92  16
+-10 -68  32
+12 -98   8
+
+//McGuire 1996: SIT>articulation
+//Task: DMN
+-7  43  19
+-3  48   1
+-10  52  -8
+-3  34  33
+-48 -18 -24
+
+//McGuire 1996: SIT> reading
+//Task: DMN
+1  44  32
+
+//Andreasen 1995: REST>semantic mem
+//Task: DMN
+3  48 -29
+12  46  55
+48  -7   7
+54 -42 -28
+-46 -61  22
+52 -61  18
+5 -51 -21
+
+//Greicius 2004a: Rest > button press young 1
+//Task: DMN
+-1 -10   3
+8 -44  11
+-37 -61  36
+-16  48  29
+-14  46 -26
+25  48  34
+51 -65  31
+-60 -11 -26
+
+//Greicius 2004b: Rest > button press young 2
+//Task: DMN
+6 -63  27
+23  44  35
+9  42 -21
+-5 -64 -45
+44 -62  53
+-33  26 -34
+5   1 -12
+-41 -72  47
+68 -14 -24
+-5 -8 -7
+-64 -17 -23
+48 -83 -34
+16 -95 -14
+-60   0 -31
+-10 -35 -31
+14 -57 -51
+5  27   3
+
+//Greicius 2004c: Rest > button press old
+//Task: DMN
+-11 -48  40
+21  42  38
+-21  58 -10
+-48  24  18
+55  -4 -29
+-45 -66  39
+-31 -80 -36
+-29  21 -26
+20 -100  -32
+58 -65  25
+-3 -12   4
+39  40 -29
+40  28  24
+-66 -24 -20
+42 -87 -37
+-12 -63 -22
+-16  11  -9
+3  59  27
+-66 -47   3
+-39 -57  37
+35 -36 -22
+10 -95 -27
+
+//Kennedy 2006: number < rest
+//Task: DMN
+0 -49  18
+3 -36  74
+0  55  -5
+0  14 -10
+-42 -74  33
+55 -65  22
+59  -3   3
+54  -1 -19
+
+//Persson 2007: fixation > verb generation
+//Task: DMN
+13 -56  34
+54 -62  19
+-14 -69  31
+-10 -50  55
+13 -50  55
+-14 -33  42
+-43 -22  -2
+25  29  55
+33 -47  -6
+-62 -26  31
+13  55  15
+
+//Avila, 2006: Hometown-Walking task > odd number counting
+//Task: NAV
+11  18  48
+27   5  57
+-27  -5  57
+25 -30 -11
+-20 -36  -9
+11 -50  12
+-5 -50  10
+30 -25 -12
+-27 -25  -8
+13 -23  13
+-9 -21   9
+
+//Hartley, 2003: wayfinding - following trails
+//Task: NAV
+-9  60  30
+-6  39  48
+-54 -21 -15
+-36  -9 -39
+-30 -18 -15
+6 -66  33
+-51 -48  30
+48 -45  15
+
+//Iaria, 2007: retrieval vs. control
+//Task: NAV
+-16 -58  20
+-24 -38 -12
+-26 -10  48
+-6   8  56
+-34  38  12
+-30  28  32
+-16  20  32
+-32 -38  40
+-16 -78  -8
+-2 -14 -18
+-4 -72 -18
+16 -54  14
+24 -38  -6
+24 -36  -2
+34  30  30
+28  30   2
+36 -64  46
+8 -18  20
+6 -68 -22
+
+//Jordan, 2003: navigation vs control
+//Task: NAV
+0 -72 -32
+12 -76  56
+12 -88  40
+-28 -16  64
+-44 -20  60
+32 -12  60
+24 -12  68
+-48  -8  40
+36 -56  52
+4  -8  68
+52   0  36
+56   8  32
+4 -24   0
+28 -24 -16
+-24 -24 -16
+
+//Kumaran, 2005: spatial relational task > social relational task
+//Task: NAV
+30 -36  -3
+-33 -42  -6
+27 -33 -15
+-30 -39  -9
+15 -57  15
+-18 -60  15
+42 -78  39
+-39 -81  30
+
+//Maguire, 1997: routes - number repetition baseline
+//Task: NAV
+16 -38   0
+-28 -42  -6
+18 -38  -6
+-14 -60  26
+-20 -70  56
+6 -66  62
+-10 -66  40
+-40  18 -26
+40 -80  28
+-32 -82  36
+-48 -78 -24
+
+//Maguire: successful navigation (nav1 and nav2) compared to following a trail of arrows
+//Task: NAV
+30 -16 -22
+-28 -16  28
+-24 -102   -2
+-22  52  22
+30 -20 -16
+-16 -26  -6
+-54 -30  14
+-52 -50 -12
+-46  22   6
+6  -6  12
+
+//Mellet, 2002: MS-Text - LAW
+//Task: NAV
+14 -70  52
+-4 -66  50
+-20 -74  48
+-34 -80  30
+42 -78  32
+-38 -52  46
+26 -64  32
+26 -58  20
+-28 -78  40
+-18 -64  22
+-26   2  50
+28  -4  52
+
+//Pine, 2002: Nav - Arrow
+//Task: NAV
+0 -86 -32
+22  -4 -12
+-52  38   2
+-48 -62 -34
+-8 -68 -14
+8 -6  4
+-4 -42  42
+-32  48  34
+-18 -64 -26
+24   0  24
+22  12  28
+-4 -42   0
+-38  -4 -44
+22  -2   8
+36   1  52
+26 -48   6
+22  10  14
+-40 -64 -14
+-54  28  24
+-10  32  40
+-52  28  14
+-20 -70 -14
+-50  24   2
+-38 -48 -32
+-18  14  18
+14   2  48
+-10  18  44
+
+//Rosenbaum, 2004: blocked routes vs. vowel counting baseline
+//Task: NAV
+21  20  49
+-36   8  51
+28 -37 -12
+-19 -44  -9
+-19 -59  21
+49 -70  29
+-33 -85  37
+
+//Spiers, 2006: customer-driven route planning > coasting
+//Task: NAV
+-30 -27 -21
+27 -24 -18
+-27 -30 -24
+-6 -63   9
+9 -63   6
+0  18  60
+-48  24  -6
+45  24   3
+60 -33  -3
+-57 -21   3
+3 -33 -39
+0 -54 -39
+48 -54 -27
+
+//Ghaem, 1997: mental simulation of routes - mental visualization of landmarks
+//Task: NAV
+-14 -18 -20
+-16 -70  36
+-40  18   4
+
+//Mayes, 2004: new route episodes > new word semantics
+//Task: NAV
+-9  51   3
+21 -21 -15
+-18 -42  -6
+27 -39  -9
+-6 -57  36
+-3 -60  24
+18 -63  21
+
+//Akitsuki,2009: self+other pain > self
+//Task: MORAL
+-32  20  50
+28  18  52
+-2  60  32
+0  60  18
+-2  66   4
+2  54  -8
+-42  32 -14
+0 -60  58
+16 -94  28
+-12 -80 -10
+-8 -78  -8
+-42 -74  10
+48 -76   2
+48 -70  12
+62 -42  12
+58  -2 -24
+54   8 -24
+-20  -6 -26
+28  -4 -24
+-36   6  -9
+44  14 -12
+8 -78 -24
+0 -32 -22
+
+//Avram,2013: Moral vs. Aesthetic Judgment
+//Task: MORAL
+-6  47  21
+-6  47  16
+3 -43  28
+-1 -62  41
+-33  20  52
+-45 -64  34
+-48 -52  22
+-3 -64  19
+
+//Bahneman,2010: Moral vs Physical Norm Judgment
+//Task: MORAL
+-2  50 -14
+-44  10  46
+-46  36 -12
+-8  48  36
+2 -56  30
+-56 -14 -16
+54   6 -28
+-58 -38  -4
+62 -38  -2
+-54 -64  28
+58 -64  32
+
+//Basile,2011: Guilt (deontological and altruistic) vs. Control Emotions (anger and sadness)
+//Task: MORAL
+0  50  -2
+-12  40  12
+-4 -52  40
+
+//Berhotz,2002: Intentional Violation of Social Norms vs Normal Social Behaviors
+//Task: MORAL
+-12  58   8
+-8  52  18
+10  54  24
+-10 -18  66
+-44   6  44
+6  36  54
+-6  32  54
+-6  14  60
+-52  32   2
+-36  28 -22
+-50 -44   6
+56   8 -28
+-52   8 -38
+-8 -98   8
+-20 -82 -10
+18 -98  10
+-34 -74 -16
+-6 -28 -20
+
+//Borg,2006: Nonmoral vs Moral
+//Task: MORAL
+-12  54 -19
+-15  77 -17
+-5 -75  -1
+56 -77  12
+-56 -75  10
+-66 -51  24
+-44  54  25
+
+//Borg,2008: Pathogen,incest,nonsexual moral vs Neutral
+//Task: MORAL
+-9  54  36
+-6  54 -15
+-45   9  54
+63  -9  42
+-42  -6  60
+-36 -12  51
+-48  12 -42
+-42  32 -14
+48  12 -42
+-69 -36   0
+-60 -12 -12
+66  -9  -6
+54 -12  54
+51 -18  60
+-21 -57  72
+-6 -51  33
+9 -87   0
+-13 -84   0
+-3 -12  39
+21   0 -12
+-15 -30  -3
+-6   0  12
+24  -3 -15
+-24  -5 -15
+
+//Borg,2011: Controversial+Noncontroversial Moral-Wrong vs. Nonmoral-Not-Wrong Judgments
+//Task: MORAL
+-3  30  51
+0  51  30
+-6  45  21
+-18  57  36
+18  54  42
+-12  63  21
+-39  12  54
+51   9  51
+-39  12  30
+-33  18  -9
+39  27   0
+-45  42  -9
+33  45 -18
+-45  24 -18
+48  18 -15
+48   9 -39
+-48  -9 -21
+-57 -42   0
+-51 -54  21
+54 -66  36
+-51 -75  21
+-42 -69  51
+-6 -78  -6
+-9 -87   9
+-36 -90  18
+45 -87   0
+-45 -52 -21
+-30 -39 -21
+-24 -21 -15
+33 -15 -12
+-15   6  -6
+12   3  18
+-9 -18 -18
+12 -21 -18
+-3 -30 -18
+3 -18 -30
+
+//Chiong,2013: moral personal>nonmoral dilemmas
+//Task: MORAL
+50 -60  26
+0 -78  42
+8  60  -4
+
+//Decety,2011: hurt > help (first+third person)
+//Task: MORAL
+-14  42  46
+-52  36  10
+2 -80   0
+-38 -68  28
+-38  22  26
+6 -32  -8
+10 -20  18
+-6 -18  18
+34  36 -10
+-32  40 -10
+
+//FeldmannHall,2012: Real Moral Decision vs. Imagined Moral Decision
+//Task: MORAL
+-44 -74   0
+46 -68   2
+54  22   6
+46 -18  62
+-30  10 -18
+26  10 -18
+16  40  26
+10 -12  10
+28  32  -8
+
+//FeldmannHall,2013: Difficult Moral Dilemmas vs. Difficult Nonmoral Dilemmas
+//Task: MORAL
+56  -2 -14
+56 -52  14
+-40 -58  16
+50 -16 -14
+-64 -56  10
+-54  -6  46
+
+//Finger,2006: Moral transgressions vs. Social transgressions and neutral
+//Task: MORAL
+74   2 -21
+-61  12  -4
+-71 -50 -11
+-1  71  35
+-10  -3  70
+
+//Harada,2009: Social Norm Judgment vs Gender Judgment
+//Task: MORAL
+-8  44  46
+-48  16 -34
+-50  16  16
+-52  26 -10
+-46   6  50
+-36  24  44
+-56 -42   0
+32 -86 -36
+14   8   0
+
+//Harenski,2006: Moral vs. Baseline (Odd,Even)
+//Task: MORAL
+63  27   9
+-21  -6 -15
+-12  39  54
+-9  30  63
+9  57  18
+9  69  21
+30 -45 -12
+
+//Harenski,2008: Moral vs. Nonmoral Picture Viewing
+//Task: MORAL
+12  45 -12
+-6 -54   9
+12 -48   3
+-51 -72  24
+54 -66  33
+21 -33 -18
+-24  36  51
+-12 -72  60
+-21   6  69
+0 -12 -15
+
+//Harenski,2010: Moral vs. Nonmoral (moral intuition_implicit)
+//Task: MORAL
+-45 -72  24
+-45 -72  24
+48 -78  27
+9 -54   9
+-27 -45 -15
+-15 -36 -12
+-63 -39  -9
+-54 -75   6
+-48  12  39
+
+//Harrison,2008: Moral vs. Rest (moral dilemma)
+//Task: MORAL
+15  17  54
+2  28  35
+-2 -60  24
+-42 -69  27
+-18  23  49
+
+//Hayashi,2010: dishonest vs. honest
+//Task: MORAL
+4  24 -10
+
+//Heekeren,2003: Moral Judgment vs. Semantic Judgment
+//Task: MORAL
+7  68  20
+2  60  -7
+-7  51  16
+-44  36 -13
+-51 -60  25
+-52  18 -27
+49  10 -24
+-56 -17 -11
+9 -80  18
+
+//Heekeren,2005: Moral Decision vs. Semantic Decision
+//Task: MORAL
+55   7 -24
+-54   5 -26
+-6  54 -14
+4  55  -8
+6 -50  26
+3  58  12
+-56 -62  18
+58 -60  22
+
+//Immordino-Yang, 2009: Admiration for virtue > control
+//Task: MORAL
+-28  23   2
+43   7  -1
+-2  24  22
+8  22  29
+-2 -42  27
+2 -61  36
+-53 -61  33
+1 -3 -3
+1 -20 -11
+-2 -35 -43
+
+//Kedia,2008: Emotional (Moral) vs. Neutral
+//Task: MORAL
+4  44  31
+12  23  62
+-48   4   0
+-22  -7 -11
+-59 -37  31
+
+//Luo,2006: Illegal vs. Legal
+//Task: MORAL
+3   3  63
+-51 -29  15
+46 -36  15
+-50 -16   8
+-35 -22  66
+-41 -12  61
+-30  -3  58
+-36 -21  48
+23  -7 -13
+
+//Mercadillo,2011: compassion > objects+scenes
+//Task: MORAL
+54  32  10
+42  32 -14
+-60 -18  34
+-34 -88   4
+-42 -72 -10
+0  -8  42
+-40  24  -2
+32 -42 -26
+-32 -86 -18
+
+//Michl,2012: Guilt vs. Neutral
+//Task: MORAL
+-2 -93  15
+-11 -101  -11
+-15 -93  -5
+5 -81   7
+5 -79   4
+-24 -97  -8
+27 -82 -37
+-32 -82 -29
+-56 -56  16
+-53 -19  -1
+-63 -35   1
+-63 -10 -11
+59   6 -18
+-47  13  11
+-57  21  19
+-47   1  55
+-53   7   8
+-5  62  39
+20  55  39
+
+//Moll,2001: Moral vs. Factual Judgments
+//Task: MORAL
+-29  63  12
+-36  45   1
+-11 -57  30
+-22 -14  -2
+45  62   5
+59   7 -29
+-49 -61  18
+5  59  -6
+29 -76 -26
+48 -60 -29
+
+//Moll,2002a: Moral vs Neutral Sentences
+//Task: MORAL
+-10  49 -21
+-34  19 -31
+-49 -42  -2
+
+//Moll,2002b: Moral vs Neutral Pictures
+//Task: MORAL
+7  59 -10
+10  46  11
+19  45 -16
+19 -11 -10
+-16 -10  -9
+51   6 -19
+49 -65   6
+-47 -73   9
+44 -47 -16
+-39 -47 -19
+12 -53  48
+-42 -82 -17
+
+//Moll,2005: Indignation vs. Neutral
+//Task: MORAL
+58  29   4
+-48  20  19
+-34  61  -2
+-7  67  19
+4  22 -18
+-13  23 -17
+-23  26 -16
+25  29 -15
+-12  38 -17
+6 -6 -6
+-28  11 -25
+-33 -15  -2
+67 -13 -16
+-43 -12 -29
+16 -86 -41
+-24 -85 -42
+
+//Parkinson,2011: Harmful vs. Neutral Scenarios
+//Task: MORAL
+-13  24  55
+-3  38  27
+6  58  19
+-30  38  35
+26  57  25
+-46 -57  19
+
+//Prehn,2008: Socio-normative Judgments vs. Neutral
+//Task: MORAL
+-8  42 -18
+-40  28 -22
+-42  12 -38
+-64 -12 -28
+50  10 -34
+-50 -68  34
+32  70   0
+-14 -74  50
+20 -68  52
+46 -38  48
+42 -82   8
+-62 -56  42
+-36 -68  42
+
+//Reniers,2012: Moral vs Nonmoral Decision Making
+//Task: MORAL
+-28  29  35
+-4  47  16
+-8  51   5
+-55 -41  43
+-4 -37  46
+-51 -45  35
+-28 -74 -10
+0 -60 -27
+12 -71 -17
+
+//Robertson,2007: Moral(care,justice) vs. Neutral
+//Task: MORAL
+8 -48  33
+-31 -19  19
+3  54  24
+-62 -51  17
+71 -52  15
+
+//Schleim,2010: Moral > neutral
+//Task: MORAL
+-4  53  34
+-36  14  51
+-47 -57  22
+-35 -58  27
+-2 -59  29
+37 -67 -40
+
+//Sinke,2009: Threat vs. Tease
+//Task: MORAL
+-48 -71   7
+49 -67   2
+-41 -47 -16
+41 -45 -15
+-52 -41  19
+55 -37  14
+-18  -7 -21
+20  -5 -22
+
+//Sommer,2010: Moral Conflicts vs. Neutral Conflicts
+//Task: MORAL
+0  52  36
+-42 -66  22
+50  14 -28
+6 -60  38
+60  22  18
+10  -4   6
+
+//Takahashi,2004: Guilt vs. Neutral
+//Task: MORAL
+-6 -95  12
+2 -85   6
+-16  49   9
+4  57  16
+-44 -61  20
+
+//Takahashi,2008: Moral depravity Judgment vs. Neutral
+//Task: MORAL
+6  58  14
+-54 -64  30
+
+//Wagner,2011: guilt > neutral
+//Task: MORAL
+0 -62  30
+-16  58  24
+0  60  16
+-36  12 -22
+-48 -60  26
+-66 -14 -14
+42   6 -42
+-46   8 -40
+2 -84  -2
+0 -48  -6
+6  52   8
+38 -24  24
+54 -26  20
+52 -46  26
+56 -34   8
+-34 -32  -4
+-26  10   8
+34  26 -16
+0  50  34
+-14 -10  68
+24  14  40
+-34  10  38
+30 -44  -4
+30   0  12
+
+//crinion & price 2005: auditory fables > fables reversed
+//Task: NARRATIVE
+-60 -48   8
+-54 -38   2
+-60  -8 -14
+-58  -6 -18
+-58   8 -20
+50 -34  -8
+58  -4  22
+54  10 -28
+54  10 -24
+-46  10  18
+-56  20  16
+-56  28   4
+-56  26  -2
+-42  28 -14
+-46   0  50
+56 -10  42
+-36 -42 -28
+-30 -36 -22
+38 -38 -28
+
+//crinion et al 2003: story > story reversed
+//Task: NARRATIVE
+-44  26 -16
+-52   8 -20
+-44  20 -24
+-56 -10 -10
+-58 -46   4
+-56 -56  18
+-42 -18 -36
+52  10 -28
+56  -8 -18
+
+//crinion et al 2003: story - distinct narrator > story reversed
+//Task: NARRATIVE
+-46  26 -14
+-52   8 -20
+-44  20 -24
+-58  -6 -14
+-60 -40   2
+-54 -52  24
+-42 -16 -34
+60  12 -18
+58 -10 -14
+60 -56  22
+
+//ferstl & von cramon 2001: coherent - incoherent sentences
+//Task: NARRATIVE
+-4 -31  42
+-3  64   5
+
+//giraud et al 2000: story > sentences
+//Task: NARRATIVE
+-42 -26  -6
+-60 -12 -10
+-48  12 -16
+-32 -38 -16
+-48 -72 -30
+
+//kansaku et al 2000: auditory story > story reversed -- males
+//Task: NARRATIVE
+-62 -20   4
+-58 -42   8
+
+//kansaku et al 2000: auditory story > story reversed -- females
+//Task: NARRATIVE
+-50 -50   8
+52 -44   4
+
+//kuperberg et al 2006: intermediate related > unrelated
+//Task: NARRATIVE
+-28  23   1
+-49  26  11
+-36  18  48
+-43 -52  42
+-56 -32   4
+-14  54  25
+11  29  47
+
+//maguire et al 1999: standard stories > unusual stories
+//Task: NARRATIVE
+-44  16 -26
+2  42 -22
+
+//miura et al 2005: read modern texts > fixation
+//Task: NARRATIVE
+-46   0  50
+-30 -64  44
+-22 -98   0
+16 -90  -8
+
+//papathanassiou et al 2000: story > rest
+//Task: NARRATIVE
+-58 -18   4
+-60 -32   4
+-58   0 -10
+-50  10 -12
+-44   4 -18
+-38  12 -26
+-46 -16 -28
+-46  -4 -34
+-58 -10 -34
+58 -16   2
+54   8 -16
+42  12 -30
+40  20 -32
+58 -56  14
+-24 -80 -30
+26 -78 -34
+
+//perani et al 1996: story > foreign story
+//Task: NARRATIVE
+52  15 -28
+-48  10 -22
+-40  41  -3
+-28 -93  22
+-45 -77  30
+59 -63  14
+
+//perani et al 1998: expt 1  story > backwards japanese
+//Task: NARRATIVE
+-40  11 -36
+-48   5 -31
+-57  -7 -25
+-43 -70  20
+
+//perani et al 1998: expt 2  story > backwards japanese
+//Task: NARRATIVE
+-48   1 -26
+-38   7 -35
+-48 -66  15
+-31 -30 -19
+-20 -17 -16
+-20 -32 -15
+-26 -45  62
+-33 -66  11
+-16 -64   6
+-22 -68  11
+41  10 -32
+48   4 -27
+39 -15 -30
+4 -99  -5
+2 -48  49
+2 -93  13
+3 -57  -8
+
+//robertson et al 2000: definite article > indefinite
+//Task: NARRATIVE
+38  14  16
+46  12   4
+
+//siebvorger et al 2007: related > unrelated sentences
+//Task: NARRATIVE
+-4  53  18
+6   5  33
+2  -5  55
+-26 -28  65
+-59 -21  14
+-36   3   9
+-51  -4  -2
+54 -28   0
+58   1   0
+42 -19  -3
+-11  19 -12
+-30 -21  11
+-19 -32  16
+37 -41  13
+
+//tzourio et al 1998: auditory stories > rest RHnd
+//Task: NARRATIVE
+-60 -14  -4
+-58   2  -8
+-54 -26   8
+-62 -28   8
+-40 -30  16
+-60 -52  18
+-20  -6  -8
+-30   8 -22
+-46  30   2
+-62  14  18
+50 -32   6
+54 -14   2
+58  -2  -2
+46 -28  12
+48   8 -18
+36  12 -22
+-12 -32   6
+
+//tzourio et al 1998: auditory stories > rest LHnd
+//Task: NARRATIVE
+-60 -14   4
+-56 -24   4
+-52   4 -18
+-36  14 -30
+-52  26   4
+-44 -34  -4
+-44  24 -10
+-48 -58  24
+62 -12   2
+58  -2   0
+56 -26   6
+50  10 -26
+34  18 -34
+34 -32  12
+-4  54 -16
+-8  58  22
+
+//xu et al 2005: fables > sentences
+//Task: NARRATIVE
+-48   2  48
+-46  26  16
+-54 -10 -24
+-56 -26 -16
+-62 -40  -6
+-46 -54  12
+-58 -60  10
+-52 -72  28
+-6  60  24
+-8  52  46
+-8 -54  36
+56  -8 -28
+56 -34 -14
+60 -58  14
+6  60  24
+20  44  50
+4 -64  32
+
+//Dick et al 2009: fables > fixation
+//Task: NARRATIVE
+-54 -28   6
+60 -20   4
+-48  26  18
+-42   2  52
+60  34   0
+11  18  70
+-5 -63  43
+-2 -19  35
+7 -27  35
+13 -69  64
+
+//lindenberg & Scheef 2007:conj reading/listening stories > language-like stim
+//Task: NARRATIVE
+-54  -4 -18
+-53 -49   2
+-18 -23 -13
+-14  -9 -20
+-7 -59  10
+19  -9 -21
+14 -30  -8
+
+//yarkoni et al 2008 (narrative comprehension and memory): written stories>scrambled sentences
+//Task: NARRATIVE
+-54 -55  11
+-51  29   1
+-19 -86 -39
+-10  50  44
+-44   5  52
+57 -40   4
+56  32  -1
+26 -84 -35
+6  60  23
+12  36  60
+
+//yarkoni et al 2008 (Picture of a thousand words): written stories>fixation
+//Task: NARRATIVE
+-37 -77  -1
+-49   1  44
+-14 -41   2
+-57 -11 -21
+-48  33 -15
+-25 -57  49
+-46  24  18
+-43  13  24
+-27  59  17
+5 -59  20
+30 -95   8
+33 -33   1
+48 -64  -8
+42   9  29
+47 -62  15
+55 -13 -26
+31 -41 -18
+29 -55  49
+21  33  55
+16  16  -9
+54  -8   0

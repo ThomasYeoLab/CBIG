@@ -38,6 +38,7 @@
 
 !/meta-analysis/*
 !/meta-analysis/Ngo2019_AuthorTopic/**
+!/meta-analysis/Yeo2015_AuthorTopicEM/**
 
 !/preprocessing/*
 !/preprocessing/Li2019_GSR/**
