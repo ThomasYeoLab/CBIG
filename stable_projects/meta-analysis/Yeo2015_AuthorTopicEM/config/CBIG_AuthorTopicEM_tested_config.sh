@@ -18,7 +18,6 @@ export CBIG_SPM_DIR=/apps/arch/Linux_x86_64/spm/spm12
 export CBIG_AFNI_DIR=/apps/arch/Linux_x86_64/afni/20150126/linux_openmp_64
 export CBIG_ANTS_DIR=/apps/arch/Linux_x86_64/ants/HoneyPot/BUILD/bin/
 export CBIG_WB_DIR=/apps/arch/Linux_x86_64/HCP/workbench-1.1.1/
-export CBIG_CARET_DIR=/apps/arch/Linux_x86_64/caret/
 export CBIG_FSLDIR=/apps/arch/Linux_x86_64/fsl/5.0.8
 
 # DO NOT CHANGE: set up your environment with the configurations above

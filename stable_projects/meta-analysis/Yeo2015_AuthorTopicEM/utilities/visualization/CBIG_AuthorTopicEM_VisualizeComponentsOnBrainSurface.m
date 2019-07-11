@@ -95,7 +95,7 @@ function CBIG_AuthorTopicEM_VisualizeComponentsOnBrainSurface(params_path, ...
 function CBIG_AuthorTopic_VisualizeComponentsInFS_LR(numK, final_images_dir, ...
     discretization_res, lh_projected_data, rh_projected_data, fslr_dir, min_thresh, max_thresh, ...
     colorscale, do_remove_small_clusters)
-  SMOOTH = 'METRIC_AVERAGE_TILE';
+  SMOOTH = 'metric';
 
   SURF_COMP_SIZE_THRESH = 20;
 
@@ -110,8 +110,8 @@ function CBIG_AuthorTopic_VisualizeComponentsInFS_LR(numK, final_images_dir, ...
   for K = 1:numK
     component_dir = fullfile(fslr_dir, ['C' num2str(K)]);
 
-    if ~exist(component_dir, 'dir')
-      mkdir(component_dir);
+    if exist(component_dir, 'dir')
+      system(['rm -r ', component_dir]);
     end
 
     lh_projected_component = lh_projected_data(K, :)';
@@ -119,7 +119,7 @@ function CBIG_AuthorTopic_VisualizeComponentsInFS_LR(numK, final_images_dir, ...
     disp('Transformation with wb_command');
 
     [orig_lh_fslr_32k_projected_component, orig_rh_fslr32k_projected_component, ~, ~] = ...
-      CBIG_project_from_fsaverage_to_fslr(lh_projected_component, rh_projected_component, component_dir, SMOOTH);
+      CBIG_project_fsaverage2fsLR(lh_projected_component, rh_projected_component, 'fsaverage6', SMOOTH, component_dir);
   
     [orig_lh_labels, lh_colortable] = CBIG_ConvertSingleHemiSurfaceDataToDiscretizedAnnotation( ...
       orig_lh_fslr_32k_projected_component, discretization_res, colorscale, min_thresh, max_thresh);
@@ -146,6 +146,7 @@ function CBIG_AuthorTopic_VisualizeComponentsInFS_LR(numK, final_images_dir, ...
     rh_fslr32k_labels = orig_rh_labels;
     rh_fslr32k_labels(rh_label_mask == 0) = underlay_labels;
 
+    mkdir(component_dir)
     lh_fslr32k_annotFile = fullfile(component_dir, 'lh_fslr_parcels.annot');
     rh_fslr32k_annotFile = fullfile(component_dir, 'rh_fslr_parcels.annot');
 

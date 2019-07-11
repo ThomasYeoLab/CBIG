@@ -22,7 +22,7 @@ classdef CBIG_AuthorTopicEM_unit_test < matlab.unittest.TestCase
   % Written by Gia H. Ngo and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
   methods (Test)
-    function test_authoTopic_EM(testCase)
+    function test_authorTopic_EM(testCase)
       % add paths to functions specific to author-topic model
       CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
       addpath(fullfile(CBIG_CODE_DIR, 'external_packages', 'matlab', ...
