@@ -51,7 +51,8 @@ At the time of release, this project was implemented with specific versions of o
 * [FreeSurfer](https://surfer.nmr.mgh.harvard.edu/fswiki/DownloadAndInstall) 5.30,
 * [FSL](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FslInstallation) 5.0.8,
 * [AFNI](https://afni.nimh.nih.gov/pub/dist/tgz/AFNI_ARCHIVE) 16.0.0
-* Matlab R2014a
+* [Workbench](https://www.humanconnectome.org/software/connectome-workbench) 1.1.1
+* Matlab R2018b
 
 Please see [CBIG repository setup instruction](https://github.com/ThomasYeoLab/CBIG/tree/master/setup) to make your local environment compatible with CBIG repository. Please see `config` folder for example configuration files.
 
@@ -71,14 +72,14 @@ Except for this project, if you want to use the code for other stable projects f
 - To download the version of the code that was last tested, you can either
 
   - visit this link:
-  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.10.1-Ngo2019_AuthorTopic](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.10.1-Ngo2019_AuthorTopic)
+  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.12.1-Ngo2019_AuthorTopic](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.12.1-Ngo2019_AuthorTopic)
 
   or
 
   - run the following command, if you have Git installed
 
   ```
-  git checkout -b Ngo2019_AuthorTopic v0.10.1-Ngo2019_AuthorTopic
+  git checkout -b Ngo2019_AuthorTopic v0.12.1-Ngo2019_AuthorTopic
   ```
 
 ----
@@ -88,6 +89,7 @@ Except for this project, if you want to use the code for other stable projects f
 - Release v0.8.0 (21/01/2019): Initial release of Ngo2019 Author-Topic Model for Curated Meta-analysis project.
 - Release v0.9.1 (21/02/2019): Added instruction for performing co-activation mapping experiment and references of the self-generated thought dataset.
 - Release v0.10.1 (21/03/2019): Added checks for input data. Reduced runtime for unit test.
+- Release v0.12.1 (09/07/2019): Update visualization function to use HCP Workbench instead of Caret.
 
 ----
 

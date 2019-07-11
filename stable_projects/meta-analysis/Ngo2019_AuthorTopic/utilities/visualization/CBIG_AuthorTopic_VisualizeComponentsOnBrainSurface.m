@@ -96,30 +96,36 @@ function CBIG_AuthorTopic_VisualizeComponentsOnBrainSurface(paramsPath, ...
 function CBIG_AuthorTopic_VisualizeComponentsInFS_LR(numK, finalImagesDir, ...
     discretization_res, lhProjectedData, rhProjectedData, fslrDir, minThresh, maxThresh, ...
     colorscale, doRemoveSmallClusters)
-  SMOOTH = 'METRIC_AVERAGE_TILE';
+  SMOOTH = 'metric';
 
   SURF_COMP_SIZE_THRESH = 20;
 
   lhAvgMesh = CBIG_read_fslr_surface('lh', 'fs_LR_32k', 'inflated', 'aparc.annot');
   rhAvgMesh = CBIG_read_fslr_surface('rh', 'fs_LR_32k', 'inflated', 'aparc.annot');
 
-  [lhVertices, refLhLabels, refLhColortable] = read_annotation(fullfile(getenv('CBIG_CODE_DIR'), 'data', 'templates', 'surface', 'fs_LR_32k', 'label', 'lh.aparc.annot'));
-  [rhVertices, refRhLabels, refRhColortable] = read_annotation(fullfile(getenv('CBIG_CODE_DIR'), 'data', 'templates', 'surface', 'fs_LR_32k', 'label', 'rh.aparc.annot'));
+  [lhVertices, refLhLabels, refLhColortable] = read_annotation(fullfile(getenv('CBIG_CODE_DIR'), ...
+  'data', 'templates', 'surface', 'fs_LR_32k', 'label', 'lh.aparc.annot'));
+  [rhVertices, refRhLabels, refRhColortable] = read_annotation(fullfile(getenv('CBIG_CODE_DIR'), ...
+  'data', 'templates', 'surface', 'fs_LR_32k', 'label', 'rh.aparc.annot'));
 
   for K = 1:numK
     componentDir = fullfile(fslrDir, ['C' num2str(K)]);
 
-    if ~exist(componentDir, 'dir')
-      mkdir(componentDir);
+
+    if exist(componentDir, 'dir')
+      system(['rm -r ' componentDir]);
     end
 
     lhProjectedComponent = lhProjectedData(K, :)';
     rhProjectedComponent = rhProjectedData(K, :)';
     disp('Transformation with wb_command');
 
-    [origLhFslr32kProjectedComponent, origRhFslr32kProjectedComponent, ~, ~] = CBIG_project_from_fsaverage_to_fslr(lhProjectedComponent, rhProjectedComponent, componentDir, SMOOTH);
-    [origLhLabels, lhColortable] = CBIG_ConvertSingleHemiSurfaceDataToDiscretizedAnnotation(origLhFslr32kProjectedComponent, discretization_res, colorscale, minThresh, maxThresh);
-    [origRhLabels, rhColortable] = CBIG_ConvertSingleHemiSurfaceDataToDiscretizedAnnotation(origRhFslr32kProjectedComponent, discretization_res, colorscale, minThresh, maxThresh);
+    [origLhFslr32kProjectedComponent, origRhFslr32kProjectedComponent, ~, ~] = CBIG_project_fsaverage2fsLR(...
+      lhProjectedComponent, rhProjectedComponent, 'fsaverage6', SMOOTH, componentDir);
+    [origLhLabels, lhColortable] = CBIG_ConvertSingleHemiSurfaceDataToDiscretizedAnnotation(...
+      origLhFslr32kProjectedComponent, discretization_res, colorscale, minThresh, maxThresh);
+    [origRhLabels, rhColortable] = CBIG_ConvertSingleHemiSurfaceDataToDiscretizedAnnotation(...
+      origRhFslr32kProjectedComponent, discretization_res, colorscale, minThresh, maxThresh);
 
     num_colors = size(lhColortable.table, 1);
     underlayLabels = lhColortable.table(num_colors, 5);
@@ -141,12 +147,16 @@ function CBIG_AuthorTopic_VisualizeComponentsInFS_LR(numK, finalImagesDir, ...
     rhFslr32kLabels = origRhLabels;
     rhFslr32kLabels(rhLabelMask == 0) = underlayLabels;
 
+    mkdir(componentDir);
     lhFslr32kAnnotFile = fullfile(componentDir, 'lh_fslr_parcels.annot');
     rhFslr32kAnnotFile = fullfile(componentDir, 'rh_fslr_parcels.annot');
 
-    CBIG_AnnotateSingleHemiMedialWall(lhVertices, lhFslr32kLabels, lhColortable, refLhLabels, refMedialwallLabels, lhFslr32kAnnotFile);
-    CBIG_AnnotateSingleHemiMedialWall(rhVertices, rhFslr32kLabels, rhColortable, refRhLabels, refMedialwallLabels, rhFslr32kAnnotFile);
+    CBIG_AnnotateSingleHemiMedialWall(lhVertices, lhFslr32kLabels, lhColortable, ...
+      refLhLabels, refMedialwallLabels, lhFslr32kAnnotFile);
+    CBIG_AnnotateSingleHemiMedialWall(rhVertices, rhFslr32kLabels, rhColortable, ...
+      refRhLabels, refMedialwallLabels, rhFslr32kAnnotFile);
 
-    CBIG_VisualizeSurfaceAnnotationInFreeview(lhFslr32kAnnotFile, rhFslr32kAnnotFile, 'fs_LR_32k', ['C' num2str(K)], finalImagesDir);
+    CBIG_VisualizeSurfaceAnnotationInFreeview(lhFslr32kAnnotFile, rhFslr32kAnnotFile, ...
+      'fs_LR_32k', ['C' num2str(K)], finalImagesDir);
   end
   close all;
