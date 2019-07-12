@@ -1,0 +1,7 @@
+output_kr_ukbb
+/mnt/eql/yeo1/CBIG_private_data/replication/stable_projects/predict_phenotypes/He2019_KRDNN/UKBB/ukbb_ht_180205_subject_list.txt
+/mnt/eql/yeo1/CBIG_private_data/replication/stable_projects/predict_phenotypes/He2019_KRDNN/UKBB/ukbb_ht_180205_behavior.csv
+/mnt/eql/yeo1/CBIG_private_data/replication/stable_projects/predict_phenotypes/He2019_KRDNN/UKBB/ukbb_ht_180205_FD.txt
+/mnt/eql/yeo1/CBIG_private_data/replication/stable_projects/predict_phenotypes/He2019_KRDNN/UKBB/ukbb_ht_180205_FC_55.mat
+input/kr_ukbb/
+1802_8868

@@ -40,5 +40,8 @@
 !/meta-analysis/Ngo2019_AuthorTopic/**
 !/meta-analysis/Yeo2015_AuthorTopicEM/**
 
+!/predict_phenotypes/*
+!/predict_phenotypes/He2019_KRDNN/**
+
 !/preprocessing/*
 !/preprocessing/Li2019_GSR/**

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # create log file
 logfile=$(mktemp)
@@ -247,8 +247,10 @@ EXTENSIONS_TO_CHECK=("m" "c" "cpp" "sh" "csh" "pl" "r")
 EXCLUDED_DIRECTORIES=("Zhang2016_ADFactors")
 STANDALONE_EX_DIR=("Zhang2016_ADFactors" "Liegeois2017_Surrogates" "Wu2017_RegistrationFusion")
 
-echo -e "\n==> [Check 4] Checking stable_projects/xxx/xxx" | tee -a $logfile
-for project_path in $CBIG_CODE_DIR/stable_projects/*/*
+project_paths=$(ls -d -1 $CBIG_CODE_DIR/stable_projects/*/*)
+
+echo -e "\n==> [Check 4] Checking stable_projects/xxx/xxx " | tee -a $logfile
+for project_path in $project_paths
 do
     project_in_exclude_directory=0
     echo -e "\n===> Checking $project_path"

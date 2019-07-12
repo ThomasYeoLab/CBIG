@@ -1,0 +1,58 @@
+name: CBIG_He2019
+channels:
+  - pytorch
+  - soumith
+  - defaults
+dependencies:
+  - blas=1.0
+  - ca-certificates=2018.03.07
+  - certifi=2018.10.15
+  - cffi=1.11.5
+  - cuda80=1.0
+  - cudatoolkit=8.0
+  - cudnn=6.0.21
+  - intel-openmp=2019.0
+  - libedit=3.1.20170329
+  - libffi=3.2.1
+  - libgcc=7.2.0
+  - libgcc-ng=8.2.0
+  - libgfortran-ng=7.3.0
+  - libstdcxx-ng=8.2.0
+  - mkl=2019.0
+  - mkl_random=1.0.1
+  - ncurses=6.1
+  - ninja=1.8.2
+  - numpy=1.15.3
+  - numpy-base=1.15.3
+  - openssl=1.1.1
+  - pycparser=2.19
+  - python=3.6.7
+  - pytorch=0.4.0
+  - readline=7.0
+  - scipy=1.1.0
+  - setuptools=40.4.3
+  - sqlite=3.25.2
+  - tk=8.6.8
+  - wheel=0.32.2
+  - xz=5.2.4
+  - zlib=1.2.11
+  - pip:
+    - bleach==1.5.0
+    - cython==0.29
+    - enum34==1.1.6
+    - html5lib==0.9999999
+    - keras==2.1.0
+    - markdown==3.0.1
+    - nibabel==2.4.0
+    - nilearn==0.5.1
+    - pip==19.0.3
+    - protobuf==3.6.1
+    - pyyaml==3.13
+    - scikit-learn==0.20.3
+    - six==1.11.0
+    - sklearn==0.0
+    - tensorflow-gpu==1.4.0
+    - tensorflow-tensorboard==0.4.0
+    - werkzeug==0.14.1
+prefix: /home/user/miniconda3/envs/CBIG_He2019
+

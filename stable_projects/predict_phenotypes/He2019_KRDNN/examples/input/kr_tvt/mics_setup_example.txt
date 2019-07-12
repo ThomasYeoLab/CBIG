@@ -1,0 +1,7 @@
+output_kr_tvt_example
+../examples/input/kr_tvt/example_subject_list.txt
+../examples/input/kr_tvt/example_beh.csv
+../examples/input/kr_tvt/example_FD.txt
+../examples/input/kr_tvt/example_fc.mat
+../examples/input/kr_tvt/
+1802_8868

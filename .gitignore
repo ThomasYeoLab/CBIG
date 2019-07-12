@@ -27,6 +27,12 @@ Desktop.ini
 # Anacoda
 miniconda.sh
 
+## Python
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
 
 
 # Unit test intermediate output folder

@@ -1,0 +1,142 @@
+
+CBIG FNN for UK Biobank with argument: Namespace(batch_size=5, dropout=0.5, epochs=100, gpu=0, index=None, lr=0.01, momentum=0.9, n_l1=8, n_l2=8, n_layer=2, out_path='log', path_data='/home/user/deepGround/code/1709/fmri_predict_behavior/rev/CBIG_He2019_dropbox_1903/python/nilearn/tvt', pred_item=1, runs=1, scheduler_decrease=75, seed=42, weight_decay=0.02)
+
+Best validation at index:  72
+Average validation corr: 0.829353806370474 , MAE: 1.80621770557528
+Average test corr 0.41391251154804004 , MAE 2.899592732779279
+Final ensemble test corr 0.41391251154804004 , MAE 2.899592732779279
+file saved: log/fnn_pred_1_2019_04_19_15_41.npz
+time spent: 131.8112
+
+CBIG FNN for UK Biobank and sex with argument: Namespace(batch_size=5, dropout=0.5, epochs=100, gpu=0, index=None, lr=0.01, momentum=0.9, n_l1=8, n_l2=32, n_layer=2, out_path='log', path_data='/home/user/deepGround/code/1709/fmri_predict_behavior/rev/CBIG_He2019_dropbox_1903/python/nilearn/tvt', runs=1, scheduler_decrease=75, seed=42, weight_decay=0.01)
+
+Best validation at index:  75
+Average validation aucc: 0.5
+Average test aucc: 0.30000001192092896
+Final averaged test aucc 0.3
+file saved: log/fnn_sex_2019_04_19_15_44.npz
+time spent: 131.4105
+
+CBIG BrainNetCNN for UK Biobank with argument: Namespace(alpha=None, batch_size=5, dim=39, dropout=0.3, e2e=16, e2n=32, epochs=100, gpu=0, index=None, lr=0.01, momentum=0.9, n2g=96, out_path='log', path_data='/home/user/deepGround/code/1709/fmri_predict_behavior/rev/CBIG_He2019_dropbox_1903/python/nilearn/tvt', pred_item=1, runs=1, scheduler_decrease=75, seed=42, weight_decay=0.02)
+
+Best validation at index:  57
+Average validation corr: 0.567209152982277 , MAE: 1.8255686245548217
+Average test corr 0.08589643619444799 , MAE 2.8563998842424874
+Final ensemble test corr 0.08589643619444799 , MAE 2.8563998842424874
+file saved: log/brainnetcnn_pred_1_2019_04_19_15_46.npz
+time spent: 132.3413
+
+CBIG BrainNetCNN for UKBB and sex with argument: Namespace(alpha=None, batch_size=5, dim=39, dropout=0.5, e2e=8, e2n=16, epochs=100, gpu=0, index=None, lr=0.01, momentum=0.9, n2g=64, out_path='log', path_data='/home/user/deepGround/code/1709/fmri_predict_behavior/rev/CBIG_He2019_dropbox_1903/python/nilearn/tvt', runs=1, scheduler_decrease=75, seed=42, weight_decay=0.02)
+
+Best validation at index:  36
+Average validation aucc: 0.800000011920929
+Average test aucc: 0.6000000238418579
+Final averaged test aucc 0.6
+file saved: log/brainnetcnn_sex_2019_04_19_15_48.npz
+time spent: 134.1949
+
+CBIG GCNN for UK Biobank with argument: Namespace(chebyshev_degree=1, dropout=0.5, epochs=1000, gpu=0, graph_estimation='chebyshev', graph_folder='/home/user/deepGround/code/1709/fmri_predict_behavior/rev/CBIG_He2019_dropbox_1903/python/nilearn/graph', graph_setup='40Subject_corr_option_3_param_5', index=None, l2_regularizer=2e-05, lr=0.005, lr_decay=1e-06, momentum=0.9, n_l1=6, num_subject=40, optimizer='SGD', out_path='log', path_data='/home/user/deepGround/code/1709/fmri_predict_behavior/rev/CBIG_He2019_dropbox_1903/python/nilearn/tvt', pred_item=1, runs=1, seed=42)
+Loading 40Subject_corr_option_3_param_5 graph...
+Graph has 40 nodes, 324 edges.
+Using Chebyshev polynomial basis filters...
+Calculating largest eigenvalue of normalized graph Laplacian...
+Calculating Chebyshev polynomials up to order 1...
+Run: 1
+
+Best validation at index:  3
+Average validation corr: 0.2467170701762085 , MAE: 2.007310393646604
+Average test corr 0.025451315639911376 , MAE 3.1852971264527907
+Final ensemble test corr 0.025451321041492524 , MAE 3.1852971264527907
+file saved: log/gcnn_pred_1_2019_04_19_15_48.npz
+time spent: 7.7030
+
+CBIG GCNN for UK Biobank and sex with argument: Namespace(chebyshev_degree=1, dropout=0.5, epochs=1000, gpu=0, graph_estimation='chebyshev', graph_folder='/home/user/deepGround/code/1709/fmri_predict_behavior/rev/CBIG_He2019_dropbox_1903/python/nilearn/graph', graph_setup='40Subject_corr_option_3_param_5', index=None, l2_regularizer=2e-05, lr=0.0003, lr_decay=1e-06, momentum=0.9, n_l1=6, num_subject=40, optimizer='Adam', out_path='log', path_data='/home/user/deepGround/code/1709/fmri_predict_behavior/rev/CBIG_He2019_dropbox_1903/python/nilearn/tvt', runs=1, seed=42)
+Loading 40Subject_corr_option_3_param_5 graph...
+Graph has 40 nodes, 324 edges.
+Using Chebyshev polynomial basis filters...
+Calculating largest eigenvalue of normalized graph Laplacian...
+Calculating Chebyshev polynomials up to order 1...
+Run: 1
+
+Best validation at index:  709
+Average validation aucc: 0.8
+Average test aucc: 0.4
+Final averaged test aucc 0.4
+file saved: log/gcnn_sex_2019_04_19_15_48.npz
+time spent: 8.8573
+
+CBIG FNN for HCP with argument: Namespace(batch_size=5, dropout=0.5, epochs=100, folds=4, gpu=0, l2_regularizer=0.02, lr=0.01, lr_decay=0.0001, momentum=0.9, n_l1=32, n_l2=16, n_l3=8, n_measure=2, num_subjects=40, out_path='log', path_data='/home/user/deepGround/code/1709/fmri_predict_behavior/rev/CBIG_He2019_dropbox_1903/python/nilearn/cv', seed=42)
+Test fold: 0 valid fold: 0
+Test fold: 0 valid fold: 1
+Test fold: 0 valid fold: 2
+Test with train+valid: 1
+Test fold: 1 valid fold: 0
+Test fold: 1 valid fold: 1
+Test fold: 1 valid fold: 2
+Test with train+valid: 2
+Test fold: 2 valid fold: 0
+Test fold: 2 valid fold: 1
+Test fold: 2 valid fold: 2
+Test with train+valid: 3
+Test fold: 3 valid fold: 0
+Test fold: 3 valid fold: 1
+Test fold: 3 valid fold: 2
+Test with train+valid: 4
+Optimal index for each fold at: [56 78  5 35]
+Optimal result for each fold: [0.06988531 0.13193576 0.37800786 0.01543325]
+Final test result: 0.14881554385075918
+log saved at: HCP_fnn_2019_04_19_15_50.npz
+time spent: 87.1370
+
+CBIG BrainNetCNN for HCP with argument: Namespace(batch_size=5, dropout=0.5, e2e=16, e2n=128, epochs=100, folds=4, gpu=0, leaky_alpha=0.1, lr=0.01, lr_decay=0.0001, momentum=0.9, n2g=26, n_measure=2, num_subjects=40, out_path='log', path_data='/home/user/deepGround/code/1709/fmri_predict_behavior/rev/CBIG_He2019_dropbox_1903/python/nilearn/cv', seed=42)
+Test fold: 0 valid fold: 0
+Test fold: 0 valid fold: 1
+Test fold: 0 valid fold: 2
+Test with train+valid: 1
+Test fold: 1 valid fold: 0
+Test fold: 1 valid fold: 1
+Test fold: 1 valid fold: 2
+Test with train+valid: 2
+Test fold: 2 valid fold: 0
+Test fold: 2 valid fold: 1
+Test fold: 2 valid fold: 2
+Test with train+valid: 3
+Test fold: 3 valid fold: 0
+Test fold: 3 valid fold: 1
+Test fold: 3 valid fold: 2
+Test with train+valid: 4
+Optimal index for each fold at: [ 1  3 10 23]
+Optimal result for each fold: [-0.01001286 -0.04283063  0.55810329  0.07837945]
+Final test result: 0.14590981054632177
+log saved at: HCP_brainnetcnn_2019_04_19_15_51.npz
+time spent: 72.8079
+
+CBIG GCNN for HCP with argument: Namespace(batch_size=5, chebyshev_degree=5, dropout=0.3, epochs=100, folds=4, gpu=0, graph_estimation='chebyshev', graph_folder='/home/user/deepGround/code/1709/fmri_predict_behavior/rev/CBIG_He2019_dropbox_1903/python/nilearn/graph', graph_setup='40Subject_corr_option_3_param_5', l2_regularizer=0.0008, lr=0.01, lr_decay=1e-05, momentum=0.9, n_l1=256, n_measure=2, num_subjects=40, optimizer='SGD', out_path='log', path_data='/home/user/deepGround/code/1709/fmri_predict_behavior/rev/CBIG_He2019_dropbox_1903/python/nilearn/cv', seed=42)
+Loading 40Subject_corr_option_3_param_5 graph...
+Graph has 40 nodes, 324 edges.
+Using Chebyshev polynomial basis filters...
+Calculating largest eigenvalue of normalized graph Laplacian...
+Calculating Chebyshev polynomials up to order 5...
+Test: 1 Valid 1
+Test: 1 Valid 2
+Test: 1 Valid 3
+Test with train+valid: 1
+Test: 2 Valid 1
+Test: 2 Valid 2
+Test: 2 Valid 3
+Test with train+valid: 2
+Test: 3 Valid 1
+Test: 3 Valid 2
+Test: 3 Valid 3
+Test with train+valid: 3
+Test: 4 Valid 1
+Test: 4 Valid 2
+Test: 4 Valid 3
+Test with train+valid: 4
+Optimal index for each fold at: [ 1 15 16 51]
+Optimal result for each fold: [ 0.13554908 -0.20121629  0.28845809  0.19351652]
+Final test result: 0.10407685025902051
+log saved at: HCP_gcnn_2019_04_19_15_52.npz
+time spent: 22.5100
+vertex degree mean: 8.1 min: 5 max: 28
+fully connected

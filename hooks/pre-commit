@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 ###
 # Prevent 'unstable_projects', 'legacy' or 'developers' directories from being committed to 'master' branch
@@ -89,7 +89,7 @@ fi
 # check whether committed files have the MIT license 
 ###
 # include python scripts
-EXTENSIONS_TO_CHECK=("m" "c" "cpp" "sh" "csh" "py" "pl" "r")
+EXTENSIONS_TO_CHECK=("m" "c" "cpp" "sh" "csh" "pl" "r")
 
 mit_license="Written by [your name] and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md"
 all_with_license=1
@@ -299,6 +299,60 @@ EXTENSIONS_TO_CHECK=("py")
 DIRECTORIES_TO_CHECK=("stable_projects" "utilities" "data")
 EXCLUDED_FILES=("Surf2SurfGui.m" "Vol2SurfGui.m" "CBIG_tested_config.sh" "CBIG_tested_config.csh" "tested_startup.m")
 
+# check mit license
+all_python_mit=1
+echo -e "\n==> [Check] Checking that committed python files have mit license.." | tee -a $logfile
+for file_path in "${files_to_be_committed[@]}"
+do
+    file_in_exclude=0
+    file_name=$(basename $file_path)
+    for excluded_file in "${EXCLUDED_FILES[@]}"
+    do
+        if [[ $file_name == $excluded_file ]]; then
+            file_in_exclude=1
+            break
+        fi
+    done
+    if [ $file_in_exclude == 1 ]; then
+        echo "$file_name will not be checked for mit license" | tee -a $logfile
+        continue
+    fi
+    for directory in "${DIRECTORIES_TO_CHECK[@]}"
+    do
+        if [[ $file_path == $directory/* ]] || [[ $file_path == $file_name ]]; then
+            for ext in "${EXTENSIONS_TO_CHECK[@]}"
+            do
+                if [[ $file_name = *.$ext ]]; then
+                    license_line_num=`grep -n "MIT license" $file_path | cut -d : -f 1`
+                    link_line_num=$((${license_line_num}+1))
+                    license_line=$(sed -n ${license_line_num}p $file_path)
+                    link_line=$(sed -n ${link_line_num}p $file_path)
+                    if [[ "$license_line" == "" ]]; then
+                        all_python_mit=0
+                        echo "$file_path does not have a MIT license" | tee -a $logfile
+                    elif [[ "$license_line" == *"CBIG under MIT license:" && "$license_line" == *"Written by"* \
+                        && "$link_line" == *"https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md" ]]; then
+                        # do nothing
+                        :
+                    else
+                        all_python_mit=0
+                        echo "$file_path does not follow our MIT license format: " | tee -a $logfile
+                        echo "Written by XXX and CBIG under MIT license:" | tee -a $logfile
+                        echo "https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md" | tee -a $logfile
+                    fi
+                fi
+            done
+        fi
+    done
+done
+
+if [ $all_python_mit == 0 ]; then
+    echo "   [FAILED] There are python scripts which does not have mit license. Abort committing." | tee -a $logfile
+else
+    echo "   [PASSED]" | tee -a $logfile
+fi
+
+# use yapf to check code format
 all_yapf_format=1
 echo -e "\n==> [Check] Checking that committed python files follow yapf pep8 format .." | tee -a $logfile
 for file_path in "${files_to_be_committed[@]}"
@@ -342,11 +396,61 @@ else
     echo "   [PASSED]" | tee -a $logfile
 fi
 
+# use flake8 to check code syntax, style and complexity
+all_flake8_format=1
+echo -e "\n==> [Check] Checking that committed python files follow flake8 format .." | tee -a $logfile
+for file_path in "${files_to_be_committed[@]}"
+do
+    file_in_exclude=0
+    file_name=$(basename $file_path)
+    for excluded_file in "${EXCLUDED_FILES[@]}"
+    do
+        if [[ $file_name == $excluded_file ]]; then
+            file_in_exclude=1
+            break
+        fi
+    done
+    if [ $file_in_exclude == 1 ]; then
+        echo "$file_name will not be checked by flake8" | tee -a $logfile
+        continue
+    fi
+    for directory in "${DIRECTORIES_TO_CHECK[@]}"
+    do
+        if [[ $file_path == $directory/* ]] || [[ $file_path == $file_name ]]; then
+            for ext in "${EXTENSIONS_TO_CHECK[@]}"
+            do
+                if [[ $file_name = *.$ext ]]; then
+                    flake8_version=$(flake8 --version | cut -d " " -f 1)
+                    if [ "$flake8_version" != "3.7.7" ]; then
+                        echo "[FAILDED] You do not have flake8 or installed a different version" | tee -a $logfile
+                        echo "Please install flake8 3.7.7:" | tee -a $logfile
+                        echo "pip install flake8==3.7.7" | tee -a $logfile
+                        exit 1
+                    fi
+                    flake8_output=$(flake8 --count ${file_path})
+                    if [ "$flake8_output" != 0 ]; then
+                        echo "$file_path does not follow flake8. Please fix the errors and warnings" | tee -a $logfile
+                        flake8 --count ${file_path} | tee -a $logfile
+                        all_flake8_format=0
+                    fi
+                fi
+            done
+        fi
+    done
+done
+
+if [ $all_flake8_format == 0 ]; then
+    echo "   [FAILED] There are python scripts which does not follow flake8. Abort committing." | tee -a $logfile
+else
+    echo "   [PASSED]" | tee -a $logfile
+fi
+
 ###
 # if any checks failed,exit the program
 ###
 if [ $all_with_valid_prefixes == 0 -o $all_with_license == 0 -o $all_within_120 == 0 -o \
-    $all_with_valid_rmpath == 0 -o $all_with_valid_prefixes == 0 -o $all_yapf_format == 0 ]; then
+    $all_with_valid_rmpath == 0 -o $all_with_valid_prefixes == 0 -o $all_python_mit == 0 -o \
+    $all_yapf_format == 0 -o $all_flake8_format == 0 ]; then
     echo "[FAILED] Some checks failed." | tee -a $logfile
     echo "Check pre-commit hook log file: $logfile" | tee -a $logfile
     exit 1
