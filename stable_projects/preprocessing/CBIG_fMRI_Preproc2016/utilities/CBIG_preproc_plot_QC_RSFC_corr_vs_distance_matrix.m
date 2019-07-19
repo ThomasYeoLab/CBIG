@@ -1,4 +1,5 @@
-function CBIG_preproc_plot_QC_RSFC_corr_vs_distance_matrix( QC_vector, FC_matrix, distance_matrix, y_label, output_name )
+function CBIG_preproc_plot_QC_RSFC_corr_vs_distance_matrix( QC_vector, FC_matrix, distance_matrix,...
+    y_label, output_name )
 
 % CBIG_preproc_plot_QC_RSFC_corr_vs_distance_matrix( QC_vector, FC_matrix, distance_matrix, y_label, output_name )
 %
@@ -27,6 +28,11 @@ function CBIG_preproc_plot_QC_RSFC_corr_vs_distance_matrix( QC_vector, FC_matrix
 % 
 % Written by Jingwei Li and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 % 
+
+%% Check input variables
+if size(QC_vector,2) > 1
+    error('Input argument ''QC_vector'' should be a column vector');
+end
 
 % check the size of matrices
 if(length(QC_vector)~=size(FC_matrix, 3))

@@ -120,6 +120,8 @@ If the user decided to pass in the setup file, then `varargin` is not needed. Th
   * It is a string of the output directory (full path). An example folder structure in the output directory can be found in `$CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSR/examples/output/KernelRidgeRegression/`.
 * `param.outstem`
   * It is a string appended to all the output filenames. For example, you may want to run this workflow multiple times for the same dataset but with different target variables, different covariates, ... `outstem` can help you to differentiate these multiple runs even if they are saved in the same output folder. For instance, the filename of the final test accuracies with optimal hyperparameters will be `[param.outdir '/final_result_' param.outstem '.mat']` if `param.outstem` is not empty. If `param.outstem` is empty, the filename will become `[param.outdir '/final_result.mat']`.
+* `param.with_bias`
+  * It is a string or a scalar that can be either 0 or 1. If `param.with_bias = 0`, the cost function to be minimized is `(y - K*alpha)^2 + (regularization of alpha)`; if `param.with_bias = 1`, the cost function to be minimized is `(y - K*alpha - beta)^2 + (regularization of alpha)`, where `beta` is a constant bias for every subject, estimated from the data.
 * `param.ker_param`
   * It is a structure of length L, where L is the number of kernel parameters the user would like to pass into the workflow.
   * It should contain two subfields: `type` and `scale`.
@@ -230,6 +232,8 @@ If the user did not prepare the setup file, he/she needs to pass in the paramete
   * It is a string of the output directory (full path). An example folder structure in the output directory can be found in `$CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSR/examples/output/KernelRidgeRegression/`.
 * `varargin{7}` (outstem)
   * It is a string appended to all the output filenames. For example, you may want to run this workflow multiple times for the same dataset but with different target variables, different covariates, ... The 7-th argument you pass in through `varargin` can help you to differentiate these multiple runs even if they are saved in the same output folder. For instance, the filename of the final test accuracies with optimal hyperparameters will be `[varargin{6} '/final_result_' varargin{7} '.mat']` if `varargin{7}` is not empty. If `varargin{7}` is empty, the filename will become `[varargin{6} '/final_result.mat']`.
+* `varargin{8}` (with_bias, optional)
+  * It is a string or a scalar that can be either 0 or 1. If `with_bias = 0`, the cost function to be minimized is `(y - K*alpha)^2 + (regularization of alpha)`; if `with_bias = 1`, the cost function to be minimized is `(y - K*alpha - beta)^2 + (regularization of alpha)`, where `beta` is a constant bias for every subject, estimated from the data. Default is 1.
 * `varargin{8}` (ker_param_file, optional)
   * A string, which is the full-path name of a `.mat` file. The `.mat` file contains a structure called `ker_param`.
   * `ker_param` is a structure of length L, where L is the number of kernel parameters the user would like to pass into the workflow.
@@ -280,6 +284,14 @@ We provided a fake example to show how to use this workflow (for the K-fold cros
 The script can be found as `$CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSR/examples/scripts/CBIG_LiGSR_example_KRR.sh`
 
 You can check the output folder structure in this directory: `$CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSR/examples/output/KernelRidgeRegression`.
+
+## Updates
+
+- Release v0.9.0 (13/02/2019): Initial release of general kernel regression package
+- Release v0.9.4 (01/04/2019): Renamed matlab variable `feature` to `feature_mat` to avoid clashing with matlab built-in function.
+- Release v0.13.1 (19/07/2019):
+  1. Added bias term in kernel regression cost funtion.
+  2. Added unit test scipt for general kernel regression package.
 
 ## Bugs and questions
 Please contact Jingwei Li at jingwei.li@u.nus.edu and Ru(by) Kong at roo.cone@gmail.com.

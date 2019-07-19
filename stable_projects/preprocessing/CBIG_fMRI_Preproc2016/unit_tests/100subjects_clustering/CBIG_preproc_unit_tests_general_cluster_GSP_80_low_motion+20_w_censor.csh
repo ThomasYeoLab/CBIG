@@ -45,14 +45,17 @@ if( $scrub_flag == 1 ) then
 	set cmd = "$cmd ${your_subject_dir} -sub_ls ${subject_list} -surf_stem ${surf_stem} -n ${num_clusters} -out_dir"
 	set cmd = "$cmd ${out_dir} -cluster_out ${out_dir}/GSP_80_low_mt_20_w_censor_clusters${formated_cluster}_scrub"
 	set cmd = "$cmd -tries 1000 -outlier_stem ${outlier_stem}"
-	echo "$cmd" | qsub -V -q circ-spool -l walltime=20:00:00,mem=2GB
+	echo "$cmd" | qsub -V -q circ-spool -l walltime=20:00:00,mem=2GB \
+          -m ae -N clust_100sub_ut
 
 else
 	set cmd = "cd ${curr_dir}; ${code_dir}/CBIG_Yeo2011_general_cluster_fcMRI_surf2surf_profiles.csh -sd" 
 	set cmd = "$cmd ${your_subject_dir} -sub_ls ${subject_list} -surf_stem ${surf_stem} -n ${num_clusters} -out_dir"
-	set cmd = "$cmd ${out_dir} -cluster_out ${out_dir}/GSP_80_low_mt_20_w_censor_clusters${formated_cluster}_noscrub"
+	set cmd = "$cmd ${out_dir} -cluster_out \
+          ${out_dir}/GSP_80_low_mt_20_w_censor_clusters${formated_cluster}_noscrub"
 	set cmd = "$cmd -tries 1000 "
-	echo "$cmd" | qsub -V -q circ-spool -l walltime=20:00:00,mem=2GB
+	echo "$cmd" | qsub -V -q circ-spool -l walltime=20:00:00,mem=2GB \
+          -m ae -N clust_100sub_ut
 endif
 
 

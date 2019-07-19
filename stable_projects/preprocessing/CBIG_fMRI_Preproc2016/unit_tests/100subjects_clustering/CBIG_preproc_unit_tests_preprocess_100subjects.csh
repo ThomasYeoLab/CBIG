@@ -30,7 +30,8 @@ foreach curr_sub ("`cat $sub_list`")
 	
 	set cmd = "CBIG_preproc_fMRI_preprocess.csh -s $curr_sub -output_d $outdir -anat_s ${curr_sub}_FS"
 	set cmd = "$cmd -anat_d ${anat_dir} -fmrinii ${fmrinii_dir}/$curr_sub.fmrinii -config ${config_file}"
-	echo $cmd | qsub -V -q circ-spool -l walltime=2:00:00,mem=4GB
+	echo $cmd | qsub -V -q circ-spool -l walltime=3:00:00,mem=4GB \
+          -m ae -N prep_100sub_ut
 	sleep 3s
 	
 end

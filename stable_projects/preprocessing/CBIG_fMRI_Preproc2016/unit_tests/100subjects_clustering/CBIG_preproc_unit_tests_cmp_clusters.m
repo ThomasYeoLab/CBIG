@@ -26,13 +26,12 @@ input_labels = load(input_file);
 
 [labels, assign, cost, dice_overlap] = CBIG_HungarianClusterMatch([ref_labels.lh_labels;...
     ref_labels.rh_labels], [input_labels.lh_labels; input_labels.rh_labels]);
-disp('Dice overlap:')
-disp(num2str(dice_overlap));
-if(min(dice_overlap) > 0.95 && cost < -18000)
-    disp('Clustering result was replicated.')
-else
-    disp('ERROR: Clustering result was too different from ground truth.')
-end
+
+dice_message = [sprintf('Dice overlap: \n'), num2str(dice_overlap)];
+cost_message = [sprintf('\nCost: \n'), num2str(cost)];
+assert((min(dice_overlap) > 0.95 && cost < -18000), ...
+    [sprintf('ERROR: Clustering result was too different from ground truth. \n'), dice_message, cost_message])
+disp([sprintf('Clustering result was replicated. \n'), dice_message, cost_message])
 save(fullfile(cmp_dir, 'your_overlap_with_groundtruth.mat'), 'cost', 'dice_overlap')
 
 %% Draw surface map

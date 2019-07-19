@@ -21,10 +21,18 @@ function CBIG_preproc_DVARS_FDRMS_Correlation(DVARS_file,FDRMS_file,output_dir_n
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
-
 %% Read in file and construct DVARS. FDRMS vectors
 fd = csvread(FDRMS_file);
 dvars = csvread(DVARS_file);
+
+%% Check input variables
+if size(fd,2) > 1
+    error('Input argument ''FDRMS_file'' should list values in columns');
+end
+
+if size(dvars,2) > 1
+    error('Input argument ''DVARS_file'' should list values in columns');
+end
 
 %% Compute the correlation, discard the first frame
 coe = CBIG_corr(fd(2:end), dvars(2:end));

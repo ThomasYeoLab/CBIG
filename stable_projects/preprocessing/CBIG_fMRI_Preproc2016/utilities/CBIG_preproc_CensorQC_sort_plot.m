@@ -1,6 +1,8 @@
-function CBIG_preproc_CensorQC_sort_plot(vol1_inmask, vol_m_inmask, vol2_inmask, N_inmask, outliers, FRAC_DIFF_inmask, CORR_inmask, outname_noext, measure_name)
+function CBIG_preproc_CensorQC_sort_plot(vol1_inmask, vol_m_inmask, vol2_inmask, N_inmask, outliers,...
+    FRAC_DIFF_inmask, CORR_inmask, outname_noext, measure_name)
 
-% CBIG_preproc_CensorQC_sort_plot(vol1_inmask, vol_m_inmask, vol2_inmask, N_inmask, outliers, FRAC_DIFF_inmask, CORR_inmask, outname_noext, measure_name)
+% CBIG_preproc_CensorQC_sort_plot(vol1_inmask, vol_m_inmask, vol2_inmask,
+% N_inmask, outliers, FRAC_DIFF_inmask, CORR_inmask, outname_noext, measure_name)
 % 
 % This function sorts voxels by the values of measure_name ('CORR' -
 % correlation or 'FRAC_DIFF' - fractional difference). FRAC_DIFF_inmask is
@@ -58,15 +60,21 @@ function CBIG_preproc_CensorQC_sort_plot(vol1_inmask, vol_m_inmask, vol2_inmask,
 %
 % Example:
 % CBIG_preproc_CensorQC_sort_plot(vol1_inmask, vol_m_inmask, vol2_inmask, N_inmask, outliers, ...
-%     FRAC_DIFF_inmask, CORR_inmask, 'subject_dir/Sub001_Ses1/qc/Sub0001_Ses1_bld002_interp_FracDiff_whole_6plots', 'FRAC_DIFF') 
+%     FRAC_DIFF_inmask, CORR_inmask,
+%     'subject_dir/Sub001_Ses1/qc/Sub0001_Ses1_bld002_interp_FracDiff_whole_6plots', 'FRAC_DIFF') 
 % CBIG_preproc_CensorQC_sort_plot(vol1_inmask, vol_m_inmask, vol2_inmask, N_inmask, outliers, ...
-%     FRAC_DIFF_inmask, CORR_inmask, 'subject_dir/Sub001_Ses1/qc/Sub0001_Ses1_bld002_interp_FracDiff_whole_6plots', 'CORR') 
+%     FRAC_DIFF_inmask, CORR_inmask,
+%     'subject_dir/Sub001_Ses1/qc/Sub0001_Ses1_bld002_interp_FracDiff_whole_6plots', 'CORR') 
 %
 % Date: Jun.14, 2016
 %
 % Written by Jingwei Li.
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
+%% Check input variables
+if size(outliers,2) > 1
+    error('Input argument ''outliers'' should be a column vector');
+end
 
 if(strcmp(measure_name, 'FRAC_DIFF'))
     [measure_sorted, measure_ind] = sort(FRAC_DIFF_inmask, 'ascend');
@@ -127,10 +135,12 @@ for i = 1:6
     % title
     if(strcmp(measure_name, 'FRAC_DIFF'))
         ti = title(['Percentile:' num2str(percentage*100) '%, Vox:' num2str(measure_ind(n)) ...
-            ', Corr:' num2str(CORR_inmask(measure_ind(n))) ', FracDiff:' num2str(FRAC_DIFF_inmask(measure_ind(n)), '%.3e')]);
+            ', Corr:' num2str(CORR_inmask(measure_ind(n))) ', FracDiff:' ...
+            num2str(FRAC_DIFF_inmask(measure_ind(n)), '%.3e')]);
     elseif(strcmp(measure_name, 'CORR'))
         ti = title(['Percentile:' num2str(percentage*100) '%, Vox:' num2str(measure_ind(n)) ...
-            ', Corr:' num2str(CORR_inmask(measure_ind(n))) ', FracDiff:' num2str(FRAC_DIFF_inmask(measure_ind(n)), '%.3e')]);
+            ', Corr:' num2str(CORR_inmask(measure_ind(n))) ', FracDiff:' ...
+            num2str(FRAC_DIFF_inmask(measure_ind(n)), '%.3e')]);
     else
         warning('No matched measure name!')
     end

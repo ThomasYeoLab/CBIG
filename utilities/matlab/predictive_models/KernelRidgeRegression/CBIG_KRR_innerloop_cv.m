@@ -1,5 +1,5 @@
 function [y_p, y_t, acc, acc_concat] = CBIG_KRR_innerloop_cv( bin_flag, num_inner_folds, ...
-    kernel, y_resid, y_orig, num_valid_sub, lambda, threshold )
+    kernel, y_resid, y_orig, num_valid_sub, with_bias, lambda, threshold )
 
 % [y_p, y_t, acc, acc_concat] = CBIG_KRR_innerloop_cv( bin_flag, num_inner_folds, ...
 %     kernel, y_resid, y_orig, num_valid_sub, lambda, threshold )
@@ -56,6 +56,14 @@ function [y_p, y_t, acc, acc_concat] = CBIG_KRR_innerloop_cv( bin_flag, num_inne
 %     For cross-validation case, this argument is not needed, set 
 %     num_valid_sub = [].
 %     
+%   - with_bias
+%     A scalar (choose from 0 or 1).
+%     - with_bias = 0 means the algorithm is to minimize 
+%     (y - K*alpha)^2 + (regularization of alpha);
+%     - with_bias = 1 means the algorithm is to minimize
+%     (y - K*alpha - beta)^2 + (regularization of alpha), where beta is a
+%     constant bias for every subject, estimated from the data.
+% 
 %   - lambda
 %     A scalar, the l2-regularization parameter.
 % 
@@ -100,7 +108,8 @@ function [y_p, y_t, acc, acc_concat] = CBIG_KRR_innerloop_cv( bin_flag, num_inne
 %     accuracy is computed based on the concatenated predicted scores of
 %     all inner-loop folds.
 % 
-% Written by Jingwei Li, Ru(by) Kong and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+% Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+% Author: Jingwei Li and Ru(by) Kong
 
 %% setting up
 num_sub = size(kernel, 1);
@@ -118,7 +127,7 @@ if(num_inner_folds == 1)
     fold_index.test = (num_sub - num_valid_sub + 1):num_sub;
 else
     % cross-validation case
-    rng(1);
+    rng(1, 'twister');
     cv_idx = cvpartition(num_sub, 'kfold', num_inner_folds);
     
     for fold = 1:num_inner_folds
@@ -143,14 +152,37 @@ for fold = 1:num_inner_folds
     
     for i = 1:size(y_resid, 2)
         %% Training
-        % alpha = (K + lambda * I)^-1 * y
-        %  Nx1    NxN   1x1    NxN      Nx1
         nan_index = isnan(curr_y_train(:,i));
-        alpha{fold,i} = (curr_ker_train(~nan_index,~nan_index) + lambda*eye(sum(~nan_index))) ...
-            \ curr_y_train(~nan_index,i);
+        K = curr_ker_train(~nan_index,~nan_index);
+        N = sum(~nan_index);
+        y = curr_y_train(~nan_index,i);
+        Kr = K + lambda * eye(N);
+        if(with_bias==0)
+            %%%%%%%%%%%%%%%%%%%% Without bias term
+            % alpha = (K + lambda * I)^-1 * y
+            %  Nx1    NxN   1x1    NxN      Nx1
+            alpha{fold,i} = Kr \ y;
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        
+        else
+            %%%%%%%%%%%%%%%%%%%% With bias term
+            X = ones(N,1);
+            beta{fold,i} = (X' * (Kr\ X)) \ X' * (Kr \ y);
+            alpha{fold,i} = Kr \ (y - X * beta{fold,i});
+        end
+        
         
         %% Test
-        y_predict{fold,i} = curr_ker_test(~isnan(curr_y_test(:,i)), ~nan_index) * alpha{fold,i};
+        K_val = curr_ker_test(~isnan(curr_y_test(:,i)), ~nan_index);
+        if(with_bias==0)
+            %%%%%%%%%%%%%% Without bias term
+            y_predict{fold,i} = K_val * alpha{fold,i};
+        else
+            %%%%%%%%%%%%%% With bias term
+            N_val = sum(~isnan(curr_y_test(:,i)));
+            y_predict{fold,i} = K_val * alpha{fold,i} + ones(N_val,1) .* beta{fold,i};
+        end
+        
         if(bin_flag==1)
             y_true{fold, i} = curr_y_true(~isnan(curr_y_true(:,i)), i);
             TP = length(find((y_predict{fold,i} > threshold) & (y_true{fold,i}==1) == 1));

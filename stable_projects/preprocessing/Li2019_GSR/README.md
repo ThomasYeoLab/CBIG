@@ -1,6 +1,6 @@
 References
 ==========
-+ Li J, Kong R, Liegeois R, Orban C, Tan Y, Sun N, Holmes AJ, Sabuncu MR, Ge T, Yeo BTT. **Global Signal Regression Strengthens Association between Resting-State Functional Connectivity and Behavior**, under review.
++ Li J, Kong R, Liegeois R, Orban C, Tan Y, Sun N, Holmes AJ, Sabuncu MR, Ge T, Yeo BTT, [**Global signal regression strengthens association between resting-state functional connectivity and behavior**](https://doi.org/10.1016/j.neuroimage.2019.04.016), Neuroimage, 2019, 196:126-141
 
 ----
 
@@ -36,13 +36,13 @@ If you want to use the code from our lab's other stable projects (other than Li2
 
 To download the latest tested version of the whole repository, you can either
 
-- visit this link: https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.9.4-Li2019_GSR
+- visit this link: https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.13.1-CBIGpreproc_Li2019GSR_CBIGKRR
 
 or
 
 - run the following command, if you have Git installed
 ```
-git checkout -b Li2019_GSR v0.9.4-Li2019_GSR
+git checkout -b Li2019_GSR v0.13.1-CBIGpreproc_Li2019GSR_CBIGKRR
 ```
 
 ----
@@ -58,6 +58,12 @@ Updates
   4. Added an input argument to let users specify the output directory of to save all the outputs from running the scripts in `examples`.
   5. Shortened the runtime of the `intelligence_scores` unit test.
   6. Rename matlab variable `feature` to `feature_mat` to avoid clashing with matlab built-in function.
+  
+- Release v0.13.1 (19/07/2019):
+  1. Updated example script and setup file.
+  2. Moved locations of some dependencies (general code to estimate variance components).
+  3. Included a no-bias flag in the scripts because the general kernel regression code was modified to handle the bias term by default.
+  4. Update reference in the readme
 
 
 Bugs and Questions

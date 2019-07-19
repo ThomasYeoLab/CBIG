@@ -1,6 +1,8 @@
-function [out_series, interm_out_series, f, cos_coeff, sin_coeff] = CBIG_preproc_censor(in_series, in_sample_time, out_sample_time, oversample_fac, outliers, low_f, high_f)
+function [out_series, interm_out_series, f, cos_coeff, sin_coeff] = CBIG_preproc_censor(in_series, in_sample_time,...
+    out_sample_time, oversample_fac, outliers, low_f, high_f)
 
-% [out_series, interm_out_series, f, cos_coeff, sin_coeff] = CBIG_preproc_censor(in_series, in_sample_time, out_sample_time, oversample_fac, low_f, high_f)
+% [out_series, interm_out_series, f, cos_coeff, sin_coeff] =
+% CBIG_preproc_censor(in_series, in_sample_time, out_sample_time, oversample_fac, low_f, high_f)
 %
 % This function estimates lost data point from unevenly sampled input data.
 % Users can perform bandpass filtering simultaneously by specifying low_f
@@ -96,7 +98,8 @@ function [out_series, interm_out_series, f, cos_coeff, sin_coeff] = CBIG_preproc
 %       signal.
 % 
 % Example:
-% [out_sample_series, f, cos_coeff, sin_coeff] = CBIG_preproc_censor(in_sample_series, in_sample_time, out_sample_time, 8, outliers, 0, 0.08)
+% [out_sample_series, f, cos_coeff, sin_coeff] =
+% CBIG_preproc_censor(in_sample_series, in_sample_time, out_sample_time, 8, outliers, 0, 0.08)
 %
 % Reference:
 % 1) Power, Jonathan D., et al. "Methods to detect, characterize, and
@@ -108,6 +111,18 @@ function [out_series, interm_out_series, f, cos_coeff, sin_coeff] = CBIG_preproc
 % Written by Jingwei Li.
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
+%% Check input variables
+if size(in_sample_time,2) > 1
+    error('Input argument ''in_sample_time'' should be a column vector');
+end
+
+if size(out_sample_time,2) > 1
+    error('Input argument ''out_sample_time'' should be a column vector');
+end
+
+if size(outliers,2) > 1
+    error('Input argument ''outliers'' should be a column vector');
+end
 
 %% check low_f and high_f
 if(~exist('low_f', 'var') && ~exist('high_f', 'var'))
@@ -139,8 +154,10 @@ f = (1/(T*oversample_fac):1/(T*oversample_fac):num_in_time/(2*T)).';       % num
 w = single(2*pi*f);
 
 %% sin and cos components
-tau = atan2(sum(sin(2*w*in_sample_time.'),2), sum(cos(2*w*in_sample_time.'),2)) ./ (2*w);       % num_freq_bin x 1
-cterm = single(cos(bsxfun(@times, w, bsxfun(@minus, in_sample_time.', tau))));                          % num_freq_bin x num_in_time
+% num_freq_bin x 1
+tau = atan2(sum(sin(2*w*in_sample_time.'),2), sum(cos(2*w*in_sample_time.'),2)) ./ (2*w); 
+% num_freq_bin x num_in_time
+cterm = single(cos(bsxfun(@times, w, bsxfun(@minus, in_sample_time.', tau))));  
 sterm = single(sin(bsxfun(@times, w, bsxfun(@minus, in_sample_time.', tau))));
 
 in_series = reshape(in_series, 1, num_in_time, nChannel);          % 1 x num_in_time x nChannel
@@ -165,9 +182,12 @@ sterm_new = single(sin(bsxfun(@times, w, bsxfun(@minus, out_sample_time.', tau))
 
 % first, recover the intermediate result (no bandpass)
 % use equation (4) in supplementary material in the same folder
-interm_out_series = single(bsxfun(@times, cos_coeff, cterm_new) + bsxfun(@times, sin_coeff, sterm_new));  % num_freq_bin x num_out_time x nChannel
-interm_out_series = sum(interm_out_series,1);                                                             % 1 x num_out_time x nChannel
-interm_out_series = reshape(interm_out_series, length(out_sample_time), nChannel);                        % num_out_time x nChannel
+% num_freq_bin x num_out_time x nChannel
+interm_out_series = single(bsxfun(@times, cos_coeff, cterm_new) + bsxfun(@times, sin_coeff, sterm_new));  
+% 1 x num_out_time x nChannel
+interm_out_series = sum(interm_out_series,1);                     
+% num_out_time x nChannel
+interm_out_series = reshape(interm_out_series, length(out_sample_time), nChannel);  
 
 output_std = single(std(interm_out_series(outliers==0, :), 1));            % 1 x nChannel
 stdfac = input_std ./ output_std;
@@ -182,9 +202,12 @@ if(bandpass_flag == 1)
     sin_coeff(fmask==1, 1, :) = 0;
     
     % use equation (4) in supplementary material in the same folder
-    out_series = single(bsxfun(@times, cos_coeff, cterm_new) + bsxfun(@times, sin_coeff, sterm_new));     % num_freq_bin x num_out_time x nChannel
-    out_series = sum(out_series,1);                                                                       % 1 x num_out_time x nChannel
-    out_series = reshape(out_series, length(out_sample_time), nChannel);                                  % num_out_time x nChannel
+    % num_freq_bin x num_out_time x nChannel
+    out_series = single(bsxfun(@times, cos_coeff, cterm_new) + bsxfun(@times, sin_coeff, sterm_new));     
+    % 1 x num_out_time x nChannel
+    out_series = sum(out_series,1);                
+    % num_out_time x nChannel
+    out_series = reshape(out_series, length(out_sample_time), nChannel); 
     
     output_std = single(std(out_series(outliers==0, :), 1));                       % 1 x nChannel
     stdfac = input_std ./ output_std;

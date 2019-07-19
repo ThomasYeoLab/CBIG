@@ -40,13 +40,24 @@ function CBIG_preproc_motion_outliers(DVARS_file,FDRMS_file,FD_th,DV_th,discard_
 fd = dlmread(FDRMS_file);
 dvars = dlmread(DVARS_file);
 
+%% Check input variables
+if size(fd,2) > 1
+    error('Input argument ''FDRMS_file'' should list values in columns');
+end
+
+if size(dvars,2) > 1
+    error('Input argument ''DVARS_file'' should list values in columns');
+end
+
 %% Detect outliers with DVARS threhold
 DV_th = str2num(DV_th);
-DV_vect = (dvars <= DV_th); % 1 means the frame below the threshold is kept, 0 means the frame above the threshold is removed
+% 1 means the frame below the threshold is kept, 0 means the frame above the threshold is removed
+DV_vect = (dvars <= DV_th); 
 
 %% Detect outliers with FDRMS threhold
 FD_th = str2num(FD_th);
-FD_vect = (fd <= FD_th); % 1 means the frame below the threshold is kept, 0 means the frame above the threshold is removed
+% 1 means the frame below the threshold is kept, 0 means the frame above the threshold is removed
+FD_vect = (fd <= FD_th); 
 
 %% Continue removing one frame before and two frames after
 DV_censor = (DV_vect & [DV_vect(2:end,1); 1] & [1; DV_vect(1:end-1)] & [1;1; DV_vect(1:end-2)]);
@@ -117,6 +128,7 @@ for idx = 1:length(seg_start)
 end
 
 %% Save out the outlier vector into a text file
-outfilename_index = fopen([output_dir_name '_FDRMS' num2str(FD_th) '_DVARS' num2str(DV_th) '_motion_outliers.txt'], 'w+');
+outfilename_index = fopen([output_dir_name '_FDRMS' num2str(FD_th) '_DVARS'...
+    num2str(DV_th) '_motion_outliers.txt'], 'w+');
 fprintf(outfilename_index, '%d\n', DV_FD_censor);
 

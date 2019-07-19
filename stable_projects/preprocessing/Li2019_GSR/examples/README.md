@@ -14,6 +14,14 @@ Since we cannot do cross-validation with only 2 subjects, each session was treat
 
 Note that this example is only for the goal of showing users about how to use the general variance component model functions. Since there are only 8 faked subjects, the estimated variances are not meaningful at all.
 
+You can use this script by running the following command in your Linux terminal:
+```
+$CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSR/examples/scripts/CBIG_LiGSR_example_Variance_Component.sh <output_dir>
+```
+
 ## Kernel ridge regression
 
-`./scripts/CBIG_LiGSR_example_KRR.sh` runs through the entire toy example for kernel ridge regression method. It first prepares the input matrices and parameters required by the kernel ridge regression workflow code, and then calls `$CBIG_CODE_DIR/utilities/matlab/predictive_models/KernelRidgeRegression/CBIG_KRR_workflow.m` to perform the prediction procedure. You can run this script directly on your linux terminal without any parameter passed in.
+`./scripts/CBIG_LiGSR_example_KRR.sh` runs through the entire toy example for kernel ridge regression method. It first prepares the input matrices and parameters required by the kernel ridge regression workflow code, and then calls `$CBIG_CODE_DIR/utilities/matlab/predictive_models/KernelRidgeRegression/CBIG_KRR_workflow.m` to perform the prediction procedure. You can use this script by running the following command in your Linux terminal:
+```
+$CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSR/examples/scripts/CBIG_LiGSR_example_KRR.sh <output_dir>
+```

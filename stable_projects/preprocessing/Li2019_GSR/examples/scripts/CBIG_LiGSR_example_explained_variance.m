@@ -58,7 +58,7 @@ function CBIG_LiGSR_example_explained_variance( data_csv1, data_csv2, ...
 % 
 % Written by Jingwei Li and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
-addpath(fullfile(getenv('CBIG_CODE_DIR'), 'external_packages', 'LME'))
+addpath(fullfile(getenv('CBIG_CODE_DIR'), 'external_packages', 'matlab', 'non_default_packages', 'LME'))
 
 quantile_norm_flag = 1;
 if(~exist(outdir, 'dir'))
@@ -152,7 +152,7 @@ for i = 1:length(y_names)
     end
 end
 
-rmpath(fullfile(getenv('CBIG_CODE_DIR'), 'external_packages', 'LME'))
+rmpath(fullfile(getenv('CBIG_CODE_DIR'), 'external_packages', 'matlab', 'non_default_packages', 'LME'))
 
 end
 

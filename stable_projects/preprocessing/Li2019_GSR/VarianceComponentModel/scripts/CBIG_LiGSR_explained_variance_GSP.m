@@ -82,7 +82,7 @@ function CBIG_LiGSR_explained_variance_GSP(data_csv, trait_list, covariate_list,
 % 
 % Written by Jingwei Li and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
-addpath(fullfile(getenv('CBIG_CODE_DIR'), 'external_packages', 'LME'))
+addpath(fullfile(getenv('CBIG_CODE_DIR'), 'external_packages', 'matlab', 'non_default_packages', 'LME'))
 
 if(~exist('verbose', 'var') || isempty(verbose))
     verbose = 1;
@@ -223,7 +223,7 @@ for i = 1:length(y_names_orig)
     end
 end
 
-rmpath(fullfile(getenv('CBIG_CODE_DIR'), 'external_packages', 'LME'))
+rmpath(fullfile(getenv('CBIG_CODE_DIR'), 'external_packages', 'matlab', 'non_default_packages', 'LME'))
 
 end
 

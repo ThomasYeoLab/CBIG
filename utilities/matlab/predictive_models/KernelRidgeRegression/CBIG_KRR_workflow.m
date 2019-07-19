@@ -42,16 +42,19 @@ function CBIG_KRR_workflow( setup_file, save_setup, varargin )
 %     7. outstem
 %        A string appended to the filenames. See the description of
 %        varargin{7}.
-%     8. ker_param 
+%     8. with_bias
+%        A string (choose from '0' or '1') or a scalar (choose from 0 or 1).
+%        See the description of varargin{8}
+%     9. ker_param 
 %        A structure of all possible kernel parameters. See the description
-%        of varargin{8}.
-%     9. lambda_set
+%        of varargin{9}.
+%     10.lambda_set
 %        A vector of all possible regularization parameters used for grid
-%        search. See the description of varargin{9}.
-%     10.threshold_set
+%        search. See the description of varargin{10}.
+%     11.threshold_set
 %        A vector of all possible thresholds to determine the separation
 %        point for binary target variables in the prediction. See the
-%        description of varargin{10}.
+%        description of varargin{11}.
 % 
 %   - save_setup
 %     A string or a scalar of 0 or 1. If the user passed in 1, then a
@@ -121,8 +124,18 @@ function CBIG_KRR_workflow( setup_file, save_setup, varargin )
 %     '58behaviors', then the accuracy files will be names as
 %     <path_to_file>/acc_58behaviors.mat, and the final output filename
 %     will be [outdir '/final_result_58behaviors.mat'].
+%   
+%   - varargin{8}   (with_bias)
+%     A string (choose from '0' or '1') or a scalar (choose from 0 or 1).
+%     - with_bias = 0 (or '0') means the algorithm is to minimize 
+%     (y - K*alpha)^2 + (regularization of alpha);
+%     - with_bias = 1 (or '1') means the algorithm is to minimize
+%     (y - K*alpha - beta)^2 + (regularization of alpha), where beta is a
+%     constant bias for every subject, estimated from the data.
+%     If not passed in, the default value is 1, i.e. there will be a bias
+%     term to be estimated.
 % 
-%   - varargin{8}   (ker_param_file)
+%   - varargin{9}   (ker_param_file)
 %     Full path of the kernel parameter file (.mat). A structure "ker_param" 
 %     is assumed to be saved in this file.
 %     "ker_param" is a K x 1 structure with two fields: type and scale. K
@@ -140,7 +153,7 @@ function CBIG_KRR_workflow( setup_file, save_setup, varargin )
 %     ker_param.type = 'corr';
 %     ker_param.scale = NaN.
 % 
-%   - varargin{9}   (lambda_set_file)
+%   - varargin{10}   (lambda_set_file)
 %     Full path of the regularization parameter file (.mat). A vector 
 %     "lambda_set" is assumed to be saved in this file.
 %     "lambda_set" is a vector of numbers for grid search of lambda (the
@@ -150,14 +163,14 @@ function CBIG_KRR_workflow( setup_file, save_setup, varargin )
 %     [ 0 0.00001 0.0001 0.001 0.004 0.007 0.01 0.04 0.07 0.1 0.4 0.7 1 1.5 2 2.5 3 3.5 4 ...
 %        5 10 15 20 30 40 50 60 70 80 100 150 200 300 500 700 1000 10000 100000 1000000]
 % 
-%  - varargin{10}   (threshold_set_file)
-%    Full path of the file (.mat) storing the set of threshold used to 
-%    binarize the predicted score when the original y is binary. A vector
-%    "threshold_set" is assumed to be saved in this file.
-%    "threshold_set" is a vector used for grid search of optimal
-%    "threshold". If this file is not passed in and also does NOT exist in
-%    "setup_file", or "threshold_set" is 'NONE', it will be set as default: 
-%    [-1:0.1:1].
+%   - varargin{11}   (threshold_set_file)
+%     Full path of the file (.mat) storing the set of threshold used to 
+%     binarize the predicted score when the original y is binary. A vector
+%     "threshold_set" is assumed to be saved in this file.
+%     "threshold_set" is a vector used for grid search of optimal
+%     "threshold". If this file is not passed in and also does NOT exist in
+%     "setup_file", or "threshold_set" is 'NONE', it will be set as default: 
+%     [-1:0.1:1].
 % 
 % Written by Jingwei Li and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
@@ -173,6 +186,10 @@ else
         end
         save(fullfile(param.outdir, ['setup' stem '.mat']), '-struct', 'param')
     end
+end
+
+if(ischar(param.with_bias))
+    param.with_bias = str2num(param.with_bias);
 end
 
 num_test_folds = length(param.sub_fold);
@@ -202,14 +219,15 @@ CBIG_KRR_generate_kernels( param.feature_mat, param.sub_fold, param.outdir, para
 fprintf('# Step 3: inner-loop cross-validation.\n')
 for test_fold = 1:num_test_folds
     CBIG_KRR_innerloop_cv_allparams( test_fold, param.sub_fold, param.num_inner_folds, ...
-        param.outdir, param.outstem, param.ker_param, param.lambda_set, param.threshold_set );
+        param.outdir, param.outstem, param.with_bias, param.ker_param, param.lambda_set, ...
+        param.threshold_set );
 end
 
 %% step 4. Test cross-validation
 fprintf('# Step 4: training-test cross-validation.\n')
 for test_fold = 1:num_test_folds
-    CBIG_KRR_test_cv_allparams( test_fold, param.sub_fold, ...
-        param.outdir, param.outstem, param.ker_param, param.lambda_set, param.threshold_set );
+    CBIG_KRR_test_cv_allparams( test_fold, param.sub_fold, param.outdir, param.outstem, ...
+        param.with_bias, param.ker_param, param.lambda_set, param.threshold_set );
 end
 
 %% step 5. Select optima
@@ -225,9 +243,9 @@ CBIG_KRR_pick_optima( param.sub_fold, param.outdir, param.outstem, param.bin_fla
 function param = CBIG_KRRworkflow_parseInput(var)
 
 varnames = {'sub_fold', 'y', 'covariates', 'feature_mat', 'num_inner_folds', 'outdir', ...
-    'outstem', 'ker_param', 'lambda_set', 'threshold_set'};
+    'outstem', 'with_bias', 'ker_param', 'lambda_set', 'threshold_set'};
 
-for i = 1:(numel(varnames)-3)
+for i = 1:(numel(varnames)-4)
     if(length(var)<i || isempty(var{i}))
         error('Variable ''%s'' is needed.', varnames{i})
     else
@@ -248,29 +266,36 @@ for i = 1:(numel(varnames)-3)
     end
 end
 
+% default of with_bias flag
+if(length(var)<8 || isempty(var{8}))
+    param.with_bias = 1;
+else
+    param.with_bias = var{8};
+end
+
 % default of ker_param
-if(length(var)<8 || isempty(var{8}) || strcmpi(var{8}, 'none'))
+if(length(var)<9 || isempty(var{9}) || strcmpi(var{9}, 'none'))
     param.ker_param.type = 'corr';
     param.ker_param.scale = NaN;
 else
-    load(var{8})
+    load(var{9})
     param.ker_param = ker_param;
 end
 
 % default of lambda_set
-if(length(var)<9 || isempty(var{9}) || strcmpi(var{9}, 'none'))
+if(length(var)<10 || isempty(var{10}) || strcmpi(var{10}, 'none'))
     param.lambda_set = [ 0 0.00001 0.0001 0.001 0.004 0.007 0.01 0.04 0.07 0.1 0.4 0.7 1 1.5 2 ...
         2.5 3 3.5 4 5 10 15 20 30 40 50 60 70 80 100 150 200 300 500 700 1000 10000 100000 1000000];
 else
-    load(var{9})
+    load(var{10})
     param.lambda_set = lambda_set;
 end
 
 % default of threshold_set
-if(length(var)<10 || isempty(var{10}) || strcmpi(var{10}, 'none'))
+if(length(var)<11 || isempty(var{11}) || strcmpi(var{11}, 'none'))
     param.threshold_set = [-1:0.1:1];
 else
-    load(var{10})
+    load(var{11})
     param.threshold_set = threshold_set;
 end
 

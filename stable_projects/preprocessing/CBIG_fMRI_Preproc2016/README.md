@@ -1,8 +1,8 @@
 ## Reference
 
-Li J, Kong R, Liegeois R, Sun N, Holmes AJ, Sabuncu MR, Ge T, Yeo BTT, Global signal regression strengthens association between resting-state functional connectivity and behavior, under review.
+Li J, Kong R, Liegeois R, Orban C, Tan Y, Sun N, Holmes AJ, Sabuncu MR, Ge T, Yeo BTT, [**Global signal regression strengthens association between resting-state functional connectivity and behavior**](https://doi.org/10.1016/j.neuroimage.2019.04.016), Neuroimage, 2019, 196:126-141.
 
-Kong R, Li J, Orban C, Sabuncu MR, Liu H, Schaefer A, Sun N, Zuo XN, Holmes AJ, Eickhoff SB, Yeo BTT, [**Spatial Topography of Individual-Specific Cortical Networks Predicts Human Cognition, Personality and Emotion**](https://academic.oup.com/cercor/advance-article/doi/10.1093/cercor/bhy123/5033556?guestAccessKey=2fa23bc8-59c7-4ff1-9360-1846d472c6dd), Cerebral Cortex, 2018.
+Kong R, Li J, Orban C, Sabuncu MR, Liu H, Schaefer A, Sun N, Zuo XN, Holmes AJ, Eickhoff SB, Yeo BTT, [**Spatial Topography of Individual-Specific Cortical Networks Predicts Human Cognition, Personality and Emotion**](https://academic.oup.com/cercor/advance-article/doi/10.1093/cercor/bhy123/5033556?guestAccessKey=2fa23bc8-59c7-4ff1-9360-1846d472c6dd), Cerebral Cortex, 2018, 26(6):2533-2551
 
 ----
 
@@ -42,14 +42,14 @@ Except for this project, if you want to use the code for other stable projects f
 - To download the version of the code that was last tested, you can either
 
   - visit this link:
-  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.9.8-CBIG_fMRI_Preprocessing](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.9.8-CBIG_fMRI_Preprocessing)
+  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.13.1-CBIGpreproc_Li2019GSR_CBIGKRR](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.13.1-CBIGpreproc_Li2019GSR_CBIGKRR)
   
   or
   
   - run the following command, if you have Git installed
   
   ```
-  git checkout -b CBIG_fMRI_Preprocessing v0.9.8-CBIG_fMRI_Preprocessing
+  git checkout -b CBIG_fMRI_Preprocessing v0.13.1-CBIGpreproc_Li2019GSR_CBIGKRR
   ```
 
 ### Usage 
@@ -161,6 +161,9 @@ codes would work on ANTs version 2.2.0.
     
 - Release v0.9.8 (30/04/2019):
     1. Bug fix: the script `$CBIG_CODE_DIR/utilities/scripts/CBIG_antsReg_vol2vol.sh` was supposed to be released in v0.9.6 but not released, causing crash of `CBIG_preproc_native2mni_ants` step. In this version, the updated `$CBIG_CODE_DIR/utilities/scripts/CBIG_antsReg_vol2vol.sh` will be released.
+    
+- Release v0.13.1 (19/07/2019): Update references in the readme.
+    
 
 ----
 

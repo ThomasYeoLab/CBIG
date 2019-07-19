@@ -141,6 +141,7 @@ if [ ! -f $KRR_dir/setup_file.mat ]; then
 	param.num_inner_folds = 2; \
 	param.outdir = '$KRR_dir'; \
 	param.outstem = ''; \
+	param.with_bias = 0; \
 	param.ker_param.type = 'corr'; \
 	param.ker_param.scale = NaN; \
 	param.lambda_set = [0 0.1 1 5 10 50 100 500 1000]; \

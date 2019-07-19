@@ -31,6 +31,7 @@ subject_list="$test_dir/lists/subject_list_862.txt"
 FD_file="$test_dir/lists/FD_regressor_862.txt"
 DVARS_file="$test_dir/lists/DV_regressor_862.txt"
 #RSFC_file="$test_dir/cort+subcort_new_S1200_862_Fisher.mat"
+with_bias=0
 
 top_outdir=$1
 #top_outdir=$test_dir/ref_output
@@ -49,7 +50,7 @@ for pipeline in GSR Baseline ; do
 	for seed in $(seq 1 1 20); do
 		cmd="$project_dir/KernelRidgeRegression/GSP/scripts/CBIG_LiGSR_KRR_workflowGSP.sh -subject_list $subject_list "
 		cmd="$cmd -RSFC_file $RSFC_file -y_list $cog_list -covariate_list $covariate_list -FD_file $FD_file -DVARS_file "
-		cmd="$cmd $DVARS_file -outdir $outdir -outstem $outstem -seed $seed"
+		cmd="$cmd $DVARS_file -outdir $outdir -outstem $outstem -seed $seed -with_bias $with_bias"
 		
 		echo $cmd | qsub -V -q circ-spool -l walltime=06:00:00,mem=6GB -m ae -N CBIG_LiGSR_KRR_replication_all_GSP
 		
@@ -72,7 +73,7 @@ for pipeline in GSR Baseline ; do
 	for seed in $(seq 1 1 20); do
 		cmd="$project_dir/KernelRidgeRegression/GSP/scripts/CBIG_LiGSR_KRR_workflowGSP.sh -subject_list $subject_list "
 		cmd="$cmd -RSFC_file $RSFC_file -y_list $age_list -covariate_list $covariate_list -FD_file $FD_file -DVARS_file "
-		cmd="$cmd $DVARS_file -outdir $outdir -outstem $outstem -seed $seed"
+		cmd="$cmd $DVARS_file -outdir $outdir -outstem $outstem -seed $seed -with_bias $with_bias"
 		
 		echo $cmd | qsub -V -q circ-spool -l walltime=01:00:00,mem=3GB -m ae -N CBIG_LiGSR_KRR_replication_all_GSP
 		
@@ -94,7 +95,7 @@ for pipeline in GSR Baseline ; do
 	for seed in $(seq 1 1 20); do
 		cmd="$project_dir/KernelRidgeRegression/GSP/scripts/CBIG_LiGSR_KRR_workflowGSP.sh -subject_list $subject_list "
 		cmd="$cmd -RSFC_file $RSFC_file -y_list $sex_list -covariate_list $covariate_list -FD_file $FD_file -DVARS_file "
-		cmd="$cmd $DVARS_file -outdir $outdir -outstem $outstem -seed $seed"
+		cmd="$cmd $DVARS_file -outdir $outdir -outstem $outstem -seed $seed -with_bias $with_bias"
 		
 		echo $cmd | qsub -V -q circ-spool -l walltime=05:00:00,mem=6GB -m ae -N CBIG_LiGSR_KRR_replication_all_GSP
 		

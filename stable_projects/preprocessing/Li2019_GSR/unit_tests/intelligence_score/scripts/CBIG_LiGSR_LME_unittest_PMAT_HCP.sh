@@ -1,6 +1,6 @@
 #!/bin/sh
-# This function uses variance component model to estimate the explained variance of fluid intelligence score (PMAT24_A_CR) 
-# in the HCP dataset.
+# This function uses variance component model to estimate the explained variance of fluid intelligence score 
+# (PMAT24_A_CR) in the HCP dataset.
 #
 # Written by Jingwei Li and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
@@ -29,9 +29,11 @@ replication_dir="$project_dir/unit_tests/intelligence_score"
 
 test_dir=/mnt/eql/yeo1/CBIG_private_data/unit_tests/stable_projects/preprocessing/Li2019_GSR/intelligence_score/\
 VarianceComponentModel/HCP
-subject_list="$test_dir/lists/subject_list_953_unrelated_419.txt"
+subject_list="$test_dir/lists/fake_subject_list_953_unrelated_419.txt"
 FD_file="$test_dir/lists/FD_regressor_953_unrelated_419.txt"
 DVARS_file="$test_dir/lists/DV_regressor_953_unrelated_419.txt"
+restricted_csv="$test_dir/lists/fake_family.csv"
+unrestricted_csv="$test_dir/lists/fake_behavior.csv"
 d=209
 num_samples=5
 rmsub_prefix="subjects953_unrelated419"
@@ -47,8 +49,9 @@ for pipeline in GSR Baseline; do
 	ystem=PMAT24
 	
 	cmd="$project_dir/VarianceComponentModel/scripts/CBIG_LiGSR_LME_workflowHCP.sh -RSFC_file $RSFC_file -trait_list "
-	cmd="$cmd $cog_list -covariate_list $covariate_list -FD_file $FD_file -DVARS_file $DVARS_file -subject_list $subject_list"
-	cmd="$cmd -outdir $outdir -ystem $ystem -d $d -num_samples $num_samples -rmsub_prefix $rmsub_prefix"
+	cmd="$cmd $cog_list -covariate_list $covariate_list -FD_file $FD_file -DVARS_file $DVARS_file -subject_list "
+	cmd="$cmd $subject_list -outdir $outdir -ystem $ystem -d $d -num_samples $num_samples -rmsub_prefix $rmsub_prefix"
+	cmd="$cmd -restricted_csv $restricted_csv -unrestricted_csv $unrestricted_csv"
 	
 	echo $cmd | qsub -V -q circ-spool -l walltime=01:00:00,mem=4GB,nodes=1:ppn=2 -m ae -N CBIG_LiGSR_LME_unittest_PMAT_HCP
 	sleep 3s

@@ -1,5 +1,5 @@
 function [acc] = CBIG_KRR_test_cv_allparams( test_fold, sub_fold, ...
-    data_dir, y_resid_stem, ker_param, lambda_set, threshold_set )
+    data_dir, y_resid_stem, with_bias, ker_param, lambda_set, threshold_set )
 
 % [acc] = CBIG_KRR_test_cv_allparams( test_fold, sub_fold, ...
 %     data_dir, y_resid_stem, ker_param, lambda_set, threshold_set )
@@ -41,6 +41,14 @@ function [acc] = CBIG_KRR_test_cv_allparams( test_fold, sub_fold, ...
 %     See the description of "outstem" parameter of function
 %     CBIG_crossvalid_regress_covariates_from_y.m
 %   
+%   - with_bias
+%     A (choose from 0 or 1).
+%     - with_bias = 0 means the algorithm is to minimize 
+%     (y - K*alpha)^2 + (regularization of alpha);
+%     - with_bias = 1 means the algorithm is to minimize
+%     (y - K*alpha - beta)^2 + (regularization of alpha), where beta is a
+%     constant bias for every subject, estimated from the data.
+% 
 %   - ker_param (optional)
 %     A K x 1 structure with two fields: type and scale. K denotes the
 %     number of kernels.
@@ -76,7 +84,8 @@ function [acc] = CBIG_KRR_test_cv_allparams( test_fold, sub_fold, ...
 %     A cell with dimension of #kernels x #lambda x #thresholds of
 %     test CV accuracy for each hyperparameter combination.
 % 
-% Written by Jingwei Li, Ru(by) Kong and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+% Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+% Author: Jingwei Li and Ru(by) Kong
 
 %% setting up
 if(ischar(test_fold))
@@ -109,16 +118,16 @@ for i = 1:size(y_orig, 2)
         % binary case
         bin_flag(i) = 1;
     end
-    if(any(bin_flag==1) && any(bin_flag==0))
-        error('Mixture of binary (e.g. sex) and continuous cases. Please run them separately.')
-    elseif(~any(bin_flag==1))    % all y are continuous
-        bin_flag = 0;
-        threshold_set = NaN;
-    else                         % all y are binary
-        bin_flag = 1;
-        if(~exist('threshold_set', 'var') || strcmpi(threshold_set, 'none'))
-            threshold_set = [-1:0.1:1];
-        end
+end
+if(any(bin_flag==1) && any(bin_flag==0))
+    error('Mixture of binary (e.g. sex) and continuous cases. Please run them separately.')
+elseif(~any(bin_flag==1))    % all y are continuous
+    bin_flag = 0;
+    threshold_set = NaN;
+else                         % all y are binary
+    bin_flag = 1;
+    if(~exist('threshold_set', 'var') || strcmpi(threshold_set, 'none'))
+        threshold_set = [-1:0.1:1];
     end
 end
 
@@ -149,7 +158,7 @@ if(~exist(fullfile(outdir, ['acc' y_resid_stem '.mat']), 'file'))
         if(strcmp(ker_param(k).type, 'corr'))
             kernel = [kernel_dir '/FSM_' ker_param(k).type '.mat'];
         else
-            kernel = [kernel_dir '/FSM_' ker_param(k).type num2str(ker_param(k).scale) '.mat'];
+            kernel = [kernel_dir '/FSM_' ker_param(k).type '_' num2str(ker_param(k).scale) '.mat'];
         end
         load(kernel)
         
@@ -164,7 +173,7 @@ if(~exist(fullfile(outdir, ['acc' y_resid_stem '.mat']), 'file'))
                 threshold = threshold_set(t);
                 fprintf('    threshold: %f\n', threshold)
                 [y_p{k,l,t}, y_t{k,l,t}, acc{k,l,t}] = CBIG_KRR_test_cv( bin_flag, FSM_train, FSM_test, ...
-                    curr_y_resid_train, curr_y_resid_test, curr_y_orig_test, lambda, threshold );
+                    curr_y_resid_train, curr_y_resid_test, curr_y_orig_test, with_bias, lambda, threshold );
                 clear threshold
             end
             clear lambda
