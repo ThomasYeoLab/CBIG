@@ -11,7 +11,7 @@ For MATLAB code, we have tested in R2014a and R2018b.
 
 References
 ==========
-+ He, T., Kong, R., Holmes, A., Nguyen, M., Sabuncu, M., Eickhoff, S.B., Bzdok, D., Feng, J. and Yeo, B.T., 2018. [**Do Deep Neural Networks Outperform Kernel Regression for Functional Connectivity Prediction of Behavior?**](https://www.biorxiv.org/content/10.1101/473603v1), under review, 2019.
++ He, T., Kong, R., Holmes, A., Nguyen, M., Sabuncu, M., Eickhoff, S.B., Bzdok, D., Feng, J. and Yeo, B.T., 2019. [**Deep Neural Networks and Kernel Regression Achieve Comparable Accuracies for Functional Connectivity Prediction of Behavior and Demographics**](https://www.biorxiv.org/content/10.1101/473603v1), under review.
 
 ----
 

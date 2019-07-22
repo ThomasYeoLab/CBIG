@@ -65,7 +65,7 @@ end
 if floor(rng_num) ~= rng_num
     rng_num = floor(rng_num);
 end
-rng(rng_num);
+rng(rng_num, 'twister');
 
 [data_dir, subject_list_file, behavior_csv, ~, ~, measure_dir, ~] = CBIG_KRDNN_mics_load_setup(setup_file);
 

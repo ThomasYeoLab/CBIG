@@ -1,6 +1,6 @@
 ## Reference
 
-He, T., Kong, R., Holmes, A., Nguyen, M., Sabuncu, M., Eickhoff, S.B., Bzdok, D., Feng, J. and Yeo, B.T., 2018. [**Do Deep Neural Networks Outperform Kernel Regression for Functional Connectivity Prediction of Behavior?**](https://www.biorxiv.org/content/10.1101/473603v1), under review, 2019.
+He, T., Kong, R., Holmes, A., Nguyen, M., Sabuncu, M., Eickhoff, S.B., Bzdok, D., Feng, J. and Yeo, B.T., 2019. [**Deep Neural Networks and Kernel Regression Achieve Comparable Accuracies for Functional Connectivity Prediction of Behavior and Demographics**](https://www.biorxiv.org/content/10.1101/473603v1), under review.
 
 ----
 ## Background
@@ -19,14 +19,14 @@ If you want to use the code from our lab's other stable projects (other than He2
 - To download the version of the code that was last tested, you can either
 
     - visit this link:
-    [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.13.0-He2019_KRDNN](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.13.0-He2019_KRDNN)
+    [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.13.2-He2019_KRDNN](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.13.2-He2019_KRDNN)
 
     or
 
     - run the following command, if you have Git installed
  
     ```
-    git checkout -b He2019_KRDNN v0.13.0-He2019_KRDNN
+    git checkout -b He2019_KRDNN v0.13.2-He2019_KRDNN
     ```
 
 ### Usage
@@ -44,6 +44,10 @@ If you want to use the code from our lab's other stable projects (other than He2
 
 ## Updates
 - Release v0.13.0 (10/07/2019): Initial release of He2019_KRDNN project
+- Release v0.13.2 (22/07/2019):
+    1. Update RNG generator in MATLAB for compatibility
+    2. Update title of paper in README files
+    3. Add information about hyperparameter in replication/README.md
 
 ----
 
