@@ -24,6 +24,10 @@ function p = CBIG_ComputeSingleFociALE_Vol2Surf(surface_ras, foci_coor, res, sig
 %
 % Written by B.T.Thomas Yeo and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
+  if size(foci_coor,2) ~= 1
+      error('Input argument ''foci_coor'' should be a column vector');
+  end
+
   if(~exist('res', 'var'))
      res = 8; % assume 2 x 2 x 2 mm
   end 

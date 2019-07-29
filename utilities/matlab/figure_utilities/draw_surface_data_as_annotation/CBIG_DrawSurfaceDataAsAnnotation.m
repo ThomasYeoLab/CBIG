@@ -12,9 +12,9 @@ function CBIG_DrawSurfaceDataAsAnnotation(lh_data, rh_data, ...
 %
 % Input:
 %   Compulsory:
-%     - lh_data              : column vector containing surface data of
+%     - lh_data              : column or row vector containing surface data of
 %                              the left hemisphere.
-%     - rh_data              : column vector containing surface data of
+%     - rh_data              : column or row vector containing surface data of
 %                              the right hemisphere.
 %     - abs_path_to_lh_ref_annot: absolute path to the reference
 %                                 annotation file for the left hemisphere.
@@ -72,6 +72,9 @@ function CBIG_DrawSurfaceDataAsAnnotation(lh_data, rh_data, ...
 %   thresholded at 1
 %
 % Written by Gia H. Ngo and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+
+% This function does not need vector check because the function itself
+% contains checking statement.
 
     if nargin < 12
         max_thresh = 1;

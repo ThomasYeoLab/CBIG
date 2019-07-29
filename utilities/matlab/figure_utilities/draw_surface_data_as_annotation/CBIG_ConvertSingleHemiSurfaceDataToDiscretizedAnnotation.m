@@ -28,26 +28,59 @@ function [labels, colortable] = CBIG_ConvertSingleHemiSurfaceDataToDiscretizedAn
 %
 % Written by Gia H. Ngo and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
   
-    % cap the maximum value in the data at the threshold's upper limit
-    if max_thresh < max(data)
-        data(data >= max_thresh) = max_thresh;
+    if size(data,2) ~= 1
+        error('Input argument ''data'' should be a column vector');
     end
-    if min(data) < min_thresh
-        data(data <= min_thresh) = min_thresh;
-    end
-    
-    % discretize non-zero values
-    nonzero_values = data(data >= min_thresh);
-    value_step = (max_thresh - min_thresh) / (discretization_res-1);
-    binranges = min_thresh:value_step:max_thresh;
-    [~, bin_ind] = histc(nonzero_values, binranges);
 
-    % generate corresponding colortable for the new labels
-    colortable = CBIG_GenerateAnnotationColortable(discretization_res, colorscale);
+    % if input data only contains positive values
+    if min(data) >= 0        
+        % cap the maximum value in the data at the threshold's upper limit
+        if max_thresh < max(data)
+            data(data >= max_thresh) = max_thresh;
+        end
     
-    % underlay the new annotation with gray color saved at the end of the new
-    % colortable
-    underlay_rgb_sum = colortable.table(end, 5);
-    
-    labels = underlay_rgb_sum * ones(length(data), 1);
-    labels(data >= min_thresh) = colortable.table(bin_ind, 5);
+        % discretize non-zero values
+        nonzero_values = data(data >= min_thresh);
+        value_step = (max_thresh - min_thresh) / (discretization_res-1);
+        binranges = min_thresh:value_step:max_thresh;
+        [~, bin_ind] = histc(nonzero_values, binranges);
+
+        % generate corresponding colortable for the new labels
+        colortable = CBIG_GenerateAnnotationColortable(discretization_res, colorscale);
+
+        % underlay the new annotation with gray color saved at the end of the new
+        % colortable
+        underlay_rgb_sum = colortable.table(end, 5);
+
+        labels = underlay_rgb_sum * ones(length(data), 1);
+        labels(data >= min_thresh) = colortable.table(bin_ind, 5);
+    else
+    % if input data contains both positive and negative data
+        data(data >= max_thresh) = max_thresh;
+        data(data <= -max_thresh) = -max_thresh;
+        data(data > -min_thresh & data < min_thresh) = 0;
+        
+        value_step = (max_thresh - min_thresh) / (discretization_res/2-1);
+        posbinranges = min_thresh:value_step:max_thresh;
+        negbinranges = (-max_thresh):value_step:(-min_thresh);
+        
+        pos_ind = data > 0;
+        pos_data = data(pos_ind);
+        neg_ind = data < 0;
+        neg_data = data(neg_ind);
+        
+        [~, pos_bin_ind] = histc(pos_data, posbinranges);
+        [~, neg_bin_ind] = histc(neg_data, negbinranges);
+        pos_bin_ind = pos_bin_ind + discretization_res/2;
+        
+        % generate corresponding colortable for the new labels
+        colortable = CBIG_GenerateAnnotationColortable(discretization_res, colorscale);
+
+        % underlay the new annotation with gray color saved at the end of the new
+        % colortable
+        underlay_rgb_sum = colortable.table(end, 5);
+
+        labels = underlay_rgb_sum * ones(length(data), 1);
+        labels(pos_ind) = colortable.table(pos_bin_ind, 5);
+        labels(neg_ind) = colortable.table(neg_bin_ind, 5);
+    end

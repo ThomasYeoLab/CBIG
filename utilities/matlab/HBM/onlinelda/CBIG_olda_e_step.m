@@ -5,6 +5,10 @@ function params = CBIG_olda_e_step(params, wc)
 % 
 % Written by B.T.Thomas Yeo and CBIG under MIT licence: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
+if size(wc,1) ~= 1
+    error('Input argument ''wc'' should be a row vector');
+end
+
 [g, phi] = CBIG_olda_variational_inference(params, wc);
 
 % add document specific contribution to new lambda (lambda = T x V)

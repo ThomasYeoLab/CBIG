@@ -132,6 +132,8 @@ patch(ymaj(:,major_grid), xline(:,major_grid),'w', 'edgecolor', 'w', 'Linewidth'
 if ((nargin == 5) && ~isempty(filename_prefix))
     filenamefin = [filename_prefix '_minsc' num2str(scalelim(1), '%.2f') '_maxsc' num2str(scalelim(2), '%.2f') '.jpg'];
     set(gcf, 'PaperPositionMode', 'auto','Renderer', 'ZBuffer'); 
+    tmp = get(gcf, 'PaperPosition');
+    set(gcf, 'PaperPosition', [0 0 tmp(3)*3563/3500 tmp(4)*2581/2625]); 
     print(gcf, '-djpeg', '-r600', filenamefin); 
     % Crop image
 %     origfile = imread(fullfile(filenamefin));

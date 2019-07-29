@@ -11,11 +11,11 @@ function CBIG_DrawSurfaceMapsWithBoundary(lh_data, rh_data, ...
 %
 % Input:
 %      -lh_data, rh_data: 
-%       data of left/right hemisphere. Nx1 vector for each, 
+%       data of left/right hemisphere. Nx1 or 1xN vector for each, 
 %       N = # of vertices in mesh_name.
 %      
 %      -lh_labels, rh_labels:
-%       parcellation of data of left/right hemisphere. Nx1 vector for each, 
+%       parcellation of data of left/right hemisphere. Nx1 or 1xN vector for each, 
 %       N = # of vertices in mesh_name.
 %
 %      -mesh_name:
@@ -39,6 +39,9 @@ function CBIG_DrawSurfaceMapsWithBoundary(lh_data, rh_data, ...
 % CBIG_DrawSurfaceMapsWithBoundary(lh_data, rh_data, lh_labels,rh_labels,'fsaverage5','inflated');
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+
+% This function does not need vector check because the function itself
+% contains checking statement.
 
 warning('off', 'MATLAB:warn_r14_stucture_assignment');
 

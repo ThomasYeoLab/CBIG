@@ -12,7 +12,12 @@ function icc = CBIG_fisher_icc(data1, data2)
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
-
+if size(data1,2) ~= 1
+    error('Input argument ''lh_data'' should be a column vector');
+end
+if size(data2,2) ~= 1
+    error('Input argument ''rh_data'' should be a column vector');
+end
 
 data = [data1; data2];
 data_mean = nanmean(data);

@@ -10,7 +10,6 @@ function permut = CBIG_permutation_given_inversion(inv_vec)
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
-
 n = length(inv_vec);
 permut = n;
 

@@ -36,6 +36,12 @@ function vertex_num = MARS_findPoint(vertices, point)
 % vertex_num = MARS_findPoint(vertices, point)
 % assumes vertices are 3 x N
 % point is 3 x 1
+if size(vertices,1) ~= 3
+    error('Input argument ''vertices'' should be 3 x N');
+end
+if ~isequal(size(point),[3,1])
+    error('Input argument ''point'' should be 3 x 1');
+end
 
 vertex_diff = vertices - repmat(point, 1, size(vertices, 2));
 

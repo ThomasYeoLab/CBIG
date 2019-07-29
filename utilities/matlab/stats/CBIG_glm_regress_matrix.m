@@ -73,12 +73,20 @@ function [resid_mtx, coef_mtx, std_mtx, retrend_mtx] = CBIG_glm_regress_matrix(i
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 %% default polynomial_fit option is 1,  censor option is []
+
 if (nargin <3)
     polynomial_fit = 0;
 end
 if (nargin < 4)
     censor = [];
 end
+
+if ~isempty(censor)
+    if size(censor,2) ~= 1
+        error('Input argument ''censor'' should be a column vector');
+    end
+end
+
 % check if there are no regressor
 if ((isempty(regressor)) && (polynomial_fit == -1))
     error('ERROR: No regressor, quit!')

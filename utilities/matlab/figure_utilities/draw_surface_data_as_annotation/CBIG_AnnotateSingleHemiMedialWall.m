@@ -32,7 +32,7 @@ function CBIG_AnnotateSingleHemiMedialWall(vertices, labels, colortable, ref_lab
 %   '/data/Work/lh_with_medial_wall.annot'
 %
 % Written by Gia H. Ngo and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
-    
+
     % pick out the medial wall and define its new color
     medialwall_vertices = (ref_labels == ref_medialwall_label);
     medialwall_color = zeros(1, 5);

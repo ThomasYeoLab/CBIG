@@ -28,6 +28,12 @@ function [lh_label, rh_label] = CBIG_project_from_fslr_to_fsaverage(lh_label_fsl
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
+if size(lh_label_fslr,2) ~= 1
+    error('Input argument ''lh_label_fslr'' should be a column vector');
+end
+if size(rh_label_fslr,2) ~= 1
+    error('Input argument ''rh_label_fslr'' should be a column vector');
+end
 
 if (nargin<3) % if no output folder is provided
     error('Please provide the absolute path to an output folder')

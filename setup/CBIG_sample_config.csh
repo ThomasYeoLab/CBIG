@@ -7,7 +7,7 @@ if( $?FREESURFER_HOME ) then
 endif
 
 # PLEASE CHANGE: Please specify location of CBIG repository
-setenv CBIG_CODE_DIR /data/users/ngohgia/storage/CBIG
+setenv CBIG_CODE_DIR $HOME/storage/CBIG_private
 
 # PLEASE CHANGE: define locations for these libraries
 setenv FREESURFER_HOME /apps/arch/Linux_x86_64/freesurfer/5.3.0

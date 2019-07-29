@@ -1,6 +1,8 @@
-function [lh_label_fslr, rh_label_fslr, lh_label_fslr_164k, rh_label_fslr_164k] = CBIG_project_from_fsaverage_to_fslr(lh_label, rh_label, abs_path_to_output_folder, type_of_smoothing)
+function [lh_label_fslr, rh_label_fslr, lh_label_fslr_164k, rh_label_fslr_164k] = ...
+  CBIG_project_from_fsaverage_to_fslr(lh_label, rh_label, abs_path_to_output_folder, type_of_smoothing)
 
-% [lh_label_fslr, rh_label_fslr, lh_label_fslr_164k, rh_label_fslr_164k] = CBIG_project_from_fsaverage_to_fslr(lh_label, rh_label, abs_path_to_output_folder, type_of_smoothing)
+% [lh_label_fslr, rh_label_fslr, lh_label_fslr_164k, rh_label_fslr_164k] =
+%  CBIG_project_from_fsaverage_to_fslr(lh_label, rh_label, abs_path_to_output_folder, type_of_smoothing)
 %
 % This function projects surface labels (parcellation labels, activation
 % patterns...) from fsaverage5/fsaverage6/fsaverage to fslr_32k/fslr_164k
@@ -33,7 +35,12 @@ function [lh_label_fslr, rh_label_fslr, lh_label_fslr_164k, rh_label_fslr_164k] 
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
-
+if size(lh_label,2) ~= 1
+    error('Input argument ''lh_label'' should be a column vector');
+end
+if size(rh_label,2) ~= 1
+    error('Input argument ''rh_label'' should be a column vector');
+end
 
 if (nargin<3) % if no output folder is provided
     error('Please provide the absolute path to an output folder')
@@ -76,7 +83,6 @@ else
 end
 
 % start processing
-addpath(fullfile(getenv('FREESURFER_HOME'), 'matlab/'));
 
 if (strcmp(type_of_smoothing, 'METRIC_NEAREST_NODE'))
     lh_mri.vol = int16(lh_labels7);
@@ -94,7 +100,8 @@ else
 end
 
 % status and cmdout are saved for debugging
-SCRIPT_PATH = fullfile(getenv('CBIG_CODE_DIR') ,'utilities/matlab/fslr_matlab/bash_scripts/CBIG_transfer_border_to_fs_lr_32k.sh');
+SCRIPT_PATH = fullfile(getenv('CBIG_CODE_DIR') , ...
+  'utilities/matlab/fslr_matlab/bash_scripts/CBIG_transfer_border_to_fs_lr_32k.sh');
 [status,cmdout] = system([SCRIPT_PATH ' ' abs_path_to_output_folder ' label ' type_of_smoothing]);
 
 rh_gifti = gifti(fullfile(abs_path_to_output_folder, 'label.R.32k_fs_LR.func.gii'));
@@ -106,4 +113,5 @@ rh_gifti = gifti(fullfile(abs_path_to_output_folder, 'label.R.fs_LR.func.gii'));
 lh_gifti = gifti(fullfile(abs_path_to_output_folder, 'label.L.fs_LR.func.gii'));
 lh_label_fslr_164k = lh_gifti.cdata;
 rh_label_fslr_164k = rh_gifti.cdata;
+
 end

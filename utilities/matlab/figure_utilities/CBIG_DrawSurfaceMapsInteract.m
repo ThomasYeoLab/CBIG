@@ -9,7 +9,7 @@ function CBIG_DrawSurfaceMapsInteract(lh_data, rh_data, mesh_name, surf_type, mi
 %
 % Input:
 %      -lh_data, rh_data: 
-%       parcellation of left/right hemisphere. Nx1 vector for each, 
+%       parcellation of left/right hemisphere. Nx1 or 1xN vector for each, 
 %       N = # of vertices in mesh_name.
 %
 %      -mesh_name:
@@ -33,6 +33,10 @@ function CBIG_DrawSurfaceMapsInteract(lh_data, rh_data, mesh_name, surf_type, mi
 % CBIG_DrawSurfaceMapsInteract(lh_labels,rh_labels,'fsaverage5','inflated');
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+
+
+% This function does not need vector check because the function itself
+% contains checking statement.
 
 warning('off', 'MATLAB:warn_r14_stucture_assignment');
 

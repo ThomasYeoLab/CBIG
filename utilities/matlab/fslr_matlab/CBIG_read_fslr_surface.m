@@ -29,8 +29,6 @@ function output_mesh = CBIG_read_fslr_surface(hemi, mesh_name, surf_type, label)
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 
-
-
     if(~exist('mesh_name', 'var'))
        mesh_name = 'fs_LR_32k'; 
     end
@@ -42,43 +40,53 @@ function output_mesh = CBIG_read_fslr_surface(hemi, mesh_name, surf_type, label)
             annot_filename = label;
         end
     end
-   
+    
+    
+    % Read surface specified by user
     folder = fullfile(getenv('CBIG_CODE_DIR'), 'data', 'templates', 'surface',mesh_name);
-
     radius = 100;
     total_surface_area = 4*pi*(radius^2);
-
     [vertices,faces] = read_surf(fullfile(folder, 'surf', [hemi, '.', surf_type]));
     output_mesh.faces = int32(faces')+1;
     output_mesh.vertices = single(vertices');
     
+    
     %%% compute vertexNbors
-    output_mesh.vertexNbors = MARS_convertFaces2VertNbors(output_mesh.faces', int32(size(output_mesh.vertices,2)));
+    output_mesh.vertexNbors = MARS_convertFaces2VertNbors(output_mesh.faces', ...
+        int32(size(output_mesh.vertices,2)));
     num_per_vertex = length(output_mesh.vertexNbors)/size(output_mesh.vertices,2);
-    output_mesh.vertexNbors = reshape(output_mesh.vertexNbors, size(output_mesh.vertices,2), num_per_vertex);
-
+    output_mesh.vertexNbors = reshape(output_mesh.vertexNbors, ...
+        size(output_mesh.vertices,2), num_per_vertex);
     output_mesh.vertexNbors=output_mesh.vertexNbors';
 
 
     %%% compute metricVerts
-    metricSurfaceArea = sum(MARS_computeMeshFaceAreas(int32(size(output_mesh.faces, 2)), int32(output_mesh.faces), single(output_mesh.vertices)));
+    metricSurfaceArea = sum(MARS_computeMeshFaceAreas(int32(size(output_mesh.faces, 2)), ...
+        int32(output_mesh.faces), single(output_mesh.vertices)));
     output_mesh.surface_scaling_factor = sqrt(total_surface_area/metricSurfaceArea);
     output_mesh.metricVerts = output_mesh.vertices*output_mesh.surface_scaling_factor;
     
     
     %Find vertexFaces
-    output_mesh.vertexFaces =  MARS_convertFaces2FacesOfVert(output_mesh.faces', int32(size(output_mesh.vertices, 2)));
-    num_per_vertex = length(output_mesh.vertexFaces)/size(output_mesh.vertices,1);
-    output_mesh.vertexFaces = reshape(output_mesh.vertexFaces, size(output_mesh.vertices,1), num_per_vertex);
-
+    output_mesh.vertexFaces =  MARS_convertFaces2FacesOfVert(output_mesh.faces', ...
+        int32(size(output_mesh.vertices, 2)));
+    output_mesh.vertexFaces = reshape(output_mesh.vertexFaces, ...
+        size(output_mesh.vertices,2), num_per_vertex);
+    output_mesh.vertexFaces = output_mesh.vertexFaces';
+    
+    
     % Compute Face Areas.
-    output_mesh.faceAreas = MARS_computeMeshFaceAreas(int32(size(output_mesh.faces, 2)), int32(output_mesh.faces), single(output_mesh.vertices));
+    output_mesh.faceAreas = MARS_computeMeshFaceAreas(int32(size(output_mesh.faces, 2)), ...
+        int32(output_mesh.faces), single(output_mesh.vertices));
+    output_mesh.faceAreas = output_mesh.faceAreas';
+    
     
     %Read brain labels
     if (exist('annot_filename', 'var'))
-        [~, MARS_label, MARS_ct] = read_annotation(fullfile(folder, 'label', [hemi, '.', annot_filename]));
-        [output_mesh.MARS_label, output_mesh.MARS_ct] = MARS_reorganizeLabels(MARS_label, MARS_ct, output_mesh.vertexNbors');  
+        [~, MARS_label, MARS_ct] = read_annotation(fullfile(folder, ...
+            'label', [hemi, '.', annot_filename]));
+        [output_mesh.MARS_label, output_mesh.MARS_ct] = ...
+            MARS_reorganizeLabels(MARS_label, MARS_ct, output_mesh.vertexNbors');  
     end
-    
 
 end

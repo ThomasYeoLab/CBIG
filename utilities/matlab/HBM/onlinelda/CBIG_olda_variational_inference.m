@@ -11,6 +11,11 @@ function [g, phi] = CBIG_olda_variational_inference(params, wc)
 % Written by B.T.Thomas Yeo and CBIG under MIT licence: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 % compute document specific gamma and phi
+
+if size(wc,1) ~= 1
+    error('Input argument ''wc'' should be a row vector');
+end
+
 g = ones(1, params.T);
 phi = zeros([params.T params.V]);
 for i = 1:params.max_e_iter

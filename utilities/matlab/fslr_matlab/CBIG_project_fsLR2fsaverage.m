@@ -7,7 +7,7 @@ function [lh_FS7_data,rh_FS7_data] = CBIG_project_fsLR2fsaverage(lh_fsLR_data,rh
 % is in fs_LR_32k, the data will upsample to fs_LR_164k.
 % Input:
 %      -lh_fsLR_data, rh_fsLR_data:
-%       a N x 1 vector, where N is the number of vertices. ?h_fsLR_data can
+%       a N x 1 and 1 x N vector, where N is the number of vertices. ?h_fsLR_data can
 %       be metric data (float) or label data (integer).
 %
 %      -fsLR_mesh:
@@ -38,6 +38,9 @@ function [lh_FS7_data,rh_FS7_data] = CBIG_project_fsLR2fsaverage(lh_fsLR_data,rh
 % [lh_FS7_data,rh_FS7_data]=CBIG_project_fsLR2fsaverage(lh_label_fsLR_32k,rh_label_fsLR_32k,'fs_LR_32k','label',folder_to_write);
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+
+% This function does not need vector check because the function itself
+% contains checking statement.
 
 if(nargin<5)% if you dont set your own write folder
     error('Not enough inputs')

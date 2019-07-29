@@ -36,7 +36,12 @@ function WarpedPt = MARS_warpPointbyTangentVec(Pt, tangentVec, input_radius)
 %Assume Pt is 3 x N, tangentVec is 3 x N
 %assume each of the point has the same radius.
 %length of tangentVec corresponds to arclength
-
+if size(Pt,1) ~= 3
+    error('Input argument ''Pt'' should be 3 x N');
+end
+if size(tangentVec,1) ~= 3
+    error('Input argument ''tangentVec'' should be 3 x N');
+end
 if(nargin <3)
     input_radius = 100;
 end

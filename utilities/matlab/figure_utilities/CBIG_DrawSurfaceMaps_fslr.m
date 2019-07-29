@@ -8,7 +8,7 @@ function h = CBIG_DrawSurfaceMaps_fslr(lh_data, rh_data, mesh_name, surf_type, m
 % Input:
 %      - lh_data, rh_data:
 %        surface labels on the left and right hemisphere respectively in
-%        fslr. Each variable is a Nx1 vector, where N corresponds to the
+%        fslr. Each variable is a Nx1 or 1xN vector, where N corresponds to the
 %        mesh defined in mesh_name.
 %        N = 163,842 for mesh_name = 'fs_LR_164k'
 %        N = 32,492 for mesh_name = 'fs_LR_32k'
@@ -35,6 +35,9 @@ function h = CBIG_DrawSurfaceMaps_fslr(lh_data, rh_data, mesh_name, surf_type, m
 %   between 1e-05 and 5e-05.
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+
+% This function does not need vector check because the function itself
+% contains checking statement.
 
 warning('off', 'MATLAB:warn_r14_stucture_assignment');
 

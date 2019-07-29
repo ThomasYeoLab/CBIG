@@ -33,6 +33,19 @@ function flag = CBIG_CheckValidSurfaceData(surface_template, lh_data, rh_data, r
 %
 % Written by Gia H. Ngo and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
     
+    if size(lh_data,2) ~= 1
+        error('Input argument ''lh_data'' should be a column vector');
+    end
+    if size(rh_data,2) ~= 1
+        error('Input argument ''rh_data'' should be a column vector');
+    end
+    if size(ref_lh_vertices,2) ~= 1
+        error('Input argument ''ref_lh_vertices'' should be a column vector');
+    end
+    if size(ref_rh_vertices,2) ~= 1
+        error('Input argument ''ref_rh_vertices'' should be a column vector');
+    end
+  
     flag = numel(lh_data) == numel(rh_data);
     flag = flag && (numel(lh_data) == numel(ref_lh_vertices));
     flag = flag && (numel(ref_lh_vertices) == numel(ref_rh_vertices));

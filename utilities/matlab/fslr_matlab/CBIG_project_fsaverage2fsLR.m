@@ -45,7 +45,8 @@ function [lh_fsLR_32k_data,rh_fsLR_32k_data,lh_fsLR_164k_data,rh_fsLR_164k_data]
 
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
-
+% This function does not need vector check because the function itself
+% contains checking statement.
 
 if(nargin<5)% if you dont set your own write folder
     error('Not enough inputs')

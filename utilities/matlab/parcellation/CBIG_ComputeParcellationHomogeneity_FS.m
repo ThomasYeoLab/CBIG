@@ -39,6 +39,9 @@ function  homo_with_weight = CBIG_ComputeParcellationHomogeneity_FS(lh_labels,rh
 %
 %Written by Ruby Kong and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
+% This function does not need vector check because the function itself
+% contains checking statement.
+
 if(size(lh_labels,2)~=1)
     lh_labels = lh_labels';
 end

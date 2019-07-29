@@ -43,6 +43,12 @@ function [lh_data_resample, rh_data_resample] = CBIG_resample_fslr(lh_data, rh_d
 
 % Written by Ruby Kong and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
+if size(lh_data,2) ~= 1
+    error('Input argument ''lh_data'' should be a column vector');
+end
+if size(rh_data,2) ~= 1
+    error('Input argument ''rh_data'' should be a column vector');
+end
 
 if(nargin<5)% if you dont set your own write folder
     error('Not enough inputs')

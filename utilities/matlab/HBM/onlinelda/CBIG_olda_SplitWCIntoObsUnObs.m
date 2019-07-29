@@ -11,6 +11,10 @@ function [obs_wc, unobs_wc] = CBIG_SplitWCIntoObsUnObs(wc, frac_obs)
 %
 % Written by B.T.Thomas Yeo and CBIG under MIT licence: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
+if size(wc,1) ~= 1
+    error('Input argument ''wc'' should be a row vector');
+end
+
 V = size(wc, 2);
 [~, I] = sort(rand(1, V), 2);
 

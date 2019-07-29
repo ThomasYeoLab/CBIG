@@ -72,7 +72,7 @@ foreach sub ($subjects)
 	
 	if( $preproc_opt == "new" ) then
 		if( ! -e ./logs/${sub}.bold ) then
-			echo "ERROR: bold list ${sub_dir}/{$sub}/logs/${sub}.bold does not exist!"
+			echo "ERROR: bold list ${sub_dir}/${sub}/logs/${sub}.bold does not exist!"
 			exit 1;
 		endif
 		set bold = `cat ./logs/${sub}.bold`

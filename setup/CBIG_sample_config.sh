@@ -7,7 +7,7 @@ if [ -n "$FREESURFER_HOME" ]; then
 fi
 
 # PLEASE CHANGE: Please specify location of CBIG repository
-export CBIG_CODE_DIR=/data/users/ngohgia/storage/CBIG
+export CBIG_CODE_DIR=$HOME/storage/CBIG_private
 
 # PLEASE CHANGE: define locations for these libraries
 export FREESURFER_HOME=/apps/arch/Linux_x86_64/freesurfer/5.3.0
