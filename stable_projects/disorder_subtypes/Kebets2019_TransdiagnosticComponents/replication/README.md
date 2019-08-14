@@ -23,12 +23,19 @@ The data can be (re-) downloaded at https://openneuro.org/datasets/ds000030/vers
 
 The wrapper function is `CBIG_VK2019_replication_wrapper.m`.
 
-The main function (i.e., PLS analysis) was modified from the code written by Dimitri Van De Ville, Daniella Zoller and Valeria Kebets, available at [https://miplab.epfl.ch/index.php/software/PLS].
+The main function (`PLS_analysis.m`) is located in
 
-Results can be compared with `PLSresults_all54Scores_N224.mat` in 
+``` 
+$CBIG_CODE_DIR/external_packages/matlab/non_default_packages/PLS_MIPlab
+```
+
+
+and was modified from the code written by Dimitri Van De Ville, Daniella Zoller and Valeria Kebets, available at https://miplab.epfl.ch/index.php/software/PLS
+
+Results can be compared with `PLSresults.mat`, `PLSresults_1000permuts.mat`, `PLS_bootstrapLoadings_500bootstraps.mat`, `PLS_bootstrapResults_500bootstraps.mat`, `PLS_5fold_crossval_1000permuts.mat`, and `PLS_taskValidation_1000permuts.mat` in 
 
 ```
-/mnt/eql/p1/users/external/vkebets/CBIG_private/stable_projects/disorder_subtypes/Kebets2019_TransdiagnosticComponents/replication/correct_output
-```
+/mnt/eql/yeo1/CBIG_private_data/replication/stable_projects/disorder_subtypes/Kebets2019_TransdiagnosticComponents/results
+``` 
 
 ----

@@ -11,7 +11,7 @@ Kebets V, Holmes AJ, Orban C, Tang S, Li J, Sun N, Kong R, Poldrack RA, Yeo BTT.
 
 ## RSFC and behavioral loadings of Latent Components 1-3
 The RSFC/behavioral loadings (i.e., Pearson's correlations between the original RSFC/behavioral data and RSFC/behavioral composite scores) associated with LCs 1-3 can be found in `PLS_loadings`.
-The RSFC loadings are 419 x 419 matrices, with the first 400 ROIs being Schaefer's 400 cortical regions (Schaefer et al., 2018), and the last 19 ROIs being subcortical regions from the Freesurfer segmentation (Fischl et al., 2002).
+The RSFC loadings are 419 x 419 matrices, with the first 400 ROIs being Schaefer's 400 cortical regions (Schaefer et al., 2018), and the last 19 ROIs being subcortical regions from the FreeSurfer segmentation (Fischl et al., 2002).
 The spreadsheet `Schaefer2018_400Parcels_17Networks_19Subcortical.csv` lists the 419 ROIs (as ordered in the .mat files). 
 The RSFC matrices can be plotted using
 
@@ -23,8 +23,8 @@ Note that the ROIs are re-arranged for visualisation.
 
 ----
 
-## Subjects' RSFC and behavioral loadings on Latent Components 1-3
-Subjects' RSFC and behavioral loadings for LCs 1-3 of the 224 participants included in our paper are released in the spreadsheet `LC_composite_scores.csv`. 
+## Subjects' RSFC and behavioral composite scores of Latent Components 1-3
+Subject-specific RSFC and behavioral composite scores for LCs 1-3 of the 224 participants included in our paper are released in the spreadsheet `LC_composite_scores.csv`. 
 
 #### Column definitions
 The spreadsheet `LC_composite_scores.csv` has 8 columns: 

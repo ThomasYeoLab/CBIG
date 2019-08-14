@@ -30,14 +30,14 @@ Except for this project, if you want to use the code for other stable projects f
 - To download the version of the code that was last tested, you can either
 
     - visit this link:
-    [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.13.3-Kebets2019_TransdiagnosticComponents](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.13.3-Kebets2019_TransdiagnosticComponents)
+    [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.13.4-Kebets2019_TransdiagnosticComponents](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.13.4-Kebets2019_TransdiagnosticComponents)
 
     or
 
     - run the following command, if you have Git installed
  
     ```
-    git checkout -b Kebets2019_TransdiagnosticComponents v0.13.3-Kebets2019_TransdiagnosticComponents
+    git checkout -b Kebets2019_TransdiagnosticComponents v0.13.4-Kebets2019_TransdiagnosticComponents
     ```
 
 ----
@@ -48,12 +48,6 @@ Except for this project, if you want to use the code for other stable projects f
 2. Follow `$CBIG_CODE_DIR/setup/README.md` to setup the config file. Instead of using `CBIG/setup/CBIG_sample_config.sh`, 
 you need to use `$CBIG_CODE_DIR/stable_projects/disorder_subtypes/Kebets2019_TransdiagnosticComponents/config/CBIG_VK2019_tested_config.sh`.
 
-### PLS analysis to extract latent components
-The script provided is used to extract the 3 significant and robust latent components in our paper (referenced above).
-This script was modified from the code written by Dimitri Van De Ville, Daniela Zöller and Valeria Kebets, with subfunctions borrowed from PLS toolbox by Rotman Baycrest
-https://www.rotman-baycrest.on.ca/index.php?section=84
-The code is available on https://miplab.epfl.ch/index.php/software/PLS, along with a description of the analysis and example data.
-
 ### Unit tests
 The unit test is mainly for internal use.
 
@@ -62,11 +56,20 @@ In the folder `examples`, we provide a toy example code on how to derive & visua
 
 ### Replication
 In the folder `replication`, we provide scripts to replicate the main findings of our paper.
+The code for the PLS analysis is located in
+
+``` 
+$CBIG_CODE_DIR/external_packages/matlab/non_default_packages/PLS_MIPlab
+```
+
+and was modified from the code written by Dimitri Van De Ville, Daniela Zöller and Valeria Kebets, with subfunctions borrowed from the PLS toolbox by Rotman Baycrest https://www.rotman-baycrest.on.ca/index.php?section=84
+The code is available on https://miplab.epfl.ch/index.php/software/PLS, along with a description of the analysis and example data.
 
 
 ----
 
 # Updates
+- Release v0.13.4 (14/08/2019): Updated Table S7_sumCorr.csv & Schaefer2018_400Parcels_17Networks_19Subcortical.csv with corrected labels
 - Release v0.13.3 (18/07/2019): Release of code for Kebets2019_TransdiagnosticComponents
 - Release v0.11.0 (14/06/2019): Initial release of the Kebets2019_TransdiagnosticComponents project
 
