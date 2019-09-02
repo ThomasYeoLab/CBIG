@@ -42,6 +42,7 @@
 
 !/predict_phenotypes/*
 !/predict_phenotypes/He2019_KRDNN/**
+!/predict_phenotypes/Nguyen2020_RNNAD/**
 
 !/preprocessing/*
 !/preprocessing/Li2019_GSR/**
