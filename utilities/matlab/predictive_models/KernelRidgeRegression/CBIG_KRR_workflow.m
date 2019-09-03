@@ -7,9 +7,16 @@ function CBIG_KRR_workflow( setup_file, save_setup, varargin )
 % hyperparameters can be passed in through the setup_file. Alternatively,
 % they can also be passed in one by one through varargin.
 % 
-% Note: if your target variables consist of both binary and non-binary
+% Note1: if your target variables consist of both binary and non-binary
 % variables, you need to deal with them separately and run this workflow
-% twice.
+% twice. 
+% Note2: If your target variables consist of NaNs, this workflow will predict
+% each variable one by one (by removing the traning and test subjects with NaNs
+% in each score), instead of predicting the variables altogether when there
+% is no NaN in any target variable. This will increase the computation time by N
+% times if you have N target variables. Therefore, please try to avoid NaNs in
+% target variables. If you can't avoid NaNs, you can separate the variables with
+% NaNs from variables without NaNs and run this workflow twice.
 % 
 % Inputs:
 %   - setup_file

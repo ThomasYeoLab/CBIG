@@ -292,6 +292,7 @@ You can check the output folder structure in this directory: `$CBIG_CODE_DIR/sta
 - Release v0.13.1 (19/07/2019):
   1. Added bias term in kernel regression cost funtion.
   2. Added unit test scipt for general kernel regression package.
+- Release v0.14.1 (03/09/2019): Optimized the speed of kernel regression scripts.
 
 ## Bugs and questions
 Please contact Jingwei Li at jingwei.li@u.nus.edu and Ru(by) Kong at roo.cone@gmail.com.

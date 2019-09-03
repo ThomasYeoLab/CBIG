@@ -43,7 +43,9 @@ else
       echo -n "You appear to be using FREESURFER $USER_default_FREESURFER (which may or may not work with current repo)."
       echo "Switch to FREESURFER version $CBIG_default_FREESURFER if possible."
       echo -n "Note: stable projects may not follow default setting, "
-      echo "refer to the proper config file of the project you use.\n"
+      echo "refer to the proper config file of the project you use."
+      echo -n "If you are unsure, please run our stable projects' examples "
+      echo "to check if the results can be replicated.\n"
     endif
   endif
 endif
@@ -77,7 +79,9 @@ else
       echo -n "You appear to be using MATLAB $USER_default_MATLAB (which may or may not work with current repo)."
       echo "Switch to MATLAB version $CBIG_default_MATLAB if possible."
       echo -n "Note: stable projects may not follow default setting, "
-      echo "refer to the proper config file of the project you use.\n"
+      echo "refer to the proper config file of the project you use."
+      echo -n "If you are unsure, please run our stable projects' examples "
+      echo "to check if the results can be replicated.\n"
     
   endif
 endif
@@ -123,7 +127,9 @@ FSLDIR is the FSL directory defined by FSL. FSL_DIR is the FSL directory defined
       echo -n "You appear to be using FSL $USER_default_FSL (which may or may not work with current repo)."
       echo "Switch to FSL version $CBIG_default_FSL if possible."
       echo -n "Note: stable projects may not follow default setting, "
-      echo "refer to the proper config file of the project you use.\n"
+      echo "refer to the proper config file of the project you use."
+      echo -n "If you are unsure, please run our stable projects' examples "
+      echo "to check if the results can be replicated.\n"
     endif
   endif
 endif
@@ -169,7 +175,9 @@ else
       echo -n "You appear to be using WORKBENCH $USER_default_WB (which may or may not work with current repo)."
       echo "Switch to WORKBENCH version $CBIG_default_WB if possible."
       echo -n "Note: stable projects may not follow default setting, "
-      echo "refer to the proper config file of the project you use.\n"
+      echo "refer to the proper config file of the project you use."
+      echo -n "If you are unsure, please run our stable projects' examples "
+      echo "to check if the results can be replicated.\n"
     endif
   endif
 endif
@@ -202,7 +210,9 @@ else
       echo -n "You appear to be using AFNI $USER_default_AFNI (which may or may not work with current repo)."
       echo "Switch to AFNI version $CBIG_default_AFNI if possible."
       echo -n "Note: stable projects may not follow default setting, "
-      echo "refer to the proper config file of the project you use. \n"
+      echo "refer to the proper config file of the project you use. "
+      echo -n "If you are unsure, please run our stable projects' examples "
+      echo "to check if the results can be replicated.\n"
     endif
   endif
 endif
@@ -212,8 +222,10 @@ endif
 ####################################
 
 if (! -f "$CBIG_CODE_DIR/.git/hooks/pre-commit") then
+  mkdir -p $CBIG_CODE_DIR/.git/hooks
   ln -s "$CBIG_CODE_DIR/hooks/pre-commit" "$CBIG_CODE_DIR/.git/hooks/pre-commit"
 endif
 if (! -f "$CBIG_CODE_DIR/.git/hooks/pre-push") then
+  mkdir -p $CBIG_CODE_DIR/.git/hooks
   ln -s "$CBIG_CODE_DIR/hooks/pre-push" "$CBIG_CODE_DIR/.git/hooks/pre-push"
 endif

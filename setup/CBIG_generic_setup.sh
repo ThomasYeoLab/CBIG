@@ -54,6 +54,8 @@ Switch to FREESURFER version $CBIG_default_FREESURFER if possible."
  Switch to FREESURFER version $CBIG_default_FREESURFER if possible."
     warn_msg "Note: stable projects may not follow default setting, \
 refer to the proper config file of the project you use."
+    warn_msg "If you are unsure, please run our stable projects' examples \
+to check if the results can be replicated."
   fi
 fi
 
@@ -85,6 +87,8 @@ Switch to MATLAB $CBIG_default_MATLAB if possible."
 Switch to MATLAB version $CBIG_default_MATLAB if possible."
     warn_msg "Note: stable projects may not follow default setting, \
 refer to the proper config file of the project you use."
+    warn_msg "If you are unsure, please run our stable projects' examples \
+to check if the results can be replicated."
   fi
 fi
 
@@ -127,6 +131,8 @@ Switch to FSL $CBIG_default_FSL if possible."
 Switch to FSL version $CBIG_default_FSL if possible."
     warn_msg "Note: stable projects may not follow default setting, \
 refer to the proper config file of the project you use."
+    warn_msg "If you are unsure, please run our stable projects' examples \
+to check if the results can be replicated."
   fi
 fi
 
@@ -169,6 +175,8 @@ Switch to WORKBENCH $CBIG_default_WB if possible."
 Switch to WORKBENCH version $CBIG_default_WB if possible."
     warn_msg "Note: stable projects may not follow default setting, \
 refer to the proper config file of the project you use."
+    warn_msg "If you are unsure, please run our stable projects' examples \
+to check if the results can be replicated."
   fi
 fi
 
@@ -199,6 +207,8 @@ Switch to AFNI $CBIG_default_AFNI if possible."
 Switch to AFNI version $CBIG_default_AFNI if possible."
     warn_msg "Note: stable projects may not follow default setting, \
 refer to the proper config file of the project you use."
+    warn_msg "If you are unsure, please run our stable projects' examples \
+to check if the results can be replicated."
   fi
 fi
 
@@ -208,10 +218,12 @@ fi
 
 if [ ! -f "$CBIG_CODE_DIR/.git/hooks/pre-commit" ];
 then
+  mkdir -p $CBIG_CODE_DIR/.git/hooks
   ln -s "$CBIG_CODE_DIR/hooks/pre-commit" "$CBIG_CODE_DIR/.git/hooks/pre-commit"
 fi
 if [ ! -f "$CBIG_CODE_DIR/.git/hooks/pre-push" ];
 then
+  mkdir -p $CBIG_CODE_DIR/.git/hooks
   ln -s "$CBIG_CODE_DIR/hooks/pre-push" "$CBIG_CODE_DIR/.git/hooks/pre-push"
 fi
 

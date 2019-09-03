@@ -19,14 +19,14 @@ If you want to use the code from our lab's other stable projects (other than He2
 - To download the version of the code that was last tested, you can either
 
     - visit this link:
-    [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.13.2-He2019_KRDNN](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.13.2-He2019_KRDNN)
+    [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.14.1-He2019_KRDNN](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.14.1-He2019_KRDNN)
 
     or
 
     - run the following command, if you have Git installed
  
     ```
-    git checkout -b He2019_KRDNN v0.13.2-He2019_KRDNN
+    git checkout -b He2019_KRDNN v0.14.1-He2019_KRDNN
     ```
 
 ### Usage
@@ -48,7 +48,9 @@ If you want to use the code from our lab's other stable projects (other than He2
     1. Update RNG generator in MATLAB for compatibility
     2. Update title of paper in README files
     3. Add information about hyperparameter in replication/README.md
-
+- Release v0.14.1 (03/09/2019):
+    1. Add trained models / weights of UK Biobank dataset
+    2. Optimize the speed of kernel regression scripts
 ----
 
 ## Bugs and Questions

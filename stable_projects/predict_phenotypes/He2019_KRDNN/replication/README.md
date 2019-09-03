@@ -99,6 +99,34 @@ Run each python3 command in `CBIG_KRDNN_DNN_command.sh` from this `replication` 
 You can find my reference result in `CBIG_KRDNN_DNN_command.sh` for each command
 ----
 
+Trained model
+====
+The models / weights of trained DNNs are saved in `trained_model`. Only models / weights for UK Biobank dataset are released, because models / weights for HCP dataset are too large and too many to release. The sub-folder name represents `modelname_behavior`. There are five models / weights for each case, because we used five models for ensemble.
+
+To load model / weight:
+* For FNN and BrainNetCNN model (PyTorch):
+```python
+# Model class must be defined (can find in /../cbig/He2019/CBIG_model_pytorch.py)
+PATH = 'trained_model/modelname_behavior/CBIG_ukbb_modelname_run_x.pkl_torch' 
+# remember to change modelname, behavior and x
+model = torch.load(PATH)
+model.eval()
+```
+* For GCNN model (Keras):
+```python
+model = gcnn(input_x.shape[1], args.dropout, args.n_l1, graph_matrix,
+             support, args.l2_regularizer)
+# this command is line 92 of /../cbig/He2019/CBIG_ukbb_gcnn.py, please
+# check that file for usage 
+
+PATH = 'trained_model/gcnn_behavior/CBIG_ukbb_gcnn_run_x_weights.h5'
+# remember to change behavior and x
+
+model.load_weights(PATH)
+```
+
+----
+
 Bugs and Questions
 ====
 Please contact He Tong at hetong1115@gmail.com.

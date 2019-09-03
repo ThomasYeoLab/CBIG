@@ -129,7 +129,7 @@ if(num_test_folds == 1)
                 FSM = CBIG_crossvalid_kernel_with_scale(feature_mat(:, train_ind), feature_mat(:, valid_ind), ...
                     [], [], ker_param(k).type, ker_param(k).scale);
             else
-                FSM = similarity_mat(train_ind+valid_ind, train_ind+valid_ind);
+                FSM = similarity_mat(or(train_ind, valid_ind), or(train_ind, valid_ind));
                 % use "+" because training and validation sets are supposed
                 % to be exclusive.
             end
@@ -151,7 +151,7 @@ if(num_test_folds == 1)
                 FSM = CBIG_crossvalid_kernel_with_scale(feature_mat(:, train_ind), feature_mat(:, test_ind), ...
                     [], [], ker_param(k).type, ker_param(k).scale);
             else
-                FSM = similarity_mat(train_ind+test_ind, train_ind+test_ind);
+                FSM = similarity_mat(or(train_ind, test_ind), or(train_ind, test_ind));
                 % use "+" because training and test sets are supposed 
                 % to be exclusive.
             end
@@ -198,7 +198,7 @@ else
                     FSM = CBIG_crossvalid_kernel_with_scale(feature_mat(:, train_ind), feature_mat(:, test_ind), ...
                         train_ind, test_ind, ker_param(k).type, ker_param(k).scale);
                 else
-                    train_test_ind = train_ind + test_ind;
+                    train_test_ind = or(train_ind, test_ind);
                     FSM = similarity_mat(train_test_ind, train_test_ind);
                 end
                 save(curr_outname, 'FSM'); clear FSM
