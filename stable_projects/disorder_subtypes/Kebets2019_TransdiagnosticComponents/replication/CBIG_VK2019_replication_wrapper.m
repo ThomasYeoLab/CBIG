@@ -14,8 +14,6 @@ function CBIG_VK2019_replication_wrapper
 %
 % Written by Valeria Kebets and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
-rng('default');
-
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
 
 root_dir = [CBIG_CODE_DIR '/stable_projects/disorder_subtypes/Kebets2019_TransdiagnosticComponents'];
@@ -117,7 +115,7 @@ save([out_dir '/PLSresults.mat']);
 
 disp('(4) Permutation testing over LCs');
 
-pvals_LC = myPLS_permut(X0,Y0,U,S,nPerms_rest,diagnosis_grouping,normalization_img,normalization_behav);
+pvals_LC = myPLS_permut(X0,Y0,U,S,nPerms_rest,diagnosis_grouping,normalization_img,normalization_behav,1000);
 
 % FDR correction over the first 5 LCs
 [signif_LC, ~] = FDR(pvals_LC(1:5), 0.05);
@@ -148,12 +146,12 @@ CBIG_VK2019_plot_subjScores(Lx,Ly,CONST_DIAGNOSIS,diagnosis_grouping,signif_LC);
 disp('(6) Bootstrapping over RSFC & behavior loadings');
 
 % Re-compute loadings using bootstrap 
-[LC_RSFC_loadings_boot,LC_behav_loadings_boot] = CBIG_VK2019_bootstrap_loadings...
-    (X0,Y0,U,signif_LC,nBootstraps,diagnosis_grouping,normalization_img,normalization_behav);
+[LC_RSFC_loadings_boot,LC_behav_loadings_boot,all_boot_orders] = CBIG_VK2019_bootstrap_loadings...
+    (X0,Y0,U,signif_LC,nBootstraps,diagnosis_grouping,normalization_img,normalization_behav,1000);
 
 save([out_dir '/PLS_bootstrapLoadings_' num2str(nBootstraps) 'bootstraps.mat'],...
     'LC_RSFC_loadings_boot','LC_behav_loadings_boot','X0','Y0','U','signif_LC',...
-    'nBootstraps','diagnosis_grouping','normalization_img','normalization_behav');
+    'nBootstraps','diagnosis_grouping','normalization_img','normalization_behav','all_boot_orders');
 
 % Compute confidence intervals, z-scores, p-values of loadings
 [std_behav_boot,zscore_behav_boot,pvals_behav_boot,std_RSFC_boot,zscore_RSFC_boot,pvals_RSFC_boot] = ...

@@ -1,5 +1,6 @@
-function [LC_RSFC_loadings_boot,LC_behav_loadings_boot] = CBIG_VK2019_bootstrap_loadings...
-    (X,Y,U,signif_LC,nBootstraps,grouping,normalization_img,normalization_behav)
+
+function [LC_RSFC_loadings_boot,LC_behav_loadings_boot,all_boot_orders] = CBIG_VK2019_bootstrap_loadings...
+    (X,Y,U,signif_LC,nBootstraps,grouping,normalization_img,normalization_behav,seed)
 % 
 % This function computes bootstrap resampling with replacement on X and Y, 
 % accounting for diagnostic groups.
@@ -9,10 +10,10 @@ function [LC_RSFC_loadings_boot,LC_behav_loadings_boot] = CBIG_VK2019_bootstrap_
 %
 % Inputs:
 % - X                        : N x M matrix, N is #subjects, M is #FC, RSFC data 
-% - Y                        : N x B matrix, N is #subjects, B is
-%                              #behaviors, behavior data
-% - U                        : B x L matrix, behavior saliences
-% - signif_LC                : significant latent components
+% - Y                        : N x B matrix, B is #behaviors, behavior data
+% - U                        : B x L matrix, L is # latent components (LCs),
+%                              behavior saliences
+% - signif_LC                : significant LCs
 % - nBootstraps              : number of bootstrap samples
 % - grouping                 : N x 1 vector, subject (diagnostic) grouping 
 % - normalization_img        : normalization options for FC data
@@ -22,15 +23,23 @@ function [LC_RSFC_loadings_boot,LC_behav_loadings_boot] = CBIG_VK2019_bootstrap_
 %                              2 = zscore within groups (default)
 %                              3 = std normalization across subjects (no centering)
 %                              4 = std normalization within groups (no centering)
-%
+% - seed                     : seed for random number generator, e.g. 1
+%                             (default is 1000)
+% 
 % Outputs:
-% - LC_behav_loadings_boot   : B x S x P matrix, bootstrapped behavior 
-% loadings for significant LCs 
+% - LC_behav_loadings_boot   : B x S x P matrix, S is # significant LCs, P is #bootstrap samples,
+%                              bootstrapped behavior loadings for significant LCs 
 % - LC_RSFC_loadings_boot    : M x S x P matrix, bootstrapped RSFC loadings
-% for significant LCs
+%                              for significant LCs
+% - all_boot_orders          : N x P, subject index in all bootstrap samples
 %
 % Written by Valeria Kebets & CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
+
+% Set random number generator 
+if isempty(seed)
+    rng(1000);
+end
 
 % Check that dimensions of X & Y are correct
 if(size(X,1) ~= size(Y,1))
@@ -38,16 +47,24 @@ if(size(X,1) ~= size(Y,1))
 end
 
 nSubj = size(X,1);
-nGroups = size(unique(grouping),1);
+groupIDs = unique(grouping);
+nGroups = length(groupIDs);
 subj_grouping = ones(nSubj,1);
 
-% Bootstrap with replacement within each diagnostic group
-all_boot_orders = [];
+% Get bootstrap subject sampling
+all_boot_orders = nan(nSubj,nBootstraps);
+
 for iter_group = 1:nGroups
-    nSubj_group = size(find(grouping==iter_group),1);
-    [boot_order,~] = rri_boot_order(nSubj_group,1,nBootstraps);
-    all_boot_orders = [all_boot_orders; boot_order];
-    clear boot_order nSubj_group
+    
+   % Get IDs of subjects in this group
+   groupID_idx = find(grouping == groupIDs(iter_group));
+   nSubj_group = length(groupID_idx);
+
+   % Compute bootstrapping orders for the number of subjects in this group
+   [boot_order_tmp,~] = rri_boot_order(nSubj_group,1,nBootstraps);
+
+   % Change the order of the group indices according to the bootstrapping
+   all_boot_orders(groupID_idx,:) = groupID_idx(boot_order_tmp);
 end
         
         

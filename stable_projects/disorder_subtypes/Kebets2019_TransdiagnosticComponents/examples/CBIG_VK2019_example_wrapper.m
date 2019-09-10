@@ -57,7 +57,7 @@ disp('(3) Running PLS');
 %% 4. Permutation testing
 
 disp('(4) Permutation testing over LCs');
-pvals_LC = myPLS_permut(X0,Y0,U,S,nPerms_rest,diagnosis_grouping,normalization_img,normalization_behav);
+pvals_LC = myPLS_permut(X0,Y0,U,S,nPerms_rest,diagnosis_grouping,normalization_img,normalization_behav,[]);
 
 % FDR correction over the first 5 LCs
 [signif_LC, ~] = FDR(pvals_LC(1:5), 0.05);

@@ -1,4 +1,4 @@
-function pvals_LC = myPLS_permut(X,Y,U,S,nPerms,grouping,normalization_img,normalization_behav)
+function pvals_LC = myPLS_permut(X,Y,U,S,nPerms,grouping,normalization_img,normalization_behav,seed)
 % Permutation testing over singular values obtained with PLS
 % Rows (subjects) of Y are permuted within each diagnostic group
 %
@@ -16,9 +16,11 @@ function pvals_LC = myPLS_permut(X,Y,U,S,nPerms,grouping,normalization_img,norma
 %                          2 = zscore within groups (default)
 %                          3 = std normalization across subjects (no centering)
 %                          4 = std normalization within groups (no centering)
+% - seed                 : seed for random number generator, e.g. 1
+%                          (default is 1000)
 %
 % Outputs:
-% - pvals_LC              : p-values for each latent component
+% - pvals_LC             : p-values for each latent component
 %
 % Written by Valeria Kebets and the MIPlab, with subfunctions borrowed
 % from PLS toolbox by Rotman Baycrest
@@ -34,6 +36,12 @@ function pvals_LC = myPLS_permut(X,Y,U,S,nPerms,grouping,normalization_img,norma
 % McIntosh AR, Lobaugh NJ (2004). Partial least squares analysis of
 % neuroimaging data: applications and advances.
 % Neuroimage 23(Suppl 1), pp. S250-263.
+
+
+% Set random number generator 
+if isempty(seed)
+    rng(1000);
+end
 
 
 % Check that dimensions of X & Y are correct

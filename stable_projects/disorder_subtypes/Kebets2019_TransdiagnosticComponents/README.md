@@ -30,14 +30,14 @@ Except for this project, if you want to use the code for other stable projects f
 - To download the version of the code that was last tested, you can either
 
     - visit this link:
-    [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.13.4-Kebets2019_TransdiagnosticComponents](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.13.4-Kebets2019_TransdiagnosticComponents)
+    [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.14.2-Kebets2019_TransdiagnosticComponents](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.14.2-Kebets2019_TransdiagnosticComponents)
 
     or
 
     - run the following command, if you have Git installed
  
     ```
-    git checkout -b Kebets2019_TransdiagnosticComponents v0.13.4-Kebets2019_TransdiagnosticComponents
+    git checkout -b Kebets2019_TransdiagnosticComponents v0.14.2-Kebets2019_TransdiagnosticComponents
     ```
 
 ----
@@ -69,6 +69,7 @@ The code is available on https://miplab.epfl.ch/index.php/software/PLS, along wi
 ----
 
 # Updates
+- Release v0.14.2 (09/09/2019): Corrected group resampling in bootstrap function, and added random number generation to bootstrap & permutation functions
 - Release v0.13.4 (14/08/2019): Updated Table S7_sumCorr.csv & Schaefer2018_400Parcels_17Networks_19Subcortical.csv with corrected labels
 - Release v0.13.3 (18/07/2019): Release of code for Kebets2019_TransdiagnosticComponents
 - Release v0.11.0 (14/06/2019): Initial release of the Kebets2019_TransdiagnosticComponents project
