@@ -12,8 +12,6 @@ To reduce overfitting, an L2-regularization term will be included. Meanwhile, ou
 
 ## K-fold Cross-validation (K-fold CV) stream
 
-### Principals
-
 For each behavioral phenotype (or other target measure you want to predict), the subjects are split into K folds. Care should be taken so that family members are not split between folds. For each test fold, `num_inner_fold`-fold cross-validation is repeatedly applied to the remaining K-1 folds with different regularization and kernel hyperparameters (i.e., inner-loop cross-validation). In practice, we included an L2-regularization term to reduce overfitting. The L2-regularization parameter (as well as other hyperparameters) is determined via the inner-loop cross-validation procedure. The optimal hyperparameters from the inner-loop crossvalidation are then used to predict the behavioral phenotype in the test fold. Accuracy is measured by correlating the predicted and actual behavioral measure across all subjects within the test fold. By repeating the procedure for each test fold, each behavior yielded K correlation accuracies, which were then averaged across the K folds. Because a single K-fold cross-validation might be sensitive to the particular split of the data into folds, the above K-fold cross-validation can be **repeated multiple times** by passing in different fold-split file (see `sub_fold` below). For example, if we do 20-fold cross-validation, the process can be repeated with 100 different splits.
 
 Steps of this stream:
@@ -25,7 +23,9 @@ Steps of this stream:
 
 ### How to use the scripts
 
-`CBIG_KRR_workflow.m` is the top-level wrapper function to run through the whole kernel ridge regression workflow. To use this function, you can either pass in a single setup file (the first argument `setup_file` of this function), or pass in a set of individual parameters (by using the `varargin` argument).
+There are two sets of scripts you can use. The top-level wrapper functions of each set are `CBIG_KRR_workflow.m` and `CBIG_KRR_workflow_LITE.m` respectively. The usages of these two wrapper functions are the same. Therefore, the following sections will only discuss about `CBIG_KRR_workflow.m`. The functionality of these two sets of scripts (with or without `LITE` appendix) are slightly different. When `CBIG_KRR_workflow.m` is used, the functional similarity matrices for each fold are saved. If the user chooses Gaussian or exponential kernel, the mean and standard deviation of features are computed from the training subjects and applied on the test subjects for each fold. However, when `CBIG_KRR_workflow_LITE.m` is used, the functional simlarity matrix is only computed and saved once across all subjects so that less disk space is needed. In the folloing training and testing on each fold, the scripts grab the similarity matrix of current fold by indexing the entire similarity matrix. To achieve this, when users choose to use Gaussian or exponential kernel, the mean and standard deviation of features are computed among all subjects.
+
+To use `CBIG_KRR_workflow.m`, you can either pass in a single setup file (the first argument `setup_file` of this function), or pass in a set of individual parameters (by using the `varargin` argument).
 
 #### 1. `setup_file`
 Here is an example setup file: `$CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSR/examples/output/KernelRidgeRegression/setup_file.mat`
@@ -121,7 +121,7 @@ If the user decided to pass in the setup file, then `varargin` is not needed. Th
 * `param.outstem`
   * It is a string appended to all the output filenames. For example, you may want to run this workflow multiple times for the same dataset but with different target variables, different covariates, ... `outstem` can help you to differentiate these multiple runs even if they are saved in the same output folder. For instance, the filename of the final test accuracies with optimal hyperparameters will be `[param.outdir '/final_result_' param.outstem '.mat']` if `param.outstem` is not empty. If `param.outstem` is empty, the filename will become `[param.outdir '/final_result.mat']`.
 * `param.with_bias`
-  * It is a string or a scalar that can be either 0 or 1. If `param.with_bias = 0`, the cost function to be minimized is `(y - K*alpha)^2 + (regularization of alpha)`; if `param.with_bias = 1`, the cost function to be minimized is `(y - K*alpha - beta)^2 + (regularization of alpha)`, where `beta` is a constant bias for every subject, estimated from the data.
+  * It is a string or a scalar that can be either 0 or 1. Default is 1. If `param.with_bias = 1`, the cost function to be minimized is `(y - K*alpha - beta)^2 + (regularization of alpha)`, where `beta` is a constant bias for every subject, estimated from the data. If `param.with_bias = 0`, the cost function to be minimized is `(y - K*alpha)^2 + (regularization of alpha)`. It means that the kernel regression fitted curve must pass through the origin since the bias term `beta` (acting as an intercept) is not included. If your target measures are not demeaned before and you still set `param.with_bias = 0`, your predicted scores would not be accurate. Hence `param.with_bias = 0` is not recommended.
 * `param.ker_param`
   * It is a structure of length L, where L is the number of kernel parameters the user would like to pass into the workflow.
   * It should contain two subfields: `type` and `scale`.
@@ -233,7 +233,7 @@ If the user did not prepare the setup file, he/she needs to pass in the paramete
 * `varargin{7}` (outstem)
   * It is a string appended to all the output filenames. For example, you may want to run this workflow multiple times for the same dataset but with different target variables, different covariates, ... The 7-th argument you pass in through `varargin` can help you to differentiate these multiple runs even if they are saved in the same output folder. For instance, the filename of the final test accuracies with optimal hyperparameters will be `[varargin{6} '/final_result_' varargin{7} '.mat']` if `varargin{7}` is not empty. If `varargin{7}` is empty, the filename will become `[varargin{6} '/final_result.mat']`.
 * `varargin{8}` (with_bias, optional)
-  * It is a string or a scalar that can be either 0 or 1. If `with_bias = 0`, the cost function to be minimized is `(y - K*alpha)^2 + (regularization of alpha)`; if `with_bias = 1`, the cost function to be minimized is `(y - K*alpha - beta)^2 + (regularization of alpha)`, where `beta` is a constant bias for every subject, estimated from the data. Default is 1.
+  * It is a string or a scalar that can be either 0 or 1. Default is 1. If `with_bias = 1`, the cost function to be minimized is `(y - K*alpha - beta)^2 + (regularization of alpha)`, where `beta` is a constant bias for every subject, estimated from the data. If `with_bias = 0`, the cost function to be minimized is `(y - K*alpha)^2 + (regularization of alpha)`. It means that the kernel regression fitted curve must pass through the origin since the bias term `beta` (acting as an intercept) is not included. If your target measures are not demeaned before and you still set `with_bias = 0`, your predicted scores would not be accurate. Hence `with_bias = 0` is not recommended.
 * `varargin{8}` (ker_param_file, optional)
   * A string, which is the full-path name of a `.mat` file. The `.mat` file contains a structure called `ker_param`.
   * `ker_param` is a structure of length L, where L is the number of kernel parameters the user would like to pass into the workflow.
@@ -255,8 +255,6 @@ If the user did not prepare the setup file, he/she needs to pass in the paramete
   * If the 10-th `varargin` is not passed in, the default `threshold_set` will be set as `threshold_set = [-1:0.1:1]`.
 
 ## Training, validation, and test stream
-
-### Principals
 
 If you have enough number of observations (e.g. hundreds of thousands of subjects), you might want to simply divide your dataset into training, validation and test sets, instead of K-fold cross-validation. In this case, the hyperparameters will be determined based on the optimal accuracies in the validation set. After that, the model parameters (i.e. the kernel regression coefficients) will be obtained from the training set with the optimal hyperparameters, and then applied to the test set to get the test accuracy.
 

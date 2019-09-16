@@ -25,6 +25,10 @@ Here we provide the procedure of generating:
 
 **Original version:**
 
+For the original version, there are two ways to generate the individual parcellation. You can choose either using `mri_surf2surf` or `mris_ca_label`.
+
+1. Using `mri_surf2surf` to project Schaefer2018 parcellation to individual space:
+
 ```
 mri_surf2surf --hemi lh \
   --srcsubject fsaverage5 \
@@ -39,7 +43,25 @@ mri_surf2surf --hemi rh \
   --tval $SUBJECTS_DIR/<subject_name>/label/rh.Yeo2011_<7/17>Networks_N1000.annot
 ```
 
+2. Using `mris_ca_label` to generate individual parcellation using gcs files:
+
+```
+mris_ca_label -l $SUBJECTS_DIR/<subject_name>/label/lh.cortex.label \
+  <subject_name> lh $SUBJECTS_DIR/<subject_name>/surf/lh.sphere.reg \
+  <gcs_file_dir>/lh.Yeo2011_<7/17>Networks.gcs \
+  $SUBJECTS_DIR/<subject_name>/label/lh.Yeo2011_<7/17>Networks_N1000.annot
+
+mris_ca_label -l $SUBJECTS_DIR/<subject_name>/label/rh.cortex.label \
+  <subject_name> rh $SUBJECTS_DIR/<subject_name>/surf/rh.sphere.reg \
+  <gcs_file_dir>/rh.Yeo2011_<7/17>Networks.gcs \
+  $SUBJECTS_DIR/<subject_name>/label/rh.Yeo2011_<7/17>Networks_N1000.annot
+```
+
+The gcs files for Yeo2011 parcellation are not stored in this repository. If you need these files, please contact Xue Aihuiping at xueaihuiping@gmail.com.
+
 **Split components version:**
+
+For the split components version, the corresponding gcs files are not available so you can only use `mri_surf2surf`.
 
 ```
 mri_surf2surf --hemi lh \

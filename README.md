@@ -1,6 +1,6 @@
 # Welcome to the Computational Brain Imaging Group (CBIG) repository!
 
-We are from [Thomas Yeo's Computational Brain Imaging Group (CBIG)](http://yeolab.weebly.com/).
+We are from [Thomas Yeo's Computational Brain Imaging Group (CBIG)](https://sites.google.com/view/yeolab).
 
 CBIG repository is a package that provides the following useful tools:  
 1. fMRI preprocessing pipeline

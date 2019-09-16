@@ -237,7 +237,7 @@ subcor_labelname = {'Cerebellum_Left';'Thalamus_Left';'Caudate_Left';'Putamen_Le
 major_grid = [];
 minor_grid = [];
 subcor_grid = [];
-major_acc_index = [1, 4, 7, 8, 10, 12, 14, 16];
+major_acc_index = [1, 4, 7, 9, 11, 13, 15, 17];
 subcor_acc_index = 17:25;
 
 lhrh_label = {lh_label{:} rh_label{:}}';
@@ -265,33 +265,17 @@ end
 
 % arrange new labels based on template order
 tmplate = {'TempPar'; 'DefaultC'; 'DefaultB';'DefaultA'; 'ContC'; 'ContB'; ...
-    'ContA'; 'Limbic'; 'SalVentAttnB'; 'SalVentAttnA'; 'DorsAttnB'; ...
+    'ContA'; 'LimbicA'; 'LimbicB'; 'SalVentAttnB'; 'SalVentAttnA'; 'DorsAttnB'; ...
     'DorsAttnA'; 'SomMotB'; 'SomMotA'; 'VisPeri'; 'VisCent'; ...
     'Accumbens'; 'Caudate'; 'Pallidum'; 'Putamen'; 'Thalamus'; ...
     'Amygdala'; 'Hippocampus'; 'BrainStem'; 'DiencephalonVentral'; 'Cerebellum'};
-tmplate2 = {'TempPole'; 'OFC'};
 
 newlabel = [];
 
 curInd = 0;
 for j = 1:numel(tmplate)
     ind = find(strcmp(all_netw,tmplate(j)));
-    
-    % for Limbic networks, further separate the networks into TempPole and OFC
-    if sum(strcmp('Limbic', tmplate(j))) ~= 0
-        ind2 = [];
-        for s = 1:numel(tmplate2)
-            if sum(strcmp(tmplate2(s), all_subnet(ind))) ~= 0
-                ind2 = [ind2; ind(find(strcmp(tmplate2(s), all_subnet(ind))))];
-                minor_grid = [minor_grid curInd+size(ind2,1)];
-            end
-            
-        end
-        if numel(ind) ~= numel(ind2)
-            disp('Wrong Index')
-        end
-        ind = ind2;
-    end
+
     curInd = curInd+size(ind,1);
     if (j~=numel(tmplate))
         if (any(j==subcor_acc_index))

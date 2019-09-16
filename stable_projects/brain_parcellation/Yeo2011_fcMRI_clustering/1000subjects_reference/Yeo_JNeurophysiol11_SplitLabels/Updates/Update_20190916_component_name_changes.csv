@@ -1,0 +1,16 @@
+Hemisphere,Number of Networks,Network,Old Component Name,New Component Name,Affected Parcel Index
+lh,7,SalVentAttn,FrOper,FrOperIns,8
+lh,7,Default,PCC,pCunPCC,25
+rh,7,SalVentAttn,FrOper,FrOperIns,34
+rh,7,Default,PFCm,PFCdPFCm,50
+rh,7,Default,PCC,pCunPCC,51
+lh,17,VisPeri,Striate,StriCal,3
+lh,17,SalVentAttnA,PrCv,FrOper,19
+lh,17,SalVentAttnB,PFCv,Ins,26
+lh,17,ContA,Cinga,Cingm,36
+lh,17,DefaultA,PCC,pCunPCC,47
+rh,17,VisPeri,Striate,StriCal,60
+rh,17,SalVentAttnA,PrCv,FrOper,77
+rh,17,SalVentAttnB,PFCv,Ins,85
+rh,17,ContA,Cinga,Cingm,94
+rh,17,DefaultA,PCC,pCunPCC,105

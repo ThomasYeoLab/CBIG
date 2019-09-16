@@ -1,6 +1,6 @@
 lh.17Networks_LH_VisCent_Striate.label
 lh.17Networks_LH_VisCent_ExStr.label
-lh.17Networks_LH_VisPeri_Striate.label
+lh.17Networks_LH_VisPeri_StriCal.label
 lh.17Networks_LH_VisPeri_ExStrInf.label
 lh.17Networks_LH_VisPeri_ExStrSup.label
 lh.17Networks_LH_DorsAttnA_SPL.label
@@ -10,7 +10,7 @@ lh.17Networks_LH_DorsAttnB_PostC.label
 lh.17Networks_LH_DorsAttnB_FEF.label
 lh.17Networks_LH_DorsAttnB_PrCv.label
 lh.17Networks_LH_DorsAttnB_TempOcc.label
-lh.17Networks_LH_SalVentAttnA_PrCv.label
+lh.17Networks_LH_SalVentAttnA_FrOper.label
 lh.17Networks_LH_SalVentAttnA_Ins.label
 lh.17Networks_LH_SalVentAttnA_ParOper.label
 lh.17Networks_LH_SalVentAttnA_FrMed.label
@@ -22,7 +22,7 @@ lh.17Networks_LH_SomMotB_Ins.label
 lh.17Networks_LH_SomMotB_Aud.label
 lh.17Networks_LH_SalVentAttnB_PFCl.label
 lh.17Networks_LH_SalVentAttnB_PFCmp.label
-lh.17Networks_LH_SalVentAttnB_PFCv.label
+lh.17Networks_LH_SalVentAttnB_Ins.label
 lh.17Networks_LH_SalVentAttnB_PFCd.label
 lh.17Networks_LH_SalVentAttnB_IPL.label
 lh.17Networks_LH_SalVentAttnB_OFC.label
@@ -31,7 +31,7 @@ lh.17Networks_LH_ContA_PFCl.label
 lh.17Networks_LH_ContA_PFClv.label
 lh.17Networks_LH_ContA_PFCd.label
 lh.17Networks_LH_ContA_Temp.label
-lh.17Networks_LH_ContA_Cinga.label
+lh.17Networks_LH_ContA_Cingm.label
 lh.17Networks_LH_ContB_IPL.label
 lh.17Networks_LH_ContB_PFClv.label
 lh.17Networks_LH_ContB_PFCl.label
@@ -39,7 +39,7 @@ lh.17Networks_LH_ContB_PFCmp.label
 lh.17Networks_LH_ContB_PFCd.label
 lh.17Networks_LH_ContB_Temp.label
 lh.17Networks_LH_DefaultA_IPL.label
-lh.17Networks_LH_DefaultA_PCC.label
+lh.17Networks_LH_DefaultA_pCunPCC.label
 lh.17Networks_LH_DefaultA_PFCm.label
 lh.17Networks_LH_DefaultA_PFCd.label
 lh.17Networks_LH_DefaultB_Temp.label
@@ -53,5 +53,5 @@ lh.17Networks_LH_DefaultC_IPL.label
 lh.17Networks_LH_TempPar.label
 lh.17Networks_LH_ContC_pCun.label
 lh.17Networks_LH_ContC_Cingp.label
-lh.17Networks_LH_Limbic_TempPole.label
-lh.17Networks_LH_Limbic_OFC.label
+lh.17Networks_LH_LimbicA_TempPole.label
+lh.17Networks_LH_LimbicB_OFC.label

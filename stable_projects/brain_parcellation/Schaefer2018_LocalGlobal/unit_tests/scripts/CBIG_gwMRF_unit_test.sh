@@ -13,7 +13,7 @@ user=`whoami`
 ###############################
 
 # code_dir containing Schaefer2018 parcellation codes
-code_dir=~/storage/CBIG_private/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Code
+code_dir=$CBIG_CODE_DIR/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Code
 
 # data_dir containing data used by unit test
 data_dir=/mnt/eql/yeo1/CBIG_private_data/unit_tests/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/data

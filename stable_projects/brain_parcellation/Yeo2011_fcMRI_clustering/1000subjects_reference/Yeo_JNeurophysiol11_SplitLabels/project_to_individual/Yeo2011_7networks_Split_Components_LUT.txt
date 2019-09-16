@@ -433,7 +433,7 @@
 1005    7Networks_LH_DorsAttn_PrCv          0   119 14  0
 1006    7Networks_LH_SalVentAttn_ParOper    196 58  250 0
 1007    7Networks_LH_SalVentAttn_TempOcc    196 58  251 0
-1008    7Networks_LH_SalVentAttn_FrOper     196 59  250 0
+1008    7Networks_LH_SalVentAttn_FrOperIns  196 59  250 0
 1009    7Networks_LH_SalVentAttn_PFCl       196 59  251 0
 1010    7Networks_LH_SalVentAttn_Med        197 58  250 0
 1011    7Networks_LH_Limbic_OFC             220 248 164 0
@@ -450,7 +450,7 @@
 1022    7Networks_LH_Default_Par            205 62  78  0
 1023    7Networks_LH_Default_Temp           205 62  79  0
 1024    7Networks_LH_Default_PFC            205 63  78  0
-1025    7Networks_LH_Default_PCC            205 63  79  0
+1025    7Networks_LH_Default_pCunPCC        205 63  79  0
 1026    7Networks_LH_Default_PHC            206 62  78  0
 2000    Background+FreeSurfer_Defined_Medial_Wall      1   1   1   0
 2001    7Networks_RH_Vis                    120 18  135 0
@@ -460,7 +460,7 @@
 2005    7Networks_RH_DorsAttn_PrCv          1   118 15  0
 2006    7Networks_RH_SalVentAttn_TempOccPar 197 58  251 0
 2007    7Networks_RH_SalVentAttn_PrC        197 59  250 0
-2008    7Networks_RH_SalVentAttn_FrOper     197 59  251 0
+2008    7Networks_RH_SalVentAttn_FrOperIns  197 59  251 0
 2009    7Networks_RH_SalVentAttn_PFCv       196 58  249 0
 2010    7Networks_RH_SalVentAttn_PFCl       196 57  250 0
 2011    7Networks_RH_SalVentAttn_Med        196 57  249 0
@@ -476,5 +476,5 @@
 2021    7Networks_RH_Default_Par            205 62  77  0
 2022    7Networks_RH_Default_Temp           205 61  78  0
 2023    7Networks_RH_Default_PFCv           205 61  77  0
-2024    7Networks_RH_Default_PFCm           204 62  78  0
-2025    7Networks_RH_Default_PCC            204 62  77  0
+2024    7Networks_RH_Default_PFCdPFCm       204 62  78  0
+2025    7Networks_RH_Default_pCunPCC        204 62  77  0

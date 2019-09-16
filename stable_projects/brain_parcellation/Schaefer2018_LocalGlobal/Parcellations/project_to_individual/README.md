@@ -13,6 +13,10 @@ Here we provide the procedure of generating:
 
 ### 1: Schaefer2018 parcellation in individual surface space
 
+There are two ways to generate the individual parcellation. You can choose either using `mri_surf2surf` or `mris_ca_label`.
+
+1. Using `mri_surf2surf` to project Schaefer2018 parcellation to individual space:
+
 ```
 mri_surf2surf --hemi lh \
   --srcsubject <fsaverage?> \
@@ -26,6 +30,22 @@ mri_surf2surf --hemi rh \
   --sval-annot $CBIG_CODE_DIR/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Parcellations/FreeSurfer5.3/<fsaverage?>/label/rh.Schaefer2018_<N>Parcels_<7/17>Networks_order.annot \
   --tval $SUBJECTS_DIR/<subject_name>/label/rh.Schaefer2018_<N>Parcels_<7/17>Networks_order.annot
 ```
+
+2. Using `mris_ca_label` to generate individual parcellation using gcs files:
+
+```
+mris_ca_label -l $SUBJECTS_DIR/<subject_name>/label/lh.cortex.label \
+  <subject_name> lh $SUBJECTS_DIR/<subject_name>/surf/lh.sphere.reg \
+  <gcs_file_dir>/lh.Schaefer2018_<N>Parcels_<7/17>Networks.gcs \
+  $SUBJECTS_DIR/<subject_name>/label/lh.Schaefer2018_<N>Parcels_<7/17>Networks_order.annot
+
+mris_ca_label -l $SUBJECTS_DIR/<subject_name>/label/rh.cortex.label \
+  <subject_name> rh $SUBJECTS_DIR/<subject_name>/surf/rh.sphere.reg \
+  <gcs_file_dir>/rh.Schaefer2018_<N>Parcels_<7/17>Networks.gcs \
+  $SUBJECTS_DIR/<subject_name>/label/rh.Schaefer2018_<N>Parcels_<7/17>Networks_order.annot
+```
+
+The gcs files for Schaefer2018 parcellation are not stored in this repository. If you need these files, please contact Xue Aihuiping at xueaihuiping@gmail.com.
 
 ### 2: Schaefer2018 parcellation in individual volume space
 

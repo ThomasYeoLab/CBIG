@@ -1,0 +1,5 @@
+Hemisphere,Number of Networks,Old Network Name,New Network Name,Component Name,Affected Parcel Index
+lh,17,Limbic,LimbicA,TempPole,29
+lh,17,Limbic,LimbicB,OFC,30
+rh,17,Limbic,LimbicA,TempPole,88
+rh,17,Limbic,LimbicB,OFC,89

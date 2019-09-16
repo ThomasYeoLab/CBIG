@@ -52,14 +52,14 @@ There is a simple example in `examples` folder. Check how to run the example cod
 
 Note that this project uses generic functions from other folders, which may be updated over time. To download the version of the code that was last tested, you can either
 
-- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.9.7-Yeo2011_fcMRI_clustering](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.9.7-Yeo2011_fcMRI_clustering)
+- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.14.3-Update_Yeo2011_Schaefer2018_labelname](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.14.3-Update_Yeo2011_Schaefer2018_labelname)
 
 or
 
 - run the following command, if you have Git installed
  
 ```
-git checkout -b Yeo2011_fcMRI_clustering v0.8.2-Yeo2011_fcMRI_clustering
+git checkout -b Yeo2011_fcMRI_clustering v0.14.3-Update_Yeo2011_Schaefer2018_labelname
 ```
 
 ----
@@ -97,6 +97,10 @@ git checkout -b Yeo2011_fcMRI_clustering v0.8.2-Yeo2011_fcMRI_clustering
     1. Update the annot files of the split components parcellation. The colortable of the previous annot file `1000subjects_reference/Yeo_JNeurophysiol11_SplitLabels/fsaverage5/label/<?h>.Yeo2011_<7/17>Networks_N1000.split_components.annot` included components from both hemisphere. Now the components of the other hemisphere in the colortable are removed.
 
     2. Add instruction and lookup tables for projecting Yeo2011 parcellation to individual subjects under `1000subjects_reference/Yeo_JNeurophysiol11_SplitLabels/project_to_individual`.
+
+- Release v0.14.3 (16/09/2019):
+
+    1. Update some component names. For details, please refer to this readme: [Update_20190916_README.md](https://github.com/ThomasYeoLab/CBIG/tree/master/stable_projects/brain_parcellation/Yeo2011_fcMRI_clustering/1000subjects_reference/Yeo_JNeurophysiol11_SplitLabels/Updates/Update_20190916_README.md)
 
 ----
 

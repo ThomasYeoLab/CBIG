@@ -51,14 +51,14 @@ Except for this project, if you want to use the code for other stable projects f
 
 To download the version of the code that is last tested, you can either
 
-- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.10.2-Schaefer2018_LocalGlobal](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.10.2-Schaefer2018_LocalGlobal)
+- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.14.3-Update_Yeo2011_Schaefer2018_labelname](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.14.3-Update_Yeo2011_Schaefer2018_labelname)
 
 or
 
 - run the following command, if you have Git installed
 
 ```
-git checkout -b Schaefer2018_LocalGlobal v0.10.2-Schaefer2018_LocalGlobal
+git checkout -b Schaefer2018_LocalGlobal v0.14.3-Update_Yeo2011_Schaefer2018_labelname
 ```
 
 ---
@@ -113,6 +113,14 @@ Updates
     4. Fix label name for rh medial wall in parcellation annot files.
 
     5. Update unit test.
+
+- Release v0.14.3 (16/09/2019):
+
+    1. Develop a matching algorithm to rename parcel names. For details, please refer to this readme: [Update_20190916_README.md](https://github.com/ThomasYeoLab/CBIG/tree/master/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Parcellations/Updates/Update_20190916_README.md)
+
+    2. Add a function to map parcellation ordering between versions. Please see the update readme above for usage.
+
+    3. Update unit test with the new parcel names.
 
 ---
 
