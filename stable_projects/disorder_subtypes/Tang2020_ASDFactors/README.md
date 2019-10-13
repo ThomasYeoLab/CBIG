@@ -27,11 +27,13 @@ Except for this project, if you want to use the code for other stable projects f
 
 To download the version of the code that was last tested, you can either
 
-* visit this link:  https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.0-Tang2020_ASDFactors
+* visit this link:  https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.2-Tang2020_ASDFactors
+
 or
 
 * run the following command, if you have Git installed
-```git checkout -b Tang2020_ASDFactors v0.15.0-Tang2020_ASDFactors
+```
+git checkout -b Tang2020_ASDFactors v0.15.2-Tang2020_ASDFactors
 ```
 
 ### Usage
@@ -54,7 +56,8 @@ In the folder `examples`, we provide toy example code on how to convert RSFC dat
 ----
 
 ## Updates
-* TO_BE_ADDED
+* Release v0.15.0 (07/10/2019): Initial release of Tang2020_ASDFactors
+* Release v0.15.2 (13/10/2019): Update README and figure utils
 
 ----
 
