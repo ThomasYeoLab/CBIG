@@ -36,13 +36,13 @@ If you want to use the code from our lab's other stable projects (other than Li2
 
 To download the latest tested version of the whole repository, you can either
 
-- visit this link: https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.13.1-CBIGpreproc_Li2019GSR_CBIGKRR
+- visit this link: https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.3-Update_proj_refs_and_add_KRR_LITE
 
 or
 
 - run the following command, if you have Git installed
 ```
-git checkout -b Li2019_GSR v0.13.1-CBIGpreproc_Li2019GSR_CBIGKRR
+git checkout -b Li2019_GSR v0.15.3-Update_proj_refs_and_add_KRR_LITE
 ```
 
 ----
@@ -64,6 +64,8 @@ Updates
   2. Moved locations of some dependencies (general code to estimate variance components).
   3. Included a no-bias flag in the scripts because the general kernel regression code was modified to handle the bias term by default.
   4. Update reference in the readme
+
+- Release v0.15.3 (16/10/2019): Pass `lambda_set` into general KRR code instead of using the default.
 
 
 Bugs and Questions

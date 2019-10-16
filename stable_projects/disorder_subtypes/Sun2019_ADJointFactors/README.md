@@ -1,6 +1,6 @@
 # Reference
 
-Sun N, Mormino EC, Chen J, Sabuncu MR, Yeo BTT. **Multi-modal factor exploration of atrophy, cognitive and tau heterogeneity in Alzheimer's disease**. Under review.
+Sun N, Mormino EC, Chen J, Sabuncu MR, Yeo BTT. [**Multi-modal latent factor exploration of atrophy, cognitive and tau heterogeneity in Alzheimer's disease**](https://www.sciencedirect.com/science/article/abs/pii/S105381191930624X). NeuroImage, 201:116043, 2019
 
 ----
 
@@ -27,14 +27,14 @@ Except for this project, if you want to use the code for other stable projects f
 - To download the version of the code that was last tested, you can either
 
     - visit this link:
-    [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.10.4-Sun2019_ADJointFactors](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.10.4-Sun2019_ADJointFactors)
+    [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.3-Update_proj_refs_and_add_KRR_LITE](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.3-Update_proj_refs_and_add_KRR_LITE)
 
     or
 
     - run the following command, if you have Git installed
  
     ```
-    git checkout -b Sun2019_ADJointFactors v0.10.4-Sun2019_ADJointFactors
+    git checkout -b Sun2019_ADJointFactors v0.15.3-Update_proj_refs_and_add_KRR_LITE
     ```
 
 ----
@@ -83,6 +83,7 @@ In the folder `examples`, we provide toy example code on how to estimate & visua
 # Updates
 - Release v0.10.0 (05/04/2019): Initial release of Sun2019_ADJointFactors project
 - Release v0.10.4 (07/06/2019): Update README.md
+- Release v0.15.3 (16/10/2019): Update reference
 
 ----
 

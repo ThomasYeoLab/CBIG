@@ -1,6 +1,6 @@
 References
 ==========
-+ Schaefer A, Kong R, Gordon EM, Laumann TO, Zuo XN, Holmes AJ, Eickhoff SB, Yeo BTT. [**Local-Global parcellation of the human cerebral cortex from intrinsic functional connectivity MRI**](http://people.csail.mit.edu/ythomas/publications/2018LocalGlobal-CerebCor.pdf), *Cerebral Cortex*, 29:3095-3114, 2018
++ Schaefer A, Kong R, Gordon EM, Laumann TO, Zuo XN, Holmes AJ, Eickhoff SB, Yeo BTT. [**Local-Global parcellation of the human cerebral cortex from intrinsic functional connectivity MRI**](http://people.csail.mit.edu/ythomas/publications/2018LocalGlobal-CerebCor.pdf). Cerebral Cortex, 29:3095-3114, 2018
 
 ----
 
@@ -51,14 +51,14 @@ Except for this project, if you want to use the code for other stable projects f
 
 To download the version of the code that is last tested, you can either
 
-- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.14.3-Update_Yeo2011_Schaefer2018_labelname](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.14.3-Update_Yeo2011_Schaefer2018_labelname)
+- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.3-Update_proj_refs_and_add_KRR_LITE](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.3-Update_proj_refs_and_add_KRR_LITE)
 
 or
 
 - run the following command, if you have Git installed
 
 ```
-git checkout -b Schaefer2018_LocalGlobal v0.14.3-Update_Yeo2011_Schaefer2018_labelname
+git checkout -b Schaefer2018_LocalGlobal v0.15.3-Update_proj_refs_and_add_KRR_LITE
 ```
 
 ---
@@ -121,6 +121,8 @@ Updates
     2. Add a function to map parcellation ordering between versions. Please see the update readme above for usage.
 
     3. Update unit test with the new parcel names.
+
+- Release v0.15.3 (16/10/2019): Update reference
 
 ---
 

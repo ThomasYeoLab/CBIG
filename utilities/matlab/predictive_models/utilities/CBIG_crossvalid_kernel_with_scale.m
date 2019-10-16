@@ -69,7 +69,8 @@ function kernel = CBIG_crossvalid_kernel_with_scale(data_KbyS1, data_KbyS2, inde
 %     subjects in "kernel" are the same as the ordering of data_KbyS1 and
 %     data_KbyS2 (S1 first, then followed by S2).
 % 
-% Written by Ru(by) Kong, Jingwei Li and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+% Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+% Author: Ru(by) Kong and Jingwei Li
 
 if(~strcmp(type,'corr'))
         
@@ -101,7 +102,7 @@ end
 
 %data_KbyS = zscore(data_KbyS,0,2);
 if(strcmp(type, 'corr'))
-    kernel = CBIG_self_corr(data_KbyS);
+    kernel = CBIG_nancorr(data_KbyS);
 elseif(strcmp(type,'Exponential'))
     kernel = exp(-1*scale*squareform(pdist(data_KbyS'))/K);
 elseif(strcmp(type,'Gaussian'))

@@ -1,6 +1,6 @@
 ## Reference
 
-Raphael Liegeois, Timothy Laumann, Avi Snyder, Juan Zhou and B. T. Thomas Yeo. [**Interpreting Temporal Fluctuations In Resting-State Functional Connectivity MRI**](http://www.biorxiv.org/content/early/2017/08/08/135681) *Neuroimage*, 2017.
+Raphael Liegeois, Timothy Laumann, Avi Snyder, Juan Zhou and B. T. Thomas Yeo. [**Interpreting Temporal Fluctuations In Resting-State Functional Connectivity MRI**](https://www.sciencedirect.com/science/article/abs/pii/S1053811917307516). NeuroImage, 163:437-55, 2017.
 
 ----
 ## Background
@@ -21,14 +21,14 @@ Other results of the paper were obtained by combining autoregressive and phase r
 To download the exact code utilized for the paper, you can either
 
 - visit this link:
-[https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.4.10-Stable_projects_prefix_and_examples](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.4.10-Stable_projects_prefix_and_examples)
+[https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.3-Update_proj_refs_and_add_KRR_LITE](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.3-Update_proj_refs_and_add_KRR_LITE)
 
 or
 
 - run the following command, if you have Git installed
  
 ```
-git checkout -b Liegeois2017_Surrogates v0.4.10-Stable_projects_prefix_and_examples
+git checkout -b Liegeois2017_Surrogates v0.15.3-Update_proj_refs_and_add_KRR_LITE
 ```
 
 ----
@@ -43,6 +43,8 @@ git checkout -b Liegeois2017_Surrogates v0.4.10-Stable_projects_prefix_and_examp
     1. Add project-specific prefix `RL2017` for all scripts names.
     
     2. Add `config`, `unit_tests`, and `examples` folders.
+
+- Release v0.15.3 (16/10/2019): Update README files.
 
 ----
 

@@ -18,6 +18,12 @@ function [y_resid_perfold] = CBIG_crossvalid_regress_covariates_from_y( ...
 % 
 %   - regressors
 %     A #subjects x #covariates matrix of regressors.
+%     If the user does not want to regress anything except performing
+%     demean, he/she can pass in empty matrix as "regressors". The scripts
+%     will automatically regress a vector of ones from y.
+%     If the user doea not want to regress anything including the mean,
+%     he/she should pass in 'NONE' so that this function can directly
+%     assign the residual to be the same as the input.
 % 
 %   - sub_fold
 %     The data split for cross-validation.
@@ -50,7 +56,8 @@ function [y_resid_perfold] = CBIG_crossvalid_regress_covariates_from_y( ...
 %     file under the folder [outdir, '/y/fold_' num2str(test_fold)] (see
 %     the description of outstem).
 % 
-% Written by Jingwei Li, Ru(by) Kong and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+% Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+% Authors: Jingwei Li, Ru(by) Kong
 
 y_orig = y_in; 
 num_test_folds = length(sub_fold);
@@ -64,16 +71,33 @@ for test_fold = 1:num_test_folds
     end
     
     if(~exist(outname, 'file'))
-        for i = 1:size(y_in, 2)
-            train_ind = sub_fold(test_fold).fold_index==0;
-            test_ind = sub_fold(test_fold).fold_index==1;
-            
-            [y_resid(train_ind,i), beta] = CBIG_regress_X_from_y_train(y_in(train_ind,i), regressors(train_ind,:));
-            y_resid(test_ind,i) = CBIG_regress_X_from_y_test(y_in(test_ind,i), regressors(test_ind,:), beta);
-            
-            if(num_test_folds==1)
-                valid_ind = sub_fold(test_fold).fold_index==2;
-                y_resid(valid_ind,i) = CBIG_regress_X_from_y_test(y_in(valid_ind,i), regressors(valid_ind,:), beta);
+        if(ischar(regressors) && strcmpi(regressors, 'none'))
+            y_resid = y_orig;
+        else
+            for i = 1:size(y_in, 2)
+                train_ind = sub_fold(test_fold).fold_index==0;
+                test_ind = sub_fold(test_fold).fold_index==1;
+                
+                if(isempty(regressors))
+                    X_train = [];
+                    X_test = [];
+                else
+                    X_train = regressors(train_ind,:);
+                    X_test = regressors(test_ind,:);
+                end
+                
+                [y_resid(train_ind,i), beta] = CBIG_regress_X_from_y_train(y_in(train_ind,i), X_train);
+                y_resid(test_ind,i) = CBIG_regress_X_from_y_test(y_in(test_ind,i), X_test, beta);
+                
+                if(num_test_folds==1)
+                    if(isempty(regressors))
+                        X_valid = [];
+                    else
+                        X_valid = regressors(valid_ind,:);
+                    end
+                    valid_ind = sub_fold(test_fold).fold_index==2;
+                    y_resid(valid_ind,i) = CBIG_regress_X_from_y_test(y_in(valid_ind,i), X_valid, beta);
+                end
             end
         end
         

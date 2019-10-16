@@ -1,7 +1,7 @@
 ## Reference
-Gia H. Ngo, Simon B. Eickhoff, Minh Nguyen, Peter T. Fox,  R. Nathan Spreng, B. T. Thomas Yeo. [Beyond Consensus: Embracing Heterogeneity in Curated Neuroimaging Meta-Analysis](https://www.biorxiv.org/content/early/2017/06/19/149567). BioRxiv preprint
+Gia H. Ngo, Simon B. Eickhoff, Minh Nguyen, Peter T. Fox,  R. Nathan Spreng, B. T. Thomas Yeo. [**Beyond Consensus: Embracing Heterogeneity in Curated Neuroimaging Meta-Analysis**](https://www.sciencedirect.com/science/article/abs/pii/S1053811919305282). NeuroImage, 200:142-158, 2019
 
-Gia H. Ngo, Simon B. Eickhoff, Peter T. Fox, B. T. Thomas Yeo. [Collapsed variational Bayesian inference of the author-topic model: application to large-scale coordinate-based meta-analysis](https://ieeexplore.ieee.org/document/7552332). PRNI2016.
+Gia H. Ngo, Simon B. Eickhoff, Peter T. Fox, B. T. Thomas Yeo. [**Collapsed variational Bayesian inference of the author-topic model: application to large-scale coordinate-based meta-analysis**](https://ieeexplore.ieee.org/document/7552332). In 2016 international workshop on pattern recognition in neuroimaging (PRNI), pp. 1-4. IEEE, 2016.
 
 ----
 
@@ -72,14 +72,14 @@ Except for this project, if you want to use the code for other stable projects f
 - To download the version of the code that was last tested, you can either
 
   - visit this link:
-  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.12.1-Ngo2019_AuthorTopic](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.12.1-Ngo2019_AuthorTopic)
+  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.3-Update_proj_refs_and_add_KRR_LITE](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.3-Update_proj_refs_and_add_KRR_LITE)
 
   or
 
   - run the following command, if you have Git installed
 
   ```
-  git checkout -b Ngo2019_AuthorTopic v0.12.1-Ngo2019_AuthorTopic
+  git checkout -b Ngo2019_AuthorTopic v0.15.3-Update_proj_refs_and_add_KRR_LITE
   ```
 
 ----
@@ -90,6 +90,7 @@ Except for this project, if you want to use the code for other stable projects f
 - Release v0.9.1 (21/02/2019): Added instruction for performing co-activation mapping experiment and references of the self-generated thought dataset.
 - Release v0.10.1 (21/03/2019): Added checks for input data. Reduced runtime for unit test.
 - Release v0.12.1 (09/07/2019): Update visualization function to use HCP Workbench instead of Caret.
+- Release v0.15.3 (16/10/2019): Update reference.
 
 ----
 

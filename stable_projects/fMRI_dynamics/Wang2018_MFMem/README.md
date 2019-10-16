@@ -1,7 +1,6 @@
 ## References
 
-Wang P, Kong R, Kong XL, Liegeois R, Orban C, Deco G, Van den Heuvel M, Yeo BT. Inversion of a Large-Scale Circuit Model Reveals 
-a Cortical Hierarchy in the Dynamic Resting Human Brain
+Wang P, Kong R, Kong XL, Liegeois R, Orban C, Deco G, Van den Heuvel M, Yeo BT. [**Inversion of a Large-Scale Circuit Model Reveals a Cortical Hierarchy in the Dynamic Resting Human Brain**](https://advances.sciencemag.org/content/5/1/eaat7854.full), Science advances, 5(1):eaat7854, 2019
 
 ----
 
@@ -29,9 +28,9 @@ The sub-folder `step2_simulation/` contains the second step which will simulate 
 The sub-folder `step3_plot/` contains all data, functions and scripts to plot the brain map and bar chart of the estimated parameters obtained in Step 1: Estimation.
 
 #### Download
-To download the version of the code that is last tested, you can either visit this link: https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.7.0-Wang2018_MFMem or run the following command, if you have Git installed:
+To download the version of the code that is last tested, you can either visit this link: https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.3-Update_proj_refs_and_add_KRR_LITE or run the following command, if you have Git installed:
 ```
-git checkout -b Wang2018_MFMem v0.7.0-Wang2018_MFMem
+git checkout -b Wang2018_MFMem v0.15.3-Update_proj_refs_and_add_KRR_LITE
 ```
 
 If you don't want to download our entire repository and only want this project `Wang2018_MFMem` only, you can use https://kinolien.github.io/gitzip/ to download this folder and these two extra scripts:

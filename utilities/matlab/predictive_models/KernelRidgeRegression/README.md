@@ -1,5 +1,9 @@
 # Kernel Ridge Regression
 
+## References
++ Li J, Kong R, Liegeois R, Orban C, Tan Y, Sun N, Holmes AJ, Sabuncu MR, Ge T, Yeo BTT, [**Global signal regression strengthens association between resting-state functional connectivity and behavior**](https://doi.org/10.1016/j.neuroimage.2019.04.016), Neuroimage, 2019, 196:126-141
++ Kong R, Li J, Orban C, et al. [Spatial Topography of Individual-Specific Cortical Networks Predicts Human Cognition, Personality, and Emotion](https://academic.oup.com/cercor/article/29/6/2533/5033556). Cerebral Cortex, 29(6):2533-2551, 2019
+
 ---
 
 **Kernel ridge regression (KRR)** is a machine learning algorithm that can be used to predict behavioral values (`y`) of a test subject based on the similarity of some features (`feature`) between this test subject and all training subjects. For example, in the case of fluid intelligence prediction (i.e. `y` = fluid intelligence), if the test subject's functional connectivity (FC; `feature` = FC) is very similar to a training subject's FC, then we believe the test subject's fluid intelligence score is very similar to the training subject. 
@@ -291,6 +295,7 @@ You can check the output folder structure in this directory: `$CBIG_CODE_DIR/sta
   1. Added bias term in kernel regression cost funtion.
   2. Added unit test scipt for general kernel regression package.
 - Release v0.14.1 (03/09/2019): Optimized the speed of kernel regression scripts.
+- Release v0.15.3 (16/10/2019): add references; add LITE version of kernel regression code
 
 ## Bugs and questions
 Please contact Jingwei Li at jingwei.li@u.nus.edu and Ru(by) Kong at roo.cone@gmail.com.

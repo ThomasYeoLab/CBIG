@@ -163,7 +163,8 @@ end
 
 if(~exist('lambda_set_file', 'var') || isempty(lambda_set_file) || ...
         strcmpi(lambda_set_file, 'none'))
-    lambda_set_file = [];
+    lambda_set_file = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', ...
+        'preprocessing', 'Li2019_GSR', 'KernelRidgeRegression', 'lambda_set.mat');
 end
 
 if(~exist('threshold_set_file', 'var') || isempty(threshold_set_file) || ...

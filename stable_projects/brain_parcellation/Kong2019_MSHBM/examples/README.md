@@ -253,8 +253,8 @@ project_dir = '<output_dir>/generate_individual_parcellations';
 
 % Visualize the parcellation of subject 1 and 2
 group = load(fullfile(getenv('CBIG_CODE_DIR'),'/stable_projects/brain_parcellation/Kong2019_MSHBM/examples/results/estimate_group_priors/group/group.mat'));
-CBIG_DrawSurfaceMaps(lh_labels1,rh_labels1, 'fsaverage5', 'inflated',-Inf,Inf,group.colors);
-CBIG_DrawSurfaceMaps(lh_labels2,rh_labels2, 'fsaverage5', 'inflated',-Inf,Inf,group.colors);
+CBIG_DrawSurfaceMaps(lh_labels1,rh_labels1, 'fsaverage5', 'inflated',0,17,group.colors);
+CBIG_DrawSurfaceMaps(lh_labels2,rh_labels2, 'fsaverage5', 'inflated',0,17,group.colors);
 ```
 The generated individual parcellations will be saved under:
 + `<output_dir>/generate_individual_parcellations/ind_parcellation`

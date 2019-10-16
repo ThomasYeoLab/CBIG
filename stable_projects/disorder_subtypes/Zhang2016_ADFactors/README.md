@@ -1,6 +1,6 @@
 ## Reference
 
-Xiuming Zhang, Elizabeth C. Mormino, Nanbo Sun, Reisa A. Sperling, Mert R. Sabuncu, B. T. Thomas Yeo. [**Bayesian model reveals latent atrophy factors with dissociable cognitive trajectories in Alzheimer's disease**](http://dx.doi.org/10.1073/pnas.1611073113). *Proceedings of the National Academy of Sciences of the USA*, 2016.
+Xiuming Zhang, Elizabeth C. Mormino, Nanbo Sun, Reisa A. Sperling, Mert R. Sabuncu, B. T. Thomas Yeo. [**Bayesian model reveals latent atrophy factors with dissociable cognitive trajectories in Alzheimer's disease**](http://dx.doi.org/10.1073/pnas.1611073113). Proceedings of the National Academy of Sciences of the USA, 113(42):E6535-44, 2016.
 
 ----
 
@@ -27,19 +27,21 @@ The remaining folders offer our full code, allowing you to start from scratch on
 Note that this project uses generic functions from other folders, which may be updated over time. To download the exact code utilized for the PNAS paper, you can either
 
 - visit this link:
-[https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.1.3-Zhang2016_ADFactors](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.1.3-Zhang2016_ADFactors)
+[https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.3-Update_proj_refs_and_add_KRR_LITE](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.3-Update_proj_refs_and_add_KRR_LITE)
 
 or
 
 - run the following command, if you have Git installed
  
 ```
-git checkout -b Zhang2016_ADFactors v0.1.3-Zhang2016_ADFactors
+git checkout -b Zhang2016_ADFactors v0.15.3-Update_proj_refs_and_add_KRR_LITE
 ```
 
 ----
 
 ## Updates
+
+- Release v0.15.3 (16/10/2019): update reference
 
 - Release v0.1.3 (26/04/2017): fixing a bug in wrapper CBIG_LDA_est.sh
 

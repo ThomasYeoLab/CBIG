@@ -5,9 +5,9 @@ This folder contains the implementation of the Expectation-Maximization (EM) alg
 <img src="readme_figures/12Component_Overview.jpg" width="100%"/>
 
 ## Reference
-- Yeo, BT Thomas, et al. "Functional specialization and flexibility in human association cortex." Cerebral Cortex, 2015.
-- Bertolero, Maxwell A., BT Thomas Yeo, and Mark D'Esposito. "The modular and integrative functional architecture of the human brain." Proceedings of the National Academy of Sciences, 2015.
-- Gia H. Ngo, Simon B. Eickhoff, Minh Nguyen, Gunes Sevinc, Peter T. Fox,  R. Nathan Spreng, B. T. Thomas Yeo. Beyond Consensus: Embracing Heterogeneity in Curated Neuroimaging Meta-Analysis. Neuroimage, 2019.
+- Yeo, BT Thomas, et al. [**Functional specialization and flexibility in human association cortex**](https://doi.org/10.1093/cercor/bhu217). Cerebral Cortex, 25(10):3654-3672, 2015.
+- Bertolero, Maxwell A., BT Thomas Yeo, and Mark D'Esposito. [**The modular and integrative functional architecture of the human brain**](https://doi.org/10.1073/pnas.1510619112). Proceedings of the National Academy of Sciences, 112(49):E6798-807, 2015.
+- Gia H. Ngo, Simon B. Eickhoff, Minh Nguyen, Peter T. Fox,  R. Nathan Spreng, B. T. Thomas Yeo. [**Beyond Consensus: Embracing Heterogeneity in Curated Neuroimaging Meta-Analysis**](https://www.sciencedirect.com/science/article/abs/pii/S1053811919305282). NeuroImage, 200:142-158, 2019
 
 ----
 
@@ -55,14 +55,14 @@ Except for this project, if you want to use the code for other stable projects f
 - To download the version of the code that was last tested, you can either
 
   - visit this link:
-  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.12.2-Yeo2015_AuthorTopic](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.12.2-Yeo2015_AuthorTopic)
+  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.3-Update_proj_refs_and_add_KRR_LITE](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.3-Update_proj_refs_and_add_KRR_LITE)
 
   or
 
   - run the following command, if you have Git installed
 
   ```
-  git checkout -b Yeo2015_AuthorTopic v0.12.2-Yeo2015_AuthorTopic
+  git checkout -b Yeo2015_AuthorTopic v0.15.3-Update_proj_refs_and_add_KRR_LITE
   ```
 
 ----
@@ -70,6 +70,7 @@ Except for this project, if you want to use the code for other stable projects f
 ## Updates
 - Release v0.12.0 (01/07/2019): Initial release of Yeo 2015 Author-Topic model with EM and Gibbs Sampling Inference. 
 - Release v0.12.2 (09/07/2019): Update visualization function to use HCP Workbench instead of Caret.
+- Release v0.15.3 (16/10/2019): Update reference.
 
 ----
 

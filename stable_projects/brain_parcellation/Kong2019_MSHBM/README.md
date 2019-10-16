@@ -3,7 +3,7 @@
 
 References
 ==========
-+ Kong R, Li J, Orban C, et al. [Spatial Topography of Individual-Specific Cortical Networks Predicts Human Cognition, Personality, and Emotion](https://academic.oup.com/cercor/advance-article/doi/10.1093/cercor/bhy123/5033556?guestAccessKey=2fa23bc8-59c7-4ff1-9360-1846d472c6dd). Cerebral Cortex. 2018.
++ Kong R, Li J, Orban C, et al. [Spatial Topography of Individual-Specific Cortical Networks Predicts Human Cognition, Personality, and Emotion](https://academic.oup.com/cercor/article/29/6/2533/5033556). Cerebral Cortex, 29(6):2533-2551, 2019
 
 ----
 
@@ -53,14 +53,14 @@ The individual 17-network parcellations of HCP data are not included in the curr
 
 To download the version of the code that is last tested, you can either
 
-- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.9.5-Kong2019_MSHBM](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.9.5-Kong2019_MSHBM)
+- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.3-Update_proj_refs_and_add_KRR_LITE](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.3-Update_proj_refs_and_add_KRR_LITE)
 
 or
 
 - run the following command, if you have Git installed
 
 ```
-git checkout -b Kong2019_MSHBM v0.9.2-Kong2019_MSHBM
+git checkout -b Kong2019_MSHBM v0.15.3-Update_proj_refs_and_add_KRR_LITE
 ```
 
 ----
@@ -394,6 +394,8 @@ Updates
 - Release v0.9.2 (19/3/2019): Add validation scripts
 
 - Release v0.9.5 (4/4/2019): Allow training subjects to have different number of sessions
+
+- Release v0.15.3 (16/10/2019): Update reference; change min/max thresholds in `CBIG_DrawSurfaceMaps` plotting command
 
 Bugs and Questions
 ====
