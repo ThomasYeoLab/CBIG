@@ -70,7 +70,7 @@ function [optimal_acc, optimal_kernel, optimal_lambda, optimal_threshold] = ...
 %     parameter). If "lambda_set" is not passed in or is 'NONE', it will be
 %     set as default:
 %     [ 0 0.00001 0.0001 0.001 0.004 0.007 0.01 0.04 0.07 0.1 0.4 0.7 1 1.5 2 2.5 3 3.5 4 ...
-%        5 10 15 20 30 40 50 60 70 80 100 150 200 300 500 700 1000 10000 100000 1000000]
+%        5 10 15 20]
 % 
 %   - threshold_set (optional)
 %     A vector of numbers (thresholds). Different thresholds used will
@@ -104,7 +104,8 @@ function [optimal_acc, optimal_kernel, optimal_lambda, optimal_threshold] = ...
 %     case of bin_flag == 1 of each test fold and each measure to predict.
 %     If bin_flag == 0, then every entry of optimal_threshold is NaN.
 %     
-% Written by Jingwei Li, Ru(by) Kong and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+% Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+% Author: Jingwei Li and Ru(by) Kong
 
 %% set default hyperparamters if not passed in
 if(~exist('ker_param', 'var') || strcmpi(ker_param, 'none'))
@@ -114,11 +115,11 @@ end
 
 if(~exist('lambda_set', 'var') || strcmpi(lambda_set, 'none'))
     lambda_set = [ 0 0.00001 0.0001 0.001 0.004 0.007 0.01 0.04 0.07 0.1 0.4 0.7 1 1.5 2 2.5 3 3.5 4 ...
-        5 10 15 20 30 40 50 60 70 80 100 150 200 300 500 700 1000 10000 100000 1000000];
+        5 10 15 20];
 end
 
 if(bin_flag==1)
-    if(~exist('threshold_set', 'var') || strcmpi(threshold_set, 'none'))
+    if(~exist('threshold_set', 'var') || strcmpi(threshold_set, 'none') || isempty(threshold_set))
         threshold_set = [-1:0.1:1];
     end
 else
@@ -129,6 +130,7 @@ if(~isempty(stem))
     stem = ['_' stem];
 end
 num_test_folds = length(sub_fold);
+metrics = {'corr','COD','predictive_COD','MAE','MAE_norm','MSE','MSE_norm'};
 
 %%
 y_predict_concat = [];
@@ -138,22 +140,25 @@ for test_fold = 1:num_test_folds
     innerloop = load(innerloop);
     testloop = load(testloop);
     
-    innerloop_acc = CBIG_KRR_reorganize_acc(innerloop.acc);
+    innerloop_loss = CBIG_KRR_reorganize_acc(innerloop.loss);
     test_acc = CBIG_KRR_reorganize_acc(testloop.acc);
     
-    for i = 1:size(innerloop_acc, 4)
-        curr_innerloop_acc = innerloop_acc(:,:,:,i);
+    for i = 1:size(innerloop_loss, 4)
+        curr_innerloop_loss = innerloop_loss(:,:,:,i);
         curr_test_acc = test_acc(:,:,:,i);
         
-        [~,I] = max(curr_innerloop_acc(:));
-        [FSM_idx, lambda_idx, threshold_idx]=ind2sub(size(curr_innerloop_acc),I);
+        [~,I] = min(curr_innerloop_loss(:));
+        [FSM_idx, lambda_idx, threshold_idx]=ind2sub(size(curr_innerloop_loss),I);
         
         optimal_kernel(test_fold, i).type = ker_param(FSM_idx).type;
         optimal_kernel(test_fold, i).scale = ker_param(FSM_idx).scale;
         optimal_lambda(test_fold, i) = lambda_set(lambda_idx);
         optimal_threshold(test_fold, i) = threshold_set(threshold_idx);
         optimal_acc(test_fold, i) = curr_test_acc(FSM_idx, lambda_idx, threshold_idx);
-        
+        for metric_ind = 1:length(metrics)
+            optimal_stats.(metrics{metric_ind})(test_fold,i) = testloop.pred_stats{FSM_idx,...
+                lambda_idx, threshold_idx}(metric_ind,i);
+        end
         y_predict{test_fold}(:,i) = testloop.y_p{FSM_idx, lambda_idx, threshold_idx}{i};
         if(num_test_folds==1)
             y_predict_concat(:,i) = testloop.y_p{FSM_idx, lambda_idx, threshold_idx}{i};
@@ -165,7 +170,7 @@ for test_fold = 1:num_test_folds
 end
 
 save(fullfile(data_dir, ['final_result' stem '.mat']), 'y_predict_concat', 'optimal_kernel', ...
-    'optimal_lambda', 'optimal_threshold', 'optimal_acc')
+    'optimal_lambda', 'optimal_threshold', 'optimal_acc', 'optimal_stats')
 
 
 end

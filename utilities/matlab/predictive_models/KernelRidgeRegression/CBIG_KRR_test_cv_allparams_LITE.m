@@ -1,4 +1,4 @@
-function [acc] = CBIG_KRR_test_cv_allparams_LITE( test_fold, sub_fold, ...
+function [acc, pred_stats] = CBIG_KRR_test_cv_allparams_LITE( test_fold, sub_fold, ...
     data_dir, y_resid_stem, with_bias, ker_param, lambda_set, threshold_set )
 
 % [acc] = CBIG_KRR_test_cv_allparams_LITE( test_fold, sub_fold, ...
@@ -74,7 +74,7 @@ function [acc] = CBIG_KRR_test_cv_allparams_LITE( test_fold, sub_fold, ...
 %     parameter). If "lambda_set" is not passed in or is 'NONE', it will be
 %     set as default:
 %     [ 0 0.00001 0.0001 0.001 0.004 0.007 0.01 0.04 0.07 0.1 0.4 0.7 1 1.5 2 2.5 3 3.5 4 ...
-%        5 10 15 20 30 40 50 60 70 80 100 150 200 300 500 700 1000 10000 100000 1000000]
+%        5 10 15 20]
 % 
 %   - threshold_set (optional)
 %     A vector of numbers (thresholds). Different thresholds used will
@@ -89,7 +89,13 @@ function [acc] = CBIG_KRR_test_cv_allparams_LITE( test_fold, sub_fold, ...
 %   - acc
 %     A cell with dimension of #kernels x #lambda x #thresholds of
 %     test CV accuracy for each hyperparameter combination.
-% 
+%
+%   - pred_stats
+%     A cell array with dimension of #kernels x #lambda x #thresholds. Each
+%     entry of the cell array is an matrix storing the prediction statistics
+%     defined by 'corr', 'COD', 'predictive_COD', 'MSE', 'MSE_norm',
+%     'MAE', 'MAE_norm'
+%
 % Written by Jingwei Li and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 %% setting up
@@ -112,8 +118,11 @@ end
 
 if(~exist('lambda_set', 'var') || strcmpi(lambda_set, 'none'))
     lambda_set = [ 0 0.00001 0.0001 0.001 0.004 0.007 0.01 0.04 0.07 0.1 0.4 0.7 1 1.5 2 2.5 3 3.5 4 ...
-        5 10 15 20 30 40 50 60 70 80 100 150 200 300 500 700 1000 10000 100000 1000000];
+        5 10 15 20];
 end
+
+% set the interested statistics
+metrics = {'corr','COD','predictive_COD','MAE','MAE_norm','MSE','MSE_norm'};
 
 for i = 1:size(y_orig, 2)
     if(length(unique(y_orig(:,i))) > 2)
@@ -131,7 +140,7 @@ elseif(~any(bin_flag==1))    % all y are continuous
     threshold_set = NaN;
 else                         % all y are binary
     bin_flag = 1;
-    if(~exist('threshold_set', 'var') || strcmpi(threshold_set, 'none'))
+    if(~exist('threshold_set', 'var') || strcmpi(threshold_set, 'none') || isempty(threshold_set))
         threshold_set = [-1:0.1:1];
     end
 end
@@ -142,10 +151,14 @@ if(length(sub_fold)>1)
     % cross-validation
     train_ind = sub_fold(test_fold).fold_index==0;
     test_ind = sub_fold(test_fold).fold_index==1;
+    train_ind_y = train_ind;
+    test_ind_y = test_ind;
 else
     train_ind = 1:length(find(sub_fold.fold_index==0));
     test_ind = (length(find(sub_fold.fold_index==0))+1):(length(find(sub_fold.fold_index==0)) ...
         + length(find(sub_fold.fold_index==1)) );
+    train_ind_y = find(sub_fold.fold_index==0);
+    test_ind_y = find(sub_fold.fold_index==1);
 end
 
 
@@ -162,9 +175,9 @@ for k = 1:length(ker_param)
 end
 
 if(~exist(fullfile(outdir, ['acc' y_resid_stem '.mat']), 'file'))
-    curr_y_resid_train = y_resid(train_ind, :);
-    curr_y_resid_test = y_resid(test_ind, :);
-    curr_y_orig_test = y_orig(test_ind, :);
+    curr_y_resid_train = y_resid(train_ind_y, :);
+    curr_y_resid_test = y_resid(test_ind_y, :);
+    curr_y_orig_test = y_orig(test_ind_y, :);
     
     for k = 1:length(ker_param)
         fprintf('Kernel type: %s, scale: %f\n', ker_param(k).type, ker_param(k).scale)
@@ -179,8 +192,9 @@ if(~exist(fullfile(outdir, ['acc' y_resid_stem '.mat']), 'file'))
             for t = 1:length(threshold_set)
                 threshold = threshold_set(t);
                 fprintf('    threshold: %f\n', threshold)
-                [y_p{k,l,t}, y_t{k,l,t}, acc{k,l,t}] = CBIG_KRR_test_cv( bin_flag, FSM_train, FSM_test, ...
-                    curr_y_resid_train, curr_y_resid_test, curr_y_orig_test, with_bias, lambda, threshold );
+                [y_p{k,l,t}, y_t{k,l,t}, acc{k,l,t}, pred_stats{k,l,t}] = CBIG_KRR_test_cv( bin_flag,...
+                    FSM_train, FSM_test, curr_y_resid_train, curr_y_resid_test, curr_y_orig_test, ...
+                    with_bias, lambda, threshold, metrics );
                 clear threshold
             end
             clear lambda
@@ -191,7 +205,7 @@ if(~exist(fullfile(outdir, ['acc' y_resid_stem '.mat']), 'file'))
     if(~exist(outdir, 'dir'))
         mkdir(outdir)
     end
-    save(fullfile(outdir, ['acc' y_resid_stem '.mat']), 'acc', 'y_p', 'y_t');
+    save(fullfile(outdir, ['acc' y_resid_stem '.mat']), 'acc', 'y_p', 'y_t', 'pred_stats');
 else
     load(fullfile(outdir, ['acc' y_resid_stem '.mat']))
     if(size(acc,1)~=length(ker_param) || size(acc,2)~=length(lambda_set) || size(acc,3)~=length(threshold_set))

@@ -1,5 +1,5 @@
-function [y_p, y_t, acc] = CBIG_KRR_test_cv( bin_flag, kernel_train, kernel_test, ...
-    y_resid_train, y_resid_test, y_orig_test, with_bias, lambda, threshold )
+function [y_p, y_t, acc, pred_stats] = CBIG_KRR_test_cv( bin_flag, kernel_train, kernel_test, ...
+    y_resid_train, y_resid_test, y_orig_test, with_bias, lambda, threshold, saving_stats )
 
 % [y_p, y_t, acc] = CBIG_KRR_test_cv( bin_flag, kernel_train, kernel_test, ...
 %     y_resid_train, y_resid_test, y_orig_test, lambda, threshold )
@@ -59,6 +59,31 @@ function [y_p, y_t, acc] = CBIG_KRR_test_cv( bin_flag, kernel_train, kernel_test
 %     (between -1 and 1) to divide the prediction into the two classes (eg.
 %     Male or Female).
 %     Ignore this parameter if y is not binary.
+%   - saving_stats
+%     A cell array of strings. Each element of the cell array indicates the
+%     prediction statistics you want to compute and save.
+%     Supported metric:
+%       'corr'              - Pearson's correlation;
+%       'COD'               - Coefficient of determination. Defined as
+%                             1-||y_pred-y_test||^2/||mean(y_test)-y_test||^2,
+%                             where y_pred is the prediction of the test data, 
+%                             y_test is the groud truth of the test data, 
+%                             and mean(y_test) is the mean of test data
+%       'predictive_COD'    - Predictive coefficient of determination. Defined as
+%                             1-||y_pred-y_test||^2/||mean(y_train)-y_test||^2,
+%                             where y_pred is the prediction of the test data, 
+%                             y_test is the groud truth of the test data, 
+%                             and mean(y_train) is the mean of training data
+%       'MAE'               - mean absolute error
+%       'MAE_norm'          - mean absolute error divided by the standard
+%                             derivation of the target variable of the training set
+%       'MSE'               - mean squared error
+%       'MSE_norm'          - mean squared error divided by the variance
+%                             of the target variable of the training set
+%       
+%     This argument should be a cell array of one or multiple strings
+%     listed above. 
+%     Default:{'corr','COD','predictive_COD','MAE','MAE_norm','MSE','MSE_norm'};
 %
 % Outputs:
 %   - y_p
@@ -78,8 +103,13 @@ function [y_p, y_t, acc] = CBIG_KRR_test_cv( bin_flag, kernel_train, kernel_test
 %     A 1 x size(y_resid,2) vector, the accuracy of each target variable
 %     prediction.
 %
-% Written by Jingwei Li, Ru(by) Kong and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
-
+%   - pred_stats
+%     A length(saving_stats) X #TargetVariable matrix. The prediction statistics
+%     for each metric defined in the input argument saving_stats for each
+%     target variable.
+%
+% Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+% Author: Jingwei Li and Ru(by) Kong
 
 %% setting up
 if(bin_flag==1 && (~exist('y_orig_test', 'var') || isempty(y_orig_test)) )
@@ -87,6 +117,7 @@ if(bin_flag==1 && (~exist('y_orig_test', 'var') || isempty(y_orig_test)) )
 end
 
 %%
+pred_stats = zeros(length(saving_stats),size(y_resid_train, 2));
 if sum(sum(isnan(y_resid_train))) > 0
     for i = 1:size(y_resid_train, 2)
         %% Training
@@ -130,10 +161,15 @@ if sum(sum(isnan(y_resid_train))) > 0
             TN = length(find((y_out < threshold) & (y_t{i}==0) == 1));
             acc(i) = (TP + TN) / length(y_t{i});
             y_t{i} = y_orig_test(:,i);
+            pred_stats(:,i) = nan;
         else
             y_t{i} = y_resid_test(~isnan(y_resid_test(:,i)), i);
             acc(i) = CBIG_corr(y_out, y_t{i});
-            y_t{i} = y_resid_test(:, i);
+            for metric_ind = 1:length(saving_stats)
+                [pred_stats(metric_ind,i),~] = CBIG_compute_prediction_acc_and_loss(...
+                    y_out, y_t{i}, saving_stats{metric_ind}, y);
+            end
+            y_t{i} = y_resid_test(:, i);            
         end
     end
 else
@@ -174,9 +210,14 @@ else
             TP = length(find((y_out(:,i) > threshold) & (y_t{i}==1) == 1));
             TN = length(find((y_out(:,i) < threshold) & (y_t{i}==0) == 1));
             acc(i) = (TP + TN) / length(y_t{i});
+            pred_stats(:,i) = nan;
         else
             y_t{i} = y_resid_test(:, i);
             acc(i) = CBIG_corr(y_out(:,i), y_t{i});
+            for metric_ind = 1:length(saving_stats)
+                [pred_stats(metric_ind,i),~] = CBIG_compute_prediction_acc_and_loss(...
+                    y_out(:,i), y_t{i}, saving_stats{metric_ind}, y(:,i));
+            end
         end
     end
 end

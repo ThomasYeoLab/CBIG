@@ -47,7 +47,9 @@ y_hat = y;
 y_hat(nan_index,:) = NaN;
 
 y(nan_index) = [];
-X(nan_index,:) = [];
+if(~isempty(X))
+    X(nan_index,:) = [];
+end
 
 % demean nusiance regressors
 X = bsxfun(@minus, X, mean(X));

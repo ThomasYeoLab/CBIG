@@ -139,6 +139,16 @@ If the user decided to pass in the setup file, then `varargin` is not needed. Th
 * `param.threshold_set`
   * The target measure you want to predict can be binary (e.g. sex). In this case, we introduce another hyperparameter, `threshold`, as a separation point to predict binary measures.
   * `threshold_set` is a vector of numbers (between -1 and 1) used for grid search of `threshold`.
+* `param.metric`
+  * A string indicating the metric used to define prediction loss. The loss is used to choose hyperparameters.Options include: 
+    * `'corr'`             - Pearson's correlation;
+    * `'COD'`              - Coefficient of determination. Defined as 1-||y_pred-y_test||^2/||mean(y_test)-y_test||^2, where y_pred is the prediction of the test data, y_test is the groud truth of the test data, and mean(y_test) is the mean of test data.
+    * `'Predictive_COD'`   - Predictive coefficient of determination. Defined as 1-||y_pred-y_test||^2/||mean(y_train)-y_test||^2, where y_pred is the prediction of the test data, y_test is the groud truth of the test data, and mean(y_train) is the mean of training data.
+    * `'MAE'`              - mean absolute error.
+    * `'MAE_norm'`         - mean absolute error divided by the standard derivation of the target variable of the training set.
+    * `'MSE'`              - mean squared error.
+    * `'MSE_norm'`         - mean squared error divided by the variance of the target variable of the training set.
+
 
 
 #### 2. `varargin`
@@ -238,7 +248,7 @@ If the user did not prepare the setup file, he/she needs to pass in the paramete
   * It is a string appended to all the output filenames. For example, you may want to run this workflow multiple times for the same dataset but with different target variables, different covariates, ... The 7-th argument you pass in through `varargin` can help you to differentiate these multiple runs even if they are saved in the same output folder. For instance, the filename of the final test accuracies with optimal hyperparameters will be `[varargin{6} '/final_result_' varargin{7} '.mat']` if `varargin{7}` is not empty. If `varargin{7}` is empty, the filename will become `[varargin{6} '/final_result.mat']`.
 * `varargin{8}` (with_bias, optional)
   * It is a string or a scalar that can be either 0 or 1. Default is 1. If `with_bias = 1`, the cost function to be minimized is `(y - K*alpha - beta)^2 + (regularization of alpha)`, where `beta` is a constant bias for every subject, estimated from the data. If `with_bias = 0`, the cost function to be minimized is `(y - K*alpha)^2 + (regularization of alpha)`. It means that the kernel regression fitted curve must pass through the origin since the bias term `beta` (acting as an intercept) is not included. If your target measures are not demeaned before and you still set `with_bias = 0`, your predicted scores would not be accurate. Hence `with_bias = 0` is not recommended.
-* `varargin{8}` (ker_param_file, optional)
+* `varargin{9}` (ker_param_file, optional)
   * A string, which is the full-path name of a `.mat` file. The `.mat` file contains a structure called `ker_param`.
   * `ker_param` is a structure of length L, where L is the number of kernel parameters the user would like to pass into the workflow.
   * `ker_param` should contain two subfields: `type` and `scale`.
@@ -247,17 +257,26 @@ If the user did not prepare the setup file, he/she needs to pass in the paramete
     * `'Gaussian'`         - Gaussian kernel;
     * `'Exponential'`      - exponential kernel.
   * `ker_param(l).scale` is a scalar specifying the scaling factor of the l-th kernel (only applicable for Gaussian kernel and exponential kernel). If `ker_param(l).type == 'corr'`, then set `ker_param(l).scale = NaN`.
-  * If the 8-th `varargin` is not passed in, the default `ker_param` will be set as `ker_param.type = 'corr'; ker_param.scale = NaN;`.
-* `varargin{9}` (lambda_set_file, optional)
+  * If the 9-th `varargin` is not passed in, the default `ker_param` will be set as `ker_param.type = 'corr'; ker_param.scale = NaN;`.
+* `varargin{10}` (lambda_set_file, optional)
   * A string, which is the full-path name of a `.mat` file. The `.mat` file contains a vector called `lambda_set`.
   * `lambda_set` is a vector of numbers for grid search of `lambda` (the regularization parameter). For example, `[0.001 0.005 0.01:0.02:0.1 0.2:0.1:1 5:5:20]`.
-  * If the 9-th `varargin` is not passed in, the default `lambda_set` will be set as `lambda_set = [ 0 0.00001 0.0001 0.001 0.004 0.007 0.01 0.04 0.07 0.1 0.4 0.7 1 1.5 2 2.5 3 3.5 4 5 10 15 20 30 40 50 60 70 80 100 150 200 300 500 700 1000 10000 100000 1000000]`.
-* `varargin{10}` (threshold_set_file, optional)
+  * If the 10-th `varargin` is not passed in, the default `lambda_set` will be set as `lambda_set = [ 0 0.00001 0.0001 0.001 0.004 0.007 0.01 0.04 0.07 0.1 0.4 0.7 1 1.5 2 2.5 3 3.5 4 5 10 15 20]`.
+* `varargin{11}` (threshold_set_file, optional)
   * A string, which is the full-path name of a `.mat` file. The `.mat` file contains a vector called `threshold_set`.
   * The target measure you want to predict can be binary (e.g. sex). In this case, we introduce another hyperparameter, `threshold`, as a separation point to predict binary measures.
   * `threshold_set` is a vector of numbers (between -1 and 1) used for grid search of `threshold`.
-  * If the 10-th `varargin` is not passed in, the default `threshold_set` will be set as `threshold_set = [-1:0.1:1]`.
-
+  * If the 11-th `varargin` is not passed in, the default `threshold_set` will be set as `threshold_set = [-1:0.1:1]`.
+* `varargin{12}` (metric, optional)
+  * A string indicating the metric used to define prediction loss. The loss is used to choose hyperparameters.Options include: 
+    * `'corr'`             - Pearson's correlation;
+    * `'COD'`              - Coefficient of determination. Defined as 1-||y_pred-y_test||^2/||mean(y_test)-y_test||^2, where y_pred is the prediction of the test data, y_test is the groud truth of the test data, and mean(y_test) is the mean of test data.
+    * `'Predictive_COD'`   - Predictive coefficient of determination. Defined as 1-||y_pred-y_test||^2/||mean(y_train)-y_test||^2, where y_pred is the prediction of the test data, y_test is the groud truth of the test data, and mean(y_train) is the mean of training data.
+    * `'MAE'`              - mean absolute error.
+    * `'MAE_norm'`         - mean absolute error divided by the standard derivation of the target variable of the training set.
+    * `'MSE'`              - mean squared error.
+    * `'MSE_norm'`         - mean squared error divided by the variance of the target variable of the training set.
+  * If the 12-th `varargin` is not passed in, the default `metric` will be set as `metric = 'predictive_COD'`.
 ## Training, validation, and test stream
 
 If you have enough number of observations (e.g. hundreds of thousands of subjects), you might want to simply divide your dataset into training, validation and test sets, instead of K-fold cross-validation. In this case, the hyperparameters will be determined based on the optimal accuracies in the validation set. After that, the model parameters (i.e. the kernel regression coefficients) will be obtained from the training set with the optimal hyperparameters, and then applied to the test set to get the test accuracy.
@@ -296,6 +315,7 @@ You can check the output folder structure in this directory: `$CBIG_CODE_DIR/sta
   2. Added unit test scipt for general kernel regression package.
 - Release v0.14.1 (03/09/2019): Optimized the speed of kernel regression scripts.
 - Release v0.15.3 (16/10/2019): add references; add LITE version of kernel regression code
+- Release v0.15.4 (05/11/2019): change default lambda set; add hyperparameter-tuning metric
 
 ## Bugs and questions
-Please contact Jingwei Li at jingwei.li@u.nus.edu and Ru(by) Kong at roo.cone@gmail.com.
+Please contact Jingwei Li at jingweili.sjtu.nus@gmail.com and Ru(by) Kong at roo.cone@gmail.com.

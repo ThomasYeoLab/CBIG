@@ -1,5 +1,5 @@
-function [y_p, y_t, acc, acc_concat] = CBIG_KRR_innerloop_cv( bin_flag, num_inner_folds, ...
-    kernel, y_resid, y_orig, num_valid_sub, with_bias, lambda, threshold )
+function [y_p, y_t, acc, loss] = CBIG_KRR_innerloop_cv( bin_flag, num_inner_folds, ...
+    kernel, y_resid, y_orig, num_valid_sub, with_bias, lambda, threshold, metric )
 
 % [y_p, y_t, acc, acc_concat] = CBIG_KRR_innerloop_cv( bin_flag, num_inner_folds, ...
 %     kernel, y_resid, y_orig, num_valid_sub, lambda, threshold )
@@ -72,6 +72,27 @@ function [y_p, y_t, acc, acc_concat] = CBIG_KRR_innerloop_cv( bin_flag, num_inne
 %     or 0) for binary target variables (e.g. sex). Ignore this parameter
 %     if y is not binary.
 %
+%   - metric (optional)
+%     A string indicating the metric used to define prediction loss. The
+%     loss is used to choose hyperparameters.
+%     Choose from:
+%       'corr'              - Pearson's correlation;
+%       'COD'               - Coefficient of determination. Defined as
+%                             1-||y_pred-y_test||^2/||mean(y_test)-y_test||^2,
+%                             where y_pred is the prediction of the test data, 
+%                             y_test is the groud truth of the test data, 
+%                             and mean(y_test) is the mean of test data
+%       'predictive_COD'    - Predictive coefficient of determination. Defined as
+%                             1-||y_pred-y_test||^2/||mean(y_train)-y_test||^2,
+%                             where y_pred is the prediction of the test data, 
+%                             y_test is the groud truth of the test data, 
+%                             and mean(y_train) is the mean of training data
+%       'MAE'               - mean absolute error
+%       'MAE_norm'          - mean absolute error divided by the standard
+%                             derivation of the target variable of the training set
+%       'MSE'               - mean squared error
+%       'MSE_norm'          - mean squared error divided by the variance
+%                             of the target variable of the training set
 % Outputs:
 %   - y_p
 %     A cell array of length #TargetVariables. Each cell array contains the
@@ -137,6 +158,8 @@ else
 end
 
 %% kernel regression for each inner-loop fold
+acc_fold = cell(num_inner_folds,size(y_resid, 2));
+loss_fold = cell(num_inner_folds,size(y_resid, 2));
 for fold = 1:num_inner_folds
     curr_train_idx = fold_index(fold).training;
     curr_test_idx = fold_index(fold).test;
@@ -190,9 +213,11 @@ for fold = 1:num_inner_folds
                 TP = length(find((y_predict{fold,i} > threshold) & (y_true{fold,i}==1) == 1));
                 TN = length(find((y_predict{fold,i} < threshold) & (y_true{fold,i}==0) == 1));
                 acc_fold{fold,i} = (TP + TN) / length(y_true{fold,i});
+                loss_fold{fold,i} = -acc_fold{fold,i};
             else
                 y_true{fold, i} = curr_y_test(~isnan(curr_y_test(:,i)), i);
                 acc_fold{fold,i} = CBIG_corr(y_predict{fold,i}, y_true{fold,i});
+                [~,loss_fold{fold,i}] = CBIG_compute_prediction_acc_and_loss(y_predict{fold,i},y_true{fold,i},metric,y);
             end
         end
     else
@@ -239,9 +264,12 @@ for fold = 1:num_inner_folds
                 TP = length(find((y_predict{fold,i} > threshold) & (y_true{fold,i}==1) == 1));
                 TN = length(find((y_predict{fold,i} < threshold) & (y_true{fold,i}==0) == 1));
                 acc_fold{fold,i} = (TP + TN) / length(y_true{fold,i});
+                loss_fold{fold,i} = -acc_fold{fold,i};
             else
                 y_true{fold, i} = curr_y_test(:,i);
                 acc_fold{fold,i} = CBIG_corr(y_predict{fold,i}, y_true{fold,i});
+                [~,loss_fold{fold,i}] = CBIG_compute_prediction_acc_and_loss(y_predict{fold,i}...
+                    ,y_true{fold,i},metric,y(:,i));
             end
         end      
     end
@@ -252,19 +280,15 @@ for i = 1:size(y_resid, 2)
     y_predict_concat = [];
     y_true_concat = [];
     acc_all = 0;
+    loss_all = 0;
     for fold = 1:num_inner_folds
         y_predict_concat = [y_predict_concat; y_predict{fold,i}];
         y_true_concat = [y_true_concat; y_true{fold,i}];
         acc_all = acc_all +  acc_fold{fold,i};
+        loss_all = loss_all + loss_fold{fold,i};
     end
     acc(i) = acc_all/num_inner_folds;
-    if(bin_flag==1)
-        TP = length(find((y_predict_concat > threshold) & (y_true_concat==1) == 1));
-        TN = length(find((y_predict_concat < threshold) & (y_true_concat==0) == 1));
-        acc_concat = (TP + TN) / length(y_true_concat);
-    else
-        acc_concat(i) = CBIG_corr(y_predict_concat,y_true_concat);
-    end
+    loss(i) = loss_all/num_inner_folds;
     y_p{i} = y_predict_concat;
     y_t{i} = y_true_concat;
 end

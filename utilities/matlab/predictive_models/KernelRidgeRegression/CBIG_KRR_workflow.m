@@ -62,6 +62,9 @@ function CBIG_KRR_workflow( setup_file, save_setup, varargin )
 %        A vector of all possible thresholds to determine the separation
 %        point for binary target variables in the prediction. See the
 %        description of varargin{11}.
+%     12.metric
+%        A string indicating the metric used to define prediction loss. See the
+%        description of varargin{12}.
 % 
 %   - save_setup
 %     A string or a scalar of 0 or 1. If the user passed in 1, then a
@@ -168,7 +171,7 @@ function CBIG_KRR_workflow( setup_file, save_setup, varargin )
 %     does NOT exist in "setup_file", or "lambda_set" is 'NONE', it will be
 %     set as default:
 %     [ 0 0.00001 0.0001 0.001 0.004 0.007 0.01 0.04 0.07 0.1 0.4 0.7 1 1.5 2 2.5 3 3.5 4 ...
-%        5 10 15 20 30 40 50 60 70 80 100 150 200 300 500 700 1000 10000 100000 1000000]
+%        5 10 15 20]
 % 
 %   - varargin{11}   (threshold_set_file)
 %     Full path of the file (.mat) storing the set of threshold used to 
@@ -178,6 +181,28 @@ function CBIG_KRR_workflow( setup_file, save_setup, varargin )
 %     "threshold". If this file is not passed in and also does NOT exist in
 %     "setup_file", or "threshold_set" is 'NONE', it will be set as default: 
 %     [-1:0.1:1].
+%
+%   - varargin{12}   (metric)
+%     A string indicating the metric used to define prediction loss. The
+%     loss is used to choose hyperparameters.
+%     Choose from:
+%       'corr'              - Pearson's correlation;
+%       'COD'               - Coefficient of determination. Defined as
+%                             1-||y_pred-y_test||^2/||mean(y_test)-y_test||^2,
+%                             where y_pred is the prediction of the test data, 
+%                             y_test is the groud truth of the test data, 
+%                             and mean(y_test) is the mean of test data
+%       'predictive_COD'    - Predictive coefficient of determination. Defined as
+%                             1-||y_pred-y_test||^2/||mean(y_train)-y_test||^2,
+%                             where y_pred is the prediction of the test data, 
+%                             y_test is the groud truth of the test data, 
+%                             and mean(y_train) is the mean of training data
+%       'MAE'               - mean absolute error
+%       'MAE_norm'          - mean absolute error divided by the standard
+%                             derivation of the target variable of the training set
+%       'MSE'               - mean squared error
+%       'MSE_norm'          - mean squared error divided by the variance
+%                             of the target variable of the training set
 % 
 % Written by Jingwei Li and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
@@ -227,7 +252,7 @@ fprintf('# Step 3: inner-loop cross-validation.\n')
 for test_fold = 1:num_test_folds
     CBIG_KRR_innerloop_cv_allparams( test_fold, param.sub_fold, param.num_inner_folds, ...
         param.outdir, param.outstem, param.with_bias, param.ker_param, param.lambda_set, ...
-        param.threshold_set );
+        param.threshold_set, param.metric );
 end
 
 %% step 4. Test cross-validation
@@ -292,7 +317,7 @@ end
 % default of lambda_set
 if(length(var)<10 || isempty(var{10}) || strcmpi(var{10}, 'none'))
     param.lambda_set = [ 0 0.00001 0.0001 0.001 0.004 0.007 0.01 0.04 0.07 0.1 0.4 0.7 1 1.5 2 ...
-        2.5 3 3.5 4 5 10 15 20 30 40 50 60 70 80 100 150 200 300 500 700 1000 10000 100000 1000000];
+        2.5 3 3.5 4 5 10 15 20];
 else
     load(var{10})
     param.lambda_set = lambda_set;
@@ -306,5 +331,9 @@ else
     param.threshold_set = threshold_set;
 end
 
-
-
+% default of metric
+if(length(var)<12 || isempty(var{12}) || strcmpi(var{12}, 'none'))
+    param.metric = 'predictive_COD';
+else
+    param.metric = var{12};
+end
