@@ -33,6 +33,8 @@
 
 !/preprocessing/*
 !/preprocessing/CBIG_fMRI_Preproc2016/**
+!/preprocessing/Li2019_GSR/**
+!/preprocessing/Orban2020_tod/**
 
 !/registration/*
 !/registration/Wu2017_RegistrationFusion/**
@@ -45,5 +47,3 @@
 !/predict_phenotypes/He2019_KRDNN/**
 !/predict_phenotypes/Nguyen2020_RNNAD/**
 
-!/preprocessing/*
-!/preprocessing/Li2019_GSR/**
