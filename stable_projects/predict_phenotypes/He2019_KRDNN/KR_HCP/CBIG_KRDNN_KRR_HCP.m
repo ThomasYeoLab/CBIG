@@ -92,6 +92,8 @@ temp = load(FC_file);
 param.feature_mat = temp.corr_mat;
 % number of inner folds
 param.num_inner_folds = 20;
+% metric
+param.metric = 'corr';
 % range of lambda for kernel regression
 param.lambda_set = [0 0.00001 0.0001 0.001 0.004 0.007 0.01 0.04 0.07 0.1 ...
 	0.4 0.7 1 1.5 2 2.5 3 3.5 4 5 10 15 20 30 40 50 60 70 80 100 150 200 ...
