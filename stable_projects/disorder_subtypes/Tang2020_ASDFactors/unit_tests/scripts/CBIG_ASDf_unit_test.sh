@@ -13,11 +13,11 @@
 code_dir=${CBIG_CODE_DIR}/stable_projects/disorder_subtypes/Tang2020_ASDFactors
 
 # data_dir is the directory where unit tests data is located
-unit_test_dir=/mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/disorder_subtypes/Tang2020_ASDFactors
-data_dir=${unit_test_dir}/data/data_short
+unit_test_dir=$CBIG_TESTDATA_DIR/stable_projects/disorder_subtypes/Tang2020_ASDFactors
+data_dir=${unit_test_dir}/data
 
 # ref_dir is the directory where reference results are located
-ref_dir=${unit_test_dir}/results/results_short
+ref_dir=${unit_test_dir}/results
 
 # pass in output_dir
 output_dir=$1
@@ -81,7 +81,7 @@ factorNum_inf=2
 # Submit unit test job to circ-spool
 #########################################
 
-/apps/sysapps/TORQUE/bin/qsub -V -q circ-spool << EOJ
+$CBIG_SCHEDULER_DIR/qsub -V -q circ-spool << EOJ
 
 #!/bin/bash
 #PBS -N 'CBIG_ASDf_unit_test'

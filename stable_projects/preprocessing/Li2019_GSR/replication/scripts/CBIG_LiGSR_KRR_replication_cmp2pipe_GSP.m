@@ -17,14 +17,14 @@ function CBIG_LiGSR_KRR_replication_cmp2pipe_GSP( KRR_dir )
 %     A file called [KRR_dir '/compare_2pipe/final_result.mat'] will be
 %     created to store the integrated result and the comparison between the
 %     two pipelines. It contains:
-%     (1) mean_acc_dif: a #seed x #MeasuresToPredict (i.e. 20 x 60) matrix
+%     (1) mean_acc_dif: a #seed x #MeasuresToPredict (i.e. 20 x 25) matrix
 %                       of accuracy difference between the two
 %                       preprocessing pipelines, averaged within each
 %                       random data split.
-%     (2) acc_GSR_mean: a #seed x #MeasuresToPredict (i.e. 20 x 60) matrix
+%     (2) acc_GSR_mean: a #seed x #MeasuresToPredict (i.e. 20 x 25) matrix
 %                       of accuracy with global signal regression, averaged
 %                       within each random data split.
-%     (3) acc_Baseline_mean: a #seed x #MeasuresToPredict (i.e. 20 x 60)
+%     (3) acc_Baseline_mean: a #seed x #MeasuresToPredict (i.e. 20 x 25)
 %                            matrix of accuracy with baseline fMRI
 %                            preprocessing, averaged within each random
 %                            data split.

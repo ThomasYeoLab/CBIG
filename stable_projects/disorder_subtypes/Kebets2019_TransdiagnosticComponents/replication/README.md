@@ -30,12 +30,12 @@ $CBIG_CODE_DIR/external_packages/matlab/non_default_packages/PLS_MIPlab
 ```
 
 
-and was modified from the code written by Dimitri Van De Ville, Daniella Zoller and Valeria Kebets, available at https://miplab.epfl.ch/index.php/software/PLS
+and was modified from the code written by Valeria Kebets, Daniella Zoller and Dimitri Van De Ville (https://github.com/danizoeller/myPLS).
 
 Results can be compared with `PLSresults.mat`, `PLSresults_1000permuts.mat`, `PLS_bootstrapLoadings_500bootstraps.mat`, `PLS_bootstrapResults_500bootstraps.mat`, `PLS_5fold_crossval_1000permuts.mat`, and `PLS_taskValidation_1000permuts.mat` in 
 
 ```
-/mnt/eql/yeo1/CBIG_private_data/replication/stable_projects/disorder_subtypes/Kebets2019_TransdiagnosticComponents/results
+$CBIG_VK2019_UCLA_CNP_DIR/Analyses/PLS/replication
 ``` 
 
 ----

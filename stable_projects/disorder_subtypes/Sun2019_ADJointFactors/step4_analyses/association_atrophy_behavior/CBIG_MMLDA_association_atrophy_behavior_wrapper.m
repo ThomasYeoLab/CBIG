@@ -20,7 +20,7 @@ addpath(genpath([CBIG_CODE_DIR '/stable_projects/disorder_subtypes/Sun2019_ADJoi
 %%%
 % get factor loadings
 %%%
-proj_dir = '/mnt/eql/yeo1/CBIG_private_data/replication/stable_projects/disorder_subtypes/Sun2019_ADJointFactors';
+proj_dir = [getenv('CBIG_REPDATA_DIR') '/stable_projects/disorder_subtypes/Sun2019_ADJointFactors'];
 order = [1 3 2];
 
 rid_file = [proj_dir '/step2_MMLDA/results/BrainBehavior2doc/ADNI2_bl_MCI_meanCNstdALL_plus1_RID.txt'];
@@ -32,8 +32,8 @@ rid_prob_MCI_inf1 = CBIG_MMLDA_get_factor_loadings(rid_file, inf1_gamma_file, or
 rid_prob_MCI_inf2 = CBIG_MMLDA_get_factor_loadings(rid_file, inf2_gamma_file, order);
 
 rid_MCI= rid_prob_MCI_inf1(:, 1);
-ADNI_path = '/share/users/imganalysis/yeolab/data/ADNI/All';
-UPENNBIOMK_file = '/share/users/imganalysis/yeolab/data/ADNI_mert/scripts/UPENNBIOMK.csv';
+ADNI_path = [getenv('CBIG_MMLDA_ANDI_DOC_DIR') '/All'];
+UPENNBIOMK_file = [getenv('CBIG_MMLDA_ADNIMERT_DIR') '/scripts/UPENNBIOMK.csv'];
 UCBERKELEYAV45_file = [ADNI_path '/ADNI_180413/documentation/UCBERKELEYAV45_11_14_17.csv'];
 [~, MCI_state] = CBIG_MMLDA_get_amyloid(UPENNBIOMK_file, UCBERKELEYAV45_file, 'ADNI2', ...
     repmat({'ADNI2'}, length(rid_MCI), 1), CBIG_MMLDA_matrix2cellstr(rid_MCI), repmat({'bl'}, length(rid_MCI), 1));

@@ -44,8 +44,8 @@ function prams=CBIG_gwMRF_set_prams(varargin)
     defaultgrad_prior='gordon'; % what gradient map we use, default is the map from gordon as in the paper
     defaultfsaverage='fsaverage6'; % which space we use, paper: fsaverage6
     defaultpotts=false; % use no gradient map but potts model, paper setting is false!
-    default_lh_avg_file='/data/users/aschaefer/storage/aschaefer/Time_Matrix_Group_release_full_lh_cov.mat'; %input data, this will only work for CBIG lab
-    default_rh_avg_file='/data/users/aschaefer/storage/aschaefer/Time_Matrix_Group_release_full_rh_cov.mat'; %input data, this will only work for CBIG lab 
+    default_lh_avg_file=fullfile(getenv('CBIG_REPDATA_DIR'),'stable_projects','brain_parcellation','Schaefer2018_LocalGlobal','Time_Matrix_Group_release_full_lh_cov.mat'); %input data, this will only work for CBIG lab
+    default_rh_avg_file=fullfile(getenv('CBIG_REPDATA_DIR'),'stable_projects','brain_parcellation','Schaefer2018_LocalGlobal','Time_Matrix_Group_release_full_rh_cov.mat'); %input data, this will only work for CBIG lab 
     % if you want to compute your own input data, look into CBIG_gwMRF_build_time_matrix and CBIG_gwMRF_build_cov_matrix
     default_initialization_prior='./input/prior_initializations_all.mat'; % this should be given externally with the future prams struct
     default_initialization_motor='./input/clustering/motor_labels.mat'; % this is not relevant, can be removed

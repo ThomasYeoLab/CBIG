@@ -3,7 +3,7 @@
 doc_dir=$1
 out_dir=$2
 
-unit_test_path=/mnt/eql/yeo1/CBIG_private_data/replication/stable_projects/disorder_subtypes/Sun2019_ADJointFactors
+unit_test_path=${CBIG_REPDATA_DIR}/stable_projects/disorder_subtypes/Sun2019_ADJointFactors
 
 if [ -z "$1" ]; then
     doc_dir=${unit_test_path}/step2_MMLDA/results/BrainBehavior2doc

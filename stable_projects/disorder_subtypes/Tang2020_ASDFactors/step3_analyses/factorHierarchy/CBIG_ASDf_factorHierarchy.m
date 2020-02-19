@@ -41,8 +41,8 @@ function [corr_brainMap, corr_factorComp] = CBIG_ASDf_factorHierarchy(k, inputDi
 
 %% Add path
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-CODE_DIR = [CBIG_CODE_DIR '/stable_projects/disorder_subtypes/Tang2020_ASDFactors'];
-addpath([CODE_DIR '/step2_polarLDA']);
+CODE_DIR = fullfile(CBIG_CODE_DIR,'stable_projects','disorder_subtypes','Tang2020_ASDFactors');
+addpath(fullfile(CODE_DIR,'step2_polarLDA'));
 
 %% Number of possible combinations of splits
 num_pairs = nchoosek(k+1,2);
@@ -52,19 +52,19 @@ corr_brainMap = zeros(num_pairs,1);
 corr_factorComp = zeros(num_pairs,1);
 
 %% Compute E(FC patterns | Factor) for k-factor and (k+1)-factor models
-beta_k = exp(load([inputDir sprintf('/k%s/r%s', num2str(k), num2str(r_k)) '/final.beta']));
-rho_k = exp(load([inputDir sprintf('/k%s/r%s', num2str(k), num2str(r_k)) '/final.rho']));
+beta_k = exp(load(fullfile(inputDir,sprintf('k%s/r%s', num2str(k), num2str(r_k)),'final.beta')));
+rho_k = exp(load(fullfile(inputDir,sprintf('k%s/r%s', num2str(k), num2str(r_k)),'final.rho')));
 Mean_k = beta_k.*(2*rho_k-1);
 
-beta_kplus = exp(load([inputDir sprintf('/k%s/r%s', num2str(k+1), num2str(r_kplus)) '/final.beta']));
-rho_kplus = exp(load([inputDir sprintf('/k%s/r%s', num2str(k+1), num2str(r_kplus)) '/final.rho']));
+beta_kplus = exp(load(fullfile(inputDir,sprintf('k%s/r%s', num2str(k+1), num2str(r_kplus)),'final.beta')));
+rho_kplus = exp(load(fullfile(inputDir,sprintf('k%s/r%s', num2str(k+1), num2str(r_kplus)),'final.rho')));
 Mean_kplus = beta_kplus.*(2*rho_kplus-1);
 
 %% Compute Pr(Factor | Participant) for k-factor and (k+1)-factor models
-gamma_k = load([inputDir '/k' num2str(k) '/r' num2str(r_k) '/final.gamma']);
+gamma_k = load(fullfile(inputDir,['k' num2str(k)],['r' num2str(r_k)],'final.gamma'));
 factorComp_k = bsxfun(@times, gamma_k, 1./(sum(gamma_k, 2)));
 
-gamma_kplus = load([inputDir '/k' num2str(k+1) '/r' num2str(r_kplus) '/final.gamma']);
+gamma_kplus = load(fullfile(inputDir,['k' num2str(k+1)],['r' num2str(r_kplus)],'final.gamma'));
 factorComp_kplus = bsxfun(@times, gamma_kplus, 1./(sum(gamma_kplus, 2)));
 
 %% Now perform exhaustive search over all possible splits
@@ -110,5 +110,4 @@ combinations(p,1),combinations(p,2),k+1,idx_splitted,k);
 end
 
 %% Remove path
-rmpath([CODE_DIR '/step2_polarLDA']);
-
+rmpath(fullfile(CODE_DIR,'step2_polarLDA'));

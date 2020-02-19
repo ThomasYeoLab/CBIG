@@ -4,7 +4,8 @@
 cd ~/storage
 rsync -a --exclude .git CBIG/* Standalone_Kebets2019_TransdiagnosticComponents
 # remove useless stable projects
-rm -r Standalone_Kebets2019_TransdiagnosticComponents/stable_projects/brain_parcellation
+rm -r Standalone_Kebets2019_TransdiagnosticComponents/stable_projects/brain_parcellation/Kong2019_MSHBN
+rm -r Standalone_Kebets2019_TransdiagnosticComponents/stable_projects/brain_parcellation/Yeo2011_fcMRI_clustering
 rm -r Standalone_Kebets2019_TransdiagnosticComponents/stable_projects/disorder_subtypes/Zhang2016_ADFactors
 rm -r Standalone_Kebets2019_TransdiagnosticComponents/stable_projects/disorder_subtypes/Tang2019_ASDFactors
 rm -r Standalone_Kebets2019_TransdiagnosticComponents/stable_projects/disorder_subtypes/Sun2019_ADJointFactors

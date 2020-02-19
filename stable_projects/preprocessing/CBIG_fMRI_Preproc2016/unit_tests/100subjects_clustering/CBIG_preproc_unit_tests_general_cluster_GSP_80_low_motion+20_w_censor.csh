@@ -26,15 +26,13 @@ set surf_stem = "_rest_skip4_stc_mc_residc_interp_FDRMS0.2_DVARS50_bp_0.009_0.08
 set outlier_stem = "_FDRMS0.2_DVARS50_motion_outliers"
 
 set curr_dir = `pwd`
-set username = `whoami`
-set work_dir = /data/users/$username/cluster/ 
+set work_dir = $HOME/cluster/ 
 
 echo $curr_dir
-echo $username
 echo $work_dir
 
 if (! -e $work_dir) then
-        mkdir -p $work_dir
+    mkdir -p $work_dir
 endif
 
 cd $work_dir
@@ -45,7 +43,7 @@ if( $scrub_flag == 1 ) then
 	set cmd = "$cmd ${your_subject_dir} -sub_ls ${subject_list} -surf_stem ${surf_stem} -n ${num_clusters} -out_dir"
 	set cmd = "$cmd ${out_dir} -cluster_out ${out_dir}/GSP_80_low_mt_20_w_censor_clusters${formated_cluster}_scrub"
 	set cmd = "$cmd -tries 1000 -outlier_stem ${outlier_stem}"
-	echo "$cmd" | qsub -V -q circ-spool -l walltime=20:00:00,mem=2GB \
+	echo "$cmd" | $CBIG_SCHEDULER_DIR/qsub -V -q circ-spool -l walltime=20:00:00,mem=2GB \
           -m ae -N clust_100sub_ut
 
 else
@@ -54,7 +52,7 @@ else
 	set cmd = "$cmd ${out_dir} -cluster_out \
           ${out_dir}/GSP_80_low_mt_20_w_censor_clusters${formated_cluster}_noscrub"
 	set cmd = "$cmd -tries 1000 "
-	echo "$cmd" | qsub -V -q circ-spool -l walltime=20:00:00,mem=2GB \
+	echo "$cmd" | $CBIG_SCHEDULER_DIR/qsub -V -q circ-spool -l walltime=20:00:00,mem=2GB \
           -m ae -N clust_100sub_ut
 endif
 

@@ -38,6 +38,10 @@ function [FC_simR, CC_check] = CBIG_MFMem_rfMRI_nsolver_eul_sto_resLH(parameter,
 %(a)choose integal time  
 %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+if size(parameter, 2) > 1
+    error('Input argument ''parameter'' should be a column vector');
+end
+
 if ifHighres == 0
     dt_l = 0.01; %[s]
 else

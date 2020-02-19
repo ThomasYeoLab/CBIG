@@ -21,8 +21,8 @@ clear
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
 addpath([CBIG_CODE_DIR '/stable_projects/disorder_subtypes/Sun2019_ADJointFactors/utilities'])
 
-ADNI_path = '/share/users/imganalysis/yeolab/data/ADNI/All';
-proj_dir = '/mnt/eql/yeo1/CBIG_private_data/replication/stable_projects/disorder_subtypes/Sun2019_ADJointFactors';
+ADNI_path = [getenv('CBIG_MMLDA_ADNI_DOC_DIR') '/All'];
+proj_dir = [getenv('CBIG_REPDATA_DIR') '/stable_projects/disorder_subtypes/Sun2019_ADJointFactors'];
 
 % get subinfo
 subinfo = csvread([proj_dir '/step2_MMLDA/data/ADNI1_bl_subinfo.csv'], 1, 0);
@@ -42,7 +42,7 @@ sex = subinfo(ind, 2);
 PTDEMOG_file = [ADNI_path '/ADNI_161017/documentation/Subject_Characteristics/PTDEMOG.csv'];
 edu = CBIG_MMLDA_get_edu(PTDEMOG_file, repmat({'ADNI1'}, length(rid), 1), ...
     CBIG_MMLDA_matrix2cellstr(rid), repmat({'sc'}, length(rid), 1));
-UPENNBIOMK_file = '/share/users/imganalysis/yeolab/data/ADNI_mert/scripts/UPENNBIOMK.csv';
+UPENNBIOMK_file = [getenv('CBIG_MMLDA_ADNIMERT_DIR') '/scripts/UPENNBIOMK.csv'];
 UCBERKELEYAV45_file = [ADNI_path '/ADNI_180413/documentation/UCBERKELEYAV45_11_14_17.csv'];
 [amyloid, ~] = CBIG_MMLDA_get_amyloid(UPENNBIOMK_file, UCBERKELEYAV45_file, 'ADNI1', ...
     repmat({'ADNI1'}, length(rid), 1), CBIG_MMLDA_matrix2cellstr(rid), repmat({'bl'}, length(rid), 1));

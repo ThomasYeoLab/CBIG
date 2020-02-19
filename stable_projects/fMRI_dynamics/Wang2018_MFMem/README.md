@@ -28,9 +28,9 @@ The sub-folder `step2_simulation/` contains the second step which will simulate 
 The sub-folder `step3_plot/` contains all data, functions and scripts to plot the brain map and bar chart of the estimated parameters obtained in Step 1: Estimation.
 
 #### Download
-To download the version of the code that is last tested, you can either visit this link: https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.3-Update_proj_refs_and_add_KRR_LITE or run the following command, if you have Git installed:
+To download the version of the code that is last tested, you can either visit this link: https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.0-Fix_Absolute_Path or run the following command, if you have Git installed:
 ```
-git checkout -b Wang2018_MFMem v0.15.3-Update_proj_refs_and_add_KRR_LITE
+git checkout -b Wang2018_MFMem v0.17.0-Fix_Absolute_Path
 ```
 
 If you don't want to download our entire repository and only want this project `Wang2018_MFMem` only, you can use https://kinolien.github.io/gitzip/ to download this folder and these two extra scripts:
@@ -47,6 +47,13 @@ The sub-folder `lib/` contains all the functions created for this project.
 
 #### Estimation and Simualtion for the 4 parameter model
 The sub-folder `extra_4p` contains all matlab data, functions and scripts to show some results we mentioned in the paper. In this experiment, we use dynamic mean-field model to simulate the functional connectivity (FC) obtained from resting-state fMRI with only 4 parameters. The details of the model can be referred from our paper.
+
+----
+
+## Updates
+- Release v0.7.0 (12/09/2018): Initial Release.
+
+- Release v0.17.0 (19/02/2020): Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths.
 
 ----
 

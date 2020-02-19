@@ -21,16 +21,16 @@ function [lh_output_file,rh_output_file]=CBIG_gwMRF_build_time_matrix(input_full
     %   - [lh_output_file,rh_output_file]=CBIG_gwMRF_build_time_matrix(input_fullpaths,[output_path,'/time_data/'],start_idx,end_idx,'fsaverage6','lh_time_matrix.mat','rh_time_matrix.mat');
     %   - Example for data used in the paper
     %       - Release Data
-    %           - input_path='/data/users/aschaefer/projects/MRF/data/GSP_official/subject_path.txt'; 
+    %           - input_path='$HOME/projects/MRF/data/GSP_official/subject_path.txt'; 
     %       - Test
-    %           - input_filename='/data/users/aschaefer/projects/MRF/data/GSP_official/GSP_CSV/test/test_filenames_corrected.csv'
-    %           - input_subjectname='/data/users/aschaefer/projects/MRF/data/GSP_official/GSP_CSV/test/test_subjectname_corrected.csv'
+    %           - input_filename='$HOME/projects/MRF/data/GSP_official/GSP_CSV/test/test_filenames_corrected.csv'
+    %           - input_subjectname='$HOME/projects/MRF/data/GSP_official/GSP_CSV/test/test_subjectname_corrected.csv'
     %       - Train
-    %           - input_filename='/data/users/aschaefer/projects/MRF/data/GSP_official/GSP_CSV/train/train_filenames_corrected.csv'
-    %           - input_subjectname='/data/users/aschaefer/projects/MRF/data/GSP_official/GSP_CSV/train/train_subjectnames_corrected.csv'
+    %           - input_filename='$HOME/projects/MRF/data/GSP_official/GSP_CSV/train/train_filenames_corrected.csv'
+    %           - input_subjectname='$HOME/projects/MRF/data/GSP_official/GSP_CSV/train/train_subjectnames_corrected.csv'
     %       - Full
-    %           - input_filename='/data/users/aschaefer/projects/MRF/data/GSP_official/GSP_CSV/full/full_filenames_corrected.csv'
-    %           - input_subjectname='/data/users/aschaefer/projects/MRF/data/GSP_official/GSP_CSV/full/full_subjectnames_corrected.csv'
+    %           - input_filename='$HOME/projects/MRF/data/GSP_official/GSP_CSV/full/full_filenames_corrected.csv'
+    %           - input_subjectname='$HOME/projects/MRF/data/GSP_official/GSP_CSV/full/full_subjectnames_corrected.csv'
     %
     % Written by Alexander Schaefer and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 

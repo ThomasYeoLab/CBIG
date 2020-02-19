@@ -15,6 +15,10 @@ function H = CBIG_MFMem_rfMRI_Num2Color(Wvector,colormap_name)
 % Written by Peng Wang and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 %--------------------------------------------------------------------------
 
+if size(Wvector, 2) > 1
+    error('Input argument ''Wvector'' should be a column vector');
+end
+
 figure
 colormap(colormap_name);
 C = colormap;

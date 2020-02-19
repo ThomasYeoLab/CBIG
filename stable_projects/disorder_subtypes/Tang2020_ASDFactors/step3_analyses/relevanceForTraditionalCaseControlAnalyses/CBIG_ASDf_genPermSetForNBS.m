@@ -29,9 +29,9 @@ function permSet = CBIG_ASDf_genPermSetForNBS(id_factor, id_con, sub_info_file, 
 
 %% Add paths
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-CODE_DIR = [CBIG_CODE_DIR '/stable_projects/disorder_subtypes/Tang2020_ASDFactors'];
-addpath([CBIG_CODE_DIR '/external_packages/matlab/non_default_packages/palm/palm-alpha109']);
-addpath([CODE_DIR '/step3_analyses/utilities']);
+CODE_DIR = fullfile(CBIG_CODE_DIR,'stable_projects','disorder_subtypes','Tang2020_ASDFactors');
+addpath(fullfile(CBIG_CODE_DIR,'external_packages','matlab','non_default_packages','palm','palm-alpha109'));
+addpath(fullfile(CODE_DIR,'step3_analyses','utilities'));
 
 %% Retrieve site information
 id_sites_factor = CBIG_ASDf_getSubData(sub_info_file, id_factor);
@@ -58,5 +58,5 @@ end
 permSet = palm_quickperms([],EB,Nperm); % the 1st column is the original order
 
 %% Remove paths
-rmpath([CBIG_CODE_DIR '/external_packages/matlab/non_default_packages/palm/palm-alpha109']);
-rmpath([CODE_DIR '/step3_analyses/utilities']);
+rmpath(fullfile(CBIG_CODE_DIR,'external_packages','matlab','non_default_packages','palm','palm-alpha109'));
+rmpath(fullfile(CODE_DIR,'step3_analyses','utilities'));

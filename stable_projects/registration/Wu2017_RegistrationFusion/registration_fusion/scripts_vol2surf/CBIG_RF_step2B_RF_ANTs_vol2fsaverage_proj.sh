@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Written by Wu Jianxiao and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
-# This script projects MNI152 index volumes to a specifiec number of GSP subjects' T1 space, using ANTs transforms, and then to fsaverage surface.
+# This script projects MNI152 index volumes to a specifiec number of GSP subjects' T1 space, using ANTs transforms, 
+# and then to fsaverage surface.
 
 ###########################################
 #Define paths
@@ -42,8 +43,10 @@ main(){
         mri_convert $ind_sub_dir/$sub/mri/norm.mgz $reference
 
         #Project the index files
-        cmd="CBIG_antsApplyReg_vol2vol.sh -i $input -r $reference -d $warp_dir -w $warp_prefix -o $output_dir/index_T1 -p $output_prefix -s inverse -t linear -a $ANTs_dir; rm $reference; \
-             $UTILITIES_DIR/CBIG_RF_proj_T1_to_fsaverage.sh $intermediate $output_dir/index_fsaverage $output_prefix $ind_sub_dir ${sub}"
+        cmd="CBIG_antsApplyReg_vol2vol.sh -i $input -r $reference -d $warp_dir -w $warp_prefix -o $output_dir/index_T1 "
+        cmd="$cmd -p $output_prefix -s inverse -t linear -a $ANTs_dir; rm $reference; "
+        cmd="$cmd $UTILITIES_DIR/CBIG_RF_proj_T1_to_fsaverage.sh $intermediate $output_dir/index_fsaverage "
+        cmd="$cmd $output_prefix $ind_sub_dir ${sub}"
 
          #Submit a job to PBS scheduler if specified. Otherwise the command is executed directly
          if [ ! -z $queue ]; then
@@ -66,42 +69,57 @@ main(){
 
 #usage
 usage() { echo "
-Usage: $0 -p <template_type> -n <num_of_sub> -a <ants_dir> -i <input_dir> -w <warp_dir> -l <ind_sub_list> -g <ind_sub_dir> -o output_dir -q <queue> -t <interval>
+Usage: $0 -p <template_type> -n <num_of_sub> -a <ants_dir> -i <input_dir> -w <warp_dir> -l <ind_sub_list> -g \
+       <ind_sub_dir> -o output_dir -q <queue> -t <interval>
 
-This script projects existing x/y/z/ index files in a volumetric atlas space to fsaverage surface as step 2 in RF-ANTs approach. The index files are registered to the volumetric atlas space using ANTs registration results (see $ANTSREG_PREP_SCRIPT about how to run ANTs registration). They are then projected to fsaverage surface.
+This script projects existing x/y/z/ index files in a volumetric atlas space to fsaverage surface as step 2 in RF-ANTs 
+approach. The index files are registered to the volumetric atlas space using ANTs registration results (see 
+$ANTSREG_PREP_SCRIPT about how to run ANTs registration). They are then projected to fsaverage surface.
 
 REQRUIED ARGUMENTS:
-	-p <template_type>      type of volumetric template used in step 1, index files creation. See $SCRIPT_DIR/CBIG_RF_step1_make_xyzIndex_volTemplate.sh for more details.
+	-p <template_type>      type of volumetric template used in step 1, index files creation.
+	                        See $SCRIPT_DIR/CBIG_RF_step1_make_xyzIndex_volTemplate.sh for more details.
 
 OPTIONAL ARGUMENTS:
-	-n <num_of_sub>		number of subjects to use. This means taking the first <num_of_sub> subjects from <ind_sub_list>. For example, setting '-n 50' means the first 50 lines of <ind_sub_list> will be read to get subject IDs. Setting this to 0 will make the script use all subjects from <ind_sub_list>.
+	-n <num_of_sub>		number of subjects to use. This means taking the first <num_of_sub> subjects from 
+	                    <ind_sub_list>. For example, setting '-n 50' means the first 50 lines of <ind_sub_list> will be 
+	                    read to get subject IDs. Setting this to 0 will make the script use all subjects from 
+	                    <ind_sub_list>.
 				[ default: 0 ]
 	-a <ants_dir> 		absolute path to directory where ANTs is installed
 				[ default: $ANTSPATH ]
-	-i <input_dir> 		absolute path to input directory. The inputs are the index files created in step 1, i.e. the input directory should be the same as output directory in step 1.
+	-i <input_dir> 		absolute path to input directory. The inputs are the index files created in step 1, i.e. the 
+	                    input directory should be the same as output directory in step 1.
 				[ default: $(pwd)/results/index_MNI152 ]
-	-w <warp_dir> 		absolute path to ANTs registration results directory. If the resutls were generated using $ANTSREG_PREP_SCRIPT, this directory should be the same as output directory used in the preparation step.
+	-w <warp_dir> 		absolute path to ANTs registration results directory. If the resutls were generated using 
+	                    $ANTSREG_PREP_SCRIPT, this directory should be the same as output directory used in the 
+	                    preparation step.
 				[ default: $(pwd)/results/antsReg ]
-	-l <ind_sub_list> 	absolute path to a file containing individual subject IDs. Each line in the file should contain one subject ID.
+	-l <ind_sub_list> 	absolute path to a file containing individual subject IDs. Each line in the file should contain 
+	                    one subject ID.
 				[ default: $DEFAULT_GSP_SUBLIST ]
 	-g <ind_sub_dir> 	SUBJECTS_DIR of individual subjects' recon-all results
-				[ default: /mnt/yeogrp/data/GSP_release/ ]
+				[ default: $CBIG_RF_REP_GSP_DIR ]
         -o <output_dir>         absolute path to output directory
 				[ default: $(pwd)/results/ ]
-	-q <queue> 		for PBS scheduler users, this is equivalent to the -q option for qsub. For example, setting "-q circ-spool" will make the script submit jobs to job scheduler using "qsub -q circ-spool"
+	-q <queue> 		for PBS scheduler users, this is equivalent to the -q option for qsub. For example, setting 
+	                "-q circ-spool" will make the script submit jobs to job scheduler using "qsub -q circ-spool"
 				[ default: unset ]
-	-t <interval> 		time interval between job submits. For example, the default setting means after each job is submitted, the script 'sleep' for 10 seconds before submitting the next one.
+	-t <interval> 		time interval between job submits. For example, the default setting means after each job is 
+	                    submitted, the script 'sleep' for 10 seconds before submitting the next one.
 				[ default: 10s ]
 	-h			display help message
 	
 OUTPUTS:
 	$0 will create 3 folders.
-	1) index_T1 folder: 3 files will be generated for each subject, corresponding to the x/y/z index files projected to the subject's T1 space. 
+	1) index_T1 folder: 3 files will be generated for each subject, corresponding to the x/y/z index files projected to 
+	   the subject's T1 space. 
 	For example: 
 		xIndex_RF_ANTs_FSL_MNI152_FS4.5_to_Sub0001_Ses1_FS.nii.gz
                 yIndex_RF_ANTs_FSL_MNI152_FS4.5_to_Sub0001_Ses1_FS.nii.gz
                 zIndex_RF_ANTs_FSL_MNI152_FS4.5_to_Sub0001_Ses1_FS.nii.gz
-	2) index_fsaverage folder: 3 files will be generated for each subject, corresponding to the x/y/z index files projected to fsaverage through that subject. 
+	2) index_fsaverage folder: 3 files will be generated for each subject, corresponding to the x/y/z index files 
+	   projected to fsaverage through that subject. 
 	For example: 
 		lh.xIndex_RF_ANTs_FSL_MNI152_FS4.5_to_Sub0001_Ses1_FS_to_fsaverage.nii.gz
                 rh.xIndex_RF_ANTs_FSL_MNI152_FS4.5_to_Sub0001_Ses1_FS_to_fsaverage.nii.gz
@@ -132,7 +150,7 @@ ANTs_dir=$ANTSPATH
 input_dir=$(pwd)/results/index_MNI152/
 warp_dir=$(pwd)/results/antsReg/
 ind_sub_list=$DEFAULT_GSP_SUBLIST
-ind_sub_dir=/mnt/yeogrp/data/GSP_release/
+ind_sub_dir=$CBIG_RF_REP_GSP_DIR
 output_dir=$(pwd)/results
 interval=10s
 

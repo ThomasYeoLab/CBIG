@@ -40,10 +40,10 @@ end
 
 %% Add paths
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-ZHANG_DIR = '/stable_projects/disorder_subtypes/Zhang2016_ADFactors';
-addpath([ZHANG_DIR '/step3_analyses_internalUse/functions']);
-addpath([ZHANG_DIR '/step3_analyses_internalUse/characteristics']);
-addpath([ZHANG_DIR '/step3_analyses_internalUse/MCI2ADProgression']);
+ZHANG_DIR = fullfile(CBIG_CODE_DIR,'stable_projects','disorder_subtypes','Zhang2016_ADFactors');
+addpath(fullfile(ZHANG_DIR,'step3_analyses_internalUse','functions'));
+addpath(fullfile(ZHANG_DIR,'step3_analyses_internalUse','characteristics'));
+addpath(fullfile(ZHANG_DIR,'step3_analyses_internalUse','MCI2ADProgression'));
 
 %% Get participants' IDs in the current cluster having the set of behavior scores
 [~, id_dx] = CBIG_ASDf_getSubData(sub_info_file);
@@ -96,7 +96,6 @@ p_lr = CBIG_lr_test(X_r, y, n, ll_u, dof);
 fprintf('p = %e\n', p_lr);
 
 %% Remove paths
-rmpath([ZHANG_DIR '/step3_analyses_internalUse/functions']);
-rmpath([ZHANG_DIR '/step3_analyses_internalUse/characteristics']);
-rmpath([ZHANG_DIR '/step3_analyses_internalUse/MCI2ADProgression']);
-
+rmpath(fullfile(ZHANG_DIR,'step3_analyses_internalUse','functions'));
+rmpath(fullfile(ZHANG_DIR,'step3_analyses_internalUse','characteristics'));
+rmpath(fullfile(ZHANG_DIR,'step3_analyses_internalUse','MCI2ADProgression'));

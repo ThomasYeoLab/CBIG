@@ -12,11 +12,11 @@ NOTE: All the input data and directories in the unit tests **only work for CBIG 
 
 ----
 ## Reference
-Siyi Tang*, Nanbo Sun*, Dorothea L. Floris, Xiuming Zhang, Adriana Di Martino, B.T. Thomas Yeo. [Reconciling Dimensional and Categorical Models of Autism Heterogeneity: a Brain Connectomics & Behavioral Study](https://doi.org/10.1101/692772). Under review.
+Siyi Tang*, Nanbo Sun*, Dorothea L. Floris, Xiuming Zhang, Adriana Di Martino, B.T. Thomas Yeo. [Reconciling Dimensional and Categorical Models of Autism Heterogeneity: a Brain Connectomics & Behavioral Study](https://doi.org/10.1016/j.biopsych.2019.11.009). Biological psychiatry, in press.
 
 ----
 ## Data
-Data for unit tests are located at `/mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/disorder_subtypes/Tang2020_ASDFactors/data/data_short`
+Data for unit tests are located at `$CBIG_TESTDATA_DIR/stable_projects/disorder_subtypes/Tang2020_ASDFactors/data`
 
 ----
 ## Run Unit Tests & Check Results
@@ -28,7 +28,7 @@ make # compile
 ```
 To run the unit tests, go to the unit tests directory `$CBIG_CODE_DIR/stable_projects/disorder_subtypes/Tang2020_ASDFactors/unit_tests/scripts` and run `runtests('CBIG_ASDf_unit_test.m')` in MATLAB.
 
-This MATLAB test script will call the bash script `CBIG_ASDf_unit_test.sh`, which will submit a job to `circ-spool` cluster, and run the steps mentioned above. For Step 2A factor estimation, it will submit another 5 jobs to our cluster to run 5 random initializations for two-factor estimate. After the 5 jobs have finished, the bash script will proceed to Step 2B. Lastly, the test script will compare the outputs with the reference results located at `/mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/disorder_subtypes/Tang2019_ASDFactors/results/results_short`.
+This MATLAB test script will call the bash script `CBIG_ASDf_unit_test.sh`, which will submit a job to `circ-spool` cluster, and run the steps mentioned above. For Step 2A factor estimation, it will submit another 5 jobs to our cluster to run 5 random initializations for two-factor estimate. After the 5 jobs have finished, the bash script will proceed to Step 2B. Lastly, the test script will compare the outputs with the reference results located at `$CBIG_TESTDATA_DIR/stable_projects/disorder_subtypes/Tang2019_ASDFactors/results`.
 
 ----
 ## Bugs and Questions

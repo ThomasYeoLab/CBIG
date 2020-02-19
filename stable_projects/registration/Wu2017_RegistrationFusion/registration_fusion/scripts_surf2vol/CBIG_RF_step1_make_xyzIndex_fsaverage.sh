@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Written by Wu Jianxiao and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
-#This function runs the CBIG_make_xyzIndex_surf function to make index volumes for each GSP subject (x/y/z coordinates of vertex in fsaverage registered to subject's surface space)
+# This function runs the CBIG_make_xyzIndex_surf function to make index volumes for each GSP subject (x/y/z coordinates 
+# of vertex in fsaverage registered to subject's surface space)
 
 ###########################################
 #Define paths
@@ -34,7 +35,8 @@ main(){
 
       #Run index file creation if the output does not exist yet
       if [ ! -e $output ]; then
-        matlab -nodesktop -nosplash -nojvm -r "addpath('$UTILITIES_DIR'); CBIG_RF_make_xyzIndex_surf('$reg_dir', '$output_dir', '$output_prefix'); exit"
+        matlab -nodesktop -nosplash -nojvm -r "addpath('$UTILITIES_DIR'); CBIG_RF_make_xyzIndex_surf('$reg_dir', \
+        '$output_dir', '$output_prefix'); exit"
       else
         echo "Index file for $sub in $hemi has already been created."
       fi
@@ -50,16 +52,23 @@ main(){
 usage() { echo "
 Usage: $0 -l <ind_sub_list> -g <ind_sub_dir> -n <num_of_sub> -o <output_dir>
 
-This script creates fsaveraeg x/y/z index files as step 1 in RF approaches. Recon-all process should have been carried out for each individual subject before this step, where surface registration between subject and fsaverage is done. In an index file, each vertex in an individual subject is assigned value based on the x/y/z coordinate of its corresponding vertex in fsaverage surface.
+This script creates fsaveraeg x/y/z index files as step 1 in RF approaches. Recon-all process should have been carried 
+out for each individual subject before this step, where surface registration between subject and fsaverage is done. 
+In an index file, each vertex in an individual subject is assigned value based on the x/y/z coordinate of its 
+corresponding vertex in fsaverage surface.
 
 REQUIRED ARGUMENTS:
-        -n <num_of_sub>         number of subjects to use. This means taking the first <num_of_sub> subjects from <ind_sub_list>. For example, setting '-n 50' means the first 50 lines of <ind_sub_list> will be read to get subject IDs. Setting this to 0 will make the script use all subjects from <ind_sub_list>.
+        -n <num_of_sub>         number of subjects to use. This means taking the first <num_of_sub> subjects from 
+                                <ind_sub_list>. For example, setting '-n 50' means the first 50 lines of <ind_sub_list> 
+                                will be read to get subject IDs. Setting this to 0 will make the script use all 
+                                subjects from <ind_sub_list>.
 
 OPTIONAL ARGUMENTS:
-	-l <ind_sub_list> 	absolute path to a file containing individual subject IDs. Each line in the file should contain one subject ID.
+	-l <ind_sub_list> 	absolute path to a file containing individual subject IDs. Each line in the file should contain 
+	                    one subject ID.
 				[ default: $DEFAULT_GSP_SUBLIST ]
 	-g <ind_sub_dir> 	SUBJECTS_DIR of individual subjects' recon-all results
-				[ default: /mnt/yeogrp/data/GSP_release ]
+				[ default: $CBIG_RF_REP_GSP_DIR ]
 	-o <output_dir>		absolute path to output directory
 				[ default: $(pwd)/results/index_fsaverage ]
 	-h			display help message
@@ -91,7 +100,7 @@ fi
 
 #Default parameters
 ind_sub_list=$DEFAULT_GSP_SUBLIST
-ind_sub_dir=/mnt/yeogrp/data/GSP_release
+ind_sub_dir=$CBIG_RF_REP_GSP_DIR
 output_dir=$(pwd)/results/index_fsaverage
 
 #Assign arguments

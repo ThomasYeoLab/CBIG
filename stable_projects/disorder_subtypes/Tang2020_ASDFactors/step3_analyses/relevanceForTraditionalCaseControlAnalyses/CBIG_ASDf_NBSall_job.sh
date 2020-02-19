@@ -32,7 +32,7 @@ env | grep CBIG_SPM_DIR >> $LF
 ########## Run Network-based statistic ############
 
 
-/apps/sysapps/TORQUE/bin/qsub -V -q circ-spool << EOJ
+$CBIG_SCHEDULER_DIR/qsub -V -q circ-spool << EOJ
 
 #!/bin/sh
 

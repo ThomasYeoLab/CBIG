@@ -112,5 +112,5 @@ All the code of SPM VBM are in `code` folder. The main functions of SPM VBM are 
     *  Mask (mask_fsl_0_1_MNI2mm_maskbrain.nii.gz)
 ----
 ## Examples
-The examples are here: `code/CBIG_MMLDA_runVBM_example.sh` `code/CBIG_MMLDA_runVBM_givenTemp_example.sh`. You can also find the results of examples in `/mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/disorder_subtypes/Sun2018_ADJointFactors/step1_SPM_VBM/results`.
+The examples are here: `code/CBIG_MMLDA_runVBM_example.sh` `code/CBIG_MMLDA_runVBM_givenTemp_example.sh`. You can also find the results of examples in `${CBIG_TESTDATA_DIR}/stable_projects/disorder_subtypes/Sun2018_ADJointFactors/step1_SPM_VBM/results`.
 

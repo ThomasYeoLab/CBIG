@@ -17,18 +17,19 @@ p_behavior = [];
 
 %% Add paths
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-CODE_DIR = [CBIG_CODE_DIR '/stable_projects/disorder_subtypes/Tang2020_ASDFactors'];
-addpath([CODE_DIR '/step3_analyses/utilities']);
-addpath([CODE_DIR '/step3_analyses/behavioralAssociation']);
-addpath([CBIG_CODE_DIR '/external_packages/matlab/non_default_packages/palm/palm-alpha109']);
+CODE_DIR = fullfile(CBIG_CODE_DIR,'stable_projects','disorder_subtypes','Tang2020_ASDFactors');
+addpath(fullfile(CODE_DIR,'step3_analyses','utilities'));
+addpath(fullfile(CODE_DIR,'step3_analyses','behavioralAssociation'));
+addpath(fullfile(CBIG_CODE_DIR,'external_packages','matlab','non_default_packages','palm','palm-alpha109'));
 
-unit_test_dir='/mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/disorder_subtypes/Tang2020_ASDFactors';
-input_dir = [unit_test_dir '/data/data_long'];
-ref_dir = [unit_test_dir '/results/results_long'];
+CBIG_REPDATA_DIR = genev('CBIG_REPDATA_DIR');
+unit_test_dir=fullfile(CBIG_REPDATA_DIR,'stable_projects','disorder_subtypes','Tang2020_ASDFactors');
+input_dir = fullfile(unit_test_dir,'data');
+ref_dir = fullfile(unit_test_dir,'results');
 
 %% Prepare CCA inputs
-path_behav_scores = [input_dir '/behavior_scores_654.csv'];
-path_subInfo = [input_dir '/subInfo_654.csv'];
+path_behav_scores = fullfile(input_dir,'behavior_scores_654.csv');
+path_subInfo = fullfile(input_dir,'subInfo_654.csv');
 
 T = readtable(path_behav_scores);
 score_names = T.Properties.VariableNames;
@@ -56,7 +57,8 @@ PAPset=palm_quickperms([],EB,Nperm);
 num_factors = 3;
 run_num = 94; % Final estimate
 factor_order = [3 2 1]; % Reorder the factor
-path_factorLoading = [ref_dir '/visualizeFactors/k' num2str(num_factors) '/r' num2str(run_num) '/factorComp.txt'];
+path_factorLoading = fullfile(ref_dir,'visualizeFactors',['k' num2str(num_factors)], ...
+    ['r' num2str(run_num)],'factorComp.txt');
 %%% CCA for each factor
 for factor_idx = 1:num_factors
     num_factors
@@ -65,7 +67,7 @@ for factor_idx = 1:num_factors
         PAPset, path_subInfo, path_behav_scores, path_factorLoading, factor_order, factor_idx);
     % Plot the results
     if Ncca > 0
-        file_name = [outputDir '/RRB_k=3_F' num2str(factor_idx)];
+        file_name = fullfile(outputDir, ['RRB_k=3_F' num2str(factor_idx)]);
         CBIG_ASDf_CCA_plotBar(score_names(ind_scores), strucCorr_score, [file_name '_barPlot']);
         CBIG_ASDf_CCA_plotScatter(V, U, R, pVal, factor_idx, [file_name '_scatterPlot']);
     end
@@ -81,7 +83,8 @@ PAPset=palm_quickperms([],EB,Nperm);
 num_factors = 3;
 run_num = 94; % Final estimate
 factor_order = [3 2 1]; % Reorder the factor
-path_factorLoading = [ref_dir '/visualizeFactors/k' num2str(num_factors) '/r' num2str(run_num) '/factorComp.txt'];
+path_factorLoading = fullfile(ref_dir,'visualizeFactors',['k' num2str(num_factors)], ...
+    ['r' num2str(run_num)],'factorComp.txt');
 %%% CCA for each factor
 for factor_idx = 1:num_factors
     num_factors
@@ -90,35 +93,13 @@ for factor_idx = 1:num_factors
         PAPset, path_subInfo, path_behav_scores, path_factorLoading, factor_order, factor_idx);
     % Plot the results
     if Ncca > 0
-        file_name = [outputDir '/SRS_k=3_F' num2str(factor_idx)];
-        CBIG_ASDf_CCA_plotBar(score_names(ind_scores), strucCorr_score, [file_name '_barPlot']);
-        CBIG_ASDf_CCA_plotScatter(V, U, R, pVal, factor_idx, [file_name '_scatterPlot']);
-    end
-    p_behavior = [p_behavior; pVal];
-end% disp('----------Social responsiveness:');
-ind_scores = [19:22]; %hard-coded
-[id_keep, EB, reg] = CBIG_ASDf_CCA_genInputs(ind_scores,path_behav_scores,id_all,dx_info,regressors_CCA);
-PAPset=palm_quickperms([],EB,Nperm);
-
-%% K=3
-num_factors = 3;
-run_num = 94; % Final estimate
-factor_order = [3 2 1]; % Reorder the factor
-path_factorLoading = [ref_dir '/visualizeFactors/k' num2str(num_factors) '/r' num2str(run_num) '/factorComp.txt'];
-%%% CCA for each factor
-for factor_idx = 1:num_factors
-    num_factors
-    factor_idx
-    [A, strucCorr_score, B, U, V, R, Rp, pVal, Ncca] = CBIG_ASDf_CCA_factorBehavior(ind_scores, id_keep, reg, ...
-        PAPset, path_subInfo, path_behav_scores, path_factorLoading, factor_order, factor_idx);
-    % Plot the results
-    if Ncca > 0
-        file_name = [outputDir '/SRS_k=3_F' num2str(factor_idx)];
+        file_name = fullfile(outputDir, ['SRS_k=3_F' num2str(factor_idx)]);
         CBIG_ASDf_CCA_plotBar(score_names(ind_scores), strucCorr_score, [file_name '_barPlot']);
         CBIG_ASDf_CCA_plotScatter(V, U, R, pVal, factor_idx, [file_name '_scatterPlot']);
     end
     p_behavior = [p_behavior; pVal];
 end
+
 
 %% Comorbid psychopathology (CBCL)
 disp('----------Comorbid psychopathology:');
@@ -129,7 +110,8 @@ PAPset=palm_quickperms([],EB,Nperm);
 num_factors = 3;
 run_num = 94; % Final estimate
 factor_order = [3 2 1]; % Reorder the factor
-path_factorLoading = [ref_dir '/visualizeFactors/k' num2str(num_factors) '/r' num2str(run_num) '/factorComp.txt'];
+path_factorLoading = fullfile(ref_dir,'visualizeFactors',['k' num2str(num_factors)], ...
+    ['r' num2str(run_num)],'factorComp.txt');
 %%% CCA for each factor
 for factor_idx = 1:num_factors
     num_factors
@@ -138,7 +120,7 @@ for factor_idx = 1:num_factors
         PAPset, path_subInfo, path_behav_scores, path_factorLoading, factor_order, factor_idx);
     % Plot the results
     if Ncca > 0
-        file_name = [outputDir '/CBCL_k=3_F' num2str(factor_idx)];
+        file_name = fullfile(outputDir, ['CBCL_k=3_F' num2str(factor_idx)]);
         CBIG_ASDf_CCA_plotBar(score_names(ind_scores), strucCorr_score, [file_name '_barPlot']);
         CBIG_ASDf_CCA_plotScatter(V, U, R, pVal, factor_idx, [file_name '_scatterPlot']);
     end
@@ -155,7 +137,8 @@ PAPset=palm_quickperms([],EB,Nperm);
 num_factors = 3;
 run_num = 94; % Final estimate
 factor_order = [3 2 1]; % Reorder the factor
-path_factorLoading = [ref_dir '/visualizeFactors/k' num2str(num_factors) '/r' num2str(run_num) '/factorComp.txt'];
+path_factorLoading = fullfile(ref_dir,'visualizeFactors',['k' num2str(num_factors)], ...
+    ['r' num2str(run_num)],'factorComp.txt');
 %%% CCA for each factor
 for factor_idx = 1:num_factors
     num_factors
@@ -164,7 +147,7 @@ for factor_idx = 1:num_factors
         PAPset, path_subInfo, path_behav_scores, path_factorLoading, factor_order, factor_idx);
     % Plot the results
     if Ncca > 0
-        file_name = [outputDir '/BRIEF_k=3_F' num2str(factor_idx)];
+        file_name = fullfile(outputDir, ['BRIEF_k=3_F' num2str(factor_idx)]);
         CBIG_ASDf_CCA_plotBar(score_names(ind_scores), strucCorr_score, [file_name '_barPlot']);
         CBIG_ASDf_CCA_plotScatter(V, U, R, pVal, factor_idx, [file_name '_scatterPlot']);
     end
@@ -181,7 +164,8 @@ PAPset=palm_quickperms([],EB,Nperm);
 num_factors = 3;
 run_num = 94; % Final estimate
 factor_order = [3 2 1]; % Reorder the factor
-path_factorLoading = [ref_dir '/visualizeFactors/k' num2str(num_factors) '/r' num2str(run_num) '/factorComp.txt'];
+path_factorLoading = fullfile(ref_dir,'visualizeFactors',['k' num2str(num_factors)], ...
+    ['r' num2str(run_num)],'factorComp.txt');
 %%% CCA for each factor
 for factor_idx = 1:num_factors
     num_factors
@@ -190,7 +174,7 @@ for factor_idx = 1:num_factors
         PAPset, path_subInfo, path_behav_scores, path_factorLoading, factor_order, factor_idx);
     % Plot the results
     if Ncca > 0
-        file_name = [outputDir '/ADOS_k=3_F' num2str(factor_idx)];
+        file_name = fullfile(outputDir, ['ADOS_k=3_F' num2str(factor_idx)]);
         CBIG_ASDf_CCA_plotBar(score_names(ind_scores), strucCorr_score, [file_name '_barPlot']);
         CBIG_ASDf_CCA_plotScatter(V, U, R, pVal, factor_idx, [file_name '_scatterPlot']);
     end
@@ -198,8 +182,8 @@ for factor_idx = 1:num_factors
 end
 
 %% Remove path
-rmpath([CODE_DIR '/step3_analyses/utilities']);
-rmpath([CODE_DIR '/step3_analyses/behavioralAssociation']);
-rmpath([CBIG_CODE_DIR '/external_packages/matlab/non_default_packages/palm/palm-alpha109']);
+rmpath(fullfile(CODE_DIR,'step3_analyses','utilities'));
+rmpath(fullfile(CODE_DIR,'step3_analyses','behavioralAssociation'));
+rmpath(fullfile(CBIG_CODE_DIR,'external_packages','matlab','non_default_packages','palm','palm-alpha109'));
 
 end

@@ -16,13 +16,13 @@ user=`whoami`
 code_dir=$CBIG_CODE_DIR/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Code
 
 # data_dir containing data used by unit test
-data_dir=/mnt/eql/yeo1/CBIG_private_data/unit_tests/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/data
+data_dir=$CBIG_TESTDATA_DIR/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/data
 
 # ref_dir containing reference results
-ref_dir=/mnt/eql/yeo1/CBIG_private_data/unit_tests/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/results
+ref_dir=$CBIG_TESTDATA_DIR/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/results
 
 # pass in output_dir
-output_dir=${1}
+output_dir=`realpath ${1}`
 mkdir -p ${output_dir}/logs
 mkdir -p ${output_dir}/job_err_out
 
@@ -38,7 +38,7 @@ echo -e "Reference folder = ${ref_dir} \n\n" >> $LF
 # Create input time and mult matrix
 ####################################
 
-/apps/sysapps/TORQUE/bin/qsub -V -q circ-spool << EOJ
+$CBIG_SCHEDULER_DIR/qsub -V -q circ-spool << EOJ
 #!/bin/sh
 #PBS -S /bin/bash
 #PBS -N 'gwMRF_mult'
@@ -70,17 +70,25 @@ while [ "${flag}" == "1" ]
 do 
 	num_job=`qstat -u ${user} | grep gwMRF_mult | wc -l`
 	if [ "${num_job}" == "1" ]; then
-		sleep 30s
+		sleep 3s
 	else
 		flag=0
 	fi
 done
 
+job1_out_file=${output_dir}/mult_mat/rh_mult_matrix.mat
+if [ ! -f $job1_out_file ]; then
+	echo "[FAILED] Job is unsuccessful. Output file: $job1_out_file does not exist."
+	exit 1
+fi
+
+
+
 ####################################################
 # Generate intermediate LH parcellation for seed 1
 ####################################################
 
-/apps/sysapps/TORQUE/bin/qsub -V -q circ-spool << EOJ
+$CBIG_SCHEDULER_DIR/qsub -V -q circ-spool << EOJ
 #!/bin/sh
 #PBS -S /bin/bash
 #PBS -N 'gwMRF_seed1'
@@ -103,7 +111,7 @@ EOJ
 # Generate intermediate RH parcellation for seed 2
 ####################################################
 
-/apps/sysapps/TORQUE/bin/qsub -V -q circ-spool << EOJ
+$CBIG_SCHEDULER_DIR/qsub -V -q circ-spool << EOJ
 #!/bin/sh
 #PBS -S /bin/bash
 #PBS -N 'gwMRF_seed2'
@@ -122,24 +130,67 @@ matlab -nosplash -nodisplay -nodesktop -r "addpath(genpath(\
 
 EOJ
 
-######################################################
-# Compare results to check whether code pass unit test
-######################################################
-
+##############################################
+# Hold until first iteration results generated
+##############################################
 prefix=Graph_Cut_faster__grad_prior_gordon_cluster_20_datacost_1_smoothcost_1000_iterations_2
 file_seed1=${output_dir}/clustering/inbetween_results/${prefix}_seed_1_lh_reduction_iteration_1.mat
 file_seed2=${output_dir}/clustering/inbetween_results/${prefix}_seed_2_rh_reduction_iteration_1.mat
 
 flag=1
 while [ "${flag}" == "1" ]
-do
-	if [ -f "${file_seed1}" ] && [ -f "${file_seed2}" ]; then
-		job_id=`qstat -u ${user}| grep gwMRF_seed1 | awk '{print $1}' | sed 's/.circuv//g'`
-		qdel ${job_id}
-		job_id=`qstat -u ${user}| grep gwMRF_seed2 | awk '{print $1}' | sed 's/.circuv//g'`
-		qdel ${job_id}
+do 
+	num_job=`qstat -u ${user} | grep gwMRF_seed1 | wc -l`
+	if [ "${num_job}" == "1" ]; then
+		
+		if [ -f "${file_seed1}" ]; then
+			job_id=`qstat -u ${user}| grep gwMRF_seed1 | awk '{print $1}' | sed 's/.circuv//g'`
+			qdel ${job_id}
+			flag=0
+		else
+			sleep 3s
+		fi
+		
+	else
+		flag=0
+	fi
+done
 
-/apps/sysapps/TORQUE/bin/qsub -V -q circ-spool << EOJ
+if [ ! -f $file_seed1 ]; then
+	echo "[FAILED] Job is unsuccessful. Output file: $file_seed1 does not exist."
+	exit 1
+fi
+
+flag=1
+while [ "${flag}" == "1" ]
+do 
+	num_job=`qstat -u ${user} | grep gwMRF_seed2 | wc -l`
+	if [ "${num_job}" == "1" ]; then
+		
+		if [ -f "${file_seed2}" ]; then
+			job_id=`qstat -u ${user}| grep gwMRF_seed2 | awk '{print $1}' | sed 's/.circuv//g'`
+			qdel ${job_id}
+			flag=0
+		else
+			sleep 3s
+		fi
+		
+	else
+		flag=0
+	fi
+done
+
+if [ ! -f $file_seed2 ]; then
+	echo "[FAILED] Job is unsuccessful. Output file: $file_seed2 does not exist."
+	exit 1
+fi
+
+######################################################
+# Compare results to check whether code pass unit test
+######################################################
+
+
+$CBIG_SCHEDULER_DIR/qsub -V -q circ-spool << EOJ
 #!/bin/sh
 #PBS -S /bin/bash
 #PBS -N 'gwMRF_compare'
@@ -154,22 +205,24 @@ matlab -nosplash -nodisplay -nodesktop -r "clear;clc;close all;CBIG_gwMRF_check_
 		
 EOJ
 
-		job_status=1
-		while [ "${job_status}" == "1" ]
-		do 
-			num_job=`qstat -u ${user} | grep gwMRF_mult | wc -l`
-			if [ "${num_job}" == "1" ]; then
-				sleep 30s
-			else
-				job_status=0
-			fi
-		done
-		flag=0
+flag=1
+while [ "${flag}" == "1" ]
+do 
+	num_job=`qstat -u ${user} | grep gwMRF_compare | wc -l`
+	if [ "${num_job}" == "1" ]; then
+		sleep 3s
 	else
-		sleep 30s
+		flag=0
 	fi
 done
 
+fail=`grep FAILED $LF | wc -l`
+success=`grep SUCCESS $LF | wc -l`
+if [ $fail -gt 0 ] || [ $success -eq 0 ]; then
+	echo "[FAILED] Job is unsuccessful. Check log file: $LF."
+	exit 1
+fi
+		
 ##################
 # End of unit test
 ##################

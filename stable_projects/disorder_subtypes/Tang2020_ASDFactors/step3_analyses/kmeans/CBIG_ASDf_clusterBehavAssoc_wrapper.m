@@ -20,23 +20,24 @@ function p_behavior =  CBIG_ASDf_clusterBehavAssoc_wrapper(outputDir)
 
 %% Add paths
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-CODE_DIR = [CBIG_CODE_DIR '/stable_projects/disorder_subtypes/Tang2020_ASDFactors'];
-UNIT_TEST_DIR = '/mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/disorder_subtypes/Tang2020_ASDFactors';
-addpath([CODE_DIR '/step3_analyses/utilities']);
-addpath([CODE_DIR '/step3_analyses/behavioralAssociation']);
-addpath([CBIG_CODE_DIR '/external_packages/matlab/non_default_packages/palm/palm-alpha109']);
+CODE_DIR = fullfile(CBIG_CODE_DIR,'stable_projects','disorder_subtypes','Tang2020_ASDFactors');
+CBIG_REPDATA_DIR = getenv('CBIG_REPDATA_DIR');
+UNIT_TEST_DIR = fullfile(CBIG_REPDATA_DIR,'stable_projects','disorder_subtypes','Tang2020_ASDFactors');
+addpath(fullfile(CODE_DIR,'step3_analyses','utilities'));
+addpath(fullfile(CODE_DIR,'step3_analyses','behavioralAssociation'));
+addpath(fullfile(CBIG_CODE_DIR,'external_packages','matlab','non_default_packages','palm','palm-alpha109'));
 
 %% Some constants
-kmeans_results = [UNIT_TEST_DIR '/results/results_long/kmeans/kmeans_clusters.mat'];
+kmeans_results = fullfile(UNIT_TEST_DIR,'results','kmeans','kmeans_clusters.mat');
 load(kmeans_results); % idx: cluster indices
 cluster2factorIdx = [2, 1, 3]; % re-order to match kmeans clusters with factors
 
-input_dir = [UNIT_TEST_DIR '/data/data_long'];
+input_dir = fullfile(UNIT_TEST_DIR,'data');
 
 p_behavior = [];
 %% Prepare inputs
-behav_score_file = [input_dir '/behavior_scores_654.csv'];
-sub_info_file = [input_dir '/subInfo_654.csv'];
+behav_score_file = fullfile(input_dir,'behavior_scores_654.csv');
+sub_info_file = fullfile(input_dir,'subInfo_654.csv');
 
 T = readtable(behav_score_file);
 score_names = T.Properties.VariableNames;
@@ -58,7 +59,7 @@ id_scoreGrp = CBIG_ASDf_CCA_genInputs(idx_score,behav_score_file,id_all,dx_info,
 cluster_idx = idx == curr_cluster;
 [model, p] = CBIG_ASDf_logReg_clusterBehavAssoc(cluster_idx, id_scoreGrp, sub_info_file, behav_score_file, idx_score);
 
-file_name = [outputDir '/RRB_cluster1'];
+file_name = fullfile(outputDir,'RRB_cluster1');
 coef = model.Coefficients(2:length(idx_score)+1,1);
 p_scores = model.Coefficients(2:length(idx_score)+1,4);
 Rsquared = model.Rsquared;
@@ -79,7 +80,7 @@ id_scoreGrp = CBIG_ASDf_CCA_genInputs(idx_score,behav_score_file,id_all,dx_info,
 cluster_idx = idx == curr_cluster;
 [model, p] = CBIG_ASDf_logReg_clusterBehavAssoc(cluster_idx, id_scoreGrp, sub_info_file, behav_score_file, idx_score);
 
-file_name = [outputDir '/SRS_cluster1'];
+file_name = fullfile(outputDir,'SRS_cluster1');
 coef = model.Coefficients(2:length(idx_score)+1,1);
 p_scores = model.Coefficients(2:length(idx_score)+1,4);
 Rsquared = model.Rsquared;
@@ -101,7 +102,7 @@ id_scoreGrp = CBIG_ASDf_CCA_genInputs(idx_score,behav_score_file,id_all,dx_info,
 cluster_idx = idx == curr_cluster;
 [model, p] = CBIG_ASDf_logReg_clusterBehavAssoc(cluster_idx, id_scoreGrp, sub_info_file, behav_score_file, idx_score);
 
-file_name = [outputDir '/CBCL_cluster1'];
+file_name = fullfile(outputDir, 'CBCL_cluster1');
 coef = model.Coefficients(2:length(idx_score)+1,1);
 p_scores = model.Coefficients(2:length(idx_score)+1,4);
 Rsquared = model.Rsquared;
@@ -122,7 +123,7 @@ id_scoreGrp = CBIG_ASDf_CCA_genInputs(idx_score,behav_score_file,id_all,dx_info,
 cluster_idx = idx == curr_cluster;
 [model, p] = CBIG_ASDf_logReg_clusterBehavAssoc(cluster_idx, id_scoreGrp, sub_info_file, behav_score_file, idx_score);
 
-file_name = [outputDir '/CBCL_cluster2'];
+file_name = fullfile(outputDir, 'CBCL_cluster2');
 coef = model.Coefficients(2:length(idx_score)+1,1);
 p_scores = model.Coefficients(2:length(idx_score)+1,4);
 Rsquared = model.Rsquared;
@@ -143,7 +144,7 @@ id_scoreGrp = CBIG_ASDf_CCA_genInputs(idx_score,behav_score_file,id_all,dx_info,
 cluster_idx = idx == curr_cluster;
 [model, p] = CBIG_ASDf_logReg_clusterBehavAssoc(cluster_idx, id_scoreGrp, sub_info_file, behav_score_file, idx_score);
 
-file_name = [outputDir '/BRIEF_cluster2'];
+file_name = fullfile(outputDir, 'BRIEF_cluster2');
 coef = model.Coefficients(2:length(idx_score)+1,1);
 p_scores = model.Coefficients(2:length(idx_score)+1,4);
 Rsquared = model.Rsquared;
@@ -157,8 +158,8 @@ p_behavior = [p_behavior; p];
 
 %% Remove path
 close all;
-rmpath([CODE_DIR '/step3_analyses/utilities']);
-rmpath([CODE_DIR '/step3_analyses/behavioralAssociation']);
-rmpath([CBIG_CODE_DIR '/external_packages/matlab/non_default_packages/palm/palm-alpha109']);
+rmpath(fullfile(CODE_DIR,'step3_analyses','utilities'));
+rmpath(fullfile(CODE_DIR,'step3_analyses','behavioralAssociation'));
+rmpath(fullfile(CBIG_CODE_DIR,'external_packages','matlab','non_default_packages','palm','palm-alpha109'));
 
 end

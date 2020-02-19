@@ -5,7 +5,7 @@ We also release the RSFC and behavioral loadings associated with LCs 1-3.
 ----
 
 ## Reference
-Kebets V, Holmes AJ, Orban C, Tang S, Li J, Sun N, Kong R, Poldrack RA, Yeo BTT. **Somatosensory-Motor Dysconnectivity Spans Multiple Transdiagnostic Dimensions of Psychopathology**. Biological Psychiatry (in press).
+Kebets V, Holmes AJ, Orban C, Tang S, Li J, Sun N, Kong R, Poldrack RA, Yeo BTT. **Somatosensory-Motor Dysconnectivity Spans Multiple Transdiagnostic Dimensions of Psychopathology**. Biological Psychiatry, 86(10): 779-791, 2019
 
 ----
 
@@ -26,6 +26,7 @@ Note that the ROIs are re-arranged for visualisation.
 ## PLS loadings
 ### RSFC and behavioral loadings of Latent Components 1-3
 The RSFC/behavioral loadings (i.e., Pearson's correlations between the original RSFC/behavioral data and RSFC/behavioral composite scores) associated with LCs 1-3 can be found in the `PLS_loadings` folder.
+The behavioral variables (ordered as the behavioral loadings) are listed in `behav_vars.csv`.
 
 ### Subjects' RSFC and behavioral composite scores of Latent Components 1-3
 Subject-specific RSFC and behavioral composite scores for LCs 1-3 of the 224 participants included in our paper are released in the spreadsheet `/PLS_loadings/LC_composite_scores.csv`. 

@@ -93,13 +93,22 @@ endif
 if( -e ${output_file1} && -e ${output_file2} ) then
 	echo "Outputs already exist. Skipping......"
 else
+	set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"')
+	set cmd = ($cmd 'addpath(genpath(fullfile('"'"$CBIG_CODE_DIR"'", "'"utilities"'", "'"matlab"'"')));')
+	set cmd = ($cmd 'addpath(fullfile('"'"$CBIG_CODE_DIR"'", "'"external_packages"'",)
+	set cmd = ($cmd "'"SD"'", "'"SDv1.5.1-svn593"'", "'"BasicTools"'"'));')
 	if( $scrub_flag == 0 ) then
-		$MATLAB -nodesktop -nodisplay -nosplash -r "addpath(fullfile(getenv('CBIG_CODE_DIR'), 'utilities', 'matlab', 'surf')); CBIG_ComputeCorrelationProfile '${roi}' '${target}' '${output_file1}' '${output_file2}' '${threshold}' '${lh_input_file}' '${rh_input_file}'; exit;"
+		set cmd = ($cmd CBIG_ComputeCorrelationProfile "'"${roi}"'" "'"${target}"'" "'"${output_file1}"'")
+		set cmd = ($cmd "'"${output_file2}"'" "'"${threshold}"'" "'"${lh_input_file}"'")
+		set cmd = ($cmd "'"${rh_input_file}"'"'; exit;''"')
 	endif
 	
 	if( $scrub_flag == 1 ) then
-		$MATLAB -nodesktop -nodisplay -nosplash -r "addpath(fullfile(getenv('CBIG_CODE_DIR'), 'utilities', 'matlab', 'surf')); CBIG_ComputeCorrelationProfile '${roi}' '${target}' '${output_file1}' '${output_file2}' '${threshold}' '${lh_input_file}' '${rh_input_file}' '${outlier_input_file}'; exit;"
+		set cmd = ($cmd CBIG_ComputeCorrelationProfile "'"${roi}"'" "'"${target}"'" "'"${output_file1}"'")
+		set cmd = ($cmd "'"${output_file2}"'" "'"${threshold}"'" "'"${lh_input_file}"'")
+		set cmd = ($cmd "'"${rh_input_file}"'" "'"${outlier_input_file}"'"'; exit;''"')
 	endif
+	eval $cmd
 endif
 
 if( -e ${output_file1} && -e ${output_file2} ) then
@@ -243,7 +252,8 @@ REQUIRED ARGUMENTS:
 	-surf_data      surf_data     : surface fMRI data filenames of all runs of <subject> (only left  
 	                                hemisphere, or only right hemisphere). Please use space as the 
 	                                delimiter between different runs. For example, 
-	                                -surf_data "<sub_dir>/<subject>/surf/lh.Sub0001_Ses1_bld002*.nii.gz <sub_dir>/<subject>/surf/lh.Sub0001_Ses1_bld003*.nii.gz"
+	                                -surf_data "<sub_dir>/<subject>/surf/lh.Sub0001_Ses1_bld002*.nii.gz \
+	                                <sub_dir>/<subject>/surf/lh.Sub0001_Ses1_bld003*.nii.gz"
 	                                NOTE: quote sign is necessary.
 	                                This function will transform all "lh" to "rh" when computing left 
 	                                hemisphere correlation, or "rh" to "lh" when computing right 
@@ -253,7 +263,8 @@ REQUIRED ARGUMENTS:
 OPTIONAL ARGUMENTS:
 	-outlier_files  outlier_files : motion outliers files of all runs. Please use space as the delimiter 
 	                                between different runs. For example, 
-	                                -outlier_files "<sub_dir>/<subject>/qc/lh.Sub0001_Ses1_bld002*.txt <sub_dir>/<subject>/qc/lh.Sub0001_Ses1_bld003*.txt"
+	                                -outlier_files "<sub_dir>/<subject>/qc/lh.Sub0001_Ses1_bld002*.txt \
+	                                <sub_dir>/<subject>/qc/lh.Sub0001_Ses1_bld003*.txt"
 	                                NOTE: quote sign is necessary.
 	-target         target        : the resolution of clustering (default is fsaverage5)
 	-roi            roi           : the resolution of ROIs (default is fsaverage3)
@@ -279,9 +290,11 @@ OUTPUTS:
 	with all ROIs in the mesh of <roi> from both left and right hemisphere.
 
 EXAMPLE:
-	csh CBIG_compute_fcMRI_surf2surf_profiles.csh -sd ~/storage/fMRI_data -s Sub0001_Ses1 
-	-surf_data "~/storage/fMRI_data/Sub0001_Ses1/surf/lh.Sub0001_Ses1_bld002_rest_skip4_stc_mc_resid_cen_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6_fs5.nii.gz 
-	~/storage/fMRI_data/Sub0001_Ses1/surf/lh.Sub0001_Ses1_bld003_rest_skip4_stc_mc_resid_cen_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6_fs5.nii.gz" 
+	CBIG_compute_fcMRI_surf2surf_profiles.csh -sd ~/storage/fMRI_data -s Sub0001_Ses1 
+	-surf_data "~/storage/fMRI_data/Sub0001_Ses1/surf/ \
+	lh.Sub0001_Ses1_bld002_rest_skip4_stc_mc_resid_cen_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6_fs5.nii.gz 
+	~/storage/fMRI_data/Sub0001_Ses1/surf/ \
+	lh.Sub0001_Ses1_bld003_rest_skip4_stc_mc_resid_cen_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6_fs5.nii.gz" 
 	-outlier_files "~/storage/fMRI_data/Sub0001_Ses1/qc/Sub0001_Ses1_bld002_FDRMS0.2_DVARS50_motion_outliers.txt 
 	~/storage/fMRI_data/Sub0001_Ses1/qc/Sub0001_Ses1_bld003_FDRMS0.2_DVARS50_motion_outliers.txt"
 	-target fsaverage5 -roi fsaverage3

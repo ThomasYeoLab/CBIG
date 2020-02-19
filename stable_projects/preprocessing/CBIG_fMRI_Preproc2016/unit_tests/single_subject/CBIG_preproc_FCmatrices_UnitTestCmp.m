@@ -50,8 +50,8 @@ function CBIG_preproc_FCmatrices_UnitTestCmp(preproc_out_dir, test_file_stem)
 %
 % Example:
 %   
-% CBIG_preproc_FCmatrices_UnitTestCmp(['/data/users/usr/storage/'...
-% 'Pre_Proc_Unit_Test'])
+% CBIG_preproc_FCmatrices_UnitTestCmp(fullfile(getenv('HOME'), 'storage', ...
+% 'Pre_Proc_Unit_Test')
 % 
 % The function takes in a string which contains the directory where the
 % preprocessed data for the single subject are stored after running the 
@@ -84,16 +84,11 @@ fid = fopen(fullfile(preproc_out_dir, 'inequal_corr_log.txt'),'wt');
 
 % true_path is the path to the FC matrices directory of the ground truth
 % test_path is the path to the FC matrices directory of the test data
-true_path = fullfile(' ','mnt','eql', 'yeo1', ...
-                     'CBIG_private_data','unit_tests',...
-                     'stable_projects', 'preprocessing',...
-                     'CBIG_fMRI_Preproc2016', 'single_subject','data', ...
-                     'Sub1116_Ses1', 'FC_metrics', 'Pearson_r');
+true_path = fullfile(getenv('CBIG_TESTDATA_DIR'), 'stable_projects', ...
+    'preprocessing', 'CBIG_fMRI_Preproc2016', 'single_subject','data', ...
+    'Sub1116_Ses1', 'FC_metrics', 'Pearson_r');
                          
-true_path = true_path(2:end);             
-
-test_path = fullfile(preproc_out_dir, subject_array, 'FC_metrics',...
-                    'Pearson_r'); 
+test_path = fullfile(preproc_out_dir, subject_array, 'FC_metrics', 'Pearson_r'); 
 
 % Loop through each FC matrix and compare
 for j = 1: length(corr_label_array)

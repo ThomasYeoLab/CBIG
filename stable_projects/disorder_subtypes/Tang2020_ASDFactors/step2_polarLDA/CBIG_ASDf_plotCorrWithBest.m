@@ -42,7 +42,7 @@ nRuns = length(corr);
 % Rank the runs from highest to lowest likelihood
 logLike = zeros(nRuns, 1);
 for idx = 1:nRuns
-    logLikes = load([inputDir sprintf('/k%s/r%s', k, num2str(idx)) '/likelihood.dat']);
+    logLikes = load(fullfile(inputDir,sprintf('k%s/r%s', k, num2str(idx)),'likelihood.dat'));
     logLike(idx) = logLikes(end, 1);
 end
 [~, ind_h2l] = sort(logLike, 'descend');
@@ -68,7 +68,7 @@ grid on;
 
 % Save the plot
 if nargin > 4 && ~isempty(outputDir)
-    output_name = [outputDir '/k' k '/r' r_final '/corrWithAllRuns'];
+    output_name = fullfile(outputDir, ['k' k], ['r' r_final], 'corrWithAllRuns');
     hgexport(gcf, output_name);
     eps2xxx([output_name '.eps'], {'png'});
 end

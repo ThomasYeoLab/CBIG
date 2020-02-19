@@ -14,18 +14,19 @@ function CBIG_ASDf_plotConjunctionUniqueMaps_wrapper(output_dir)
 
 %% Add paths
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-CODE_DIR = [CBIG_CODE_DIR '/stable_projects/disorder_subtypes/Tang2020_ASDFactors'];
-addpath([CODE_DIR '/step3_analyses/utilities']);
-addpath([CODE_DIR '/step3_analyses/bootstrapping']);
+CODE_DIR = fullfile(CBIG_CODE_DIR,'stable_projects','disorder_subtypes','Tang2020_ASDFactors');
+addpath(fullfile(CODE_DIR,'step3_analyses','utilities'));
+addpath(fullfile(CODE_DIR,'step3_analyses','bootstrapping'));
 
 %% load pre-computed significant RSFC
-UNIT_TEST_DIR = '/mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/disorder_subtypes/Tang2020_ASDFactors'
-INPUT_DIR = [UNIT_TEST_DIR '/results/results_long/bootstrapping'];
-load([INPUT_DIR '/factor1_thresholded.mat']);
+CBIG_REPDATA_DIR = getenv('CBIG_REPDATA_DIR');
+UNIT_TEST_DIR = fullfile(CBIG_REPDATA_DIR,'stable_projects','disorder_subtypes','Tang2020_ASDFactors');
+INPUT_DIR = fullfile(UNIT_TEST_DIR,'results','bootstrapping');
+load(fullfile(INPUT_DIR,'factor1_thresholded.mat'));
 factor1 = corr_mat_masked;
-load([INPUT_DIR '/factor2_thresholded.mat']);
+load(fullfile(INPUT_DIR,'factor2_thresholded.mat'));
 factor2 = corr_mat_masked;
-load([INPUT_DIR '/factor3_thresholded.mat']);
+load(fullfile(INPUT_DIR,'factor3_thresholded.mat'));
 factor3 = corr_mat_masked;
 
 %% binarize significant RSFC and sum across all factors
@@ -41,17 +42,17 @@ uniq_map_f1 = factor1 .* uniq_map;
 uniq_map_f2 = factor2 .* uniq_map;
 uniq_map_f3 = factor3 .* uniq_map;
 scalelim = [-1.6e-5, 1.6e-5];
-CBIG_ASDf_Plot400Schaefer19Subcor17Networks_419by419Input(uniq_map_f1, scalelim, [output_dir '/uniq_map_F1']);
-save([output_dir '/uniq_map_F1.mat'], 'uniq_map_f1');
-CBIG_ASDf_Plot400Schaefer19Subcor17Networks_419by419Input(uniq_map_f2, scalelim, [output_dir '/uniq_map_F2']);
-save([output_dir '/uniq_map_F2.mat'], 'uniq_map_f2');
-CBIG_ASDf_Plot400Schaefer19Subcor17Networks_419by419Input(uniq_map_f3, scalelim, [output_dir '/uniq_map_F3']);
-save([output_dir '/uniq_map_F3.mat'], 'uniq_map_f3');
+CBIG_ASDf_Plot400Schaefer19Subcor17Networks_419by419Input(uniq_map_f1, scalelim, fullfile(output_dir,'uniq_map_F1'));
+save(fullfile(output_dir,'uniq_map_F1.mat'), 'uniq_map_f1');
+CBIG_ASDf_Plot400Schaefer19Subcor17Networks_419by419Input(uniq_map_f2, scalelim, fullfile(output_dir,'uniq_map_F2'));
+save(fullfile(output_dir,'uniq_map_F2.mat'), 'uniq_map_f2');
+CBIG_ASDf_Plot400Schaefer19Subcor17Networks_419by419Input(uniq_map_f3, scalelim, fullfile(output_dir,'uniq_map_F3'));
+save(fullfile(output_dir,'uniq_map_F3.mat'), 'uniq_map_f3');
 
 %% conjunction map, edges shared across 2 or 3 factors
 conj_map = counts;
 conj_map(conj_map < 2) = 0;
-save([output_dir '/conj_map.mat'], 'conj_map');
+save(fullfile(output_dir,'conj_map.mat'), 'conj_map');
 
 %% conjunction map, edges shared across all 3 factors
 mask_conj = counts;
@@ -60,9 +61,9 @@ sum_abs = abs(factor1) + abs(factor2) + abs(factor3);
 conj_map_all = mask_conj .* sum_abs;
 scalelim = [-1e-4, 1e-4];
 CBIG_ASDf_Plot400Schaefer19Subcor17Networks_419by419Input(conj_map_all, scalelim, ...
- [output_dir '/conj_map_allFactors']);
-save([output_dir '/conj_map_allFactors.mat'], 'conj_map_all');
+ fullfile(output_dir,'conj_map_allFactors'));
+save(fullfile(output_dir,'conj_map_allFactors.mat'), 'conj_map_all');
 
 %% Remove paths
-rmpath([CODE_DIR '/step3_analyses/utilities']);
-rmpath([CODE_DIR '/step3_analyses/bootstrapping']);
+rmpath(fullfile(CODE_DIR,'step3_analyses','utilities'));
+rmpath(fullfile(CODE_DIR,'step3_analyses','bootstrapping'));

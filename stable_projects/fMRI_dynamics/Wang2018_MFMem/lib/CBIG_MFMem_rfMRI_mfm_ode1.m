@@ -19,6 +19,9 @@ function dy = CBIG_MFMem_rfMRI_mfm_ode1(y,parameter,SC)
 % Written by Peng Wang and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 %----------------------------------------------------------------------------
 
+if size(parameter, 2) > 1
+    error('Input argument ''parameter'' should be a column vector');
+end
 
 %parameters for inputs and couplings
 J = 0.2609; %nA

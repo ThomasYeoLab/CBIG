@@ -27,17 +27,18 @@ p_characteristics = [];
 
 %% Add path
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-CODE_DIR = [CBIG_CODE_DIR '/stable_projects/disorder_subtypes/Tang2020_ASDFactors'];
-addpath([CODE_DIR '/step3_analyses/characteristics']);
-addpath([CODE_DIR '/step3_analyses/utilities']);
+CODE_DIR = fullfile(CBIG_CODE_DIR,'stable_projects','disorder_subtypes','Tang2020_ASDFactors');
+addpath(fullfile(CODE_DIR,'step3_analyses','characteristics'));
+addpath(fullfile(CODE_DIR,'step3_analyses','utilities'));
 
-UNIT_TEST_DIR = '/mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/disorder_subtypes/Tang2020_ASDFactors';
-inputDir = [UNIT_TEST_DIR '/data/data_long'];
+CBIG_REPDATA_DIR = getenv('CBIG_REPDATA_DIR');
+UNIT_TEST_DIR = fullfile(CBIG_REPDATA_DIR,'stable_projects','disorder_subtypes','Tang2020_ASDFactors');
+inputDir = fullfile(UNIT_TEST_DIR,'data');
 factorOrder = [3 2 1];
 k = 3;
 
-sub_info_file = [inputDir '/subInfo_654.csv'];
-load([inputDir '/id_sexBalanced.mat']); % Load subject IDs for sex difference analysis (114 subjects)
+sub_info_file = fullfile(inputDir,'subInfo_654.csv');
+load(fullfile(inputDir,'id_sexBalanced.mat')); % Load subject IDs for sex difference analysis (114 subjects)
 
 %% Get diagnosis, age, motion, FIQ scores
 [~, id_dx, id_age, ~, id_motion, id_fiq, ~, ~] = CBIG_ASDf_getSubData(sub_info_file);
@@ -65,7 +66,7 @@ disp('----AGE:');
 X = [factorComp(:,1:(k-1)) reg];
 y = age(idx_asd,1);
 numReg = size(reg,2);
-output_name = [outputDir '/k' num2str(k) '_AGE'];
+output_name = fullfile(outputDir, ['k' num2str(k) '_AGE']);
 curr_p = CBIG_ASDf_fitGLM_hypoTest(k, X, y, numReg, output_name); 
 p_characteristics = [p_characteristics; curr_p(2:end,1)];
 
@@ -74,7 +75,7 @@ disp('----MOTION:');
 X = [factorComp(:,1:(k-1)) reg];
 y = motion(idx_asd,1);
 numReg = size(reg,2);
-output_name = [outputDir '/k' num2str(k) '_MOTION'];
+output_name = fullfile(outputDir, ['k' num2str(k) '_MOTION']);
 curr_p = CBIG_ASDf_fitGLM_hypoTest(k, X, y, numReg, output_name);
 p_characteristics = [p_characteristics; curr_p(2:end,1)];
 
@@ -83,18 +84,18 @@ disp('----FIQ:');
 X = [factorComp(:,1:(k-1)) reg];
 y = FIQ_score(idx_asd,1);
 numReg = size(reg,2);
-output_name = [outputDir '/k' num2str(k) '_FIQ'];
+output_name = fullfile(outputDir, ['k' num2str(k) '_FIQ']);
 curr_p = CBIG_ASDf_fitGLM_hypoTest(k, X, y, numReg, output_name);
 p_characteristics = [p_characteristics; curr_p(2:end,1)];
 
 %%% Compare sex across factors
 disp('----SEX:');
-output_name = [outputDir '/k' num2str(k) '_SEX'];
+output_name = fullfile(outputDir, 'k' num2str(k) '_SEX']);
 [~, curr_out] = CBIG_ASDf_logReg_compareSex(k, id_sexBalanced, ...
 sub_info_file, factorLoading_dir, factorOrder, output_name);
 p_characteristics = [p_characteristics; curr_out(2:end,1)];
 
 %% Remove path
-rmpath([CODE_DIR '/step3_analyses/utilities']);
-rmpath([CODE_DIR '/step3_analyses/characteristics']);
+rmpath(fullfile(CODE_DIR,'step3_analyses','characteristics'));
+rmpath(fullfile(CODE_DIR,'step3_analyses','utilities'));
 

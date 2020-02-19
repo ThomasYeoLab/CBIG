@@ -1,4 +1,5 @@
-function [QC, RSFC, y_label] = CBIG_preproc_plot_QC_RSFC_corr_vs_distance_readdata( sub_dir, sub_list, QC_type, RSFC_stem )
+function [QC, RSFC, y_label] = CBIG_preproc_plot_QC_RSFC_corr_vs_distance_readdata( ...
+    sub_dir, sub_list, QC_type, RSFC_stem )
 
 % CBIG_preproc_plot_QC_RSFC_corr_vs_distance_readdata( sub_dir, sub_list, QC_type, RSFC_stem )
 % 
@@ -52,8 +53,9 @@ function [QC, RSFC, y_label] = CBIG_preproc_plot_QC_RSFC_corr_vs_distance_readda
 % 
 % Example 1:
 %     [QC, RSFC, y_label] = CBIG_preproc_plot_QC_RSFC_corr_vs_distance_readdata( ...
-% '/mnt/eql/yeo3/data/GSP2016/CBIG_preproc_global_cen_bp/GSP_single_session/CBIG2016_preproc_global_cen_bp', ...
-% '/mnt/eql/yeo3/data/GSP2016/CBIG_preproc_global_cen_bp/GSP_single_session/scripts/surf_exist_list.txt', ...
+% fullfile(getenv('CBIG_TESTDATA_DIR'), 'stable_projects', 'preprocessing', 'CBIG_fMRI_Preproc2016', ...
+% '100subjects_clustering', 'preproc_out'), fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', ...
+% 'CBIG_fMRI_Preproc2016', 'unit_tests', '100subjects_clustering', 'GSP_80_low_motion+20_w_censor.txt'), ...
 % 'FD_mean', '_rest_skip4_stc_mc_residc_interp_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6_all2all' )
 % 
 % Written by Jingwei Li and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
@@ -72,7 +74,7 @@ fclose(fid);
 % file and put into <sub_dir>/<subject_name>/FC_metrics/Pearson_r folder.
 RSFC = [];
 for i = 1:num_sub
-    RSFC_file = [sub_dir '/' subjects{i} '/FC_metrics/Pearson_r/' subjects{i} RSFC_stem '.mat'];
+    RSFC_file = fullfile(sub_dir, subjects{i}, 'FC_metrics', 'Pearson_r', [subjects{i} RSFC_stem '.mat']);
     load(RSFC_file)
     RSFC = cat(3, RSFC, corr_mat);
 end
@@ -82,7 +84,7 @@ end
 QC = zeros(num_sub, 1);
 for i = 1:num_sub
     % read run numbers
-    boldfile = [sub_dir '/' subjects{i} '/logs/' subjects{i} '.bold'];
+    boldfile = fullfile(sub_dir, subjects{i}, 'logs', [subjects{i} '.bold']);
     fid = fopen(boldfile, 'r');
     xdata = fgets(fid);
     fclose(fid);
@@ -95,7 +97,8 @@ for i = 1:num_sub
     
     if(strcmp(QC_type, 'FD_mean'))
         for j = 1:length(runs)
-            QC_file = [sub_dir '/' subjects{i} '/bold/' runs{j} '/' subjects{i} '_bld' runs{j} '_rest_skip4_stc_mc_rel_mean.rms'];
+            QC_file = fullfile(sub_dir, subjects{i}, 'bold', runs{j}, [subjects{i} '_bld' runs{j} ...
+                '_rest_skip4_stc_mc_rel_mean.rms']);
             qc(j) = dlmread(QC_file);
         end
         QC(i) = mean(qc);
@@ -103,7 +106,8 @@ for i = 1:num_sub
         
     elseif(strcmp(QC_type, 'FD_std'))
         for j = 1:length(runs)
-            QC_file = [sub_dir '/' subjects{i} '/bold/' runs{j} '/' subjects{i} '_bld' runs{j} '_rest_skip4_stc_mc_rel.rms'];
+            QC_file = fullfile(sub_dir , subjects{i}, 'bold', runs{j}, [subjects{i} '_bld' runs{j} ...
+                '_rest_skip4_stc_mc_rel.rms']);
             qc(j) = std(dlmread(QC_file));
         end
         QC(i) = mean(qc);
@@ -111,7 +115,8 @@ for i = 1:num_sub
         
     elseif(strcmp(QC_type, 'censored_frames'))
         for j = 1:length(runs)
-            QC_file = [sub_dir '/' subjects{i} '/qc/' subjects{i} '_bld' runs{j} '_FDRMS0.2_DVARS50_motion_outliers.txt'];
+            QC_file = fullfile(sub_dir, subjects{i}, 'qc', [subjects{i} '_bld' runs{j} ...
+                '_FDRMS0.2_DVARS50_motion_outliers.txt']);
             outliers = dlmread(QC_file);
             qc(j) = sum(outliers==0);
         end

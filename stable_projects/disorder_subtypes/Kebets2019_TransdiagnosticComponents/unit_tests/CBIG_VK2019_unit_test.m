@@ -3,31 +3,31 @@ classdef CBIG_VK2019_unit_test < matlab.unittest.TestCase
 
     methods (Test)
         function test_example(testCase)
+            
             % create output folder
-            CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-            cur_dir = fullfile(CBIG_CODE_DIR, 'stable_projects', ...
-                'disorder_subtypes', 'Kebets2019_TransdiagnosticComponents', 'unit_tests');
-            out_dir = fullfile(cur_dir, 'output');
+            current_dir = fileparts(mfilename('fullpath'));
+            out_dir = fullfile(current_dir,'output');
             mkdir(out_dir)
             
             % run the example
-            addpath(fullfile(CBIG_CODE_DIR, 'stable_projects', ...
-                'disorder_subtypes', 'Kebets2019_TransdiagnosticComponents', 'examples'));
+            pos_v = strfind(current_dir,filesep);
+            root_dir = fullfile(current_dir(1:pos_v(length(pos_v)) - 1));
+            
+            addpath(fullfile(root_dir,'examples'));
             
             CBIG_VK2019_example_wrapper(out_dir);
             
             % check the results
-            ref_dir = fullfile(CBIG_CODE_DIR, 'stable_projects', ...
-                'disorder_subtypes', 'Kebets2019_TransdiagnosticComponents', 'examples', 'correct_output');
+            ref_dir = fullfile(root_dir,'examples','correct_output');
             
             % compare RSFC & behavioral scores & loadings
-            ref_Params = load(fullfile(ref_dir, 'PLSresults_example.mat'));          
+            ref_Params = load(fullfile(ref_dir,'PLSresults_example.mat'));          
             ref_Lx = ref_Params.Lx;
             ref_Ly = ref_Params.Ly;
             ref_RSFC_loadings = ref_Params.LC_RSFC_loadings;
             ref_behav_loadings = ref_Params.LC_behav_loadings;
             
-            test_Params = load(fullfile(out_dir, 'PLSresults_example.mat'));
+            test_Params = load(fullfile(out_dir,'PLSresults_example.mat'));
             test_Lx = test_Params.Lx;
             test_Ly = test_Params.Ly;
             test_RSFC_loadings = test_Params.LC_RSFC_loadings;
@@ -44,9 +44,8 @@ classdef CBIG_VK2019_unit_test < matlab.unittest.TestCase
             assert(diff_behav_loadings < 1e-6, sprintf('maximum difference in behav loadings: %f',diff_behav_loadings));
             
             % remove the scripts & output directory
-            rmdir(out_dir, 's');
-            rmpath(fullfile(CBIG_CODE_DIR, 'stable_projects', ...
-                'disorder_subtypes', 'Kebets2019_TransdiagnosticComponents', 'examples'));
+            rmdir(out_dir,'s');
+            rmpath(fullfile(root_dir,'examples'));
         end
     end
 end

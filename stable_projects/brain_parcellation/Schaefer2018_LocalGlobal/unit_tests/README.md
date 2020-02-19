@@ -10,7 +10,7 @@ References
 
 Data
 ====
-We use 2 preprocessed subjects from the GSP dataset for this unit test. The data can be found under `/mnt/eql/yeo1/CBIG_private_data/unit_tests/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/data`.
+We use 2 preprocessed subjects from the GSP dataset for this unit test. The data can be found under `$CBIG_TESTDATA_DIR/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/data`.
 
 ----
 
@@ -23,7 +23,7 @@ $CBIG_CODE_DIR/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/unit_
 
 This will submit jobs to `circ-spool` to create two parcellation randomizations with 50 left and 50 right hemisphere cluster in your output folder.
  
-After that, the script will automatically call function `CBIG_gwMRF_check_unit_test_result.m` to compare your intermeidate results with the intermediate results in our `ref_dir` (/mnt/eql/yeo1/CBIG_private_data/unit_tests/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/results).
+After that, the script will automatically call function `CBIG_gwMRF_check_unit_test_result.m` to compare your intermediate results with the intermediate results in our `ref_dir` ($CBIG_TESTDATA_DIR/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/results).
 
 Finally, a log file will be created in `<your_output_folder>/logs`, containing detailed information about whether the unit test is `[PASSED]` or `[FAILED]`. 
 

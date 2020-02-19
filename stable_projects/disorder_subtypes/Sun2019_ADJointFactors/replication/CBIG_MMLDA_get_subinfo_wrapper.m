@@ -3,7 +3,7 @@ function CBIG_MMLDA_get_subinfo_wrapper(out_dir)
 % Written by Nanbo Sun and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 if nargin < 1 || isempty(out_dir)
-    out_dir = ['/mnt/eql/yeo1/CBIG_private_data/stable_projects/disorder_subtypes' ...
+    out_dir = [getenv('CBIG_REPDATA_DIR') '/stable_projects/disorder_subtypes' ...
     '/Sun2019_ADJointFactors/step2_MMLDA/data'];
 end
 
@@ -13,10 +13,9 @@ addpath([CBIG_CODE_DIR '/stable_projects/disorder_subtypes/Sun2019_ADJointFactor
 % get the descript of each behavior score and it's the same for both ADNI1
 % and ADNI2, so we just need to use either one
 [ADAS, MMSE, NEUROBAT] = CBIG_MMLDA_behavior_choose('ADNI2');
-
-ADNI_spreadsheet_path = '/share/users/imganalysis/yeolab/data/ADNI/All/ADNI_161017/documentation';
-ADNI_VBM_path = ['/mnt/eql/yeo1/CBIG_private_data/stable_projects/disorder_subtypes' ...
-    '/Sun2019_ADJointFactors/step1_SPM_VBM/Sun2019_SPM_VBM'];
+ADNI_DOC_DIR = getenv('CBIG_MMLDA_ANDI_DOC_DIR');
+ADNI_spreadsheet_path = [ADNI_DOC_DIR '/All/ADNI_161017/documentation'];
+ADNI_VBM_path = [getenv('CBIG_MMLDA_ADNI_DIR') '/Sun2019_SPM_VBM'];
 
 %%%
 % ADNI2 bl
@@ -171,23 +170,23 @@ tmp_cell = vertcat(tmp{:});
 rid_cell = tmp_cell(:, 1);
 viscode_cell = tmp_cell(:, 2);
 rid = CBIG_MMLDA_cellstr2matrix(rid_cell);
-phase_cell = importdata([ADNI_VBM_path '/preprocessing/lists/ADNI23_PETtau/Phase_269all.txt');
+phase_cell = importdata([ADNI_VBM_path '/preprocessing/lists/ADNI23_PETtau/Phase_269all.txt']);
 
 % get age gender dx
-DXSUM_file = '/share/users/imganalysis/yeolab/data/ADNI/All/ADNI_180413/documentation/DXSUM_PDXCONV_ADNIALL.csv';
-PTDEMOG_file = '/share/users/imganalysis/yeolab/data/ADNI/All/ADNI_180413/documentation/PTDEMOG.csv';
+DXSUM_file = [ADNI_DOC_DIR '/All/ADNI_180413/documentation/DXSUM_PDXCONV_ADNIALL.csv'];
+PTDEMOG_file = [ADNI_DOC_DIR '/All/ADNI_180413/documentation/PTDEMOG.csv'];
 [age, gender, dx] = CBIG_MMLDA_get_age_gender_dx(DXSUM_file, PTDEMOG_file, phase_cell, rid_cell, viscode_cell);
 
 % get icv gmVol 
-load('/mnt/eql/p4/users/external/nanbos/ADNI_VBM/SPM_VBM/ADNI2/PET_20180505/output/gmVolAndICV/id_gmVol_icv.mat')
+load([getenv('CBIG_MMLDA_ADNI_DIR') 'Sun2019_SPMVBM/preprocessing/output/ADNI23_PETtau/gmVolAndICV/id_gmVol_icv.mat']);
 icv = cell2mat(id_gmVol_icv(:, 3));
 gmVol = cell2mat(id_gmVol_icv(:, 2));
 
 % get behavioral scores
-ADAS_ADNI1_spreadsheet = '/share/users/imganalysis/yeolab/data/ADNI/All/ADNI_161017/documentation/ADASSCORES.csv';
-ADAS_ADNI2_spreadsheet = '/share/users/imganalysis/yeolab/data/ADNI/All/ADNI_180413/documentation/ADAS_ADNIGO23.csv';
-MMSE_spreadsheet = '/share/users/imganalysis/yeolab/data/ADNI/All/ADNI_180413/documentation/MMSE.csv';
-NEUROBAT_spreadsheet = '/share/users/imganalysis/yeolab/data/ADNI/All/ADNI_180413/documentation/NEUROBAT.csv';
+ADAS_ADNI1_spreadsheet = [ADNI_DOC_DIR '/All/ADNI_161017/documentation/ADASSCORES.csv'];
+ADAS_ADNI2_spreadsheet = [ADNI_DOC_DIR '/All/ADNI_180413/documentation/ADAS_ADNIGO23.csv'];
+MMSE_spreadsheet = [ADNI_DOC_DIR '/All/ADNI_180413/documentation/MMSE.csv'];
+NEUROBAT_spreadsheet = [ADNI_DOC_DIR '/All/ADNI_180413/documentation/NEUROBAT.csv'];
 behavior_scores_bl = CBIG_MMLDA_get_behavior_scores(ADAS_ADNI1_spreadsheet, ...
     ADAS_ADNI2_spreadsheet, MMSE_spreadsheet, NEUROBAT_spreadsheet, 'ADNI3', phase_cell, rid_cell, viscode_cell);
 behavior_scores_sc = CBIG_MMLDA_get_behavior_scores(ADAS_ADNI1_spreadsheet, ...

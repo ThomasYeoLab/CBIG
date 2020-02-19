@@ -7,11 +7,9 @@
 # setup for CIRC cluster
 ########################
 curr_dir=$(pwd)
-username=$(whoami)
-work_dir=/data/users/$username/cluster/
+work_dir=$HOME/cluster/
 
 echo $curr_dir
-echo $username
 echo $work_dir
 
 if [ ! -d $work_dir ]; then
@@ -26,8 +24,7 @@ cd $work_dir
 project_dir="$CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSR"
 replication_dir="$project_dir/unit_tests/intelligence_score"
 
-test_dir=/mnt/eql/yeo1/CBIG_private_data/unit_tests/stable_projects/preprocessing/Li2019_GSR/intelligence_score/\
-KernelRidgeRegression/HCP
+test_dir=$CBIG_TESTDATA_DIR/stable_projects/preprocessing/Li2019_GSR/intelligence_score/KernelRidgeRegression/HCP
 subject_list="$test_dir/lists/fake_subject_list_953.txt"
 FD_file="$test_dir/lists/FD_regressor_953.txt"
 DVARS_file="$test_dir/lists/DV_regressor_953.txt"
@@ -56,7 +53,8 @@ for pipeline in GSR Baseline; do
 		cmd="$cmd $DVARS_file -outdir $outdir -outstem $outstem -seed $seed -num_test_folds 5 -num_inner_folds 5 "
 		cmd="$cmd -with_bias $with_bias -restricted_csv $restricted_csv -unrestricted_csv $unrestricted_csv"
 		
-		echo $cmd | qsub -V -q circ-spool -l walltime=2:00:00,mem=6GB -m ae -N CBIG_LiGSR_KRR_unittest_PMAT_HCP
+		echo $cmd | $CBIG_SCHEDULER_DIR/qsub -V -q circ-spool -l walltime=2:00:00,mem=6GB -m ae \
+		  -N CBIG_LiGSR_KRR_unittest_PMAT_HCP
 		
 		if [ ! -f $outdir/covariates_${outstem}.mat ] || [ ! -f $outdir/y_${outstem}.mat ]; then
 			# wait for the files shared across random splits to be saved

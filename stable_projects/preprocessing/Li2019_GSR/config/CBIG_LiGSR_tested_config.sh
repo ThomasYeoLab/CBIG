@@ -20,6 +20,15 @@ export CBIG_WB_DIR=/apps/arch/Linux_x86_64/HCP/workbench/
 export CBIG_CARET_DIR=/apps/arch/Linux_x86_64/caret/
 export CBIG_FSLDIR=/apps/arch/Linux_x86_64/fsl/5.0.8
 
+# DO NOT CHANGE: define locations for unit tests data and replication data
+export CBIG_TESTDATA_DIR=/mnt/eql/yeo1/CBIG_test_data/unit_tests
+export CBIG_REPDATA_DIR=/mnt/eql/yeo1/CBIG_test_data/replication
+export CBIG_LiGSR_REP_GSP_DIR=/mnt/eql/yeo1/data/GSP_release
+export CBIG_LiGSR_REP_HCP_DIR=/mnt/eql/yeo1/data/HCP
+
+# DO NOT CHANGE: define scheduler location
+export CBIG_SCHEDULER_DIR=/apps/sysapps/TORQUE/bin
+
 # DO NOT CHANGE: set up your environment with the configurations above
 SETUP_PATH=$CBIG_CODE_DIR/setup/CBIG_generic_setup.sh
 source $SETUP_PATH

@@ -1,7 +1,7 @@
 function CBIG_MMLDA_visualize_factors_wrapper(mmlda_dir, visualize_dir)
 % This wrapper visualize factors after MMLDA estimation
 % Written by Nanbo Sun and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
-unit_test_path = '/mnt/eql/yeo1/CBIG_private_data/replication/stable_projects/disorder_subtypes/Sun2019_ADJointFactors';
+unit_test_path = [getenv('CBIG_REPDATA_DIR') '/stable_projects/disorder_subtypes/Sun2019_ADJointFactors'];
 
 if nargin < 1
     mmlda_dir = [unit_test_path '/step2_MMLDA/results/estimation'];

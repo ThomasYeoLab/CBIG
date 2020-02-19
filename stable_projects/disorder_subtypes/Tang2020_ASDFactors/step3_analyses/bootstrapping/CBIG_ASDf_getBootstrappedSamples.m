@@ -17,14 +17,15 @@ function CBIG_ASDf_getBootstrappedSamples(output_dir, N)
 %  Written by Siyi Tang and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 % Define path
-UNIT_TEST_DIR = '/mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/disorder_subtypes/Tang2020_ASDFactors';
-sub_info = [UNIT_TEST_DIR '/data/data_long/subInfo_654.csv'];
-zScore_dir = [UNIT_TEST_DIR '/results/results_long/FC2doc/step1_output_zScores.mat'];
+CBIG_REPDATA_DIR = getenv('CBIG_REPDATA_DIR');
+UNIT_TEST_DIR = fullfile(CBIG_REPDATA_DIR,'stable_projects','disorder_subtypes','Tang2020_ASDFactors');
+sub_info = fullfile(UNIT_TEST_DIR,'data','subInfo_654.csv');
+zScore_dir = fullfile(UNIT_TEST_DIR,'results','FC2doc','step1_output_zScores.mat');
 
 % Add path
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-CODE_DIR = [CBIG_CODE_DIR '/stable_projects/disorder_subtypes/Tang2020_ASDFactors'];
-addpath([CODE_DIR '/step3_analyses/utilities']);
+CODE_DIR = fullfile(CBIG_CODE_DIR,'stable_projects','disorder_subtypes','Tang2020_ASDFactors');
+addpath(fullfile(CODE_DIR,'step3_analyses','utilities'));
 
 % Set random seed
 rng('default');
@@ -67,4 +68,4 @@ for i = 1:N
 end
 
 % Remove path
-rmpath([CODE_DIR '/step3_analyses/utilities']);
+rmpath(fullfile(CODE_DIR,'step3_analyses','utilities'));

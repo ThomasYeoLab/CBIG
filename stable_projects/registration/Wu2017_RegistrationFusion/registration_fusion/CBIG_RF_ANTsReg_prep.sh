@@ -33,7 +33,8 @@ main(){
 
     #Run registration if output does not exist yet
     if [ ! -e $output ]; then
-      cmd="CBIG_antsReg_vol2vol.sh -r $template -i $input -d $output_dir/antsReg -p $output_prefix -a $ANTs_dir; rm $input"
+      cmd="CBIG_antsReg_vol2vol.sh -r $template -i $input -d $output_dir/antsReg -p $output_prefix -a $ANTs_dir; "
+      cmd="$cmd rm $input"
 
       #Submit a job to PBS scheduler if specified. Otherwise the command is executed directly
       if [ ! -z $queue ]; then
@@ -57,39 +58,51 @@ main(){
 
 #usage
 usage() { echo "
-Usage: $0 -n <num_of_sub> -a <ants_dir> -m <mni_template> -l <gsp_sub_list> -g <gsp_sub_dir> -q <queue> -t <interval> -o <output_dir>
+Usage: $0 -n <num_of_sub> -a <ants_dir> -m <mni_template> -l <gsp_sub_list> -g <gsp_sub_dir> -q <queue> -t <interval> \
+       -o <output_dir>
 
-This script runs ANTs registration between a specified number of individual subjects' T1 space and a volumetric atlas space. The output from this script are used in step 2 in RF-ANTs approach.
+This script runs ANTs registration between a specified number of individual subjects' T1 space and a volumetric atlas 
+space. The output from this script are used in step 2 in RF-ANTs approach.
 
 REQUIRED ARGUMENTS:
 	-p <template_type> 	type of volumetric template to use. Input to this option is also used as prefix of output files.
 				Possible options are:
 				'MNI152_orig': use FSL_MNI152 1mm template
 				'Colin27_orig': use SPM_Colin27 1mm template
-				others: use user-defined volumetric template file. In this case, input to this option can be any string; the user is expected to provide a template using "-t" option. Note that volumetric templates themselves are preferred to their normalised volumes, since ANTs registration can take very long to run on normalised volumes (with larger volume dimensions).
+				others: use user-defined volumetric template file. In this case, input to this option can be any 
+				        string; the user is expected to provide a template using "-t" option. Note that volumetric 
+				        templates themselves are preferred to their normalised volumes, since ANTs registration can 
+				        take very long to run on normalised volumes (with larger volume dimensions).
 
 OPTIONAL ARGUMENTS:
-	-n <num_of_sub>		number of subjects to use. This means taking the first <num_of_sub> subjects from <ind_sub_list>. For example, setting '-n 50' means the first 50 lines of <ind_sub_list> will be read to get subject IDs. Setting this to 0 will make the script use all subjects from <ind_sub_list>.
+	-n <num_of_sub>		number of subjects to use. This means taking the first <num_of_sub> subjects from 
+	                    <ind_sub_list>. For example, setting '-n 50' means the first 50 lines of <ind_sub_list> will 
+	                    be read to get subject IDs. Setting this to 0 will make the script use all subjects from 
+	                    <ind_sub_list>.
 				[ default: 0 ]
 	-a <ants_dir> 		directory where ANTs is installed
 				[ default: $CBIG_ANTS_DIR ]
 	-t <template> 		absolute path to user-defined volumetric template file
 				[ default: unset ] 	
-	-l <ind_sub_list> 	absolute path to a file containing individual subject IDs. Each line in the file should contain one subject ID.
+	-l <ind_sub_list> 	absolute path to a file containing individual subject IDs. Each line in the file should contain 
+	                    one subject ID.
 				[ default: $DEFAULT_GSP_SUBLIST ]
 	-g <ind_sub_dir> 	SUBJECTS_DIR of individual subjects' recon-all results
-				[ default: /mnt/yeogrp/data/GSP_release/ ]
-        -o <output_dir>         absolute path to output directory
+				[ default: $CBIG_RF_REP_GSP_DIR ]
+	-o <output_dir>         absolute path to output directory
 				[ default: $(pwd)/results ]
-	-q <queue> 		for PBS scheduler users, this is equivalent to the -q option for qsub. For example, setting "-q circ-spool" will make the script submit jobs to job scheduler using "qsub -q circ-spool"
+	-q <queue> 		for PBS scheduler users, this is equivalent to the -q option for qsub. For example, setting 
+	                "-q circ-spool" will make the script submit jobs to job scheduler using "qsub -q circ-spool"
 				[ default: unset ]
-	-i <interval> 		time interval between job submits. For example, the default setting means after each job is submitted, the script 'sleep' for 10 minutes before submitting the next one.
+	-i <interval> 		time interval between job submits. For example, the default setting means after each job is 
+	                    submitted, the script 'sleep' for 10 minutes before submitting the next one.
 				[ default: 10m ]
 	-h			display help message
 
 OUTPUTS:
 	$0 will create 2 folders.
-	1) antsReg folder: 3 files will be created for each subject, corresponding to the affine transform, forward and backward nonlinear warp from the subject's T1 space to the volumetric atlas space. 
+	1) antsReg folder: 3 files will be created for each subject, corresponding to the affine transform, forward and 
+	   backward nonlinear warp from the subject's T1 space to the volumetric atlas space. 
 	For example: 
 		Sub0001_Ses1_FS_moving_MNI152_orig_fixed_ants0GenericAffine.mat
 		Sub0001_Ses1_FS_moving_MNI152_orig_fixed_ants1Warp.nii.gz
@@ -115,7 +128,7 @@ fi
 num_sub=0
 ANTs_dir=$CBIG_ANTS_DIR
 ind_sub_list=$DEFAULT_GSP_SUBLIST
-ind_sub_dir=/mnt/yeogrp/data/GSP_release/
+ind_sub_dir=$CBIG_RF_REP_GSP_DIR
 interval=10m
 output_dir=$(pwd)/results
 

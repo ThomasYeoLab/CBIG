@@ -14,31 +14,33 @@ function CBIG_VK2019_replication_wrapper
 %
 % Written by Valeria Kebets and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
-CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-
-root_dir = [CBIG_CODE_DIR '/stable_projects/disorder_subtypes/Kebets2019_TransdiagnosticComponents'];
-scripts_dir = [root_dir '/replication/code'];
-out_dir = [root_dir '/replication/output'];
+current_dir = fileparts(mfilename('fullpath'));
+pos_v = strfind(current_dir,filesep);
+root_dir = fullfile(current_dir(1:pos_v(length(pos_v)) - 1));
+scripts_dir = fullfile(root_dir,'replication','code');
+out_dir = fullfile(root_dir,'replication','output');
 if ~exist(out_dir), mkdir(out_dir); end
-addpath(genpath([CBIG_CODE_DIR '/external_packages/matlab/non_default_packages/PLS_MIPlab']));
+
 addpath(scripts_dir);
+addpath(fullfile(getenv('CBIG_CODE_DIR'),'external_packages','matlab','non_default_packages','PLS_MIPlab'));
 
-data_root_dir = '/mnt/eql/yeo9/data/UCLAconsortiumNeuropsych';
-behav_dir = [data_root_dir '/behavData/phenotype/mat'];
-FC_dir = [data_root_dir '/FC/preproc_201801/rest/FD_th0.2/fsavg6_censor_GSR'];
-motion_dir = [data_root_dir '/preprocessedData/rsfMRI/preproc_201801/GSR/FD_th0.2'];
-taskFC_dir = [data_root_dir '/FC/preproc_201801/averageAcrossTasks/FD_th0.2/fsavg6_censor_GSR'];
+data_root_dir = getenv('CBIG_VK2019_UCLA_CNP_DIR');
+behav_dir = fullfile(data_root_dir,'behavData','phenotype','mat');
+motion_dir = fullfile(data_root_dir,'preprocessedData','rsfMRI','GSR');
+FC_dir = fullfile(data_root_dir,'FC','rest','fsavg6_censor_GSR');
+taskFC_dir = fullfile(data_root_dir,'FC','averageAcrossTasks','fsavg6_censor_GSR');
 
-subjPath = '/mnt/eql/yeo2/data_preprocess_scripts/UCLA_scripts/Kebets2019_TransdiagnosticComponents/lists/rest';
-subjListFile = [subjPath '/UCLA_subjNames_subjDiag_PLS_rest_N224.mat'];
+subjListFile = fullfile(root_dir,'data_release','PLS_loadings','LC_composite_scores.csv');
+subjListFile_all = fullfile(data_root_dir,'behavData','diagnosis.csv');
+
 
 % Options
-nPerms_rest = 100; % permutations in main (RSFC) PLS analysis
+nPerms_rest = 1000; % permutations in main (RSFC) PLS analysis
 nPerms_cv = 1000; % permutations in cross-validation
 nPerms_task = 1000; % permutations in task FC validation
 nBootstraps = 500; % bootstraps for RSFC & behavior loadings
-normalization_img = 2; % normalization options for RSFC data
-normalization_behav = 2; % normalization options for behavior adta
+normalization_img = 1; % normalization options for RSFC data
+normalization_behav = 1; % normalization options for behavior adta
 % 0 = no normalization
 % 1 = zscore across all subjects
 % 2 = zscore within groups (default)
@@ -53,8 +55,33 @@ RSfile_stem = 'bld001_rest_skip4_stc';
 disp('(1) Loading data');
 
 % Load list of subjects & diagnoses
-load(subjListFile);
+fid = fopen(subjListFile_all);
+file = textscan(fid,'%s%s','delimiter',',');
+fclose(fid);
+subj_names = file{1};
+clear file fid
+
+% Load list of included subjects
+fid = fopen(subjListFile);
+file = textscan(fid,'%s%s%s%s%s%s%s%s','delimiter',',');
+fclose(fid);
+namesInclSubj = file{1}(2:end,:);
 nSubj = numel(namesInclSubj);
+diagInclSubj = file{2}(2:end);
+CONST_DIAGNOSIS = unique(diagInclSubj);
+clear file fid
+
+% Get index of included subjects & code diagnosis as numerical value
+commonInclSubj = nan(nSubj,1);
+diagnosis_grouping = nan(nSubj,1);
+
+for iter_subj = 1:nSubj
+    a = strfind(subj_names,namesInclSubj{iter_subj});
+    commonInclSubj(iter_subj,1) = find(not(cellfun('isempty',a)));     
+    b = strcmp(CONST_DIAGNOSIS,diagInclSubj{iter_subj});
+    diagnosis_grouping(iter_subj,1) = find(b==1);     
+    clear a b
+end
 
 % Behavior variables
 behavTests = {'asrs','hopkins','barratt','dickman','mpq','eysenck','bipolarII_scales','golden',...
@@ -109,7 +136,7 @@ disp('(3) Running PLS');
 [U,S,V,Lx,Ly,explCovLC,LC_behav_loadings,LC_RSFC_loadings] = ...
     myPLS_analysis(X0,Y0,normalization_img,normalization_behav);
 
-save([out_dir '/PLSresults.mat']);
+save(fullfile(out_dir,'PLSresults.mat'));
 
 %% 4. Permutation testing
 
@@ -128,7 +155,7 @@ for iter_lc = 1:length(signif_LC)
         num2str(round(100*explCovLC(this_lc))) '% of covariance']);
 end
 
-save([out_dir '/PLSresults_' num2str(nPerms_rest) 'permuts.mat'],...
+save(fullfile(out_dir,['PLSresults_' num2str(nPerms_rest) 'permuts.mat']),...
     'pvals_LC','X0','Y0','U','S','nPerms_rest','diagnosis_grouping','normalization_img','normalization_behav');
 
 %% 5. Plots
@@ -149,7 +176,7 @@ disp('(6) Bootstrapping over RSFC & behavior loadings');
 [LC_RSFC_loadings_boot,LC_behav_loadings_boot,all_boot_orders] = CBIG_VK2019_bootstrap_loadings...
     (X0,Y0,U,signif_LC,nBootstraps,diagnosis_grouping,normalization_img,normalization_behav,1000);
 
-save([out_dir '/PLS_bootstrapLoadings_' num2str(nBootstraps) 'bootstraps.mat'],...
+save(fullfile(out_dir,['PLS_bootstrapLoadings_' num2str(nBootstraps) 'bootstraps.mat']),...
     'LC_RSFC_loadings_boot','LC_behav_loadings_boot','X0','Y0','U','signif_LC',...
     'nBootstraps','diagnosis_grouping','normalization_img','normalization_behav','all_boot_orders');
 
@@ -158,7 +185,7 @@ save([out_dir '/PLS_bootstrapLoadings_' num2str(nBootstraps) 'bootstraps.mat'],.
     CBIG_VK2019_bootstrap_stats(LC_behav_loadings,LC_behav_loadings_boot,LC_RSFC_loadings,LC_RSFC_loadings_boot,...
     nRois,signif_LC,scripts_dir,out_dir);
 
-save([out_dir '/PLS_bootstrapResults_' num2str(nBootstraps) 'bootstraps.mat'],...
+save(fullfile(out_dir,['PLS_bootstrapResults_' num2str(nBootstraps) 'bootstraps.mat']),...
     'std_behav_boot','zscore_behav_boot','pvals_behav_boot','std_RSFC_boot','zscore_RSFC_boot','pvals_RSFC_boot',...
     'LC_behav_loadings','LC_behav_loadings_boot','LC_RSFC_loadings','LC_RSFC_loadings_boot','nRois',...
     'signif_LC','scripts_dir','out_dir');
@@ -171,7 +198,7 @@ nFolds = 5;
 [corr_LxLy_tr,corr_LxLy_te,pvals_corr_LxLy_te] = CBIG_VK2019_crossval...
     (X0,Y0,signif_LC,diagnosis_grouping,nFolds,nPerms_cv);
 
-save([out_dir '/PLS_' num2str(nFolds) 'fold_crossval_' num2str(nPerms_cv) 'permuts.mat'],...
+save(fullfile(out_dir,['PLS_' num2str(nFolds) 'fold_crossval_' num2str(nPerms_cv) 'permuts.mat']),...
     'corr_LxLy_tr','corr_LxLy_te','pvals_corr_LxLy_te','X0','Y0','signif_LC','diagnosis_grouping','nFolds','nPerms_cv');
 
 %% 8. Validation on task FC
@@ -180,14 +207,14 @@ disp('(8) Task FC validation');
 
 % Project task FC onto RSFC saliences 
 [corr_LxLy_task,pvals_corr_LxLy_task] = CBIG_VK2019_validation_taskFC...
-    (Y_reg,U,V,taskFC_dir,signif_LC,nRois,namesInclSubj,commonInclSubj,...
+    (Y_reg,U,V,taskFC_dir,signif_LC,nRois,namesInclSubj,...
     diagnosis_grouping,nPerms_task,normalization_img);
 
-save([out_dir '/PLS_taskValidation_' num2str(nPerms_task) 'permuts.mat'],...
+save(fullfile(out_dir,['PLS_taskValidation_' num2str(nPerms_task) 'permuts.mat']),...
     'corr_LxLy_task','pvals_corr_LxLy_task','Y_reg','U','V','taskFC_dir','signif_LC','nRois',...
     'namesInclSubj','commonInclSubj','diagnosis_grouping','nPerms_task','normalization_img');
 
 
-rmpath(genpath([CBIG_CODE_DIR '/external_packages/matlab/non_default_packages/PLS_MIPlab']));
+rmpath(fullfile(getenv('CBIG_CODE_DIR'),'external_packages','matlab','non_default_packages','PLS_MIPlab'));
 rmpath(scripts_dir);
 

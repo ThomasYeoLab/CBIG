@@ -35,12 +35,12 @@ function [corr, avgCorr] = CBIG_ASDf_corrTwoRuns(inputDir_best, inputDir, K, r_b
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 %% Load inputs and compute E(FC patterns | Factor)
-beta_best = exp(load([inputDir_best sprintf('/k%s/r%s', K, num2str(r_best)) '/final.beta']));
-rho_best = exp(load([inputDir_best sprintf('/k%s/r%s', K, num2str(r_best)) '/final.rho']));
+beta_best = exp(load(fullfile(inputDir_best,sprintf('k%s/r%s', K, num2str(r_best)),'final.beta')));
+rho_best = exp(load(fullfile(inputDir_best,sprintf('k%s/r%s', K, num2str(r_best)),'final.rho')));
 Mean_best = beta_best.*(2*rho_best-1);
  
-beta = exp(load([inputDir sprintf('/k%s/r%s', K, num2str(r)) '/final.beta']));
-rho = exp(load([inputDir sprintf('/k%s/r%s', K, num2str(r)) '/final.rho']));
+beta = exp(load(fullfile(inputDir,sprintf('k%s/r%s', K, num2str(r)),'final.beta')));
+rho = exp(load(fullfile(inputDir,sprintf('k%s/r%s', K, num2str(r)),'final.rho')));
 Mean = beta.*(2*rho-1);
 
 %% Reorder factors to obtain the maximal correlation coefficients

@@ -6,8 +6,7 @@
 
 output_dir=$1
 
-unit_test_dir=/mnt/eql/yeo1/CBIG_private_unit_tests_data
-data_dir=${unit_test_dir}/stable_projects/disorder_subtypes/Tang2020_ASDFactors/results/results_long/splitHalf
+data_dir=${CBIG_REPDATA_DIR}/stable_projects/disorder_subtypes/Tang2020_ASDFactors/results/splitHalf
 corpus_set1=${data_dir}/set1_dx1.dat
 corpus_set2=${data_dir}/set1_dx2.dat
 K=3
@@ -34,7 +33,7 @@ touch $LF
 # Submit job to circ cluster
 ##############################
 
-/apps/sysapps/TORQUE/bin/qsub -V -q circ-spool << EOJ
+$CBIG_SCHEDULER_DIR/qsub -V -q circ-spool << EOJ
 
 #!/bin/bash
 #PBS -S /bin/bash

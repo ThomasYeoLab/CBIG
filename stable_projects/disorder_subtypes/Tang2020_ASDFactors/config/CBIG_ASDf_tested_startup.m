@@ -19,6 +19,7 @@ if (~isdeployed)
         external_matlab_add_all_path;
         cd(startup_path);
 
+
         % add SD
         CBIG_SD_DIR = getenv('CBIG_SD_DIR');
         if (~isempty(CBIG_SD_DIR) && exist(CBIG_SD_DIR, 'dir'))
@@ -28,6 +29,14 @@ if (~isdeployed)
         end
         clear CBIG_SD_DIR;
 
+        % add SPM12
+        CBIG_SPM_DIR = getenv('CBIG_SPM_DIR');
+        if (~isempty(CBIG_SPM_DIR) && exist(CBIG_SPM_DIR, 'dir'))
+            addpath(CBIG_SPM_DIR);
+        else
+            disp('CBIG_SPM_DIR is not set or points to a non-existing directory');
+        end
+        clear CBIG_SPM_DIR;
     else
         disp('CBIG_CODE_DIR not defined!');
     end

@@ -41,7 +41,8 @@ set output_dir = "" # output directory
 set config = ""     # config file
 set curr_stem = ""  # current stem
 set zpdbold = ""    # bold runs (002 003)
-set BOLD_stem = "_rest" # Initialize the BOLD_stem with _rest, the BOLD_stem is the input of each step and will be updated after each step
+set BOLD_stem = "_rest" # Initialize the BOLD_stem with _rest, 
+#the BOLD_stem is the input of each step and will be updated after each step
 set REG_stem = ""   # stem of registration file produced by bbregister
 set MASK_stem = ""  # stem of file used to create masks
 set OUTLIER_stem="" # stem of file including censor frames
@@ -155,7 +156,8 @@ foreach curr_bold ($zpdbold)
 	else
 		echo "[BOLD INFO]: Input bold nifti file already exists !" >> $LF	
 	endif
-	echo "[BOLD INFO]: bold nifti file is $output_dir/$subject/bold/$curr_bold/$subject'_bld$curr_bold$BOLD_stem.nii.gz'" >> $LF
+	echo "[BOLD INFO]: bold nifti file is: " >> $LF
+	echo "$output_dir/$subject/bold/$curr_bold/$subject'_bld$curr_bold$BOLD_stem.nii.gz'" >> $LF
 	@ k++
 end
 set Bold_file = $output_dir/$subject/logs/$subject.bold
@@ -193,7 +195,8 @@ foreach step ( "`cat $config`" )
 	
 	if ( "$curr_step" == "CBIG_preproc_skip" ) then
 		
-		set cmd = "$root_dir/CBIG_preproc_skip.csh -s $subject -d $output_dir -bld '$zpdbold' -BOLD_stem $BOLD_stem $curr_flag"
+		set cmd = "$root_dir/CBIG_preproc_skip.csh -s $subject -d $output_dir -bld '$zpdbold' -BOLD_stem $BOLD_stem "
+		set cmd = "$cmd $curr_flag"
 		echo "[$curr_step]: $cmd" >> $LF
 		eval $cmd >&  /dev/null
 		
@@ -214,7 +217,8 @@ foreach step ( "`cat $config`" )
 		echo $output_dir/$subject/bold/$curr_bold/${subject}_bld$curr_bold$BOLD_stem.nii.gz >> $cleanup_file
 		
 			if ( ! -e $output_dir/$subject/bold/$curr_bold/$subject"_bld"$curr_bold$BOLD_stem.nii.gz ) then
-				echo "[ERROR]: file $output_dir/$subject/bold/$curr_bold/${subject}_bld$curr_bold$BOLD_stem.nii.gz can not be found" >> $LF
+				echo "[ERROR]: file $output_dir/$subject/bold/$curr_bold/${subject}_bld$curr_bold$BOLD_stem.nii.gz \
+can not be found" >> $LF
 				echo "[ERROR]: CBIG_preproc_skip fail!" >> $LF
 				exit 1
 			endif
@@ -226,7 +230,8 @@ foreach step ( "`cat $config`" )
 		
 	else if ( "$curr_step" == "CBIG_preproc_fslslicetimer" ) then
 	    
-	    set cmd = "$root_dir/CBIG_preproc_fslslicetimer.csh -s $subject -d $output_dir -bld '$zpdbold' -BOLD_stem $BOLD_stem $curr_flag"
+	    set cmd = "$root_dir/CBIG_preproc_fslslicetimer.csh -s $subject -d $output_dir -bld '$zpdbold' -BOLD_stem "
+	    set cmd = "$cmd $BOLD_stem $curr_flag"
 		echo "[$curr_step]: $cmd" >> $LF
 		eval $cmd >&  /dev/null 	
 		
@@ -242,7 +247,8 @@ foreach step ( "`cat $config`" )
 		echo $output_dir/$subject/bold/$curr_bold/${subject}_bld$curr_bold$BOLD_stem.nii.gz >> $cleanup_file
 		
 			if ( ! -e $output_dir/$subject/bold/$curr_bold/$subject"_bld"$curr_bold$BOLD_stem.nii.gz ) then
-				echo "[ERROR]: file $output_dir/$subject/bold/$curr_bold/${subject}_bld$curr_bold$BOLD_stem.nii.gz can not be found" >> $LF
+				echo "[ERROR]: file $output_dir/$subject/bold/$curr_bold/${subject}_bld$curr_bold$BOLD_stem.nii.gz \
+can not be found" >> $LF
 				echo "[ERROR]: CBIG_preproc_fslslicetimer fail!" >> $LF
 				exit 1
 			endif
@@ -254,7 +260,8 @@ foreach step ( "`cat $config`" )
 		
 	else if ( $curr_step == "CBIG_preproc_fslmcflirt_outliers" ) then
 		
-		set cmd = "$root_dir/CBIG_preproc_fslmcflirt_outliers.csh -s $subject -d $output_dir -bld '$zpdbold' -BOLD_stem $BOLD_stem $curr_flag"
+		set cmd = "$root_dir/CBIG_preproc_fslmcflirt_outliers.csh -s $subject -d $output_dir -bld '$zpdbold' "
+		set cmd = "$cmd -BOLD_stem $BOLD_stem $curr_flag"
 		echo "[$curr_step]: $cmd" >> $LF
 		eval $cmd >&  /dev/null
 		
@@ -304,7 +311,8 @@ foreach step ( "`cat $config`" )
 		#check existence of output
 		foreach curr_bold ($zpdbold)
 			if ( ! -e $output_dir/$subject/bold/$curr_bold/$subject"_bld"$curr_bold$BOLD_stem.nii.gz ) then
-				echo "[ERROR]: file $output_dir/$subject/bold/$curr_bold/${subject}_bld$curr_bold$BOLD_stem.nii.gz can not be found" >> $LF
+				echo "[ERROR]: file $output_dir/$subject/bold/$curr_bold/${subject}_bld$curr_bold$BOLD_stem.nii.gz \
+can not be found" >> $LF
 				echo "[ERROR]: CBIG_preproc_fslmcflirt_outliers fail!" >> $LF
 				exit 1
 			endif
@@ -316,7 +324,8 @@ foreach step ( "`cat $config`" )
 	
 	else if ( "$curr_step" == "CBIG_preproc_bbregister" ) then
 		
-		set cmd = "$root_dir/CBIG_preproc_bbregister.csh -s $subject -d $output_dir -anat_s $anat -anat_d $anat_dir -bld '$zpdbold' -BOLD_stem $BOLD_stem $curr_flag"
+		set cmd = "$root_dir/CBIG_preproc_bbregister.csh -s $subject -d $output_dir -anat_s $anat -anat_d $anat_dir "
+		set cmd = "$cmd -bld '$zpdbold' -BOLD_stem $BOLD_stem $curr_flag"
 		echo "[$curr_step]: $cmd" >> $LF
 		eval $cmd >&  /dev/null	
 		
@@ -330,7 +339,8 @@ foreach step ( "`cat $config`" )
 		#check existence of output
 		foreach curr_bold ($zpdbold)
 			if ( ! -e $output_dir/$subject/bold/$curr_bold/$subject"_bld"$curr_bold$REG_stem.dat ) then
-				echo "[ERROR]: file $output_dir/$subject/bold/$curr_bold/$subject"_bld"$curr_bold$REG_stem.dat can not be found" >> $LF
+				echo "[ERROR]: file $output_dir/$subject/bold/$curr_bold/$subject"_bld"$curr_bold$REG_stem.dat \
+can not be found" >> $LF
 				echo "[ERROR]: CBIG_preproc_bbregister!" >> $LF
 				exit 1
 			endif
@@ -342,7 +352,8 @@ foreach step ( "`cat $config`" )
 		
 	else if ( "$curr_step" == "CBIG_preproc_despiking" ) then
 	    
-	    set cmd = "$root_dir/CBIG_preproc_despiking.csh -s $subject -d $output_dir -bld '$zpdbold' -BOLD_stem $BOLD_stem $curr_flag"
+	    set cmd = "$root_dir/CBIG_preproc_despiking.csh -s $subject -d $output_dir -bld '$zpdbold' -BOLD_stem "
+	    set cmd = "$cmd $BOLD_stem $curr_flag"
 		echo "[$curr_step]: $cmd" >> $LF
 		eval $cmd >&  /dev/null 	
 		
@@ -354,7 +365,8 @@ foreach step ( "`cat $config`" )
 		#check existence of output
 		foreach curr_bold ($zpdbold)	
 			if ( ! -e $output_dir/$subject/bold/$curr_bold/$subject"_bld"$curr_bold$BOLD_stem.nii.gz ) then
-				echo "[ERROR]: file $output_dir/$subject/bold/$curr_bold/${subject}_bld$curr_bold$BOLD_stem.nii.gz can not be found" >> $LF
+				echo "[ERROR]: file $output_dir/$subject/bold/$curr_bold/${subject}_bld$curr_bold$BOLD_stem.nii.gz \
+can not be found" >> $LF
 				echo "[ERROR]: CBIG_preproc_despiking fail!" >> $LF
 				exit 1
 			endif
@@ -371,17 +383,21 @@ foreach step ( "`cat $config`" )
 		if ( $nocleanup != 1) then            # needs to cleanup
 			# if curr_flag contains "-nocleanup", we remove this option
 			set curr_flag = `echo $curr_flag | sed 's/-nocleanup//'`
-			echo "[$curr_step]: -nocleanup is not passed in wrapper function CBIG_preproc_fMRI_preprocess.csh. The intermediate censoring interpolation volume will be removed." >> $LF
+			echo "[$curr_step]: -nocleanup is not passed in wrapper function CBIG_preproc_fMRI_preprocess.csh. \
+The intermediate censoring interpolation volume will be removed." >> $LF
 		else                                  # does not need to cleanup
 			# check if curr_flag contains -nocleanup
 			set flag_ind = `echo $curr_flag | awk '{print index($0, "-nocleanup")}'`
 			if ( $flag_ind == 0 ) then        # 0 means curr_flag does not contain "-nocleanup", add "-nocleanup"
 				set curr_flag = "$curr_flag -nocleanup"
 			endif
-			echo "[$curr_step]: -nocleanup is passed in wrapper function CBIG_preproc_fMRI_preprocess.csh. The intermediate censoring interpolation volume will not be removed." >> $LF
+			echo "[$curr_step]: -nocleanup is passed in wrapper function CBIG_preproc_fMRI_preprocess.csh. \
+The intermediate censoring interpolation volume will not be removed." >> $LF
 		endif
 		
-		set cmd = "$root_dir/CBIG_preproc_censor.csh -s $subject -d $output_dir -anat_s $anat -anat_d $SUBJECTS_DIR -bld '$zpdbold' -BOLD_stem $BOLD_stem -REG_stem $REG_stem -OUTLIER_stem $OUTLIER_stem $curr_flag"
+		set cmd = "$root_dir/CBIG_preproc_censor.csh -s $subject -d $output_dir -anat_s $anat -anat_d $SUBJECTS_DIR "
+		set cmd = "$cmd -bld '$zpdbold' -BOLD_stem $BOLD_stem -REG_stem $REG_stem -OUTLIER_stem $OUTLIER_stem "
+		set cmd = "$cmd $curr_flag"
 		echo "[$curr_step]: $cmd" >> $LF
 		eval $cmd >&  /dev/null 
 		
@@ -402,7 +418,8 @@ foreach step ( "`cat $config`" )
            
 		foreach curr_bold ($zpdbold)
 			if ( ! -e $output_dir/$subject/bold/$curr_bold/$subject"_bld"$curr_bold$BOLD_stem.nii.gz ) then
-				echo "[ERROR]: file $output_dir/$subject/bold/$curr_bold/${subject}_bld$curr_bold$BOLD_stem.nii.gz can not be found" >> $LF
+				echo "[ERROR]: file $output_dir/$subject/bold/$curr_bold/${subject}_bld$curr_bold$BOLD_stem.nii.gz \
+can not be found" >> $LF
 				echo "[ERROR]: CBIG_preproc_censor fail!" >> $LF
 				exit 1
 			endif
@@ -414,7 +431,8 @@ foreach step ( "`cat $config`" )
 	
 	else if ( "$curr_step" == "CBIG_preproc_bandpass" ) then
 		
-		set cmd = "$root_dir/CBIG_preproc_bandpass_fft.csh -s $subject -d $output_dir -bld '$zpdbold' -BOLD_stem $BOLD_stem -OUTLIER_stem $OUTLIER_stem $curr_flag" 
+		set cmd = "$root_dir/CBIG_preproc_bandpass_fft.csh -s $subject -d $output_dir -bld '$zpdbold' -BOLD_stem " 
+		set cmd = "$cmd $BOLD_stem -OUTLIER_stem $OUTLIER_stem $curr_flag"
 		echo "[$curr_step]: $cmd" >> $LF
 		eval $cmd >&  /dev/null 	
 		
@@ -438,7 +456,8 @@ foreach step ( "`cat $config`" )
 		foreach curr_bold ($zpdbold)
 		
 			if ( ! -e $output_dir/$subject/bold/$curr_bold/$subject"_bld"$curr_bold$BOLD_stem.nii.gz ) then
-				echo "[ERROR]: file $output_dir/$subject/bold/$curr_bold/${subject}_bld$curr_bold$BOLD_stem.nii.gz can not be found" >> $LF
+				echo "[ERROR]: file $output_dir/$subject/bold/$curr_bold/${subject}_bld$curr_bold$BOLD_stem.nii.gz \
+can not be found" >> $LF
 				echo "[ERROR]: CBIG_preproc_bandpass fail!" >> $LF
 				exit 1
 			endif
@@ -450,7 +469,9 @@ foreach step ( "`cat $config`" )
 	
 	else if ( $curr_step == "CBIG_preproc_regress" ) then
 		
-		set cmd = "$root_dir/CBIG_preproc_regression.csh -s $subject -d $output_dir -anat_s $anat -anat_d $SUBJECTS_DIR -bld '$zpdbold' -BOLD_stem $BOLD_stem -REG_stem $REG_stem -MASK_stem $BOLD_stem -OUTLIER_stem $OUTLIER_stem $curr_flag"
+		set cmd = "$root_dir/CBIG_preproc_regression.csh -s $subject -d $output_dir -anat_s $anat -anat_d "
+		set cmd = "$cmd $SUBJECTS_DIR -bld '$zpdbold' -BOLD_stem $BOLD_stem -REG_stem $REG_stem -MASK_stem $BOLD_stem "
+		set cmd = "$cmd -OUTLIER_stem $OUTLIER_stem $curr_flag"
 		echo "[$curr_step]: $cmd" >> $LF
 		eval $cmd >&  /dev/null 
 		
@@ -471,7 +492,8 @@ foreach step ( "`cat $config`" )
 		echo $output_dir/$subject/bold/$curr_bold/${subject}_bld$curr_bold$BOLD_stem.nii.gz >> $cleanup_file
 		
 			if ( ! -e $output_dir/$subject/bold/$curr_bold/$subject"_bld"$curr_bold$BOLD_stem.nii.gz ) then
-				echo "[ERROR]: file $output_dir/$subject/bold/$curr_bold/${subject}_bld$curr_bold$BOLD_stem.nii.gz can not be found" >> $LF
+				echo "[ERROR]: file $output_dir/$subject/bold/$curr_bold/${subject}_bld$curr_bold$BOLD_stem.nii.gz \
+can not be found" >> $LF
 				echo "[ERROR]: CBIG_preproc_regress fail!" >> $LF
 				exit 1
 			endif
@@ -482,26 +504,30 @@ foreach step ( "`cat $config`" )
 	##########################################
 	else if ( $curr_step == "CBIG_preproc_QC_greyplot" ) then
 		
-		set cmd = "$root_dir/CBIG_preproc_QC_greyplot.csh -s $subject -d $output_dir -anat_s $anat -anat_d $SUBJECTS_DIR"
-		set cmd = "$cmd  -bld '$zpdbold' -BOLD_stem $BOLD_stem -REG_stem $REG_stem -MC_stem $mc_stem $curr_flag"
+		set cmd = "$root_dir/CBIG_preproc_QC_greyplot.csh -s $subject -d $output_dir -anat_s $anat -anat_d "
+		set cmd = "$cmd $SUBJECTS_DIR -bld '$zpdbold' -BOLD_stem $BOLD_stem -REG_stem $REG_stem -MC_stem $mc_stem "
+		set cmd = "$cmd $curr_flag"
 		echo "[$curr_step]: $cmd" >> $LF
 		eval $cmd >&  /dev/null
 		
 		foreach curr_bold ($zpdbold)
 			if ( ! -e $output_dir/$subject/qc/$subject"_bld"$curr_bold$BOLD_stem"_greyplot.png" ) then
-				echo "[ERROR]: file $output_dir/$subject/qc/${subject}_bld${curr_bold}${BOLD_stem}_greyplot.png can not be found" >> $LF
+				echo "[ERROR]: file $output_dir/$subject/qc/${subject}_bld${curr_bold}${BOLD_stem}_greyplot.png \
+can not be found" >> $LF
 				echo "[ERROR]: CBIG_preproc_QC_greyplot fail!" >> $LF
 				exit 1
 			endif
 		end
 
 	##########################################
-	# Preprocess step: Porjection to fsaverage surface (project to high resolution => smooth => downsample to low resolution)
+	# Preprocess step: Porjection to fsaverage surface 
+	# (project to high resolution => smooth => downsample to low resolution)
 	##########################################
 	
 	else if ( $curr_step == "CBIG_preproc_native2fsaverage" ) then
 		
-		set cmd = "$root_dir/CBIG_preproc_native2fsaverage.csh -s $subject -d $output_dir -anat_s $anat -anat_d $SUBJECTS_DIR -bld '$zpdbold' -BOLD_stem $BOLD_stem -REG_stem $REG_stem $curr_flag"
+		set cmd = "$root_dir/CBIG_preproc_native2fsaverage.csh -s $subject -d $output_dir -anat_s $anat -anat_d "
+		set cmd = "$cmd $SUBJECTS_DIR -bld '$zpdbold' -BOLD_stem $BOLD_stem -REG_stem $REG_stem $curr_flag"
 		echo "[$curr_step]: $cmd" >> $LF
 		eval $cmd >&  /dev/null
 		
@@ -530,8 +556,10 @@ foreach step ( "`cat $config`" )
 		
 		#check existence of output
 		foreach curr_bold ($zpdbold)
-			if ( ! -e $output_dir/$subject/surf/lh.$subject"_bld"$curr_bold$SURF_stem.nii.gz || ! -e $output_dir/$subject/surf/rh.$subject"_bld"$curr_bold$SURF_stem.nii.gz) then
-				echo "[ERROR]: file $output_dir/$subject/surf/${subject}_bld$curr_bold$SURF_stem.nii.gz can not be found" >> $LF
+			if ( ! -e $output_dir/$subject/surf/lh.$subject"_bld"$curr_bold$SURF_stem.nii.gz || \
+! -e $output_dir/$subject/surf/rh.$subject"_bld"$curr_bold$SURF_stem.nii.gz) then
+				echo "[ERROR]: file $output_dir/$subject/surf/${subject}_bld$curr_bold$SURF_stem.nii.gz \
+can not be found" >> $LF
 				echo "[ERROR]: CBIG_preproc_native2fsaverage fail!" >> $LF
 				exit 1
 			endif
@@ -567,7 +595,8 @@ The intermediate files will be removed." >> $LF
 		if ( "$curr_flag" =~ *"-Pearson_r"* ) then
 			set FC_metrics_stem = "${FC_SURF_stem}_all2all"
 			if ( ! -e $output_dir/$subject/FC_metrics/Pearson_r/$subject$FC_metrics_stem.mat ) then
-				echo "[ERROR]: file $output_dir/$subject/FC_metrics/Pearson_r/$subject$FC_metrics_stem.mat can not be found" >> $LF
+				echo "[ERROR]: file $output_dir/$subject/FC_metrics/Pearson_r/$subject$FC_metrics_stem.mat \
+can not be found" >> $LF
 				echo "[ERROR]: CBIG_preproc_FC_metrics fail!" >> $LF
 				exit 1
 			endif
@@ -579,7 +608,8 @@ The intermediate files will be removed." >> $LF
 	
 	else if ( $curr_step == "CBIG_preproc_native2mni" ) then
 		
-		set cmd = "$root_dir/CBIG_preproc_native2mni.csh -s $subject -d $output_dir -anat_s $anat -anat_d $SUBJECTS_DIR -bld '$zpdbold' -BOLD_stem $BOLD_stem -REG_stem $REG_stem $curr_flag"
+		set cmd = "$root_dir/CBIG_preproc_native2mni.csh -s $subject -d $output_dir -anat_s $anat -anat_d "
+		set cmd = "$cmd $SUBJECTS_DIR -bld '$zpdbold' -BOLD_stem $BOLD_stem -REG_stem $REG_stem $curr_flag"
 		echo "[$curr_step]: $cmd" >> $LF
 		eval $cmd >&  /dev/null 	
 		
@@ -603,7 +633,8 @@ The intermediate files will be removed." >> $LF
 		#check existence of output
 		foreach curr_bold ($zpdbold)
 			if ( ! -e $output_dir/$subject/vol/$subject"_bld"$curr_bold$VOL_stem.nii.gz ) then
-				echo "[ERROR]: file $output_dir/$subject/vol/${subject}_bld$curr_bold$VOL_stem.nii.gz can not be found" >> $LF
+				echo "[ERROR]: file $output_dir/$subject/vol/${subject}_bld$curr_bold$VOL_stem.nii.gz \
+can not be found" >> $LF
 				echo "[ERROR]: CBIG_preproc_native2mni fail!" >> $LF
 				exit 1
 			endif
@@ -824,15 +855,17 @@ DESCRIPTION:
 	    run registration as the final registration of this run. Otherwise, use the original registration.
 	    c) To save disk space, it also generates a loose whole brain mask and applies it to input fMRI 
 	    volumes. If you follow the default config file, then the input fMRI volumes are motion corrected volumes.
-	(5) [CBIG_preproc_regress -whole_brain -wm -csf -motion12_itamar -detrend_method detrend -per_run -censor -polynomial_fit 1] 
+	(5) [CBIG_preproc_regress -whole_brain -wm -csf -motion12_itamar -detrend_method detrend -per_run -censor \
+	     -polynomial_fit 1] 
 	    regresses out motion, whole brain, white matter, ventricle, linear regressors for each run seperately. 
 	    If the data have censored frames, this function will first estimate the beta coefficients ignoring the 
 	    censored frames and then apply the beta coefficients to all frames to regress out those regressors.  
 	(6) [CBIG_preproc_censor -nocleanup -max_mem NONE] 
 	    removes (ax+b) trend of censored frames, then does censoring with interpolation. For interpolation method, 
-	    please refer to (Power et al. 2014). In our example_config.txt, "-max_mem NONE" means the maximal memory usage is not 
-	    specified, the actual memory usage will vary according to the size of input fMRI file (linearly proportional). If you 
-	    want to ensure the memory usage does not exceed 10G, for example, you can pass in "-max_mem 9".
+	    please refer to (Power et al. 2014). In our example_config.txt, "-max_mem NONE" means the maximal memory usage 
+	    is not specified, the actual memory usage will vary according to the size of input fMRI file (linearly 
+	    proportional). If you want to ensure the memory usage does not exceed 10G, for example, you can pass in 
+	    "-max_mem 9".
 	(7) [CBIG_preproc_despiking]
 	    uses AFNI 3dDespike to conduct despiking. This function can be used to replace censoring interpolation step (6),  
 	    depending on the requirement of users.
@@ -844,32 +877,34 @@ DESCRIPTION:
 	    creates greyplots for quality control purpose. Greyplots contain 4 subplots: framewise displacement trace (with 
 	    censoring threshold), DVARS trace (with censoring threshold), global signal, and grey matter timeseries.
 	    In our default config file, we only create the grey plots just before projecting the data to surface/volumetric 
-	    spaces because our aim is to see how much artifacts are there after all data cleaning steps. If the users want to 
-	    compare the greyplots after different steps, they can insert this step multiple times in the config file (but must be
-	    after CBIG_preproc_bbregister step because it needs intra-subject registration information to create masks).
+	    spaces because our aim is to see how much artifacts are there after all data cleaning steps. If the users want 
+	    to compare the greyplots after different steps, they can insert this step multiple times in the config file 
+	    (but must be after CBIG_preproc_bbregister step because it needs intra-subject registration information to 
+	    create masks).
 	(10) [CBIG_preproc_native2fsaverage -proj fsaverage6 -down fsaverage5 -sm 6] 
 	    projects fMRI to fsaverage6, smooths it with fwhm = 6mm and downsamples it to fsaverage5.
-	(11) [CBIG_preproc_FC_metrics -Pearson_r -censor -lh_cortical_ROIs_file <lh_cortical_ROIs_file> -rh_cortical_ROIS_file \
-	    <rh_cortical_ROIs_file>]
+	(11) [CBIG_preproc_FC_metrics -Pearson_r -censor -lh_cortical_ROIs_file <lh_cortical_ROIs_file> \
+	      -rh_cortical_ROIS_file <rh_cortical_ROIs_file>]
 	    computes FC (functional connectivity) metrics based on both cortical and subcortical ROIs. The cortical ROIs 
 	    can be passed in by -lh_cortical_ROIs and -rh_cortical_ROIs. The subcortical ROIs are 19 labels extracted 
 	    from aseg in subject-specific functional space. This function will support for multiple types of FC metrics
 	    in the future, but currently we only support static Pearson's correlation by using "-Pearson_r" flag. 
 	    If "-censor" flag is used, the censored frames are ignored when computing FC metrics.
 	(12) [CBIG_preproc_native2mni_ants -sm_mask \
-	    ${CBIG_CODE_DIR}/data/templates/volume/FSL_MNI152_masks/SubcorticalLooseMask_MNI1mm_sm6_MNI2mm_bin0.2.nii.gz \
-	    -final_mask ${FSL_DIR}/data/standard/MNI152_T1_2mm_brain_mask_dil.nii.gz]
-	    first, projects fMRI to FSL MNI 2mm space using ANTs registration; second, smooth it by fwhm = 6mm within <sm_mask>; 
-	    and last, masks the result by <final_mask> to save disk space.
-	    Caution: if you want to use this step, please check your ANTs software version. There is a bug in early builds of 
-	    ANTs (before Aug 2014) that causes resampling for timeseries to be wrong. We have tested that our codes would work on 
-	    ANTs version 2.2.0. 
+	      ${CBIG_CODE_DIR}/data/templates/volume/FSL_MNI152_masks/SubcorticalLooseMask_MNI1mm_sm6_MNI2mm_bin0.2.nii.gz \
+	      -final_mask ${FSL_DIR}/data/standard/MNI152_T1_2mm_brain_mask_dil.nii.gz]
+	    first, projects fMRI to FSL MNI 2mm space using ANTs registration; second, smooth it by fwhm = 6mm within 
+	    <sm_mask>; and last, masks the result by <final_mask> to save disk space.
+	    Caution: if you want to use this step, please check your ANTs software version. There is a bug in early builds 
+	    of ANTs (before Aug 2014) that causes resampling for timeseries to be wrong. We have tested that our codes 
+	    would work on ANTs version 2.2.0. 
 	(13) [CBIG_preproc_native2mni -down FSL_MNI_2mm -sm 6 -sm_mask <sm_mask> -final_mask <final_mask>] 
-	    it has the similar functionality as (12) but using FreeSurfer with talairach.m3z, not ANTs. We suggest the users 
-	    use (12) instead of (13).
-	    First, this step projects fMRI to FreeSurfer nonlinear space; second, projects the image from FreeSurfer nonlinear 
-	    space to FSL MNI 1mm space; third, downsamples the image from FSL MNI 1mm space to FSL MNI 2mm space; fourth, smooths 
-	    it by fwhm = 6mm within <sm_mask>; and last, masks the result by <final_mask> to save disk space.
+	    it has the similar functionality as (12) but using FreeSurfer with talairach.m3z, not ANTs. We suggest the 
+	    users use (12) instead of (13).
+	    First, this step projects fMRI to FreeSurfer nonlinear space; second, projects the image from FreeSurfer 
+	    nonlinear space to FSL MNI 1mm space; third, downsamples the image from FSL MNI 1mm space to FSL MNI 2mm space; 
+	    fourth, smooths it by fwhm = 6mm within <sm_mask>; and last, masks the result by <final_mask> to save disk 
+	    space.
 	
 
 	Note: this pipeline assumes the user has finished FreeSurfer recon-all T1 preprocessing.
@@ -890,8 +925,8 @@ DESCRIPTION:
 REQUIRED ARGUMENTS:
 	-s  <subject>              : subject ID
 	-fmrinii  <fmrinii>        : fmrinii text file including 2 columns, the 1st column contains all run numbers, 
-	                            the 2nd column specify the absolute path to raw functional nifti files for corresponding run.
-	                            An example file is here: 
+	                            the 2nd column specify the absolute path to raw functional nifti files for 
+	                            corresponding run. An example file is here: 
 	                            ${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/example_fmrinii.txt
 	                            Example of <fmrinii> content:
 	                            002 /data/../Sub0015_bld002_rest.nii.gz
@@ -899,27 +934,28 @@ REQUIRED ARGUMENTS:
 
 	-anat_s  <anat>            : FreeSurfer recon-all folder name of this subject (relative path)
 	-anat_d  <anat_dir>        : specify anat directory to recon-all folder (full path), i.e. <anat_dir> contains <anat>
-	-output_d  <output_dir>    : output directory to save out preprocess results (full path). This pipeline will create a 
-	                             folder named <subject> under <output_dir>. All preprocessing results of this subject are 
-	                             stored in <output_dir>/<subject>.
+	-output_d  <output_dir>    : output directory to save out preprocess results (full path). This pipeline will create 
+	                             a folder named <subject> under <output_dir>. All preprocessing results of this subject 
+	                             are stored in <output_dir>/<subject>.
 	-config  <config>          : configuration file
 	                            An example file is here: 
 	                            ${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/example_config.txt
 	                            Example of <config> content (Remind: this is not a full config file):
+	                            
 	                            ###CBIG fMRI preprocessing configuration file
 	                            ###The order of preprocess steps is listed below
 	                            CBIG_preproc_skip -skip 4
 	                            CBIG_preproc_fslslicetimer -slice_timing ${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/example_slice_timing.txt
 	                            CBIG_preproc_fslmcflirt_outliers -FD_th 0.2 -DV_th 50 -discard-run 50 -rm-seg 5
 
-	                            The symbol # in the config file also means comment, you can write anything you want if you 
-	                            begin a line with #. Each line of the config file representing a function or step of our 
-	                            preprocessing pipeline, the order of the step representing our preprocessing order, so it is 
-	                            easy to change the order of your preprocessing according to changing the config file.
-	                            In this config file, you can also specify the option of each function. For example, if you 
-	                            want to skip first 4 frames of the fMRI data, you can add the option (-skip 4) behind the 
-	                            CBIG_preproc_skip. For further details about these options, you can use option (-help) for 
-	                            each function, such as (CBIG_preproc_skip -help).
+	                            The symbol # in the config file also means comment, you can write anything you want if 
+	                            you begin a line with #. Each line of the config file representing a function or step 
+	                            of our preprocessing pipeline, the order of the step representing our preprocessing 
+	                            order, so it is easy to change the order of your preprocessing according to changing 
+	                            the config file. In this config file, you can also specify the option of each function. 
+	                            For example, if you want to skip first 4 frames of the fMRI data, you can add the 
+	                            option (-skip 4) behind the CBIG_preproc_skip. For further details about these options, 
+	                            you can use option (-help) for each function, such as (CBIG_preproc_skip -help).
 
 OPTIONAL ARGUMENTS:
 	-help                      : help
@@ -933,8 +969,8 @@ OUTPUTS:
 	1. surf folder contains the intermediate and final preprocessed fMRI data on the surface. 
 		For example, 
 		surf/lh.Sub0033_Ses1_bld002_rest_skip4_stc_mc_resid_interp_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6_fs5.nii.gz 
-		is bold data from run 002 ("bld002") of subject "Sub0033_Ses1" that has been projected to the left hemisphere ("lh"). 
-		The remaining descriptors in the filename describe the order of the processing steps. In particular,
+		is bold data from run 002 ("bld002") of subject "Sub0033_Ses1" that has been projected to the left hemisphere 
+		("lh"). The remaining descriptors in the filename describe the order of the processing steps. In particular,
 		"rest" = resting state fmri
 		"skip" = first four frames have been removed for T1 equilibrium
 		"stc" = slice time correction
@@ -952,8 +988,8 @@ OUTPUTS:
 		For example, 
 		a. 
 		vol/Sub0033_Ses1_bld002_rest_skip4_stc_mc_residc_interp_FDRMS0.2_DVARS50_bp_0.009_0.08_MNI2mm_sm6_finalmask.nii.gz
-		is the BOLD data of run 002 ("bld002") in subject "Sub0033_Ses1", generated after CBIG_preproc_native2mni_ants step. 
-		The remaining descriptors in the filename describe the order of the processing steps. In particular,
+		is the BOLD data of run 002 ("bld002") in subject "Sub0033_Ses1", generated after CBIG_preproc_native2mni_ants 
+		step. The remaining descriptors in the filename describe the order of the processing steps. In particular,
 		"rest" = resting state fmri
 		"skip" = first four frames have been removed for T1 equilibrium
 		"stc" = slice time correction
@@ -976,15 +1012,16 @@ OUTPUTS:
 		
 	3. logs folder contains all log files for our preprocessing.
 		CBIG_fMRI_preprocess.log contains the log info of CBIG_fMRI_preprocess.csh function, which is a wrapper script.
-		Similarly, the name of the log file indicates the function, for example, CBIG_preproc_regress.log corresponds to the 
-		function CBIG_preproc_regression.csh. Other log files: env.log includes all environment variables; git.log includes 
-		the last git commit info; Sub0033_Ses1.bold contains the run numbers of this subject after censoring; cleanup.txt 
-		includes all intermediate files that have been deleted, the user can use -nocleanup option to keep these volumes.
+		Similarly, the name of the log file indicates the function, for example, CBIG_preproc_regress.log corresponds 
+		to the function CBIG_preproc_regression.csh. Other log files: env.log includes all environment variables; 
+		git.log includes the last git commit info; Sub0033_Ses1.bold contains the run numbers of this subject after 
+		censoring; cleanup.txt includes all intermediate files that have been deleted, the user can use -nocleanup 
+		option to keep these volumes.
 	   
 	4. bold folder contains the intermediate files for each step.
 		bold/002 folder contains all intermediate bold volumes of run 002.
-		For example, Sub0033_Ses1_bld002_rest_skip4_stc_mc.nii.gz is the volume after skip -> slice-timing correction -> 
-		motion correction
+		For example, Sub0033_Ses1_bld002_rest_skip4_stc_mc.nii.gz is the volume after skip -> slice-timing correction 
+		-> motion correction
 
 		bold/mask folder contains all the fMRI masks.
 		For example, Sub0033_Ses1.func.ventricles.nii.gz means that it's a functional ventricle mask for the subject 
@@ -995,16 +1032,17 @@ OUTPUTS:
 
 		bold/mc folder contains the output files of fsl_motion_outliers, and some intermediate files when detecting 
 		high-motion outliers. For example, Sub0033_Ses1_bld002_rest_skip4_stc_motion_outliers_DVARS is the text file of 
-		DVARS value of each frame of Sub0033_Ses1, run 002;	Sub0033_Ses1_bld002_rest_skip4_stc_motion_outliers_FDRMS is the 
-		text file of FDRMS value of each frame of Sub0033_Ses1, run 002;
+		DVARS value of each frame of Sub0033_Ses1, run 002;	Sub0033_Ses1_bld002_rest_skip4_stc_motion_outliers_FDRMS is 
+		the text file of FDRMS value of each frame of Sub0033_Ses1, run 002;
 
 	5. qc folder contains all the files that are useful for quality control.
 		For example:
 		CBIG_preproc_bbregister_intra_sub_reg.cost contains the number of bbregister cost in T1-T2* registration.
 		Sub0033_Ses1_bld002_mc_abs.rms, Sub0033_Ses1_bld002_mc_abs_mean.rms, Sub0033_Ses1_bld002_mc_rel.rms, and 
 		Sub0033_Ses1_bld002_mc_rel_mean.rms are motion parameters.
-		Sub0033_Ses1_bld002_FDRMS0.2_DVARS50_motion_outliers.txt contains the outlier labels of frames (1-keep, 0-censored)
-		For introduction of more qc files, please refer to quality_control_readme.md in the same folder of this script.
+		Sub0033_Ses1_bld002_FDRMS0.2_DVARS50_motion_outliers.txt contains the outlier labels of frames (1-keep, 
+		0-censored). For introduction of more qc files, please refer to quality_control_readme.md in the same folder of 
+		this script.
 		
 	6. FC_metrics folder contains all files related to this subject's FC (functional connectivity) metrics.
 	   It contains three subfolders currently"
@@ -1013,8 +1051,12 @@ OUTPUTS:
 	   FC_metrics/Pearson_r contains the static Pearson's correlation of this subject.
   
 EXAMPLE:
-	CBIG_fMRI_preprocess.csh -s Sub0033_Ses1 -output_d ./ -anat_s Sub0033_Ses1_FS -anat_d 
-	/share/users/imganalysis/yeolab/data/GSP_release -fmrinii ./Sub0033_Ses1.fmrinii -config ./prepro.config
+	CBIG_fMRI_preprocess.csh -s Sub0033_Ses1 -output_d $CBIG_TESTDATA_DIR/stable_projects/preprocessing/\
+	CBIG_fMRI_Preproc2016/100subjects_clustering/preproc_out -anat_s Sub0033_Ses1_FS -anat_d \
+	$CBIG_TESTDATA_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/100subjects_clustering/recon_all -fmrinii \
+	$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/unit_tests/100subjects_clustering/fmrinii/\
+	Sub0033_Ses1.fmrinii -config $CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/unit_tests/\
+	100subjects_clustering/prepro.config/prepro.config
 	
 Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 

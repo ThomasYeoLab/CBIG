@@ -49,7 +49,7 @@ function CBIG_preproc_compare_two_pipelines(pipe_dir1, pipe_name1, pipe_stem1...
 %
 % Output:
 %   If compare_type == 'surf', the output file will be under the directory 
-%   [output_dir '/' subject_id]
+%   fullfile(output_dir, subject_id)
 %   - [pipe_name1 '_' pipe_name2 '_corr_surf.png'] :
 %     correlation map between surface data in pipe1 and pipe2
 %   - [pipe_name1 '_' pipe_name2 '_corr_surf_hist.png'] :
@@ -57,7 +57,7 @@ function CBIG_preproc_compare_two_pipelines(pipe_dir1, pipe_name1, pipe_stem1...
 %   - [pipe_name1 '_' pipe_name2 '_corr_surf_stat.txt'] :
 %     maximum, mean, minimum, median value of the correlation
 %   If compare_type == 'vol', the output file will be under the directory
-%   [output_dir '/' subject_id]
+%   fullfile(output_dir, subject_id)
 %   - [pipe_name1 '_' pipe_name2 '_corr_vol.nii.gz'] :
 %     The correlation of all voxels in the whole brain between 2 pipelines are
 %     saved in MNI 2mm volume space.
@@ -76,34 +76,43 @@ function CBIG_preproc_compare_two_pipelines(pipe_dir1, pipe_name1, pipe_stem1...
 %     between 2 pipelines 
 %
 % Example:
-% datadir = ['/mnt/eql/yeo2/CBIG_repo_tests/CBIG_fMRI_Preproc2016_test/'... 
-% 'surface_vol_12sub'];
-% CBIG_preproc_compare_two_pipelines([datadir '/procsurffast'], ... 
-% 'procsurffast', ['_rest_reorient_skip_faln_mc_g1000000000_bpss_resid_'...
-% 'fsaverage6_sm6_fsaverage5'], [datadir '/swap_bp_regress'], 'swap_bp_regress'...
-% , '_rest_skip4_stc_mc_resid_lp0.08_fs6_sm6_fs5', 'Sub0069_Ses1', '002', ...
-% '~/storage/test', 'surf')
+% datadir1 = fullfile(getenv('CBIG_TESTDATA_DIR'), 'stable_projects', 'preprocessing', ...
+%    'CBIG_fMRI_Preproc2016', 'single_subject', 'data');
+% datadir2 = fullfile(getenv('CBIG_TESTDATA_DIR'), 'stable_projects', 'preprocessing', ...
+%    'CBIG_fMRI_Preproc2016', '100subjects_clustering', 'preproc_out');
+% CBIG_preproc_compare_two_pipelines(datadir1, 'pipename1', ...
+% '_rest_reorient_skip_faln_mc_g1000000000_bpss_resid_fsaverage6_sm6_fsaverage5', ...
+% datadir2, 'pipename2', '_rest_skip4_stc_mc_resid_lp0.08_fs6_sm6_fs5', 'Sub1116_Ses1', ...
+% '002', fullfile(getenv('HOME'), 'storage', 'test'), 'surf')
 %
 % Written by Nanbo Sun and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 % create sub dir for each subject_id and each run
-output_dir_sub_run = [output_dir '/' subject_id '/' run ];
+output_dir_sub_run = fullfile(output_dir, subject_id, run );
 mkdir(output_dir_sub_run)
 
 % get the full path of surface or volume in pipeline1
-lh_surface_file1 = [pipe_dir1 '/' subject_id '/surf/lh.' subject_id '_bld' run pipe_stem1 '.nii.gz'];
-rh_surface_file1 = [pipe_dir1 '/' subject_id '/surf/rh.' subject_id '_bld' run pipe_stem1 '.nii.gz'];
-MNI2mm_vol_file1 = [pipe_dir1 '/' subject_id '/vol/'     subject_id '_bld' run pipe_stem1 '.nii.gz'];
+lh_surface_file1 = fullfile(pipe_dir1, subject_id, 'surf', ...
+    ['lh.' subject_id '_bld' run pipe_stem1 '.nii.gz']);
+rh_surface_file1 = fullfile(pipe_dir1, subject_id, 'surf', ...
+    ['rh.' subject_id '_bld' run pipe_stem1 '.nii.gz']);
+MNI2mm_vol_file1 = fullfile(pipe_dir1, subject_id, 'vol', ...
+    [subject_id '_bld' run pipe_stem1 '.nii.gz']);
 
 % get the full path of surface or volume in pipeline2
-lh_surface_file2 = [pipe_dir2 '/' subject_id '/surf/lh.' subject_id '_bld' run pipe_stem2 '.nii.gz'];
-rh_surface_file2 = [pipe_dir2 '/' subject_id '/surf/rh.' subject_id '_bld' run pipe_stem2 '.nii.gz'];
-MNI2mm_vol_file2 = [pipe_dir2 '/' subject_id '/vol/'     subject_id '_bld' run pipe_stem2 '.nii.gz'];
+lh_surface_file2 = fullfile(pipe_dir2, subject_id, 'surf', ...
+    ['lh.' subject_id '_bld' run pipe_stem2 '.nii.gz']);
+rh_surface_file2 = fullfile(pipe_dir2, subject_id, 'surf', ...
+    ['rh.' subject_id '_bld' run pipe_stem2 '.nii.gz']);
+MNI2mm_vol_file2 = fullfile(pipe_dir2, subject_id, 'vol', ...
+    [subject_id '_bld' run pipe_stem2 '.nii.gz']);
 
 %%
 % get MNI 2mm gm mask used to mask volume data
-gm_mask_128_file = [getenv('CBIG_CODE_DIR') '/data/templates/volume/FSL_MNI152_masks/GM_Mask_MNI1mm_MNI2mm_128x128x128.nii.gz'];
-gm_mask_91_file = [getenv('CBIG_CODE_DIR') '/data/templates/volume/FSL_MNI152_masks/GM_Mask_MNI1mm_MNI2mm_91x109x91.nii.gz'];
+gm_mask_128_file = fullfile(getenv('CBIG_CODE_DIR'), 'data', 'templates', 'volume', ...
+    'FSL_MNI152_masks', 'GM_Mask_MNI1mm_MNI2mm_128x128x128.nii.gz');
+gm_mask_91_file = fullfile(getenv('CBIG_CODE_DIR'), 'data', 'templates', 'volume', ...
+    'FSL_MNI152_masks/GM_Mask_MNI1mm_MNI2mm_91x109x91.nii.gz');
 
 %% compare pipe_type1 and pipe_type2
 
@@ -117,7 +126,7 @@ if strcmp(compare_type,'surf')
 (lh_surface_file1,rh_surface_file1,lh_surface_file2,rh_surface_file2,'fsaverage5');
 
 CBIG_DrawSurfaceMaps(corr_lh,corr_rh,'fsaverage5','inflated',0,1);
-saveas(gcf,[output_dir_sub_run '/' outputname '_surf.png']);
+saveas(gcf,fullfile(output_dir_sub_run, [outputname '_surf.png']));
 close(gcf);
 
 figure
@@ -129,9 +138,9 @@ hold on
 hist([corr_lh_ex corr_rh_ex]);
 hold off
 set(gcf, 'PaperPositionMode', 'auto');
-saveas(gcf,[output_dir_sub_run '/' outputname '_surf_hist.png']);
+saveas(gcf, fullfile(output_dir_sub_run, [outputname '_surf_hist.png']));
 
-fid = fopen([output_dir_sub_run '/' outputname '_surf_stat.txt'],'w');
+fid = fopen(fullfile(output_dir_sub_run, [outputname '_surf_stat.txt']),'w');
 fprintf(fid,'max correlation :%f\n',max([corr_lh_ex corr_rh_ex]));
 fprintf(fid,'mean correlation :%f\n',mean([corr_lh_ex corr_rh_ex]));
 fprintf(fid,'min correlation :%f\n',min([corr_lh_ex corr_rh_ex]));
@@ -158,13 +167,13 @@ corr_vol_gm = corr_vol(logical(mask1d));
 %write the vol correlation into nifti volume
 corr_vol3d=reshape(corr_vol,size(mask));
 mri.vol=corr_vol3d;
-MRIwrite(mri,[output_dir_sub_run '/' outputname '_vol.nii.gz']);
+MRIwrite(mri,fullfile(output_dir_sub_run, [outputname '_vol.nii.gz']));
 
 corr_gm_re=zeros(1,length(mask1d));
 corr_gm_re(logical(mask1d))=corr_vol_gm;
 corr_gm_vol=reshape(corr_gm_re,size(mask));
 mri.vol=corr_gm_vol;
-MRIwrite(mri,[output_dir_sub_run '/' outputname '_vol_gm.nii.gz']);
+MRIwrite(mri,fullfile(output_dir_sub_run, [outputname '_vol_gm.nii.gz']));
 
 %exclude the NaN value s 
 corr_vol_ex = corr_vol(~isnan(corr_vol));
@@ -179,7 +188,7 @@ hold on
 hist(corr_vol_ex)
 hold off
 set(gcf, 'PaperPositionMode', 'auto');
-saveas(gcf,[output_dir_sub_run '/' outputname '_vol_hist.png']);
+saveas(gcf,fullfile(output_dir_sub_run, [outputname '_vol_hist.png']));
 
 figure 
 set(gcf,'Visible','off');
@@ -190,16 +199,16 @@ hold on
 hist(corr_vol_gm_ex);
 hold off
 set(gcf, 'PaperPositionMode', 'auto');
-saveas(gcf,[output_dir_sub_run '/' outputname '_vol_gm_hist.png']);
+saveas(gcf,fullfile(output_dir_sub_run, [outputname '_vol_gm_hist.png']));
 
-fid = fopen([output_dir_sub_run '/' outputname '_vol_stat.txt'],'w');
+fid = fopen(fullfile(output_dir_sub_run, [outputname '_vol_stat.txt']),'w');
 fprintf(fid,'max correlation :%f\n',max(corr_vol_ex));
 fprintf(fid,'mean correlation :%f\n',mean(corr_vol_ex));
 fprintf(fid,'min correlation :%f\n',min(corr_vol_ex));
 fprintf(fid,'median correlation :%f\n',median(corr_vol_ex));
 fclose(fid);
 
-fid = fopen([output_dir_sub_run '/' outputname '_vol_gm_stat.txt'],'w');
+fid = fopen(fullfile(output_dir_sub_run, [outputname '_vol_gm_stat.txt']),'w');
 fprintf(fid,'max correlation :%f\n',max(corr_vol_gm_ex));
 fprintf(fid,'mean correlation :%f\n',mean(corr_vol_gm_ex));
 fprintf(fid,'min correlation :%f\n',min(corr_vol_gm_ex));

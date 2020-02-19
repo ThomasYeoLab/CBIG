@@ -12,15 +12,15 @@ Install
 =======
 **Set up your enviroment**
 
-The configuration scripts `CBIG_gwMRF_tested_config.sh` and `CBIG_gwMRF_tested_startup.m` can be found under `<your-cbig-repo-direcotry>/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/config` folder. 
+The configuration scripts `CBIG_gwMRF_tested_config.sh` and `CBIG_gwMRF_tested_startup.m` can be found under `<your-cbig-repo-directory>/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/config` folder. 
 
-Please follow the instructions in `<your-cbig-repo-direcotry>/setup/README.md` to have your local environment compatible with CBIG repository. 
+Please follow the instructions in `<your-cbig-repo-directory>/setup/README.md` to have your local environment compatible with CBIG repository. 
 
 ----
 
 Example data
 ============
-We use two subjects from the preprocessed CoRR_HNU dataset as example data. The example data can be found here: `<your-cbig-repo-direcotry>/data/example_data/CoRR_HNU`. 
+We use two subjects from the preprocessed CoRR_HNU dataset as example data. The example data can be found here: `<your-cbig-repo-directory>/data/example_data/CoRR_HNU`. 
 For more information on the CoRR_HNU dataset, you may refer to this paper by Xi-Nian Zuo et al.: [An open science resource for establishing reliability and reproducibility in functional connectomics](https://www.nature.com/articles/sdata201449.pdf).
 
 ----

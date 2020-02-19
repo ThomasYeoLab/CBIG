@@ -17,7 +17,7 @@ function p_10foldCV = CBIG_MMLDA_10foldCV_wrapper(out_dir)
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
 addpath([CBIG_CODE_DIR '/stable_projects/disorder_subtypes/Sun2019_ADJointFactors/utilities'])
 
-proj_dir = '/mnt/eql/yeo1/CBIG_private_data/replication/stable_projects/disorder_subtypes/Sun2019_ADJointFactors';
+proj_dir = [getenv('CBIG_REPDATA_DIR') '/stable_projects/disorder_subtypes/Sun2019_ADJointFactors'];
 
 % Find the factor's order of each fold
 k = 3;

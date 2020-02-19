@@ -43,8 +43,8 @@ function CBIG_ASDf_FC2doc_infFactorComp_wrapper(corrMat_ASD_path, corrMat_con_pa
 
 %% Add path
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-CODE_DIR = [CBIG_CODE_DIR '/stable_projects/disorder_subtypes/Tang2020_ASDFactors'];
-addpath([CODE_DIR '/step3_analyses/utilities']);
+CODE_DIR = fullfile(CBIG_CODE_DIR,'stable_projects','disorder_subtypes','Tang2020_ASDFactors');
+addpath(fullfile(CODE_DIR,'step3_analyses','utilities'));
 
 %% Load FC matrices and concatenate together, ASD followed by control subjects
 load(corrMat_ASD_path);
@@ -67,7 +67,7 @@ output_name = 'step1_output_inf';
 output_dir = [output_dir '/'];
 [z, discretized_z] = CBIG_ASDf_FC2doc_forInference(corrMat_all, ...
 reg_CN_mean, reg_CN_std, regressors, dx_info, cohort_label, output_dir, output_name);
-save([output_dir output_name '_zScores.mat'], 'z', 'discretized_z');
+save(fullfile(output_dir, [output_name '_zScores.mat']), 'z', 'discretized_z');
 
 %% Remove path
-rmpath([CODE_DIR '/step3_analyses/utilities']);
+rmpath(fullfile(CODE_DIR,'step3_analyses','utilities'));

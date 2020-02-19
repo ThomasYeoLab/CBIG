@@ -33,12 +33,12 @@ if exist('scalelim','var')
     end
 end
 
-inputDir = [inputDir '/k' k '/r' r '/'];
-outputDir = [outputDir '/k' k '/r' r '/'];
+inputDir = fullfile(inputDir, ['k' k], ['r' r]);
+outputDir = fullfile(outputDir, ['k' k], ['r' r]);
 num_ROIs = 419;
 
-beta = load([inputDir 'final.beta']);
-rho = load([inputDir 'final.rho']);
+beta = load(fullfile(inputDir, 'final.beta'));
+rho = load(fullfile(inputDir, 'final.rho'));
 
 for factor_idx = 1:str2double(k)
     mean_corrmat = zeros(num_ROIs,num_ROIs);
@@ -63,14 +63,14 @@ for factor_idx = 1:str2double(k)
         end
     end
     
-    save([outputDir 'mean' num2str(factor_idx) '.mat'], 'mean_corrmat');
+    save(fullfile(outputDir,['mean' num2str(factor_idx) '.mat']), 'mean_corrmat');
     
     % Plot the matrix
     if nargin <= 4 || isempty(scalelim)
         scalelim = [-max(abs(mean_corrmat(:))) max(abs(mean_corrmat(:)))];
     end
     CBIG_ASDf_Plot400Schaefer19Subcor17Networks_419by419Input(mean_corrmat, ...
-        scalelim, [outputDir 'mean' num2str(factor_idx)]);
+        scalelim, fullfile(outputDir, ['mean' num2str(factor_idx)]));
     
 end
 

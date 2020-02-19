@@ -41,13 +41,14 @@ classdef CBIG_gwMRF_unit_test < matlab.unittest.TestCase
             %% check output log file
             logfile_path = fullfile(OutputDir, 'logs', 'CBIG_gwMRF_unit_test.log');
             [~, error_messages] = system(['cat ', logfile_path, ' | grep FAILED']);
+            [~, success_messages] = system(['cat ', logfile_path, ' | grep SUCCESS']);
             
             % extract detailed error meassages from log file
             assert(isempty(error_messages), sprintf(error_messages));
-                        
+            assert(~isempty(success_messages), sprintf(success_messages));            
             
             %% remove intermediate output data (IMPORTANT)
-            %rmdir(OutputDir, 's');
+            rmdir(OutputDir, 's');
         end
         
         

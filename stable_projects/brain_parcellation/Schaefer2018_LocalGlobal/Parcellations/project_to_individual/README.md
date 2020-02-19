@@ -45,7 +45,7 @@ mris_ca_label -l $SUBJECTS_DIR/<subject_name>/label/rh.cortex.label \
   $SUBJECTS_DIR/<subject_name>/label/rh.Schaefer2018_<N>Parcels_<7/17>Networks_order.annot
 ```
 
-The gcs files for Schaefer2018 parcellation are not stored in this repository. If you need these files, please contact Xue Aihuiping at xueaihuiping@gmail.com.
+The gcs files for Schaefer2018 parcellation can be downloaded [here](https://www.dropbox.com/s/1vk6zjus5nogd0z/gcs_Schaefer2018_update20190916.zip?dl=0). If you have trouble downloading the files, please contact Xue Aihuiping at xueaihuiping@gmail.com.
 
 ### 2: Schaefer2018 parcellation in individual volume space
 

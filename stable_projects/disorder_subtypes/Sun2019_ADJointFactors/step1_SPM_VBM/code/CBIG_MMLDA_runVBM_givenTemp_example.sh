@@ -5,7 +5,7 @@
 outDir=$1
 
 # reference direcotry
-workspace=/mnt/eql/yeo1/CBIG_private_data/unit_tests/stable_projects/\
+workspace=${CBIG_TESTDATA_DIR}/stable_projects/\
 disorder_subtypes/Sun2019_ADJointFactors/step1_SPM_VBM
 refDir=${workspace}/results/VBM_use_given_template
 
@@ -13,7 +13,7 @@ imgList=${workspace}/data/ADNI2_bl_rawpath_set2.txt
 idList=${workspace}/data/ADNI2_bl_rid_set2.txt
 idListReorient=${workspace}/data/ADNI2_bl_rid_set2_reorient.txt
 scriptDir=${CBIG_CODE_DIR}/stable_projects/disorder_subtypes/Sun2019_ADJointFactors/step1_SPM_VBM/code
-spmDir=/apps/arch/Linux_x86_64/spm/spm12
+spmDir=${CBIG_SPM_DIR}
 newTemp="${workspace}/results/VBM_create_new_template/mri/wTemplate_1.nii,1"
 reorientSample=${scriptDir}/Translation_Identity.mat
 queue=circ-spool

@@ -14,7 +14,8 @@ function p_tau = CBIG_MMLDA_association_factor_tau_wrapper(out_dir)
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
 addpath(genpath([CBIG_CODE_DIR '/stable_projects/disorder_subtypes/Sun2019_ADJointFactors/utilities']))
 
-proj_dir = '/mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/disorder_subtypes/Sun2019_ADJointFactors';
+proj_dir = [getenv('CBIG_TESTDATA_DIR') '/stable_projects/disorder_subtypes/Sun2019_ADJointFactors'];
+CBIG_Sun2019_PET_preprocess = [CBIG_MMLDA_ADNI_DIR '/Sun2019_PET_preprocess/preprocessing'];
 
 %%%%
 % Get rid by considering subjects with ADNI2 preprocessed + ADNI3 original T1 
@@ -27,7 +28,7 @@ rid_257 = load([CBIG_CODE_DIR '/stable_projects/disorder_subtypes/Sun2019_ADJoin
 % Get the PET tau
 %%%%
 % load PET tau rid list
-rid_vis = importdata('/mnt/eql/p4/users/external/nanbos/AD_PET_tau_factor/PET_preprocess_20180505/scripts/lists/RID_Viscode_267all.txt');
+rid_vis = importdata([CBIG_Sun2019_PET_preprocess '/lists/RID_Viscode_269all_rm_recon_fail.txt']);
 rid_PET = strtok(rid_vis, '_');
 rid_PET = cellfun(@str2num, rid_PET);
 
@@ -42,7 +43,7 @@ mri = MRIread(mask_file);
 mask = logical(mri.vol(:));
 
 % get PET tau
-mri = MRIread('/mnt/eql/p4/users/external/nanbos/AD_PET_tau_factor/PET_preprocess_20180505/output/merg_SPMVBMdeform.nii.gz');
+mri = MRIread([CBIG_Sun2019_PET_preprocess '/output/merg_SPMVBMdeform.nii.gz']);
 vol = mri.vol;
 volsize = size(vol);
 PETtau2d = reshape(vol, prod(volsize(1:3)), volsize(4));
@@ -60,7 +61,7 @@ end
 %%%%
 % Get atrophy and behavioral factor loadings
 %%%%
-proj_dir = '/mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/disorder_subtypes/Sun2019_ADJointFactors';
+proj_dir = [getenv('CBIG_TESTDATA_DIR') '/stable_projects/disorder_subtypes/Sun2019_ADJointFactors'];
 order = [1 3 2];
 
 rid_file = [proj_dir '/step2_MMLDA/results/results_long/BrainBehavior2doc/ADNI2_PETtau_ALL_meanCNstdALL_plus1_RID.txt'];
@@ -81,7 +82,7 @@ rid_prob_PETtau_inf_int = rid_prob_PETtau_inf(ind_prob, :);
 %%%
 % Get age, sex, dx from subinfo
 %%%
-subinfo_dir = ['/mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/disorder_subtypes' ...
+subinfo_dir = [getenv('CBIG_TESTDATA_DIR') '/stable_projects/disorder_subtypes' ...
 '/Sun2019_ADJointFactors/step2_MMLDA/data'];
 subinfo = csvread([subinfo_dir '/ADNI23_PETtau_subinfo.csv'], 1, 0);
 ind = CBIG_MMLDA_find_array_in_array(rid_int, subinfo(:, 1));

@@ -56,6 +56,13 @@ function [projected, projected_seg] = CBIG_RF_projectfsaverage2Vol_single(lh_inp
 %
 % Written by Wu Jianxiao and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
+if size(lh_input, 1) > 1
+    error('Input argument ''lh_input'' should be a row vector');
+end
+if size(rh_input, 1) > 1
+    error('Input argument ''rh_input'' should be a row vector');
+end
+
 %Function usage
 if nargin < 2
     disp('usage: [lh_projected, rh_projected] = CBIG_RF_projectfsaverage2Vol_single(lh_input, rh_input, interp, map, mask)');

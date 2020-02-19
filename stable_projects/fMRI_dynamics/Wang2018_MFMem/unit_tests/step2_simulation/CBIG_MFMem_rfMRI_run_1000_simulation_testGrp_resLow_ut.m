@@ -12,7 +12,7 @@ function CBIG_MFMem_rfMRI_run_1000_simulation_testGrp_resLow_ut()
 %% setup directory for lib, data, save
 main_dir = pwd;
 data_dir = fullfile(main_dir,'data'); 
-save_dir = [main_dir '/save'];
+save_dir = fullfile(main_dir,'save');
 
 cd('..')
 cd('..')
@@ -25,12 +25,12 @@ addpath(lib_dir);
 
 %% load model parameter
 parameter_file_name = 'Example_Estimated_Parameter.mat';
-load ([data_dir '/' parameter_file_name],'Para_E');
+load (fullfile(data_dir,parameter_file_name),'Para_E');
 
 
 %% load FC, SC
 FCSC_file_name = 'FCSC_Desikan68_Raphael_Wang.mat';
-load([data_dir '/' FCSC_file_name]);
+load(fullfile(data_dir,FCSC_file_name));
 
 SC = SC_test;
 FC = FC_test;
@@ -73,7 +73,7 @@ ylabel('Similarity','FontSize',9)
 
 %% save result
 
-save( [save_dir '/sim_output.mat'],'CC_check');
+save(fullfile(save_dir,'sim_output.mat'),'CC_check');
 rmpath(lib_dir);
 
 end

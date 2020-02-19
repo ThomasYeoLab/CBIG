@@ -35,8 +35,9 @@ methods (Test)
         whoami = whoami(1:end-1);
         
         %% call Li2019_GSR intelligence_score shell script (variance component model & GSP data)
-        cmd = ['$CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSR/unit_tests/intelligence_score/', ...
-            'scripts/CBIG_LiGSR_LME_unittest_intelligence_score_GSP.sh ', OutputDir];
+        cmdfun = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', 'Li2019_GSR', ...
+            'unit_tests', 'intelligence_score', 'scripts', 'CBIG_LiGSR_LME_unittest_intelligence_score_GSP.sh');
+        cmd = [cmdfun, ' ', OutputDir];
         system(cmd) % this will submit 2 jobs to HPC
         
         %% we need to periodically check whether the job has finished or not
@@ -80,8 +81,9 @@ methods (Test)
         whoami = whoami(1:end-1);
         
         %% call Li2019_GSR intelligence_score shell script (variance component model & HCP data)
-        cmd = ['$CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSR/unit_tests/intelligence_score/'...
-            'scripts/CBIG_LiGSR_LME_unittest_PMAT_HCP.sh ', OutputDir];
+        cmdfun = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', 'Li2019_GSR', ...
+            'unit_tests', 'intelligence_score', 'scripts', 'CBIG_LiGSR_LME_unittest_PMAT_HCP.sh');
+        cmd = [cmdfun, ' ', OutputDir];
         system(cmd);
         
         %% we need to periodically check whether the job has finished or not
@@ -125,8 +127,9 @@ methods (Test)
         whoami = whoami(1:end-1);
         
         %% call Li2019_GSR intelligence_score shell script (kernel regression method & GSP data)
-        cmd = ['$CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSR/unit_tests/intelligence_score/',...
-            'scripts/CBIG_LiGSR_KRR_unittest_intelligence_score_GSP.sh ', OutputDir];
+        cmdfun = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', 'Li2019_GSR', ...
+            'unit_tests', 'intelligence_score', 'scripts', 'CBIG_LiGSR_KRR_unittest_intelligence_score_GSP.sh');
+        cmd = [cmdfun, ' ', OutputDir];
         system(cmd); % this will submit 6 jobs to HPC
         
         %% we need to periodically check whether the job has finished or not
@@ -170,8 +173,9 @@ methods (Test)
         whoami = whoami(1:end-1);
         
         %% call Li2019_GSR intelligence_score shell script (kernel regression method & HCP data)
-        cmd = ['$CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSR/unit_tests/intelligence_score/',...
-            'scripts/CBIG_LiGSR_KRR_unittest_PMAT_HCP.sh ', OutputDir];
+        cmdfun = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', 'Li2019_GSR', ...
+            'unit_tests', 'intelligence_score', 'scripts', 'CBIG_LiGSR_KRR_unittest_PMAT_HCP.sh');
+        cmd = [cmdfun, ' ', OutputDir];
         system(cmd); % this will submit 6 jobs to HPC
         
         %% we need to periodically check whether the job has finished or not
@@ -192,6 +196,102 @@ methods (Test)
         % no more assert command needed (they are already written inside 
         % CBIG_LiGSR_KRR_unittest_PMAT_cmp_w_reference_HCP)
         CBIG_LiGSR_KRR_unittest_PMAT_cmp_w_reference_HCP( fullfile(OutputDir, ...
+            'compare_2pipe', 'final_result.mat') );
+        
+        rmpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', ...
+            'Li2019_GSR', 'unit_tests', 'intelligence_score', 'scripts'));
+    end
+    
+    function test_intelligence_score_LRR_GSP_Case(testCase)
+        %% path setting
+        addpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', ...
+            'Li2019_GSR', 'unit_tests', 'intelligence_score', 'scripts'));
+        gpso_dir = fullfile(getenv('CBIG_CODE_DIR'), 'external_packages', 'matlab', ...
+            'non_default_packages', 'Gaussian_Process');
+        OutputDir = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', ...
+            'Li2019_GSR', 'unit_tests', 'output', 'intelligence_score_LRR_GSP_Case');
+        
+        % create output dir (IMPORTANT)
+        if(exist(OutputDir, 'dir'))
+            rmdir(OutputDir, 's')
+        end
+        mkdir(OutputDir);
+        
+        [~, whoami] = system('whoami');
+        whoami = whoami(1:end-1);
+        
+        %% call Li2019_GSR intelligence_score shell script (linear ridge regression method & GSP data)
+        cmdfun = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', 'Li2019_GSR', ...
+            'unit_tests', 'intelligence_score', 'scripts', 'CBIG_LiGSR_LRR_unittest_intelligence_score_GSP.sh');
+        cmd = [cmdfun, ' ', gpso_dir, ' ', OutputDir];
+        system(cmd); % this will submit 6 jobs to HPC
+        
+        %% we need to periodically check whether the job has finished or not
+        cmdout = 1;
+        while(cmdout~=0)
+            % the job name is  specified as CBIG_LiGSR_LRR_unittest_intelligence_score_GSP
+            cmd = ['qstat -a | grep CBIG_LiGSR_LRR | grep ' whoami ' | wc -l']; 
+            [~, cmdout] = system(cmd);
+            cmdout = str2num(cmdout(1: end-1)); % after the job is finished, cmdout should be 0
+            
+            pause(20); % sleep for 20s and check again
+        end
+        
+        %% compare two preprocessing pipelines
+        CBIG_LiGSR_LRR_unittest_intelligence_score_cmp2pipe_GSP( OutputDir );
+        
+        %% compare result with ground truth
+        % no more assert command needed (they are already written inside 
+        % CBIG_LiGSR_LRR_unittest_intelligence_score_cmp_w_reference_GSP)
+        CBIG_LiGSR_LRR_unittest_intelligence_score_cmp_w_reference_GSP( fullfile(OutputDir, ...
+            'compare_2pipe', 'final_result.mat') );
+        
+        rmpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', ...
+            'Li2019_GSR', 'unit_tests', 'intelligence_score', 'scripts'));
+    end
+    
+    function test_intelligence_score_LRR_HCP_Case(testCase)
+        %% path setting
+        addpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', ...
+            'Li2019_GSR', 'unit_tests', 'intelligence_score', 'scripts'));
+        gpso_dir = fullfile(getenv('CBIG_CODE_DIR'), 'external_packages', 'matlab', ...
+            'non_default_packages', 'Gaussian_Process');
+        OutputDir = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', ...
+            'Li2019_GSR', 'unit_tests', 'output', 'intelligence_score_LRR_HCP_Case');
+        
+        % create output dir (IMPORTANT)
+        if(exist(OutputDir, 'dir'))
+            rmdir(OutputDir, 's')
+        end
+        mkdir(OutputDir);
+        
+        [~, whoami] = system('whoami');
+        whoami = whoami(1:end-1);
+        
+        %% call Li2019_GSR intelligence_score shell script (linear ridge regression method & HCP data)
+        cmdfun = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', 'Li2019_GSR', ...
+            'unit_tests', 'intelligence_score', 'scripts/CBIG_LiGSR_LRR_unittest_PMAT_HCP.sh');
+        cmd = [cmdfun, ' ', gpso_dir, ' ', OutputDir];
+        system(cmd); % this will submit 6 jobs to HPC
+        
+        %% we need to periodically check whether the job has finished or not
+        cmdout = 1;
+        while(cmdout~=0)
+            % the job name is  specified as CBIG_LiGSR_LRR_unittest_PMAT_HCP
+            cmd = ['qstat -a | grep CBIG_LiGSR_LRR | grep ' whoami ' | wc -l']; 
+            [~, cmdout] = system(cmd);
+            cmdout = str2num(cmdout(1: end-1)); % after the job is finished, cmdout should be 0
+            
+            pause(20); % sleep for 20s and check again
+        end
+        
+        %% compare two preprocessing pipelines
+        CBIG_LiGSR_LRR_unittest_PMAT_cmp2pipe_HCP( OutputDir );
+        
+        %% compare result with ground truth
+        % no more assert command needed (they are already written inside 
+        % CBIG_LiGSR_LRR_unittest_PMAT_cmp_w_reference_HCP)
+        CBIG_LiGSR_LRR_unittest_PMAT_cmp_w_reference_HCP( fullfile(OutputDir, ...
             'compare_2pipe', 'final_result.mat') );
         
         rmpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', ...

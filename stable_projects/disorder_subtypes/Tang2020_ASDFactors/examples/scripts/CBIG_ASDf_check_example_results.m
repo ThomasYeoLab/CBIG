@@ -37,24 +37,24 @@ log_fileID = fopen(log_file, 'a');
 fprintf(log_fileID,'\n--------[CHECK 1] Checking FC2doc results (factor estimate):\n');
 
 % Check if dx1.dat and dx2.dat exist
-if (~exist([output_dir '/FC2doc/step1_output_dx1.dat'], 'file'))
+if (~exist(fullfile(output_dir,'FC2doc','step1_output_dx1.dat'), 'file'))
 %     fprintf('[FAILED] Word counts document for ASD participants missing!\n');
     fprintf(log_fileID, '[FAILED] Word counts document for ASD participants missing!\n');
 end
 
-if (~exist([output_dir '/FC2doc/step1_output_dx2.dat'], 'file'))
+if (~exist(fullfile(output_dir,'FC2doc','step1_output_dx2.dat'), 'file'))
 %     fprintf('[FAILED] Word counts document for control participants missing!\n');
     fprintf(log_fileID, '[FAILED] Word counts document for control participants missing!\n');
 end
 
 % Check discretized z scores, these are what were written into .dat word
 % counts documents.
-if (~exist([output_dir '/FC2doc/step1_output_zScores.mat'], 'file'))
+if (~exist(fullfile(output_dir,'FC2doc','step1_output_zScores.mat'), 'file'))
 %     fprintf('[FAILED] Z scores missing!');
     fprintf(log_fileID, '[FAILED] Z scores missing!');
 else
-    zScores = load([output_dir '/FC2doc/step1_output_zScores.mat']);
-    ref_zScores = load([ref_dir '/FC2doc/step1_output_zScores.mat']);
+    zScores = load(fullfile(output_dir,'FC2doc','step1_output_zScores.mat'));
+    ref_zScores = load(fullfile(ref_dir,'FC2doc','step1_output_zScores.mat'));
     
     if (~isequal(ref_zScores.discretized_z, zScores.discretized_z))
         diff_discretZ = max(max(abs(ref_zScores.discretized_z - zScores.discretized_z)));
@@ -77,24 +77,24 @@ end
 fprintf(log_fileID, '\n--------[CHECK 2] Checking FC2doc results (factor composition inference):\n');
 
 % Check if dx1.dat and dx2.dat exist
-if (~exist([output_dir '/FC2doc/step1_output_inf_dx1.dat'], 'file'))
+if (~exist(fullfile(output_dir,'FC2doc','step1_output_inf_dx1.dat'), 'file'))
 %     fprintf('[FAILED] Word counts document for ASD participants missing!\n');
     fprintf(log_fileID, '[FAILED] Word counts document for ASD participants missing!\n');
 end
 
-if (~exist([output_dir '/FC2doc/step1_output_dx2.dat'], 'file'))
+if (~exist(fullfile(output_dir,'FC2doc','step1_output_dx2.dat'), 'file'))
 %     fprintf('[FAILED] Word counts document for control participants missing!\n');
     fprintf(log_fileID, '[FAILED] Word counts document for control participants missing!\n');
 end
 
 % Check discretized z scores, these are what were written into .dat word
 % counts documents.
-if (~exist([output_dir '/FC2doc/step1_output_zScores.mat'], 'file'))
+if (~exist(fullfile(output_dir,'FC2doc','step1_output_zScores.mat'), 'file'))
 %     fprintf('[FAILED] Z scores missing!\n');
     fprintf(log_fileID, '[FAILED] Z scores missing!\n');
 else
-    zScores = load([output_dir '/FC2doc/step1_output_inf_zScores.mat']);
-    ref_zScores = load([ref_dir '/FC2doc/step1_output_inf_zScores.mat']);
+    zScores = load(fullfile(output_dir,'FC2doc','step1_output_inf_zScores.mat'));
+    ref_zScores = load(fullfile(ref_dir,'FC2doc','step1_output_inf_zScores.mat'));
     
     if (~isequal(ref_zScores.discretized_z, zScores.discretized_z))
         diff_discretZ = max(max(abs(ref_zScores.discretized_z - zScores.discretized_z)));
@@ -115,16 +115,16 @@ end
 % fprintf('\n--------[CHECK 3] Checking if estimated model parameters are the same as reference:\n');
 fprintf(log_fileID, '\n--------[CHECK 3] Checking if estimated model parameters same as reference:\n');
 
-curr_output_dir = [output_dir '/estimate/k2/r1'];
-curr_ref_dir = [ref_dir '/estimate/k2/r1'];
+curr_output_dir = fullfile(output_dir,'estimate','k2','r1');
+curr_ref_dir = fullfile(ref_dir,'estimate','k2','r1');
 
 %%% beta estimate
-if (~exist([curr_output_dir '/final.beta'], 'file'))
+if (~exist(fullfile(curr_output_dir,'final.beta'), 'file'))
 %     fprintf('[FAILED] Final beta estimate result missing!\n');
     fprintf(log_fileID, '[FAILED] Final beta estimate result missing!\n');
 else
-    beta = load([curr_output_dir '/final.beta']);
-    ref_beta = load([curr_ref_dir '/final.beta']);
+    beta = load(fullfile(curr_output_dir,'final.beta'));
+    ref_beta = load(fullfile(curr_ref_dir,'final.beta'));
     if (~isequal(beta, ref_beta))
         diff_beta = max(max(abs(beta - ref_beta)));
 %         fprintf('[FAILED] Final beta estimate is different from reference, max abs diff: %f.\n', diff_beta);
@@ -141,12 +141,12 @@ else
 end
 
 %%% rho estimate
-if (~exist([curr_output_dir '/final.rho'], 'file'))
+if (~exist(fullfile(curr_output_dir,'final.rho'), 'file'))
 %     fprintf('[FAILED] Final rho estimate result missing!\n');
     fprintf(log_fileID, '[FAILED] Final rho estimate result missing!\n');
 else
-    rho = load([curr_output_dir '/final.rho']);
-    ref_rho = load([curr_ref_dir '/final.rho']);
+    rho = load(fullfile(curr_output_dir,'final.rho'));
+    ref_rho = load(fullfile(curr_ref_dir,'final.rho'));
     if (~isequal(rho, ref_rho))
         diff_rho = max(max(abs(rho - ref_rho)));
 %         fprintf('[FAILED] Final rho estimate is different from reference, max abs diff: %f.\n', diff_rho);
@@ -163,12 +163,12 @@ else
 end
         
 %%% gamma estimate
-if (~exist([curr_output_dir '/final.gamma'], 'file'))
+if (~exist(fullfile(curr_output_dir,'final.gamma'), 'file'))
 %     fprintf('[FAILED] Final gamma estimate result missing!\n');
     fprintf(log_fileID, '[FAILED] Final gamma estimate result missing!\n');
 else
-    gamma = load([curr_output_dir '/final.gamma']);
-    ref_gamma = load([curr_ref_dir '/final.gamma']);
+    gamma = load(fullfile(curr_output_dir,'final.gamma'));
+    ref_gamma = load(fullfile(curr_ref_dir,'final.gamma'));
     if (~isequal(gamma, ref_gamma))
         diff_gamma = max(max(abs(gamma - ref_gamma)));
 %         fprintf('[FAILED] Final gamma estimate is different from reference, max abs diff: %f.\n', diff_gamma);
@@ -185,12 +185,12 @@ else
 end
         
 %%% likelihood
-if (~exist([curr_output_dir '/likelihood.dat'], 'file'))
+if (~exist(fullfile(curr_output_dir,'likelihood.dat'), 'file'))
 %     fprintf('[FAILED] Likelihood file missing!\n');
     fprintf(log_fileID, '[FAILED] Likelihood file missing!\n');
 else
-    likelihood = load([curr_output_dir '/likelihood.dat']);
-    ref_likelihood = load([curr_ref_dir '/likelihood.dat']);
+    likelihood = load(fullfile(curr_output_dir,'likelihood.dat'));
+    ref_likelihood = load(fullfile(curr_ref_dir,'likelihood.dat'));
     if (~isequal(likelihood, ref_likelihood))
         diff_likelihood = max(max(likelihood - ref_likelihood));
 %         fprintf('[FAILED] Likelihood is different from reference, max abs diff: %f.\n', diff_likelihood);
@@ -209,15 +209,15 @@ end
 %% Check if E(RSFC patterns|Factor) & Pr(Factor|Participant) are the same as reference
 fprintf(log_fileID, '\n--------[CHECK 4] Checking E(RSFC patterns|Factor) & Pr(Factor|Participant):\n');
 
-curr_output_dir = [output_dir '/visualizeFactors/k2/r1'];
-curr_ref_dir = [ref_dir '/visualizeFactors/k2/r1'];
+curr_output_dir = fullfile(output_dir,'visualizeFactors','k2','r1');
+curr_ref_dir = fullfile(ref_dir,'visualizeFactors','k2','r1');
 
 k = 2;
 %%% Check if E(RSFC pattern | Factor) is the same as reference,
 %%% for each factor
 for i = 1:k
-    mean = load([curr_output_dir '/mean' num2str(i) '.mat']);
-    ref_mean = load([curr_ref_dir '/mean' num2str(i) '.mat']);
+    mean = load(fullfile(curr_output_dir, ['mean' num2str(i) '.mat']));
+    ref_mean = load(fullfile(curr_ref_dir, ['mean' num2str(i) '.mat']));
     
     if (~isequal(mean.mean_corrmat, ref_mean.mean_corrmat))
         diff_mean = max(max(abs(mean.mean_corrmat - ref_mean.mean_corrmat)));
@@ -231,8 +231,8 @@ clear mean;
 clear ref_mean;
 
 %%% Check if Pr(Factor | Participant) is the same as reference
-factorComp = load([curr_output_dir '/factorComp.txt']);
-ref_factorComp = load([curr_ref_dir '/factorComp.txt']);
+factorComp = load(fullfile(curr_output_dir,'factorComp.txt'));
+ref_factorComp = load(fullfile(curr_ref_dir,'factorComp.txt'));
 if (~isequal(factorComp, ref_factorComp))
     diff_factorComp = max(max(abs(factorComp - ref_factorComp)));
 
@@ -249,18 +249,18 @@ clear ref_factorComp;
 % fprintf('\n--------[CHECK 5] Checking if inferred factor composition is the same:\n');
 fprintf(log_fileID, '\n--------[CHECK 5] Checking if inferred factor composition is the same:\n');
 
-curr_output_dir = [output_dir '/inference'];
-curr_ref_dir = [ref_dir '/inference'];
+curr_output_dir = fullfile(output_dir, 'inference');
+curr_ref_dir = fullfile(ref_dir, 'inference');
 
 %%% Factor composition
-factorComp_files = dir(fullfile([curr_output_dir '/*k2r1_factorComp.txt'])) ;
+factorComp_files = dir(fullfile(curr_output_dir, '*k2r1_factorComp.txt'));
 if isempty(factorComp_files)
 %     fprintf('[FAILED] Factor composition text file missing!\n');
     fprintf(log_fileID, '[FAILED] Factor composition text file missing!\n');
 else
-    factorComp = load([curr_output_dir '/' factorComp_files(1).name]);
-    ref_factorComp_files = dir(fullfile([curr_ref_dir '/*k2r1_factorComp.txt'])) ;
-    ref_factorComp = load([curr_ref_dir '/' ref_factorComp_files(1).name]);
+    factorComp = load(fullfile(curr_output_dir, factorComp_files(1).name));
+    ref_factorComp_files = dir(fullfile(curr_ref_dir, '*k2r1_factorComp.txt')) ;
+    ref_factorComp = load(fullfile(curr_ref_dir, ref_factorComp_files(1).name));
     
     if (~isequal(factorComp, ref_factorComp))
         diff_factorComp = max(max(abs(factorComp - ref_factorComp)));

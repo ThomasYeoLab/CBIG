@@ -35,6 +35,10 @@ function [FC_simR, CC_check] = CBIG_MFMem_rfMRI_nsolver_eul_sto_4p(parameter,pri
 %(a) solve diffitial equation of dynamic mean field and hemodynamic model using stochastic Euler method 
 %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
+if size(parameter, 2) > 1
+    error('Input argument ''parameter'' should be a column vector');
+end
+
 if ifRepara == 1
     parameter = exp(parameter).*prior;
 end

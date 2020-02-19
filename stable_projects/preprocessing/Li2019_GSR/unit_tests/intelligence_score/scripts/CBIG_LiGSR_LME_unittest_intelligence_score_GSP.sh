@@ -8,11 +8,9 @@
 # setup for CIRC cluster
 ########################
 curr_dir=$(pwd)
-username=$(whoami)
-work_dir=/data/users/$username/cluster/
+work_dir=$HOME/cluster/
 
 echo $curr_dir
-echo $username
 echo $work_dir
 
 if [ ! -d $work_dir ]; then
@@ -27,11 +25,11 @@ cd $work_dir
 project_dir="$CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSR"
 replication_dir="$project_dir/unit_tests/intelligence_score"
 
-test_dir=/mnt/eql/yeo1/CBIG_private_data/unit_tests/stable_projects/preprocessing/Li2019_GSR/intelligence_score/\
-VarianceComponentModel/GSP
+test_dir=$CBIG_TESTDATA_DIR/stable_projects/preprocessing/Li2019_GSR/intelligence_score/VarianceComponentModel/GSP
 subject_list="$test_dir/lists/subject_list_862.txt"
 FD_file="$test_dir/lists/FD_regressor_862.txt"
 DVARS_file="$test_dir/lists/DV_regressor_862.txt"
+data_csv="$test_dir/lists/GSP_phenotypes_shuffled.csv"
 d=431
 num_samples=5
 rmsub_prefix="subjects862"
@@ -50,10 +48,12 @@ for pipeline in GSR Baseline ; do
 	ystem=2intelligence
 	
 	cmd="$project_dir/VarianceComponentModel/scripts/CBIG_LiGSR_LME_workflowGSP.sh -RSFC_file $RSFC_file -trait_list "
-	cmd="$cmd $cog_list -covariate_list $covariate_list -FD_file $FD_file -DVARS_file $DVARS_file -subject_list $subject_list"
-	cmd="$cmd -outdir $outdir -ystem $ystem -d $d -num_samples $num_samples -rmsub_prefix $rmsub_prefix"
+	cmd="$cmd $cog_list -covariate_list $covariate_list -FD_file $FD_file -DVARS_file $DVARS_file -subject_list "
+	cmd="$cmd $subject_list -outdir $outdir -ystem $ystem -d $d -num_samples $num_samples -rmsub_prefix $rmsub_prefix "
+	cmd="$cmd -data_csv $data_csv"
 	
-	echo $cmd | qsub -V -q circ-spool -l walltime=01:00:00,mem=4GB,nodes=1:ppn=2 -m ae -N CBIG_LiGSR_LME_unittest_intelligence_score_GSP
+	echo $cmd | $CBIG_SCHEDULER_DIR/qsub -V -q circ-spool -l walltime=01:00:00,mem=8GB,nodes=1:ppn=2 -m ae -N \
+	  CBIG_LiGSR_LME_unittest_intelligence_score_GSP
 	sleep 3s
 done
 

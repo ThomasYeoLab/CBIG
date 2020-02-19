@@ -1,9 +1,14 @@
 #!/bin/csh -f 
 
 # example:
-#     CBIG_Yeo2011_general_cluster_fcMRI_surf2surf_profiles.csh -sd /mnt/eql/yeo2/CBIG_repo_tests/CBIG_fMRI_Preproc2016_test/GSP_surface_100sub/procsurffast -sub_ls /mnt/eql/yeo2/CBIG_repo_tests/CBIG_fMRI_Preproc2016_test/GSP_surface_100sub/procsurffast/scripts/GSP_newtestlist.txt -surf_stem fsaverage5 -n 7 -cluster_out GSP_100_low_motion_clusters
+#     CBIG_Yeo2011_general_cluster_fcMRI_surf2surf_profiles.csh -sd <sub_dir> \
+#     -sub_ls <sub_list.txt> -surf_stem fsaverage5 -n 7 -cluster_out GSP_100_low_motion_clusters
 
-# This function is the main function that calls CBIG_Yeo2011_create_subject_surf_list.csh, CBIG_Yeo2011_compute_fcMRI_surf2surf_profiles_subjectlist.csh, and CBIG_Yeo2011_cluster_fcMRI_surf2surf_profiles_subjectlist.csh in sequence. It assumes that the preprocessed surface data are located in sub_dir/subject/surf/. surf_stem is used to distinguish the data that you want to input from other surface data. 
+# This function is the main function that calls CBIG_Yeo2011_create_subject_surf_list.csh, 
+# CBIG_Yeo2011_compute_fcMRI_surf2surf_profiles_subjectlist.csh, and 
+# CBIG_Yeo2011_cluster_fcMRI_surf2surf_profiles_subjectlist.csh in sequence. It assumes that the 
+# preprocessed surface data are located in sub_dir/subject/surf/. surf_stem is used to distinguish 
+# the data that you want to input from other surface data. 
 
 # Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
@@ -63,21 +68,24 @@ echo "[Clustering]: logfile = $LF"
 #########################################
 # main function
 #########################################
-set cmd = "${root_dir}/CBIG_Yeo2011_create_subject_surf_list.csh -sd ${sub_dir} -sub_ls ${sub_list} -surf_stem ${surf_stem} -out_dir ${out_dir} -preproc_opt ${preproc_opt}"
+set cmd = "${root_dir}/CBIG_Yeo2011_create_subject_surf_list.csh -sd ${sub_dir} -sub_ls ${sub_list} -surf_stem "
+set cmd = "$cmd ${surf_stem} -out_dir ${out_dir} -preproc_opt ${preproc_opt}"
 if( $scrub_flag == 1 ) then
 	set cmd = "$cmd -outlier_stem ${outlier_stem}"
 endif
 echo $cmd |& tee -a $LF
 eval $cmd |& tee -a $LF
 
-set cmd = "${root_dir}/CBIG_Yeo2011_compute_fcMRI_surf2surf_profiles_subjectlist.csh -sd ${sub_dir} -sub_ls ${sub_list} -surf_ls ${out_dir}/lists/lh.surf${surf_stem}.list"
+set cmd = "${root_dir}/CBIG_Yeo2011_compute_fcMRI_surf2surf_profiles_subjectlist.csh -sd ${sub_dir} -sub_ls ${sub_list}"
+set cmd = "$cmd -surf_ls ${out_dir}/lists/lh.surf${surf_stem}.list -target $target -roi $roi"
 if( $scrub_flag == 1 ) then
 	set cmd = "$cmd -outlier_ls ${out_dir}/lists/outlier${outlier_stem}.list"
 endif
 echo $cmd |& tee -a $LF
 eval $cmd |& tee -a $LF
 
-set cmd = "${root_dir}/CBIG_Yeo2011_cluster_fcMRI_surf2surf_profiles_subjectlist.csh -sd ${sub_dir} -sub_ls ${sub_list} -n ${num_clusters} -out ${cluster_out} -tries ${num_tries}"
+set cmd = "${root_dir}/CBIG_Yeo2011_cluster_fcMRI_surf2surf_profiles_subjectlist.csh -sd ${sub_dir} -sub_ls ${sub_list}"
+set cmd = "$cmd -n ${num_clusters} -out ${cluster_out} -tries ${num_tries} -mesh $target"
 if( $scrub_flag == 1 ) then
 	set cmd = "$cmd -scrub_flag 1"
 endif
@@ -264,8 +272,10 @@ REQUIRED ARGUMENTS:
 	-sub_ls        sub_list     : subject list (full path). Each line in this file is one subject ID.
 	-surf_stem     surf_stem    : a stem that can identify the surface data that you want to use.
 	                              For example, if the surface filename is 
-	                              "Sub0001_Ses1_bld002_rest_skip4_stc_mc_resid_cen_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6_fs5.nii.gz",
-	                              <surf_stem> = "_rest_skip4_stc_mc_resid_cen_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6_fs5".
+	                              "Sub0001_Ses1_bld002_rest_skip4_stc_mc_resid_cen_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_
+	                              sm6_fs5.nii.gz",
+	                              <surf_stem> = "_rest_skip4_stc_mc_resid_cen_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6_
+	                              fs5".
 	-n             num_clusters : number of clusters
 	-out_dir       out_dir      : output directory. It contains the log file, the lh & rh surface file 
 	                              lists, and the motion outlier list. Usually, <out_dir> is the directory 

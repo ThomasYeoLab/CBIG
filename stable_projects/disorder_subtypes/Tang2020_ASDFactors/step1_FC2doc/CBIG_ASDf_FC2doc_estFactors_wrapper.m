@@ -37,8 +37,8 @@ function CBIG_ASDf_FC2doc_estFactors_wrapper(corrMat_ASD_path, corrMat_con_path,
 
 %% Add paths
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-CODE_DIR = [CBIG_CODE_DIR '/stable_projects/disorder_subtypes/Tang2020_ASDFactors'];
-addpath([CODE_DIR '/step3_analyses/utilities']);
+CODE_DIR = fullfile(CBIG_CODE_DIR,'stable_projects','disorder_subtypes','Tang2020_ASDFactors');
+addpath(fullfile(CODE_DIR,'step3_analyses','utilities'));
 
 %% Concatenate FC matrices together, ASD subjects followed by control subjects
 load(corrMat_ASD_path);
@@ -60,4 +60,4 @@ output_dir = [output_dir '/'];
 save([output_dir output_name '_zScores.mat'], 'z', 'discretized_z');
 
 %% Remove path
-rmpath([CODE_DIR '/step3_analyses/utilities']);
+rmpath(fullfile(CODE_DIR,'step3_analyses','utilities'));

@@ -20,6 +20,10 @@ export CBIG_ANTS_DIR=/apps/arch/Linux_x86_64/ants/HoneyPot/BUILD/bin/
 export CBIG_WB_DIR=/apps/arch/Linux_x86_64/HCP/workbench/
 export CBIG_FSLDIR=/apps/arch/Linux_x86_64/fsl/5.0.8
 
+# DO NOT CHANGE: define locations for unit tests data and replication data
+export CBIG_TESTDATA_DIR=NA
+export CBIG_REPDATA_DIR=NA
+
 # DO NOT CHANGE: set up your environment with the configurations above
 SETUP_PATH=$CBIG_CODE_DIR/setup/CBIG_generic_setup.sh
 source $SETUP_PATH

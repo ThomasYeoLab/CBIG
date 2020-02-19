@@ -108,11 +108,11 @@ end
 indCN = dx_info==cohort_label(1);
 Y_CN = corrArr(indCN,:);
 mean_CN = mean(Y_CN,1);
-save([output_dir output_name '_mean_CN.mat'], 'mean_CN');
+save(fullfile(output_dir, [output_name '_mean_CN.mat']), 'mean_CN');
 X_CN = [ones(size(Y_CN,1),1) regressors(indCN,:)];
 % add a diagonal matrix with small values to prevent singular matrix problem
 b_CN = (X_CN'*X_CN + eye(size(X_CN,2))*1e-6)\(X_CN'*Y_CN);
-save([output_dir output_name '_beta_CN.mat'], 'b_CN');
+save(fullfile(output_dir, [output_name '_beta_CN.mat']), 'b_CN');
 
 % Regress out regressors for all subjects by computing Y - X*b_CN +
 % mean(Y_CN) for each unique ROI-ROI pair

@@ -1,63 +1,49 @@
 function CBIG_VK2019_example_wrapper(out_dir)
-% Written by Valeria Kebets and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
-rng('default');
+% Written by Valeria Kebets and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
 
-root_dir = [CBIG_CODE_DIR '/stable_projects/disorder_subtypes/Kebets2019_TransdiagnosticComponents'];
-files_dir = [root_dir '/examples/input'];
-ref_dir = [root_dir '/examples/correct_output'];
+current_dir = fileparts(mfilename('fullpath'));
+pos_v = strfind(current_dir,filesep);
+root_dir = fullfile(current_dir(1:pos_v(length(pos_v)) - 1));
+
+files_dir = fullfile(root_dir,'examples','input');
+ref_dir = fullfile(root_dir,'examples','correct_output');
+
 if ~exist(out_dir), mkdir(out_dir); end
 
-scripts_dir = [root_dir '/replication/code'];
-addpath(genpath([CBIG_CODE_DIR '/external_packages/matlab/non_default_packages/PLS_MIPlab']));
+addpath(fullfile(getenv('CBIG_CODE_DIR'),'external_packages','matlab','non_default_packages','PLS_MIPlab'));
+scripts_dir = fullfile(root_dir,'replication','code');
 addpath(scripts_dir);
 
-data_root_dir = '/mnt/eql/yeo9/data/UCLAconsortiumNeuropsych';
-behav_dir = [data_root_dir '/behavData/phenotype/mat'];
-motion_dir = [data_root_dir '/preprocessedData/rsfMRI/preproc_201801/GSR/FD_th0.2'];
-
 % Options
-nPerms_rest = 100; % permutations in main (RSFC) PLS analysis
-normalization_img = 2; % normalization options for RSFC data
-normalization_behav = 2; % normalization options for behavior adta
+nPerms = 50; % permutations in PLS analysis
+normalization_img = 1; % normalization options for RSFC data
+normalization_behav = 1; % normalization options for behavior data
 % 0 = no normalization
 % 1 = zscore across all subjects
 % 2 = zscore within groups (default)
 % 3 = std normalization across subjects (no centering)
 % 4 = std normalization within groups (no centering)
 
-confounds= {'age','gender','educ1','scanner','motion1'}; % Regressors (motion1=FDRMS; motion2=FDRMS & DVARS)
-RSfile_stem = 'bld001_rest_skip4_stc';
-
 %% 1. Load data
 
 disp('(1) Loading data');
 
-load([files_dir '/example_data_CNP.mat']);
+load(fullfile(files_dir,'example_data_CNP.mat'));
 
-%% 2. Regress out confounds from data
+%% 2. PLS analysis
 
-disp('(2) Regressing out confounds from data');
-
-X_reg = CBIG_VK2019_regrOutConfounds(X_nonreg,confounds,behav_dir,motion_dir,RSfile_stem,commonInclSubj,namesInclSubj);
-Y_reg = CBIG_VK2019_regrOutConfounds(Y_nonreg,confounds,behav_dir,motion_dir,RSfile_stem,commonInclSubj,namesInclSubj);
-
-% Save original matrices
-X0 = X_reg; Y0 = Y_reg;
-
-%% 3. PLS analysis
-
-disp('(3) Running PLS');
+disp('(2) Running PLS');
 
 [U,S,V,Lx,Ly,explCovLC,LC_behav_loadings,LC_RSFC_loadings] = ...
     myPLS_analysis(X0,Y0,normalization_img,normalization_behav);
 
-%% 4. Permutation testing
+%% 3. Permutation testing
 
-disp('(4) Permutation testing over LCs');
-pvals_LC = myPLS_permut(X0,Y0,U,S,nPerms_rest,diagnosis_grouping,normalization_img,normalization_behav,[]);
+disp('(3) Permutation testing over LCs');
+pvals_LC = myPLS_permut(X0,Y0,U,S,nPerms,diagnosis_grouping,normalization_img,normalization_behav,[]);
 
 % FDR correction over the first 5 LCs
 [signif_LC, ~] = FDR(pvals_LC(1:5), 0.05);
@@ -70,23 +56,29 @@ for iter_lc = 1:length(signif_LC)
         num2str(round(100*explCovLC(this_lc))) '% of covariance']);
 end
 
-%% 5. Plots
+if length(signif_LC)==0
+    disp('No significant LCs');
+end
+
+%% 4. Plots
+
+which_LC = 1;
 
 % RSFC & behavior loadings
 nRois = 419;
-CBIG_VK2019_plot_loadings(out_dir,LC_behav_loadings,behavNames,LC_RSFC_loadings,nRois,signif_LC); 
+CBIG_VK2019_plot_loadings(out_dir,LC_behav_loadings,behavNames,LC_RSFC_loadings,nRois,which_LC); 
 
 % RSFC & behavior composite scores
-CBIG_VK2019_plot_subjScores(Lx,Ly,CONST_DIAGNOSIS,diagnosis_grouping,signif_LC); 
+CBIG_VK2019_plot_subjScores(Lx,Ly,CONST_DIAGNOSIS,diagnosis_grouping,which_LC); 
 
 %% Compare results with reference
 
 these_Lx = Lx;
 these_Ly = Ly;
-these_RSFC_loadings = LC_RSFC_loadings;
+these_RSFC_loadings = LC_RSFC_loadings(1:1000,:); % only check first 1000
 these_behav_loadings = LC_behav_loadings;
 
-load([ref_dir '/PLSresults_example.mat']);
+load(fullfile(ref_dir,'PLSresults_example.mat'));
 ref_Lx = Lx;
 ref_Ly = Ly;
 ref_RSFC_loadings = LC_RSFC_loadings;
@@ -132,8 +124,10 @@ end
 clear ref_Lx ref_Ly ref_RSFC_loadings ref_behav_loadings these_Lx these_Ly these_RSFC_loadings these_behav_loadings ...
     diff_RSFC_scores diff_behav_scores diff_RSFC_loadings diff_behav_loadings
 
-%% Save results
-save([out_dir '/PLSresults_example.mat']);
 
-rmpath(genpath([CBIG_CODE_DIR '/external_packages/matlab/non_default_packages/PLS_MIPlab']));
+%% Save results
+save(fullfile(out_dir,'PLSresults_example.mat'),...
+    'Lx','Ly','LC_RSFC_loadings','LC_behav_loadings');
+
+rmpath(fullfile(getenv('CBIG_CODE_DIR'),'external_packages','matlab','non_default_packages','PLS_MIPlab'));
 rmpath(scripts_dir);

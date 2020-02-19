@@ -17,6 +17,9 @@ Code Release
 - `KernelRidgeRegression` folder contains the scripts to run kernel ridge regression to predict behavioral measures for each dataset. `KernelRidgeRegression/GSP/scripts/CBIG_LiGSR_KRR_workflowGSP.sh` and `KernelRidgeRegression/HCP/scripts/CBIG_LiGSR_KRR_workflowHCP.sh` are the top-level wrappers.
   - This folder only contains the wrapper scripts. These wrapper scripts call a set of general kernel ridge regression scripts, which can be found [here](https://github.com/ThomasYeoLab/CBIG/blob/master/utilities/matlab/predictive_models/KernelRidgeRegression).
 
+- `LinearRidgeRegression` folder contains the scripts to run linear ridge regression to predict a behavioral measure for each dataset. `LinearRidgeRegression/GSP/scripts/CBIG_LiGSR_LRR_workflowGSP.sh` and `LinearRidgeRegression/HCP/scripts/CBIG_LiGSR_LRR_workflowHCP.sh` are the top-level wrappers.
+  - This folder only contains the wrapper scripts. These wrapper scripts call a set of general linear ridge regression scripts, which can be found [here](https://github.com/ThomasYeoLab/CBIG/blob/master/utilities/matlab/predictive_models/LinearRidgeRegression).
+
 - `unit_tests` folder contains the scripts for two types of unit tests: (1) replication of results shown in Li et al. (under review); (2) results of 1 or 2 behavioral measures related to intelligence for each dataset. For the procedures to run the replication tests, refer to `unit_tests/replication/README.md`. For the procedures to run the tests on only the 1 or 2 intelligence measures, refer to `unit_tests/intelligence_score/README.md`.
 
 - `examples` folder contains the scripts and the input/output files of a toy example for each method. Check [this readme file](https://github.com/ThomasYeoLab/CBIG/blob/master/stable_projects/preprocessing/Li2019_GSR/examples/README.md) for more details.
@@ -36,13 +39,13 @@ If you want to use the code from our lab's other stable projects (other than Li2
 
 To download the latest tested version of the whole repository, you can either
 
-- visit this link: https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.3-Update_proj_refs_and_add_KRR_LITE
+- visit this link: https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.0-Fix_Absolute_Path
 
 or
 
 - run the following command, if you have Git installed
 ```
-git checkout -b Li2019_GSR v0.15.3-Update_proj_refs_and_add_KRR_LITE
+git checkout -b Li2019_GSR v0.17.0-Fix_Absolute_Path
 ```
 
 ----
@@ -51,6 +54,7 @@ Updates
 ===========
 
 - Release v0.9.0 (13/02/2019): Initial release of Li2019_GSR project.
+
 - Release v0.9.4 (01/04/2019): 
   1. Added a script to generate the stand-alone repository for this project
   2. Improved some descriptions in the README files
@@ -67,6 +71,7 @@ Updates
 
 - Release v0.15.3 (16/10/2019): Pass `lambda_set` into general KRR code instead of using the default.
 
+- Release v0.17.0 (19/02/2020): Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths.
 
 Bugs and Questions
 ==========

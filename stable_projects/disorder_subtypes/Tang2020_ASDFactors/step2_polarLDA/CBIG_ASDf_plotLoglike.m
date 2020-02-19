@@ -20,7 +20,7 @@ function CBIG_ASDf_plotLoglike(inputDir, k, r)
 
 figure;
 
-log_likelihood = load([inputDir '/k' k '/r' r '/likelihood.dat']);
+log_likelihood = load(fullfile(inputDir, ['k' k], ['r' r], 'likelihood.dat'));
 
 plot(log_likelihood(:, 1), 'o-');
 

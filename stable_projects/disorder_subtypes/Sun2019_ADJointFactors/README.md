@@ -27,14 +27,14 @@ Except for this project, if you want to use the code for other stable projects f
 - To download the version of the code that was last tested, you can either
 
     - visit this link:
-    [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.3-Update_proj_refs_and_add_KRR_LITE](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.3-Update_proj_refs_and_add_KRR_LITE)
+    [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.0-Fix_Absolute_Path](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.0-Fix_Absolute_Path)
 
     or
 
     - run the following command, if you have Git installed
  
     ```
-    git checkout -b Sun2019_ADJointFactors v0.15.3-Update_proj_refs_and_add_KRR_LITE
+    git checkout -b Sun2019_ADJointFactors v0.17.0-Fix_Absolute_Path
     ```
 
 ----
@@ -84,6 +84,7 @@ In the folder `examples`, we provide toy example code on how to estimate & visua
 - Release v0.10.0 (05/04/2019): Initial release of Sun2019_ADJointFactors project
 - Release v0.10.4 (07/06/2019): Update README.md
 - Release v0.15.3 (16/10/2019): Update reference
+- Release v0.17.0 (19/02/2020): Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths.
 
 ----
 

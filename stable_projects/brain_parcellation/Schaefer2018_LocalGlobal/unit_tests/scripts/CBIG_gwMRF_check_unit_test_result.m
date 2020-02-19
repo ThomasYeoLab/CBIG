@@ -17,8 +17,8 @@ function [] = CBIG_gwMRF_check_unit_test_result(output_dir)
 % Written by Yang Qing and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 
-unit_test_data_dir = fullfile('/mnt', 'eql', 'yeo1', 'CBIG_private_data', 'unit_tests');
-ref_dir = fullfile(unit_test_data_dir, 'stable_projects', ...
+
+ref_dir = fullfile(getenv('CBIG_TESTDATA_DIR'), 'stable_projects', ...
     'brain_parcellation', 'Schaefer2018_LocalGlobal', 'results');
 
 %-------------------------------------------------------------------------%
@@ -175,5 +175,7 @@ else
     end
     
 end
+
+fprintf('[SUCCESS]\t Unit test done successfully \n');
 
 end

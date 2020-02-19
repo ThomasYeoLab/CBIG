@@ -1,4 +1,5 @@
 function pvals_LC = myPLS_permut(X,Y,U,S,nPerms,grouping,normalization_img,normalization_behav,seed)
+
 % Permutation testing over singular values obtained with PLS
 % Rows (subjects) of Y are permuted within each diagnostic group
 %
@@ -25,22 +26,12 @@ function pvals_LC = myPLS_permut(X,Y,U,S,nPerms,grouping,normalization_img,norma
 % Written by Valeria Kebets and the MIPlab, with subfunctions borrowed
 % from PLS toolbox by Rotman Baycrest
 % (https://www.rotman-baycrest.on.ca/index.php?section=84)
-%
-% Please cite the following papers when using this code:
-%
-% Zoller D, Schaer M, Scariati E, Padula MC, Eliez S, Van De Ville D (2017).
-% Disentangling resting-state BOLD variability and PCC
-% functional connectivity in 22q11.2 deletion syndrom.
-% Neuroimage 149, pp. 85-97.
-%
-% McIntosh AR, Lobaugh NJ (2004). Partial least squares analysis of
-% neuroimaging data: applications and advances.
-% Neuroimage 23(Suppl 1), pp. S250-263.
-
 
 % Set random number generator 
 if isempty(seed)
-    rng(1000);
+    rng(1000,'twister');
+else
+    rng(seed,'twister');
 end
 
 

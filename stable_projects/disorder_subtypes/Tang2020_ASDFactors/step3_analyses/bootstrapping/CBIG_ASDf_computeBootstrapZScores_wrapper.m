@@ -24,14 +24,14 @@ is_sum = false;
 
 %% Add paths
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-CODE_DIR = [CBIG_CODE_DIR '/stable_projects/disorder_subtypes/Tang2020_ASDFactors'];
-addpath([CODE_DIR '/step2_polarLDA']);
-addpath([CODE_DIR '/step3_analyses/utilities']);
+CODE_DIR = fullfile(CBIG_CODE_DIR,'stable_projects','disorder_subtypes','Tang2020_ASDFactors');
+addpath(fullfile(CODE_DIR, 'step2_polarLDA'));
+addpath(fullfile(CODE_DIR, 'step3_analyses','utilities'));
 
 %% Original factor
-inputDir_best = [CODE_DIR '/data_release/files_polarLDA/model_K3'];
-beta_best = exp(load([inputDir_best '/final.beta']));
-rho_best = exp(load([inputDir_best '/final.rho']));
+inputDir_best = fullfile(CODE_DIR,'data_release','files_polarLDA','model_K3');
+beta_best = exp(load(fullfile(inputDir_best,'final.beta')));
+rho_best = exp(load(fullfile(inputDir_best,'final.rho')));
 Mean_best = beta_best.*(2*rho_best-1);
 Mean_best = Mean_best([3 2 1],:); % re-order the original factors
 
@@ -51,12 +51,12 @@ f3_net = zeros(N, M_blk);
 
 % Loop over all bootstrapped samples
 for i = 1:N
-    input_dir = [in_dir '/resampled_' num2str(i)];
+    input_dir = fullfile(in_dir, ['resampled_' num2str(i)]);
     
     r_dir = 'init_with_model';
     
-    beta = exp(load([input_dir sprintf('/k%s/%s', k, r_dir) '/final.beta']));
-    rho = exp(load([input_dir sprintf('/k%s/%s', k, r_dir) '/final.rho']));
+    beta = exp(load(fullfile(input_dir,sprintf('k%s/%s', k, r_dir),'final.beta')));
+    rho = exp(load(fullfile(input_dir,sprintf('k%s/%s', k, r_dir),'final.rho')));
     Mean = beta.*(2*rho-1);
     
     order = CBIG_ASDf_hunMatch(str2double(k), Mean_best, Mean);
@@ -74,8 +74,8 @@ for i = 1:N
     close all;
 end
 
-save([out_dir '/bootstrappedFactors.mat'], 'f1_all', 'f2_all', 'f3_all');
-save([out_dir '/bootstrappedFactorsByNetworks.mat'], 'f1_net', 'f2_net', 'f3_net');
+save(fullfile(out_dir,'bootstrappedFactors.mat'), 'f1_all', 'f2_all', 'f3_all');
+save(fullfile(out_dir,'bootstrappedFactorsByNetworks.mat'), 'f1_net', 'f2_net', 'f3_net');
 
 %% 419x419 mean and std
 means = zeros(3,M);
@@ -99,8 +99,8 @@ stds_blk(1,:) = std(f1_net, 0, 1);
 stds_blk(2,:) = std(f2_net, 0, 1);
 stds_blk(3,:) = std(f3_net, 0, 1);
 
-save([out_dir '/meanStd.mat'], 'means', 'stds');
-save([out_dir '/meanStdByNetworks.mat'], 'means_blk', 'stds_blk');
+save(fullfile(out_dir,'meanStd.mat'), 'means', 'stds');
+save(fullfile(out_dir,'meanStdByNetworks.mat'), 'means_blk', 'stds_blk');
 
 %% Compute z-scores
 z_scores = Mean_best ./ stds;
@@ -108,13 +108,13 @@ z_scores_blk = Mean_best_net ./ stds_blk;
 
 % p-value, two-tailed
 p_vals = 2 * (1 - normcdf(abs(z_scores)));
-save([out_dir '/bootstrapped_pVals.mat'], 'z_scores', 'p_vals');
+save(fullfile(out_dir,'bootstrapped_pVals.mat'), 'z_scores', 'p_vals');
 
 p_vals_blk = 2 * (1 - normcdf(abs(z_scores_blk)));
-save([out_dir '/bootstrappedByNetworks_pVals.mat'], 'z_scores_blk', 'p_vals_blk');
+save(fullfile(out_dir,'bootstrappedByNetworks_pVals.mat'), 'z_scores_blk', 'p_vals_blk');
 
 close all;
 
 %% Remove paths
-rmpath([CODE_DIR '/step2_polarLDA']);
-rmpath([CODE_DIR '/step3_analyses/utilities']);
+rmpath(fullfile(CODE_DIR, 'step2_polarLDA'));
+rmpath(fullfile(CODE_DIR, 'step3_analyses','utilities'));

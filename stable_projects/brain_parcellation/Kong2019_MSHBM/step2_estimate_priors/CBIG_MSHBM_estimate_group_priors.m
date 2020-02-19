@@ -273,7 +273,7 @@ while(stop_inter == 0)
 
     update_cost_inter = Params.cost_intra;    
     Params.Record(Params.iter_inter) = update_cost_inter;
-    if(abs(abs(update_cost_inter - cost_inter)./cost_inter) <= 1e-6 || Params.iter_inter >= max_iter)
+    if(abs(abs(update_cost_inter - cost_inter)./cost_inter) <= 1e-5 || Params.iter_inter >= max_iter)
         stop_inter = 1;
         Params.cost_inter = update_cost_inter;
 

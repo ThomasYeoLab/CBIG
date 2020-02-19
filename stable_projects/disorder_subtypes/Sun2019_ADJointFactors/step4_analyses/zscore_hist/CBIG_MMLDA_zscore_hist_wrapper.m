@@ -14,10 +14,9 @@ CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
 addpath([CBIG_CODE_DIR '/stable_projects/disorder_subtypes/Sun2019_ADJointFactors/utilities'])
 addpath([CBIG_CODE_DIR '/stable_projects/disorder_subtypes/Sun2019_ADJointFactors/step2_MMLDA'])
 
-subinfo_dir = ['/mnt/eql/yeo1/CBIG_private_data/replication/stable_projects/disorder_subtypes' ...
+subinfo_dir = [getenv('CBIG_REPDATA_DIR') '/stable_projects/disorder_subtypes' ...
     '/Sun2019_ADJointFactors/step2_MMLDA/data'];
-ADNI_VBM_path = ['/mnt/eql/yeo1/CBIG_private_data/replication/stable_projects/disorder_subtypes' ...
-    '/Sun2019_ADJointFactors/step1_SPM_VBM/Sun2019_SPMVBM'];
+ADNI_VBM_path = [getenv('CBIG_MMLDA_ANDI_DIR') '/Sun2019_SPMVBM'];
 
 %%%
 % get the z score of ADNI1 and ADNIGO2 AD 

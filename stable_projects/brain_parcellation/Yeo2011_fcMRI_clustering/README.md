@@ -52,14 +52,14 @@ There is a simple example in `examples` folder. Check how to run the example cod
 
 Note that this project uses generic functions from other folders, which may be updated over time. To download the version of the code that was last tested, you can either
 
-- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.14.3-Update_Yeo2011_Schaefer2018_labelname](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.14.3-Update_Yeo2011_Schaefer2018_labelname)
+- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.0-Fix_Absolute_Path](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.0-Fix_Absolute_Path)
 
 or
 
 - run the following command, if you have Git installed
  
 ```
-git checkout -b Yeo2011_fcMRI_clustering v0.14.3-Update_Yeo2011_Schaefer2018_labelname
+git checkout -b Yeo2011_fcMRI_clustering v0.17.0-Fix_Absolute_Path
 ```
 
 ----
@@ -101,6 +101,8 @@ git checkout -b Yeo2011_fcMRI_clustering v0.14.3-Update_Yeo2011_Schaefer2018_lab
 - Release v0.14.3 (16/09/2019):
 
     1. Update some component names. For details, please refer to this readme: [Update_20190916_README.md](https://github.com/ThomasYeoLab/CBIG/tree/master/stable_projects/brain_parcellation/Yeo2011_fcMRI_clustering/1000subjects_reference/Yeo_JNeurophysiol11_SplitLabels/Updates/Update_20190916_README.md)
+
+- Release v0.17.0 (19/02/2020): Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths.
 
 ----
 

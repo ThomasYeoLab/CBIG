@@ -72,10 +72,11 @@ fprintf('t-stats threshold:%f\n', tThresh);
 fprintf('Number of permutations:%d\n', Nperm);
 
 %% load FC matrices
-UNIT_TEST_DIR = '/mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/disorder_subtypes/Tang2020_ASDFactors';
-inputDir = [inputDir '/data/data_long'];
-load([inputDir '/corrMat_ASD_inf.mat']); % load ASD FC matrices
-load([inputDir '/corrMat_Con_inf.mat']); % load control FC matrices
+CBIG_REPDATA_DIR = getenv('CBIG_REPDATA_DIR');
+UNIT_TEST_DIR = fullfile(CBIG_REPDATA_DIR,'stable_projects','disorder_subtypes','Tang2020_ASDFactors');
+inputDir = fullfile(inputDir, 'data');
+load(fullfile(inputDir, 'corrMat_ASD_inf.mat')); % load ASD FC matrices
+load(fullfile(inputDir, 'corrMat_Con_inf.mat')); % load control FC matrices
 
 idx_asd_subgrp = ismember(id_asd, id_asd_subgrp);
 idx_con_subgrp = ismember(id_con, id_con_subgrp);

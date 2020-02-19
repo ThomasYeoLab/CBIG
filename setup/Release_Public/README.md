@@ -9,10 +9,11 @@ Put some attractive background information for your project here.
 
 ----
 
-## Data Release [This section is Optional]
-The data utilized in this study are released in `XXXXDataRelease` folder. Specifically, the data include:
-- Describe your data
-- Describe your data
+## Data/Parcellation/Model Release [Please name accordingly] 
+The name of this section depends on the nature of your project. List down the results that you decide to release from your projects. This may include parcellations, trained models, FC matrices or any other results you have generated from your project. The following is a suggested format:
+
+The data utilized in this study is released in the `XXXXDataRelease` folder. Specifically, the data includes:
+- Describe your data (include path to your data if needed)
 
 ----
 
@@ -21,7 +22,7 @@ The data utilized in this study are released in `XXXXDataRelease` folder. Specif
 Since the whole Github repository is too big, we provide a stand-alone version of only this project and its dependencies. To download this stand-alone repository, visit this link: [https://github.com/ThomasYeoLab/Standalone_LastName20yy_ProjectName](https://github.com/ThomasYeoLab/Standalone_LastName20yy_ProjectName)
 
 ### Download whole repository
-Except for this project, if you want to use the code for other stable projects from out lab as well, you need to download the whole repository.
+If you wish to use the codes for other stable projects from our lab as well, you will need to download the whole repository.
 
 - To download the version of the code that was last tested, you can either
 
@@ -36,17 +37,21 @@ Except for this project, if you want to use the code for other stable projects f
     git checkout -b LastName20yy_ProjectName vx.x.x-LastName20yy_ProjectName
     ```
 
-### Usage
-- Describe how to use 
+## Usage
+- Describe how to use the main project 
+- [*This item only applies when you are writing a README under the main folder of the project*] Describe the **location** and **usage** of any additional functionality implemented for the project (e.g. transforming data into another space, calculating centroids). It is **very important** to try to cover every additional functionality here, since most users won't dig into your sub-folders to check if any additional functionalities exist.
+
+  Example: "Please check [directory] for the usage of [name of functionality]".
+  
+  Also note that you could have separate README files for each functionality in their respective sub-folders.
 
 ----
 
 ## Updates
-- Release vx.x.x (dd/mm/yyyy): Description
+- Release vx.x.x (dd/mm/yyyy): Description of changes
 
 ----
 
 ## Bugs and Questions
 
 Please contact FirstAuthor at FirstAuthor_email_address and Thomas Yeo at yeoyeo02@gmail.com.
-

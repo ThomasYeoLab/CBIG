@@ -3,7 +3,7 @@
 # Written by Jingwei Li and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 
-data_csv=/share/users/imganalysis/yeolab/data/GSP_release/scripts/subjects/GSP_extended_140630.csv
+data_csv=$CBIG_LiGSR_REP_GSP_DIR/scripts/subjects/GSP_extended_140630.csv
 outstem=""
 
 num_test_folds=20
@@ -77,7 +77,7 @@ REQUIRED ARGUMENTS:
 OPTIONAL ARGUMENTS:
 	-data_csv          data_csv         : The CSV file containing the behavioral and demographic information from the 
 	                                      GSP dataset. If not passed in, the default is 
-	                                   '"'/share/users/imganalysis/yeolab/data/GSP_release/scripts/subjects/GSP_extended_140630.csv'"'
+	                                     \${CBIG_LiGSR_REP_GSP_DIR}/scripts/subjects/GSP_extended_140630.csv
 	-outstem           outstem          : A string to specify the output files. For example, if outstem = 23behaviors, 
 	                                      then the output files will be named with a suffix of _23behaviors. If not 
 	                                      passed in, the default is without any suffix.
@@ -93,7 +93,8 @@ OPTIONAL ARGUMENTS:
 	                                      If not passed in, the default value is 0, i.e. there is no bias term.
 	
 Example:
-	$CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSR/KernelRidgeRegression/GSP/scripts/CBIG_LiGSR_KRR_workflowGSP.sh 
+	$CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSR/KernelRidgeRegression/GSP/scripts/\
+	CBIG_LiGSR_KRR_workflowGSP.sh 
 	-subject_list xxx/subject_list_862.txt -RSFC_file xxx/cort+subcort_new_S1200_953_Fisher.mat -y_list 
 	xxx/23behaviors.txt -covariate_list xxx/covariates_23behaviors.txt -FD_file xxx/FD_regressor_862.txt
 	-DVARS_file xxx/DV_regressor_862.txt -outdir xxx/ref_output -seed 1 -with_bias 0

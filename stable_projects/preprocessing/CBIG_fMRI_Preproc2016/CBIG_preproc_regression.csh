@@ -9,11 +9,12 @@
 # 3) use glm to regress out regressors for each run seperately
 #
 # Example: 
-#	$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_regression.csh -s Sub0069_Ses1 
-#	-d /data/users/nanbos/storage/fMRI_preprocess/nanbo -anat_s Sub0069_Ses1_FS -anat_d 
-#	/mnt/eql/yeo2/CBIG_repo_tests/CBIG_fMRI_Preproc2016_test/surface_vol_12sub -bld "002 003" -BOLD_stem 
-#	_rest_skip4_stc_mc -REG_stem _rest_skip4_stc_mc_reg -MASK_stem _rest_skip4_stc_mc -erode_space anat -aCompCor 
-#	-aCompCor_nPCs 5 -wm -wm_max_erode 3 -csf -csf_max_erode 1 -motion12_itamar -per_run
+#	$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_regression.csh -s Su0033_Ses1 -d \
+#	$CBIG_TESTDATA_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/100subjects_clustering/preproc_out -anat_s \
+#	Sub0033_Ses1_FS -anat_d $CBIG_TESTDATA_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/\
+#   100subjects_clustering/recon_all -bld "002 003" -BOLD_stem _rest_skip4_stc_mc -REG_stem _rest_skip4_stc_mc_reg \
+#   -MASK_stem _rest_skip4_stc_mc -erode_space anat -aCompCor -aCompCor_nPCs 5 -wm -wm_max_erode 3 -csf -csf_max_erode \
+#	1 -motion12_itamar -per_run
 #############################################
 # Written by Nanbo Sun and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 #############################################
@@ -106,27 +107,32 @@ echo "=======================Create masks (wb,wm,vent) for regressors===========
 if ( "$erode_space" == "func" ) then
 	if ( $wm == 1 && "$wm_max_erode" == "" ) then
 		set wm_max_erode = 1
-		echo "WARNING: WM mask will be created but -wm_max_erode is not passed in. Maximal erosion will be set to 1. (Erode in functional space.)" |& tee -a $LF
+		echo "WARNING: WM mask will be created but -wm_max_erode is not passed in. Maximal erosion " |& tee -a $LF
+		echo "will be set to 1. (Erode in functional space.)" |& tee -a $LF
 	endif
 	
 	if ( $csf == 1 && "$csf_max_erode" == "" ) then
 		set csf_max_erode = 0
-		echo "WARNING: Ventricles mask will be created but -csf_max_erode is not passed in. Maximal erosion will be set to 0. (Erode in functional space.)" |& tee -a $LF
+		echo "WARNING: Ventricles mask will be created but -csf_max_erode is not passed in. Maximal " |& tee -a $LF
+		echo "erosion will be set to 0. (Erode in functional space.)" |& tee -a $LF
 	endif
 	
 else
 	if ( $wm == 1 && "$wm_max_erode" == "" ) then
 		set wm_max_erode = 3
-		echo "WARNING: WM mask will be created but -wm_max_erode is not passed in. Maximal erosion will be set to 3. (Erode in anatomical space.)" |& tee -a $LF
+		echo "WARNING: WM mask will be created but -wm_max_erode is not passed in. Maximal erosion will " |& tee -a $LF
+		echo "be set to 3. (Erode in anatomical space.)" |& tee -a $LF
 	endif
 	
 	if ( $csf == 1 && "$csf_max_erode" == "" ) then
 		set csf_max_erode = 1
-		echo "WARNING: Ventricles mask will be created but -csf_max_erode is not passed in. Maximal erosion will be set to 1. (Erode in anatomical space.)" |& tee -a $LF
+		echo "WARNING: Ventricles mask will be created but -csf_max_erode is not passed in. Maximal " |& tee -a $LF
+		echo "erosion will be set to 1. (Erode in anatomical space.)" |& tee -a $LF
 	endif
 endif
 
-set cmd = "$root_dir/CBIG_preproc_create_mask.csh -s $subject -d $subject_dir -anat_s $anat -anat_d $anat_dir -bld '$zpdbold' -REG_stem $REG_stem -MASK_stem $MASK_stem"
+set cmd = "$root_dir/CBIG_preproc_create_mask.csh -s $subject -d $subject_dir -anat_s $anat -anat_d $anat_dir -bld "
+set cmd = "$cmd '$zpdbold' -REG_stem $REG_stem -MASK_stem $MASK_stem"
 
 if($whole_brain) then
 	set cmd = "$cmd -whole_brain"
@@ -229,7 +235,8 @@ set all_regressor_exist_flag = 1
 
 # write file names to the lists and check whether output files already exist
 
-# If $per_run is off, $CompCor_regressors_list should only contain one line (only one CompCor regressors text file for merged runs)
+# If $per_run is off, $CompCor_regressors_list should only contain one line 
+# (only one CompCor regressors text file for merged runs)
 if($per_run == 0) then
 	set CompCor_regressor_file = "$regress_folder/${subject}_aCompCor_regressor.txt"
 	
@@ -338,7 +345,9 @@ endif
 echo "=======================Create mc regressor=======================" |& tee -a $LF
 if ($motion12_itamar == 1) then
 	if ($mc_regressor_exist_flag == 0) then
-		set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r '"' 'addpath(fullfile('"'"$root_dir"'"','"'"utilities"'"'))'; CBIG_preproc_create_mc_regressors "'"$mc_par_list"'" "'"$mc_regressor_list"'" "'"$detrend_method"'" "'"$mt_diff_flag"'"; exit '"' );
+		set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r '"' 'addpath(fullfile('"'"$root_dir"'"\
+','"'"utilities"'"'))'; CBIG_preproc_create_mc_regressors "'"$mc_par_list"'" "'"$mc_regressor_list"'" \
+"'"$detrend_method"'" "'"$mt_diff_flag"'"; exit '"' );
 		echo $cmd |& tee -a $LF
 		eval $cmd |& tee -a $LF
 		
@@ -357,7 +366,9 @@ endif
 echo "=======================Create wb, wm, csf regressors=======================" |& tee -a $LF 
 if ($whole_brain || $wm || $csf) then
 	if ($ROI_regressor_exist_flag == 0) then
-		set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r '"' 'addpath(fullfile('"'"$root_dir"'"','"'"utilities"'"'))'; CBIG_preproc_create_ROI_regressors "'"$fMRI_list"'" "'"$ROI_regressors_list"'" "'"$wb_mask"'" "'"$wm_mask"'" "'"$csf_mask"'" "'"$other_diff_flag"'"; exit '"' );
+		set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r '"' 'addpath(fullfile('"'"$root_dir"'"\
+','"'"utilities"'"'))'; CBIG_preproc_create_ROI_regressors "'"$fMRI_list"'" "'"$ROI_regressors_list"'" "'"$wb_mask"'" \
+"'"$wm_mask"'" "'"$csf_mask"'" "'"$other_diff_flag"'"; exit '"' );
 		echo $cmd |& tee -a $LF
 		eval $cmd |& tee -a $LF
 		
@@ -385,7 +396,9 @@ if ( $aCompCor ) then
 		endif
 		
 		# The path needs to be changed after moved the matlab function in git repo
-		set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r '"' 'addpath(fullfile('"'"$root_dir"'"','"'"utilities"'"'))'; CBIG_preproc_aCompCor_multipleruns "'"$fMRI_list"'" "'"$wm_csf_mask_comb"'" "'"$CompCor_regressors_list"'" "'"$nPCs"'" "'"$per_run"'" "'"$aCompCor_diff_flag"'" ; exit '"' );
+		set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r '"' 'addpath(fullfile('"'"$root_dir"'"','\
+"'"utilities"'"'))'; CBIG_preproc_aCompCor_multipleruns "'"$fMRI_list"'" "'"$wm_csf_mask_comb"'" \
+"'"$CompCor_regressors_list"'" "'"$nPCs"'" "'"$per_run"'" "'"$aCompCor_diff_flag"'" ; exit '"' );
 		echo $cmd |& tee -a $LF
 		eval $cmd |& tee -a $LF
 		
@@ -469,7 +482,9 @@ endif
 echo "=======================Use glm to regress out all regressors=======================" |& tee -a $LF
 if ($motion12_itamar || $whole_brain || $wm || $csf || $aCompCor) then
 	if (($resid_exist_flag == 0) || ($force == 1)) then
-		set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r '"' 'addpath(fullfile('"'"$root_dir"'"','"'"utilities"'"'))'; CBIG_glm_regress_vol "'"$fMRI_list"'" "'"$resid_list"'" "'"$all_regressors_list"'" "'"$polynomial_fit"'" "'"$censor_list"'" "'"$per_run"'"; exit '"' )
+		set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r '"' 'addpath(fullfile('"'"$root_dir"'"','\
+"'"utilities"'"'))'; CBIG_glm_regress_vol "'"$fMRI_list"'" "'"$resid_list"'" "'"$all_regressors_list"'" \
+"'"$polynomial_fit"'" "'"$censor_list"'" "'"$per_run"'"; exit '"' )
 		echo $cmd |& tee -a $LF
 		eval $cmd |& tee -a $LF
 	else
@@ -488,7 +503,8 @@ echo "=======================Regression done!=======================" |& tee -a 
 which git
 if (! $status) then
 	echo "=======================Git: Last Commit of Current Function =======================" |& tee -a $LF
-	git -C ${CBIG_CODE_DIR} log -1 -- stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_regression.csh >> $LF
+	git -C ${CBIG_CODE_DIR} log -1 -- stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_regression.csh \
+	>> $LF
 endif
 
 echo "*********************************************************************" |& tee -a $LF
@@ -752,7 +768,8 @@ REQUIRED ARGUMENTS:
 	                                    two run numbers (e.g. -bld "002 003"). NOTE: quote sign is necessary.
 	-BOLD_stem  <BOLD_stem>           : the stem of input file. E.g. if input file is 
 	                                    Sub0001_bld002_rest_skip_stc_mc.nii.gz, then <BOLD_stem> = _rest_skip4_stc_mc. 
-	                                    This input file is assumed to be in <subject_dir>/<subject_id>/bold/<run_number>.
+	                                    This input file is assumed to be in 
+	                                    <subject_dir>/<subject_id>/bold/<run_number>.
 	-REG_stem  <REG_stem>             : the stem of T1-T2* registration file. E.g. if the registration file 
 	                                    is Sub0001_Ses1_bld002_rest_skip4_stc_mc_reg.dat, then 
 	                                    <REG_stem> = _rest_skip4_stc_mc_reg. The registration file is assumed to be 
@@ -798,8 +815,8 @@ OPTIONAL ARGUMENTS:
 	-use_aCompCor_diff                : If this option is used, derivatives of aCompCor PCs will be included.
 	                                    Default is to NOT include the derivatives of aCompCor PCs.
 	-no_other_diff                    : If this option is used, the derivatives of other regressors except motion and  
-	                                    aCompCor (GS, WM, CSF) will not be included. Default is to include the derivatives 
-	                                    of other regressors.
+	                                    aCompCor (GS, WM, CSF) will not be included. Default is to include the 
+	                                    derivatives of other regressors.
 	-polynomial_fit <polynomial_fit>  : -1/0/1 (default is 1). If polynomial_fit is set to -1, we add
 	                                    nothing in regressor matrix. If polynomial_fit is set to 0, we prepend a
 	                                    Mx1 vector [1,1,1...1]' to the regressor matrix and end up with a
@@ -819,23 +836,26 @@ OUTPUTS:
 	    contains all regressor lists and regressors text files.
 	    
 	(2) The volume after regression
-	    <sub_dir>/<subject_id>/bold/<run_number>/<subject_id>_bld<run_number><BOLD_stem>_resid.nii.gz (if -censor is not used)
+	    <sub_dir>/<subject_id>/bold/<run_number>/<subject_id>_bld<run_number><BOLD_stem>_resid.nii.gz 
+	    (if -censor is not used)
 	    or
-	    <sub_dir>/<subject_id>/bold/<run_number>/<subject_id>_bld<run_number><BOLD_stem>_residc.nii.gz (if -censor is used)
+	    <sub_dir>/<subject_id>/bold/<run_number>/<subject_id>_bld<run_number><BOLD_stem>_residc.nii.gz 
+	    (if -censor is used)
 
 EXAMPLES:
 	1.
-	$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_regression.csh -s Sub0069_Ses1 
-	-d /data/users/nanbos/storage/fMRI_preprocess/nanbo -anat_s Sub0069_Ses1_FS -anat_d 
-	/mnt/eql/yeo2/CBIG_repo_tests/CBIG_fMRI_Preproc2016_test/surface_vol_12sub -bld "002 003" -BOLD_stem 
-	_rest_skip4_stc_mc -REG_stem _rest_skip4_stc_mc_reg -MASK_stem _rest_skip4_stc_mc -whole_brain -wm -csf 
-	-motion12_itamar -per_run
+	$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_regression.csh -s Sub0033_Ses1 \
+	-d $CBIG_TESTDATA_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/100subjects_clustering/preproc_out \
+	-anat_s Sub0033_Ses1_FS -anat_d $CBIG_TESTDATA_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/\
+	100subjects_clustering/recon_all -bld "002 003" -BOLD_stem _rest_skip4_stc_mc -REG_stem _rest_skip4_stc_mc_reg \
+	-MASK_stem _rest_skip4_stc_mc -whole_brain -wm -csf -motion12_itamar -per_run
 	
 	2.
-	$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_regression.csh -s Sub0069_Ses1 
-	-d /data/users/nanbos/storage/fMRI_preprocess/nanbo -anat_s Sub0069_Ses1_FS -anat_d 
-	/mnt/eql/yeo2/CBIG_repo_tests/CBIG_fMRI_Preproc2016_test/surface_vol_12sub -bld "002 003" -BOLD_stem 
-	_rest_skip4_stc_mc -REG_stem _rest_skip4_stc_mc_reg -MASK_stem _rest_skip4_stc_mc -erode_space anat -aCompCor 
-	-aCompCor_nPCs 5 -wm -wm_max_erode 3 -csf -csf_max_erode 1 -motion12_itamar -per_run
+	$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_regression.csh -s Sub0033_Ses1 
+	-d $CBIG_TESTDATA_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/100subjects_clustering/preproc_out \
+	-anat_s Sub0033_Ses1_FS -anat_d $CBIG_TESTDATA_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/\
+	100subjects_clustering/recon_all -bld "002 003" -BOLD_stem _rest_skip4_stc_mc -REG_stem _rest_skip4_stc_mc_reg \
+	-MASK_stem _rest_skip4_stc_mc -erode_space anat -aCompCor -aCompCor_nPCs 5 -wm -wm_max_erode 3 -csf -csf_max_erode \
+	1 -motion12_itamar -per_run
 
 

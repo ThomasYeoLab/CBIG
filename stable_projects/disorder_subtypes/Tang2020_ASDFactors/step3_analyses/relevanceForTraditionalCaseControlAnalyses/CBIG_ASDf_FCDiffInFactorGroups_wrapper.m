@@ -39,27 +39,28 @@ p_NBS = [];
 
 %% Define and add paths
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-CODE_DIR = [CBIG_CODE_DIR '/stable_projects/disorder_subtypes/Tang2020_ASDFactors'];
-addpath([CODE_DIR '/step3_analyses/utilities']);
-addpath([CODE_DIR '/step2_polarLDA']);
+CODE_DIR = fullfile(CBIG_CODE_DIR,'stable_projects','disorder_subtypes','Tang2020_ASDFactors');
+addpath(fullfile(CODE_DIR,'step3_analyses','utilities'));
+addpath(fullfile(CODE_DIR,'step2_polarLDA'));
 
-corrMat_dir = '/mnt/eql/yeo11/data/ABIDE1_preprocess/fc_correlation/output_316';
-UNIT_TEST_DIR = '/mnt/eql/yeo1/CBIG_private_unit_tests_data/stable_projects/disorder_subtypes/Tang2020_ASDFactors';
-inputDir = [UNIT_TEST_DIR '/data/data_long'];
+corrMat_dir = fulfile('mnt','eql','yeo11','data','ABIDE1_preprocess','fc_correlation','output_316');
+CBIG_REPDATA_DIR = getenv('CBIG_REPDATA_DIR');
+UNIT_TEST_DIR = fullfile(CBIG_REPDATA_DIR,'stable_projects','disorder_subtypes','Tang2020_ASDFactors');
+inputDir = fullfile(UNIT_TEST_DIR,'data');
 
-sub_info_file = [inputDir '/subInfo_316.csv'];
-subgrpDir = [inputDir '/ABIDE1_subgroups'];
+sub_info_file = fullfile(inputDir,'subInfo_316.csv');
+subgrpDir = fullfile(inputDir,'ABIDE1_subgroups');
 
 %% Load ABIDE-I ASD participants' IDs in each sub-group
-id_asd_file = [subgrpDir '/id_asd.mat'];
-id_con_file = [subgrpDir '/id_con.mat'];
+id_asd_file = fullfile(subgrpDir,'id_asd.mat');
+id_con_file = fullfile(subgrpDir,'id_con.mat');
 
-id_K3F1_file = [subgrpDir '/id_K3F1.mat'];
-id_K3F2_file = [subgrpDir '/id_K3F2.mat'];
-id_K3F3_file = [subgrpDir '/id_K3F3.mat'];
-id_K3Con1_file = [subgrpDir '/id_K3Con1.mat'];
-id_K3Con2_file = [subgrpDir '/id_K3Con2.mat'];
-id_K3Con3_file = [subgrpDir '/id_K3Con3.mat'];
+id_K3F1_file = fullfile(subgrpDir,'id_K3F1.mat');
+id_K3F2_file = fullfile(subgrpDir,'id_K3F2.mat');
+id_K3F3_file = fullfile(subgrpDir,'id_K3F3.mat');
+id_K3Con1_file = fullfile(subgrpDir,'id_K3Con1.mat');
+id_K3Con2_file = fullfile(subgrpDir,'id_K3Con2.mat');
+id_K3Con3_file = fullfile(subgrpDir,'id_K3Con3.mat');
 
 %% Set random number seed
 rng('default');
@@ -70,7 +71,7 @@ output_name = ['nbs_allSub_Nperm' num2str(Nperm) '_tThresh' num2str(tThresh)];
 
 %%% Run NBS, either submit job to CBIG cluster or run directly on matlab
 if ~isequal(cluster,'circ-spool')
-    curr_output_name = [outputDir '/' output_name];
+    curr_output_name = fullfile(outputDir, output_name);
     p_all = CBIG_ASDf_FCDiffAllSub_NBS(tThresh, id_asd_file, id_con_file, sub_info_file, ...
 Nperm, curr_output_name);
     p_NBS = [p_NBS; p_all];
@@ -86,7 +87,7 @@ disp('----FC difference between ASD and control subjects within factor group (K 
 %%% K = 3, factor 1 subgroup
 output_name = ['nbs_K3F1_Nperm' num2str(Nperm) '_tThresh' num2str(tThresh)];
 if ~isequal(cluster,'circ-spool')
-    curr_output_name = [outputDir '/' output_name];
+    curr_output_name = fullfile(outputDir, output_name);
     p_F1 = CBIG_ASDf_FCDiffInSubgrp_NBS(tThresh, id_K3F1_file, id_K3Con1_file, id_asd_file, ...
 id_con_file, sub_info_file, Nperm, curr_output_name);
     p_NBS = [p_NBS; p_F1];
@@ -100,7 +101,7 @@ end
 %%% K = 3, factor 2 subgroup
 output_name = ['nbs_K3F2_Nperm' num2str(Nperm) '_tThresh' num2str(tThresh)];
 if ~isequal(cluster,'circ-spool')
-    curr_output_name = [outputDir '/' output_name];
+    curr_output_name = fullfile(outputDir, output_name);
     p_F2 = CBIG_ASDf_FCDiffInSubgrp_NBS(tThresh, id_K3F2_file, id_K3Con2_file, id_asd_file, ...
 id_con_file, sub_info_file, Nperm, curr_output_name);
     p_NBS = [p_NBS; p_F2];
@@ -114,7 +115,7 @@ end
 %%% K = 3, factor 3 subgroup
 output_name = ['nbs_K3F3_Nperm' num2str(Nperm) '_tThresh' num2str(tThresh)];
 if ~isequal(cluster,'circ-spool')
-    curr_output_name = [outputDir '/' output_name];
+    curr_output_name = fullfile(outputDir, output_name);
     p_F3 = CBIG_ASDf_FCDiffInSubgrp_NBS(tThresh, id_K3F3_file, id_K3Con3_file, id_asd_file, ...
 id_con_file, sub_info_file, Nperm, curr_output_name);
     p_NBS = [p_NBS; p_F3];
@@ -128,32 +129,32 @@ end
 %% Plot FC differences, thresholded by NBS
 %%% All ASD vs controls
 if ~isempty(cluster) % If submitted jobs, wait until jobs finished
-    CBIG_ASDf_checkJobStatus([outputDir '/progressFile.txt'], 4, 600);
+    CBIG_ASDf_checkJobStatus(fullfile(outputDir,'progressFile.txt'), 4, 600);
 end
 output_name = ['nbs_allSub_Nperm' num2str(Nperm) '_tThresh' num2str(tThresh)];
-load([outputDir '/' output_name '.mat']) % load NBS result
+load(fullfile(outputDir, [output_name '.mat'])) % load NBS result
 CBIG_ASDf_plotFCDiff_NBSThresholded(sub_info_file, id_asd_file, id_con_file, ADJ, 1, ...
-corrMat_dir, [-0.08 0.08], [outputDir '/' output_name]);
+corrMat_dir, [-0.08 0.08], fullfile(outputDir, output_name));
 
 %%% K = 3, factor 1 subgroup
 output_name = ['nbs_K3F1_Nperm' num2str(Nperm) '_tThresh' num2str(tThresh)];
-load([outputDir '/' output_name '.mat']) % load NBS result
+load(fullfile(outputDir, [output_name '.mat'])) % load NBS result
 CBIG_ASDf_plotFCDiff_NBSThresholded(sub_info_file, id_K3F1_file, id_K3Con1_file, ADJ, 1, ...
-corrMat_dir, [-0.08 0.08], [outputDir '/' output_name]);
+corrMat_dir, [-0.08 0.08], fullfile(outputDir, output_name));
 
 %%% K = 3, factor 2 subgroup
 output_name = ['nbs_K3F2_Nperm' num2str(Nperm) '_tThresh' num2str(tThresh)];
-load([outputDir '/' output_name '.mat']) % load NBS result
+load(fullfile(outputDir, [output_name '.mat'])) % load NBS result
 CBIG_ASDf_plotFCDiff_NBSThresholded(sub_info_file, id_K3F2_file, id_K3Con2_file, ADJ, 1, ...
-corrMat_dir, [-0.08 0.08], [outputDir '/' output_name]);
+corrMat_dir, [-0.08 0.08], fullfile(outputDir, output_name));
 
 
 %%% K = 3, factor 3 subgroup
 output_name = ['nbs_K3F3_Nperm' num2str(Nperm) '_tThresh' num2str(tThresh)];
-load([outputDir '/' output_name '.mat']) % load NBS result
+load(fullfile(outputDir, [output_name '.mat'])) % load NBS result
 CBIG_ASDf_plotFCDiff_NBSThresholded(sub_info_file, id_K3F3_file, id_K3Con3_file, ADJ, 1, ...
-corrMat_dir, [-0.08 0.08], [outputDir '/' output_name]);
+corrMat_dir, [-0.08 0.08], fullfile(outputDir, output_name));
 
 %% Remove paths
-rmpath([CODE_DIR '/step3_analyses/utilities']);
-rmpath([CODE_DIR '/step2_polarLDA']);
+rmpath(fullfile(CODE_DIR,'step3_analyses','utilities'));
+rmpath(fullfile(CODE_DIR,'step2_polarLDA'));

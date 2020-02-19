@@ -4,7 +4,7 @@
 
 out_dir=$1
 
-workspace="/mnt/eql/yeo1/CBIG_private_data/unit_tests/stable_projects/\
+workspace="${CBIG_TESTDATA_DIR}/stable_projects/\
 disorder_subtypes/Sun2019_ADJointFactors/step3_PET_preprocess"
 # reference directory
 ref_dir=${workspace}/results
@@ -14,7 +14,7 @@ T1_list=${workspace}/data/T1_path_2sub.txt
 PET_list=${workspace}/data/PET_path_2sub.txt
 deform_dir=${workspace}/data/
 script_dir=${CBIG_CODE_DIR}/stable_projects/disorder_subtypes/Sun2019_ADJointFactors/step3_PET_preprocess
-spm_dir=/apps/arch/Linux_x86_64/spm/spm12
+spm_dir=${CBIG_SPM_DIR}
 queue=circ-spool
 
 # run PET preprocessing

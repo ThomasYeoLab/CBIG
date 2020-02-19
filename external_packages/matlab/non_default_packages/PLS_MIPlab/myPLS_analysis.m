@@ -1,4 +1,5 @@
 function [U,S,V,Lx,Ly,explCovLC,LC_behav_loadings,LC_RSFC_loadings] = myPLS_analysis(X,Y,normalization_img,normalization_behav)
+
 % PLS analysis (main script)
 %
 % Inputs:
@@ -25,18 +26,9 @@ function [U,S,V,Lx,Ly,explCovLC,LC_behav_loadings,LC_RSFC_loadings] = myPLS_anal
 % Written by Valeria Kebets and the MIPlab, with subfunctions borrowed
 % from PLS toolbox by Rotman Baycrest
 % (https://www.rotman-baycrest.on.ca/index.php?section=84)
-%
-% Please cite the following papers when using this code:
-%
-% Zoller D, Schaer M, Scariati E, Padula MC, Eliez S, Van De Ville D (2017).
-% Disentangling resting-state BOLD variability and PCC
-% functional connectivity in 22q11.2 deletion syndrom.
-% Neuroimage 149, pp. 85-97.
-%
-% McIntosh AR, Lobaugh NJ (2004). Partial least squares analysis of
-% neuroimaging data: applications and advances.
-% Neuroimage 23(Suppl 1), pp. S250-263.
 
+scripts_dir = fileparts(mfilename('fullpath'));
+addpath(scripts_dir);
 
 % Check that dimensions of X & Y are correct
 if(size(X,1) ~= size(Y,1))

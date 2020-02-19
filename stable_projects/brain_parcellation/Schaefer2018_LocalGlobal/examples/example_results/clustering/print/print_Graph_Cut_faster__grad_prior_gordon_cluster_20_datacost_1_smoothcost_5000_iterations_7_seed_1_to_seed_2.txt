@@ -1,6 +1,6 @@
 using gordon gradient prior
 outputname:Graph_Cut_faster__grad_prior_gordon_cluster_20_datacost_1_smoothcost_5000_iterations_7
-using profile /data/users/qyang/storage/NEW_alex_HNU/mult_mat//lh_mult_matrix.mat and /data/users/qyang/storage/NEW_alex_HNU/mult_mat//rh_mult_matrix.mat
+using profile $HOME/storage/NEW_alex_HNU/mult_mat//lh_mult_matrix.mat and $HOME/storage/NEW_alex_HNU/mult_mat//rh_mult_matrix.mat
 Will iterate from initialization 1 to initialization 2 
 Computing parameters in split brains 
 with gradient 

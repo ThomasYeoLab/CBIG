@@ -1,2 +1,2 @@
-/data/users/rkong/storage/CBIG_private/data/example_data/CoRR_HNU/subj01/subj01_sess1/profiles/lh.subj01.fsaverage5_roifsaverage3_BI.surf2surf_profile_cen.nii.gz
-/data/users/rkong/storage/CBIG_private/data/example_data/CoRR_HNU/subj02/subj02_sess1/profiles/lh.subj02.fsaverage5_roifsaverage3_BI.surf2surf_profile_cen.nii.gz
+$CBIG_CODE_DIR/data/example_data/CoRR_HNU/subj01/subj01_sess1/profiles/lh.subj01.fsaverage5_roifsaverage3_BI.surf2surf_profile_cen.nii.gz
+$CBIG_CODE_DIR/data/example_data/CoRR_HNU/subj02/subj02_sess1/profiles/lh.subj02.fsaverage5_roifsaverage3_BI.surf2surf_profile_cen.nii.gz

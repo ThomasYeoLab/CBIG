@@ -1,4 +1,3 @@
-
 function [LC_RSFC_loadings_boot,LC_behav_loadings_boot,all_boot_orders] = CBIG_VK2019_bootstrap_loadings...
     (X,Y,U,signif_LC,nBootstraps,grouping,normalization_img,normalization_behav,seed)
 % 
@@ -39,6 +38,8 @@ function [LC_RSFC_loadings_boot,LC_behav_loadings_boot,all_boot_orders] = CBIG_V
 % Set random number generator 
 if isempty(seed)
     rng(1000);
+else
+    rng(seed);
 end
 
 % Check that dimensions of X & Y are correct

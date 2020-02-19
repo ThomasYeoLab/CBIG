@@ -33,8 +33,8 @@ end
 
 %% Add path
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-CODE_DIR = [CBIG_CODE_DIR '/stable_projects/disorder_subtypes/Tang2020_ASDFactors'];
-addpath([CODE_DIR '/step3_analyses/utilities']);
+CODE_DIR = fullfile(CBIG_CODE_DIR,'stable_projects','disorder_subtypes','Tang2020_ASDFactors');
+addpath(fullfile(CODE_DIR,'step3_analyses','utilities'));
 
 %% Compute correlation between all the runs
 % This function takes time if there are many runs
@@ -43,7 +43,7 @@ addpath([CODE_DIR '/step3_analyses/utilities']);
 %% Final estimate we obtained
 r_final = num2str(I(1));
 fprintf('Final estimate for K = %s: run %s.\n', k, r_final);
-mkdir([outputDir '/k' k '/r' r_final]);
+mkdir(fullfile(outputDir, ['k' k], ['r' r_final]));
 
 % Plot correlation between final estimate and all other solutions
 if size(corrRuns, 1) > 1
@@ -63,11 +63,11 @@ CBIG_ASDf_mean2mat(inputDir, outputDir, k, r_final, scalelim);
 
 %% Write Pr(Factor | Participant), i.e., normalized \gamma in polarLDA, to .txt file, 
 %% where each row is a participant's factor composition
-gamma_file = [inputDir '/k' k '/r' r_final '/final.gamma'];
-output_name = [outputDir '/k' k '/r' r_final '/factorComp.txt'];
+gamma_file = fullfile(inputDir, ['k' k], ['r' r_final], 'final.gamma');
+output_name = fullfile(outputDir, ['k' k], ['r' r_final], 'factorComp.txt');
 CBIG_ASDf_gamma2table(gamma_file, output_name);
 
 %% Remove path
-rmpath([CODE_DIR '/step3_analyses/utilities']);
+rmpath(fullfile(CODE_DIR,'step3_analyses','utilities'));
 
 end

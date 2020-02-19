@@ -23,7 +23,7 @@ where the folder names with `_FS` (e.g. `Sub1116_Ses1_FS`) meaning they are stru
 The preprocessed subject (Sub1116_Ses1) for comparison is stored here
 
 ```
-/mnt/eql/yeo1/CBIG_private_data/unit_tests/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/single_subject/data
+$CBIG_TESTDATA_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/single_subject/data
 ```
 
 ----

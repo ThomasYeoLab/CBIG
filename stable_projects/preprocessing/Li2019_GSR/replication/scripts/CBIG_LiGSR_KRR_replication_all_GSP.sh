@@ -7,11 +7,9 @@
 # setup for CIRC cluster
 ########################
 curr_dir=$(pwd)
-username=$(whoami)
-work_dir=/data/users/$username/cluster/
+work_dir=$HOME/cluster/
 
 echo $curr_dir
-echo $username
 echo $work_dir
 
 if [ ! -d $work_dir ]; then
@@ -26,7 +24,7 @@ cd $work_dir
 project_dir="$CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSR"
 replication_dir="$project_dir/replication"
 
-test_dir=/mnt/eql/yeo1/CBIG_private_data/replication/stable_projects/preprocessing/Li2019_GSR/KernelRidgeRegression/GSP
+test_dir=${CBIG_REPDATA_DIR}/stable_projects/preprocessing/Li2019_GSR/KernelRidgeRegression/GSP
 subject_list="$test_dir/lists/subject_list_862.txt"
 FD_file="$test_dir/lists/FD_regressor_862.txt"
 DVARS_file="$test_dir/lists/DV_regressor_862.txt"
@@ -49,10 +47,11 @@ for pipeline in GSR Baseline ; do
 	
 	for seed in $(seq 1 1 20); do
 		cmd="$project_dir/KernelRidgeRegression/GSP/scripts/CBIG_LiGSR_KRR_workflowGSP.sh -subject_list $subject_list "
-		cmd="$cmd -RSFC_file $RSFC_file -y_list $cog_list -covariate_list $covariate_list -FD_file $FD_file -DVARS_file "
+		cmd="$cmd -RSFC_file $RSFC_file -y_list $cog_list -covariate_list $covariate_list -FD_file $FD_file -DVARS_file"
 		cmd="$cmd $DVARS_file -outdir $outdir -outstem $outstem -seed $seed -with_bias $with_bias"
 		
-		echo $cmd | qsub -V -q circ-spool -l walltime=06:00:00,mem=6GB -m ae -N CBIG_LiGSR_KRR_replication_all_GSP
+		echo $cmd | $CBIG_SCHEDULER_DIR/qsub -V -q circ-spool -l walltime=06:00:00,mem=6GB -m ae \
+		  -N CBIG_LiGSR_KRR_replication_all_GSP
 		
 		if [ ! -f $outdir/covariates_${outstem}.mat ] || [ ! -f $outdir/y_${outstem}.mat ]; then
 			# wait for the files shared across random splits to be saved
@@ -72,10 +71,11 @@ for pipeline in GSR Baseline ; do
 	
 	for seed in $(seq 1 1 20); do
 		cmd="$project_dir/KernelRidgeRegression/GSP/scripts/CBIG_LiGSR_KRR_workflowGSP.sh -subject_list $subject_list "
-		cmd="$cmd -RSFC_file $RSFC_file -y_list $age_list -covariate_list $covariate_list -FD_file $FD_file -DVARS_file "
+		cmd="$cmd -RSFC_file $RSFC_file -y_list $age_list -covariate_list $covariate_list -FD_file $FD_file -DVARS_file"
 		cmd="$cmd $DVARS_file -outdir $outdir -outstem $outstem -seed $seed -with_bias $with_bias"
 		
-		echo $cmd | qsub -V -q circ-spool -l walltime=01:00:00,mem=3GB -m ae -N CBIG_LiGSR_KRR_replication_all_GSP
+		echo $cmd | $CBIG_SCHEDULER_DIR/qsub -V -q circ-spool -l walltime=01:00:00,mem=3GB -m ae \
+		  -N CBIG_LiGSR_KRR_replication_all_GSP
 		
 		if [ ! -f $outdir/covariates_${outstem}.mat ] || [ ! -f $outdir/y_${outstem}.mat ]; then
 			sleep 3m
@@ -94,10 +94,11 @@ for pipeline in GSR Baseline ; do
 	
 	for seed in $(seq 1 1 20); do
 		cmd="$project_dir/KernelRidgeRegression/GSP/scripts/CBIG_LiGSR_KRR_workflowGSP.sh -subject_list $subject_list "
-		cmd="$cmd -RSFC_file $RSFC_file -y_list $sex_list -covariate_list $covariate_list -FD_file $FD_file -DVARS_file "
+		cmd="$cmd -RSFC_file $RSFC_file -y_list $sex_list -covariate_list $covariate_list -FD_file $FD_file -DVARS_file"
 		cmd="$cmd $DVARS_file -outdir $outdir -outstem $outstem -seed $seed -with_bias $with_bias"
 		
-		echo $cmd | qsub -V -q circ-spool -l walltime=05:00:00,mem=6GB -m ae -N CBIG_LiGSR_KRR_replication_all_GSP
+		echo $cmd | $CBIG_SCHEDULER_DIR/qsub -V -q circ-spool -l walltime=05:00:00,mem=6GB -m ae \
+		  -N CBIG_LiGSR_KRR_replication_all_GSP
 		
 		if [ ! -f $outdir/covariates_${outstem}.mat ] || [ ! -f $outdir/y_${outstem}.mat ]; then
 			sleep 3m

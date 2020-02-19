@@ -69,7 +69,7 @@ if(strcmp(targ_mesh,'fs_LR_32k'))
         error('could not find clustering results group.mat')
     end
     % Visualization
-    CBIG_DrawSurfaceMaps(lh_labels,rh_labels, 'fsaverage5', 'inflated');
+    CBIG_DrawSurfaceMaps_fslr(lh_labels,rh_labels, 'fs_LR_32k', 'inflated');
     
 elseif(~isempty(strfind(targ_mesh,'fsaverage'))) 
     lh_avg_profile_file = fullfile(out_dir,'profiles','avg_profile',['lh_' targ_mesh '_roi' seed_mesh '_avg_profile.nii.gz']);

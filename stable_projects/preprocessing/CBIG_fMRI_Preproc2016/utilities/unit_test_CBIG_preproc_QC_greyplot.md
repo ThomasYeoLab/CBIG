@@ -15,7 +15,7 @@ A mid-motion subject `Sub0158_Ses1` is selected for this test.
 Open a shell command-line window and type the following commands:
 
 ```
-${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_fMRI_preprocess.csh -s Sub1058_Ses1 -output_d ${your_outdir} -anat_s Sub1058_Ses1_FS -anat_d /share/users/imganalysis/yeolab/data/GSP_release -fmrinii /mnt/eql/yeo3/data/GSP2016/CBIG_preproc_global_cen_bp/GSP_single_session/scripts/fmrinii/Sub1058_Ses1.fmrinii -config ${config_file} 
+${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_fMRI_preprocess.csh -s Sub1058_Ses1 -output_d ${your_outdir} -anat_s Sub1058_Ses1_FS -anat_d /share/users/imganalysis/yeolab/data/GSP_release -fmrinii $CBIG_preproc_REP_GSP_DIR/CBIG_preproc_global_cen_bp/GSP_single_session/scripts/fmrinii/Sub1058_Ses1.fmrinii -config ${config_file} 
 ```
 
 You need to specify your own output directory `${your_outdir}`, and the absolute path to configuration file `${config_file}`. `${config_file}` contains the following steps and parameters:

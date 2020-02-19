@@ -9,23 +9,32 @@ if [ -n "$FREESURFER_HOME" ]; then
 fi
 
 # PLEASE CHANGE: Please specify location of CBIG repository
-export CBIG_CODE_DIR=/data/users/rkong/storage/CBIG_private
+export CBIG_CODE_DIR=$HOME/storage/CBIG_private
 
 # PLEASE CHANGE: define locations for these libraries
 export FREESURFER_HOME=/apps/arch/Linux_x86_64/freesurfer/5.3.0
-export CBIG_MATLAB_DIR=/apps/arch/Linux_x86_64/matlab/R2014a
+export CBIG_MATLAB_DIR=/apps/arch/Linux_x86_64/matlab/R2018b
 export CBIG_SPM_DIR=/apps/arch/Linux_x86_64/spm/spm12
-export CBIG_AFNI_DIR=/apps/arch/Linux_x86_64/afni/20150126/linux_openmp_64
+export CBIG_AFNI_DIR=/apps/arch/Linux_x86_64/afni/AFNI_2011_12_21_1014/linux_openmp_64
 export CBIG_ANTS_DIR=/apps/arch/Linux_x86_64/ants/ants_v2.2.0/BUILD/bin/
-export CBIG_WB_DIR=/apps/arch/Linux_x86_64/HCP/workbench/
-export CBIG_CARET_DIR=/apps/arch/Linux_x86_64/caret/
+export CBIG_WB_DIR=/apps/arch/Linux_x86_64/HCP/workbench-1.1.1/
 export CBIG_FSLDIR=/apps/arch/Linux_x86_64/fsl/5.0.8
+
+# DO NOT CHANGE: define locations for unit tests data and replication data
+export CBIG_TESTDATA_DIR=/mnt/eql/yeo1/CBIG_test_data/unit_tests
+export CBIG_MSHBM_REP_GSP_DIR=/mnt/eql/yeo3/data/GSP2016/CBIG_preproc_global_cen_bp/GSP_test_retest/CBIG2016_preproc_global_cen_bp/profiles
+export CBIG_MSHBM_REP_HCP_DIR=/mnt/eql/yeo8/data/HCP_S1200_postprocessing
+export CBIG_MSHBM_REP_HNU_DIR=/mnt/eql/yeo9/data/HNU/CBIG2016_preproc_global_cen_bp/profiles
+
+# DO NOT CHANGE: define scheduler location
+export CBIG_SCHEDULER_DIR=/apps/sysapps/TORQUE/bin
 
 # DO NOT CHANGE: set up your environment with the configurations above
 SETUP_PATH=$CBIG_CODE_DIR/setup/CBIG_generic_setup.sh
 source $SETUP_PATH
 
-# DO NOT CHANGE: set up temporary directory for MRIread from FS6.0
+# DO NOT CHANGE: set up temporary directory for MRIread from FS6.0 for CBIG 
+# members using the HPC, Other users should comment this out
 export TMPDIR=/tmpstore
 
 # Do NOT CHANGE: set up MATLABPATH so that MATLAB can find startup.m in our repo 

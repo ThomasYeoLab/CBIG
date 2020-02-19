@@ -81,9 +81,9 @@ for iter_lc = 1:size(signif_LC,1)
 end
 
 % Average RSFC loadings within/between 18 networks 
-file1_in = [out_dir '/LC_RSFC_loadings_419x419.mat'];
+file1_in = fullfile(out_dir,'LC_RSFC_loadings_419x419.mat');
 save(file1_in,'LC_RSFC_loadings_CM');
-file1_out = [out_dir '/LC_RSFC_loadings_18x18.mat'];
+file1_out = fullfile(out_dir,'LC_RSFC_loadings_18x18.mat');
 cd(scripts_dir);
 
 a = system(['python CBIG_VK2019_avgCMbyNetworks.py ',file1_in,' ','LC_RSFC_loadings_CM ',scripts_dir,' ',file1_out]);
@@ -100,9 +100,9 @@ for iter_lc = 1:size(signif_LC,1)
     end
     
         % Average bootstrapped RSFC loadings within/between 18 networks
-        file2_in = [out_dir '/LC' num2str(this_lc) '_RSFC_loadings_boot_419x419.mat'];
+        file2_in = fullfile(out_dir,['LC' num2str(this_lc) '_RSFC_loadings_boot_419x419.mat']);
         save(file2_in,'LC_RSFC_loadings_boot_CM');
-        file2_out = [out_dir '/LC' num2str(this_lc) '_RSFC_loadings_boot_18x18.mat'];
+        file2_out = fullfile(out_dir,['LC' num2str(this_lc) '_RSFC_loadings_boot_18x18.mat']);
         
         a = system(['python CBIG_VK2019_avgCMbyNetworks.py ',...
             file2_in,' ','LC_RSFC_loadings_boot_CM ',scripts_dir,' ',file2_out]);
@@ -114,10 +114,10 @@ end
 load(file1_out);
 LC_RSFC_loadings_avg = thisLC_RSFC_loadings_avg;
 
-files = dir([out_dir '/*_RSFC_loadings_boot_18x18.mat']);
+files = dir(fullfile(out_dir,'*_RSFC_loadings_boot_18x18.mat'));
 
 for iter_lc = 1:size(files,1)
-    load([out_dir '/' files(iter_lc).name]);
+    load(fullfile(out_dir,files(iter_lc).name));
     LC_RSFC_loadings_boot_avg(:,:,iter_lc,:) = thisLC_RSFC_loadings_avg(:,:,:);
     clear thisLC_RSFC_loadings_avg
 end

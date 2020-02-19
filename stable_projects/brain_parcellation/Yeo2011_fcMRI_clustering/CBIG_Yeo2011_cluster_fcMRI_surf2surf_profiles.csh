@@ -1,7 +1,8 @@
 #!/bin/csh -f
 
 # example:
-#     CBIG_Yeo2011_cluster_fcMRI_surf2surf_profiles.csh -lh_in /mnt/eql/yeo2/CBIG_repo_tests/CBIG_fMRI_Preproc2016_test/GSP_surface_100sub/procsurffast/clustering/GSP_100_low_motion_clusters_lh_profile.txt -rh_in /mnt/eql/yeo2/CBIG_repo_tests/CBIG_fMRI_Preproc2016_test/GSP_surface_100sub/procsurffast/clustering/GSP_100_low_motion_clusters_rh_profile.txt -n 7 -out /mnt/eql/yeo2/CBIG_repo_tests/CBIG_fMRI_Preproc2016_test/GSP_surface_100sub/procsurffast/clustering/GSP_100_low_motion_clusters
+#     CBIG_Yeo2011_cluster_fcMRI_surf2surf_profiles.csh -lh_in <lh_profile.txt> \
+#     -rh_in <rh_profile.txt> -n 7 -out <output_file>
 # Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 set VERSION = '$Id: CBIG_Yeo2011_cluster_fcMRI_surf2surf_profiles.csh v 1.0 2016/06/18 $'
@@ -64,7 +65,11 @@ echo "rh_avg_profile = $rh_avg_profile"
 if( -e $lh_avg_profile && -e $rh_avg_profile ) then
 	echo "Averaged profiles $lh_avg_profile & $rh_avg_profile already exist. Skipping ......"
 else
-	$MATLAB -nojvm -nodesktop -nosplash -r "addpath(fullfile(getenv('CBIG_CODE_DIR'), 'utilities', 'matlab', 'utilities')); CBIG_AvgFreeSurferVolumes '${lh_profile_txt}' '${lh_avg_profile}'; CBIG_AvgFreeSurferVolumes '${rh_profile_txt}' '${rh_avg_profile}'; exit;"
+	set cmd = ( $MATLAB -nojvm -nodesktop -nosplash -r '"')
+	set cmd = ($cmd 'addpath(genpath(fullfile('"'"$CBIG_CODE_DIR"'", "'"utilities"'", "'"matlab"'"')));')
+	set cmd = ($cmd CBIG_AvgFreeSurferVolumes "'"${lh_profile_txt}"'" "'"${lh_avg_profile}"'"';')
+	set cmd = ($cmd CBIG_AvgFreeSurferVolumes "'"${rh_profile_txt}"'" "'"${rh_avg_profile}"'"'; exit;''"')
+	eval $cmd
 endif
 
 if( ! -e $lh_avg_profile ) then
@@ -88,7 +93,16 @@ echo "===>> Cluster"
 if( -e "${output_file}.mat" ) then
 	echo "Clustering results ${output_file}.mat already exist. Skipping ......"
 else
-	$MATLAB -nojvm -nodesktop -nosplash -r "addpath(fullfile(getenv('CBIG_CODE_DIR'), 'utilities', 'matlab', 'DSP')); CBIG_VonmisesSeriesClustering_fix_bessel_randnum_bsxfun '$mesh' '$mask' '${num_clusters}' '${output_file}' '${lh_avg_profile}' '${rh_avg_profile}' '$smooth' '${num_tries}' '${znorm}'; exit;"
+	set cmd = ( $MATLAB -nojvm -nodesktop -nosplash -r '"')
+	set cmd = ($cmd 'addpath(genpath(fullfile('"'"$CBIG_CODE_DIR"'", "'"utilities"'", "'"matlab"'"')));')
+	set cmd = ($cmd 'addpath(fullfile('"'"$CBIG_CODE_DIR"'", "'"external_packages"'",)
+	set cmd = ($cmd "'"SD"'", "'"SDv1.5.1-svn593"'", "'"BasicTools"'"'));')
+	set cmd = ($cmd 'addpath(fullfile('"'"$CBIG_CODE_DIR"'", "'"external_packages"'",)
+	set cmd = ($cmd "'"matlab"'", "'"default_packages"'", "'"DSP"'"'));')
+	set cmd = ($cmd CBIG_VonmisesSeriesClustering_fix_bessel_randnum_bsxfun "'"${mesh}"'" "'"${mask}"'")
+	set cmd = ($cmd "'"${num_clusters}"'" "'"${output_file}"'" "'"${lh_avg_profile}"'" "'"${rh_avg_profile}"'")
+	set cmd = ($cmd "'"${smooth}"'" "'"${num_tries}"'" "'"${znorm}"'"'; exit;''"')
+	eval $cmd
 endif
 
 if( ! -e "${output_file}.mat" ) then
@@ -104,15 +118,33 @@ echo ""
 # Hungarian match
 ########################################
 echo "===>> Hungarian match"
-if( $num_clusters == 17 ) then
-	set ref_file = ${root_dir}/1000subjects_reference/1000subjects_clusters017_ref.mat
-else if( $num_clusters == 7 ) then
-	set ref_file = ${root_dir}/1000subjects_reference/1000subjects_clusters007_ref.mat
+if( $mesh == fsaverage5 ) then
+	if( $num_clusters == 17 ) then
+		set ref_file = ${root_dir}/1000subjects_reference/1000subjects_clusters017_ref.mat
+	else if( $num_clusters == 7 ) then
+		set ref_file = ${root_dir}/1000subjects_reference/1000subjects_clusters007_ref.mat
+	endif
+else if( $mesh == fsaverage6 ) then
+	if( $num_clusters == 17 ) then
+		set ref_file = ${root_dir}/1000subjects_reference/1000subjects_clusters017_ref_NNinterp_fs6.mat
+	else if( $num_clusters == 7 ) then
+		set ref_file = ${root_dir}/1000subjects_reference/1000subjects_clusters007_ref_NNinterp_fs6.mat
+	endif
 endif
 
-$MATLAB -nojvm -nodesktop -nosplash -r "addpath(fullfile(getenv('CBIG_CODE_DIR'), 'utilities', 'matlab', 'utilities')); CBIG_HungarianClusterMatchSurfWrapper '${ref_file}' '${output_file}' '${output_file}'; exit;"
+if( $mesh == fsaverage5 || $mesh == fsaverage6 ) then
+	set cmd = ( $MATLAB -nojvm -nodesktop -nosplash -r '"')
+	set cmd = ($cmd 'addpath(genpath(fullfile('"'"$CBIG_CODE_DIR"'", "'"utilities"'", "'"matlab"'"')));')
+	set cmd = ($cmd 'addpath(fullfile('"'"$CBIG_CODE_DIR"'", "'"external_packages"'",)
+	set cmd = ($cmd "'"matlab"'", "'"default_packages"'", "'"others"'"'));')
+	set cmd = ($cmd CBIG_HungarianClusterMatchSurfWrapper "'"${ref_file}"'" "'"${output_file}"'")
+	set cmd = ($cmd "'"${output_file}"'"'; exit;''"')
+	eval $cmd
+	echo "Hungarian match finished."
+else
+	echo "WARNING: The surface resolution is different from the reference file. Hungarian match is skipped."
+endif
 
-echo "Hungarian match finished."
 
 exit 0
 
@@ -126,6 +158,12 @@ while( $#argv != 0 )
 	set flag = $argv[1]; shift;
 	
 	switch($flag)
+		# surface mesh name
+		case "-mesh":
+			if( $#argv == 0 ) goto arg1err
+			set mesh = $argv[1]; shift;
+			breaksw
+		
 		# lh input
 		case "-lh_in":
 			if( $#argv == 0 ) goto arg1err
@@ -246,7 +284,8 @@ OUTPUTS:
 	e.g., "lh.*.avg_profiles017.nii.gz", "rh.*.avg_profiles017.nii.gz";
 	
 EXAMPLE:
-	csh CBIG_cluster_fcMRI_surf2surf_profiles.csh -lh_in ~/storage/fMRI_clustering/clustering_017_scrub_lh_profile.txt
-	-rh_in  ~/storage/fMRI_clustering/clustering_017_scrub_rh_profile.txt -n 17 -out 
-	~/storage/fMRI_clustering/clustering_017_scrub -tries 1000
+	CBIG_cluster_fcMRI_surf2surf_profiles.csh -lh_in \
+	~/storage/fMRI_clustering/clustering_017_scrub_lh_profile.txt \
+	-rh_in  ~/storage/fMRI_clustering/clustering_017_scrub_rh_profile.txt -n 17 \
+	-out ~/storage/fMRI_clustering/clustering_017_scrub -tries 1000
 

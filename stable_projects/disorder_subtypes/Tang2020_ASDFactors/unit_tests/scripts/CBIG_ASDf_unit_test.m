@@ -23,9 +23,10 @@
              end
              
              % check the results
-             ref_dir = fullfile('/mnt', 'eql', 'yeo1', 'CBIG_private_unit_tests_data', ...
+             CBIG_TESTDATA_DIR = getenv('CBIG_TESTDATA_DIR');
+             ref_dir = fullfile(CBIG_TESTDATA_DIR, ...
                  'stable_projects', 'disorder_subtypes', 'Tang2020_ASDFactors', ...
-                 'results', 'results_short');
+                 'results');
              curr_out_dir = fullfile(out_dir, 'visualizeFactors', 'k2', 'r4');
              curr_ref_dir = fullfile(ref_dir, 'visualizeFactors', 'k2', 'r4');
              

@@ -2,8 +2,9 @@
 #
 # Written by Jingwei Li and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
-HCP_dir="/share/users/imganalysis/yeolab/data/HCP/S1200/scripts"
-restricted_csv="$HCP_dir/restricted_hcp_data/RESTRICTED_jingweili_4_12_2017_1200subjects_fill_empty_zygosityGT_by_zygositySR.csv"
+HCP_dir="$CBIG_LiGSR_REP_HCP_DIR/S1200/scripts"
+restricted_csv="$HCP_dir/restricted_hcp_data/\
+RESTRICTED_jingweili_4_12_2017_1200subjects_fill_empty_zygosityGT_by_zygositySR.csv"
 unrestricted_csv="$HCP_dir/subject_measures/unrestricted_jingweili_12_7_2017_21_0_16_NEO_A_corrected.csv"
 unrelated=1
 ystem=""
@@ -50,51 +51,53 @@ NAME:
 	CBIG_LiGSR_LME_workflowHCP.sh
 	
 DESCRIPTION:
-	This function calls the matlab function '"'CBIG_LiGSR_LME_workflowHCP.m'"' to perform variance component model for the 
-	Human Connectome Project (HCP) dataset.
+	This function calls the matlab function '"'CBIG_LiGSR_LME_workflowHCP.m'"' to perform variance component model for 
+	the Human Connectome Project (HCP) dataset.
 	
 REQUIRED ARGUMENTS:
-	-RSFC_file         RSFC_file        : The resting-state functional connectivity filename (.mat). It is assumed that a 
-	                                      #ROIs x #ROIs x #subjects matrix called '"'corr_mat'"' is saved in this file.
-	-trait_list        trait_list       : The full path to a text file of trait names. Each line in this file corresponds to 
-	                                      one trait. The trait names should exist as headers in '"'data_csv'"'.
+	-RSFC_file         RSFC_file        : The resting-state functional connectivity filename (.mat). It is assumed that 
+	                                      a #ROIs x #ROIs x #subjects matrix called '"'corr_mat'"' is saved in this file
+	-trait_list        trait_list       : The full path to a text file of trait names. Each line in this file 
+	                                      corresponds to one trait. The trait names should exist as headers in 
+	                                      '"'data_csv'"'.
 	-covariate_list    covariate_list   : The full path to a text file containing the name of all covariates. Each line 
-	                                      corresponds to one covariate. Except for the covariates FD and DVARS, all the other 
-	                                      covariate names should exist as headers in '"'data_csv'"'.
-	-FD_file           FD_file          : The full path of the mean framewise displacement (FD) of all subjects. The number 
-	                                      of lines in '"'FD_file'"' should be the same as the number of lines in '"'sub_list'"'. 
-	                                      If the user wants to regress out FD, then '"'FD'"' should be included in 
-	                                      '"'covariate_list'"'. If the covariates do not include FD, this input variable is 
-	                                      not needed. The user can pass in NONE.
-	-DVARS_file        DVARS_file       : The full path of the mean DVARS of all subjects. The number of lines in '"'DVARS_file'"' 
-	                                      should be the same as the number of lines in '"'subject_list'"'. If the user wants 
-	                                      to regress out '"'DVARS'"', then '"'DVARS'"' (or '"'DV'"') should be included in 
-	                                      '"'covariate_list'"'. If the covariates do not include DVARS, this input variable 
-	                                      is not needed. The user can pass in NONE.
+	                                      corresponds to one covariate. Except for the covariates FD and DVARS, all the 
+	                                      other covariate names should exist as headers in '"'data_csv'"'.
+	-FD_file           FD_file          : The full path of the mean framewise displacement (FD) of all subjects. The 
+	                                      number of lines in '"'FD_file'"' should be the same as the number of lines in 
+	                                      '"'sub_list'"'. If the user wants to regress out FD, then '"'FD'"' should be 
+	                                      included in '"'covariate_list'"'. If the covariates do not include FD, this 
+	                                      input variable is not needed. The user can pass in NONE.
+	-DVARS_file        DVARS_file       : The full path of the mean DVARS of all subjects. The number of lines in 
+	                                      '"'DVARS_file'"' should be the same as the number of lines in 
+	                                      '"'subject_list'"'. If the user wants to regress out '"'DVARS'"', then 
+	                                      '"'DVARS'"' (or '"'DV'"') should be included in '"'covariate_list'"'. If the 
+	                                      covariates do not include DVARS, this input variable is not needed. The user 
+	                                      can pass in NONE.
 	-subject_list      subject_list     : Full path of a text file containing all subjects. Each line is one subject ID.
 	-outdir            outdir           : Full path of the output directory.
 	-d                 d                : The number of subjects to be removed for each jackknife sample, e.g. 209.
 	-num_samples       num_samples      : The total number of jackknife samples, e.g. 1000.
 	-rmsub_prefix      rmsub_prefix     : A string. The prefix to the filename of the subject list to be removed for 
-	                                      jackknife samples. The list of removed subject IDs of each jackknife sample will 
-	                                      be saved under the output file name 
+	                                      jackknife samples. The list of removed subject IDs of each jackknife sample 
+	                                      will be saved under the output file name 
 	                                      \${outdir}/jackknife_lists/\${rmsub_prefix}_choose\${d}_set\${i}.txt,
 	                                      where i ranges from  1 to num_samples.
 	
 OPTIONAL ARGUMENTS:
 	-restricted_csv    restricted_csv   : The restricted CSV file downloaded from the HCP website. If not passed in, the 
 	                                      default is 
-	                                      '"'/share/users/imganalysis/yeolab/data/HCP/S1200/scripts/restricted_hcp_data/
-	                                      RESTRICTED_jingweili_4_12_2017_1200subjects_fill_empty_zygosityGT_by_zygositySR.csv'"'
-	-unrestricted_csv  unrestricted_csv : The unrestricted CSV file downloaded from the HCP website. If not passed in, the 
-	                                      default is 
-	                                      '"'/share/users/imganalysis/yeolab/data/HCP/S1200/scripts/subject_measures/
-	                                      unrestricted_jingweili_12_7_2017_21_0_16_NEO_A_corrected.csv'"'
-	-unrelated         unrelated        : 0 or 1. 1 means all subjects in the \$subject_list are unrelated. 0 means there is 
-	                                      a family structure within the subjects in \$subject_list, and the family 
-	                                      information will be read from \$restricted_csv. Default is 1.
-	-ystem             ystem            : The trait values will be read from '"'restricted_csv'"' and '"'unrestricted_csv'"',
-	                                      and saved in a .mat file: 
+	                                      \${CBIG_LiGSR_REP_HCP_DIR}/S1200/scripts/restricted_hcp_data/
+	                                 RESTRICTED_jingweili_4_12_2017_1200subjects_fill_empty_zygosityGT_by_zygositySR.csv
+	-unrestricted_csv  unrestricted_csv : The unrestricted CSV file downloaded from the HCP website. If not passed in, 
+	                                      the default is 
+	                                      \${CBIG_LiGSR_REP_HCP_DIR}/S1200/scripts/subject_measures/
+	                                      unrestricted_jingweili_12_7_2017_21_0_16_NEO_A_corrected.csv
+	-unrelated         unrelated        : 0 or 1. 1 means all subjects in the \$subject_list are unrelated. 0 means 
+	                                      there is a family structure within the subjects in \$subject_list, and the 
+	                                      family information will be read from \$restricted_csv. Default is 1.
+	-ystem             ystem            : The trait values will be read from '"'restricted_csv'"' and 
+	                                      '"'unrestricted_csv'"', and saved in a .mat file: 
 	                                      \${outdir}/y_\${ystem}.mat. For example, if '"'trait_list'"' contains 13 
 	                                      cognitive behavioral names, you can set ystem = 13cognitive.
 
@@ -102,8 +105,8 @@ EXAMPLE:
 	$CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSR/VarianceComponentModel/scripts/CBIG_LiGSR_LME_workflowHCP.sh 
 	-RSFC_file xxx/RSFC_953_unrelated_419_Fisher_GSR.mat -trait_list xxx/13cognitive.txt -covariate_list 
 	xxx/covariates_58behaviors.txt -FD_file xxx/FD_regressor_953_unrelated_419.txt -DVARS_file 
-	xxx/DV_regressor_953_unrelated_419.txt -subject_list xxx/subject_list_953_unrelated_419.txt -outdir xxx/ref_output/GSR 
-	-ystem 13cognitive -d 208 -num_samples 1000 -rmsub_prefix subjects953_unrelated419
+	xxx/DV_regressor_953_unrelated_419.txt -subject_list xxx/subject_list_953_unrelated_419.txt 
+	-outdir xxx/ref_output/GSR -ystem 13cognitive -d 208 -num_samples 1000 -rmsub_prefix subjects953_unrelated419
 
 Written by Jingwei Li and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 " 1>&2; exit 1; }

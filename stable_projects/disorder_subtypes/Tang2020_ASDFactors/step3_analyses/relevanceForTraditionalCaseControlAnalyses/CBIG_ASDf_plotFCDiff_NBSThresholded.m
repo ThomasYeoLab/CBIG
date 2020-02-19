@@ -55,34 +55,34 @@ idx_asd = ismember(id_asd_all, id_factor_file);
 idx_con = ismember(id_con_all, id_con_file);
 
 %% Load ASD's FC matrices
-load([corrMat_dir '/lh2lh_400corrmat_ASD_allSub.mat']);
+load(fullfile(corrMat_dir,'lh2lh_400corrmat_ASD_allSub.mat'));
 lh2lh_corr_asd = corr_mat(:,:,idx_asd);
-load([corrMat_dir '/lh2rh_400corrmat_ASD_allSub.mat']);
+load(fullfile(corrMat_dir,'lh2rh_400corrmat_ASD_allSub.mat'));
 lh2rh_corr_asd = corr_mat(:,:,idx_asd);
-load([corrMat_dir '/rh2rh_400corrmat_ASD_allSub.mat']);
+load(fullfile(corrMat_dir,'rh2rh_400corrmat_ASD_allSub.mat'));
 rh2rh_corr_asd = corr_mat(:,:,idx_asd);
-load([corrMat_dir '/lh2subcor_400corrmat_ASD_allSub.mat']);
+load(fullfile(corrMat_dir,'lh2subcor_400corrmat_ASD_allSub.mat'));
 lh2subcor_corr_asd = corr_mat(:,:,idx_asd);
-load([corrMat_dir '/rh2subcor_400corrmat_ASD_allSub.mat']);
+load(fullfile(corrMat_dir,'rh2subcor_400corrmat_ASD_allSub.mat'));
 rh2subcor_corr_asd = corr_mat(:,:,idx_asd);
-load([corrMat_dir '/subcor2subcor_400corrmat_ASD_allSub.mat']);
+load(fullfile(corrMat_dir,'subcor2subcor_400corrmat_ASD_allSub.mat'));
 subcor2subcor_corr_asd = corr_mat(:,:,idx_asd);
 
 avgCorr_asd = CBIG_ASDf_indivCorr2avgCorr(lh2lh_corr_asd, lh2rh_corr_asd, rh2rh_corr_asd, ...
     lh2subcor_corr_asd, rh2subcor_corr_asd, subcor2subcor_corr_asd);
 
 %% Load control subjects' FC matrices
-load([corrMat_dir '/lh2lh_400corrmat_Control_allSub.mat']);
+load(fullfile(corrMat_dir,'lh2lh_400corrmat_Control_allSub.mat'));
 lh2lh_corr_con = corr_mat(:,:,idx_con);
-load([corrMat_dir '/lh2rh_400corrmat_Control_allSub.mat']);
+load(fullfile(corrMat_dir,'lh2rh_400corrmat_Control_allSub.mat'));
 lh2rh_corr_con = corr_mat(:,:,idx_con);
-load([corrMat_dir '/rh2rh_400corrmat_Control_allSub.mat']);
+load(fullfile(corrMat_dir,'rh2rh_400corrmat_Control_allSub.mat'));
 rh2rh_corr_con = corr_mat(:,:,idx_con);
-load([corrMat_dir '/lh2subcor_400corrmat_Control_allSub.mat']);
+load(fullfile(corrMat_dir,'lh2subcor_400corrmat_Control_allSub.mat'));
 lh2subcor_corr_con = corr_mat(:,:,idx_con);
-load([corrMat_dir '/rh2subcor_400corrmat_Control_allSub.mat']);
+load(fullfile(corrMat_dir,'rh2subcor_400corrmat_Control_allSub.mat'));
 rh2subcor_corr_con = corr_mat(:,:,idx_con);
-load([corrMat_dir '/subcor2subcor_400corrmat_Control_allSub.mat']);
+load(fullfile(corrMat_dir,'subcor2subcor_400corrmat_Control_allSub.mat'));
 subcor2subcor_corr_con = corr_mat(:,:,idx_con);
 
 avgCorr_con = CBIG_ASDf_indivCorr2avgCorr(lh2lh_corr_con, lh2rh_corr_con, rh2rh_corr_con,...

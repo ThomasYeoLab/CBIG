@@ -1,5 +1,5 @@
 ## Reference
-Siyi Tang*, Nanbo Sun*, Dorothea L. Floris, Xiuming Zhang, Adriana Di Martino, B.T. Thomas Yeo. [Reconciling Dimensional and Categorical Models of Autism Heterogeneity: a Brain Connectomics & Behavioral Study](https://doi.org/10.1101/692772). Under review.
+Siyi Tang*, Nanbo Sun*, Dorothea L. Floris, Xiuming Zhang, Adriana Di Martino, B.T. Thomas Yeo. [Reconciling Dimensional and Categorical Models of Autism Heterogeneity: a Brain Connectomics & Behavioral Study](https://doi.org/10.1016/j.biopsych.2019.11.009). Biological psychiatry, in press.
 
 ----
 
@@ -27,13 +27,13 @@ Except for this project, if you want to use the code for other stable projects f
 
 To download the version of the code that was last tested, you can either
 
-* visit this link:  https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.2-Tang2020_ASDFactors
+* visit this link:  https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.0-Fix_Absolute_Path
 
 or
 
 * run the following command, if you have Git installed
 ```
-git checkout -b Tang2020_ASDFactors v0.15.2-Tang2020_ASDFactors
+git checkout -b Tang2020_ASDFactors v0.17.0-Fix_Absolute_Path
 ```
 
 ### Usage
@@ -58,7 +58,7 @@ In the folder `examples`, we provide toy example code on how to convert RSFC dat
 ## Updates
 * Release v0.15.0 (07/10/2019): Initial release of Tang2020_ASDFactors
 * Release v0.15.2 (13/10/2019): Update README and figure utils
-
+* Release v0.17.0 (19/02/2020): Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths.
 ----
 
 ## Bugs and Questions

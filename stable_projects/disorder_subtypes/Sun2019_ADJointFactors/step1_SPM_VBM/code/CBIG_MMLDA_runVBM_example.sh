@@ -5,7 +5,7 @@
 outDir=$1
 
 # reference directory
-workspace=/mnt/eql/yeo1/CBIG_private_data/unit_tests/stable_projects/\
+workspace=${CBIG_TESTDATA_DIR}/stable_projects/\
 disorder_subtypes/Sun2019_ADJointFactors/step1_SPM_VBM
 refDir=${workspace}/results/VBM_create_new_template
 
@@ -13,7 +13,7 @@ imgList=${workspace}/data/ADNI2_bl_rawpath_set1.txt
 idList=${workspace}/data/ADNI2_bl_rid_set1.txt
 idListReorient=${workspace}/data/ADNI2_bl_rid_set1_reorient.txt
 scriptDir=${CBIG_CODE_DIR}/stable_projects/disorder_subtypes/Sun2019_ADJointFactors/step1_SPM_VBM/code
-spmDir=/apps/arch/Linux_x86_64/spm/spm12
+spmDir=${CBIG_SPM_DIR}
 reorientSample=${scriptDir}/Translation_Identity.mat
 queue=circ-spool
 

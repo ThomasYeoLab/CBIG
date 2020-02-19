@@ -13,20 +13,28 @@ More details can be found in Schaefer et al. 2018.
 
 Parcellations Release
 =====================
-The parcellations are available at multiple resolution (100 parcels to 1000 parcels), and can be found under the ```Parcellations``` folder. To use the parcellations without the trouble of downloading our entire repository, you can just click on this link: [download Schaefer2018_Parcellations](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/ThomasYeoLab/CBIG/tree/master/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Parcellations)
 
-Specifically, there are three subfolders corresponding to three different spaces ```Freesurfer5.3```, ```MNI``` and ```HCP```. 
++ The parcellations are available at multiple resolution (100 parcels to 1000 parcels), and can be found under the ```Parcellations``` folder. To use the parcellations without the trouble of downloading our entire repository, you can just click on this link: [download Schaefer2018_Parcellations](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/ThomasYeoLab/CBIG/tree/master/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Parcellations)
 
-The parcellations were first computed in Freesurfer ```fsaverage6``` space and sampled to ```fsaverage5``` and ```fsaverage``` space. The parcellations were also projected to HCP ```fslr32k``` and FSL ```MNI``` space. Each parcel is matched to a corresponding network in the 7 and 17 network parcellation by Yeo et al. 2011.([The organization of the human cerebral cortex estimated by intrinsic functional connectivity](http://www.ncbi.nlm.nih.gov/pubmed/21653723)).
+  + Specifically, there are three subfolders corresponding to three different spaces ```Freesurfer5.3```, ```MNI``` and ```HCP```. 
 
-Here we provide a visualization of the 400 parcel parcellation in ```fslr32k``` space, parcels were colored to match Yeo 7/17 network parcellation:
+  + The parcellations were first computed in Freesurfer ```fsaverage6``` space and sampled to ```fsaverage5``` and ```fsaverage``` space. The parcellations were also projected to HCP ```fslr32k``` and FSL ```MNI``` space. 
 
++ Each parcel is matched to a corresponding network in the 7 and 17 network parcellation by [Yeo et al. 2011](http://www.ncbi.nlm.nih.gov/pubmed/21653723). 
+
+  + Parcel names were obtained by matching with the components in [Yeo2011 split components](https://github.com/ThomasYeoLab/CBIG/tree/master/stable_projects/brain_parcellation/Yeo2011_fcMRI_clustering/1000subjects_reference/Yeo_JNeurophysiol11_SplitLabels). The abbreviations of parcel names can be found here: [7 networks](https://github.com/ThomasYeoLab/CBIG/blob/master/stable_projects/brain_parcellation/Yeo2011_fcMRI_clustering/1000subjects_reference/Yeo_JNeurophysiol11_SplitLabels/Yeo2011_7networks_N1000.split_components.glossary.csv), [17 networks](https://github.com/ThomasYeoLab/CBIG/blob/master/stable_projects/brain_parcellation/Yeo2011_fcMRI_clustering/1000subjects_reference/Yeo_JNeurophysiol11_SplitLabels/Yeo2011_17networks_N1000.split_components.glossary.csv).
+
+  + Here we provide a visualization of the 400 parcel parcellation in ```fslr32k``` space, parcels were colored to match Yeo 7/17 network parcellation:
+
+<p align="center">
 <img src="readme_figures/Schaefer2018_400parcel_parcellation_match_Yeo_7_network_fslr32k.png" height="300" />
 
 <img src="readme_figures/Schaefer2018_400parcel_parcellation_match_Yeo_17_network_fslr32k.png" height="300" />
+</p>
 
++ We also provide RAS centroid coordinates of the parcellations in MNI 1mm and 2mm space. If you are interested, please check the csv files in: `Parcellations/MNI/Centroid_coordinates`
 
-We also provide RAS centroid coordinates of the parcellations in MNI 1mm and 2mm space. If you are interested, please check the csv files in: `Parcellations/MNI/Centroid_coordinates`
++ If you want to project the Schaefer2018 parcellation to individual space, If you want to project the Schaefer2018 parcellation to individual space, the relevant files and instructions are located here: [project to individual](https://github.com/ThomasYeoLab/CBIG/tree/master/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Parcellations/project_to_individual)
 
 ---
 
@@ -51,14 +59,14 @@ Except for this project, if you want to use the code for other stable projects f
 
 To download the version of the code that is last tested, you can either
 
-- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.3-Update_proj_refs_and_add_KRR_LITE](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.3-Update_proj_refs_and_add_KRR_LITE)
+- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.0-Fix_Absolute_Path](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.0-Fix_Absolute_Path)
 
 or
 
 - run the following command, if you have Git installed
 
 ```
-git checkout -b Schaefer2018_LocalGlobal v0.15.3-Update_proj_refs_and_add_KRR_LITE
+git checkout -b Schaefer2018_LocalGlobal v0.17.0-Fix_Absolute_Path
 ```
 
 ---
@@ -123,6 +131,8 @@ Updates
     3. Update unit test with the new parcel names.
 
 - Release v0.15.3 (16/10/2019): Update reference
+
+- Release v0.17.0 (19/02/2020): Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths. 
 
 ---
 

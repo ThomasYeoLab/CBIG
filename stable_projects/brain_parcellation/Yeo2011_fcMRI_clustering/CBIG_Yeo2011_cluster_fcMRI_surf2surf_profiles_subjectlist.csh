@@ -1,7 +1,5 @@
 #!/bin/csh -f 
 
-# example:
-#     CBIG_Yeo2011_cluster_fcMRI_surf2surf_profiles_subjectlist.csh -sd /mnt/eql/yeo2/CBIG_repo_tests/CBIG_fMRI_Preproc2016_test/GSP_surface_100sub/procsurffast -sub_ls /mnt/eql/yeo2/CBIG_repo_tests/CBIG_fMRI_Preproc2016_test/GSP_surface_100sub/procsurffast/scripts/GSP_newtestlist.txt -n 7 -out /mnt/eql/yeo2/CBIG_repo_tests/CBIG_fMRI_Preproc2016_test/GSP_surface_100sub/procsurffast/clustering/GSP_100_low_motion_clusters
 # Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 set VERSION = '$Id: CBIG_Yeo2011_cluster_fcMRI_surf2surf_profiles_subjectlist.csh v 1.0 2016/06/18 $'
@@ -9,6 +7,7 @@ set VERSION = '$Id: CBIG_Yeo2011_cluster_fcMRI_surf2surf_profiles_subjectlist.cs
 set sub_dir = ""
 set subjects = ""
 set output_file = ""
+set mesh = fsaverage5
 set roi = fsaverage3
 set threshold = 0.1
 set num_tries = 1000
@@ -57,7 +56,8 @@ foreach s ($subjects)
 	endif
 end
 
-set cmd = "${root_dir}/CBIG_Yeo2011_cluster_fcMRI_surf2surf_profiles.csh -lh_in ${lh_profile_input} -rh_in ${rh_profile_input} -n ${num_clusters} -out ${output_file} -tries ${num_tries}"
+set cmd = "${root_dir}/CBIG_Yeo2011_cluster_fcMRI_surf2surf_profiles.csh -mesh $mesh -lh_in ${lh_profile_input} "
+set cmd = "$cmd-rh_in ${rh_profile_input} -n ${num_clusters} -out ${output_file} -tries ${num_tries}"
 echo $cmd
 eval $cmd
 
@@ -72,6 +72,18 @@ while( $#argv != 0 )
 	set flag = $argv[1]; shift;
 	
 	switch($flag)
+		# surface mesh of clustering resolution
+		case "-mesh":
+			if( $#argv == 0 ) goto arg1err;
+			set mesh = $argv[1]; shift;
+			breaksw
+		
+		# surface mesh of ROIs' resolution
+		case "-roi":
+			if( $#argv == 0 ) goto arg1err;
+			set roi = $argv[1]; shift;
+			breaksw
+		
 		# subjects directory
 		case "-sd":
 			if( $#argv == 0 ) goto arg1err;
@@ -185,6 +197,12 @@ REQUIRED ARGUMENTS:
 	                            is not included.
 
 OPTIONAL ARGUMENTS:
+	-mesh        mesh         : Surface mesh name of the input correlation profiles (i.e. the clustering 
+	                            resolusion), e.g. fsaverage5, fs_LR_32k. It should be the same as the 
+	                            "-target" argument in `CBIG_Yeo2011_compute_fcMRI_surf2surf_profiles_subjectlist.csh` 
+	                            script. Default is fsaverage5.
+	-roi         roi          : Surface mesh name of the ROIs resolution. It should be the same as the 
+	                            "-roi" argument  Default is fsaverage3.
 	-tries       num_tries    : number of different random initialization for clustering (default is 1000)
 	-scrub_flag  scrub_flag   : 0 or 1, 1 for ignoring high motion frames when computing profiles; 
 	                            0 for keeping all frames when computing correlation profiles. 
@@ -205,6 +223,6 @@ OUTPUTS:
 EXAMPLE:
 	csh CBIG_cluster_fcMRI_surf2surf_profiles_subjectlist.csh -sd ~/storage/fMRI_data -sub_ls 
 	~/storage/fMRI_data/scripts/sub_list.txt -n 17 -out ~/storage/fMRI_clustering/clustering_017_scrub 
-	-tries 1000 -scrub_flag 1
+	-mesh fsaverage5 -roi fsaverage3 -tries 1000 -scrub_flag 1
 
 

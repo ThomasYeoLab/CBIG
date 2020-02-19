@@ -1,4 +1,4 @@
-function CBIG_MFMem_rfMRI_estimation_main_ut(N_core,EstimationMaxStep)
+function CBIG_MFMem_rfMRI_estimation_main_ut(N_core,EstimationMaxStep,output_dir)
 
 %--------------------------------------------------------------------------
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -44,14 +44,17 @@ function CBIG_MFMem_rfMRI_estimation_main_ut(N_core,EstimationMaxStep)
 % the EEG/MEG signal.
 %
 % REFERENCE LIST:
-% [1](Deco 2013), Resting-state functional connectivity emerges from structurally and dynamically shaped slow linear fluctuations.
+% [1](Deco 2013), Resting-state functional connectivity emerges from structurally and 
+%    dynamically shaped slow linear fluctuations.
 % [2](Friston 2002), Bayesian estimation of dynamical systems: an application to fMRI. 
 % [3](Harville 1977), Maximum likelihood approaches to variance component estimation and to related problems.
 % [4](Kiebel 2008), Dynamic causal modelling for EEG and MEG. 
 % [5](Friston 2000), Nonlinear responses in fMRI: the Balloon model, Volterra kernels, and other hemodynamics. 
 % [6](Martins 2003), The complex-step derivative approximation.
-% [7](Wang 2013), A realistic neural mass model of the cortex with laminar-specific connections and synaptic plasticity: Evaluation with auditory habituation.
-% [8](Wang, unpublished), Short-term plasticity of laminar synaptic connections in Alzheimer's disease - An MEG study using Bayesian inversion.
+% [7](Wang 2013), A realistic neural mass model of the cortex with laminar-specific connections and synaptic 
+%    plasticity: Evaluation with auditory habituation.
+% [8](Wang, unpublished), Short-term plasticity of laminar synaptic connections in Alzheimer's disease - 
+%    An MEG study using Bayesian inversion.
 %
 % Written by Peng Wang and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 %-------------------------------------------------------------------------
@@ -76,17 +79,16 @@ function CBIG_MFMem_rfMRI_estimation_main_ut(N_core,EstimationMaxStep)
 poolobj = gcp('nocreate');
 delete(poolobj);
 
-%% setup directory for lib, data, cluster, save
-main_dir = pwd;
-data_dir = fullfile(main_dir,'data'); 
-cluster_dir = fullfile(main_dir,'cluster'); %output/cluster
-save_dir = [main_dir '/save'];
+%% setup directory 
+CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
 
-cd('..')
-cd('..')
-high_dir = pwd;
-lib_dir = fullfile(high_dir, 'lib');
-addpath(lib_dir);
+data_dir = fullfile(CBIG_CODE_DIR,'stable_projects','fMRI_dynamics','Wang2018_MFMem',...
+    'unit_tests','step1_estimation','data');
+cluster_dir = fullfile(output_dir,'cluster'); %output/cluster
+mkdir(cluster_dir);
+
+% add path
+addpath(genpath(fullfile(CBIG_CODE_DIR,'stable_projects','fMRI_dynamics','Wang2018_MFMem')));
 
 %--------------------------------------------------------------------------
 %% setup working conditions
@@ -161,7 +163,8 @@ nT = n*T;         %number of data samples
 %% prepare the model parameters
 
 %-----------------------------------------------------------
-% set up prior for G(globle scaling of SC), w(self-connection strength/excitatory),Sigma(noise level),Io(background input)
+% set up prior for G(globle scaling of SC), w(self-connection strength/excitatory),
+% Sigma(noise level),Io(background input)
 p = 2*NumC + 2; %number of estimated parameter
 Prior_E = zeros(p,1);
 
@@ -199,10 +202,12 @@ A = log(Para_E./Prior_E);
 step = 1; %counter
 
 % setup save vectors
-CC_check_step = zeros(1,EstimationMaxStep+1);     %save the fitting criterion, here is the goodness of fit, same as rrr below
+%save the fitting criterion, here is the goodness of fit, same as rrr below
+CC_check_step = zeros(1,EstimationMaxStep+1);     
 lembda_step_save = zeros(n,EstimationMaxStep);    %save the Ce
 rrr = zeros(1,EstimationMaxStep);                 %save the goodness of fit
-rrr_z  = zeros(1,EstimationMaxStep);              %save the correlation between emprical FC and simulated FC, z-transfered
+%save the correlation between emprical FC and simulated FC, z-transfered
+rrr_z  = zeros(1,EstimationMaxStep);              
 Para_E_step_save = zeros(p,EstimationMaxStep);    %save the estimated parameter
         
 %setup the cluster
@@ -222,9 +227,10 @@ while (step <= EstimationMaxStep)
     
     
     if step == 1
-        load(fullfile(data_dir,'saved_original_random_generator.mat'),'Nstate') %use the same randon generator in our paper
+        %use the same randon generator in our paper
+        load(fullfile(data_dir,'saved_original_random_generator.mat'),'Nstate')
     else
-        Nstate = rng;
+        Nstate = 1;
     end
     
     
@@ -235,8 +241,9 @@ while (step <= EstimationMaxStep)
     funcP = @(Para_E) CBIG_MFMem_rfMRI_nsolver_eul_sto(Para_E,Prior_E,SC,y,FC_mask,Nstate,14.4,0.72,0);
     funcA = @(A) CBIG_MFMem_rfMRI_nsolver_eul_sto(A,Prior_E,SC,y,FC_mask,Nstate,14.4,0.72,1);
  
-    [h_output, CC_check] = funcP(Para_E);  %CC_check: cross-correlation check of two FCs
-                                           %h_output: output of model, entries above the main diagonal of the simulated FC, z-transfered
+    [h_output, CC_check] = funcP(Para_E);  
+    %CC_check: cross-correlation check of two FCs                                 
+    %h_output: output of model, entries above the main diagonal of the simulated FC, z-transfered
                                          
                                            
     %<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -372,8 +379,9 @@ while (step <= EstimationMaxStep)
         for i = 1:n                                           
         %step1: 0.5*r'*invCe*exp(lembda(i))*Q(i) 
         g(i) = -0.5*exp(lembda(i))*trace(P(T*(i-1)+1:T*(i-1)+T,T*(i-1)+1:T*(i-1)+T));
-        %step2: (0.5*r'*invCe*exp(lembda(i))*Q(i))*invCe*r                                                      
-        g_rest = 0.5*bsxfun(@times,r',inv_DiagCe)*exp(lembda(i))*CBIG_MFMem_rfMRI_matrixQ(i,n,T); %CBIG_MFMem_rfMRI_matrixQ is used to caculate Q(i)
+        %step2: (0.5*r'*invCe*exp(lembda(i))*Q(i))*invCe*r    
+        %CBIG_MFMem_rfMRI_matrixQ is used to caculate Q(i)
+        g_rest = 0.5*bsxfun(@times,r',inv_DiagCe)*exp(lembda(i))*CBIG_MFMem_rfMRI_matrixQ(i,n,T); 
         g_rest = bsxfun(@times,g_rest,inv_DiagCe)*r;
         %step3:
         g(i) = g(i) + g_rest;
@@ -614,7 +622,8 @@ while (step <= EstimationMaxStep)
 
    %Abort criterium of total estimation
     if ((step>5)&&(rrr(step) >= 0.99 || (dN < 1e-5 && rrr_z(step) > 0.4) ) ), break, end
-    if ((step>5)&&(rrr_z(step)-rrr_z(step-1)<=-0.10)),break,end   % stop if we find a bifucation edge, it should be a good solution (Deco et al., 2013)
+    % stop if we find a bifucation edge, it should be a good solution (Deco et al., 2013)
+    if ((step>5)&&(rrr_z(step)-rrr_z(step-1)<=-0.10)),break,end   
     
     step = step + 1; %counter
 
@@ -633,13 +642,13 @@ disp(Para_E)
 
 saved_date = fix(clock);
 %save estimated parameter and correlation between FCs (z-transfered)
-save([save_dir '/Estimated_Parameter.mat'],'Para_E','rrr_z_max');
+save([output_dir '/Estimated_Parameter.mat'],'Para_E','rrr_z_max');
 
 
 poolobj = gcp('nocreate');
 delete(poolobj);
-rmpath(lib_dir);
-save([save_dir '/corr_saved.mat'],'rrr_z')
+rmpath(genpath(fullfile(CBIG_CODE_DIR,'stable_projects','fMRI_dynamics','Wang2018_MFMem')));
+save([output_dir '/corr_saved.mat'],'rrr_z')
 
 end
 

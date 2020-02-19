@@ -19,8 +19,8 @@ function CBIG_preproc_unit_tests_cmp_clusters( your_clusters, cmp_dir )
 input_file = your_clusters;
 
 %% Compute overlap with ground truth
-ref_file = fullfile('/mnt','eql','yeo1','CBIG_private_data','replication','stable_projects','preprocessing',...
-    'CBIG_fMRI_Preproc2016','100subjects_clustering','clustering','GSP_80_low_mt_20_w_censor_clusters017_scrub.mat');
+ref_file = fullfile(getenv('CBIG_TESTDATA_DIR'), 'stable_projects', 'preprocessing', 'CBIG_fMRI_Preproc2016', ...
+    '100subjects_clustering','clustering','GSP_80_low_mt_20_w_censor_clusters017_scrub.mat');
 ref_labels = load(ref_file);
 input_labels = load(input_file);
 
@@ -35,15 +35,15 @@ disp([sprintf('Clustering result was replicated. \n'), dice_message, cost_messag
 save(fullfile(cmp_dir, 'your_overlap_with_groundtruth.mat'), 'cost', 'dice_overlap')
 
 %% Draw surface map
-ref_file = fullfile(getenv('CBIG_CODE_DIR'),'/stable_projects/brain_parcellation/Yeo2011_fcMRI_clustering/',...
-    '1000subjects_reference/1000subjects_clusters017_ref.mat');
+ref_file = fullfile(getenv('CBIG_CODE_DIR'),'stable_projects', 'brain_parcellation', 'Yeo2011_fcMRI_clustering',...
+    '1000subjects_reference', '1000subjects_clusters017_ref.mat');
 ref = load(ref_file);
 CBIG_DrawSurfaceMaps(input_labels.lh_labels, input_labels.rh_labels, 'fsaverage5','inflated',0, 17, ref.colors)
 set(gcf, 'PaperPositionMode', 'auto')
 print(gcf, '-dpng', fullfile(cmp_dir, 'your_clusters017_scrub.png'))
 close
-gt_fig = fullfile('/mnt/eql/yeo1/CBIG_private_data/replication/stable_projects/preprocessing/',...
-    'CBIG_fMRI_Preproc2016/100subjects_clustering/clustering/figures/GSP_80_low_mt_20_w_censor_cluster017_scrub.png');
+gt_fig = fullfile(getenv('CBIG_TESTDATA_DIR'), 'stable_projects', 'preprocessing', 'CBIG_fMRI_Preproc2016', ...
+    '100subjects_clustering', 'clustering', 'figures', 'GSP_80_low_mt_20_w_censor_cluster017_scrub.png');
 fprintf('\nCheck out this figure: %s.\nCompare it with %s.\n', fullfile(cmp_dir, 'your_clusters017_scrub.png'), gt_fig);
 
 end

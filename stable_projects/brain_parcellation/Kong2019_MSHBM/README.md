@@ -53,14 +53,14 @@ The individual 17-network parcellations of HCP data are not included in the curr
 
 To download the version of the code that is last tested, you can either
 
-- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.3-Update_proj_refs_and_add_KRR_LITE](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.3-Update_proj_refs_and_add_KRR_LITE)
+- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.0-Fix_Absolute_Path](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.0-Fix_Absolute_Path)
 
 or
 
 - run the following command, if you have Git installed
 
 ```
-git checkout -b Kong2019_MSHBM v0.15.3-Update_proj_refs_and_add_KRR_LITE
+git checkout -b Kong2019_MSHBM v0.17.0-Fix_Absolute_Path
 ```
 
 ----
@@ -396,6 +396,8 @@ Updates
 - Release v0.9.5 (4/4/2019): Allow training subjects to have different number of sessions
 
 - Release v0.15.3 (16/10/2019): Update reference; change min/max thresholds in `CBIG_DrawSurfaceMaps` plotting command
+
+- Release v0.17.0 (19/02/2020): Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths.
 
 Bugs and Questions
 ====
