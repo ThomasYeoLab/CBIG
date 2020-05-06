@@ -225,6 +225,12 @@ new_dlabel = old_dlabel;
 for i=1:p
     new_dlabel.parcels(old_dlabel.parcels == index(i)) = i;
 end
+% Exclude medial wall vertices defined by HCP
+lh_mesh_fslr_32k=CBIG_read_fslr_surface('lh','fs_LR_32k','inflated','medialwall.annot');
+rh_mesh_fslr_32k=CBIG_read_fslr_surface('rh','fs_LR_32k','inflated','medialwall.annot');
+new_dlabel.parcels([lh_mesh_fslr_32k.MARS_label == 1;rh_mesh_fslr_32k.MARS_label == 1]) = 0;
+
+
 ft_write_cifti(output_name, new_dlabel, 'parameter', 'parcels');
 input = [output_name, '.dscalar.nii'];
 label_list_file = [output_name,'_info.txt'];
@@ -297,6 +303,13 @@ disp(['Writing cifti files, ' num2str(p) ' Parcels, ' num2str(k) ' Networks.']);
 system('rm -rf ~/temp123/');
 [lh_fslr32k, rh_fslr32k] = CBIG_project_fsaverage2fsLR(lh_new, rh_new, 'fsaverage6', ...
     'label', '~/temp123', '20160827');
+
+% Exclude medial wall vertices defined by HCP
+lh_mesh_fslr_32k=CBIG_read_fslr_surface('lh','fs_LR_32k','inflated','medialwall.annot');
+rh_mesh_fslr_32k=CBIG_read_fslr_surface('rh','fs_LR_32k','inflated','medialwall.annot');
+lh_fslr32k(lh_mesh_fslr_32k.MARS_label == 1) = 0;
+rh_fslr32k(rh_mesh_fslr_32k.MARS_label == 1) = 0;
+
 cifti_name = fullfile(output_dir, 'HCP', 'fslr32k', 'cifti', ...
     ['Schaefer2018_',num2str(p),'Parcels_',num2str(k) ,'Networks_order']);
 CBIG_gwMRF_write_cifti_from_annot(lh_annot, rh_annot, cifti_name, p/2, lh_fslr32k, rh_fslr32k);

@@ -52,6 +52,11 @@ fclose(fileID);
 
 system('rm -rf ~/temp123/')
 [lh_fslr,rh_fslr]=CBIG_project_fsaverage2fsLR(lh_new,rh_new,'fsaverage6','label','~/temp123/','20160827');
+% Exclude medial wall vertices defined by HCP
+lh_mesh_fslr_32k=CBIG_read_fslr_surface('lh','fs_LR_32k','inflated','medialwall.annot');
+rh_mesh_fslr_32k=CBIG_read_fslr_surface('rh','fs_LR_32k','inflated','medialwall.annot');
+lh_fslr(lh_mesh_fslr_32k.MARS_label == 1) = 0;
+rh_fslr(rh_mesh_fslr_32k.MARS_label == 1) = 0;
 
 %% to avoid that interpolation errors cause differences 
 lh_label_max_match=zeros(size(lh_fslr));
