@@ -244,8 +244,8 @@ if( $csf == 1 ) then
 				eval $cmd
 				
 				set vent_vol = `fslstats mask/${subject}.func.ventricles_erode${i}.nii.gz -V`
-				set vent_vol = "$num_vent[2]"
-				echo $num_vent > mask/${subject}_func_ventricles_erode${i}_vol.txt
+				set vent_vol = "$vent_vol[2]"
+				echo $vent_vol > mask/${subject}_func_ventricles_erode${i}_vol.txt
 			end
 			
 			echo "Final ventricles mask is eroded by 0 times in functional space." |& tee -a $LF
