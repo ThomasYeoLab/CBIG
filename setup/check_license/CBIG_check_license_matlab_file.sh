@@ -73,7 +73,7 @@ else
 
     echo ""
 		echo -e "===================== Proposed file (with the comment block fixed) ===================="
-		cp $file ${file}_backup
+		rsync -az $file ${file}_backup
 		sed -i "$start_num,$end_num"d ${file}_backup
 		line_num_array=`sed -n "/^function/=" ${file}_backup`
 		line_num=`echo $line_num_array | cut -c1`

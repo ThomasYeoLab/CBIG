@@ -11,6 +11,7 @@ Kong R, Li J, Orban C, Sabuncu MR, Liu H, Schaefer A, Sun N, Zuo XN, Holmes AJ, 
 This folder contains a resting-state fMRI preprocessing pipeline written by CBIG group. Our preprocessing pipeline allows flexible preprocessing order by specifying the order of preprocessing steps in a configuration text file. The preprocessing steps include:
 - slice-time correction
 - motion correction
+- spatial distortion correction
 - intra-subject registration between T1 and T2* images
 - nuisance regression
 - temporal interpolation of censored frames
@@ -42,14 +43,14 @@ Except for this project, if you want to use the code for other stable projects f
 - To download the version of the code that was last tested, you can either
 
   - visit this link:
-  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.0-Fix_Absolute_Path](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.0-Fix_Absolute_Path)
+  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.2-CBIG_preproc_spatial_distortion_correction](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.2-CBIG_preproc_spatial_distortion_correction)
   
   or
   
   - run the following command, if you have Git installed
   
   ```
-  git checkout -b CBIG_fMRI_Preprocessing v0.17.0-Fix_Absolute_Path
+  git checkout -b CBIG_fMRI_Preprocessing v0.17.2-CBIG_preproc_spatial_distortion_correction
   ```
 
 ### Usage 
@@ -82,7 +83,7 @@ Except for this project, if you want to use the code for other stable projects f
   
 - Software versions
   
-  The compulsory softwares include FreeSurfer (5.3 or 4.5), FSL (5.0.8), Matlab (2014a), and Python (2 or 3, only build-in functions are needed). If the user wants to use `CBIG_preproc_despiking` step, then AFNI is needed. If the user wants to use `CBIG_preproc_native2mni_ants` step, then ANTs (2.2.0) is needed.
+  The compulsory softwares include FreeSurfer (5.3 or 4.5), FSL (5.0.10), Matlab (2014a), and Python (2 or 3, only build-in functions are needed). If the user wants to use `CBIG_preproc_despiking` step, then AFNI is needed. If the user wants to use `CBIG_preproc_native2mni_ants` step, then ANTs (2.2.0) is needed.
 
   NOTE: There is a bug in early builds of ANTs (before Aug 2014) that causes resampling for timeseries to be wrong. We have tested that our
 codes would work on ANTs version 2.2.0. 
@@ -166,8 +167,14 @@ codes would work on ANTs version 2.2.0.
     
 - Release v0.17.0 (19/02/2020): Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths.
 
+- Release v0.17.2 (07/07/2020):
+	1. Bug fix: Fix 'out-of-bound' error of `CBIG_preproc_fslmcflirt_outlier.csh` due to incorrect extraction of number of frames from `$boldfile"_mc_tmp.nii.gz"`.
+	2. Bug fix: Fix the threshold for ventricle mask erosion in functional space from `$num_vent` (number of voxels) to `$vent_vol` (volume).
+	3. Add spatial distortion correction: CBIG_preproc_spatial_distortion_correction.csh.
+	4. Spatial distortion correction step requires a newer FSL version. Update the default FSL verision to 5.0.10.
+
 ----
 
 ## Bugs and Questions
 
-Please contact Ru(by) Kong at roo.cone@gmail.com, Jingwei Li at jingweili.sjtu.nus@gmail.com, Nanbo Sun at sun464879934@gmail.com and Thomas Yeo at yeoyeo02@gmail.com.
+Please contact Ru(by) Kong at roo.cone@gmail.com, Jingwei Li at jingweili.sjtu.nus@gmail.com, Nanbo Sun at sun464879934@gmail.com, Shaoshi Zhang at 0zhangshaoshi0@gmail.com and Thomas Yeo at yeoyeo02@gmail.com.

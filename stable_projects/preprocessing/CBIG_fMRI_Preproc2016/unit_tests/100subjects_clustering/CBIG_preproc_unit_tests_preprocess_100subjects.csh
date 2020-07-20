@@ -2,8 +2,7 @@
 # Written by Jingwei Li and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 set outdir = $1
-set fmrinii_dir = "$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/unit_tests"
-set fmrinii_dir = "${fmrinii_dir}/100subjects_clustering/fmrinii"
+set fmrinii_dir = ${outdir}/fmrinii
 set anat_dir = "$CBIG_TESTDATA_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/100subjects_clustering"
 set anat_dir = "$anat_dir/recon_all"
 set config_file = "$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/unit_tests"

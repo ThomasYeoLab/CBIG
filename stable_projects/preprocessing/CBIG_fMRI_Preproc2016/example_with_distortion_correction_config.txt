@@ -1,0 +1,18 @@
+###CBIG fMRI preprocessing configuration file
+###The order of preprocess steps is listed below
+###Change: swap bandpass and regress order, regress_new (use BOLD_stem as MASK_stem), per_run, detrend (not trendout), censor
+CBIG_preproc_skip -skip 4
+### Caution: Change your slice timing file based on your data !!! The example slice timing file is a fake one.
+CBIG_preproc_fslslicetimer -slice_timing ${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/example_slice_timing.txt
+CBIG_preproc_fslmcflirt_outliers -FD_th 0.2 -DV_th 50 -discard-run 50 -rm-seg 5 -spline_final
+### Caution: In the case of spatial distortion correction using opposite phase encoding directions, please change the path of j- and j+ image accordingly. If the voxel postion increases from posterior to anterior (for example, RAS, LAS orientation), j+ corresponds to PA and j- corresponds to AP direction.
+### Total readout time (trt), effective echo spacing (ees) and echo time (TE) should be based on your data!!!
+CBIG_preproc_spatial_distortion_correction -fpm oppo_PED -j_minus <j_minus_image_path> -j_plus <j_plus_image_path> -j_minus_trt 0.04565 -j_plus_trt 0.04565 -ees .580013 -te 30.00
+CBIG_preproc_bbregister
+CBIG_preproc_regress -whole_brain -wm -csf -motion12_itamar -detrend_method detrend -per_run -censor -polynomial_fit 1
+CBIG_preproc_censor -max_mem NONE
+CBIG_preproc_bandpass -low_f 0.009 -high_f 0.08 -detrend 
+CBIG_preproc_QC_greyplot -FD_th 0.2 -DV_th 50
+CBIG_preproc_native2fsaverage -proj fsaverage6 -sm 6 -down fsaverage5
+CBIG_preproc_FC_metrics -Pearson_r -censor
+CBIG_preproc_native2mni_ants -sm_mask ${CBIG_CODE_DIR}/data/templates/volume/FSL_MNI152_masks/SubcorticalLooseMask_MNI1mm_sm6_MNI2mm_bin0.2.nii.gz -final_mask ${FSL_DIR}/data/standard/MNI152_T1_2mm_brain_mask_dil.nii.gz

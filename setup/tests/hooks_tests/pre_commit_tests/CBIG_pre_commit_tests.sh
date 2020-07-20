@@ -4,7 +4,7 @@ for folder in */
 do 
 	echo "[TEST](start) $folder"
 	cd $curr_dir
-	cp -r $folder $CBIG_CODE_DIR/stable_projects/
+	rsync -az $folder $CBIG_CODE_DIR/stable_projects/
 	git add $CBIG_CODE_DIR/stable_projects/$folder/*
 	cd $CBIG_CODE_DIR
 	sh $CBIG_CODE_DIR/hooks/pre-commit

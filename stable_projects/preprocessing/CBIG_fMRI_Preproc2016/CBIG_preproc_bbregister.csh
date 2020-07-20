@@ -100,7 +100,7 @@ foreach curr_bold ($zpdbold)
 	else
 		echo "bbr_orig/$boldfile'_reg.dat' already exists"|& tee -a $LF 
 	endif
-	cp bbr_orig/$boldfile"_reg.dat" $boldfile"_reg.dat" 
+	rsync -az bbr_orig/$boldfile"_reg.dat" $boldfile"_reg.dat" 
 	popd
 end
 echo "=======================FSL initialization done!=======================" |& tee -a $LF
@@ -162,17 +162,17 @@ foreach curr_bold ($zpdbold)
 		if ($comp == 1) then
 			echo "[Reg] Registration from best run (run$best_run) reduces the bbr cost of run$curr_bold" |& tee -a $LF
 			echo "[Reg]: Registration from the best run will be applied to run$curr_bold" |& tee -a $LF
-			set cmd = "cp $best_run/bbr_orig/$bestboldfile'_reg.dat' $curr_bold/$boldfile'_reg.dat'"
+			set cmd = "rsync -az $best_run/bbr_orig/$bestboldfile'_reg.dat' $curr_bold/$boldfile'_reg.dat'"
 			echo $cmd |& tee -a $LF
 			eval $cmd
-			set cmd = "cp $curr_bold/bbr_use_best_run/$boldfile'_use_best_run_initcost.dat'"
+			set cmd = "rsync -az $curr_bold/bbr_use_best_run/$boldfile'_use_best_run_initcost.dat'"
 			set cmd = "$cmd $curr_bold/$boldfile'_reg.dat.mincost'"
 			echo $cmd |& tee -a $LF
 			eval $cmd
 		else
 			echo "[Reg]: Registration from best run (run$best_run) doesn't reduces the bbr cost of run$curr_bold" |& tee -a $LF
 			echo "[REG]: BBR cost of run $curr_bold will keep using its original transformation matrix" |& tee -a $LF
-			set cmd = "cp $curr_bold/bbr_orig/$boldfile'_reg.dat.mincost' $curr_bold/$boldfile'_reg.dat.mincost'"
+			set cmd = "rsync -az $curr_bold/bbr_orig/$boldfile'_reg.dat.mincost' $curr_bold/$boldfile'_reg.dat.mincost'"
 			echo $cmd |& tee -a $LF
 			eval $cmd
 		endif
@@ -183,7 +183,7 @@ foreach curr_bold ($zpdbold)
 	endif
 end
 #copy the bbr cost of the best run to its bold run folder
-set cmd = "cp $best_run/bbr_orig/$bestboldfile'_reg.dat.mincost' $best_run/$bestboldfile'_reg.dat.mincost'"
+set cmd = "rsync -az $best_run/bbr_orig/$bestboldfile'_reg.dat.mincost' $best_run/$bestboldfile'_reg.dat.mincost'"
 echo $cmd |& tee -a $LF
 eval $cmd
 
@@ -221,7 +221,8 @@ end
 which git
 if (! $status) then
 	echo "=======================Git: Last Commit of Current Function =======================" |& tee -a $LF
-	git -C ${CBIG_CODE_DIR} log -1 -- stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_bbregister.csh >> $LF
+	git -C ${CBIG_CODE_DIR} log -1 -- stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_bbregister.csh \
+	>> $LF
 endif
 
 echo "****************************************************************" |& tee -a $LF

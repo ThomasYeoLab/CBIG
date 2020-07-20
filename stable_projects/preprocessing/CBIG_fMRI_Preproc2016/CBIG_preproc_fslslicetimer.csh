@@ -5,7 +5,8 @@
 #	-s Sub0001_Ses1 -d ~/storage/fMRI_preprocess -bld '002 003' -BOLD_stem _rest_skip4 -slice_order
 #	${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/example_slice_order.txt
 #
-# This function uses FSL slicetimer to conduct slice timing correction. One slice timing file or slice order file is needed. 
+# This function uses FSL slicetimer to conduct slice timing correction. 
+# One slice timing file or slice order file is needed. 
 # If no one is passed in, the programme will generate a slice order file automatically. The default one is Siemens.
 #
 # Written by Jingwei Li.
@@ -97,19 +98,48 @@ foreach runfolder ($bold)
 		endif
 		
 		##########################
-		# if slice-timing file in passed in, check how many columns are there
+		# if slice-timing file in passed in, check how many columns (each column inidicates slice-timing of one run) are there
 		# if > 1, split multiple columns into multiple files
+		# slice timings are normalized to TR
 		##########################
 		set auto_st_file_flag = 0;
 		if( $?st_file_in ) then
+			set MRI_info = `mri_info ${BOLD}.nii.gz`
+			# extract TR from header information
+			set TR = `echo $MRI_info | grep -o 'TR: \(.*\)' | awk -F " " '{print $2}'`
+			if ( "$TR" == "" ) then
+				echo "ERROR: TR cannot be extracted from image header information" |& tee -a $LF
+				exit 1
+			endif
+			# check the unit for TR is msec or sec
+			set unit = `echo $MRI_info | grep -o 'TR: \(.*\)' | awk -F " " '{print $3}'`
+			set unit = `echo $unit | awk -F "," '{print $1}'`
+			# convert the unit of TR to sec (required by FSL slicetimer)
+			if ( "$unit" == "msec" ) then
+				set TR = `echo "scale=4; $TR/1000" | bc`
+			else
+				echo "ERROR: Unknown TR unit" |& tee -a $LF
+				exit 1
+			endif
 			set num_col = `awk -F ' ' '{print NF; exit}' $st_file_in`
 			set num_run = `echo $#bold`
 			if( $num_col == 1 ) then
 				set st_file = $st_file_in
+				set st_fraction_file = $boldfolder/$runfolder/tmp_stc/tmp_st_fraction.txt
+				mkdir -p tmp_stc
+				foreach slice_timing ("`cat $st_file`")
+					echo "scale=4; 0.5 - $slice_timing/$TR" | bc >> $st_fraction_file
+				end	
+				set st_file = $st_fraction_file	
 			else if ( $num_col == $num_run ) then
 				set st_file = $boldfolder/$runfolder/tmp_stc/tmp_st.txt
 				mkdir -p tmp_stc
 				cut -f $run_count -d ' ' $st_file_in > $st_file
+				set st_fraction_file = $boldfolder/$runfolder/tmp_stc/tmp_st_fraction.txt
+				foreach slice_timing ("`cat $st_file`")
+					echo "scale=4; 0.5 - $slice_timing/$TR" | bc >> $st_fraction_file
+				end	
+				set st_file = $st_fraction_file	
 				set auto_st_file_flag = 1
 			else
 				echo "ERROR: Number of columns in slice-timing file is not consistent with total number of runs." \
@@ -167,7 +197,7 @@ foreach runfolder ($bold)
 		set cmd = (slicetimer -i ${BOLD}.nii.gz -o ${BOLD}${stc_suffix}.nii.gz -d $direction)
 		
 		if( $?st_file ) then
-			echo "  ---------------------- Slice Timing -------------------------------" |& tee -a $LF
+			echo "  ------------------ Slice Timing (in unit of TR) -------------------" |& tee -a $LF
 			cat $st_file | tr '\n' ' ' |& tee -a $LF
 			echo "" |& tee -a $LF
 			echo "  -------------------------------------------------------------------" |& tee -a $LF
@@ -188,7 +218,8 @@ foreach runfolder ($bold)
 		
 		#########################
 		# remove the automatically generated default slice order file, if there is one
-		# remove the split slice timing file of current run, if input slice-timing file contains multiple columns 
+		# remove the split slice timing file of current run 
+		# if input slice-timing file contains multiple columns of slice timing
 		#########################
 		if ( $auto_so_file_flag == 1 || $auto_st_file_flag == 1 ) then
 			rm -r tmp_stc
@@ -209,7 +240,8 @@ echo "====================== Slice time correction finished. ===================
 which git
 if (! $status) then
 	echo "=======================Git: Last Commit of Current Function =======================" |& tee -a $LF
-	git -C ${CBIG_CODE_DIR} log -1 -- stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_fslslicetimer.csh >> $LF
+	git -C ${CBIG_CODE_DIR} log -1 -- stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_fslslicetimer.csh\
+>> $LF
 endif
 
 echo "******************************************************************************"
@@ -264,11 +296,12 @@ while( $#argv != 0 )
 			set so_file = $argv[1]; shift;
 			breaksw
 			
+		# slice timing file
 		case "-slice_timing":
 			if ( $#argv == 0 ) goto arg1err;
 			set st_file_in = $argv[1]; shift;
 			breaksw
-		
+
 		default:
 			echo ERROR: Flag $flag unrecognized.
 			echo $cmdline
@@ -355,14 +388,18 @@ REQUIRED ARGUMENTS:
 
 OPTIONAL ARGUMENTS:
 	-direction    <direction> : slice aquisition direction. 1 means x axis representing Right-Left, 
-	                            2 means y axis representing Anterior-Posterior, 3 means z axis representing Superior-Inferior.
-	-slice_timing <st_file>   : slice timing file (absolute path). It can contain one column or multiple columns  
-	                            (separated by a space, see example_slice_timing.txt within the same folder). 
-	                            If there is only one column, it is assumed that every run follows the same slice timing;  
-	                            if there are multiple columns, each column corresponds to one of the runs given by -bld option.
+	                            2 means y axis representing Anterior-Posterior, 
+	                            3 means z axis representing Superior-Inferior.
+	-slice_timing <st_file>   : slice timing file (absolute path). It can contain one column or multiple columns 
+	                            of slice timing (separated by a space, see example_slice_timing.txt within the same 
+	                            folder). 
+	                            If there is only one column of slice timing, it is assumed that every run follows 
+	                            the same slice timing;  
+	                            if there are multiple columns of slice timing, each column corresponds to 
+	                            one of the runs given by -bld option.
 	                            N-th row corresponds to the time point when N-th slice was sampled.
-	                            If both -slice_timing and -slice_order options are not used, this script will generate a 
-	                            default slice order file following Siemens slice order 
+	                            NOTE: If both -slice_timing and -slice_order options are not used, 
+	                            this script will generate a default slice order file following Siemens slice order 
 	                            (see description of -slice_order option).
 	-slice_order  <so_file>   : slice order file (absolute path), where each row is one number. 
 	                            If the user did not pass in a slice order file or a slice timing file,  
@@ -371,8 +408,8 @@ OPTIONAL ARGUMENTS:
 	                            1, 3, 5, ..., 2, 4, 6, ...; if the number of slices is even, the 
 	                            ordering is 2, 4, 6, ..., 1, 3, 5, ....
 	                            For the example of slice order file, please see 
-	                            ${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/example_slice_order.txt
-
+	                            ${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/\
+	                            example_slice_order.txt
 OUTPUTS:
 	This function will output NIFTI volumes <subject>_bld<run_number><BOLD_stem>_stc.nii.gz in folder 
 	<sub_dir>/<subject>/bold/<run_number>.

@@ -111,7 +111,7 @@ echo "[MC]: base_bold = $base_bold" |& tee -a $LF
 # Generate Template use n-th frame of the first run
 #############################################
 
-echo "=======================Generate template.nii.gz..(n-th frame of the base_bold, default is 1st frame)=======================" |& tee -a $LF
+echo "=========Generate template.nii.gz..(n-th frame of the base_bold, default is 1st frame)=========" |& tee -a $LF
 pushd $base_bold
 
 set base_boldfile = $subject"_bld"$zpdbold[1]$BOLD_stem
@@ -167,7 +167,7 @@ foreach curr_bold ($zpdbold)
 		echo $cmd |& tee -a $LF
 		eval $cmd >> $LF
 		mv $boldfile"_mc.nii.gz" $boldfile"_mc_tmp.nii.gz"
-		set numof_tps = `fslnvols $boldfile"_mc_tmp"` 
+		set numof_tps = `fslnvols $boldfile".nii.gz"` 
 		fslroi $boldfile"_mc_tmp" $boldfile"_mc" 1 $numof_tps |& tee -a $LF
 		rm $boldfile"_mc_tmp.nii.gz"
 	else
@@ -199,7 +199,8 @@ foreach curr_bold ($zpdbold)
 	set mc_rel_rms_file = "${subject}_bld${curr_bold}${BOLD_stem}_mc_rel.rms"
 	set outname_prefix = "${subject}_bld${curr_bold}${BOLD_stem}_mc"
 	
-	set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; CBIG_preproc_plot_mcflirt_par $mc_par_file $mc_abs_rms_file $mc_rel_rms_file $qc $outname_prefix; exit; '"' );
+	set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; \
+		CBIG_preproc_plot_mcflirt_par $mc_par_file $mc_abs_rms_file $mc_rel_rms_file $qc $outname_prefix; exit; '"' );
 	echo $cmd |& tee -a $LF
 	eval $cmd |& tee -a $LF
 	
@@ -222,7 +223,9 @@ foreach curr_bold ($zpdbold)
 	# Use DVARS as metric
 	if ( (! -e $mc/${boldfile}_motion_outliers_DVARS) || ($force == 1) ) then
 		echo "[MC]: bold = $curr_bold Perform FSL motion outliers with metric = dvars" |& tee -a $LF
-		set cmd = "fsl_motion_outliers -i ${boldfile}_mc -o $mc/${boldfile}_motion_outliers_confound_DVARS -s $mc/${boldfile}_motion_outliers_DVARS -p $mc/${boldfile}_motion_outliers_DVARS -t $mc/tmp_outliers/$curr_bold --dvars --nomoco"
+		set cmd = "fsl_motion_outliers -i ${boldfile}_mc -o $mc/${boldfile}_motion_outliers_confound_DVARS \
+					-s $mc/${boldfile}_motion_outliers_DVARS -p $mc/${boldfile}_motion_outliers_DVARS \
+					-t $mc/tmp_outliers/$curr_bold --dvars --nomoco"
 		echo $cmd |& tee -a $LF
 		eval $cmd >> $LF
 	else
@@ -233,7 +236,9 @@ foreach curr_bold ($zpdbold)
 	if ( (! -e $mc/${boldfile}_motion_outliers_FDRMS) || ($force == 1) ) then
 		echo "[MC]: bold = $curr_bold Perform FSL motion outliers with metric = fdrms" |& tee -a $LF
 	
-		set cmd = "fsl_motion_outliers -i $boldfile -o $mc/${boldfile}_motion_outliers_confound_FDRMS -s $mc/${boldfile}_motion_outliers_FDRMS -p $mc/${boldfile}_motion_outliers_FDRMS -t $mc/tmp_outliers/$curr_bold --fdrms"
+		set cmd = "fsl_motion_outliers -i $boldfile -o $mc/${boldfile}_motion_outliers_confound_FDRMS \
+					-s $mc/${boldfile}_motion_outliers_FDRMS -p $mc/${boldfile}_motion_outliers_FDRMS \
+					-t $mc/tmp_outliers/$curr_bold --fdrms"
 		echo $cmd |& tee -a $LF
 		eval $cmd >> $LF
 	else
@@ -258,12 +263,15 @@ foreach curr_bold ($zpdbold)
 		set output = "$qc/${subject}_bld${curr_bold}"
 		set dvars_file = "$mc/${boldfile}_motion_outliers_DVARS"
 		set fd_file = "$mc/${boldfile}_motion_outliers_FDRMS"
-		set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; CBIG_preproc_DVARS_FDRMS_Correlation $dvars_file $fd_file $output; CBIG_preproc_motion_outliers $dvars_file $fd_file $fd_th $dv_th $discard_seg $output; exit; '"' );
+		set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; \
+			CBIG_preproc_DVARS_FDRMS_Correlation $dvars_file $fd_file $output; \
+			CBIG_preproc_motion_outliers $dvars_file $fd_file $fd_th $dv_th $discard_seg $output; exit; '"' );
 		eval $cmd |& tee -a $LF
 	else
 		echo "[MC]: Motion outliers detection already created!" |& tee -a $LF
 	endif
-	echo "[MC]: Motion outliers is in $qc/${subject}_bld${curr_bold}_FDRMS${fd_th}_DVARS${dv_th}_motion_outliers.txt" |& tee -a $LF
+	echo "[MC]: Motion outliers is in $qc/${subject}_bld${curr_bold}_FDRMS${fd_th}_DVARS${dv_th}_motion_outliers.txt" \
+		|& tee -a $LF
 	
 	popd
 end
@@ -324,7 +332,8 @@ endif
 which git
 if (! $status) then
 	echo "=======================Git: Last Commit of Current Function =======================" |& tee -a $LF
-	git -C ${CBIG_CODE_DIR} log -1 -- stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_fslmcflirt_outliers.csh >> $LF
+	git -C ${CBIG_CODE_DIR} log -1 -- stable_projects/preprocessing/CBIG_fMRI_Preproc2016/\
+		CBIG_preproc_fslmcflirt_outliers.csh >> $LF
 endif
 
 exit 1;

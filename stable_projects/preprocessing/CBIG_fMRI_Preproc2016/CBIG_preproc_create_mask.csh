@@ -113,23 +113,27 @@ echo "[MASK]: reg = $reg" |& tee -a $LF
 if ( "$erode_space" == "func" ) then
 	if ( $wm == 1 && "$wm_max_erode" == "" ) then
 		set wm_max_erode = 1
-		echo "WARNING: WM mask will be created but -wm_max_erode is not passed in. Maximal erosion will be set to 1. (Erode in functional space.)" |& tee -a $LF
+		echo "WARNING: WM mask will be created but -wm_max_erode is not passed in. \
+Maximal erosion will be set to 1. (Erode in functional space.)" |& tee -a $LF
 	endif
 	
 	if ( $csf == 1 && "$csf_max_erode" == "" ) then
 		set csf_max_erode = 0
-		echo "WARNING: Ventricles mask will be created but -csf_max_erode is not passed in. Maximal erosion will be set to 0. (Erode in functional space.)" |& tee -a $LF
+		echo "WARNING: Ventricles mask will be created but -csf_max_erode is not passed in. \
+Maximal erosion will be set to 0. (Erode in functional space.)" |& tee -a $LF
 	endif
 	
 else
 	if ( $wm == 1 && "$wm_max_erode" == "" ) then
 		set wm_max_erode = 3
-		echo "WARNING: WM mask will be created but -wm_max_erode is not passed in. Maximal erosion will be set to 3. (Erode in anatomical space.)" |& tee -a $LF
+		echo "WARNING: WM mask will be created but -wm_max_erode is not passed in. \
+Maximal erosion will be set to 3. (Erode in anatomical space.)" |& tee -a $LF
 	endif
 	
 	if ( $csf == 1 && "$csf_max_erode" == "" ) then
 		set csf_max_erode = 1
-		echo "WARNING: Ventricles mask will be created but -csf_max_erode is not passed in. Maximal erosion will be set to 1. (Erode in anatomical space.)" |& tee -a $LF
+		echo "WARNING: Ventricles mask will be created but -csf_max_erode is not passed in. \
+Maximal erosion will be set to 1. (Erode in anatomical space.)" |& tee -a $LF
 	endif
 endif
 	
@@ -137,7 +141,8 @@ endif
 if( $whole_brain == 1 ) then
 	echo "=======================Create whole brain mask=======================" |& tee -a $LF
 	if( (! -e mask/$subject.brainmask.bin.nii.gz) || ( $force == 1 ) ) then
-		set cmd = "mri_vol2vol --reg $mask_bold/$reg --targ $anat_dir/$anat/mri/brainmask.mgz --mov $mask_bold/$boldfile.nii.gz --inv --o mask/$subject.brainmask.nii.gz"
+		set cmd = "mri_vol2vol --reg $mask_bold/$reg --targ $anat_dir/$anat/mri/brainmask.mgz \
+--mov $mask_bold/$boldfile.nii.gz --inv --o mask/$subject.brainmask.nii.gz"
 		echo $cmd |& tee -a $LF
 		eval $cmd |& tee -a $LF
 
@@ -177,12 +182,14 @@ if( $wm == 1 ) then
 	echo "======================= Create wm mask =======================" |& tee -a $LF
 	if( (! -e mask/$subject.func.wm.nii.gz) || ( $force == 1 )) then
 		if ( "$erode_space" == "func" ) then
-			set cmd = "mri_label2vol --seg $anat_dir/$anat/mri/aparc+aseg.mgz --temp $mask_bold/$boldfile.nii.gz --reg $mask_bold/$reg --o mask/$subject.func.aseg.nii" 
+			set cmd = "mri_label2vol --seg $anat_dir/$anat/mri/aparc+aseg.mgz \
+--temp $mask_bold/$boldfile.nii.gz --reg $mask_bold/$reg --o mask/$subject.func.aseg.nii" 
 			echo $cmd |& tee -a $LF
 			eval $cmd |& tee -a $LF
 			
 			foreach i (`seq 0 1 ${wm_max_erode}`)
-				set cmd = "mri_binarize --i mask/$subject.func.aseg.nii --wm --erode ${i} --o mask/$subject.func.wm_erode${i}.nii.gz"
+				set cmd = "mri_binarize --i mask/$subject.func.aseg.nii \
+--wm --erode ${i} --o mask/$subject.func.wm_erode${i}.nii.gz"
 				echo $cmd |& tee -a $LF
 				eval $cmd |& tee -a $LF
 				
@@ -191,17 +198,19 @@ if( $wm == 1 ) then
 			end
 			
 			echo "Final white matter mask is eroded by 1 times in functional space."
-			set cmd = "cp mask/$subject.func.wm_erode1.nii.gz mask/$subject.func.wm.nii.gz"
+			set cmd = "rsync -az mask/$subject.func.wm_erode1.nii.gz mask/$subject.func.wm.nii.gz"
 			echo $cmd |& tee -a $LF
 			eval $cmd |& tee -a $LF
 			
 		else
 			foreach i (`seq 0 1 ${wm_max_erode}`)
-				set cmd = "mri_binarize --i $anat_dir/$anat/mri/aparc+aseg.mgz --wm --erode ${i} --o mask/${subject}.anat.wm_erode${i}.nii.gz"
+				set cmd = "mri_binarize --i $anat_dir/$anat/mri/aparc+aseg.mgz \
+--wm --erode ${i} --o mask/${subject}.anat.wm_erode${i}.nii.gz"
 				echo $cmd |& tee -a $LF
 				eval $cmd |& tee -a $LF
 				
-				set cmd = "mri_label2vol --seg mask/${subject}.anat.wm_erode${i}.nii.gz --temp $mask_bold/$boldfile.nii.gz --reg $mask_bold/$reg --o mask/${subject}.func.wm_erode${i}.nii.gz"
+				set cmd = "mri_label2vol --seg mask/${subject}.anat.wm_erode${i}.nii.gz \
+--temp $mask_bold/$boldfile.nii.gz --reg $mask_bold/$reg --o mask/${subject}.func.wm_erode${i}.nii.gz"
 				echo $cmd |& tee -a $LF
 				eval $cmd |& tee -a $LF
 				
@@ -216,7 +225,7 @@ if( $wm == 1 ) then
 			end
 			
 			echo "Final white matter mask is eroded by $wm_erode times in anatomical space." |& tee -a $LF
-			set cmd = "cp mask/$subject.func.wm_erode${wm_erode}.nii.gz mask/$subject.func.wm.nii.gz"
+			set cmd = "rsync -az mask/$subject.func.wm_erode${wm_erode}.nii.gz mask/$subject.func.wm.nii.gz"
 			echo $cmd |& tee -a $LF
 			eval $cmd |& tee -a $LF
 		endif
@@ -232,35 +241,39 @@ if( $csf == 1 ) then
 	echo "======================= Create csf mask =======================" |& tee -a $LF
 	if( (! -e mask/$subject.func.ventricles.nii.gz) || ( $force == 1 )) then
 		if ( "$erode_space" == "func" ) then
-			set cmd = "mri_label2vol --seg $anat_dir/$anat/mri/aparc+aseg.mgz --temp $mask_bold/$boldfile.nii.gz --reg $mask_bold/$reg --o mask/$subject.func.aseg.nii" 
+			set cmd = "mri_label2vol --seg $anat_dir/$anat/mri/aparc+aseg.mgz \
+--temp $mask_bold/$boldfile.nii.gz --reg $mask_bold/$reg --o mask/$subject.func.aseg.nii" 
 			echo $cmd |& tee -a $LF
 			eval $cmd
 			
 			set vent_erode = 0
 			foreach i (`seq 0 1 ${csf_max_erode}`)  # When erode_space="func", default csf_max_erode=0. 
 			                                        # Actually $subject.func.ventricles_erode1.nii.gz, ... won't be generated.
-				set cmd = "mri_binarize --i mask/$subject.func.aseg.nii --ventricles --erode ${i} --o mask/$subject.func.ventricles_erode${i}.nii.gz"
+				set cmd = "mri_binarize --i mask/$subject.func.aseg.nii \
+--ventricles --erode ${i} --o mask/$subject.func.ventricles_erode${i}.nii.gz"
 				echo $cmd |& tee -a $LF
 				eval $cmd
 				
 				set vent_vol = `fslstats mask/${subject}.func.ventricles_erode${i}.nii.gz -V`
-				set vent_vol = "$num_vent[2]"
-				echo $num_vent > mask/${subject}_func_ventricles_erode${i}_vol.txt
+				set vent_vol = "$vent_vol[2]"
+				echo $vent_vol > mask/${subject}_func_ventricles_erode${i}_vol.txt
 			end
 			
 			echo "Final ventricles mask is eroded by 0 times in functional space." |& tee -a $LF
-			set cmd = "cp mask/$subject.func.ventricles_erode0.nii.gz mask/$subject.func.ventricles.nii.gz"
+			set cmd = "rsync -az mask/$subject.func.ventricles_erode0.nii.gz mask/$subject.func.ventricles.nii.gz"
 			echo $cmd |& tee -a $LF
 			eval $cmd |& tee -a $LF
 		
 		else
 			set vent_erode = 0
 			foreach i (`seq 0 1 $csf_max_erode`)
-				set cmd = "mri_binarize --i $anat_dir/$anat/mri/aparc+aseg.mgz --ventricles --erode ${i} --o mask/${subject}.anat.ventricles_erode${i}.nii.gz"
+				set cmd = "mri_binarize --i $anat_dir/$anat/mri/aparc+aseg.mgz \
+--ventricles --erode ${i} --o mask/${subject}.anat.ventricles_erode${i}.nii.gz"
 				echo $cmd |& tee -a $LF
 				eval $cmd |& tee -a $LF
 				
-				set cmd = "mri_label2vol --seg mask/${subject}.anat.ventricles_erode${i}.nii.gz --temp $mask_bold/$boldfile.nii.gz --reg $mask_bold/$reg --o mask/${subject}.func.ventricles_erode${i}.nii.gz"
+				set cmd = "mri_label2vol --seg mask/${subject}.anat.ventricles_erode${i}.nii.gz \
+--temp $mask_bold/$boldfile.nii.gz --reg $mask_bold/$reg --o mask/${subject}.func.ventricles_erode${i}.nii.gz"
 				echo $cmd |& tee -a $LF
 				eval $cmd |& tee -a $LF
 				
@@ -275,7 +288,7 @@ if( $csf == 1 ) then
 			end
 			
 			echo "Final ventricles mask is eroded by $vent_erode times in anatomical space." |& tee -a $LF
-			set cmd = "cp mask/$subject.func.ventricles_erode${vent_erode}.nii.gz mask/$subject.func.ventricles.nii.gz"
+			set cmd = "rsync -az mask/$subject.func.ventricles_erode${vent_erode}.nii.gz mask/$subject.func.ventricles.nii.gz"
 			echo $cmd |& tee -a $LF
 			eval $cmd |& tee -a $LF
 		endif
@@ -290,13 +303,16 @@ endif
 if( $gm == 1 ) then
 	echo "======================= Create gm mask=======================" |& tee -a $LF
 	if( (! -e mask/$subject.func.gm.nii.gz) || ( $force == 1 )) then
-		set cmd = "mri_label2vol --seg $anat_dir/$anat/mri/aparc+aseg.mgz --temp $mask_bold/$boldfile.nii.gz --reg $mask_bold/$reg --o mask/$subject.func.aseg.nii" 
+		set cmd = "mri_label2vol --seg $anat_dir/$anat/mri/aparc+aseg.mgz \
+--temp $mask_bold/$boldfile.nii.gz --reg $mask_bold/$reg --o mask/$subject.func.aseg.nii" 
 		echo $cmd |& tee -a $LF
 		eval $cmd
 
-#gm labels: https://github.com/neurodebian/freesurfer/blob/cc12577ed0a75115d645a55291ae61f0d937dd7e/mri_binarize/mri_binarize.c
+#gm labels: 
+#https://github.com/neurodebian/freesurfer/blob/cc12577ed0a75115d645a55291ae61f0d937dd7e/mri_binarize/mri_binarize.c
 #match table: /apps/arch/Linux_x86_64/freesurfer/5.3.0/FreeSurferColorLUT.txt
-		set cmd = "mri_binarize --i mask/$subject.func.aseg.nii --match 2 41 77 251 252 253 254 255 7 46 4 5 14 43 44 15 72 31 63 0 24 --inv --o mask/$subject.func.gm.nii.gz"
+		set cmd = "mri_binarize --i mask/$subject.func.aseg.nii \
+--match 2 41 77 251 252 253 254 255 7 46 4 5 14 43 44 15 72 31 63 0 24 --inv --o mask/$subject.func.gm.nii.gz"
 		echo $cmd |& tee -a $LF
 		eval $cmd
 		
@@ -308,7 +324,8 @@ endif
 
 # If aCompCor == 1. combine wm and csf mask
 if ( $aCompCor == 1 ) then
-	echo "======================================= Combine wm and ventricles masks  ========================================" |& tee -a $LF
+	echo "======================================= Combine wm and ventricles masks  \
+========================================" |& tee -a $LF
 	set wm_vent_mask = "mask/${subject}.func.wm.vent.nii.gz"
 	if ( ! -e ${wm_vent_mask} ) then
 		set cmd = "fslmaths mask/${subject}.func.wm.nii.gz -max mask/${subject}.func.ventricles.nii.gz ${wm_vent_mask}"
@@ -336,7 +353,8 @@ echo "" |& tee -a $LF
 which git
 if (! $status) then
 	echo "======================= Git: Last Commit of Current Function =======================" |& tee -a $LF
-	git -C ${CBIG_CODE_DIR} log -1 -- stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_create_mask.csh >> $LF
+	git -C ${CBIG_CODE_DIR} log -1 -- stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_create_mask.csh \
+>> $LF
 endif
 
 echo "*********************************************************************" |& tee -a $LF

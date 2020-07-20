@@ -108,11 +108,22 @@ If it exists, you can use the package by `addpath` of this package in your funct
 - If you are still in BASH or C-SHELL from the previous step, exit.
 - Open a new BASH or C-SHELL.
 - If you have `FreeSurfer` path configured properly, you should see a few lines from FreeSurfer when your command-line interface is booting up. One of those lines is:
-```Setting up environment for FreeSurfer/FS-FAST (and FSL)```
-- Use `freeview` and `fslview` to load MNI template
+  ```Setting up environment for FreeSurfer/FS-FAST (and FSL)```
+- Use `freeview` to load MNI template
 
 ```bash
 freeview $CBIG_CODE_DIR/data/templates/volume/FSL_MNI152_FS4.5.0/mri/norm.nii.gz
+```
+
+* Use `fsleyes` (for FSL verision 5.0.10 or above) to load MNI template
+
+```bash
+fsleyes $CBIG_CODE_DIR/data/templates/volume/FSL_MNI152_FS4.5.0/mri/norm.nii.gz
+```
+
+If you are using FSL with version 5.0.8 or below, you can use `fslview` to load MNI template
+
+```bash
 fslview $CBIG_CODE_DIR/data/templates/volume/FSL_MNI152_FS4.5.0/mri/norm.nii.gz
 ```
 

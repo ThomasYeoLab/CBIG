@@ -39,7 +39,7 @@ if echo "$answer" | grep -iq "^y" ; then
           bash $INSTALLER -b -p $INSTALLATION_DIR
         fi
         echo "Existing ~/.bashrc willl be backed up as ~/.bashrc.python_bak"
-        cp ~/.bashrc{,.python_bak}
+        rsync -az ~/.bashrc{,.python_bak}
         echo "export PATH=$INSTALLATION_DIR/bin:"'$PATH' >> ~/.bashrc
         source ~/.bashrc
     else

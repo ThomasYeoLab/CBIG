@@ -16,7 +16,7 @@ setenv CBIG_SPM_DIR       /apps/arch/Linux_x86_64/spm/spm12
 setenv CBIG_AFNI_DIR      /apps/arch/Linux_x86_64/afni/AFNI_2011_12_21_1014/linux_openmp_64
 setenv CBIG_ANTS_DIR      /apps/arch/Linux_x86_64/ants/ants_v2.2.0/BUILD/bin/
 setenv CBIG_WB_DIR        /apps/arch/Linux_x86_64/HCP/workbench-1.1.1/
-setenv CBIG_FSLDIR        /apps/arch/Linux_x86_64/fsl/5.0.8
+setenv CBIG_FSLDIR        /apps/arch/Linux_x86_64/fsl/5.0.10
 
 # DO NOT CHANGE: define locations for unit tests data and replication data
 setenv CBIG_TESTDATA_DIR  /mnt/eql/yeo1/CBIG_test_data/unit_tests

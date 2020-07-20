@@ -10,7 +10,8 @@
 #
 # This function does the following three steps:
 #     1. Project fMRI volume data to surface (defined by proj_mesh, like fsaverage6) using mri_vol2surf
-#     2. Smooth projected data using mri_surf2surf. Since in FreeSurfer 5.3.0, mri_surf2surf with --cortex flag will set vertices within medial wall mask to be zero, we put the medial wall values back after smoothing.
+#     2. Smooth projected data using mri_surf2surf. Since in FreeSurfer 5.3.0, mri_surf2surf with --cortex flag 
+#	 will set vertices within medial wall mask to be zero, we put the medial wall values back after smoothing.
 #     3. Downsample smoothed data to downmesh, e.g. fsaverage5, using mri_surf2surf 
 #
 # Written by Jingwei Li.
@@ -145,7 +146,8 @@ foreach runfolder ($bold)
 		if(-e $output) then
 			echo "[SURF]: Projection to $hemi.${BOLD}_$proj_short.nii.gz already exist" |& tee -a $LF
 		else
-			set cmd = (mri_vol2surf --mov ${BOLD}.nii.gz --reg $regfile --hemi  $hemi --projfrac 0.5 --trgsubject $proj_mesh --o $output --reshape --interp trilinear)
+			set cmd = (mri_vol2surf --mov ${BOLD}.nii.gz --reg $regfile --hemi  $hemi \
+--projfrac 0.5 --trgsubject $proj_mesh --o $output --reshape --interp trilinear)
 			echo $cmd |& tee -a $LF
 			eval $cmd
 			
@@ -195,8 +197,9 @@ foreach runfolder ($bold)
 				echo "Input2: $input2"
 				exit 1;
 			endif
-			
-			$MATLAB -nodesktop -nodisplay -nosplash -r "addpath(fullfile('$root_dir', 'utilities'));CBIG_preproc_fsaverage_medialwall_fillin '$hemi' 'fsaverage6' '$input1' '$input2' '$tmp_output';exit" |& tee -a $LF
+			set matlab_cmd = ("addpath(fullfile('$root_dir', 'utilities'));" \
+"CBIG_preproc_fsaverage_medialwall_fillin '$hemi' 'fsaverage6' '$input1' '$input2' '$tmp_output'; exit;")
+			$MATLAB -nodesktop -nodisplay -nosplash -r "$matlab_cmd" |& tee -a $LF
 			
 			if ( ! -e $tmp_output ) then
 				echo "ERROR: Fill in medial wall failed. ${tmp_output} is not produced." |& tee -a $LF
@@ -250,7 +253,7 @@ foreach runfolder ($bold)
 		else
 			set scale = $proj_res
 			if($scale == $down_res) then
-				set cmd = (cp $curr_input $output)
+				set cmd = (rsync -az $curr_input $output)
 				echo $cmd |& tee -a $LF
 				eval $cmd
 			endif
@@ -266,7 +269,8 @@ foreach runfolder ($bold)
 				
 				set trgsubject = fsaverage$new_scale
 				
-				set cmd = (mri_surf2surf --hemi $hemi --srcsubject $srcsubject --sval $curr_input --nsmooth-in 1 --trgsubject $trgsubject --tval $output --reshape)
+				set cmd = (mri_surf2surf --hemi $hemi --srcsubject $srcsubject \
+--sval $curr_input --nsmooth-in 1 --trgsubject $trgsubject --tval $output --reshape)
 				echo $cmd |& tee -a $LF
 				eval $cmd
 				
@@ -293,8 +297,9 @@ foreach runfolder ($bold)
 		foreach hemi (lh rh)
 			set before_NaN_name = $surffolder/$hemi.${subject}_bld${runfolder}${out_stem}.nii.gz
 			set after_NaN_name = $surffolder/$hemi.${subject}_bld${runfolder}${out_stem}_medialwallNaN.nii.gz
-			
-			$MATLAB -nodesktop -nodisplay -nosplash -r "addpath(fullfile('$root_dir', 'utilities'));CBIG_preproc_set_medialwall_NaN '$hemi' '$out_mesh' '$before_NaN_name' '$after_NaN_name';exit" |& tee -a $LF
+			set matlab_cmd = ("addpath(fullfile('$root_dir', 'utilities'));" \
+"CBIG_preproc_set_medialwall_NaN '$hemi' '$out_mesh' '$before_NaN_name' '$after_NaN_name'; exit;")
+			$MATLAB -nodesktop -nodisplay -nosplash -r "$matlab_cmd" |& tee -a $LF
 			
 			if ( -e $after_NaN_name ) then
 				echo "[SURF]: $after_NaN_name is successfully generated. Move it to $before_NaN_name." |& tee -a $LF
@@ -316,8 +321,10 @@ end
 # check if git exists
 which git
 if (! $status) then
-	echo "=======================Git: Last Commit of Current Function =======================" |& tee -a $LF
-	git -C ${CBIG_CODE_DIR} log -1 -- stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_native2fsaverage.csh >> $LF
+	echo "=======================Git: Last Commit of Current Function \
+=======================" |& tee -a $LF
+	git -C ${CBIG_CODE_DIR} log -1 \
+-- stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_native2fsaverage.csh >> $LF
 endif
 
 echo "***************************************************************" |& tee -a $LF
@@ -448,12 +455,14 @@ endif
 
 # check the format of projection and downsampling mesh
 if($proj_mesh != fsaverage & $proj_mesh != fsaverage6 & $proj_mesh != fsaverage5 & $proj_mesh != fsaverage4 ) then
-    echo "ERROR: proj_mesh = $proj_mesh is not acceptable (allowable values = fsaverage, fsaverage6, fsaverage5, fsaverage4)"
+    echo "ERROR: proj_mesh = $proj_mesh is not acceptable \
+(allowable values = fsaverage, fsaverage6, fsaverage5, fsaverage4)"
     exit 1;
 endif
 
 if($down_mesh != fsaverage & $down_mesh != fsaverage6 & $down_mesh != fsaverage5 & $down_mesh != fsaverage4 ) then
-    echo "ERROR: down_mesh = $down_mesh is not acceptable (allowable values = fsaverage, fsaverage6, fsaverage5, fsaverage4)"
+    echo "ERROR: down_mesh = $down_mesh is not acceptable \
+(allowable values = fsaverage, fsaverage6, fsaverage5, fsaverage4)"
     exit 1;
 endif
 

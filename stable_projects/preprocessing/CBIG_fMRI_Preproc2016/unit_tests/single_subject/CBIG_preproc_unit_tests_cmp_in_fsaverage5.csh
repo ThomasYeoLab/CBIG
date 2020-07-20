@@ -4,14 +4,14 @@
 set pipe_dir1 = "$CBIG_TESTDATA_DIR/stable_projects/preprocessing"
 set pipe_dir1 = "$pipe_dir1/CBIG_fMRI_Preproc2016/single_subject/data"
 set pipe_name1 = "gt"
-set pipe_stem1 = "_rest_skip4_stc_mc_residc_interp_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6_fs5"
+set pipe_stem1 = "_rest_skip8_stc_mc_sdc_residc_interp_FDRMS0.3_DVARS60_bp_0.009_0.08_fs6_sm6_fs5"
 
 set pipe_dir2 = $1
 set pipe_name2 = "user-test"
 set pipe_stem2 = $2
 
-set subject_id = "Sub1116_Ses1"
-set runs = "002 003"
+set subject_id = "sub-NDARBF851NH6"
+set runs = "001 002"
 
 set output_dir = $3
 

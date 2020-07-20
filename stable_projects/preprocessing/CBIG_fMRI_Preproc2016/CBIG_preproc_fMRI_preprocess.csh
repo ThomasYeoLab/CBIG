@@ -47,6 +47,8 @@ set REG_stem = ""   # stem of registration file produced by bbregister
 set MASK_stem = ""  # stem of file used to create masks
 set OUTLIER_stem="" # stem of file including censor frames
 set nocleanup = 0   # default clean up intermediate files
+set is_motion_corrected = 0 # flag indicates whether motion correction is performed
+set is_distortion_corrected = 0 # flag indicates whether spatial distortion correction is performed 
 
 set root_dir = `python -c "import os; print(os.path.realpath('$0'))"`
 set root_dir = `dirname $root_dir`
@@ -152,7 +154,7 @@ set boldname = (`awk -F " " '{printf($2" ")}' $fmrinii_file`)
 foreach curr_bold ($zpdbold)
 	if ( ! -e $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold$BOLD_stem.nii.gz" ) then
 		mkdir -p $output_dir/$subject/bold/$curr_bold
-		cp $boldname[$k] $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold$BOLD_stem.nii.gz"
+		rsync -az $boldname[$k] $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold$BOLD_stem.nii.gz"
 	else
 		echo "[BOLD INFO]: Input bold nifti file already exists !" >> $LF	
 	endif
@@ -183,7 +185,7 @@ foreach step ( "`cat $config`" )
 	set inputflag = (`echo $step | awk -F " " '{printf NF}'`)
 	if ( $inputflag != 1) then
 		set curr_flag = ( `echo $step | cut -f 1 -d " " --complement` )
-		echo "[$curr_step] curr_flag = $curr_flag" >> $LF
+		echo "[$curr_step]: curr_flag = $curr_flag" >> $LF
 	endif
 	
 	set zpdbold = `cat $Bold_file`
@@ -303,9 +305,9 @@ can not be found" >> $LF
         # if no run was left, then give a warning and exit the preprocessing 
 	    set zpdbold = `cat $Bold_file`
         if ( "$zpdbold" == "" ) then
-            echo "[WARNING]: There is no bold run left after discarding runs with high motion." >> $LF
-            echo "Preprocessing Completed!" >> $LF
-            exit 1
+            	echo "[WARNING]: There is no bold run left after discarding runs with high motion." >> $LF
+            	echo "Preprocessing Completed!" >> $LF
+            	exit 1
         endif
          
 		#check existence of output
@@ -317,6 +319,76 @@ can not be found" >> $LF
 				exit 1
 			endif
 		end
+
+		# if motion correction is done successfully, the following flag value is set to 1
+		set is_motion_corrected = 1
+
+	##########################################
+	# Preprocess step: spatial distortion correction
+	##########################################
+
+	else if ( "$curr_step" == "CBIG_preproc_spatial_distortion_correction" ) then
+		# spatial distortion correction can only be performed after motion correction is done	
+		if ( $is_motion_corrected == 0 ) then
+			echo "[ERROR]: BOLD image is not motion corrected. Spatial Distortion Correction cannot be performed." >> $LF
+			exit 1
+		else
+		set cmd = "$root_dir/CBIG_preproc_spatial_distortion_correction.csh -s $subject -d $output_dir -bld '$zpdbold' "
+		set cmd = "$cmd -BOLD_stem $mc_stem $curr_flag"
+		echo "[$curr_step]: $cmd" >> $LF
+		eval $cmd >& /dev/null
+
+		# Spatial Distortion Correction QC: run BBR on BOLD image that is not distortion corrected
+
+		# Here, we are running BBR on motion-corrected but not distortion-corrceted image. 
+		# As a QC step, the BBR costs can be compared between images with/without distortion correction. By right, the image
+		# with distortion correction should have a lower BBR cost than the image without distortion correction.
+		# Note that this BBR step here is for QC only, but not the REAL preprocessing step.
+		rsync -az $output_dir/$subject/bold/ $output_dir/$subject/bold_backup
+		rsync -az $output_dir/$subject/logs/ $output_dir/$subject/logs_backup
+		rsync -az $output_dir/$subject/qc/ $output_dir/$subject/qc_backup
+		set cmd = "$root_dir/CBIG_preproc_bbregister.csh -s $subject -d $output_dir -anat_s $anat -anat_d $anat_dir "
+		set cmd = "$cmd -bld '$zpdbold' -BOLD_stem $mc_stem"
+		eval $cmd >& /dev/null 
+
+		# Extract the BBR cost without distortion correction
+		set cmd = "mv $output_dir/$subject/qc/CBIG_preproc_bbregister_intra_sub_reg.cost"
+		set cmd = "$cmd $output_dir/$subject/qc_backup/CBIG_preproc_bbregister_intra_sub_reg_no_sdc.cost"
+		eval $cmd >& /dev/null 	
+
+		# clean up temporary directories
+		rm -r -f $output_dir/$subject/bold
+		rm -r -f $output_dir/$subject/logs
+		rm -r $output_dir/$subject/qc
+		mv $output_dir/$subject/bold_backup $output_dir/$subject/bold
+		mv $output_dir/$subject/logs_backup $output_dir/$subject/logs
+		mv $output_dir/$subject/qc_backup $output_dir/$subject/qc
+
+
+		#update stem
+		set curr_stem = "mc_sdc"
+		set BOLD_stem = "$mc_stem"_"$curr_stem"
+
+		#clean up intermediate files
+		if ( $nocleanup != 1 ) then
+			foreach curr_bold ($zpdbold)
+				rm -r $output_dir/$subject/bold/$curr_bold/warping
+			end
+		endif
+
+		#check existence of output
+		foreach curr_bold ($zpdbold)
+			if ( ! -e $output_dir/$subject/bold/$curr_bold/$subject"_bld"$curr_bold$BOLD_stem.nii.gz ) then
+				echo "[ERROR]: file $output_dir/$subject/bold/$curr_bold/$subject"\
+_bld"$curr_bold$BOLD_stem.nii.gz can not be found" >> $LF
+				echo "[ERROR]: CBIG_preproc_spatial_distortion_correction!" >> $LF
+				exit 1
+			endif
+		end
+
+		# if spatial distortion correction is done successfully, the following flag value is set to 1
+		set is_distortion_corrected = 1		
+		endif
 	
 	##########################################
 	# Preprocess step: function-anatomical registration
@@ -335,6 +407,40 @@ can not be found" >> $LF
 		set REG_stem = $BOLD_stem
 		set MASK_stem = $BOLD_stem
 		set REG_stem = $REG_stem"_$curr_stem"
+
+		#combine BBR cost with disortion correction and without distortion correction
+		if ( $is_distortion_corrected == 1 ) then
+			# in the CBIG_preproc_bbregister_instra_sub_reg.cost file, the first number is the BBR cost
+			# with distortion correction, the second number is the BBR cost without distortion correction
+			# By right, the first number should not be greater than the second number
+			set bbr_cost_with_sdc = `cat $output_dir/$subject/qc/CBIG_preproc_bbregister_intra_sub_reg.cost`
+			set bbr_cost_without_sdc = `cat $output_dir/$subject/qc/CBIG_preproc_bbregister_intra_sub_reg_no_sdc.cost`
+			
+			# output a warning if BBR cost with SDC is higher than BBR cost without SDC
+			set run_number = 1
+			while ( $run_number < = $#bbr_cost_with_sdc )
+				set bbr_cost_with_sdc_current_run = `printf "%f" $bbr_cost_with_sdc[$run_number]`
+				set bbr_cost_without_sdc_current_run = `printf "%f" $bbr_cost_without_sdc[$run_number]`
+				if ( `echo "$bbr_cost_with_sdc_current_run > $bbr_cost_without_sdc_current_run" | bc` ) then 
+					echo "[WARNING] BBR cost is higher with distortion correction ($bbr_cost_with_sdc)\
+than without distortion correction ($bbr_cost_without_sdc)." >> $LF
+				endif
+				@ run_number = $run_number + 1
+			end
+			unset run_number
+
+			set cmd = "paste $output_dir/$subject/qc/CBIG_preproc_bbregister_intra_sub_reg.cost"
+			set cmd = "$cmd $output_dir/$subject/qc/CBIG_preproc_bbregister_intra_sub_reg_no_sdc.cost >"
+			set cmd = "$cmd $output_dir/$subject/qc/CBIG_preproc_bbregister_intra_sub_reg_sdc.cost"
+			eval $cmd >& /dev/null
+
+			rm $output_dir/$subject/qc/CBIG_preproc_bbregister_intra_sub_reg_no_sdc.cost
+			rm $output_dir/$subject/qc/CBIG_preproc_bbregister_intra_sub_reg.cost
+			set cmd = "mv $output_dir/$subject/qc/CBIG_preproc_bbregister_intra_sub_reg_sdc.cost"
+			set cmd = "$cmd $output_dir/$subject/qc/CBIG_preproc_bbregister_intra_sub_reg.cost"
+			eval $cmd >& /dev/null
+
+		endif
 		
 		#check existence of output
 		foreach curr_bold ($zpdbold)
@@ -462,6 +568,7 @@ can not be found" >> $LF
 				exit 1
 			endif
 		end
+
 
 	##########################################
 	# Preprocess step: Regression ( Use ouput of last step as the MASK input )
@@ -847,7 +954,21 @@ DESCRIPTION:
 	    does motion correction with spline interpolation and calculates Framewise Displacement and DVARS, 
 	    then generates a vector indicating censored frames (1:keep 0:censored). This step throws away the
 	    runs where the number of outliers are more than the threshold set by -discard-run option.
-	(4) [CBIG_preproc_bbregister] 
+	(4) [CBIG_spatial_distortion_correction -fpm "oppo_PED" -j_minus <j_minus_image> -j_plus <j_plus_image>\
+		-j_minus_trt <j_minus_total_readout_time> -j_plus_trt <j_plus_total_readoutime>\
+	    -ees <effective_echo_spacing> -te <TE>]
+		or
+		[CBIG_preproc_spatial_distortion_correction -fpm "mag+phasediff"\ 
+	    -m <magnitude_image> -p <phase_difference_image> -delta <phase_image_TE_difference> -ees <effective_echo_spacing>\
+	    -te <TE>]
+	    corrects for spatial distortion caused by susceptibilty-induced off-resonance field. This step requires fieldmap
+	    images (either in magnitude and phase differnce form or opposite phase encoding directions form) and assumes that 
+	    the functional image has gone through motion correction. Note that in the case of opposite phase ecnoding 
+	    direction, please ensures that FSL version is 5.0.10, the outputs may otherwise be erroneous; also, this script 
+	    currently only supports phase encoding directions along AP (j-) and PA (j) directions. For more details, please refer
+		to our spatial distortion correction READEME here: $CBIG_CODE_DIR/stable_projects/preprocessing/\
+		CBIG_fMRI_Preproc2016/spatial_distortion_correction_readme.md
+	(5) [CBIG_preproc_bbregister] 
 	    a) Do bbregister with fsl initialization for each run. 
 	    b) Choose the best run with lowest bbr cost. Apply the registration matrix of the best run to 
 	    other runs and recompute the bbr cost. If the cost computed using best run registration is 
@@ -855,25 +976,25 @@ DESCRIPTION:
 	    run registration as the final registration of this run. Otherwise, use the original registration.
 	    c) To save disk space, it also generates a loose whole brain mask and applies it to input fMRI 
 	    volumes. If you follow the default config file, then the input fMRI volumes are motion corrected volumes.
-	(5) [CBIG_preproc_regress -whole_brain -wm -csf -motion12_itamar -detrend_method detrend -per_run -censor \
+	(6) [CBIG_preproc_regress -whole_brain -wm -csf -motion12_itamar -detrend_method detrend -per_run -censor \
 	     -polynomial_fit 1] 
 	    regresses out motion, whole brain, white matter, ventricle, linear regressors for each run seperately. 
 	    If the data have censored frames, this function will first estimate the beta coefficients ignoring the 
 	    censored frames and then apply the beta coefficients to all frames to regress out those regressors.  
-	(6) [CBIG_preproc_censor -nocleanup -max_mem NONE] 
+	(7) [CBIG_preproc_censor -nocleanup -max_mem NONE] 
 	    removes (ax+b) trend of censored frames, then does censoring with interpolation. For interpolation method, 
 	    please refer to (Power et al. 2014). In our example_config.txt, "-max_mem NONE" means the maximal memory usage 
 	    is not specified, the actual memory usage will vary according to the size of input fMRI file (linearly 
 	    proportional). If you want to ensure the memory usage does not exceed 10G, for example, you can pass in 
 	    "-max_mem 9".
-	(7) [CBIG_preproc_despiking]
+	(8) [CBIG_preproc_despiking]
 	    uses AFNI 3dDespike to conduct despiking. This function can be used to replace censoring interpolation step (6),  
 	    depending on the requirement of users.
-	(8) [CBIG_preproc_bandpass -low_f 0.009 -high_f 0.08 -detrend] 
+	(9) [CBIG_preproc_bandpass -low_f 0.009 -high_f 0.08 -detrend] 
 	    does bandpass filtering with passband = [0.009, 0.08] (boundaries are included). This step applies FFT 
 	    on timeseries and cuts off the frequencies in stopbands (rectanguluar filter), then performs inverse FFT 
 	    to get the result.
-	(9) [CBIG_preproc_QC_greyplot -FD_th 0.2 -DV_th 50]
+	(10) [CBIG_preproc_QC_greyplot -FD_th 0.2 -DV_th 50]
 	    creates greyplots for quality control purpose. Greyplots contain 4 subplots: framewise displacement trace (with 
 	    censoring threshold), DVARS trace (with censoring threshold), global signal, and grey matter timeseries.
 	    In our default config file, we only create the grey plots just before projecting the data to surface/volumetric 
@@ -881,16 +1002,16 @@ DESCRIPTION:
 	    to compare the greyplots after different steps, they can insert this step multiple times in the config file 
 	    (but must be after CBIG_preproc_bbregister step because it needs intra-subject registration information to 
 	    create masks).
-	(10) [CBIG_preproc_native2fsaverage -proj fsaverage6 -down fsaverage5 -sm 6] 
+	(11) [CBIG_preproc_native2fsaverage -proj fsaverage6 -down fsaverage5 -sm 6] 
 	    projects fMRI to fsaverage6, smooths it with fwhm = 6mm and downsamples it to fsaverage5.
-	(11) [CBIG_preproc_FC_metrics -Pearson_r -censor -lh_cortical_ROIs_file <lh_cortical_ROIs_file> \
+	(12) [CBIG_preproc_FC_metrics -Pearson_r -censor -lh_cortical_ROIs_file <lh_cortical_ROIs_file> \
 	      -rh_cortical_ROIS_file <rh_cortical_ROIs_file>]
 	    computes FC (functional connectivity) metrics based on both cortical and subcortical ROIs. The cortical ROIs 
 	    can be passed in by -lh_cortical_ROIs and -rh_cortical_ROIs. The subcortical ROIs are 19 labels extracted 
 	    from aseg in subject-specific functional space. This function will support for multiple types of FC metrics
 	    in the future, but currently we only support static Pearson's correlation by using "-Pearson_r" flag. 
 	    If "-censor" flag is used, the censored frames are ignored when computing FC metrics.
-	(12) [CBIG_preproc_native2mni_ants -sm_mask \
+	(13) [CBIG_preproc_native2mni_ants -sm_mask \
 	      ${CBIG_CODE_DIR}/data/templates/volume/FSL_MNI152_masks/SubcorticalLooseMask_MNI1mm_sm6_MNI2mm_bin0.2.nii.gz \
 	      -final_mask ${FSL_DIR}/data/standard/MNI152_T1_2mm_brain_mask_dil.nii.gz]
 	    first, projects fMRI to FSL MNI 2mm space using ANTs registration; second, smooth it by fwhm = 6mm within 
@@ -898,9 +1019,9 @@ DESCRIPTION:
 	    Caution: if you want to use this step, please check your ANTs software version. There is a bug in early builds 
 	    of ANTs (before Aug 2014) that causes resampling for timeseries to be wrong. We have tested that our codes 
 	    would work on ANTs version 2.2.0. 
-	(13) [CBIG_preproc_native2mni -down FSL_MNI_2mm -sm 6 -sm_mask <sm_mask> -final_mask <final_mask>] 
-	    it has the similar functionality as (12) but using FreeSurfer with talairach.m3z, not ANTs. We suggest the 
-	    users use (12) instead of (13).
+	(14) [CBIG_preproc_native2mni -down FSL_MNI_2mm -sm 6 -sm_mask <sm_mask> -final_mask <final_mask>] 
+	    it has the similar functionality as (13) but using FreeSurfer with talairach.m3z, not ANTs. We suggest the 
+	    users use (13) instead of (14).
 	    First, this step projects fMRI to FreeSurfer nonlinear space; second, projects the image from FreeSurfer 
 	    nonlinear space to FSL MNI 1mm space; third, downsamples the image from FSL MNI 1mm space to FSL MNI 2mm space; 
 	    fourth, smooths it by fwhm = 6mm within <sm_mask>; and last, masks the result by <final_mask> to save disk 
@@ -945,7 +1066,8 @@ REQUIRED ARGUMENTS:
 	                            ###CBIG fMRI preprocessing configuration file
 	                            ###The order of preprocess steps is listed below
 	                            CBIG_preproc_skip -skip 4
-	                            CBIG_preproc_fslslicetimer -slice_timing ${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/example_slice_timing.txt
+	                            CBIG_preproc_fslslicetimer -slice_timing \
+${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/example_slice_timing.txt
 	                            CBIG_preproc_fslmcflirt_outliers -FD_th 0.2 -DV_th 50 -discard-run 50 -rm-seg 5
 
 	                            The symbol # in the config file also means comment, you can write anything you want if 
@@ -1002,7 +1124,8 @@ OUTPUTS:
 		"sm6" = data smoothed with a FWHM = 6mm kernel
 		"finalmask" = masking the final image to save space.
 		b. 
-		vol/Sub0033_Ses1_bld002_rest_skip4_stc_mc_resid_interp_FDRMS0.2_DVARS50_bp_0.009_0.08_FS1mm_MNI1mm_MNI2mm_sm6_finalmask.nii.gz 
+		vol/Sub0033_Ses1_bld002_rest_skip4_stc_mc_resid_interp_FDRMS0.2_DVARS50_bp_0.009_0.08_FS1mm_MNI1mm_MNI2mm_\
+		sm6_finalmask.nii.gz 
 		is the BOLD data of run 002 ("bld002") in subject "Sub0033_Ses1", generated after CBIG_preproc_native2mni step. 
 		The remaining descriptors in the filename describe the order of the processing steps. In particular,
 		"FS1mm" = projection of data to freesurfer nonlinear 1mm volumetric space
