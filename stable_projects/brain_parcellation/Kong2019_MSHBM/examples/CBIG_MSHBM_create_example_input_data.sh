@@ -54,7 +54,7 @@ done
 # Copy initialization parameters into output directory
 ######################################################
 
-cp -r $CBIG_CODE_DIR/stable_projects/brain_parcellation/Kong2019_MSHBM/examples/input/group \
+rsync -az $CBIG_CODE_DIR/stable_projects/brain_parcellation/Kong2019_MSHBM/examples/input/group \
 $out_dir/estimate_group_priors
 
 ##############################
@@ -117,14 +117,14 @@ rh.sub${sub}_sess1_fsaverage5_roifsaverage3.surf2surf_profile_${split}.nii.gz"
 done
 
 # for simplicity, the training set and test set are the same for the examples
-cp -r $out_dir/estimate_group_priors/profile_list/training_set/* \
+rsync -az $out_dir/estimate_group_priors/profile_list/training_set/* \
 $out_dir/generate_individual_parcellations/profile_list/test_set
 
 ####################################################################
 # Copy estimated group priors for individual parcellation generation
 ####################################################################
 
-cp -r $CBIG_CODE_DIR/stable_projects/brain_parcellation/Kong2019_MSHBM/examples/input/priors \
+rsync -az $CBIG_CODE_DIR/stable_projects/brain_parcellation/Kong2019_MSHBM/examples/input/priors \
 $out_dir/generate_individual_parcellations
 
 	

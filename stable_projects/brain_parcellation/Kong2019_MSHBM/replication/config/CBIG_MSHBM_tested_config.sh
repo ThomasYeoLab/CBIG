@@ -1,5 +1,5 @@
 #! /bin/sh
-# Last successfully run on May 28th, 2018
+# Last successfully run on Nov 18th, 2019 with git repository version v0.15.4-Update_KRR
 # Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 
@@ -22,7 +22,8 @@ export CBIG_FSLDIR=/apps/arch/Linux_x86_64/fsl/5.0.8
 
 # DO NOT CHANGE: define locations for unit tests data and replication data
 export CBIG_TESTDATA_DIR=/mnt/eql/yeo1/CBIG_test_data/unit_tests
-export CBIG_MSHBM_REP_GSP_DIR=/mnt/eql/yeo3/data/GSP2016/CBIG_preproc_global_cen_bp/GSP_test_retest/CBIG2016_preproc_global_cen_bp/profiles
+export CBIG_MSHBM_REP_GSP_DIR=/mnt/eql/yeo3/data/GSP2016/CBIG_preproc_global_cen_bp/\
+GSP_test_retest/CBIG2016_preproc_global_cen_bp/profiles
 export CBIG_MSHBM_REP_HCP_DIR=/mnt/eql/yeo8/data/HCP_S1200_postprocessing
 export CBIG_MSHBM_REP_HNU_DIR=/mnt/eql/yeo9/data/HNU/CBIG2016_preproc_global_cen_bp/profiles
 

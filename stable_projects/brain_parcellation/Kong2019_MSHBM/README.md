@@ -53,14 +53,14 @@ The individual 17-network parcellations of HCP data are not included in the curr
 
 To download the version of the code that is last tested, you can either
 
-- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.0-Fix_Absolute_Path](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.0-Fix_Absolute_Path)
+- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.18.0-Xue2021_IndCerebellum](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.18.0-Xue2021_IndCerebellum)
 
 or
 
 - run the following command, if you have Git installed
 
 ```
-git checkout -b Kong2019_MSHBM v0.17.0-Fix_Absolute_Path
+git checkout -b Kong2019_MSHBM v0.18.0-Xue2021_IndCerebellum
 ```
 
 ----
@@ -398,6 +398,8 @@ Updates
 - Release v0.15.3 (16/10/2019): Update reference; change min/max thresholds in `CBIG_DrawSurfaceMaps` plotting command
 
 - Release v0.17.0 (19/02/2020): Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths.
+
+- Release v0.18.0 (13/01/2021): Add optional arguments to support Xue2021_IndCerebellum
 
 Bugs and Questions
 ====

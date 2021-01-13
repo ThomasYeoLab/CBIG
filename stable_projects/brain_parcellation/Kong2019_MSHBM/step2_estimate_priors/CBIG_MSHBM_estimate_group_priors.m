@@ -1,6 +1,6 @@
-function Params = CBIG_MSHBM_estimate_group_priors(project_dir,mesh,num_sub,num_sess,num_clusters,max_iter)
+function Params = CBIG_MSHBM_estimate_group_priors(project_dir,mesh,num_sub,num_sess,num_clusters,varargin)
 
-% Params = CBIG_MSHBM_generate_individual_parcellation_FS(project_dir,mesh,sub,sess,num_clusters,max_iter)
+% Params = CBIG_MSHBM_estimate_group_priors(project_dir,mesh,num_sub,num_sess,num_clusters,varargin)
 %
 % This script will estimate group priors for individual-level parcellation
 % generation. The estimated group priors include:
@@ -83,9 +83,20 @@ function Params = CBIG_MSHBM_estimate_group_priors(project_dir,mesh,num_sub,num_
 %
 %     The number of networks of the parcellations. For example, '17'.
 %
+% Optional input:
+%
 %   - max_iter: (string)
 %     
 %     The maximum iteration of the algorithm. Default is '50'.
+%
+%   - conv_th: (string)
+%     
+%     The convergence threshould of the algorithm. Default is '1e-5'.
+%
+%   - save_all: (string)
+%     
+%     '1' means save all parameters. '0' means skip some parameters to save
+%     space. Default is '0';
 %
 % Output:
 %   
@@ -141,19 +152,18 @@ function Params = CBIG_MSHBM_estimate_group_priors(project_dir,mesh,num_sub,num_
 
 addpath('../lib/');
 
-
-if(nargin == 6)
-    max_iter = str2num(max_iter);
-else
-    max_iter = 50;
-end
-
+pnames = {'max_iter' 'conv_th' 'save_all'};
+dflts =  {'50' '1e-5' '0'};
+[max_iter, conv_th, save_all] = internal.stats.parseArgs(pnames, dflts, varargin{:});
 
 %% setting parameters
 setting_params.num_sub = str2double(num_sub); 
 setting_params.num_session = str2double(num_sess);
 setting_params.num_clusters = str2double(num_clusters);
 setting_params.epsilon = 1e-4;
+setting_params.conv_th = str2double(conv_th);
+setting_params.max_iter = str2double(max_iter);
+setting_params.save_all = str2double(save_all);
 setting_params.mesh = mesh;
 
 %% read in data
@@ -273,14 +283,17 @@ while(stop_inter == 0)
 
     update_cost_inter = Params.cost_intra;    
     Params.Record(Params.iter_inter) = update_cost_inter;
-    if(abs(abs(update_cost_inter - cost_inter)./cost_inter) <= 1e-5 || Params.iter_inter >= max_iter)
+    if(abs(abs(update_cost_inter - cost_inter)./cost_inter) <= setting_params.conv_th || ...
+            Params.iter_inter >= setting_params.max_iter)
         stop_inter = 1;
         Params.cost_inter = update_cost_inter;
 
         % set s_lambda, s_psi, s_t_nu to be empty to save space and time
-        Params.s_lambda = [];
-        Params.s_psi = [];
-        Params.s_t_nu = [];
+        if(save_all==0)
+            Params.s_lambda = [];
+            Params.s_psi = [];
+            Params.s_t_nu = [];
+        end
         if(~exist(fullfile(project_dir, 'priors')))
             mkdir(fullfile(project_dir, 'priors'));
         end

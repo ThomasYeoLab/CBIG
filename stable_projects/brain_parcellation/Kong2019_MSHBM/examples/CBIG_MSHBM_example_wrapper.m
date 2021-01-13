@@ -10,17 +10,20 @@ function [Params, lh_labels, rh_labels] = CBIG_MSHBM_example_wrapper(out_dir)
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
 
 %% Generating input example data
-system(['${CBIG_CODE_DIR}/stable_projects/brain_parcellation/Kong2019_MSHBM/examples/CBIG_MSHBM_create_example_input_data.sh ' out_dir]);
+cmd = '${CBIG_CODE_DIR}/stable_projects/brain_parcellation/Kong2019_MSHBM';
+cmd = [cmd '/examples/CBIG_MSHBM_create_example_input_data.sh ' out_dir];
+system(cmd);
 
 
 %% Example1: Group priors estimation
 cd(fullfile(CBIG_CODE_DIR, 'stable_projects', 'brain_parcellation', 'Kong2019_MSHBM', 'step2_estimate_priors'));
 
 project_dir = fullfile(out_dir, 'estimate_group_priors');
-Params = CBIG_MSHBM_estimate_group_priors(project_dir,'fsaverage5','2','2','17','5');
+Params = CBIG_MSHBM_estimate_group_priors(project_dir, 'fsaverage5', '2', '2', '17', 'max_iter', '5');
 
 %% Example2: Individual-level parcellations generation
-cd(fullfile(CBIG_CODE_DIR, 'stable_projects', 'brain_parcellation', 'Kong2019_MSHBM', 'step3_generate_ind_parcellations'));
+cd(fullfile(CBIG_CODE_DIR, 'stable_projects', 'brain_parcellation', 'Kong2019_MSHBM', ...
+    'step3_generate_ind_parcellations'));
 
 project_dir = fullfile(out_dir, 'generate_individual_parcellations');
 

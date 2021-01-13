@@ -154,7 +154,7 @@ Start Matlab, in Matlab command window, run the following commands to estimate g
 
 ```
 project_dir = '<output_dir>/estimate_group_priors';
-Params = CBIG_MSHBM_estimate_group_priors(project_dir,'fsaverage5','2','2','17','5');
+Params = CBIG_MSHBM_estimate_group_priors(project_dir,'fsaverage5','2','2','17','max_iter','5');
 ```
 As there are only two subjects, the script may not be able to converge, we will only run 5 iterations in this example. The results of each iteration will be saved into `priors` folder, the results of each iteration will be saved as `Params_iteration?.mat`, which contains a struct variable `Params`. The final estimated group priors should be saved as `Params_Final.mat`.
 
@@ -266,6 +266,32 @@ The user can compare the generated individual parcellations with the following f
 
 ##### CoRR-HNU subject 2
 ![visualization_of_subject_2](results/generate_individual_parcellations/figures/ind_parcellation_sub2.jpg)
+
+### Example wrapper script
+----
+
++ We provide a wrapper script which runs through the entire example tutorial:
+
+   `$CBIG_CODE_DIR/stable_projects/brain_parcellation/Kong2019_MSHBM/examples/CBIG_MSHBM_example_wrapper.m`
+
+   User can use this wrapper script as a reference. Please run the following command:
+   ```
+   cd $CBIG_CODE_DIR/stable_projects/brain_parcellation/Kong2019_MSHBM/examples
+   CBIG_MSHBM_example_wrapper(out_dir)
+   ```
+   Results will be saved in `out_dir`.
+
++ We also provide a script which checks user's example results with our reference results:
+
+   `$CBIG_CODE_DIR/stable_projects/brain_parcellation/Kong2019_MSHBM/examples/CBIG_MSHBM_check_example_results.m`
+
+   Assume your example results are saved in `out_dir`. Please run the following command to check your results:
+   ```
+   cd $CBIG_CODE_DIR/stable_projects/brain_parcellation/Kong2019_MSHBM/examples
+   CBIG_MSHBM_check_example_results(out_dir)
+   ```
+   You will receive this message if your results are correct:
+   `Your example results are correct!`.
 
 ----
 

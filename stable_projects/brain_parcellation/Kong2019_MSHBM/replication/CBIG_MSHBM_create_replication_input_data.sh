@@ -24,10 +24,10 @@ mkdir -p $out_dir/generate_individual_parcellations/HCP
 # Copy initialization parameters into output directory
 ######################################################
 
-cp -r "$CBIG_CODE_DIR/stable_projects/brain_parcellation/Kong2019_MSHBM/replication/input/\
+rsync -az "$CBIG_CODE_DIR/stable_projects/brain_parcellation/Kong2019_MSHBM/replication/input/\
 estimate_group_priors/GSP_HNU/group" $out_dir/estimate_group_priors/GSP_HNU
 
-cp -r "$CBIG_CODE_DIR/stable_projects/brain_parcellation/Kong2019_MSHBM/replication/input/\
+rsync -az "$CBIG_CODE_DIR/stable_projects/brain_parcellation/Kong2019_MSHBM/replication/input/\
 estimate_group_priors/HCP/group" $out_dir/estimate_group_priors/HCP
 
 ########################################
@@ -86,10 +86,10 @@ done
 # Copy estimated group priors for individual parcellation generation
 ####################################################################
 
-cp -r "$CBIG_CODE_DIR/stable_projects/brain_parcellation/Kong2019_MSHBM/replication/input\
+rsync -az "$CBIG_CODE_DIR/stable_projects/brain_parcellation/Kong2019_MSHBM/replication/input\
 /generate_individual_parcellations/GSP_HNU/priors" $out_dir/generate_individual_parcellations/GSP_HNU
 
-cp -r "$CBIG_CODE_DIR/stable_projects/brain_parcellation/Kong2019_MSHBM/replication/input\
+rsync -az "$CBIG_CODE_DIR/stable_projects/brain_parcellation/Kong2019_MSHBM/replication/input\
 /generate_individual_parcellations/HCP/priors" $out_dir/generate_individual_parcellations/HCP
 
 ########################################
