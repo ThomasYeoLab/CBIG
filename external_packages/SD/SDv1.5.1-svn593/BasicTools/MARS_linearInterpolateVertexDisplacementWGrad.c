@@ -111,7 +111,7 @@ mexFunction(
     
     const float radius_sq = dotVectors(vertices, vertices);    
     float Dx[9], Dx_sq[9], temp_grad2[9];
-    int grad_dims[3];
+    mwSize grad_dims[3];
     int p, f, fno_c_style;
     int i;
     

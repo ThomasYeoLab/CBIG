@@ -8,7 +8,11 @@ read -p "Are you sure? (y/n) " answer
 if echo "$answer" | grep -iq "^y" ; then
     # store current directory
     WORKDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-    INSTALLER="/apps/arch/Linux_x86_64/Miniconda3-latest-Linux-x86_64.sh"
+    INSTALLER="/apps/Miniconda3-latest-Linux-x86_64.sh"
+    
+    # Set LC_ALL=C to avoid possible errors when install packages via pip
+    # Reference: https://stackoverflow.com/questions/36394101/pip-install-locale-error-unsupported-locale-setting
+    export LC_ALL=C
 
     # check if conda has already been installed
     conda --version > /dev/null 2>&1
@@ -17,7 +21,7 @@ if echo "$answer" | grep -iq "^y" ; then
     # download and install miniconda
     if [ $install_conda -ne 0 ]; then
         # default installation directory
-        INSTALLATION_DIR=$HOME/miniconda
+        INSTALLATION_DIR=$HOME/storage/miniconda
         echo "-- Downloading Python packages manager (conda) --"
         echo "After that, its path will be added into your .bashrc file."
         echo "conda's path: $INSTALLATION_DIR"

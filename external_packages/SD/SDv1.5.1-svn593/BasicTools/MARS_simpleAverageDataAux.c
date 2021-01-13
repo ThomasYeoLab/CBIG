@@ -84,7 +84,7 @@ mexFunction(
     float dist2nbor_sq, w_tot, sc, w_cur;
     float inv_two_var;
     float * tmp_data;
-    int out_dims[2];
+    mwSize out_dims[2];
     
     out_dims[0] = dataDim;
     out_dims[1] = numOfVertices;

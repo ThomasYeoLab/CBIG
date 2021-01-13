@@ -1,0 +1,246 @@
+#!/bin/csh -f
+
+##############################
+## Written by Ru(by) Kong
+##############################
+
+set n = `echo $argv | grep -e -help | wc -l`
+
+# if there is no arguments or there is -help option 
+if( $#argv == 0 || $n != 0 ) then
+	# print help	
+	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+	exit 0;
+endif
+
+######################################################
+# find the current diretory and set working directory
+######################################################
+set curr_dir = `pwd`
+set username = `whoami`
+set work_dir = /home/$username/cluster/ 
+
+if (! -e $work_dir) then
+        mkdir -p $work_dir
+endif
+
+################################
+# set job submission parameters
+################################
+
+set walltime = '01:00:00'
+set ncpus = '1'
+set memory = '8GB'
+set sleeptime = '3'
+
+set jobname = ""
+set stderr_file = ""
+set stdout_file = ""
+set script_file = ""
+
+goto parse_args;
+parse_args_return:
+
+goto check_params;
+check_params_return:
+
+
+#############################################
+# Avoid large memory job being sent to shortQ 
+#############################################
+set hour = `echo $walltime | cut -d ':' -f1`
+set min = `echo $walltime | cut -d ':' -f2`
+set sec = `echo $walltime | cut -d ':' -f3`
+@ timenum = $hour * 3600 + $min * 60 + $sec
+if ( $timenum <= 600) then
+	if ( "$memory" =~ *"G"* ) then
+		set memnum = `(echo $memory | awk -F'G' '{ print $1 }')`
+		if ( $memnum > 750 ) then
+			echo "WARNING: Your job requires large memory: $memnum GB but small walltime: $walltime."
+			echo "WARNING: To avoid your job being sent to shortQ, your walltime will be adjusted to 00:20:00."
+			set walltime = 00:20:00
+		else if ( $memnum > 40 ) then
+			echo "WARNING: Your job requires large memory: $memnum GB but small walltime: $walltime."
+			echo "WARNING: To avoid your job being sent to shortQ, you might want to increase your walltime."
+		endif
+	endif
+endif
+
+#####################
+# Print out job info
+#####################
+echo "[JOB INFO]: Walltime = ${walltime}"
+echo "[JOB INFO]: Number of CPUs = ${ncpus}"
+echo "[JOB INFO]: Memory = ${memory}"
+echo "[JOB INFO]: Command = ${cmd_script}"
+set cmd = "-V -l walltime=${walltime} -l mem=${memory} -l nodes=1:ppn=${ncpus} -m ae"
+
+if ( "$jobname" != "" ) then
+    set cmd = "$cmd -N ${jobname}"
+endif
+
+if ( "$stderr_file" != "" ) then
+    set cmd = "$cmd -e ${stderr_file}"
+endif
+
+if ( "$stdout_file" != "" ) then
+    set cmd = "$cmd -o ${stdout_file}"
+endif
+
+
+# check current node. Job can only be submitted from the headnode
+set currnode = `hostname`
+if ( "$currnode" != "headnode" ) then
+	echo "WARNING: ssh from $currnode to headnode ..."
+	# submit job
+	ssh headnode "cd $work_dir; qsub ${cmd} -- ${cmd_script}"
+else
+	# submit job
+	cd ${work_dir}
+	echo "${cmd_script}" | qsub $cmd
+endif
+
+sleep ${sleeptime}
+
+exit 0
+
+##########################################
+# Parse Arguments 
+##########################################	
+
+parse_args:
+set cmdline = "$argv";
+while( $#argv != 0 )
+	set flag = $argv[1]; shift;
+	
+	switch($flag)
+		case "-cmd":
+			if ( $#argv == 0 ) goto arg1err;
+			set cmd_script = ($argv[1]); shift;
+			breaksw	
+
+		case "-walltime":
+			if ( $#argv == 0 ) goto arg1err;
+			set walltime = $argv[1]; shift;
+			breaksw	
+		
+		case "-ncpus":
+			if ( $#argv == 0 ) goto arg1err;
+			set ncpus = $argv[1]; shift;
+			breaksw	
+		
+		case "-mem":
+			if ( $#argv == 0 ) goto arg1err;
+			set memory = $argv[1]; shift;
+			breaksw	
+			
+		case "-name":
+			if ( $#argv == 0 ) goto arg1err;
+			set jobname = $argv[1]; shift;
+			breaksw	
+
+		case "-joberr":
+			if ( $#argv == 0 ) goto arg1err;
+			set stderr_file = $argv[1]; shift;
+			breaksw	
+
+		case "-jobout":
+			if ( $#argv == 0 ) goto arg1err;
+			set stdout_file = $argv[1]; shift;
+			breaksw	
+
+		case "-script":
+			if ( $#argv == 0 ) goto arg1err;
+			set script_file = $argv[1]; shift;
+			breaksw	
+			
+		default:
+			echo ERROR: Flag $flag unrecognized.
+			echo $cmdline
+			exit 1
+			breaksw
+	endsw
+end
+goto parse_args_return;
+
+
+##########################################
+# Check Parameters
+##########################################
+
+check_params:
+if ( "$cmd_script" == "" ) then
+	echo "ERROR: submitted command or script not specified"
+	exit 1;
+endif
+
+goto check_params_return;
+
+
+##########################################
+# ERROR message
+##########################################	
+
+arg1err:
+  echo "ERROR: flag $flag requires one argument"
+  exit 1
+
+arg2err:
+  echo "ERROR: flag $flag requires two arguments"
+  exit 1
+
+##############################################
+# Everything below is printed as part of help
+##############################################
+BEGINHELP
+
+NAME: 
+    CBIG_pbsubmit
+
+!! MUST-READ !!: 
+    Please submit your job from headnode: 
+    1. Check your current node using command `hostname`. 
+    2. If you are not in the headnode, use `ssh headnode` to access headnode.
+    3. [DANGEROUS] If you have to submit job from compiler for some reasons, this script will ssh headnode and submit
+       job for you. But your job command has to be a formatted as a script with/without input arguments, e.g.,
+       "/path/my_job_script.sh input1 input2 input3"
+    4. If you want to run your job under conda enviroment, e.g. CBIG_py3, you must activate corresponding environment
+       in "cmd" argument. For example, when you want to submit jobs under CBIG_py3, you need to use 
+       "source activate CBIG_py3;<your_job_wrapper.sh>;source deactivate" as your "cmd" argument. 
+
+DESCRIPTION:
+    This script is a job submission script which is used to submit a command or a script to server scheduler as a job.
+    The resource usage of your job can be found in $HOME/cluster/STDIN.o????.STATS once the job is finished. 
+    ********************************************
+    Default setting:
+    Walltime = 01:00:00
+    Number of CPUs = 1
+    Memory = 8G
+    Job output log = $HOME/cluster/STDIN.o????
+    Job error log = $HOME/cluster/STDIN.e????	 
+	
+REQUIRED ARGUMENTS:
+    -cmd    <cmd>:  The script to be submitted.
+                    IMPORTANT NOTE: If <cmd> contains string, please use double quote to quote it. e.g.,
+                    -cmd "/path/my_job_script.sh input1 input2 input3"
+                    or
+                    my_cmd="/path/my_job_script.sh input1 input2 input3"
+                    -cmd "${my_cmd}"	
+	                             
+OPTIONAL ARGUMENTS:
+    -walltime   <walltime>:         Specify the maximum run time (hours, minutes and seconds): HH:MM:SS. Default is 01:00:00.
+    -ncpus      <ncpus>:            Specify the number of CPUs for a job. Default is 1.
+    -mem        <memory>:           Specify the amount of maximum memory required (e.g. 3G). Default is 8G.
+    -name       <jobname>:          The job name.         
+    -joberr     <joberr_file>:      The path to the job error log file. e.g., "/path/myjoberr.log". Default is $HOME/cluster/STDIN.e????. 
+    -jobout     <jobout_file>:      The path to the job output log file. e.g., "/path/myjobout.log". Default is $HOME/cluster/STDIN.o????.	
+    -help       : help
+
+
+EXAMPLE:
+    ssh headnode
+    cmd="/path/my_job_script.sh input1 input2 input3"
+	
+    $CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "$cmd" 
+    $CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "$cmd" -walltime 00:30:00 -mem 4G -ncpus 2
+    $CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "$cmd" -walltime 00:30:00 -mem 4G -name "MYJOB" -joberr "/path/myjoberr.log" -jobout "/path/myjobout.log"

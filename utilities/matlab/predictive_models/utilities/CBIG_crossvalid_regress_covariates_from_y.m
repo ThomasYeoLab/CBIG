@@ -90,12 +90,12 @@ for test_fold = 1:num_test_folds
                 y_resid(test_ind,i) = CBIG_regress_X_from_y_test(y_in(test_ind,i), X_test, beta);
                 
                 if(num_test_folds==1)
+                    valid_ind = sub_fold(test_fold).fold_index==2;
                     if(isempty(regressors))
                         X_valid = [];
                     else
                         X_valid = regressors(valid_ind,:);
                     end
-                    valid_ind = sub_fold(test_fold).fold_index==2;
                     y_resid(valid_ind,i) = CBIG_regress_X_from_y_test(y_in(valid_ind,i), X_valid, beta);
                 end
             end

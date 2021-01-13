@@ -29,6 +29,12 @@ function params = CBIG_EM_AT(corpus, paradigm_by_exp, params)
 %
 % Written by B.T.Thomas Yeo and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
+
+if size(corpus{3},1) ~= 1
+    error('Input argument ''corpus{3}'' should be a row vector');
+end
+
+
 rand('twister', sum(10000*params.seed));
 lh_avg_mesh = CBIG_ReadNCAvgMesh('lh', 'fsaverage5', 'inflated', 'cortex');
 rh_avg_mesh = CBIG_ReadNCAvgMesh('rh', 'fsaverage5', 'inflated', 'cortex');
@@ -73,10 +79,12 @@ for iter = 1:params.em_max_iter
         log_likelihood_improvement = abs(new_log_likelihood - params.log_likelihood)/abs(params.log_likelihood);
     end
     params.log_likelihood = new_log_likelihood;
-    disp(['Iter ' num2str(iter, '%03d') ': log likelihood = ' num2str(params.log_likelihood) ' (' num2str(log_likelihood_improvement) '), time elapsed = ' num2str(toc)]);
+    disp(['Iter ' num2str(iter, '%03d') ': log likelihood = ' num2str(params.log_likelihood) ...
+        ' (' num2str(log_likelihood_improvement) '), time elapsed = ' num2str(toc)]);
     tic;
     
-    if(log_likelihood_improvement < params.em_convergence && iter >= params.em_min_iter && mod(iter, params.mod_smooth) ~= 1)
+    if(log_likelihood_improvement < params.em_convergence && iter >= params.em_min_iter ...
+            && mod(iter, params.mod_smooth) ~= 1)
         break;
     end
     

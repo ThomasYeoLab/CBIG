@@ -143,6 +143,103 @@ else
 fi
 
 ###
+# check whether committed files include any absolute paths (mnt, apps, data/users, share) 
+###
+abs_path_list=`cat $CBIG_CODE_DIR/hooks/list/absolute_path_list`
+all_without_abs_path=1
+echo -e "\n==> [Check] Checking that committed files do not include absolute paths.." | tee -a $logfile
+for file_path in "${files_to_be_committed[@]}"
+do
+    file_in_exclude=0
+    file_name=$(basename $file_path)
+    for excluded_file in "${EXCLUDED_FILES[@]}"
+    do
+        if [[ $file_name == $excluded_file ]]; then
+            file_in_exclude=1
+            break
+        fi
+    done
+    if [ $file_in_exclude == 1 ]; then
+        echo "$file_name will not be checked for absolute paths." | tee -a $logfile
+        continue
+    fi
+    for directory in "${DIRECTORIES_TO_CHECK[@]}"
+    do
+        if [[ $file_path == $directory/* ]] || [[ $file_path == $file_name ]]; then
+            for ext in "${EXTENSIONS_TO_CHECK[@]}"
+            do
+                if [[ $file_name = *.$ext ]]; then
+                    if [[ ! $file_name =~ "config" ]]; then
+                        for path_keyword in $abs_path_list; do
+                            abs_path=`grep $path_keyword $file_path`
+                            if [[ ! "$abs_path" == "" ]] && [[ ! "$abs_path" == *"#"*$path_keyword* ]] && [[ ! "$abs_path" == *"%"*$path_keyword* ]] && [[ ! "$abs_path" == *"//"*$path_keyword* ]]; then
+                                all_without_abs_path=0
+                                echo "$file_path includes absolute path: $abs_path" | tee -a $logfile
+                            fi
+                        done
+                    fi
+                fi
+            done
+        fi
+    done
+done
+
+if [ $all_without_abs_path == 0 ]; then
+    echo "   [FAILED] There are files including absolute paths without environment variables. Abort committing." | tee -a $logfile
+    echo "Please use environment variables." | tee -a $logfile
+else
+    echo "   [PASSED]" | tee -a $logfile
+fi
+
+###
+# check whether committed files include any banned keywords (cp) 
+###
+banword_list=`cat $CBIG_CODE_DIR/hooks/list/banned_keyword_list`
+all_without_banword=1
+echo -e "\n==> [Check] Checking that committed files do not banned keywords.." | tee -a $logfile
+for file_path in "${files_to_be_committed[@]}"
+do
+    file_in_exclude=0
+    file_name=$(basename $file_path)
+    for excluded_file in "${EXCLUDED_FILES[@]}"
+    do
+        if [[ $file_name == $excluded_file ]]; then
+            file_in_exclude=1
+            break
+        fi
+    done
+    if [ $file_in_exclude == 1 ]; then
+        echo "$file_name will not be checked for banned keywords." | tee -a $logfile
+        continue
+    fi
+    for directory in "${DIRECTORIES_TO_CHECK[@]}"
+    do
+        if [[ $file_path == $directory/* ]] || [[ $file_path == $file_name ]]; then
+            for ext in "${EXTENSIONS_TO_CHECK[@]}"
+            do
+                if [[ $file_name = *.$ext ]]; then
+                    if [[ ! $file_name =~ "config" ]]; then
+                        for banword in $banword_list; do
+                            banword_line=`grep $banword $file_path`
+                            if [[ ! "$banword_line" == "" ]] && [[ ! "$banword_line" == *"#"*$banword* ]] && [[ ! "$banword_line" == *"%"*$banword* ]] && [[ ! "$banword_line" == *"//"*$banword* ]]; then
+                                all_without_banword=0
+                                echo "$file_path includes banned keyword: $banword" | tee -a $logfile
+                            fi
+                        done
+                    fi
+                fi
+            done
+        fi
+    done
+done
+
+if [ $all_without_banword == 0 ]; then
+    echo "   [FAILED] There are files including banned keyworks. Abort committing." | tee -a $logfile
+else
+    echo "   [PASSED]" | tee -a $logfile
+fi
+
+###
 # check whether committed files have lines whose length is more than 120 characters 
 ###
 all_within_120=1
@@ -448,9 +545,9 @@ fi
 ###
 # if any checks failed,exit the program
 ###
-if [ $all_with_valid_prefixes == 0 -o $all_with_license == 0 -o $all_within_120 == 0 -o \
-    $all_with_valid_rmpath == 0 -o $all_with_valid_prefixes == 0 -o $all_python_mit == 0 -o \
-    $all_yapf_format == 0 -o $all_flake8_format == 0 ]; then
+if [ $all_with_valid_prefixes == 0 -o $all_with_license == 0 -o $all_without_abs_path == 0 -o $all_without_banword == 0 \
+    -o $all_within_120 == 0 -o $all_with_valid_rmpath == 0 -o $all_with_valid_prefixes == 0 -o $all_python_mit == 0 \
+    -o $all_yapf_format == 0 -o $all_flake8_format == 0 ]; then
     echo "[FAILED] Some checks failed." | tee -a $logfile
     echo "Check pre-commit hook log file: $logfile" | tee -a $logfile
     exit 1

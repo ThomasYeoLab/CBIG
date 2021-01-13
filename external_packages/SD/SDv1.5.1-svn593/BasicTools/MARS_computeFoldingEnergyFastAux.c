@@ -112,7 +112,7 @@ mexFunction(
     const int       numOfFaces      =   mxGetN(prhs[1]);
     const int       size_list_in    =   mxGetM(prhs[3]);
 
-    int f, scalar_dim, v, cur_face, size_list_out, N_in, vert;
+    int f, v, cur_face, N_in, vert; mwSize scalar_dim, size_list_out;
     int *   vertexList_out;
     const float * v0, * v1, * v2;
     int v0_ind, v1_ind, v2_ind, tmp_ind;

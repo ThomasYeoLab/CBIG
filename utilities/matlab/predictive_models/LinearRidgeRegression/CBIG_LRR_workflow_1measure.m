@@ -101,8 +101,10 @@ gpso_info = dir(fullfile(params.gpso_dir, 'deck'));
 if(isempty(setdiff({gpso_info.name}, {'.', '..'})))
     curr_dir = pwd;
     cd(getenv('CBIG_CODE_DIR'))
+    system('git config --global http.sslverify "false"');
     command = sprintf('git submodule update --init --recursive');
     system(command);
+    system('git config --global http.sslverify "true"');
     cd(curr_dir)
 end
 

@@ -38,3 +38,8 @@ __pycache__/
 # Unit test intermediate output folder
 unit_tests/**/output/**
 stable_projects/**/unit_tests/**/output
+stable_projects/**/examples/**/output
+
+# files inside submodules gpso and deck
+external_packages/matlab/non_default_packages/Gaussian_Process/deck/**
+external_packages/matlab/non_default/packages/Gaussian_Process/gpso/**

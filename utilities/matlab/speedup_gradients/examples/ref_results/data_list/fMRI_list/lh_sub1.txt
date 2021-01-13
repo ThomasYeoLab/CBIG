@@ -1,0 +1,2 @@
+/home/rkong/storage/CBIG_private/data/example_data/CoRR_HNU/subj01/subj01_sess1/surf/lh.subj01_sess1_bld002_rest_skip4_stc_mc_residc_interp_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6.nii.gz
+/home/rkong/storage/CBIG_private/data/example_data/CoRR_HNU/subj01/subj01_sess2/surf/lh.subj01_sess2_bld002_rest_skip4_stc_mc_residc_interp_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6.nii.gz

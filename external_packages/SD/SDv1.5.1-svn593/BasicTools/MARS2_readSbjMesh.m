@@ -89,7 +89,8 @@ if (isfield(params, 'metric_surf_filename'))
     %normalize surface area to be the same.
     %metricSurfaceArea = MARS_calculateSurfaceArea(metricVerts, faces);
     
-    metricSurfaceArea = sum(MARS_computeMeshFaceAreas(int32(size(faces, 1)), int32(faces'), single(metricVerts')));
+    metricSurfaceArea = sum(MARS_computeMeshFaceAreas(int32(size(faces, 1)), int32(faces'), single(metricVerts')), 'double');
+    metricSurfaceArea = single(metricSurfaceArea);
     surface_scaling_factor = sqrt(total_surface_area/metricSurfaceArea);
     metricVerts = metricVerts*surface_scaling_factor;
 else

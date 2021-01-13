@@ -1,5 +1,5 @@
 function [acc, pred_stats] = CBIG_KRR_test_cv_allparams_LITE( test_fold, sub_fold, ...
-    data_dir, y_resid_stem, with_bias, ker_param, lambda_set, threshold_set )
+    data_dir, y_resid_stem, with_bias, kernel, ker_param, lambda_set, threshold_set )
 
 % [acc] = CBIG_KRR_test_cv_allparams_LITE( test_fold, sub_fold, ...
 %     data_dir, y_resid_stem, ker_param, lambda_set, threshold_set )
@@ -55,6 +55,13 @@ function [acc, pred_stats] = CBIG_KRR_test_cv_allparams_LITE( test_fold, sub_fol
 %     (y - K*alpha - beta)^2 + (regularization of alpha), where beta is a
 %     constant bias for every subject, estimated from the data.
 % 
+%   - kernel
+%     a #AllSubjects x #AllSubjects kernel matrix (The ordering of subjects 
+%     follows the original subject list, i.e. the ordering in "feature_mat"
+%     or "similarity_mat".)
+%     A 'none' will be passed in, if it was saved in [outdir '/FSM']. 
+%     Algorithm will load it from the file.
+%
 %   - ker_param (optional)
 %     A K x 1 structure with two fields: type and scale. K denotes the
 %     number of kernels.
@@ -154,24 +161,26 @@ if(length(sub_fold)>1)
     train_ind_y = train_ind;
     test_ind_y = test_ind;
 else
-    train_ind = 1:length(find(sub_fold.fold_index==0));
-    test_ind = (length(find(sub_fold.fold_index==0))+1):(length(find(sub_fold.fold_index==0)) ...
-        + length(find(sub_fold.fold_index==1)) );
-    train_ind_y = find(sub_fold.fold_index==0);
-    test_ind_y = find(sub_fold.fold_index==1);
+    train_ind = find(sub_fold.fold_index==0);
+    test_ind = find(sub_fold.fold_index==1);
+    train_ind_y = train_ind;
+    test_ind_y = test_ind;
 end
 
 
 %% test CV for each parameter combination
 outdir = fullfile(data_dir, 'test_cv', ['fold_' num2str(test_fold)]);
 
-for k = 1:length(ker_param)
-    if(strcmp(ker_param(k).type, 'corr'))
-        kfile = [kernel_dir '/FSM_' ker_param(k).type '.mat'];
-    else
-        kfile = [kernel_dir '/FSM_' ker_param(k).type '_' num2str(ker_param(k).scale) '.mat'];
+if(strcmpi(kernel, 'none'))
+    clear kernel
+    for k = 1:length(ker_param)
+        if(strcmp(ker_param(k).type, 'corr'))
+            kfile = [kernel_dir '/FSM_' ker_param(k).type '.mat'];
+        else
+            kfile = [kernel_dir '/FSM_' ker_param(k).type '_' num2str(ker_param(k).scale) '.mat'];
+        end
+        kernel{k} = load(kfile);
     end
-    kernel{k} = load(kfile);
 end
 
 if(~exist(fullfile(outdir, ['acc' y_resid_stem '.mat']), 'file'))

@@ -10,20 +10,20 @@ fi
 export CBIG_CODE_DIR=$HOME/storage/CBIG_private
 
 # PLEASE CHANGE: define locations for these libraries
-export FREESURFER_HOME=/apps/arch/Linux_x86_64/freesurfer/5.3.0
-export CBIG_MATLAB_DIR=/apps/arch/Linux_x86_64/matlab/R2018b
-export CBIG_SPM_DIR=/apps/arch/Linux_x86_64/spm/spm12
-export CBIG_AFNI_DIR=/apps/arch/Linux_x86_64/afni/AFNI_2011_12_21_1014/linux_openmp_64
-export CBIG_ANTS_DIR=/apps/arch/Linux_x86_64/ants/ants_v2.2.0/BUILD/bin/
-export CBIG_WB_DIR=/apps/arch/Linux_x86_64/HCP/workbench-1.1.1/
-export CBIG_FSLDIR=/apps/arch/Linux_x86_64/fsl/5.0.10
+export FREESURFER_HOME=/apps/freesurfer/5.3.0
+export CBIG_MATLAB_DIR=/apps/matlab/R2018b
+export CBIG_SPM_DIR=/apps/spm/spm12
+export CBIG_AFNI_DIR=/apps/afni/AFNI_2011_12_21_1014/linux_openmp_64
+export CBIG_ANTS_DIR=/apps/ants/ants_v2.2.0/BUILD/bin/
+export CBIG_WB_DIR=/apps/HCP/workbench-1.1.1/
+export CBIG_FSLDIR=/apps/fsl/5.0.10
 
 # DO NOT CHANGE: define locations for unit tests data and replication data
-export CBIG_TESTDATA_DIR=/mnt/eql/yeo1/CBIG_test_data/unit_tests
-export CBIG_REPDATA_DIR=/mnt/eql/yeo1/CBIG_test_data/replication
+export CBIG_TESTDATA_DIR=/mnt/isilon/CSC1/Yeolab/CodeMaintenance/UnitTestData
+export CBIG_REPDATA_DIR=/mnt/isilon/CSC1/Yeolab/CodeMaintenance/ReplicationData
 
 # DO NOT CHANGE: define scheduler location
-export CBIG_SCHEDULER_DIR=/apps/sysapps/TORQUE/bin
+export CBIG_SCHEDULER_DIR=/opt/pbs/bin
 
 # DO NOT CHANGE: set up your environment with the configurations above
 SETUP_PATH=$CBIG_CODE_DIR/setup/CBIG_generic_setup.sh
@@ -31,7 +31,7 @@ source $SETUP_PATH
 
 # DO NOT CHANGE: set up temporary directory for MRIread from FS6.0 for CBIG 
 # members using the HPC, Other users should comment this out
-export TMPDIR=/tmpstore
+export TMPDIR=/tmp
 
 # Do NOT CHANGE: set up MATLABPATH so that MATLAB can find startup.m in our repo 
 export MATLABPATH=$CBIG_CODE_DIR/setup

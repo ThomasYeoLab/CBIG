@@ -80,7 +80,7 @@ mxArray *MARS_convertFaces2VertNbors(const mxArray *mxFaces, int numVerts)
     int *numFacesPerVertex, row, col, maxFaces = 0;
     
     int face_no, vno1, vno2, vno3, i;
-    mxArray *mxVertNbors; int *vertNbors, total_length;
+    mxArray *mxVertNbors; int *vertNbors; mwSize total_length;
     int *numNborsPerVertex;
     
     /*First access the face matrix*/

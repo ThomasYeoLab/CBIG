@@ -25,6 +25,13 @@ function q = CBIG_EM_doc_inference_wc(w, paradigm, params)
 %
 % Written by B.T.Thomas Yeo and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
+if size(w{3},1) ~= 1
+    error('Input argument ''w{3}'' should be a row vector');
+end
+if size(paradigm,2) ~= 1
+    error('Input argument ''paradigm'' should be a column vector');
+end
+
 num_paradigms = sum(paradigm);
 
 theta = params.theta(paradigm, :); % num_paradigms x T

@@ -26,13 +26,21 @@ function [params, doc_log_likelihood, q] = CBIG_EM_doc_e_step_wc(w, paradigm, pa
 %
 % Written by B.T.Thomas Yeo and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
+if size(w{3},1) ~= 1
+    error('Input argument ''w{3}'' should be a row vector');
+end
+if size(paradigm,2) ~= 1
+    error('Input argument ''paradigm'' should be a column vector');
+end
+
 q = CBIG_EM_doc_inference_wc(w, paradigm, params);
 
 % Compute document log likelihood
 doc_log_likelihood = CBIG_EM_doc_log_likelihood_wc(w, paradigm, params, q);
 
 % update theta for M-step: theta is A x T
-params.new_theta(paradigm, :) = params.new_theta(paradigm, :) + squeeze(sum(bsxfun(@times, q, reshape(w{3}, [1 1 length(w{3})])), 3)); % Ad x T
+params.new_theta(paradigm, :) = params.new_theta(paradigm, :) ...
+    + squeeze(sum(bsxfun(@times, q, reshape(w{3}, [1 1 length(w{3})])), 3)); % Ad x T
 
 % update beta for M-step: beta is T x V
 beta_update = squeeze(sum(q, 1)); % T x Nd

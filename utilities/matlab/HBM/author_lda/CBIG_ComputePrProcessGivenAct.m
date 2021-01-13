@@ -7,6 +7,10 @@ function [pr_process, act_contribution] = CBIG_ComputePrProcessGivenAct(act, bet
 %
 % Written by B.T.Thomas Yeo and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
+if size(act,1) ~= 1
+    error('Input argument ''act'' should be a row vector');
+end
+
 if(nargin < 3)
    threshold = 1e-4; 
 end

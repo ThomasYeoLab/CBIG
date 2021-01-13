@@ -67,7 +67,7 @@ pos = [0.020, 0.510, 0.325, 0.470;...
     0.720, 0.010, 0.240, 0.230];
 
 h = figure; gpos = get(h, 'Position');
-gpos(3) = 1200; gpos(4) = 600; set(h, 'Position', gpos);
+gpos(1) = 0; gpos(2) = 0; gpos(3) = 1200; gpos(4) = 600; set(h, 'Position', gpos);
 
 if(exist('colors', 'var'))
     m = colors/max(colors(:));
@@ -185,10 +185,7 @@ end
 
 if(exist('min_thresh', 'var'))
     cbax = axes('Position', [0.29 0.5 0.1 0.02], 'visible', 'off');
-    data = [lh_data; rh_data]; 
-    data(data < min_thresh) = min_thresh; 
-    data(data > max_thresh) = max_thresh;
-    caxis(cbax, [min(min(data)), max(max(data))]);
+    caxis(cbax, [min_thresh, max_thresh]);
     colorbar('peer', cbax, 'horiz', 'Position', [0.29 0.5 0.1 0.02]);
 end
 

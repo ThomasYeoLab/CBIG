@@ -1,4 +1,5 @@
-function  homo_with_weight = CBIG_ComputeParcellationHomogeneity_FS(lh_labels,rh_labels,mesh,lh_input_filename,rh_input_filename)
+function  homo_with_weight = CBIG_ComputeParcellationHomogeneity_FS(lh_labels,rh_labels,mesh,...
+    lh_input_filename,rh_input_filename)
 
 % homo_with_weight = CBIG_ComputeParcellationHomogeneity_FS(lh_labels,rh_labels,input_filename)
 %
@@ -32,10 +33,11 @@ function  homo_with_weight = CBIG_ComputeParcellationHomogeneity_FS(lh_labels,rh
 %
 % Example:
 %
-% lh_input_filename = '/data/users/rkong/storage/ruby/data/Individual/data/scripts/HNU/fcMRI_data_lists/CBIG2016_preproc_global_cen_bp/fcMRI_list_for_each_sub/lh_fs5_rest10sess_sub1.txt';
-% rh_input_filename = '/data/users/rkong/storage/ruby/data/Individual/data/scripts/HNU/fcMRI_data_lists/CBIG2016_preproc_global_cen_bp/fcMRI_list_for_each_sub/rh_fs5_rest10sess_sub1.txt';
-% load('/data/users/rkong/storage/ruby/data/Individual/Inter_Intra/HNU_test/V2_1session/V2a/parcellation/Individual_Intra_MRF_sub1_w200_MRF30.mat');
-% homo_with_weight = CBIG_ComputeParcellationHomogeneity_FS(lh_labels,rh_labels,'fsaverage5',lh_input_filename,rh_input_filename)
+% lh_input_filename = '/data/users/lh_fs5_rest10sess_sub1.txt';
+% rh_input_filename = '/data/users/rh_fs5_rest10sess_sub1.txt';
+% load('/data/users/parcellation/Individual_Intra_MRF_sub1_w200_MRF30.mat');
+% homo_with_weight = CBIG_ComputeParcellationHomogeneity_FS(lh_labels,rh_labels,...
+%  'fsaverage5',lh_input_filename,rh_input_filename)
 %
 %Written by Ruby Kong and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
@@ -78,21 +80,18 @@ for k=1:num_subs
                 rh_input=rh_curr_filename{i};
                 fprintf('filename: %s \n',lh_input);
                 
-                lh_hemi=MRIread(lh_input);
-                rh_hemi=MRIread(rh_input);
-                lh_vol=reshape(lh_hemi.vol,[size(lh_hemi.vol,1)*size(lh_hemi.vol,2)*size(lh_hemi.vol,3) size(lh_hemi.vol,4)]);
-                rh_vol=reshape(rh_hemi.vol,[size(rh_hemi.vol,1)*size(rh_hemi.vol,2)*size(rh_hemi.vol,3) size(rh_hemi.vol,4)]);
-                lh_vol=single(lh_vol);
-                rh_vol=single(rh_vol);
-                vol=[lh_vol;rh_vol];
-                clear lh_hemi rh_hemi
+                [~,lh_vol,~]=read_fmri(lh_input);
+                [~,rh_vol,~]=read_fmri(rh_input);
                 
-                all_nan=find(mean(vol,2)==0);
+                vol=[lh_vol;rh_vol];
+                clear lh_vol rh_vol
+                
+                all_nan=find(sum(abs(vol),2)==0);
                 homo_full_mat=single(zeros(size(lh_avg_mesh.vertices,2)+size(rh_avg_mesh.vertices,2),1));
                 for c=1:max(labels)      
                     a=vol(labels==c,:)';
                     index_cluster=find(labels==c);
-                    index_nan=transpose(find(mean(a)==0));
+                    index_nan=transpose(find(sum(abs(a))==0));
                     a(:,index_nan)=[];
                     index_cluster=setdiff(index_cluster,all_nan);
                     labels_size(k,c)=length(index_cluster);
@@ -152,7 +151,7 @@ end
 
 function [fmri, vol, vol_size] = read_fmri(fmri_name)
 
-% [fmri, vol] = read_fmri(fmri_name)
+% [fmri, vol, vol_size] = read_fmri(fmri_name)
 % Given the name of functional MRI file (fmri_name), this function read in
 % the fmri structure and the content of signals (vol).
 % 
@@ -178,7 +177,7 @@ if (isempty(strfind(fmri_name, '.dtseries.nii')))
     fmri = MRIread(fmri_name);
     vol = single(fmri.vol);
     vol_size = size(vol);
-    vol = reshape(vol, prod(vol_size(1:3)), prod(vol_size)/prod(vol_size(1:3)));
+    vol = reshape(vol, prod(vol_size(1:length(vol_size)-1)), vol_size(length(vol_size))); 
     fmri.vol = [];
 else
     % if input file is CIFTI file

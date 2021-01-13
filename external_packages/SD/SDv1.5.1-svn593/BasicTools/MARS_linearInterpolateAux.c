@@ -113,8 +113,8 @@ mexFunction(
     const int       numOfPoints     =   mxGetN(prhs[0]);
     const int       data_dim        =   mxGetM(prhs[6]);
     
-    int out_dims[2], p, grad_dims[3];
-    int index_dims[2];
+    mwSize out_dims[2]; int p, grad_dims[3];
+    mwSize index_dims[2];
     int * FaceInds_MatlabStyle, * NViF_MatlabStyle;
     int cur_face_ind;
     

@@ -113,7 +113,7 @@ int index_2D_array(int row, int col, int num_rows)
 
 void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 {
-  int length = 1;
+  mwSize length = 1;
   float *surfaceArea;
   
  /* Check for proper number of arguments. */

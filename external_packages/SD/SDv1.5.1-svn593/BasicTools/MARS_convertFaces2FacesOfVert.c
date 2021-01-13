@@ -57,7 +57,7 @@ mxArray *MARS_convertFaces2FacesOfVert(const mxArray *mxFaces, int numVerts)
     int *numFacesPerVertex;
     int maxFaces = 0, row, col;
     mxArray *mxfacesOfVert; 
-    int *facesOfVert, vno, total_length;
+    int *facesOfVert, vno; mwSize total_length;
     
     
     /*First access face matric from mxFaces */

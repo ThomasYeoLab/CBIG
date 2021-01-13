@@ -118,7 +118,7 @@ end
 
 %%
 pred_stats = zeros(length(saving_stats),size(y_resid_train, 2));
-if sum(sum(isnan(y_resid_train))) > 0
+if sum(sum(isnan(y_resid_train))) > 0 || sum(sum(isnan(y_resid_test))) >0
     for i = 1:size(y_resid_train, 2)
         %% Training
         nan_index = isnan(y_resid_train(:,i));
@@ -142,18 +142,18 @@ if sum(sum(isnan(y_resid_train))) > 0
         end
         
         %% Test
-        K_test = kernel_test(~isnan(y_resid_test(:,i)), ~nan_index);
-        y_p{i} = nan(size(y_resid_test, 1), 1);
+        K_test = kernel_test(:, ~nan_index);
         if(with_bias==0)
             %%%%%%%%%%%%%%%%%%%% Without bias term
             y_out = K_test * alpha{i};
-            y_p{i}(~isnan(y_resid_test(:,i))) = y_out;
+            y_p{i} = y_out;
         else
             %%%%%%%%%%%%%%%%%%%% With bias term
-            N_test = sum(~isnan(y_resid_test(:,i)));
+            N_test = size(y_resid_test, 1);
             y_out = K_test * alpha{i} + ones(N_test,1) .* beta{i};
-            y_p{i}(~isnan(y_resid_test(:,i))) = y_out;
+            y_p{i} = y_out;
         end
+        y_out = y_out(~isnan(y_resid_test(:,i)));
         
         if(bin_flag==1)
             y_t{i} = y_orig_test(~isnan(y_orig_test(:,i)), i);

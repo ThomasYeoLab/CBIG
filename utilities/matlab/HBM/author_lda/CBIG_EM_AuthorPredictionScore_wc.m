@@ -1,10 +1,15 @@
-function [author_log_posterior_prob, author_classification_score] = CBIG_EM_AuthorPredictionScore_wc(corpus, paradigm_by_exp, params)
+function [author_log_posterior_prob, author_classification_score] ...
+    = CBIG_EM_AuthorPredictionScore_wc(corpus, paradigm_by_exp, params)
 
-% [author_log_posterior_prob, author_classification_score] = CBIG_EM_AuthorPredictionScore_wc(corpus, paradigm_by_exp, params)
-% Compute log posterior probability of the tasks (authors) assignment, and score of tasks (authors) classification given the estimated parameters.
+% [author_log_posterior_prob, author_classification_score] ...
+% = CBIG_EM_AuthorPredictionScore_wc(corpus, paradigm_by_exp, params)
+% Compute log posterior probability of the tasks (authors) assignment, and 
+% score of tasks (authors) classification given the estimated parameters.
 %
-% Note that as compared to CBIG_EM_AuthorPredictionScore, this function takes in an argument corpus of a different structure
-% FORMAT [author_log_posterior_prob, author_classification_score] = CBIG_EM_AuthorPredictionScore_vol(corpus, paradigm_by_exp, params)
+% Note that as compared to CBIG_EM_AuthorPredictionScore, this function 
+% takes in an argument corpus of a different structure
+% FORMAT [author_log_posterior_prob, author_classification_score] ...
+% = CBIG_EM_AuthorPredictionScore_vol(corpus, paradigm_by_exp, params)
 %
 % corpus         = 1 x 3 cell array
 % corpus{1}      = Nd x V sparse matrix where Nd is the number of activation foci (unique
@@ -24,6 +29,10 @@ function [author_log_posterior_prob, author_classification_score] = CBIG_EM_Auth
 % author_classification_score = average classification score of tasks (authors) across all documents
 %
 % Written by B.T.Thomas Yeo and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+
+if size(corpus{3},1) ~= 1
+    error('Input argument ''corpus{3}'' should be a row vector');
+end
 
 params.log_beta = log(params.beta);
 params.log_theta = log(params.theta);

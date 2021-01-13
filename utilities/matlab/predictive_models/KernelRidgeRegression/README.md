@@ -29,12 +29,20 @@ Steps of this stream:
 
 There are two sets of scripts you can use. The top-level wrapper functions of each set are `CBIG_KRR_workflow.m` and `CBIG_KRR_workflow_LITE.m` respectively. The usages of these two wrapper functions are the same. Therefore, the following sections will only discuss about `CBIG_KRR_workflow.m`. The functionality of these two sets of scripts (with or without `LITE` appendix) are slightly different. When `CBIG_KRR_workflow.m` is used, the functional similarity matrices for each fold are saved. If the user chooses Gaussian or exponential kernel, the mean and standard deviation of features are computed from the training subjects and applied on the test subjects for each fold. However, when `CBIG_KRR_workflow_LITE.m` is used, the functional simlarity matrix is only computed and saved once across all subjects so that less disk space is needed. In the folloing training and testing on each fold, the scripts grab the similarity matrix of current fold by indexing the entire similarity matrix. To achieve this, when users choose to use Gaussian or exponential kernel, the mean and standard deviation of features are computed among all subjects.
 
-To use `CBIG_KRR_workflow.m`, you can either pass in a single setup file (the first argument `setup_file` of this function), or pass in a set of individual parameters (by using the `varargin` argument).
+To use `CBIG_KRR_workflow.m`, you can either pass in a single setup structure or file (the first argument `setup_param` of this function), or pass in a set of individual parameters (Compulsory variables and optional variables via varargin).
 
-#### 1. `setup_file`
-Here is an example setup file: `$CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSR/examples/output/KernelRidgeRegression/setup_file.mat`
+For example, 
+1) If we wish to just pass in setup_param 
+CBIG_KRR_workflow( setup_param)
 
-If the user decided to pass in the setup file, then `varargin` is not needed. The setup file should be a `.mat` file containing a Matlab structure variable called `params`, which has the following structure fields:
+
+2) If we wish to pass in input variables one by one and also specifying optional variables `with_bias` and `lambda_set_file`
+CBIG_KRR_workflow( '', 1, sub_fold_file, y_file, covariate_file, feature_file, num_inner_folds, outdir, outstem, 'with_bias', 0, 'lambda_set_file', 'xxx/xxx/lambda_set_file.mat')
+
+#### 1. `setup_param`
+Here is an example file for setup_param: `$CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSR/examples/output/KernelRidgeRegression/setup_file.mat`
+
+If the user decided to pass in the setup structure or file, then input variables from `sub_fold file` to `varargin` are not needed. `setup_param` can be setup parameter (a Matlab structure variable) or full path of the setup parameter (.mat storing a Matlab structure variable called `params`). The structure should have the following structure fields:
 * `param.sub_fold`
   * `param.sub_fold` is a structure which tells how the subjects are split. 
   * `param.sub_fold(i).fold_index` is a N x 1 binary vector, where N is the total number of subjects. `param.sub_fold(i).fold_index(j) = 1` indicates that the `j`-th subject is in the test set of the `i`-th outer-loop CV iteration, while `param.sub_fold(i).fold_index(j) = 0` indicates that the `j`-th subject is in the training set of the `i`-th outer-loop CV iteration.
@@ -126,6 +134,8 @@ If the user decided to pass in the setup file, then `varargin` is not needed. Th
   * It is a string appended to all the output filenames. For example, you may want to run this workflow multiple times for the same dataset but with different target variables, different covariates, ... `outstem` can help you to differentiate these multiple runs even if they are saved in the same output folder. For instance, the filename of the final test accuracies with optimal hyperparameters will be `[param.outdir '/final_result_' param.outstem '.mat']` if `param.outstem` is not empty. If `param.outstem` is empty, the filename will become `[param.outdir '/final_result.mat']`.
 * `param.with_bias`
   * It is a string or a scalar that can be either 0 or 1. Default is 1. If `param.with_bias = 1`, the cost function to be minimized is `(y - K*alpha - beta)^2 + (regularization of alpha)`, where `beta` is a constant bias for every subject, estimated from the data. If `param.with_bias = 0`, the cost function to be minimized is `(y - K*alpha)^2 + (regularization of alpha)`. It means that the kernel regression fitted curve must pass through the origin since the bias term `beta` (acting as an intercept) is not included. If your target measures are not demeaned before and you still set `param.with_bias = 0`, your predicted scores would not be accurate. Hence `param.with_bias = 0` is not recommended.
+* `param.save_kernel`
+  * **Only for `LITE` version** It is a string or a scalar that can be either 0 or 1. Default is 1. `save_kernel = 0` (or '0') means the algorithm is do not save kernel into files. `save_kernel = 1` (or '1') means the algorithm is save kernel into files.
 * `param.ker_param`
   * It is a structure of length L, where L is the number of kernel parameters the user would like to pass into the workflow.
   * It should contain two subfields: `type` and `scale`.
@@ -151,9 +161,11 @@ If the user decided to pass in the setup file, then `varargin` is not needed. Th
 
 
 
-#### 2. `varargin`
-If the user did not prepare the setup file, he/she needs to pass in the parameters needed one by one through `varargin` argument (and leave `setup_file` as empty). In Matlab, `varargin` grabs all the parameters passed in, starting from the position of `varargin` till the last input, and store them in cell arrays. In the case of `CBIG_KRR_workflow.m`, since `varargin` is the 3rd argument, the 3rd to the last inputs will all be stored in `varargin`. The parameters you need to pass in through `varargin` are:
-* `varargin{1}` (sub_fold_file)
+#### 2. Compulsory and Optional Variables if `setup_param` is not passed in
+If the user did not prepare the setup file, he/she needs to pass in the parameters needed one by one through the compulsory and optional variables (after the input variable `save_setup`) and leave `setup_param` as empty. The first 7 Variables are compulsory (ie from `sub_fold_file` to `outstem`). Subsequently `varargin` will parse the optional input variables. In Matlab, `varargin` grabs all the parameters passed in, starting from the position of `varargin` till the last input, and store them in cell arrays. In the case of `CBIG_KRR_workflow.m`, since `varargin` is the 10th argument, the 10th to the last inputs will all be stored in `varargin`. If the user wishes to specify certain optional variables like 'metric', all the user needs to do is (...,outstem, 'metric', metric). The user needs to specify the variable name first ('metric') and then followed by the variable value (metric).
+
+Overall, the parameters you need to pass in are:
+* sub_fold_file
   * A string, which is the full-path name of a `.mat` file. The `.mat` file contains a structure variable called `sub_fold`.
   * `sub_fold` is a structure variable which tells how the subjects are split. 
   * `sub_fold(i).fold_index` is a N x 1 binary vector, where N is the total number of subjects. `sub_fold(i).fold_index(j) = 1` indicates that the `j`-th subject is in the test set of the `i`-th outer-loop CV iteration, while `sub_fold(i).fold_index(j) = 0` indicates that the `j`-th subject is in the training set of the `i`-th outer-loop CV iteration.
@@ -181,7 +193,7 @@ If the user did not prepare the setup file, he/she needs to pass in the paramete
     delimiter = ',';
     sub_fold = CBIG_cross_validation_data_split( subject_list, family_csv, subject_header, family_header, num_folds, seed, outdir, delimiter );
     ``` 
-* `varargin{2}` (y_file)
+* y_file
   * A string, which is the full-path name of a `.mat` file. The `.mat` file contains a matrix called `y`.
   * `y` is a matrix of behavioral measures (or other measures you want to predict) with size N x M, where N is the total number of subjects, and M is the number of behavioral measures. 
   * If your behavioral measures are stored in several CSV files, we provide a function `$CBIG_CODE_DIR/utilities/matlab/predictive_models/utilities/CBIG_read_y_from_csv.m` to extract the behavioral measures from these CSV files. Here is an example of using this function.
@@ -206,7 +218,7 @@ If the user did not prepare the setup file, he/she needs to pass in the paramete
     delimiter = ','
     y = CBIG_read_y_from_csv( csv_files, subject_header, y_names, y_types, subject_list, outname, delimiter );
     ```
-* `varargin{3}` (covariate_file)
+* covariate_file
   * A string, which is the full-path name of a `.mat` file. The `.mat` file contains a matrix called `covariates`.
   * `covariates` is a matrix of the covariates you want to regress out from the behavioral measures. The size is N x P, where N is the total number of subjects, and P is the number of covariate variables you want to regress. (Note that the number of regressors can be different from the number of covariate measures, if there is categorical covariate measure. See the description of `covariate_types` below.)
   * If your covariates are stored in several CSV files, we provide a function `$CBIG_CODE_DIR/utilities/matlab/predictive_models/utilities/CBIG_generate_covariates_from_csv.m` to extract the covariate measures from these CSV files. Here is an example of using this function.
@@ -235,20 +247,22 @@ If the user did not prepare the setup file, he/she needs to pass in the paramete
     delimiter = ',';
     covariates = CBIG_generate_covariates_from_csv( csv_files, subject_header, covariate_names, covariate_types, subject_list, FD_file, DVARS_file, outname, delimiter );
     ```
-* `varargin{4}` (feature_file)
+* feature_file
   * A string, which is the full-path name of a `.mat` file. The `.mat` file contains a matrix called `feature_mat`.
   * `feature_mat` is a matrix of the features used as the explanatory variables in the prediction.
   * `feature_mat` can be a 2-D matrix with dimension of F x N, where F is the number of features and N is the number of subjects. In this case, each column is a feature vector of a single subject.
   * `feature_mat` can also be a 3-D matrix with dimension of R1 x R2 x N, where R1 is the number of ROIs_1, R2 is the number of ROIs_2, and N is the number of subjects. In this case, it is a connectivity matrix between ROIs_1 and ROIs_2. Only the lower-triangular off-diagonal entries will be considered.
-* `varargin{5}` (num_inner_folds)
+* num_inner_folds
   * A scalar, the number of inner-loop cross-validation folds. For example, `20`.
-* `varargin{6}` (outdir)
+* outdir
   * It is a string of the output directory (full path). An example folder structure in the output directory can be found in `$CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSR/examples/output/KernelRidgeRegression/`.
-* `varargin{7}` (outstem)
-  * It is a string appended to all the output filenames. For example, you may want to run this workflow multiple times for the same dataset but with different target variables, different covariates, ... The 7-th argument you pass in through `varargin` can help you to differentiate these multiple runs even if they are saved in the same output folder. For instance, the filename of the final test accuracies with optimal hyperparameters will be `[varargin{6} '/final_result_' varargin{7} '.mat']` if `varargin{7}` is not empty. If `varargin{7}` is empty, the filename will become `[varargin{6} '/final_result.mat']`.
-* `varargin{8}` (with_bias, optional)
+* outstem
+  * It is a string appended to all the output filenames. For example, you may want to run this workflow multiple times for the same dataset but with different target variables, different covariates, ... This can help you to differentiate these multiple runs even if they are saved in the same output folder. For instance, the filename of the final test accuracies with optimal hyperparameters will be `[outdir '/final_result_' outstem '.mat']` if `outstem` is not empty. If `outstem` is empty, the filename will become `[outdir '/final_result.mat']`.
+* (...,'with_bias', with_bias,...)
   * It is a string or a scalar that can be either 0 or 1. Default is 1. If `with_bias = 1`, the cost function to be minimized is `(y - K*alpha - beta)^2 + (regularization of alpha)`, where `beta` is a constant bias for every subject, estimated from the data. If `with_bias = 0`, the cost function to be minimized is `(y - K*alpha)^2 + (regularization of alpha)`. It means that the kernel regression fitted curve must pass through the origin since the bias term `beta` (acting as an intercept) is not included. If your target measures are not demeaned before and you still set `with_bias = 0`, your predicted scores would not be accurate. Hence `with_bias = 0` is not recommended.
-* `varargin{9}` (ker_param_file, optional)
+* (...,'save_kernel', save_kernel,...)
+  * **Only for `LITE` version** It is a string or a scalar that can be either 0 or 1. Default is 1. `save_kernel = 0` (or '0') means the algorithm is do not save kernel into files. `save_kernel = 1` (or '1') means the algorithm is save kernel into files.
+* (...,'ker_param_file', ker_param_file,...)
   * A string, which is the full-path name of a `.mat` file. The `.mat` file contains a structure called `ker_param`.
   * `ker_param` is a structure of length L, where L is the number of kernel parameters the user would like to pass into the workflow.
   * `ker_param` should contain two subfields: `type` and `scale`.
@@ -257,17 +271,17 @@ If the user did not prepare the setup file, he/she needs to pass in the paramete
     * `'Gaussian'`         - Gaussian kernel;
     * `'Exponential'`      - exponential kernel.
   * `ker_param(l).scale` is a scalar specifying the scaling factor of the l-th kernel (only applicable for Gaussian kernel and exponential kernel). If `ker_param(l).type == 'corr'`, then set `ker_param(l).scale = NaN`.
-  * If the 9-th `varargin` is not passed in, the default `ker_param` will be set as `ker_param.type = 'corr'; ker_param.scale = NaN;`.
-* `varargin{10}` (lambda_set_file, optional)
+  * If ker_param_file is not passed in, the default `ker_param` will be set as `ker_param.type = 'corr'; ker_param.scale = NaN;`.
+* (...,'lambda_set_file', lambda_set_file,...)
   * A string, which is the full-path name of a `.mat` file. The `.mat` file contains a vector called `lambda_set`.
   * `lambda_set` is a vector of numbers for grid search of `lambda` (the regularization parameter). For example, `[0.001 0.005 0.01:0.02:0.1 0.2:0.1:1 5:5:20]`.
-  * If the 10-th `varargin` is not passed in, the default `lambda_set` will be set as `lambda_set = [ 0 0.00001 0.0001 0.001 0.004 0.007 0.01 0.04 0.07 0.1 0.4 0.7 1 1.5 2 2.5 3 3.5 4 5 10 15 20]`.
-* `varargin{11}` (threshold_set_file, optional)
+  * If `lambda_set_file` is not passed in, the default `lambda_set` will be set as `lambda_set = [ 0 0.00001 0.0001 0.001 0.004 0.007 0.01 0.04 0.07 0.1 0.4 0.7 1 1.5 2 2.5 3 3.5 4 5 10 15 20]`.
+* (...,'threshold_set_file', threshold_set_file,...)
   * A string, which is the full-path name of a `.mat` file. The `.mat` file contains a vector called `threshold_set`.
   * The target measure you want to predict can be binary (e.g. sex). In this case, we introduce another hyperparameter, `threshold`, as a separation point to predict binary measures.
   * `threshold_set` is a vector of numbers (between -1 and 1) used for grid search of `threshold`.
-  * If the 11-th `varargin` is not passed in, the default `threshold_set` will be set as `threshold_set = [-1:0.1:1]`.
-* `varargin{12}` (metric, optional)
+  * If `threshold_set_file` is not passed in, the default `threshold_set` will be set as `threshold_set = [-1:0.1:1]`.
+* (...,'metric',metric, ...)
   * A string indicating the metric used to define prediction loss. The loss is used to choose hyperparameters.Options include: 
     * `'corr'`             - Pearson's correlation;
     * `'COD'`              - Coefficient of determination. Defined as 1-||y_pred-y_test||^2/||mean(y_test)-y_test||^2, where y_pred is the prediction of the test data, y_test is the groud truth of the test data, and mean(y_test) is the mean of test data.
@@ -276,7 +290,7 @@ If the user did not prepare the setup file, he/she needs to pass in the paramete
     * `'MAE_norm'`         - mean absolute error divided by the standard derivation of the target variable of the training set.
     * `'MSE'`              - mean squared error.
     * `'MSE_norm'`         - mean squared error divided by the variance of the target variable of the training set.
-  * If the 12-th `varargin` is not passed in, the default `metric` will be set as `metric = 'predictive_COD'`.
+  * If `metric` is not passed in, the default `metric` will be set as `metric = 'predictive_COD'`.
 ## Training, validation, and test stream
 
 If you have enough number of observations (e.g. hundreds of thousands of subjects), you might want to simply divide your dataset into training, validation and test sets, instead of K-fold cross-validation. In this case, the hyperparameters will be determined based on the optimal accuracies in the validation set. After that, the model parameters (i.e. the kernel regression coefficients) will be obtained from the training set with the optimal hyperparameters, and then applied to the test set to get the test accuracy.

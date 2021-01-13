@@ -1,4 +1,4 @@
-function CBIG_KRR_generate_kernels_LITE(feature_mat, outdir, ker_param, similarity_mat)
+function kernel = CBIG_KRR_generate_kernels_LITE(feature_mat, outdir, save_kernel, ker_param, similarity_mat)
 
 % CBIG_KRR_generate_kernels_LITE( feature_mat, sub_fold, outdir, ker_param, similarity_mat )
 % 
@@ -37,6 +37,13 @@ function CBIG_KRR_generate_kernels_LITE(feature_mat, outdir, ker_param, similari
 %     A string, the full path of output directory.
 %     A subfolder [outdir '/FSM'] will be created to store the kernels
 %     across all subjects.
+%
+%   - save_kernel
+%     A string (choose from '0' or '1') or a scalar (choose from 0 or 1).
+%     - save_kernel = 0 (or '0') means the algorithm is do not save kernel
+%     into files.
+%     - save_kernel = 1 (or '1') means the algorithm is save kernel into
+%     files.
 % 
 %   - ker_param (optional)
 %     A K x 1 structure with two fields: type and scale. K denotes the
@@ -60,27 +67,14 @@ function CBIG_KRR_generate_kernels_LITE(feature_mat, outdir, ker_param, similari
 %     needed (you can pass in an empty matrix for the "feature_mat" input).
 % 
 % Outputs:
-%     Case 1. (cross-validation)
-%     For each fold and each kernel hyperparameter, a #TrainingSubjects x
-%     #TrainingSubjects matrix will be saved in [outdir '/FSM_innerloop']
-%     folder as the inner-loop cross-validation kernel. 
-%     Meanwhile, a #AllSubjects x #AllSubjects kernel matrix will be saved
-%     in [outdir '/FSM_test'] folder for the training-test
-%     cross-validation. (The ordering of subjects follows the original
-%     subject list, i.e. the ordering in "feature_mat" or "similarity_mat".)
-% 
-%     Case 2 (training, validation, and test)
-%     In this case, cross-validation is not performed. Instead, the data
-%     are split into training, validation and test sets. For each kernel
-%     hyperparameter, a (#TrainingSubjects + #ValidationSubjects) x
-%     (#TrainingSubject + #ValidationSubjects) kernel matrix will be saved
-%     in [outdir '/FSM_innerloop'] folder for the training and validation
-%     phase. (Training subjects at first, then followed by validation
-%     subjects.)
-%     Meanwhile, a (#TrainingSubjects + #TestSubjects) x (#TrainingSubjects
-%     + #TestSubjects) kernel matrix will be saved in [outdir '/FSM_test']
-%     folder for the test phase. (Training subjects at first, then followed
-%     by test subjects.)
+%   - kernel
+%     a #AllSubjects x #AllSubjects kernel matrix (The ordering of subjects 
+%     follows the original subject list, i.e. the ordering in "feature_mat"
+%     or "similarity_mat".)
+%     if input 'save_kernel' = 1 (or '1'), this kernel matrix will be also
+%     saved in [outdir '/FSM'].
+%     if it has already been saved in [outdir '/FSM'], then a 'none' will 
+%     be passed out. Later algorithm will load it from the file.
 % 
 % Written by Jingwei Li and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
@@ -106,8 +100,10 @@ for k = 1:num_ker
         outstem{k} = ['_' num2str(ker_param(k).scale)];
     end
     outname = fullfile(outdir, 'FSM', ['FSM_' ker_param(k).type outstem{k} '.mat']);
-    if(~exist(fullfile(outdir, 'FSM')))
-        mkdir(fullfile(outdir, 'FSM'));
+    if(save_kernel~=0)
+        if(~exist(fullfile(outdir, 'FSM')))
+            mkdir(fullfile(outdir, 'FSM'));
+        end
     end
     
     %% Depending on kernel parameters, compute kernels
@@ -135,8 +131,13 @@ for k = 1:num_ker
         else
             FSM = similarity_mat;
         end
-        save(outname, 'FSM'); clear FSM
+        tmp.FSM = FSM;
+        kernel{k} = tmp;
+        if(save_kernel~=0)
+            save(outname, 'FSM'); clear FSM
+        end
     else
+        kernel = 'none';
         fprintf('Already exist. Skipping ...\n')
     end
 end

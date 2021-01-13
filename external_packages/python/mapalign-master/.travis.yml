@@ -1,0 +1,37 @@
+language: python
+python:
+- 2.7
+- 3.4
+- 3.5
+- 3.6
+env:
+- INSTALL_SKLEARN=true
+- INSTALL_SKLEARN=false
+before_install:
+- function conda_inst {
+  export CONDA_HOME=$HOME/conda &&
+  wget https://repo.continuum.io/miniconda/Miniconda${TRAVIS_PYTHON_VERSION:0:1}-latest-Linux-x86_64.sh
+    -O /home/travis/.cache/conda.sh &&
+  bash /home/travis/.cache/conda.sh -b -p ${CONDA_HOME} &&
+  export PATH=${CONDA_HOME}/bin:$PATH &&
+  hash -r &&
+  conda config --set always_yes yes --set changeps1 no &&
+  conda update -q conda &&
+  conda config --add channels conda-forge &&
+  conda install python=${TRAVIS_PYTHON_VERSION} numpy scipy nomkl pytest &&
+  if $INSTALL_SKLEARN; then conda install scikit-learn; fi }
+- travis_retry conda_inst
+install:
+- travis_retry pip install -e .
+script:
+- py.test -v --doctest-modules mapalign
+deploy:
+  provider: pypi
+  user: satra
+  password:
+    secure: OCO0FXb4f+pH4Uw7zWCIRp3qOJ1t7rhky4K8MjNU8tyVCJgd6O/Bv8GJgceS0LktPodlAAjB8SxAhTORPAQZ1D/44PJYy3NQIisvej1zjLpaA9TEGfl6W7MqhDpRyMHW+cnSi/n84SAmdr+Z4vOxScDHdwr13EPmGyOIlHMAGnE=
+  on:
+    tags: true
+    repo: satra/mapalign
+    branch: master
+  distributions: "sdist"

@@ -1,0 +1,186 @@
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=mex 2012.6.30)  14 AUG 2013 23:29
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**glmnetMex.F GLMnet.f
+(./glmnetMex.F
+This is MeX  Version 1.05  18 XII 1993  (B. Jackowski & M. Ry\'cko)
+! You can't use `macro parameter character #' in vertical mode.
+l.1 #
+     include "fintrf.h"
+? 
+
+Overfull \hbox (46.91075pt too wide) in paragraph at lines 6--56
+[]\tenrm C [a0,ca,ia,nin,rsq,alm,nlp,jerr] = ... C glm-net-Mex(parm,x,y,jd,vp,n
+e,nx,nlam,flmin,ulam,thr,isd,w,ka,cl,intr,maxit)|
+
+\hbox(7.5+2.5)x469.75499, glue set - 1.0
+.\hbox(0.0+0.0)x20.0
+.\tenrm C
+.\glue 3.33333 plus 1.66498 minus 1.11221
+.\tenrm [
+.\tenrm a
+.etc.
+
+
+Overfull \hbox (12.91075pt too wide) in paragraph at lines 6--56
+\tenrm C [a0,ca,ia,nin,dev,alm,nlp,jerr] = ... C glm-net-Mex(parm,x,y,jd,vp,ne,
+nx,nlam,flmin,ulam,thr,isd,nc,maxit,kopt)|
+
+\hbox(7.5+2.5)x469.75499, glue set - 1.0
+.\tenrm C
+.\glue 3.33333 plus 1.66498 minus 1.11221
+.\tenrm [
+.\tenrm a
+.\tenrm 0
+.etc.
+
+! Display math should end with $$.
+<to be read again> 
+                    
+l.68 c$$$ 
+           integer*4 mexPrintf
+? 
+! Display math should end with $$.
+<to be read again> 
+                    
+l.69 c$$$ 
+           character*120 line
+? 
+! Display math should end with $$.
+<to be read again> 
+                    
+l.70 c$$$ 
+           integer*4 k
+? 
+! Display math should end with $$.
+<to be read again> 
+                    
+l.71 c$$$ 
+           integer xx
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+<to be read again> 
+                   _
+l.91       mwpointer temp_
+                          pr
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+<to be read again> 
+                   \par 
+l.94 
+     
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+<to be read again> 
+                   _
+l.120          call get_
+                        int_parms(fdev,eps,big,mnlam,devmax,pmin,exmx)
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+<to be read again> 
+                   \par 
+l.122 
+      
+? 
+
+Overfull \hbox (15.90938pt too wide) in paragraph at lines 119--122
+[]\tenrm if (task .eq. -1) then call get$[]\teni nt[]arms\tenrm (\teni fdev; ep
+s; big; mnlam; devmax; pmin; exmx\tenrm )\teni callget[]norm\tenrm (\teni prec;
+ mxit\tenrm )$ |
+
+\hbox(7.5+2.86108)x469.75499, glue set - 1.0
+.\hbox(0.0+0.0)x20.0
+.\tenrm i
+.\tenrm f
+.\glue 3.33333 plus 1.66666 minus 1.11111
+.\tenrm (
+.etc.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+<to be read again> 
+                   _
+l.124          temp_
+                    pr = mxGetPr(plhs(1))
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+<to be read again> 
+                   \par 
+l.126 
+      
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+<to be read again> 
+                   _
+l.128          temp_
+                    pr = mxGetPr(plhs(2))
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+<to be read again> 
+                   \par 
+l.130 
+      
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+<to be read again> 
+                   _
+l.132          temp_
+                    pr = mxGetPr(plhs(3))
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+<to be read again> 
+                   \par 
+l.134 
+      
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+<to be read again> 
+                   _
+l.136          temp_
+                    pr = mxGetPr(plhs(4))
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+<to be read again> 
+                   \par 
+l.138 
+      
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+<to be read again> 
+                   _
+l.140          temp_
+                    pr = mxGetPr(plhs(5))
+? ^^[^^[
+Type <return> to proceed, S to scroll future error messages,
+R to run without stopping, Q to run quietly,
+I to insert something, E to edit your file,
+1 or ... or 9 to ignore the next 1 to 9 tokens of input,
+H for help, X to quit.
+? X
+No pages of output.

@@ -27,13 +27,23 @@ function doc_log_likelihood = CBIG_EM_doc_log_likelihood_wc(w, paradigm, params,
 %
 % Written by B.T.Thomas Yeo and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
-log_likelihood_theta = sum(sum(sum(bsxfun(@times, bsxfun(@times, q, params.log_theta(paradigm, :)), reshape(w{3}, [1 1 length(w{3})])), 3), 2));
+if size(w{3},1) ~= 1
+    error('Input argument ''w{3}'' should be a row vector');
+end
+if size(paradigm,2) ~= 1
+    error('Input argument ''paradigm'' should be a column vector');
+end
+
+log_likelihood_theta = sum(sum(sum(bsxfun(@times, bsxfun(@times, q, params.log_theta(paradigm, :)), ...
+    reshape(w{3}, [1 1 length(w{3})])), 3), 2));
 
 beta_update = squeeze(sum(q, 1)); % T x Nd*
 if(length(w{3}) == 1)
-    log_likelihood_beta  = sum(sum(bsxfun(@times, beta_update .* transpose(params.log_beta * w{2}'), reshape(w{3}, [1 length(w{3})])), 2));
+    log_likelihood_beta  = sum(sum(bsxfun(@times, beta_update .* transpose(params.log_beta * w{2}'), ...
+        reshape(w{3}, [1 length(w{3})])), 2));
 else
-    log_likelihood_beta  = sum(sum(bsxfun(@times, beta_update .* (params.log_beta * w{2}'), reshape(w{3}, [1 length(w{3})])), 2));
+    log_likelihood_beta  = sum(sum(bsxfun(@times, beta_update .* (params.log_beta * w{2}'), ...
+        reshape(w{3}, [1 length(w{3})])), 2));
 end
 
 q_entropy = -sum(sum(sum(bsxfun(@times, q .* log(q), reshape(w{3}, [1 1 length(w{3})])), 3), 2));

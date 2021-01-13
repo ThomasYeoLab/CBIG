@@ -132,7 +132,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
    int *vertNbors; 
    double *costNbors;
    int numVerts, maxNeighbors;
-   int dims[1];
+   mwSize dims[1];
 
    /* Assume inputs are all in matlab indices
     Check for proper number of arguments. */

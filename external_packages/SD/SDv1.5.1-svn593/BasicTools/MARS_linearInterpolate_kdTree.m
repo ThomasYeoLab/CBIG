@@ -35,9 +35,28 @@ function [vals, NViF, NF] = MARS_linearInterpolate_kdTree(points, mesh, data)
 %function [vals] = MARS_linearInterpolate_kdTree(points, mesh, data)
 
 %description: Returns interpolated value(s) of data (on mesh) at point
+%IMPORTANT: point and mesh should be on a sphere with the same radius!
 
 %MARS Project (Thomas Yeo and Mert Sabuncu), MIT, CSAIL, (c) 2008
 %Author: Mert
+
+% Check the first 100 points of the mesh and compare the radius.
+p_r_mesh = sum(mesh.vertices(:, 1:min(100, size(mesh.vertices, 2))).^2, 1);
+r_mesh = max(p_r_mesh);
+if(abs(sum(p_r_mesh ./ r_mesh - 1))>1e-4)
+    warning('Mesh surface is not a sphere.');
+end
+
+p_r_points = sum(points(:, 1:min(100, size(points, 2))).^2, 1);
+r_points = max(p_r_points);
+if(abs(sum(p_r_points ./ r_points - 1))>1e-4)
+    warning('Points surface is not a sphere.');
+end
+
+if(abs(r_mesh - r_points)>1e-4)
+    warning('Two spheres do not have the same radius.');
+end
+
 [nearest_vertex_guess, d] =  MARS_findNV_kdTree(points, mesh.vertices);
 [vals, NViF, NF] = MARS_linearInterpolateAux(single(points), single(mesh.vertices), int32(mesh.faces), int32(mesh.vertexNbors),... 
                                       int32(mesh.vertexFaces), int32(nearest_vertex_guess), single(data));

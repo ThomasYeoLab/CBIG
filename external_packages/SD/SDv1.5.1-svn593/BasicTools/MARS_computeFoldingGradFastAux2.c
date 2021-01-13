@@ -114,13 +114,13 @@ mexFunction(
     const int       numOfNbors      =   mxGetM(prhs[3]);
     const int       size_list_in    =   mxGetM(prhs[4]);
 
-    int f, scalar_dim, v, cur_face, size_list_out, N_in, vert, nv, cur_nbor, nbor_cnt;
+    int f, v, cur_face, N_in, vert, nv, cur_nbor, nbor_cnt; mwSize scalar_dim, size_list_out;
     int *   vertexList_out;
     const float * v0, * v1, * v2;
     int v0_ind, v1_ind, v2_ind, tmp_ind;
     float tmp_vec[3], v0v1[3], v0v2[3], tmp_grad[3], centroid[3];
     float * faceArea,  * energy, *gradient;
-    int out_grad_dims[2];
+    mwSize out_grad_dims[2];
     bool *  isVertexListed;
     int*    flippedVertexList;
     

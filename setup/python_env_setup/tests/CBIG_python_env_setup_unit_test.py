@@ -11,11 +11,6 @@ class TestClass:
     def test_nilearn(self):
         import nilearn
 
-    def test_nipype(self):
-        import nipype.interfaces.fsl as fsl
-        import nipype.pipeline.engine as pe
-        from nipype import Node, JoinNode, Workflow
-
     def test_pydicom(self):
         import dicom
 

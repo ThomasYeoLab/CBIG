@@ -1,0 +1,80 @@
+#!/bin/sh
+
+# This script checks whether your job is successful. It will first check
+# whether your jobs are running or not. After they are all finished, it
+# will check your log file or output file. You can check either, both or 
+# neither of the two files (which we do not recommend).
+# For log file check, if the log file includes 'FAILED' or does NOT include
+# 'SUCCESS', then the job will be considered unsuccessful. To notify this 
+# function about the status of your job, you need to manually print a 
+# 'SUCCESS' message at the end of your log file. If this is not applicable, 
+# you can choose to check the existance of the output file. 
+# This script should be called on headnode. If not, this script will
+# automatically ssh to headnode. But this is NOT recommended.
+#       -n: Name or ID of your job. If you choose job name, all jobs with 
+#               the same name will be checked. If you choose job id, you 
+#               can check only one single job.
+#               Note that for our current scheduler, the length of the job 
+#               name is limited to 15 characters. Longer name will be cut 
+#               down. Please be careful.
+#       -l: Path of the log file. This script only handles one file at a
+#               time.
+#       -o: Path of the output file. This script only handles one file at 
+#               a time.
+#
+# Example: CBIG_check_job_status -n Unit_test -l <log_path>
+# Example: CBIG_check_job_status -n 100001 -o <output_path>
+# Written by XUE Aihuiping and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+
+user=`whoami`
+
+while getopts "n:l:o:" arg
+do
+        case $arg in
+             n)
+	        job=$OPTARG
+                ;;
+             l)
+	        log_file=$OPTARG
+                ;;
+             o)
+	        out_file=$OPTARG
+                ;;
+             ?)
+	        echo "Unknown argument"
+	        exit 1
+	        ;;
+        esac
+done
+
+# Wait till jobs with the same name are all done
+currnode=`hostname`
+if [ "${currnode}" != "headnode" ]; then
+	echo "WARNING: ssh from $currnode to headnode ..."
+	ssh headnode "$CBIG_CODE_DIR/utilities/scripts/CBIG_wait_for_job -n ${job}"
+else
+	$CBIG_CODE_DIR/utilities/scripts/CBIG_wait_for_job -n ${job}
+fi
+
+if [ ! $log_file ] && [ ! $out_file ]; then
+        echo "[Warning] Both log file and output file are NOT checked."
+fi
+
+# Check log file
+if [ $log_file ]; then
+        fail=`grep FAILED $log_file | wc -l`
+        success=`grep SUCCESS $log_file | wc -l`
+        if [ ${fail} -gt 0 ] || [ ${success} -eq 0 ]; then
+                echo "[FAILED] Job is unsuccessful. Log file: $log_file"
+                exit 1
+        fi
+fi
+
+# Check output files
+if [ $out_file ]; then
+        if [ ! -f ${out_file} ]; then
+                echo "[FAILED] Job is unsuccessful. Out file: $out_file does not exist."
+                exit 1
+        fi
+fi
+

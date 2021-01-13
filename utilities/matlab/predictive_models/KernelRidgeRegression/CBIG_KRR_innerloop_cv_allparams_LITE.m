@@ -1,5 +1,5 @@
 function [acc, loss] = CBIG_KRR_innerloop_cv_allparams_LITE( test_fold, sub_fold, num_inner_folds, ...
-    data_dir, y_resid_stem, with_bias, ker_param, lambda_set, threshold_set, metric )
+    data_dir, y_resid_stem, with_bias, kernel, ker_param, lambda_set, threshold_set, metric )
 
 % [acc, acc_concat] = CBIG_KRR_innerloop_cv_allparams_LITE( test_fold, num_inner_folds, ...
 %     outdir, y_resid, ker_param, lambda_set, threshold_set )
@@ -66,6 +66,13 @@ function [acc, loss] = CBIG_KRR_innerloop_cv_allparams_LITE( test_fold, sub_fold
 %     - with_bias = 1 means the algorithm is to minimize
 %     (y - K*alpha - beta)^2 + (regularization of alpha), where beta is a
 %     constant bias for every subject, estimated from the data.
+%
+%   - kernel
+%     a #AllSubjects x #AllSubjects kernel matrix (The ordering of subjects 
+%     follows the original subject list, i.e. the ordering in "feature_mat"
+%     or "similarity_mat".)
+%     A 'none' will be passed in, if it was saved in [outdir '/FSM']. 
+%     Algorithm will load it from the file.
 %   
 %   - ker_param (optional)
 %     A K x 1 structure with two fields: type and scale. K denotes the
@@ -206,13 +213,16 @@ end
 %% inner-loop cv for each parameter combination
 outdir = fullfile(data_dir, 'innerloop_cv', ['fold_' num2str(test_fold)]);
 
-for k = 1:length(ker_param)
-    if(strcmp(ker_param(k).type, 'corr'))
-        kfile = fullfile(kernel_dir, ['FSM_' ker_param(k).type '.mat']);
-    else
-        kfile = fullfile(kernel_dir, ['FSM_' ker_param(k).type '_' num2str(ker_param(k).scale) '.mat']);
+if(strcmpi(kernel, 'none'))
+    clear kernel
+    for k = 1:length(ker_param)
+        if(strcmp(ker_param(k).type, 'corr'))
+            kfile = fullfile(kernel_dir, ['FSM_' ker_param(k).type '.mat']);
+        else
+            kfile = fullfile(kernel_dir, ['FSM_' ker_param(k).type '_' num2str(ker_param(k).scale) '.mat']);
+        end
+        kernel{k} = load(kfile);
     end
-    kernel{k} = load(kfile);
 end
 
 if(~exist(fullfile(outdir, ['acc' y_resid_stem '.mat']), 'file'))

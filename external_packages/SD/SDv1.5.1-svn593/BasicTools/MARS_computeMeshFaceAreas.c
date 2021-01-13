@@ -60,7 +60,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 {
   int numFaces, *faces;
   float *vertices;
-  int dims;
+  mwSize dims;
   float *faceAreas;
   
  /* Check for proper number of arguments. */

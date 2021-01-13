@@ -108,8 +108,8 @@ mexFunction(
     const int       numOfPoints     =   mxGetN(prhs[0]);
     const int       data_dim        =   mxGetM(prhs[6]);
     
-    int out_dims[2], p, grad_dims[3];
-    int index_dims[2];
+    int p; mwSize out_dims[2], grad_dims[3];
+    mwSize index_dims[2];
     int * FaceInds_MatlabStyle, * NViF_MatlabStyle;
     int cur_face_ind;
     
@@ -144,7 +144,7 @@ mexFunction(
         mexErrMsgTxt("Inconsistent number of vertices!");
     if (mxGetN(prhs[0]) != mxGetN(prhs[5]))
         mexErrMsgTxt("Numof points and number of seedVertices should be the same!");
-    if (mxGetN(prhs[6]) != numOfVertices) mxErrMsgTxt("Data not the right size!");
+    if (mxGetN(prhs[6]) != numOfVertices) mexErrMsgTxt("Data not the right size!");
     
     /*
      *
@@ -152,7 +152,7 @@ mexFunction(
      */
     
     /*if(!(FaceInds_MatlabStyle = (int*) calloc(numOfPoints, sizeof(int))))
-         mxErrMsgTxt("Memory allocation error!!!");*/
+         mexErrMsgTxt("Memory allocation error!!!");*/
     plhs[3] = mxCreateNumericArray(2, index_dims, mxINT32_CLASS, mxREAL);
     FaceInds_MatlabStyle = (int *)mxGetData(plhs[3]);    
      

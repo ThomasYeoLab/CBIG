@@ -70,7 +70,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
   int maxNeighbors, numVerts;
   int *vertexNbors;
   float *vertices;
-  int dims[2];
+  mwSize dims[2];
   float *vertexDistSq2Nbors;
   
  /* Check for proper number of arguments. */

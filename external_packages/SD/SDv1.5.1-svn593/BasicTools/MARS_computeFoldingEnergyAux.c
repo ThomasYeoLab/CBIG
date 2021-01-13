@@ -106,7 +106,7 @@ mexFunction(
     const int       numOfVertices   =   mxGetN(prhs[0]);
     const int       numOfFaces      =   mxGetN(prhs[1]);
 
-    int f, scalar_dim, v, cur_face, wait;
+    int f, v, cur_face, wait; mwSize scalar_dim;
     const float * v0, * v1, * v2;
     int v0_ind, v1_ind, v2_ind, tmp_ind;
     float tmp_vec[3], v0v1[3], v0v2[3], tmp_grad[3];

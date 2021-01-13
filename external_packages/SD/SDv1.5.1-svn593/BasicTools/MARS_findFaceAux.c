@@ -109,7 +109,7 @@ mexFunction(
     
     int * NViF, *VCount;
     
-    int scalar_dims[2];
+    mwSize scalar_dims[2];
     int * FI;
     
     

@@ -6,7 +6,6 @@ The Python distribution used in CBIG is based on [Anaconda](https://www.continuu
 Defined in `CBIG_pip_packages.txt`
 
 - [nipy](https://github.com/nipy/nipy) version 0.4.0
-- [nipype](https://github.com/nipy/nipype) version 0.12.0
 - [nibabel](https://github.com/nipy/nibabel) version 2.0.2
 - [nilearn](https://github.com/nipy/nibabel) version 0.2.5.1
 
@@ -26,6 +25,7 @@ We highly recommend installing Python 3.5 environment.
 
 **[IMPORTANT]** To test if the setup is successful, **log out and log in again** before running: 
 ```bash
+source activate CBIG_py3
 python -m pytest $CBIG_CODE_DIR/setup/python_env_setup/tests/CBIG_python_env_setup_unit_test.py
 ```
 # Install other packages for your own needs

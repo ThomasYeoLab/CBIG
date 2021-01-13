@@ -223,6 +223,7 @@ if(~exist(fullfile(outdir, ['acc' y_resid_stem '.mat']), 'file'))
                 [y_p, y_t, acc_fold, loss_fold] = CBIG_KRR_innerloop_cv( bin_flag, num_inner_folds, ...
                     FSM, curr_y_resid, curr_y_orig, num_valid_sub, with_bias, lambda, threshold, metric );
                 clear threshold
+                y_pred{k,l,t} = y_p;
                 acc{k,l,t} = acc_fold;
                 loss{k,l,t} = loss_fold;
             end
@@ -234,7 +235,7 @@ if(~exist(fullfile(outdir, ['acc' y_resid_stem '.mat']), 'file'))
     if(~exist(outdir, 'dir'))
         mkdir(outdir)
     end
-    save(fullfile(outdir, ['acc' y_resid_stem '.mat']), 'acc', 'loss');
+    save(fullfile(outdir, ['acc' y_resid_stem '.mat']), 'acc', 'loss', 'y_pred');
 else
     load(fullfile(outdir, ['acc' y_resid_stem '.mat']))
     if(size(acc,1)~=length(ker_param) || size(acc,2)~=length(lambda_set) || size(acc,3)~=length(threshold_set))

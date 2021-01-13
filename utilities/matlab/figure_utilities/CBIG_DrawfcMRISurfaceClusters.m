@@ -47,7 +47,7 @@ pos = [0.1 0.58 0.16 0.34; ...
     0.7 0.11 0.16 0.14];
 
 h = figure; gpos = get(h, 'Position');
-gpos(3) = 1200; gpos(4) = 600; set(h, 'Position', gpos);
+gpos(1) = 0; gpos(2) = 0; gpos(3) = 1200; gpos(4) = 600; set(h, 'Position', gpos);
 for hemis = {'lh' 'rh'}
     
     hemi = hemis{1};

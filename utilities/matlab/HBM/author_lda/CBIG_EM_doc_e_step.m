@@ -21,6 +21,10 @@ function [params, doc_log_likelihood, q] = CBIG_EM_doc_e_step(w, paradigm, param
 %
 % Written by B.T.Thomas Yeo and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
+if size(paradigm,2) ~= 1
+    error('Input argument ''paradigm'' should be a column vector');
+end
+
 q = CBIG_EM_doc_inference(w, paradigm, params);
 
 % Compute document log likelihood

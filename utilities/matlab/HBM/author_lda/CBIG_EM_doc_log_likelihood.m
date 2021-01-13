@@ -23,6 +23,10 @@ function doc_log_likelihood = CBIG_EM_doc_log_likelihood(w, paradigm, params, q)
 %
 % Written by B.T.Thomas Yeo and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
+if size(paradigm,2) ~= 1
+    error('Input argument ''paradigm'' should be a column vector');
+end
+
 log_likelihood_theta = sum(sum(sum(bsxfun(@times, q, params.log_theta(paradigm, :)), 3), 2));
 
 beta_update = squeeze(sum(q, 1)); % T x Nd

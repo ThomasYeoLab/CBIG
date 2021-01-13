@@ -106,7 +106,7 @@ mexFunction(
     const int       numOfVertices   =   mxGetN(prhs[0]);
     const int       data_dim        =   mxGetM(prhs[4]);
     
-    int grad_dims[3];
+    mwSize grad_dims[3];
     int p, f, fno_c_style;
     int i;
     

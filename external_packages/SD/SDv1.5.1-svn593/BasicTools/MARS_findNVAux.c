@@ -114,7 +114,7 @@ mexFunction(
     
     float           distance, cur_distance;
     int             curSeed;
-    int             scalar_dims[2];
+    mwSize          scalar_dims[2];
     int             nearest, p;
     int *           NV;
     float *         min_dist;

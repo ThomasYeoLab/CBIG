@@ -1,8 +1,10 @@
-function CBIG_ComputeROIs2ROIsCorrelationMatrix(output_file, subj_text_list1, subj_text_list2, discard_frames_list, ROIs1, ROIs2, regression_mask1, regression_mask2, all_comb_bool, avg_sub_bool)
+function CBIG_ComputeROIs2ROIsCorrelationMatrix(output_file, subj_text_list1, subj_text_list2, ...
+    discard_frames_list, ROIs1, ROIs2, regression_mask1, regression_mask2, all_comb_bool, avg_sub_bool)
 
-% CBIG_ComputeROIs2ROIsCorrelationMatrix(output_file, subj_text_list1, subj_text_list2, discard_frames_list, ROIs1, ROIs2, regression_mask1, regression_mask2, all_comb_bool, avg_sub_bool)
+% CBIG_ComputeROIs2ROIsCorrelationMatrix(output_file, subj_text_list1, subj_text_list2, discard_frames_list, ...
+% ROIs1, ROIs2, regression_mask1, regression_mask2, all_comb_bool, avg_sub_bool)
 %   This function compute the ROIs to ROIs correlation matrix
-%   The time courses for each subject will be grabbed and average within
+%   The time courses for each subject will be grabbed and averaged within
 %   the ROI. This averaged time course will be correlated with the time
 %   course from another ROI.
 %
@@ -169,7 +171,9 @@ for i = 1:length(subj_list_1) % loop through each subject
         if (isempty(strfind(input, '.dtseries.nii'))) % input is a nifti file: .nii.gz
             input_series = MRIread(input);
             % time_course1 will look like nframes x nvertices for e.g. 236 x 10242
-            time_course1 = single(transpose(reshape(input_series.vol, size(input_series.vol, 1) * size(input_series.vol, 2) * size(input_series.vol, 3), size(input_series.vol, 4))));
+            time_course1 = single(transpose(reshape(input_series.vol, ...
+                size(input_series.vol, 1) * size(input_series.vol, 2) * size(input_series.vol, 3), ...
+                size(input_series.vol, 4))));
         else % input is a cifti file: .dtseries.nii
             input_series = ft_read_cifti(input);
             time_course1 = single(transpose(input_series.dtseries));
@@ -178,7 +182,9 @@ for i = 1:length(subj_list_1) % loop through each subject
         if (isempty(strfind(input, '.dtseries.nii'))) % input is a nifti file: .nii.gz
             input_series = MRIread(input);
             % time_course1 will look like nframes x nvertices for e.g. 236 x 10242
-            time_course2 = single(transpose(reshape(input_series.vol, size(input_series.vol, 1) * size(input_series.vol, 2) * size(input_series.vol, 3), size(input_series.vol, 4))));
+            time_course2 = single(transpose(reshape(input_series.vol, ...
+                size(input_series.vol, 1) * size(input_series.vol, 2) * size(input_series.vol, 3), ...
+                size(input_series.vol, 4))));
         else % input is a cifti file: .dtseries.nii
             input_series = ft_read_cifti(input);
             time_course2 = single(transpose(input_series.dtseries));
@@ -331,19 +337,30 @@ elseif (~isempty(strfind(ROI_list, '.annot'))) % input ROI as a single .annot fi
         ROI_cell{i} = find(vertex_label == regions(i));
     end
 
-else % input ROIs is a list of its locations: either .nii.gz or .label
+else % input ROIs is a list of its locations: .nii.gz, dlabel.nii or .label
     fid = fopen(ROI_list, 'r');
     i = 0;
     while(1);
         tmp = fgetl(fid);
         if(tmp == -1)
             break
-        else
-            i = i + 1;
+        else          
             if(~isempty(strfind(tmp, '.nii.gz')) || ~isempty(strfind(tmp, '.mgz')) || ~isempty(strfind(tmp, '.mgh')))
-                tmp = MRIread(tmp);
-                ROI_cell{i} = find(tmp.vol == 1); % each cell contains a list of vertex's indices
+                ROI_vol = MRIread(tmp);
+                regions = unique(ROI_vol.vol(ROI_vol.vol ~= 0));
+                for n = 1:length(regions)
+                    i = i + 1;
+                    ROI_cell{i} = find(ROI_vol.vol == regions(n)); % each cell contains a list of vertex's indices
+                end
+            elseif(~isempty(strfind(tmp, '.dlabel.nii')))
+                ROI_vol = ft_read_cifti(tmp, 'mapname','array');
+                regions = unique(ROI_vol.dlabel(ROI_vol.dlabel ~= 0));
+                for n = 1:length(regions)
+                    i = i + 1;
+                    ROI_cell{i} = find(ROI_vol.dlabel == regions(n));
+                end
             elseif(~isempty(strfind(tmp, '.label')))
+                i = i + 1;
                 tmp = read_label([], tmp);
                 ROI_cell{i} = tmp(:, 1) + 1;
             end
@@ -361,9 +378,11 @@ if(strcmp(regression_mask, 'NONE'))
     regress_cell = [];
 else
     isRegress = 1;
-    if(exist('regression_cell', 'var') == 1) %regression_cell is a existing variable
+    %regression_cell is a existing variable
+    if(exist('regression_cell', 'var') == 1)
         regress_cell = regression_mask;
-    elseif (exist(regression_mask, 'file') == 2) %regression_cell is a existing .mat file contains a variable regress_cell
+    %regression_cell is a existing .mat file contains a variable regress_cell
+    elseif (exist(regression_mask, 'file') == 2)
         load(regression_mask);
     else
         error('regression_cell should be a variable or a .mat file which contains a variable regress_cell');

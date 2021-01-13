@@ -244,8 +244,11 @@ fi
 ######
 exit_flag=0
 EXTENSIONS_TO_CHECK=("m" "c" "cpp" "sh" "csh" "pl" "r")
-EXCLUDED_DIRECTORIES=("Zhang2016_ADFactors")
-STANDALONE_EX_DIR=("Zhang2016_ADFactors" "Liegeois2017_Surrogates" "Wu2017_RegistrationFusion")
+EXCLUDED_DIRECTORIES=(`cat $CBIG_CODE_DIR/hooks/list/exclude_list`)
+NO_LONGER_SUPPORT_DIR=(`cat $CBIG_CODE_DIR/hooks/list/no_longer_support_list`)
+STANDALONE_EX_DIR=(`cat $CBIG_CODE_DIR/hooks/list/exclude_standalone_list`)
+REPLICATION_EX_DIR=(`cat $CBIG_CODE_DIR/hooks/list/exclude_replication_list`)
+EXAMPLE_EX_DIR=(`cat $CBIG_CODE_DIR/hooks/list/exclude_example_list`)
 
 project_paths=$(ls -d -1 $CBIG_CODE_DIR/stable_projects/*/*)
 
@@ -253,16 +256,39 @@ echo -e "\n==> [Check 4] Checking stable_projects/xxx/xxx " | tee -a $logfile
 for project_path in $project_paths
 do
     project_in_exclude_directory=0
+    project_folder_name=( $(basename "$project_path") )
     echo -e "\n===> Checking $project_path"
     all_with_valid_prefix=1
     for exclude_directory in "${EXCLUDED_DIRECTORIES[@]}" 
     do
         if [[ "$project_path" == */${exclude_directory} ]]; then
+            echo "    [SKIPPED] $project_folder_name is excluded from all checks." | tee -a $logfile
             project_in_exclude_directory=1
             break
         fi
     done
     if [[ $project_in_exclude_directory == 1 ]]; then
+        continue
+    fi
+    project_retired=0
+    # check no longer supported directories
+    for retired_dir in "${NO_LONGER_SUPPORT_DIR[@]}" 
+    do
+        if [[ "$project_path" == */${retired_dir} ]]; then
+            echo " $project_folder_name is no longer supported. This folder should only contain one readme file" | tee -a $logfile
+            project_retired=1
+            break
+        fi
+    done
+    if [[ $project_retired == 1 ]]; then
+        if [ ! -f "${project_path}/README.md" ];then
+            exit_flag=1
+            echo "    [FAILED] $project_path does not have a readme file" | tee -a $logfile
+        fi
+        if [ `ls ${project_path} | wc -l` -gt 1 ];then
+            exit_flag=1
+            echo "    [FAILED] $project_path should only have one readme file" | tee -a $logfile
+        fi
         continue
     fi
 
@@ -311,106 +337,6 @@ do
     fi
 
     ###
-    # check whether all projects have the config/CBIG_<project_name>_tested_config.sh
-    ###
-    echo -e "\n====> Check whether this project has config/CBIG_<project_name>_tested_config.sh" | tee -a $logfile
-    all_with_config=1
-    if [[ -e $project_path/config/CBIG_${project_name}_tested_config.sh ]]; then
-        secondline=`sed -n 2p $project_path/config/CBIG_${project_name}_tested_config.sh`
-        if [[ "$secondline" != "# Last successfully run on"* ]]; then
-            all_with_config=0
-            echo "$project_path/config/CBIG_${project_name}_tested_config.sh does not have the time stamp" | tee -a $logfile
-        fi
-    elif [[ -e $project_path/config/CBIG_${project_name}_tested_config.csh ]]; then
-        secondline=`sed -n 2p $project_path/config/CBIG_${project_name}_tested_config.csh`
-        if [[ "$secondline" != "# Last successfully run on"* ]]; then
-            all_with_config=0
-            echo "$project_path/config/CBIG_${project_name}_tested_config.csh does not have the time stamp" | tee -a $logfile
-        fi
-    else
-        echo "$project_path does not have a CBIG_${project_name}_tested_config file" | tee -a $logfile
-    fi
-    if [ $all_with_config == 0 ]; then
-        exit_flag=1
-        echo "    [FAILED] Stable_project $project_path does not have CBIG_${project_name}_tested_config files \
-or these files do not have time stamp." | tee -a $logfile
-        echo "Please add CBIG_${project_name}_tested_config.sh or CBIG_${project_name}_tested_config.csh to \
-$project_path/config/ manually" | tee -a $logfile
-        echo "Each stable project should contain a repo config file that was used when the project was last \
-tested to work." | tee -a $logfile
-        echo "The second line of the config file should be a comment:" | tee -a $logfile
-        echo "# Last successfully run on <spelled out date to reduce confusion, e.g., Jan 7th, 2017>" | tee -a $logfile
-    else
-        echo "    [PASSED]" | tee -a $logfile
-    fi
-
-    ###
-    # if there are matlab files in a project, check whether it has config/CBIG_<project_name>_tested_startup.m
-    ###
-    m_files=$(find $project_path -name "*.m")
-    if [[ ${m_files} ]]; then
-        echo -e "\n====> Check whether this project has config/CBIG_<project_name>_tested_startup.m" | tee -a $logfile
-        if [[ ! -e $project_path/config/CBIG_${project_name}_tested_startup.m ]]; then
-            exit_flag=1
-            echo "    [FAILED] $project_path does not have a CBIG_${project_name}_tested_startup.m file" | tee -a $logfile
-            echo "Please add CBIG_${project_name}_tested_startup.m to $project_path/config/ manually" | tee -a $logfile
-        else
-            echo "    [PASSED]" | tee -a $logfile
-        fi
-    fi
-
-    ###
-    # if there are python files in a project, check whether it has config/CBIG_<project_name>_python_env.txt
-    ###
-    py_files=$(find $project_path -name "*.py")
-    if [[ ${py_files} ]]; then
-        echo -e "\n====> Check whether this project has config/CBIG_<project_name>_python_env.yml" | tee -a $logfile
-        count=`ls -1 $project_path/config/*.yml 2>/dev/null | wc -l`
-        if [[ $count == 0 ]]; then
-            exit_flag=1
-            echo "    [FAILED] $project_path does not have a CBIG_\${project_name}_python_env.yml file" | tee -a $logfile
-            echo "Please add CBIG_${project_name}_python_env.yml to $project_path/config/ manually" | tee -a $logfile
-        else
-            echo "    [PASSED]" | tee -a $logfile
-        fi
-        # check keras.json
-        yml_file=$(ls -1 $project_path/config/*.yml)
-        keras_line=$(grep keras $yml_file)
-        if [[ ! -z "$keras_line" ]]; then
-            echo -e "\n====> Check whether this project has config/keras.json" | tee -a $logfile
-            if [[ ! -e $project_path/config/keras.json ]]; then
-                exit_flag=1
-                echo "    [FAILED] $project_path does not have keras.json file" | tee -a $logfile
-                echo "Please add keras.json to $project_path/config/ manually" | tee -a $logfile
-            else
-                echo "    [PASSED]" | tee -a $logfile
-            fi
-        fi
-    fi
-
-    ###
-    # check whether the project has config/CBIG_<project_name>_generate_standalone.sh
-    ###
-    project_in_standalone_ex_dir=0
-    for exclude_directory in "${STANDALONE_EX_DIR[@]}" 
-    do
-        if [[ "$project_path" == */${exclude_directory} ]]; then
-            project_in_standalone_ex_dir=1
-            break
-        fi
-    done
-    if [[ $project_in_standalone_ex_dir == 0 ]]; then
-        echo -e "\n====> Check whether this project has config/CBIG_<project_name>_generate_standalone.sh" | tee -a $logfile
-        if [[ ! -e $project_path/config/CBIG_${project_name}_generate_standalone.sh ]]; then
-            exit_flag=1
-            echo "    [FAILED] $project_path does not have a CBIG_${project_name}_generate_standalone.sh" | tee -a $logfile
-            echo "Please add CBIG_${project_name}_generate_standalone.sh to $project_path/config/ manually" | tee -a $logfile
-        else
-            echo "    [PASSED]" | tee -a $logfile
-        fi
-    fi
-
-    ###
     # check whether all projects have the unit_tests folder
     ###
     echo -e "\n====> Check whether this project has unit_tests folder" | tee -a $logfile
@@ -425,13 +351,334 @@ tested to work." | tee -a $logfile
     ###
     # check whether all projects have the examples folder
     ###
+    project_in_example_ex_dir=0
     echo -e "\n====> Check whether this project has examples folder" | tee -a $logfile
-    if [ ! -d "$project_path/examples" ]; then
-        exit_flag=1
-        echo "    [FAILED] $project_path does not have a examples folder" | tee -a $logfile
-        echo "Please add a examples folder under $project_path manually" | tee -a $logfile
+    for exclude_directory in "${EXAMPLE_EX_DIR[@]}" 
+    do
+        if [[ "$project_path" == */${exclude_directory} ]]; then
+            project_in_example_ex_dir=1
+            echo "    [SKIPPED] $project_folder_name is excluded from example folder check." | tee -a $logfile
+            break
+        fi
+    done
+
+    if [[ $project_in_example_ex_dir == 0 ]]; then
+        if [ ! -d "$project_path/examples" ]; then
+            exit_flag=1
+            echo "    [FAILED] $project_path does not have a examples folder" | tee -a $logfile
+            echo "Please add a examples folder under $project_path manually" | tee -a $logfile
+        else
+            echo "    [PASSED]" | tee -a $logfile
+        fi
+
+        ###
+        # check whether all projects have a CBIG_XXX_check_example_results.m script
+        ###
+        echo -e "\n=====> Check whether this project has a check example script" | tee -a $logfile
+        check_script=`find "$project_path/examples" -name "*check_example_results.m"`
+        if [[ $check_script == "" ]]; then
+            exit_flag=1
+            echo "    [FAILED] $project_path does not have a check example script" | tee -a $logfile
+            echo "Please add CBIG_XXX_check_example_results.m under $project_path/examples manually" | tee -a $logfile
+        else
+            echo "    [PASSED]" | tee -a $logfile
+        fi
+
+        ###
+        # check whether the unit test wrapper calls the check example function
+        ###
+        echo -e "\n=====> Check whether the unit test wrapper calls the check example function" | tee -a $logfile
+        unit_test_files=$(find "$project_path/unit_tests" -name "*unit_test.m")
+        exist_call_check=0
+        for unit_test_m in "${unit_test_files[@]}"
+        do
+            find_check=`grep check_example_results $unit_test_m`
+            if [[ $find_check != "" ]]; then
+                exist_call_check=1
+                break
+            fi
+        done
+        if [ $exist_call_check == 0 ]; then
+            echo "    [FAILED] $project_path does not call CBIG_XXX_check_example_results in the unit tests." | tee -a $logfile
+            echo "Please call CBIG_XXX_check_example_results in your unit tests." | tee -a $logfile
+            exit_flag=1
+        else
+            echo "    [PASSED]" | tee -a $logfile
+        fi
+    fi
+
+    ###
+    # check whether all projects have the replication folder
+    ###
+    project_in_replication_ex_dir=0
+    echo -e "\n====> Checking replication folder .." | tee -a $logfile
+    for exclude_directory in "${REPLICATION_EX_DIR[@]}" 
+    do
+        if [[ "$project_path" == */${exclude_directory} ]]; then
+            project_in_replication_ex_dir=1
+            echo "    [SKIPPED] $project_folder_name is excluded from replication folder check." | tee -a $logfile
+            break
+        fi
+    done
+    if [[ $project_in_replication_ex_dir == 0 ]]; then
+        echo -e "\n=====> Check whether this project has replication folder" | tee -a $logfile
+        if [ ! -d "$project_path/replication" ]; then
+            exit_flag=1
+            echo "    [FAILED] $project_path does not have a replication folder" | tee -a $logfile
+            echo "Please add a replication folder under $project_path manually" | tee -a $logfile
+        else
+            echo "    [PASSED]" | tee -a $logfile
+        fi
+
+        ###
+        # check whether all projects have a standardized config file under replication/config
+        ###
+        echo -e "\n=====> Check whether this project has a standardized CBIG_<project_name>_tested_config.sh" | tee -a $logfile
+        all_with_config=1
+        config_path_sh="$project_path/replication/config/CBIG_${project_name}_tested_config.sh"
+        config_path_csh="$project_path/replication/config/CBIG_${project_name}_tested_config.csh"
+        if [[ -e $config_path_sh ]]; then
+            secondline=`sed -n 2p $config_path_sh`
+            if [[ "$secondline" != "# Last successfully run on"* ]]; then
+                all_with_config=0
+                echo "$project_path/replication/config/CBIG_${project_name}_tested_config.sh does not have the time stamp" | tee -a $logfile
+            fi
+            if [[ "$secondline" != *"git repository version"* ]]; then
+                all_with_config=0
+                echo "$project_path/replication/config/CBIG_${project_name}_tested_config.sh does not have the git version" | tee -a $logfile
+            fi
+            env_test=`grep CBIG_TESTDATA_DIR $config_path_sh`
+            if [[ "$env_test" == "" ]]; then
+                 echo "$config_path_sh does not define CBIG_TESTDATA_DIR" | tee -a $logfile
+                 all_with_config=0
+            fi
+            rep_test=`grep CBIG_REPDATA_DIR $config_path_sh`
+            if [[ "$rep_test" == "" ]]; then
+                 rep_test=`grep CBIG_${project_name}_REP_.*_DIR $config_path_sh`
+                 if [[ "$rep_test" == "" ]]; then
+                     echo "$config_path_sh does not define CBIG_REPDATA_DIR" | tee -a $logfile
+                     all_with_config=0
+                 fi
+            fi
+        elif [[ -e $config_path_csh ]]; then
+            secondline=`sed -n 2p $config_path_csh`
+            if [[ "$secondline" != "# Last successfully run on"* ]]; then
+                all_with_config=0
+                echo "$project_path/replication/config/CBIG_${project_name}_tested_config.csh does not have the time stamp" | tee -a $logfile
+                echo "The second line of the config file should be a comment:" | tee -a $logfile
+                echo "# Last successfully run on <spelled out date to reduce confusion, e.g., Jan 7th, 2017> with git \
+repository version <vx.x.x-version_name>" | tee -a $logfile
+            fi
+            env_test=`grep CBIG_TESTDATA_DIR $config_path_csh`
+            if [[ "$env_test" == "" ]]; then
+                 echo "$config_path_csh does not define CBIG_TESTDATA_DIR" | tee -a $logfile
+                 all_with_config=0
+            fi
+            rep_test=`grep CBIG_REPDATA_DIR $config_path_csh`
+            if [[ "$rep_test" == "" ]]; then
+                 rep_test=`grep CBIG_${project_name}_REP_.*_DIR $config_path_csh`
+                 if [[ "$rep_test" == "" ]]; then
+                     echo "$config_path_csh does not define CBIG_REPDATA_DIR" | tee -a $logfile
+                     all_with_config=0
+                 fi
+            fi
+        else
+            echo "$project_path does not have a CBIG_${project_name}_tested_config file" | tee -a $logfile
+            echo "Please add CBIG_${project_name}_tested_config.sh or CBIG_${project_name}_tested_config.csh to \
+$project_path/config/ manually" | tee -a $logfile
+            echo "Each stable project should contain a repo config file that was used when the project was last \
+tested to work." | tee -a $logfile
+            echo "The second line of the config file should be a comment:" | tee -a $logfile
+            echo "# Last successfully run on <spelled out date to reduce confusion, e.g., Jan 7th, 2017> with git \
+repository version <vx.x.x-version_name>" | tee -a $logfile
+            all_with_config=0
+        fi
+        if [ $all_with_config == 0 ]; then
+            exit_flag=1
+            echo "    [FAILED] Stable_project $project_path does not have CBIG_${project_name}_tested_config files \
+or these files do not meet the above requirements." | tee -a $logfile
+        else
+            echo "    [PASSED]" | tee -a $logfile
+        fi
+
+        ###
+        # if there are matlab files in a project, check whether it has config/CBIG_<project_name>_tested_startup.m
+        ###
+        m_files=$(find $project_path -name "*.m")
+        if [[ ${m_files} ]]; then
+            echo -e "\n=====> Check whether this project has CBIG_<project_name>_tested_startup.m" | tee -a $logfile
+            if [[ ! -e $project_path/replication/config/CBIG_${project_name}_tested_startup.m ]]; then
+                exit_flag=1
+                echo "    [FAILED] $project_path does not have a CBIG_${project_name}_tested_startup.m file" | tee -a $logfile
+                echo "Please add CBIG_${project_name}_tested_startup.m to $project_path/replication/config/ manually" | tee -a $logfile
+            else
+                echo "    [PASSED]" | tee -a $logfile
+            fi
+        fi
+
+        ###
+        # if there are python files in a project, check whether it has config/CBIG_<project_name>_python_env.txt
+        ###
+        py_files=$(find $project_path -name "*.py")
+        if [[ ${py_files} ]]; then
+            echo -e "\n=====> Check whether this project has CBIG_<project_name>_python_env.yml" | tee -a $logfile
+            count=`ls -1 $project_path/replication/config/*.yml 2>/dev/null | wc -l`
+            if [[ $count == 0 ]]; then
+                exit_flag=1
+                echo "    [FAILED] $project_path does not have a CBIG_\${project_name}_python_env.yml file" | tee -a $logfile
+                echo "Please add CBIG_${project_name}_python_env.yml to $project_path/replication/config/ manually" | tee -a $logfile
+            else
+                echo "    [PASSED]" | tee -a $logfile
+            fi
+            # check keras.json
+            yml_file=$(ls -1 $project_path/replication/config/*.yml)
+            keras_line=$(grep keras $yml_file)
+            if [[ ! -z "$keras_line" ]]; then
+                echo -e "\n=====> Check whether this project has config/keras.json" | tee -a $logfile
+                if [[ ! -e $project_path/replication/config/keras.json ]]; then
+                    exit_flag=1
+                    echo "    [FAILED] $project_path does not have keras.json file" | tee -a $logfile
+                    echo "Please add keras.json to $project_path/replication/config/ manually" | tee -a $logfile
+                else
+                    echo "    [PASSED]" | tee -a $logfile
+                fi
+            fi
+        fi
+
+        ###
+        # check whether the project has replication/config/CBIG_<project_name>_generate_standalone.sh
+        ###
+        project_in_standalone_ex_dir=0
+        for exclude_directory in "${STANDALONE_EX_DIR[@]}" 
+        do
+            if [[ "$project_path" == */${exclude_directory} ]]; then
+                project_in_standalone_ex_dir=1
+                break
+            fi
+        done
+        if [[ $project_in_standalone_ex_dir == 0 ]]; then
+            echo -e "\n=====> Check whether this project has CBIG_<project_name>_generate_standalone.sh" | tee -a $logfile
+            if [[ ! -e $project_path/replication/config/CBIG_${project_name}_generate_standalone.sh ]]; then
+                exit_flag=1
+                echo "    [FAILED] $project_path does not have a CBIG_${project_name}_generate_standalone.sh" | tee -a $logfile
+                echo "Please add CBIG_${project_name}_generate_standalone.sh to $project_path/config/ manually" | tee -a $logfile
+            else
+                echo "    [PASSED]" | tee -a $logfile
+            fi
+        fi
     else
-        echo "    [PASSED]" | tee -a $logfile
+        ###
+        # check whether all projects have a standardized config file
+        ###
+        echo -e "\n====> Check whether this project has a standardized config/CBIG_<project_name>_tested_config.sh" | tee -a $logfile
+        all_with_config=1
+        config_path_sh="$project_path/config/CBIG_${project_name}_tested_config.sh"
+        config_path_csh="$project_path/config/CBIG_${project_name}_tested_config.csh"
+        if [[ -e $config_path_sh ]]; then
+            secondline=`sed -n 2p $config_path_sh`
+            if [[ "$secondline" != "# Last successfully run on"* ]]; then
+                all_with_config=0
+                echo "$project_path/config/CBIG_${project_name}_tested_config.sh does not have the time stamp" | tee -a $logfile
+                echo "The second line of the config file should be a comment:" | tee -a $logfile
+                echo "# Last successfully run on <spelled out date to reduce confusion, e.g., Jan 7th, 2017>" | tee -a $logfile
+            fi
+            env_test=`grep CBIG_TESTDATA_DIR $config_path_sh`
+            if [[ "$env_test" == "" ]]; then
+                 echo "$config_path_sh does not define CBIG_TESTDATA_DIR" | tee -a $logfile
+                 all_with_config=0
+            fi
+        elif [[ -e $config_path_csh ]]; then
+            secondline=`sed -n 2p $config_path_csh`
+            if [[ "$secondline" != "# Last successfully run on"* ]]; then
+                all_with_config=0
+                echo "$project_path/config/CBIG_${project_name}_tested_config.csh does not have the time stamp" | tee -a $logfile
+            fi
+            env_test=`grep CBIG_TESTDATA_DIR $config_path_csh`
+            if [[ "$env_test" == "" ]]; then
+                 echo "$config_path_csh does not define CBIG_TESTDATA_DIR" | tee -a $logfile
+                 all_with_config=0
+            fi
+        else
+            echo "$project_path does not have a CBIG_${project_name}_tested_config file" | tee -a $logfile
+            echo "Please add CBIG_${project_name}_tested_config.sh or CBIG_${project_name}_tested_config.csh to \
+$project_path/config/ manually" | tee -a $logfile
+            echo "The second line of the config file should be a comment:" | tee -a $logfile
+            echo "# Last successfully run on <spelled out date to reduce confusion, e.g., Jan 7th, 2017>" | tee -a $logfile
+            all_with_config=0
+        fi
+        if [ $all_with_config == 0 ]; then
+            exit_flag=1
+            echo "    [FAILED] Stable_project $project_path does not have CBIG_${project_name}_tested_config files \
+or these files do not meet the above requirements." | tee -a $logfile
+        else
+            echo "    [PASSED]" | tee -a $logfile
+        fi
+
+        ###
+        # if there are matlab files in a project, check whether it has config/CBIG_<project_name>_tested_startup.m
+        ###
+        m_files=$(find $project_path -name "*.m")
+        if [[ ${m_files} ]]; then
+            echo -e "\n====> Check whether this project has config/CBIG_<project_name>_tested_startup.m" | tee -a $logfile
+            if [[ ! -e $project_path/config/CBIG_${project_name}_tested_startup.m ]]; then
+                exit_flag=1
+                echo "    [FAILED] $project_path does not have a CBIG_${project_name}_tested_startup.m file" | tee -a $logfile
+                echo "Please add CBIG_${project_name}_tested_startup.m to $project_path/config/ manually" | tee -a $logfile
+            else
+                echo "    [PASSED]" | tee -a $logfile
+            fi
+        fi
+
+        ###
+        # if there are python files in a project, check whether it has config/CBIG_<project_name>_python_env.txt
+        ###
+        py_files=$(find $project_path -name "*.py")
+        if [[ ${py_files} ]]; then
+            echo -e "\n====> Check whether this project has config/CBIG_<project_name>_python_env.yml" | tee -a $logfile
+            count=`ls -1 $project_path/config/*.yml 2>/dev/null | wc -l`
+            if [[ $count == 0 ]]; then
+                exit_flag=1
+                echo "    [FAILED] $project_path does not have a CBIG_\${project_name}_python_env.yml file" | tee -a $logfile
+                echo "Please add CBIG_${project_name}_python_env.yml to $project_path/config/ manually" | tee -a $logfile
+            else
+                echo "    [PASSED]" | tee -a $logfile
+            fi
+            # check keras.json
+            yml_file=$(ls -1 $project_path/config/*.yml)
+            keras_line=$(grep keras $yml_file)
+            if [[ ! -z "$keras_line" ]]; then
+                echo -e "\n====> Check whether this project has config/keras.json" | tee -a $logfile
+                if [[ ! -e $project_path/config/keras.json ]]; then
+                    exit_flag=1
+                    echo "    [FAILED] $project_path does not have keras.json file" | tee -a $logfile
+                    echo "Please add keras.json to $project_path/config/ manually" | tee -a $logfile
+                else
+                    echo "    [PASSED]" | tee -a $logfile
+                fi
+            fi
+        fi
+
+        ###
+        # check whether the project has config/CBIG_<project_name>_generate_standalone.sh
+        ###
+        project_in_standalone_ex_dir=0
+        for exclude_directory in "${STANDALONE_EX_DIR[@]}" 
+        do
+            if [[ "$project_path" == */${exclude_directory} ]]; then
+                project_in_standalone_ex_dir=1
+                break
+            fi
+        done
+        if [[ $project_in_standalone_ex_dir == 0 ]]; then
+            echo -e "\n====> Check whether this project has config/CBIG_<project_name>_generate_standalone.sh" | tee -a $logfile
+            if [[ ! -e $project_path/config/CBIG_${project_name}_generate_standalone.sh ]]; then
+                exit_flag=1
+                echo "    [FAILED] $project_path does not have a CBIG_${project_name}_generate_standalone.sh" | tee -a $logfile
+                echo "Please add CBIG_${project_name}_generate_standalone.sh to $project_path/config/ manually" | tee -a $logfile
+            else
+                echo "    [PASSED]" | tee -a $logfile
+            fi
+        fi
     fi
 done
 

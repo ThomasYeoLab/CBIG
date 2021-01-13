@@ -1,0 +1,39 @@
+#!/bin/sh
+
+# This script will wait until your job is finished or errored using qstat.
+# This script should be run on the headnode. This script should not be used
+# independently, instead it should only be called via CBIG_check_job_status.
+#
+#       -n: Name or ID of your job. If you choose job name, all jobs with 
+#               the same name will be checked. If you choose job id, you 
+#               can check only one single job.
+#               Note that for our current scheduler, the length of the job 
+#               name is limited to 15 characters. Longer name will be cut 
+#               down. Please be careful.
+#
+# Example: CBIG_wait_for_job -n Unit_test
+# Written by XUE Aihuiping and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+
+while getopts "n:" arg
+do
+        case $arg in
+             n)
+	        job=$OPTARG
+                ;;
+             ?)
+	        echo "Unknown argument"
+	        exit 1
+	        ;;
+        esac
+done
+
+user=`whoami`
+
+# Wait till jobs with the same name are all done
+echo "Waiting for job ${job}..."
+job_num=`qstat | grep -E ''${user}'' | grep -E ''${job}'' | wc -l`
+while [ ${job_num} -gt 0 ];do
+        sleep 60s
+        job_num=`qstat | grep -E ''${user}'' | grep -E ''${job}'' | wc -l`
+done
+echo "Job ${job} is finished."

@@ -66,7 +66,7 @@ void FindNeighborhoodGivenRadiusAux(mxArray *plhs[], int maxNeighbors, int numVe
 {
     int *indicator_vec1, *indicator_vec2;
     int i, numVertInNeighborhood = 0;
-    int dims[2];
+    mwSize dims[2];
     int *vertexList;
     
     indicator_vec1 = (int *) calloc(numVerts, sizeof(int));
