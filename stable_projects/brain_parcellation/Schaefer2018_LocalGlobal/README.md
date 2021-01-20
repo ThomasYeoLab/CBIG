@@ -59,14 +59,14 @@ Except for this project, if you want to use the code for other stable projects f
 
 To download the version of the code that is last tested, you can either
 
-- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.1-Schaefer2018_LocalGlobal](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.1-Schaefer2018_LocalGlobal)
+- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.18.1-Update_stable_project_unit_test](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.18.1-Update_stable_project_unit_test)
 
 or
 
 - run the following command, if you have Git installed
 
 ```
-git checkout -b Schaefer2018_LocalGlobal v0.17.1-Schaefer2018_LocalGlobal
+git checkout -b Schaefer2018_LocalGlobal v0.18.1-Update_stable_project_unit_test
 ```
 
 ---
@@ -136,6 +136,11 @@ Updates
 
 - Release v0.17.1 (06/05/2020): The medial wall area of Schaefer2018 parcellations in cifti format is different from the medial wall defined by HCP. The recent workbench toolbox release (v1.4.2) cannot handle this. The label of HCP medial wall vertices are now defined as 0 to be compatible with the latest workbench toolbox.
 
+- Release v0.18.1 (20/01/2021):
+
+    1. Update unit test to accommodate to the new HPC.
+
+    2. Fix a minor bug in `CBIG_gwMRF_set_prams.m`
 ---
 
 Bugs and Questions

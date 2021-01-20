@@ -53,6 +53,12 @@ If you have a queue (e.g. circ-spool), you need to specify output directory `out
 CBIG_MMLDA_example_wrapper(out_dir, queue)
 ```
 
+The final results can be compared using
+
+```
+CBIG_MMLDA_check_example_results(out_dir)
+```
+
 ## Visualization
 
 After finishing the examples, you can find the atrophy patterns of 2 factors here:

@@ -332,8 +332,10 @@ endif
 which git
 if (! $status) then
 	echo "=======================Git: Last Commit of Current Function =======================" |& tee -a $LF
-	git -C ${CBIG_CODE_DIR} log -1 -- stable_projects/preprocessing/CBIG_fMRI_Preproc2016/\
+	pushd ${CBIG_CODE_DIR}
+	git log -1 -- ${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/\
 		CBIG_preproc_fslmcflirt_outliers.csh >> $LF
+	popd
 endif
 
 exit 1;

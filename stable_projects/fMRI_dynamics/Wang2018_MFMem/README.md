@@ -28,9 +28,9 @@ The sub-folder `step2_simulation/` contains the second step which will simulate 
 The sub-folder `step3_plot/` contains all data, functions and scripts to plot the brain map and bar chart of the estimated parameters obtained in Step 1: Estimation.
 
 #### Download
-To download the version of the code that is last tested, you can either visit this link: https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.0-Fix_Absolute_Path or run the following command, if you have Git installed:
+To download the version of the code that is last tested, you can either visit this link: https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.18.1-Update_stable_project_unit_test or run the following command, if you have Git installed:
 ```
-git checkout -b Wang2018_MFMem v0.17.0-Fix_Absolute_Path
+git checkout -b Wang2018_MFMem v0.18.1-Update_stable_project_unit_test
 ```
 
 If you don't want to download our entire repository and only want this project `Wang2018_MFMem` only, you can use https://kinolien.github.io/gitzip/ to download this folder and these two extra scripts:
@@ -54,6 +54,8 @@ The sub-folder `extra_4p` contains all matlab data, functions and scripts to sho
 - Release v0.7.0 (12/09/2018): Initial Release.
 
 - Release v0.17.0 (19/02/2020): Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths.
+
+- Release v0.18.1 (20/01/2021): Update unit test to accommodate to the new HPC.
 
 ----
 

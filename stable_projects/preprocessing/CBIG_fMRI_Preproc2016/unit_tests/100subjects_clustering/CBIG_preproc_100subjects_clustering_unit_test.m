@@ -47,7 +47,7 @@ classdef CBIG_preproc_100subjects_clustering_unit_test < matlab.unittest.TestCas
             %% periodically check whether the job has finished or not             
             cmdout = 1;
             while(cmdout ~= 0)
-                cmd = 'qstat | grep prep_100sub_ut | grep `whoami` | wc -l';
+                cmd = 'ssh headnode "qstat | grep prep_100sub_ut | grep `whoami` | wc -l"';
                 [~, cmdout] = system(cmd);
                 % after job finishes, cmdout should be 0
                 cmdout = str2num(cmdout(1: end-1));
@@ -63,7 +63,7 @@ classdef CBIG_preproc_100subjects_clustering_unit_test < matlab.unittest.TestCas
             %% periodically check whether the job has finished or not             
             cmdout = 1;
             while(cmdout ~= 0)
-                cmd = 'qstat | grep clust_100sub_ut | grep `whoami` | wc -l';
+                cmd = 'ssh headnode "qstat | grep clust_100sub_ut | grep `whoami` | wc -l"';
                 [~, cmdout] = system(cmd);
                 cmdout = str2num(cmdout(1: end-1));
                 pause(60);

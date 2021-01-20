@@ -4,8 +4,7 @@ References
 ====
 
 + Nguyen, M., Sun, N., Alexander D.C., Feng J., Yeo B.T.T., 2018. [**Modeling Alzheimer’s disease progression using deep recurrent neural networks**](https://doi.org/10.1109/prni.2018.8423955), PRNI, 2018.
-+ Nguyen, M., He T., An L., Alexander D.C., Feng J., Yeo B.T.T., 2019. **Predicting Alzheimer’s disease progression
-using deep recurrent neural networks**, under review.
++ Nguyen, M., He T., An L., Alexander D.C., Feng J., Yeo B.T.T., 2020. [**Predicting Alzheimer’s disease progression using deep recurrent neural networks**](https://doi.org/10.1016/j.neuroimage.2020.117203), NeuroImage, 117203.
 
 ----
 

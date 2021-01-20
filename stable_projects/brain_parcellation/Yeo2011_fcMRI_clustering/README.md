@@ -52,14 +52,14 @@ There is a simple example in `examples` folder. Check how to run the example cod
 
 Note that this project uses generic functions from other folders, which may be updated over time. To download the version of the code that was last tested, you can either
 
-- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.0-Fix_Absolute_Path](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.0-Fix_Absolute_Path)
+- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.18.1-Update_stable_project_unit_test](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.18.1-Update_stable_project_unit_test)
 
 or
 
 - run the following command, if you have Git installed
  
 ```
-git checkout -b Yeo2011_fcMRI_clustering v0.17.0-Fix_Absolute_Path
+git checkout -b Yeo2011_fcMRI_clustering v0.18.1-Update_stable_project_unit_test
 ```
 
 ----
@@ -103,6 +103,12 @@ git checkout -b Yeo2011_fcMRI_clustering v0.17.0-Fix_Absolute_Path
     1. Update some component names. For details, please refer to this readme: [Update_20190916_README.md](https://github.com/ThomasYeoLab/CBIG/tree/master/stable_projects/brain_parcellation/Yeo2011_fcMRI_clustering/1000subjects_reference/Yeo_JNeurophysiol11_SplitLabels/Updates/Update_20190916_README.md)
 
 - Release v0.17.0 (19/02/2020): Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths.
+
+- Release v0.18.1 (20/01/2021): 
+
+    1. Update unit test to accommodate to the new HPC.
+
+    2. Turned off "silhouette" option in the wrapper file `CBIG_Yeo2011_cluster_fcMRI_surf2surf_profiles.csh`.
 
 ----
 

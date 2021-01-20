@@ -6,7 +6,7 @@ function [] = CBIG_gwMRF_check_unit_test_result(output_dir)
 % on our HPC server to make sure the codes work fine.
 %
 % '[FAILED]' message indicates something wrong with the codes, the
-% unit test is successful only if all messages are '[PASSED]'.
+% unit test is considered successful only if there is no [FAILED] and the test is [DONE] in the log file.
 %   
 % Input:
 %   - output_dir = the folder containing the output of your unit test
@@ -137,29 +137,11 @@ fprintf('\n[CHECK 3]\t Parcellation results \n');
 disp('-------------------------------------------------------------------');
 
 prefix = 'Graph_Cut_faster__grad_prior_gordon_cluster_20_datacost_1_smoothcost_1000_iterations_2';
-file_seed1 = [prefix, '_seed_1_lh_reduction_iteration_1.mat'];
 file_seed2 = [prefix, '_seed_2_rh_reduction_iteration_1.mat'];
 
-if(~exist(fullfile(output_dir, 'clustering', 'inbetween_results', file_seed1), 'file') ...
-        || ~exist(fullfile(output_dir, 'clustering', 'inbetween_results', file_seed2), 'file'))
+if(~exist(fullfile(output_dir, 'clustering', 'inbetween_results', file_seed2), 'file'))
 	fprintf('[FAILED]\t Parcellation result missing! \n');
 else
-    % start comparing seed 1
-    ref_seed_1 = load(fullfile(ref_dir, 'clustering', 'inbetween_results', file_seed1));
-    seed_1 = load(fullfile(output_dir, 'clustering', 'inbetween_results', file_seed1));
-   
-    [~, ~, cost, ~] = CBIG_HungarianClusterMatch(ref_seed_1.current_label,...
-        seed_1.current_label', 0);
-    
-    if(abs(cost) ~= 37476)
-        fprintf('[FAILED]\t LH intermediate parcellations of seed 1 are diffrent, overlap_percentage = %f \n', ...
-            abs(cost_lh)/37476);
-    else
-        fprintf('[PASSED]\t LH intermediate parcellations of seed 1 are the same \n');
-    end
-    
-    clear cost;
-
     % start comparing seed 2
     ref_seed_2 = load(fullfile(ref_dir, 'clustering', 'inbetween_results', file_seed2));
     seed_2 = load(fullfile(output_dir, 'clustering', 'inbetween_results', file_seed2));
@@ -167,15 +149,18 @@ else
     [~, ~, cost, ~] = CBIG_HungarianClusterMatch(ref_seed_2.current_label, ...
         seed_2.current_label', 0);
     
-    if(abs(cost) ~= 37471)
-        fprintf('[FAILED]\t RH intermediate parcellations of seed 2 are diffrent, overlap_percentage = %f \n', ...
-            abs(cost_rh)/37471);
-    else
+    labels_diff = 37471 - abs(cost);
+    if(labels_diff == 0)
         fprintf('[PASSED]\t RH intermediate parcellations of seed 2 are the same \n');
+    elseif(labels_diff/37471 < 0.0005) % Less than 0.05% of total voxels are different.
+        fprintf(['[PASSED]\t' num2str(labels_diff) ' labels are different.\n']);
+        warning('The small difference might be caused by different running environments.');
+    else % Too many voxels are different.
+        fprintf('[FAILED]\t RH intermediate parcellations of seed 2 are different, overlap_percentage = %f \n', ...
+            abs(cost_rh)/37471);
     end
-    
 end
 
-fprintf('[SUCCESS]\t Unit test done successfully \n');
+fprintf('[DONE]\t Unit test is done. \n');
 
 end

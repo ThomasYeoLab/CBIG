@@ -217,12 +217,14 @@ def eval_submission(ref_frame, pred_frame):
     return {'mAUC': mauc, 'bca': bca, 'adasMAE': adas, 'ventsMAE': vent}
 
 
-if __name__ == "__main__":
+def get_arg_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--reference', '-r', required=True)
     parser.add_argument('--prediction', '-p', required=True)
+    return parser
 
-    args = parser.parse_args()
+
+def main(args):
     result = eval_submission(
         misc.read_csv(args.reference), misc.read_csv(args.prediction))
 
@@ -230,3 +232,7 @@ if __name__ == "__main__":
     print('mAUC', result['mAUC'], 'bca', result['bca'])
     print('########### Mean Absolute Error (MAE) ##################')
     print('adasMAE', result['adasMAE'], 'ventsMAE', result['ventsMAE'])
+
+
+if __name__ == "__main__":
+    main(get_arg_parser().parse_args())

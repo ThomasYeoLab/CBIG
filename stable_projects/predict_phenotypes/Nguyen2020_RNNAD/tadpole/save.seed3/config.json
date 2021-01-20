@@ -1,0 +1,12 @@
+{
+    "epochs": 100,
+    "h_drop": 0.3,
+    "h_size": 128,
+    "i_drop": 0.1,
+    "lr": 0.001632233,
+    "model": "MinRNN",
+    "nb_layers": 3,
+    "seed": 3,
+    "w_ent": 1.0,
+    "weight_decay": 1e-07
+}

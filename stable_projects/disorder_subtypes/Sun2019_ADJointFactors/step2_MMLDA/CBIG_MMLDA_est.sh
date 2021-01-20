@@ -8,7 +8,8 @@
 
 # Usage
 usage() { echo "
-Usage: $0 -a <docs1> -b <docs2> -t <setting> -k <no_topics> -s <start_init> -e <end_init> -m <MMLDA_dir> -o <out_dir> [-q <queue>]
+Usage: $0 -a <docs1> -b <docs2> -t <setting> -k <no_topics> -s <start_init> -e <end_init> -m <MMLDA_dir> -o <out_dir> 
+[-q <queue>]
     - docs1         Text file with each line summarizing the document of first 
                     modality; e.g., brain atrophy doc
     - docs2         Text file with each line summarizing the document of second
@@ -86,29 +87,33 @@ for (( r=${start_init}; r<=${end_init}; r++ )); do
         ${MMLDA_dir}/MMLDA est ${alpha} ${no_topics} ${setting} ${docs1} ${docs2} random ${run_dir} ${r} >> ${log_file}
         echo "${r}" >> ${progress_file}
     else
-        qsub -V -q ${queue} << EOJ
-#!/bin/bash
-#PBS -N 'MMLDA_est'
-#PBS -l walltime=150:00:0
-#PBS -l mem=3gb
-#PBS -e ${run_dir}/mmlda.err
-#PBS -o ${run_dir}/mmlda.out
+        ERR_FILE_PATH=${run_dir}/mmlda.err
+        OUT_FILE_PATH=${run_dir}/mmlda.out
     
-    # converting relative paths to absolute for qsub
-    setting=$(readlink -f ${setting})
-    docs1=$(readlink -f ${docs1})
-    docs2=$(readlink -f ${docs2})
-    run_dir=$(readlink -f ${run_dir})
+        # converting relative paths to absolute for qsub
+        setting=$(readlink -f ${setting})
+        docs1=$(readlink -f ${docs1})
+        docs2=$(readlink -f ${docs2})
+        run_dir=$(readlink -f ${run_dir})
 
-    date >> ${log_file}
-    echo "Docs: ${docs1} ${docs2}" >> ${log_file}
-    echo "Number of topics: ${no_topics}" >> ${log_file}
-    echo "Settings:" >> ${log_file}
-    cat ${setting} >> ${log_file}
+        date >> ${log_file}
+        echo "Docs: ${docs1} ${docs2}" >> ${log_file}
+        echo "Number of topics: ${no_topics}" >> ${log_file}
+        echo "Settings:" >> ${log_file}
+        cat ${setting} >> ${log_file}
 
-    ${MMLDA_dir}/MMLDA est ${alpha} ${no_topics} ${setting} ${docs1} ${docs2} random ${run_dir} ${r} >> ${log_file}
-    echo "${r}" >> ${progress_file}
-EOJ
+        cmd="${MMLDA_dir}/MMLDA est ${alpha} ${no_topics} ${setting} ${docs1} ${docs2} random ${run_dir} ${r}"
+        cmd="$cmd | tee -a ${log_file}"
+        script_file=${run_dir}/job_submitted.sh
+        echo "#!/bin/bash" > ${script_file}
+        echo $cmd >> ${script_file}
+        chmod 750 ${script_file}
+
+        $CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "$script_file" -walltime 2:00:00 -mem 3G -name "MMLDA_est" \
+-joberr ${ERR_FILE_PATH} -jobout ${OUT_FILE_PATH}
+
+        echo "${r}" >> ${progress_file}
+
     fi
 done
 

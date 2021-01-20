@@ -47,13 +47,16 @@ for pipeline in GSR Baseline ; do
 	covariate_list="$replication_dir/scripts/GSP_lists/covariates.txt"
 	ystem=2intelligence
 	
+	log_file="${top_outdir}/CBIG_LiGSR_LME_unittest_intelligence_score_GSP_${pipeline}.log"
 	cmd="$project_dir/VarianceComponentModel/scripts/CBIG_LiGSR_LME_workflowGSP.sh -RSFC_file $RSFC_file -trait_list "
 	cmd="$cmd $cog_list -covariate_list $covariate_list -FD_file $FD_file -DVARS_file $DVARS_file -subject_list "
 	cmd="$cmd $subject_list -outdir $outdir -ystem $ystem -d $d -num_samples $num_samples -rmsub_prefix $rmsub_prefix "
 	cmd="$cmd -data_csv $data_csv"
-	
-	echo $cmd | $CBIG_SCHEDULER_DIR/qsub -V -q circ-spool -l walltime=01:00:00,mem=8GB,nodes=1:ppn=2 -m ae -N \
-	  CBIG_LiGSR_LME_unittest_intelligence_score_GSP
+    cmd="$cmd | tee -a ${log_file}"
+
+    $CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "$cmd" -walltime 1:00:00 -mem 8G \
+    -name "LiGSRUT_ME"
+
 	sleep 3s
 done
 

@@ -59,5 +59,27 @@
              % remove the output directory
              rmdir(out_dir, 's')
          end
+         
+         function test_example(testCase)
+             % create output folder
+             CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
+             cur_dir = fullfile(CBIG_CODE_DIR, 'stable_projects', ...
+                 'disorder_subtypes', 'Tang2020_ASDFactors', 'examples');
+             out_dir = [cur_dir '/output'];
+             mkdir(out_dir)
+             addpath(fullfile(cur_dir,'scripts'));
+             % run the example
+             cmd = ['sh ' fullfile(cur_dir, 'scripts/', ...
+                 'CBIG_ASDf_example_script.sh') ' ' out_dir];
+             system(cmd);
+             
+             % check the results
+             logfile = fullfile(out_dir,'check_result.log');
+             CBIG_ASDf_check_example_results(out_dir, logfile);
+             
+             % remove the output directory
+             rmdir(out_dir, 's')
+             rmpath(fullfile(cur_dir,'scripts'));
+         end
      end
  end

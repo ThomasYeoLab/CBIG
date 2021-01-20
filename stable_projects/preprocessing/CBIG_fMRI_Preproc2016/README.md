@@ -43,14 +43,14 @@ Except for this project, if you want to use the code for other stable projects f
 - To download the version of the code that was last tested, you can either
 
   - visit this link:
-  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.2-CBIG_preproc_spatial_distortion_correction](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.2-CBIG_preproc_spatial_distortion_correction)
+  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.18.1-Update_stable_project_unit_test](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.18.1-Update_stable_project_unit_test)
   
   or
   
   - run the following command, if you have Git installed
   
   ```
-  git checkout -b CBIG_fMRI_Preprocessing v0.17.2-CBIG_preproc_spatial_distortion_correction
+  git checkout -b CBIG_fMRI_Preprocessing v0.18.1-Update_stable_project_unit_test
   ```
 
 ### Usage 
@@ -173,6 +173,9 @@ codes would work on ANTs version 2.2.0.
 	3. Add spatial distortion correction: CBIG_preproc_spatial_distortion_correction.csh.
 	4. Spatial distortion correction step requires a newer FSL version. Update the default FSL verision to 5.0.10.
 
+- Release v0.18.1 (20/01/2021):
+  1. Update unit test to accommodate to the new HPC.
+  2. Modify preprocessing scripts to make them compatible with the CSCHPC node structure.
 ----
 
 ## Bugs and Questions

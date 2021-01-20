@@ -28,10 +28,10 @@ python -m cbig.Nguyen2020.train --verbose \
     --h_drop 0.1 \
     --h_size 512 \
     --epochs 100 --lr 5e-4 --model MinRNN --weight_decay 5e-7 \
-    --out output/model.pt
+    --checkpoint output/model.pt
 
 echo Apply trained model on validation set
-python -m cbig.Nguyen2020.predict --checkpoint output/model.pt --data output/val.pkl -o output/prediction_val.csv
+python -m cbig.Nguyen2020.predict --checkpoint output/model.pt --data output/val.pkl --prediction output/prediction_val.csv
 
 echo Evaluation prediction on validation set
 python -m cbig.Nguyen2020.evaluation --reference output/fold0_val.csv --prediction output/prediction_val.csv

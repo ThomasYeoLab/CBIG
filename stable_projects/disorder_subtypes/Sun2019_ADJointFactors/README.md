@@ -27,14 +27,14 @@ Except for this project, if you want to use the code for other stable projects f
 - To download the version of the code that was last tested, you can either
 
     - visit this link:
-    [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.0-Fix_Absolute_Path](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.0-Fix_Absolute_Path)
+    [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.18.1-Update_stable_project_unit_test](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.18.1-Update_stable_project_unit_test)
 
     or
 
     - run the following command, if you have Git installed
  
     ```
-    git checkout -b Sun2019_ADJointFactors v0.17.0-Fix_Absolute_Path
+    git checkout -b Sun2019_ADJointFactors v0.18.1-Update_stable_project_unit_test
     ```
 
 ----
@@ -44,7 +44,7 @@ Except for this project, if you want to use the code for other stable projects f
 1. Make sure you have installed: Matlab 2014a, Freesurfer 6.0, SPM 12, FSL 5.0.8, Ants 2.2.0
 2. Install CAT12 into SPM 12 by following [CAT12 Download](http://www.neuro.uni-jena.de/cat/index.html#DOWNLOAD)
 3. Follow `$CBIG_CODE_DIR/setup/README.md` to setup the config file. Instead of using `CBIG/setup/CBIG_sample_config.sh`, 
-you need to use `$CBIG_CODE_DIR/stable_projects/disorder_subtypes/Sun2019_ADJointFactors/config/CBIG_MMLDA_tested_config.sh`.
+you need to use `$CBIG_CODE_DIR/stable_projects/disorder_subtypes/Sun2019_ADJointFactors/replication/config/CBIG_MMLDA_tested_config.sh`.
 
 ### Infer factor compositions of new subjects
 Even though we provide the factor compositions of ADNI2 bl/m12 and ADNI1 bl subjects, the user
@@ -85,6 +85,8 @@ In the folder `examples`, we provide toy example code on how to estimate & visua
 - Release v0.10.4 (07/06/2019): Update README.md
 - Release v0.15.3 (16/10/2019): Update reference
 - Release v0.17.0 (19/02/2020): Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths.
+- Release v0.18.1 (20/01/2021): Update unit test to accommodate to the new HPC.
+
 
 ----
 

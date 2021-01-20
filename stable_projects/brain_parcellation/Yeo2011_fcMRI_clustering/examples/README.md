@@ -10,7 +10,9 @@ Run the following command with your own job-submitting script:
 $CBIG_CODE_DIR/stable_projects/brain_parcellation/Yeo2011_fcMRI_clustering/examples/scripts/CBIG_Yeo2011_example.csh <your_own_output_dir>
 ```
 
-We do not offer the command to submit jobs to the job scheduler because different users can have different types of job schedulers. The estimated walltime is less than 20min, and the estimated mem usage is less than 2G.
+We also provide a matlab wrapper `CBIG_Yeo2011_generate_example_results(output_dir)` which runs the above command. 
+
+We do not offer the command to submit jobs to the job scheduler because it's specific to CBIG lab environment. The estimated runtime is ~ 10min with less than 2G memory and 1 CPU.
 
 ----
 
@@ -18,7 +20,9 @@ We do not offer the command to submit jobs to the job scheduler because differen
 
 If you have run the command above, there should be a `.mat` file: `<your_own_output_dir>/clustering/HNU_example_clusters017_scrub.mat`. This is the final clustering output file.
 
-Run the following commands in Matlab command window:
+To check your results, run the matlab function `CBIG_Yeo2011_check_example_results(output_dir)`. A few vertices can be different due to different Matlab versions or environments. This script allows for 0.05% vertices to be different.
+
+To visualize your results, run the following commands in Matlab command window:
 
 ```
 clustered = load('<Your clustering .mat file>');

@@ -99,7 +99,9 @@ echo "====================== Despiking finished. ======================" |& tee 
 which git
 if (! $status) then
 	echo "=======================Git: Last Commit of Current Function =======================" |& tee -a $LF
-	git -C ${CBIG_CODE_DIR} log -1 -- stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_despiking.csh >> $LF
+	pushd ${CBIG_CODE_DIR}
+	git log -1 -- ${CBIG_CODE_DIR}stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_despiking.csh >> $LF
+	popd
 endif
 
 echo "******************************************************************************"

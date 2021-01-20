@@ -170,17 +170,17 @@ def train(args):
     except KeyboardInterrupt:
         print('Early exit')
 
-    torch.save(model, args.out)
-    save_config(args, '%s.json' % args.out)
+    torch.save(model, args.checkpoint)
+    save_config(args, '%s.json' % args.checkpoint)
 
 
-def get_args():
+def get_arg_parser():
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--model', '-m', required=True)
 
     parser.add_argument('--data', required=True)
-    parser.add_argument('--out', '-o', required=True)
+    parser.add_argument('--checkpoint', '-c', required=True)
 
     parser.add_argument('--epochs', type=int, required=True)
     parser.add_argument('--lr', type=float, required=True)
@@ -196,8 +196,8 @@ def get_args():
 
     parser.add_argument('--verbose', action='store_true')
 
-    return parser.parse_args()
+    return parser
 
 
 if __name__ == '__main__':
-    train(get_args())
+    train(get_arg_parser().parse_args())

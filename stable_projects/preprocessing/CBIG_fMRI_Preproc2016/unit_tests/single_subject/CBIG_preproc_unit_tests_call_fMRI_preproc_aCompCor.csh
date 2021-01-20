@@ -22,8 +22,11 @@ endif
 
 cd $work_dir
 
+set log_file = "${outdir}/CBIG_preproc_unit_tests_call_fMRI_preproc.log"
 
-set cmd = "CBIG_preproc_fMRI_preprocess.csh -s $curr_sub -output_d $outdir -anat_s ${curr_sub}_FS -anat_d"
+set cmd = "${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_fMRI_preprocess.csh"
+set cmd = "$cmd -s $curr_sub -output_d $outdir -anat_s ${curr_sub}_FS -anat_d"
 set cmd = "$cmd ${anat_dir} -fmrinii ${fmrinii_dir}/$curr_sub.fmrinii -config ${config_file} -nocleanup"
-echo $cmd | $CBIG_SCHEDULER_DIR/qsub -V -q circ-spool -l walltime=1:00:00,mem=6GB -m ae -N \
-    CBIG_preproc_unit_tests_call_fMRI_preproc
+set cmd = "$cmd | tee -a ${log_file}"
+$CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "$cmd" -walltime 1:30:00 -mem 6G \
+-name "CBIG_preproc_unit_tests_call_fMRI_preproc"

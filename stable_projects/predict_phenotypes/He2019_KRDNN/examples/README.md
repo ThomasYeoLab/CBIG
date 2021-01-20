@@ -28,9 +28,16 @@ Run
 ----
 Run the following code in matlab from this `example` folder:
 ```MATLAB
+cd $CBIG_CODE_DIR/stable_projects/predict_phenotypes/He2019_KRDNN/examples
 CBIG_KRDNN_KR_CV_example
 ```
-You can check the output result in `output_kr_cv_example/final_result.mat` against the reference result in: `results/KR_CV_matlab_r2014a/final_result.mat` or `results/KR_CV_matlab_r2018b/final_result.mat` (There are little differences between matlab R2014a and R2018b, which is might due to the unstable of very small example dataset).
+You can check the output result in `output_kr_cv_example/final_result.mat` against the reference result in: `results/KR_CV_matlab_r2014a/final_result.mat` or `results/KR_CV_matlab_r2018b/final_result.mat` (There are little differences between matlab R2014a and R2018b, which is might due to the unstable of very small example dataset). We also provide script to check your output against R2018b reference result:
+```MATLAB
+cd $CBIG_CODE_DIR/stable_projects/predict_phenotypes/He2019_KRDNN/examples
+CBIG_KRDNN_check_example_results('output_kr_cv_example', true);
+```
+You will receive this message if your results are correct:
+   `Your example results are correct!`.
 
 ----
 
@@ -38,9 +45,16 @@ You can check the output result in `output_kr_cv_example/final_result.mat` again
 ----
 Run the following code in matlab from this `example` folder:
 ```MATLAB
+cd $CBIG_CODE_DIR/stable_projects/predict_phenotypes/He2019_KRDNN/examples
 CBIG_KRDNN_KR_TVT_example
 ```
-You can check the output result in `output_kr_tvt_example/final_result.mat` against the reference result in: `results/KR_TVT/final_result.mat`
+You can check the output result in `output_kr_tvt_example/final_result.mat` against the reference result in: `results/KR_TVT/final_result.mat`. We also provide script to check your output against reference result:
+```MATLAB
+cd $CBIG_CODE_DIR/stable_projects/predict_phenotypes/He2019_KRDNN/examples
+CBIG_KRDNN_check_example_results('output_kr_tvt_example', false);
+```
+You will receive this message if your results are correct:
+   `Your example results are correct!`.
 
 ----
 

@@ -100,7 +100,9 @@ else
 	set git_log = $output_dir/$subject/logs/git.log
 	echo "$TS" >> $git_log
 	echo "***************************Git: Last Commit of Current Repo***************************" >> $git_log
-	git -C ${CBIG_CODE_DIR} log -1 >> $git_log
+	pushd ${CBIG_CODE_DIR}
+	git log -1 >> $git_log
+	popd
 endif
 
 ##########################################

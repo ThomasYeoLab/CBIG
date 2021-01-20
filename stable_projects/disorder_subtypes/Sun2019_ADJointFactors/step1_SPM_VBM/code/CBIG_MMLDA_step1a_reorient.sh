@@ -33,7 +33,8 @@ while getopts ":i:d:r:s:p:q:" opt; do
         esac
 done
 shift $((OPTIND-1))
-if [ -z "${inDir}" ] || [ -z "${idList}" ] || [ -z "${reorientSample}" ] || [ -z "${scriptDir}" ] || [ -z "${spmDir}" ]; then
+if [ -z "${inDir}" ] || [ -z "${idList}" ] || [ -z "${reorientSample}" ] || [ -z "${scriptDir}" ] || [ -z "${spmDir}" ];
+then
     echo Missing Parameters!
     usage
 fi
@@ -54,7 +55,7 @@ for id in `cat ${idList}`; do
     logFile=${logDir}/${id}.log
     imgPath=${inDir}/${id}.nii
     imgPathReorient=${inDir}/${id}_reorient.nii
-    cp ${imgPath} ${imgPathReorient}
+    rsync -az ${imgPath} ${imgPathReorient}
 
     if [ -z "${queue}" ]; then
         matlab -nodisplay -nosplash -r \

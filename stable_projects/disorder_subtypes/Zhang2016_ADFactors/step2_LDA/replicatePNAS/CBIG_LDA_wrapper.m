@@ -8,12 +8,16 @@ cd ../lib/
 
 %% Prepare LDA inputs
 projDir = '/data/users/xzhang/storage/forPNASRelease/'; % please change
-mask = [projDir 'outputs/VBM_bl/concatAndGenMask/GMToNonlinTmp_mod_mean_binThr0.05.nii.gz']; % please change, if you didn't follow this folder structure in VBM
-inputDir = [getenv('CBIG_CODE_DIR') '/stable_projects/disorder_subtypes/Zhang2016_ADFactors/step2_LDA/replicatePNAS/inputs_brain2doc/'];
+% please change, if you didn't follow this folder structure in VBM
+mask = [projDir 'outputs/VBM_bl/concatAndGenMask/GMToNonlinTmp_mod_mean_binThr0.05.nii.gz']; 
+inputDir = [getenv('CBIG_CODE_DIR') ...
+'/stable_projects/disorder_subtypes/Zhang2016_ADFactors/step2_LDA/replicatePNAS/inputs_brain2doc/'];
 
 % Processing 810 ADNI-1 baseline scans
-vol4D = [projDir 'outputs/VBM_bl/smoothing/GMToNonlinTmp_mod_4d_s4.246.nii.gz']; % please change, if you didn't follow this folder structure in VBM
-concatOrder = [projDir 'outputs/VBM_bl/concatAndGenMask/GMToNonlinTmp_mod_4d_concatOrder.txt']; % please change, if you didn't follow this folder structure in VBM
+% please change, if you didn't follow this folder structure in VBM
+vol4D = [projDir 'outputs/VBM_bl/smoothing/GMToNonlinTmp_mod_4d_s4.246.nii.gz']; 
+% please change, if you didn't follow this folder structure in VBM
+concatOrder = [projDir 'outputs/VBM_bl/concatAndGenMask/GMToNonlinTmp_mod_4d_concatOrder.txt']; 
 refList = [inputDir 'filenames_228CN.txt'];
 nuisanceVars = [inputDir 'age_sex_icv_bl.csv'];
 outDir = [projDir 'outputs/LDA_bl/docsForLDA/'];
@@ -23,9 +27,12 @@ CN228 = [inputDir 'filenames_228CN.txt'];
 CBIG_brain2doc(vol4D, concatOrder, mask, refList, nuisanceVars, outDir, AD188, MCI394, CN228);
 
 % Processing 560 m24 follow-up scans
-vol4D = [projDir 'outputs/VBM_m24/smoothing/GMToNonlinTmp_mod_4d_s4.246.nii.gz']; % please change, if you didn't follow this folder structure in VBM
-concatOrder = [projDir 'outputs/VBM_m24/concat/GMToNonlinTmp_mod_4d_concatOrder.txt']; % please change, if you didn't follow this folder structure in VBM
-params = [projDir 'outputs/LDA_bl/docsForLDA/refParams.mat']; % please change, if you didn't follow this folder structure in VBM
+% please change, if you didn't follow this folder structure in VBM
+vol4D = [projDir 'outputs/VBM_m24/smoothing/GMToNonlinTmp_mod_4d_s4.246.nii.gz']; 
+% please change, if you didn't follow this folder structure in VBM
+concatOrder = [projDir 'outputs/VBM_m24/concat/GMToNonlinTmp_mod_4d_concatOrder.txt'];
+% please change, if you didn't follow this folder structure in VBM
+params = [projDir 'outputs/LDA_bl/docsForLDA/refParams.mat']; 
 nuisanceVars = [inputDir 'age_sex_icv_m24.csv'];
 outDir = [projDir 'outputs/LDA_m24/docsForLDA/'];
 m24 = [inputDir 'filenames_560m24.txt']; % since it's the full list, it simply helps reorders the scans
@@ -34,7 +41,7 @@ CBIG_brain2doc(vol4D, concatOrder, mask, params, nuisanceVars, outDir, m24);
 
 %% Compile LDA C code
 system('rm -rf ./lda-c-dist');
-system('cp -aR ${CBIG_CODE_DIR}/external_packages/lda-c-dist ./'); % to keep common space clean
+system('rsync -az ${CBIG_CODE_DIR}/external_packages/lda-c-dist ./'); % to keep common space clean
 system('cd lda-c-dist; make; cd ..'); % compile the C code
 
 
@@ -42,7 +49,8 @@ system('cd lda-c-dist; make; cd ..'); % compile the C code
 docs = [projDir 'outputs/LDA_bl/docsForLDA/docs_AD188.dat'];
 R = 20; % number of random initializations
 outDir = [projDir 'outputs/LDA_bl/est/'];
-queue = 'circ-spool'; % (optional) job queue; If you have a cluster, use it to specify a job queue, initializations will run in parallel
+% (optional) job queue; If you have a cluster, use it to specify a job queue, initializations will run in parallel
+queue = 'circ-spool'; 
 % Try K = 2, 3 and 4
 for K = 2:4
     if isempty(queue)

@@ -73,7 +73,7 @@ for id in `cat ${idList}`; do
     imgPath=${inDir}/${id}.nii
     imgPathReorient=${inDir}/${id}_reorient.nii
     reorient_matrix=${reorient_matrix_array[$i]}
-    cp ${imgPath} ${imgPathReorient}
+    rsync -az ${imgPath} ${imgPathReorient}
 
     if [ -z "${queue}" ]; then
         matlab -nodisplay -nosplash -r \

@@ -10,6 +10,23 @@ The societal and economic burden of mental illness is increasingly recognized, a
 
 ----
 
+# Important Note
+- We no longer support this project.
+- The last supported git repo version is v0.17.0-Fix_Absolute_Path. To access this:
+    - visit this link:
+    [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.0-Fix_Absolute_Path](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.0-Fix_Absolute_Path)
+
+    or
+
+    - run the following command, if you have Git installed
+ 
+    ```
+    git checkout -b Kebets2019_TransdiagnosticComponents v0.17.0-Fix_Absolute_Path
+    ```
+- Last working config file is the CBIG_sample_config.sh in the last supported git repo version.
+
+----
+
 # Data Release
 The main findings of this study are available in the `data_release` folder. Specifically, the data include:
 1. RSFC data of all subjects included in the analysis
@@ -47,7 +64,7 @@ Except for this project, if you want to use the code for other stable projects f
 ### Set up
 1. Make sure you have installed: Matlab 2018b, Freesurfer 5.3.0, Python 3.6
 2. Follow `$CBIG_CODE_DIR/setup/README.md` to setup the config file. Instead of using `CBIG/setup/CBIG_sample_config.sh`, 
-you need to use `$CBIG_CODE_DIR/stable_projects/disorder_subtypes/Kebets2019_TransdiagnosticComponents/config/CBIG_VK2019_tested_config.sh`.
+you need to use `$CBIG_CODE_DIR/stable_projects/disorder_subtypes/Kebets2019_TransdiagnosticComponents/replication/config/CBIG_VK2019_tested_config.sh`.
 3. To create a Python environment similar to what was used for the project, install Anaconda with Python 3.6, and create the Anaconda environment from `config/CBIG_VK2019_python_env.yml` file by running `conda env create -f config/CBIG_VK2019_python_env.yml`
 
 ### Unit tests
@@ -64,7 +81,7 @@ The code for the PLS analysis is located in
 $CBIG_CODE_DIR/external_packages/matlab/non_default_packages/PLS_MIPlab
 ```
 
-and was modified from the code written by Valeria Kebets, Daniela Zoller and Dimitri Van De Ville (https://github.com/danizoeller/myPLS).
+and was modified from the code written by Valeria Kebets, Daniela Zöller and Dimitri Van De Ville (https://github.com/danizoeller/myPLS).
 
 
 ----
@@ -81,13 +98,10 @@ and was modified from the code written by Valeria Kebets, Daniela Zoller and Dim
 
 - Release v0.15.1 (08/10/2019): Released RSFC matrices, and updated `Table S7_sumCorr.csv` & `Schaefer2018_400Parcels_17Networks_19Subcortical.csv` with corrected labels
 
-- Release v0.17.0 (19/02/2020): 
+- Release v0.17.0 (19/02/2020): Added new environment variables to avoid possible problems caused by hard-coded absolute paths, added names of behavioral variables, and reduced the size of the example data.
+    
+- Release v.x.x (15/05/2020): Split the example wrapper into functions to generate and check the example data.
 
-    1. Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths.
-
-    2. Add names of behavior variables.
-
-    3. Correct example wrapper and reduce size of example data.
 
 ----
 

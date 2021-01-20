@@ -17,6 +17,8 @@ set mask = cortex
 set smooth = 0;
 set num_tries = 1000;
 set znorm = 0;
+set max_iter = 100;
+set no_silhouette = 1;
 
 set PrintHelp = 0;
 set n = `echo $argv | grep -e-help | wc -l`
@@ -101,7 +103,8 @@ else
 	set cmd = ($cmd "'"matlab"'", "'"default_packages"'", "'"DSP"'"'));')
 	set cmd = ($cmd CBIG_VonmisesSeriesClustering_fix_bessel_randnum_bsxfun "'"${mesh}"'" "'"${mask}"'")
 	set cmd = ($cmd "'"${num_clusters}"'" "'"${output_file}"'" "'"${lh_avg_profile}"'" "'"${rh_avg_profile}"'")
-	set cmd = ($cmd "'"${smooth}"'" "'"${num_tries}"'" "'"${znorm}"'"'; exit;''"')
+	set cmd = ($cmd "'"${smooth}"'" "'"${num_tries}"'" "'"${znorm}"'"' "'"${max_iter}"'"')
+	set cmd = ($cmd "'"${no_silhouette}"'"'; exit;''"')
 	eval $cmd
 endif
 

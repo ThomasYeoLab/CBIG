@@ -113,12 +113,13 @@ end
 function CBIG_MMLDA_copy_best_run(src_dir, target_dir, k, r)
 % Copy best run from source dir to target dir.
 mkdir([target_dir '/k' num2str(k) '/r' num2str(r) '/']);
-cmd = ['cp -a ' src_dir '/k' num2str(k) '/r' num2str(r) '/likelihood.dat ' ...
+cmd = ['rsync -az ' src_dir '/k' num2str(k) '/r' num2str(r) '/likelihood.dat ' ...
 target_dir '/k' num2str(k) '/r' num2str(r) '/'];
 system(cmd);
-cmd = ['cp -a ' src_dir '/k' num2str(k) '/r' num2str(r) '/*.log ' target_dir '/k' num2str(k) '/r' num2str(r) '/'];
+cmd = ['rsync -az ' src_dir '/k' num2str(k) '/r' num2str(r) '/*.log ' target_dir '/k' num2str(k) '/r' num2str(r) '/'];
 system(cmd);
-cmd = ['cp -a ' src_dir '/k' num2str(k) '/r' num2str(r) '/final.* ' target_dir '/k' num2str(k) '/r' num2str(r) '/'];
+cmd = ['rsync -az ' src_dir '/k' num2str(k) '/r' ...
+num2str(r) '/final.* ' target_dir '/k' num2str(k) '/r' num2str(r) '/'];
 system(cmd);
 end
 

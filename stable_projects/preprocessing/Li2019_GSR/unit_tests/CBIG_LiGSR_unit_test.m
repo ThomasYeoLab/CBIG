@@ -18,6 +18,17 @@ classdef CBIG_LiGSR_unit_test < matlab.unittest.TestCase
 % Written by Jingwei Li and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 methods (Test)
+    function test_examples(testCase)
+        addpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', ...
+            'Li2019_GSR', 'examples', 'scripts'));
+        
+        CBIG_LiGSR_generate_example_results
+        CBIG_LiGSR_check_example_results
+        
+        rmpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', ...
+            'Li2019_GSR', 'examples', 'scripts'));
+    end
+    
     function test_intelligence_score_LME_GSP_Case(testCase)
         %% path setting
         addpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', ...
@@ -31,9 +42,6 @@ methods (Test)
         end
         mkdir(OutputDir);
         
-        [~, whoami] = system('whoami');
-        whoami = whoami(1:end-1);
-        
         %% call Li2019_GSR intelligence_score shell script (variance component model & GSP data)
         cmdfun = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', 'Li2019_GSR', ...
             'unit_tests', 'intelligence_score', 'scripts', 'CBIG_LiGSR_LME_unittest_intelligence_score_GSP.sh');
@@ -41,15 +49,8 @@ methods (Test)
         system(cmd) % this will submit 2 jobs to HPC
         
         %% we need to periodically check whether the job has finished or not
-        cmdout = 1;
-        while(cmdout~=0)
-            % the job name is  specified as CBIG_LiGSR_LME_unittest_intelligence_score_GSP
-            cmd = ['qstat -a | grep CBIG_LiGSR_LME | grep ' whoami ' | wc -l']; 
-            [~, cmdout] = system(cmd);
-            cmdout = str2num(cmdout(1: end-1)); % after the job is finished, cmdout should be 0
-            
-            pause(20); % sleep for 20s and check again
-        end
+        cmd='sh $CBIG_CODE_DIR/utilities/scripts/CBIG_check_job_status -n LiGSRUT_ME';
+        system(cmd)
         
         %% compare two preprocessing pipelines
         CBIG_LiGSR_LME_unittest_intelligence_score_cmp2pipe_GSP( OutputDir );
@@ -77,9 +78,6 @@ methods (Test)
         end
         mkdir(OutputDir);
         
-        [~, whoami] = system('whoami');
-        whoami = whoami(1:end-1);
-        
         %% call Li2019_GSR intelligence_score shell script (variance component model & HCP data)
         cmdfun = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', 'Li2019_GSR', ...
             'unit_tests', 'intelligence_score', 'scripts', 'CBIG_LiGSR_LME_unittest_PMAT_HCP.sh');
@@ -87,15 +85,8 @@ methods (Test)
         system(cmd);
         
         %% we need to periodically check whether the job has finished or not
-        cmdout = 1;
-        while(cmdout~=0)
-            % the job name is  specified as CBIG_LiGSR_LME_unittest_PMAT_HCP
-            cmd = ['qstat -a | grep CBIG_LiGSR_LME | grep ' whoami ' | wc -l']; 
-            [~, cmdout] = system(cmd);
-            cmdout = str2num(cmdout(1: end-1)); % after the job is finished, cmdout should be 0
-            
-            pause(20); % sleep for 20s and check again
-        end
+        cmd='sh $CBIG_CODE_DIR/utilities/scripts/CBIG_check_job_status -n LiGSRUT_ME';
+        system(cmd)
         
         %% compare two preprocessing pipelines
         CBIG_LiGSR_LME_unittest_PMAT_cmp2pipe_HCP( OutputDir );
@@ -123,9 +114,6 @@ methods (Test)
         end
         mkdir(OutputDir);
         
-        [~, whoami] = system('whoami');
-        whoami = whoami(1:end-1);
-        
         %% call Li2019_GSR intelligence_score shell script (kernel regression method & GSP data)
         cmdfun = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', 'Li2019_GSR', ...
             'unit_tests', 'intelligence_score', 'scripts', 'CBIG_LiGSR_KRR_unittest_intelligence_score_GSP.sh');
@@ -133,15 +121,8 @@ methods (Test)
         system(cmd); % this will submit 6 jobs to HPC
         
         %% we need to periodically check whether the job has finished or not
-        cmdout = 1;
-        while(cmdout~=0)
-            % the job name is  specified as CBIG_LiGSR_KRR_unittest_intelligence_score_GSP
-            cmd = ['qstat -a | grep CBIG_LiGSR_KRR | grep ' whoami ' | wc -l']; 
-            [~, cmdout] = system(cmd);
-            cmdout = str2num(cmdout(1: end-1)); % after the job is finished, cmdout should be 0
-            
-            pause(20); % sleep for 20s and check again
-        end
+        cmd='sh $CBIG_CODE_DIR/utilities/scripts/CBIG_check_job_status -n LiGSRUT_KR';
+        system(cmd)
         
         %% compare two preprocessing pipelines
         CBIG_LiGSR_KRR_unittest_intelligence_score_cmp2pipe_GSP( OutputDir );
@@ -169,9 +150,6 @@ methods (Test)
         end
         mkdir(OutputDir);
         
-        [~, whoami] = system('whoami');
-        whoami = whoami(1:end-1);
-        
         %% call Li2019_GSR intelligence_score shell script (kernel regression method & HCP data)
         cmdfun = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', 'Li2019_GSR', ...
             'unit_tests', 'intelligence_score', 'scripts', 'CBIG_LiGSR_KRR_unittest_PMAT_HCP.sh');
@@ -179,15 +157,8 @@ methods (Test)
         system(cmd); % this will submit 6 jobs to HPC
         
         %% we need to periodically check whether the job has finished or not
-        cmdout = 1;
-        while(cmdout~=0)
-            % the job name is  specified as CBIG_LiGSR_KRR_unittest_PMAT_HCP
-            cmd = ['qstat -a | grep CBIG_LiGSR_KRR | grep ' whoami ' | wc -l']; 
-            [~, cmdout] = system(cmd);
-            cmdout = str2num(cmdout(1: end-1)); % after the job is finished, cmdout should be 0
-            
-            pause(20); % sleep for 20s and check again
-        end
+        cmd='sh $CBIG_CODE_DIR/utilities/scripts/CBIG_check_job_status -n LiGSRUT_KR';
+        system(cmd)
         
         %% compare two preprocessing pipelines
         CBIG_LiGSR_KRR_unittest_PMAT_cmp2pipe_HCP( OutputDir );
@@ -217,8 +188,6 @@ methods (Test)
         end
         mkdir(OutputDir);
         
-        [~, whoami] = system('whoami');
-        whoami = whoami(1:end-1);
         
         %% call Li2019_GSR intelligence_score shell script (linear ridge regression method & GSP data)
         cmdfun = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', 'Li2019_GSR', ...
@@ -227,15 +196,8 @@ methods (Test)
         system(cmd); % this will submit 6 jobs to HPC
         
         %% we need to periodically check whether the job has finished or not
-        cmdout = 1;
-        while(cmdout~=0)
-            % the job name is  specified as CBIG_LiGSR_LRR_unittest_intelligence_score_GSP
-            cmd = ['qstat -a | grep CBIG_LiGSR_LRR | grep ' whoami ' | wc -l']; 
-            [~, cmdout] = system(cmd);
-            cmdout = str2num(cmdout(1: end-1)); % after the job is finished, cmdout should be 0
-            
-            pause(20); % sleep for 20s and check again
-        end
+        cmd='sh $CBIG_CODE_DIR/utilities/scripts/CBIG_check_job_status -n LiGSRUT_LR';
+        system(cmd)
         
         %% compare two preprocessing pipelines
         CBIG_LiGSR_LRR_unittest_intelligence_score_cmp2pipe_GSP( OutputDir );
@@ -265,9 +227,6 @@ methods (Test)
         end
         mkdir(OutputDir);
         
-        [~, whoami] = system('whoami');
-        whoami = whoami(1:end-1);
-        
         %% call Li2019_GSR intelligence_score shell script (linear ridge regression method & HCP data)
         cmdfun = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', 'Li2019_GSR', ...
             'unit_tests', 'intelligence_score', 'scripts/CBIG_LiGSR_LRR_unittest_PMAT_HCP.sh');
@@ -275,15 +234,8 @@ methods (Test)
         system(cmd); % this will submit 6 jobs to HPC
         
         %% we need to periodically check whether the job has finished or not
-        cmdout = 1;
-        while(cmdout~=0)
-            % the job name is  specified as CBIG_LiGSR_LRR_unittest_PMAT_HCP
-            cmd = ['qstat -a | grep CBIG_LiGSR_LRR | grep ' whoami ' | wc -l']; 
-            [~, cmdout] = system(cmd);
-            cmdout = str2num(cmdout(1: end-1)); % after the job is finished, cmdout should be 0
-            
-            pause(20); % sleep for 20s and check again
-        end
+        cmd='sh $CBIG_CODE_DIR/utilities/scripts/CBIG_check_job_status -n LiGSRUT_LR';
+        system(cmd)
         
         %% compare two preprocessing pipelines
         CBIG_LiGSR_LRR_unittest_PMAT_cmp2pipe_HCP( OutputDir );

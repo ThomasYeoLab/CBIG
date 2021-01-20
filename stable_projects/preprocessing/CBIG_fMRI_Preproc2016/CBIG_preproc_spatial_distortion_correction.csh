@@ -488,6 +488,22 @@ mv "$boldfile"_"$ref"* warping/
 
 end
 
+#########################
+# Output last commit of current function 
+#########################
+# check if git exists
+which git
+if (! $status) then
+	echo "=======================Git: Last Commit of Current Function =======================" |& tee -a $LF
+	pushd ${CBIG_CODE_DIR}
+	git log -1 -- ${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_spatial_distortion_correction.csh\
+>> $LF
+	popd
+endif
+
+echo "******************************************************************************"
+echo ""
+
 exit 0
 
 ##########################################

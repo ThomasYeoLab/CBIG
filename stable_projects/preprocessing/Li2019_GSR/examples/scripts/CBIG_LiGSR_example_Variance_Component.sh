@@ -19,6 +19,8 @@
 #
 # Written by Jingwei Li and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
+export MATLABPATH=$CBIG_CODE_DIR/setup
+
 fmri_dir="$CBIG_CODE_DIR/data/example_data/CoRR_HNU"
 eg_dir="$CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSR/examples"
 input_dir="$eg_dir/input"
@@ -29,7 +31,7 @@ input_dir="$eg_dir/input"
 output_dir=$1
 prepare_dir="$output_dir/preparation"
 LME_dir="$output_dir/VarianceComponentModel"
-gt_dir="$eg_dir/output/VarianceComponentModel"
+gt_dir="$eg_dir/ref_output/VarianceComponentModel"
 mkdir -p $prepare_dir
 subjects=$(cat $input_dir/subject_list.txt)
 

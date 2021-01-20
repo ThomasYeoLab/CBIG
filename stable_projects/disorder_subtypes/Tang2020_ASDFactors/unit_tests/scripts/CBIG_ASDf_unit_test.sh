@@ -11,7 +11,7 @@
 
 # code_dir is the directory where Tang2019_ASDFactors codes are located
 code_dir=${CBIG_CODE_DIR}/stable_projects/disorder_subtypes/Tang2020_ASDFactors
-
+export MATLABPATH=$CBIG_CODE_DIR/setup
 # data_dir is the directory where unit tests data is located
 unit_test_dir=$CBIG_TESTDATA_DIR/stable_projects/disorder_subtypes/Tang2020_ASDFactors
 data_dir=${unit_test_dir}/data
@@ -77,19 +77,6 @@ code_dir_step2c=${code_dir}/step2_polarLDA
 infSettings=${code_dir_step2c}/CBIG_ASDf_polarLDA_infSettings.txt
 factorNum_inf=2
 
-#########################################
-# Submit unit test job to circ-spool
-#########################################
-
-$CBIG_SCHEDULER_DIR/qsub -V -q circ-spool << EOJ
-
-#!/bin/bash
-#PBS -N 'CBIG_ASDf_unit_test'
-#PBS -l walltime=5:00:00
-#PBS -l mem=8gb
-#PBS -e ${output_dir}/job_err_out/CBIG_ASDf_unit_test.err
-#PBS -o ${output_dir}/job_err_out/CBIG_ASDf_unit_test.out
-
 #######################################
 # Step1A FC2doc for factor estimation
 #######################################
@@ -143,7 +130,7 @@ ${code_dir_step2a}/CBIG_ASDf_polarLDA_est.sh \
     -m ${code_dir_step2a} \
     -r ${run_files} \
     -o ${output_dir_step2a} \
-    -q circ-spool
+    -q CBIG_cluster
 
 ## hold until submitted jobs are finished
 matlab -nodisplay -nosplash -nodesktop -r \
@@ -196,5 +183,3 @@ echo -e "K = 2 inference finished.\n\n" >> $LF
 echo -e "End of CBIG_ASDf_unit_test" >> $LF
 date >> $LF
 echo -e "================================================\n\n" >> $LF
-
-EOJ

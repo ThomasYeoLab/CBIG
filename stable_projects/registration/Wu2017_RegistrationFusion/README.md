@@ -48,13 +48,13 @@ The folder `bin` contains data files necessary for this project, as well as the 
 
 Note that this project uses generic functions from other folders, which may be updated over time. To download the version of the code that was last tested, you can either
 
-- visit this link: https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.11.1-v0.17.0-Fix_Absolute_Path
+- visit this link: https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.18.1-Update_stable_project_unit_test
 
 or
 
 - run the following command, if you have Git installed
 ```
-git checkout -b Wu2017_RegistrationFusion v0.17.0-Fix_Absolute_Path
+git checkout -b Wu2017_RegistrationFusion v0.18.1-Update_stable_project_unit_test
 ```
 
 ----
@@ -71,7 +71,7 @@ git checkout -b Wu2017_RegistrationFusion v0.17.0-Fix_Absolute_Path
 - Release v0.10.3 (26/05/2019): Added stand-alone scripts for conversion between MNI152 coordinates and fsaverage vertices
 - Release v0.11.1 (18/06/2019): Added information for stand-alone scripts in relevant README files
 - Release v0.17.0 (19/02/2020): Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths.
-
+- Release v0.18.1 (20/01/2020): Remove the "verbose option" in rsync in some of the scripts.
 ----
 
 ## Bugs and Questions

@@ -25,32 +25,47 @@ classdef CBIG_gwMRF_unit_test < matlab.unittest.TestCase
                 'brain_parcellation', 'Schaefer2018_LocalGlobal', 'unit_tests');
             OutputDir = fullfile(UnitTestDir, 'output'); 
             
+            %% prep work
             % create output dir (IMPORTANT)
             if(exist(OutputDir, 'dir'))
                 rmdir(OutputDir, 's')
             end
             mkdir(OutputDir);
+
+            %% generate example results
+            % create example outdir, which is under the unit test parent folder
+            ExampleDir = fullfile(OutputDir,'example_out');
+            mkdir(ExampleDir);
+            % generate example input file
+            cmd = ['sh ${CBIG_CODE_DIR}/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal'...
+            '/examples/example_input/CBIG_gwMRF_create_example_input_fullpaths.sh  ' ExampleDir];
+            system(cmd);
             
-            
-            %% call Schaefer2018_LocalGlobal unit test script to generate results
+            %% run the rest of the unit test that checks intermediate results
+            % generate unit test input full paths
+            cmd = ['sh ' fullfile(UnitTestDir, 'scripts', 'CBIG_gwMRF_create_unit_tests_input_fullpaths.sh'),...
+            ' ', OutputDir];            
+            system(cmd);
+            % call Schaefer2018_LocalGlobal unit test script to generate results (including example)
+            % as well as check the result correctness. Its return value indicates whether unit test passed or failed.
             cmd = ['sh ' fullfile(UnitTestDir, 'scripts', 'CBIG_gwMRF_unit_test.sh'),...
-                ' ', OutputDir];            
-            system(cmd); % this will submit a job to HPC
-            
-            
-            %% check output log file
-            logfile_path = fullfile(OutputDir, 'logs', 'CBIG_gwMRF_unit_test.log');
-            [~, error_messages] = system(['cat ', logfile_path, ' | grep FAILED']);
-            [~, success_messages] = system(['cat ', logfile_path, ' | grep SUCCESS']);
-            
-            % extract detailed error meassages from log file
-            assert(isempty(error_messages), sprintf(error_messages));
-            assert(~isempty(success_messages), sprintf(success_messages));            
+                ' ', OutputDir];
+            status = system(cmd); 
+            assert(isequal(status,0), 'Unit test failed.');
+
+            % check output for the example. This has to be done after we run CBIG_gwMRF_unit_test.sh,
+            % since generating example results is done by this shell script. We choose to do this to
+            % avoid switching between different environments for multiple times.
+            addpath(fullfile(getenv('CBIG_CODE_DIR'),'stable_projects','brain_parcellation',...
+            'Schaefer2018_LocalGlobal','examples','scripts'));
+            assert(CBIG_gwMRF_check_example_results(ExampleDir, 1),...
+                'The example result for seed 1 does not match the reference result.');
+            rmpath(fullfile(getenv('CBIG_CODE_DIR'),'stable_projects','brain_parcellation',...
+            'Schaefer2018_LocalGlobal','examples','scripts'));
             
             %% remove intermediate output data (IMPORTANT)
             rmdir(OutputDir, 's');
-        end
-        
-        
+            close(gcf);
+        end  
     end
 end

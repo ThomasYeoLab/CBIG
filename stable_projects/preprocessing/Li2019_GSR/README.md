@@ -39,13 +39,13 @@ If you want to use the code from our lab's other stable projects (other than Li2
 
 To download the latest tested version of the whole repository, you can either
 
-- visit this link: https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.17.0-Fix_Absolute_Path
+- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.18.1-Update_stable_project_unit_test](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.18.1-Update_stable_project_unit_test)
 
 or
 
 - run the following command, if you have Git installed
 ```
-git checkout -b Li2019_GSR v0.17.0-Fix_Absolute_Path
+git checkout -b Li2019_GSR v0.18.1-Update_stable_project_unit_test
 ```
 
 ----
@@ -72,6 +72,9 @@ Updates
 - Release v0.15.3 (16/10/2019): Pass `lambda_set` into general KRR code instead of using the default.
 
 - Release v0.17.0 (19/02/2020): Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths.
+
+- Release v0.18.1 (20/01/2021):
+  1. Update unit test to accommodate to the new HPC.
 
 Bugs and Questions
 ==========

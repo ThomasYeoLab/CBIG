@@ -45,7 +45,7 @@ classdef CBIG_preproc_single_subject_unit_test < matlab.unittest.TestCase
             %% we need to periodically check whether the job has finished or not             
             cmdout = 1;
             while(cmdout ~= 0)
-                cmd = 'qstat | grep preproc | grep `whoami` | wc -l';
+                cmd = 'ssh headnode "qstat | grep preproc | grep `whoami` | wc -l"';
                 [~, cmdout] = system(cmd);
                 % after job finishes, cmdout should be 0
                 cmdout = str2num(cmdout(1: end-1));
@@ -193,7 +193,7 @@ classdef CBIG_preproc_single_subject_unit_test < matlab.unittest.TestCase
             %% we need to periodically check whether the job has finished or not             
             cmdout = 1;
             while(cmdout ~= 0)
-                cmd = 'qstat | grep preproc | grep `whoami` | wc -l';
+                cmd = 'ssh headnode "qstat | grep preproc | grep `whoami` | wc -l"';
                 [~, cmdout] = system(cmd);
                 % after job finishes, cmdout should be 0
                 cmdout = str2num(cmdout(1: end-1));
@@ -261,7 +261,7 @@ classdef CBIG_preproc_single_subject_unit_test < matlab.unittest.TestCase
             %% we need to periodically check whether the job has finished or not             
             cmdout = 1;
             while(cmdout ~= 0)
-                cmd = 'qstat | grep preproc | grep `whoami` | wc -l';
+                cmd = 'ssh headnode "qstat | grep preproc | grep `whoami` | wc -l"';
                 [~, cmdout] = system(cmd);
                 % after job finishes, cmdout should be 0
                 cmdout = str2num(cmdout(1: end-1));

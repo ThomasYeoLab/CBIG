@@ -27,9 +27,7 @@ if exist('queue', 'var')
     cmd = [cmd '-q ' queue];
 end
 system(cmd)
-cmd=['${CBIG_CODE_DIR}/stable_projects/disorder_subtypes/Sun2019_ADJointFactors/' ...
-    'step2_MMLDA/CBIG_MMLDA_wait_until_finished.sh ' mmlda_dir '/k2/progress.txt ' ...
-    '5'];
+cmd='sh $CBIG_CODE_DIR/utilities/scripts/CBIG_check_job_status -n MMLDA_est';
 system(cmd)
 
 %%%
@@ -70,10 +68,7 @@ if exist('queue', 'var')
     cmd = [cmd '-q ' queue];
 end
 system(cmd)
-cmd=['${CBIG_CODE_DIR}/stable_projects/disorder_subtypes/Sun2019_ADJointFactors/' ... 
-    'step2_MMLDA/CBIG_MMLDA_wait_until_finished.sh ' ...
-    inf_dir '/k2_ADNI2_bl_AD_meanCNstdALL_plus1_1sub_progress.txt ' ...
-    '1'];
+cmd='sh $CBIG_CODE_DIR/utilities/scripts/CBIG_check_job_status -n MMLDA_inf';
 system(cmd)
 %%%
 % 4. Compare output results with reference

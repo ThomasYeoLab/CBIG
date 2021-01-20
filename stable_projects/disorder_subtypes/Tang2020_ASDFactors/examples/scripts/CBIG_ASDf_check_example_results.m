@@ -40,11 +40,13 @@ fprintf(log_fileID,'\n--------[CHECK 1] Checking FC2doc results (factor estimate
 if (~exist(fullfile(output_dir,'FC2doc','step1_output_dx1.dat'), 'file'))
 %     fprintf('[FAILED] Word counts document for ASD participants missing!\n');
     fprintf(log_fileID, '[FAILED] Word counts document for ASD participants missing!\n');
+    error('[FAILED] Word counts document for ASD participants missing!');
 end
 
 if (~exist(fullfile(output_dir,'FC2doc','step1_output_dx2.dat'), 'file'))
 %     fprintf('[FAILED] Word counts document for control participants missing!\n');
     fprintf(log_fileID, '[FAILED] Word counts document for control participants missing!\n');
+    error('[FAILED] Word counts document for control participants missing!');
 end
 
 % Check discretized z scores, these are what were written into .dat word
@@ -52,6 +54,7 @@ end
 if (~exist(fullfile(output_dir,'FC2doc','step1_output_zScores.mat'), 'file'))
 %     fprintf('[FAILED] Z scores missing!');
     fprintf(log_fileID, '[FAILED] Z scores missing!');
+    error('[FAILED] Z scores missing!');
 else
     zScores = load(fullfile(output_dir,'FC2doc','step1_output_zScores.mat'));
     ref_zScores = load(fullfile(ref_dir,'FC2doc','step1_output_zScores.mat'));
@@ -60,6 +63,7 @@ else
         diff_discretZ = max(max(abs(ref_zScores.discretized_z - zScores.discretized_z)));
 %         fprintf('[FAILED] Dicretized Z-scores are different from reference, max abs diff = %f.\n]', diff_discretZ);
         fprintf(log_fileID, '[FAILED] Dicretized Z-scores differ from ref, max abs diff=%f.\n]', diff_discretZ);
+        error('[FAILED] Dicretized Z-scores differ from ref, max abs diff=%f.]', diff_discretZ);
     else
 %         fprintf('[PASSED] Dicretized Z-scores are the same as reference.\n');
         fprintf(log_fileID, '[PASSED] Dicretized Z-scores same as reference.\n');
@@ -80,11 +84,13 @@ fprintf(log_fileID, '\n--------[CHECK 2] Checking FC2doc results (factor composi
 if (~exist(fullfile(output_dir,'FC2doc','step1_output_inf_dx1.dat'), 'file'))
 %     fprintf('[FAILED] Word counts document for ASD participants missing!\n');
     fprintf(log_fileID, '[FAILED] Word counts document for ASD participants missing!\n');
+    error('[FAILED] Word counts document for ASD participants missing!');
 end
 
 if (~exist(fullfile(output_dir,'FC2doc','step1_output_dx2.dat'), 'file'))
 %     fprintf('[FAILED] Word counts document for control participants missing!\n');
     fprintf(log_fileID, '[FAILED] Word counts document for control participants missing!\n');
+    error('[FAILED] Word counts document for control participants missing!');
 end
 
 % Check discretized z scores, these are what were written into .dat word
@@ -92,6 +98,7 @@ end
 if (~exist(fullfile(output_dir,'FC2doc','step1_output_zScores.mat'), 'file'))
 %     fprintf('[FAILED] Z scores missing!\n');
     fprintf(log_fileID, '[FAILED] Z scores missing!\n');
+    error('[FAILED] Z scores missing!');
 else
     zScores = load(fullfile(output_dir,'FC2doc','step1_output_inf_zScores.mat'));
     ref_zScores = load(fullfile(ref_dir,'FC2doc','step1_output_inf_zScores.mat'));
@@ -100,6 +107,7 @@ else
         diff_discretZ = max(max(abs(ref_zScores.discretized_z - zScores.discretized_z)));
 %         fprintf('[FAILED] Dicretized Z-scores are different from reference, max abs diff = %f.\n]', diff_discretZ);
         fprintf(log_fileID, '[FAILED] Dicretized Z-scores differ from ref, max abs diff=%f.\n]', diff_discretZ);
+        error('[FAILED] Dicretized Z-scores differ from ref, max abs diff=%f.]', diff_discretZ);
     else
 %         fprintf('[PASSED] Dicretized Z-scores are the same as reference.\n');
         fprintf(log_fileID, '[PASSED] Dicretized Z-scores are the same as reference.\n');
@@ -122,6 +130,7 @@ curr_ref_dir = fullfile(ref_dir,'estimate','k2','r1');
 if (~exist(fullfile(curr_output_dir,'final.beta'), 'file'))
 %     fprintf('[FAILED] Final beta estimate result missing!\n');
     fprintf(log_fileID, '[FAILED] Final beta estimate result missing!\n');
+    error('[FAILED] Final beta estimate result missing!');
 else
     beta = load(fullfile(curr_output_dir,'final.beta'));
     ref_beta = load(fullfile(curr_ref_dir,'final.beta'));
@@ -129,6 +138,7 @@ else
         diff_beta = max(max(abs(beta - ref_beta)));
 %         fprintf('[FAILED] Final beta estimate is different from reference, max abs diff: %f.\n', diff_beta);
         fprintf(log_fileID, '[FAILED] Final beta estimate differs from ref, max abs diff=%f.\n', diff_beta);
+        error('[FAILED] Final beta estimate differs from ref, max abs diff=%f.', diff_beta);
     else
 %         fprintf('[PASSED] Final beta estimate is the same as reference.\n');
         fprintf(log_fileID, '[PASSED] Final beta estimate is the same as reference.\n');
@@ -144,6 +154,7 @@ end
 if (~exist(fullfile(curr_output_dir,'final.rho'), 'file'))
 %     fprintf('[FAILED] Final rho estimate result missing!\n');
     fprintf(log_fileID, '[FAILED] Final rho estimate result missing!\n');
+    error('[FAILED] Final rho estimate result missing!');
 else
     rho = load(fullfile(curr_output_dir,'final.rho'));
     ref_rho = load(fullfile(curr_ref_dir,'final.rho'));
@@ -151,6 +162,7 @@ else
         diff_rho = max(max(abs(rho - ref_rho)));
 %         fprintf('[FAILED] Final rho estimate is different from reference, max abs diff: %f.\n', diff_rho);
         fprintf(log_fileID, '[FAILED] Final rho estimate differs from ref, max abs diff=%f.\n', diff_rho);
+        error('[FAILED] Final rho estimate differs from ref, max abs diff=%f.', diff_rho);
     else
 %         fprintf('[PASSED] Final rho estimate is the same as reference.\n');
         fprintf(log_fileID, '[PASSED] Final rho estimate is the same as reference.\n');
@@ -166,6 +178,7 @@ end
 if (~exist(fullfile(curr_output_dir,'final.gamma'), 'file'))
 %     fprintf('[FAILED] Final gamma estimate result missing!\n');
     fprintf(log_fileID, '[FAILED] Final gamma estimate result missing!\n');
+    error('[FAILED] Final gamma estimate result missing!');
 else
     gamma = load(fullfile(curr_output_dir,'final.gamma'));
     ref_gamma = load(fullfile(curr_ref_dir,'final.gamma'));
@@ -173,6 +186,7 @@ else
         diff_gamma = max(max(abs(gamma - ref_gamma)));
 %         fprintf('[FAILED] Final gamma estimate is different from reference, max abs diff: %f.\n', diff_gamma);
         fprintf(log_fileID, '[FAILED] Final gamma estimate differs from ref, max abs diff=%f.\n', diff_gamma);
+        error('[FAILED] Final gamma estimate differs from ref, max abs diff=%f.', diff_gamma);
     else
 %         fprintf('[PASSED] Final gamma estimate is the same as reference.\n');
         fprintf(log_fileID, '[PASSED] Final gamma estimate is the same as reference.\n');
@@ -188,6 +202,7 @@ end
 if (~exist(fullfile(curr_output_dir,'likelihood.dat'), 'file'))
 %     fprintf('[FAILED] Likelihood file missing!\n');
     fprintf(log_fileID, '[FAILED] Likelihood file missing!\n');
+    error('[FAILED] Likelihood file missing!');
 else
     likelihood = load(fullfile(curr_output_dir,'likelihood.dat'));
     ref_likelihood = load(fullfile(curr_ref_dir,'likelihood.dat'));
@@ -195,6 +210,7 @@ else
         diff_likelihood = max(max(likelihood - ref_likelihood));
 %         fprintf('[FAILED] Likelihood is different from reference, max abs diff: %f.\n', diff_likelihood);
         fprintf(log_fileID, '[FAILED] Likelihood differs from ref, max abs diff=%f.\n', diff_likelihood);
+        error('[FAILED] Likelihood differs from ref, max abs diff=%f.', diff_likelihood);
     else
 %         fprintf('[PASSED] Likelihood is the same as reference.\n');
         fprintf(log_fileID, '[PASSED] Likelihood is the same as reference.\n');
@@ -222,6 +238,7 @@ for i = 1:k
     if (~isequal(mean.mean_corrmat, ref_mean.mean_corrmat))
         diff_mean = max(max(abs(mean.mean_corrmat - ref_mean.mean_corrmat)));
         fprintf(log_fileID, '[FAILED] RSFC patterns of factor %d differ from ref, max abs diff=%f.\n', i, diff_mean);
+        error('[FAILED] RSFC patterns of factor %d differ from ref, max abs diff=%f.', i, diff_mean);
     else
         fprintf(log_fileID, '[PASSED] RSFC patterns of factor %d is the same as reference.\n', i);
     end
@@ -237,6 +254,7 @@ if (~isequal(factorComp, ref_factorComp))
     diff_factorComp = max(max(abs(factorComp - ref_factorComp)));
 
     fprintf(log_fileID, '[FAILED] Factor composition differs from ref, max abs diff=%f.\n', diff_factorComp);
+    error('[FAILED] Factor composition differs from ref, max abs diff=%f.', diff_factorComp);
 else
 %     fprintf('[PASSED] Factor composition is the same as reference.\n');
     fprintf(log_fileID, '[PASSED] Factor composition is the same as reference.\n');
@@ -257,6 +275,7 @@ factorComp_files = dir(fullfile(curr_output_dir, '*k2r1_factorComp.txt'));
 if isempty(factorComp_files)
 %     fprintf('[FAILED] Factor composition text file missing!\n');
     fprintf(log_fileID, '[FAILED] Factor composition text file missing!\n');
+    error('[FAILED] Factor composition text file missing!');
 else
     factorComp = load(fullfile(curr_output_dir, factorComp_files(1).name));
     ref_factorComp_files = dir(fullfile(curr_ref_dir, '*k2r1_factorComp.txt')) ;
@@ -266,6 +285,7 @@ else
         diff_factorComp = max(max(abs(factorComp - ref_factorComp)));
 %         fprintf('[FAILED] Factor composition is different 
         fprintf(log_fileID, '[FAILED] Factor composition differs from ref, max abs diff=%f.\n', diff_factorComp);
+        error('[FAILED] Factor composition differs from ref, max abs diff=%f.', diff_factorComp);
     else
 %         fprintf('[PASSED] Factor composition is the same as the reference.\n');
         fprintf(log_fileID, '[PASSED] Factor composition is the same as the reference.\n');

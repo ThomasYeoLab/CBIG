@@ -29,7 +29,7 @@ input_labels = load(input_file);
 
 dice_message = [sprintf('Dice overlap: \n'), num2str(dice_overlap)];
 cost_message = [sprintf('\nCost: \n'), num2str(cost)];
-assert((min(dice_overlap) > 0.95 && cost < -18000), ...
+assert((min(dice_overlap) > 0.99 && cost < -18000), ...
     [sprintf('ERROR: Clustering result was too different from ground truth. \n'), dice_message, cost_message])
 disp([sprintf('Clustering result was replicated. \n'), dice_message, cost_message])
 save(fullfile(cmp_dir, 'your_overlap_with_groundtruth.mat'), 'cost', 'dice_overlap')

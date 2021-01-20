@@ -78,28 +78,27 @@ for r in `cat ${run_file}`; do
         ${polarLDA_dir}/polarLDA est ${alpha} ${no_topics} ${setting} ${docs} random ${run_dir}/ ${r} >> ${log_file}
         echo "${r}" >> ${progress_file}
     else
-        qsub -V -q ${queue} << EOJ
-#!/bin/bash
-#PBS -N 'polarLDA_est'
-#PBS -l walltime=10:00:0
-#PBS -l mem=16gb
-#PBS -e ${run_dir}/polarLDA.err
-#PBS -o ${run_dir}/polarLDA.out
     
-    # converting relative paths to absolute for qsub
-    setting=$(readlink -f ${setting})
-    docs=$(readlink -f ${docs})
-    run_dir=$(readlink -f ${run_dir})
+        # converting relative paths to absolute for qsub
+        setting=$(readlink -f ${setting})
+        docs=$(readlink -f ${docs})
+        run_dir=$(readlink -f ${run_dir})
 
-    date >> ${log_file}
-    echo "Docs: ${docs} " >> ${log_file}
-    echo "Number of topics: ${no_topics}" >> ${log_file}
-    echo "Settings:" >> ${log_file}
-    cat ${setting} >> ${log_file}
-
-    ${polarLDA_dir}/polarLDA est ${alpha} ${no_topics} ${setting} ${docs} random ${run_dir}/ ${r} >> ${log_file}
-    echo "${r}" >> ${progress_file}
-EOJ
+        date >> ${log_file}
+        echo "Docs: ${docs} " >> ${log_file}
+        echo "Number of topics: ${no_topics}" >> ${log_file}
+        echo "Settings:" >> ${log_file}
+        cat ${setting} >> ${log_file}
+        cmd="${polarLDA_dir}/polarLDA est ${alpha} ${no_topics} ${setting} ${docs} \
+        random ${run_dir}/ ${r} >> ${log_file}"
+        cmd="${cmd};echo "${r}" >> ${progress_file}"
+        # write command to a script file
+        script_file=${run_dir}/job_submitted.sh
+        echo "#!/bin/bash" > ${script_file}
+        echo $cmd >> ${script_file}
+        chmod 750 ${script_file}
+        $CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "${script_file}" -walltime 10:00:00 -mem 16G -name "polarLDA_est" \
+        -joberr ${run_dir}/polarLDA.err -jobout ${run_dir}/polarLDA.out
     fi
 done
 

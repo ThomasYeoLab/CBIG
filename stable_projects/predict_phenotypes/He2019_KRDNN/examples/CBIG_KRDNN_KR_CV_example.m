@@ -13,8 +13,9 @@ addpath(genpath(fullfile(CBIG_CODE_DIR, '/utilities/matlab/predictive_models/Ker
 
 % generate setup file
 param = load(fullfile(CBIG_CODE_DIR, ...
-	'stable_projects/preprocessing/Li2019_GSR/examples/output/KernelRidgeRegression/setup_file.mat'));
-param.outdir = fullfile(pwd, 'output_kr_cv_example'); % Output folder of all output, can change to whatever you want
+	'stable_projects/preprocessing/Li2019_GSR/examples/ref_output/KernelRidgeRegression/setup_file.mat'));
+% Output folder of all output, can change to whatever you want
+param.outdir = fullfile(pwd, 'output','output_kr_cv_example'); 
 param.metric = 'corr';
 mkdir(param.outdir)
 save(fullfile(param.outdir, 'setup_file.mat'), '-struct', 'param');

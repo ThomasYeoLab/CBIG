@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Written by Wu Jianxiao and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
-#This script computes average mapping from fsaverage to the volumetric atlas space across a specified number of GSP subjects for the specified approach approach (by supplying the corresponding input prefix)
+#This script computes average mapping from fsaverage to the volumetric atlas space across a specified number of 
+#GSP subjects for the specified approach approach (by supplying the corresponding input prefix)
 
 ###########################################
 #Set-up
@@ -35,12 +36,14 @@ main(){
 
   #Call function to compute average mapping
   matlab -nodesktop -nosplash -nojvm -r "addpath('$UTILITIES_DIR'); \
-                                         CBIG_RF_compute_surf2vol_avgMapping('$temp_sub_list', '$input_dir', '$input_prefix', '$output_dir/mapping', '$output_prefix'); \
+  CBIG_RF_compute_surf2vol_avgMapping('$temp_sub_list', '$input_dir', \
+  '$input_prefix', '$output_dir/mapping', '$output_prefix'); \
                                          exit"
 
   #Call function to create cortical mask
   matlab -nodesktop -nosplash -nojvm -r "addpath('$UTILITIES_DIR'); \
-                                         CBIG_RF_make_cortexMask('$template_sub_id', '$output_dir/mapping/${output_prefix}_count.mat', $num_sub, '$output_dir/mask'); \
+  CBIG_RF_make_cortexMask('$template_sub_id', '$output_dir/mapping/${output_prefix}_count.mat', \
+  $num_sub, '$output_dir/mask'); \
                                          exit"
 
   #Remove temporary file
@@ -48,9 +51,10 @@ main(){
 
   #Unless specified, the average mapping is also copied to the bin
   if [ $copy -ne 0 ]; then
-    cp $output_dir/mapping/${output_prefix}_avgMapping.prop.mat $BIN_DIR/final_warps_FS$fs_ver/
-    cp $output_dir/mask/${template_sub_id}_cortex_estimate.nii.gz $BIN_DIR/liberal_cortex_masks_FS$fs_ver/
-    echo "Warning: Average mapping & cortex mask have been copied to bin. Add -c 0 to command if you do not want to copy them."
+    rsync -az $output_dir/mapping/${output_prefix}_avgMapping.prop.mat $BIN_DIR/final_warps_FS$fs_ver/
+    rsync -az $output_dir/mask/${template_sub_id}_cortex_estimate.nii.gz $BIN_DIR/liberal_cortex_masks_FS$fs_ver/
+    echo "Warning: Average mapping & cortex mask have been copied to bin." 
+    echo "Add -c 0 to command if you do not want to copy them."
   fi
 }
 
@@ -62,33 +66,47 @@ main(){
 usage() { echo "
 Usage: $0 -s <template_sub_id> -n <num_of_sub> -r <RF_type> -l <ind_sub_list> -i <input_dir> -o <output_dir>
 
-This script computes the average mapping from fsaverage to a volumetric atlas space, across a specified number of individual subjects, as step 3 in RF approaches. The averaging is carried out across the x/y/z index files previously projected from fsaverage to the volumetric atlas space through each individual subject.
+This script computes the average mapping from fsaverage to a volumetric atlas space, \
+across a specified number of individual subjects, as step 3 in RF approaches. \
+The averaging is carried out across the x/y/z index files previously \
+projected from fsaverage to the volumetric atlas space through each individual subject.
 
-After generating the average mapping, a loose cortex mask is also created using the count map generated in the process. This mask can be used in conjunction with the average mapping for final projection.
+After generating the average mapping, a loose cortex mask is also created using the count map \
+generated in the process. This mask can be used in conjunction with the average mapping for final projection.
 
-Note that both the average mapping and the cortex mask will be copied to the respective bin folders by default. Use -c option to specify otherwise.
+Note that both the average mapping and the cortex mask will be copied to the respective bin folders by default. \
+Use -c option to specify otherwise.
 
 REQUIRED ARGUMENTS:
 	-s <template_sub_id> 	subject ID of the volumetric template used in recon-all
 
 OPTIONAL ARGUMENTS:
-	-n <num_of_sub>		number of subjects to use. This means taking the first <num_of_sub> subjects from <ind_sub_list>. For example, setting '-n 50' means the first 50 lines of <ind_sub_list> will be read to get subject IDs. Setting this to 0 will make the script use all subjects from <ind_sub_list>.
+	-n <num_of_sub>		number of subjects to use. \
+This means taking the first <num_of_sub> subjects from <ind_sub_list>. \
+For example, setting '-n 50' means the first 50 lines of <ind_sub_list> will be read to get subject IDs. \
+Setting this to 0 will make the script use all subjects from <ind_sub_list>.
 				[ default: 0 ]
 	-r <RF_type>            type of RF approaches used in step 2, i.e. RF_M3Z or RF_ANTs
                                 [ default: RF_ANTs ]
-	-i <input_dir> 		absolute path to input directory. The inputs are the index files projected to the volumetric atlas space through individual subjects in step 2, i.e. the input directory should be the same as output directory in step 2.
+	-i <input_dir> 		absolute path to input directory. \
+The inputs are the index files projected to the volumetric atlas space through individual subjects in step 2, \
+i.e. the input directory should be the same as output directory in step 2.
 				[ default: $(pwd)/results/index_\$template_sub_id ]
-	-l <ind_sub_list> 	absolute path to a file containing individual subject IDs. Each line in the file should contain one subject ID.
+	-l <ind_sub_list> 	absolute path to a file containing individual subject IDs. \
+Each line in the file should contain one subject ID.
 				[ default: $DEFAULT_GSP_SUBLIST ]
 	-o <output_dir> 	absolute path to output directory
 				[ default: $(pwd)/results ]
-	-c <copy_results>	set this to 0 to prevent the results generated from being copied to the bin folders. By default, both the average mapping and cortex mask generated will be copied to the respective bin folders.
+	-c <copy_results>	set this to 0 to prevent the results generated from being copied to the bin folders. \
+By default, both the average mapping and cortex mask generated will be copied to the respective bin folders.
 				[ default: 1 ]
 	-h			display help message
 
 OUTPUTS:
 	$0 will create 2 folders:
-	1) mapping folder: 2 files will be generated, corresponding to the average mapping and count map in the volumetric atlas space. The count map shows at each votex how many subjects were projected to it.
+	1) mapping folder: 2 files will be generated, \
+corresponding to the average mapping and count map in the volumetric atlas space. \
+The count map shows at each votex how many subjects were projected to it.
 	For example:
 		allSub_fsaverage_to_FSL_MNI152_FS4.5.0_RF_ANTs_avgMapping.prop.mat
 		allSub_fsaverage_to_FSL_MNI152_FS4.5.0_RF_ANTs_count.mat

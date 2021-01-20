@@ -4,12 +4,15 @@
 # https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 from __future__ import print_function
 import argparse
+import json
+import os
 import pickle
 
 import numpy as np
 import torch
 
 import cbig.Nguyen2020.misc as misc
+from cbig.Nguyen2020.model import MODEL_DICT
 
 
 def predict_subject(model, cat_seq, value_seq, time_seq):
@@ -92,13 +95,39 @@ def predict(model, dataset, pred_start, duration, baseline):
     return ret
 
 
-def get_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--checkpoint', required=True)
-    parser.add_argument('--data', required=True)
-    parser.add_argument('--out', '-o', required=True)
+def load_checkpoint(folder):
+    config = os.path.join(folder, 'config.json')
+    with open(config) as fhandler:
+        config = json.load(fhandler)
 
-    return parser.parse_args()
+    feat_stats = os.path.join(folder, 'feat_stats.pkl')
+    with open(feat_stats) as fhandler:
+        mean, stds = pickle.load(fhandler)
+
+    model = MODEL_DICT[config['model']](
+        nb_classes=3,
+        nb_measures=len(mean),
+        nb_layers=config['nb_layers'],
+        h_size=config['h_size'],
+        h_drop=config['h_drop'],
+        i_drop=config['i_drop'])
+
+    model_weights = os.path.join(folder, 'model_weights.pt')
+    model.load_state_dict(torch.load(model_weights))
+
+    setattr(model, 'mean', mean)
+    setattr(model, 'stds', stds)
+
+    return model
+
+
+def get_arg_parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--checkpoint', '-c', required=True)
+    parser.add_argument('--data', required=True)
+    parser.add_argument('--prediction', '-p', required=True)
+
+    return parser
 
 
 def main(args):
@@ -112,7 +141,10 @@ def main(args):
     """
     device = torch.device(
         'cuda') if torch.cuda.is_available() else torch.device('cpu')
-    model = torch.load(args.checkpoint)
+    if args.checkpoint.endswith('.pt'):
+        model = torch.load(args.checkpoint)
+    else:
+        model = load_checkpoint(args.checkpoint)
     model.to(device)
 
     with open(args.data, 'rb') as fhandler:
@@ -120,8 +152,8 @@ def main(args):
 
     prediction = predict(model, data['test'], data['pred_start'],
                          data['duration'], data['baseline'])
-    misc.build_pred_frame(prediction, args.out)
+    misc.build_pred_frame(prediction, args.prediction)
 
 
 if __name__ == '__main__':
-    main(get_args())
+    main(get_arg_parser().parse_args())

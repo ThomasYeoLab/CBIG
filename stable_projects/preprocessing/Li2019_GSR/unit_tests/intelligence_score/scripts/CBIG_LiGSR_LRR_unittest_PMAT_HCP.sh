@@ -48,13 +48,15 @@ for pipeline in GSR Baseline; do
 	y_name=$(cat $cog_list)
 	
 	for seed in $(seq 1 1 3); do
+		log_file="${top_outdir}/CBIG_LiGSR_LRR_unittest_PMAT_HCP_${seed}.log"
 		cmd="$project_dir/LinearRidgeRegression/HCP/scripts/CBIG_LiGSR_LRR_workflowHCP.sh -subject_list $subject_list "
 		cmd="$cmd -RSFC_file $RSFC_file -y_name $y_name -covariate_list $covariate_list -FD_file $FD_file -DVARS_file "
 		cmd="$cmd $DVARS_file -outdir $outdir -gpso_dir $gpso_dir -seed $seed -num_test_folds 3 -num_inner_folds 3 "
 		cmd="$cmd -restricted_csv $restricted_csv -unrestricted_csv $unrestricted_csv -eval $evaluations -tree $tree"
-		
-		echo $cmd | $CBIG_SCHEDULER_DIR/qsub -V -q circ-spool -l walltime=2:00:00,mem=6GB -m ae \
-		  -N CBIG_LiGSR_LRR_unittest_PMAT_HCP
+        cmd="$cmd | tee -a ${log_file}"
+
+        $CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "$cmd" -walltime 2:00:00 -mem 6G \
+        -name "LiGSRUT_LR"
 		
 		if [ ! -f $outdir/covariates/covariates.mat ] || [ ! -f $outdir/y/y_${y_name}.mat ]; then
 			# wait for the files shared across random splits to be saved

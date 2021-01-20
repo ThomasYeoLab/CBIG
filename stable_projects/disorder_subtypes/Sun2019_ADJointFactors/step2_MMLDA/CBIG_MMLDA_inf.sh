@@ -8,7 +8,8 @@
 
 # Usage
 usage() { echo "
-Usage: $0 -a <docs1> -b <docs2> -t <setting> -k <no_topics> -d <model> -m <MMLDA_dir> -o <out_dir> -n <out_name> [-q <queue>]
+Usage: $0 -a <docs1> -b <docs2> -t <setting> -k <no_topics> -d <model> -m <MMLDA_dir> -o <out_dir> -n <out_name> 
+[-q <queue>]
     - docs1         Text file with each line summarizing the document of first 
                     modality; e.g., brain atrophy doc
     - docs2         Text file with each line summarizing the document of second
@@ -85,13 +86,8 @@ if [ -z "${queue}" ]; then
 
     echo "Done" >> ${progress_file}
 else
-    qsub -V -q ${queue} << EOJ
-#!/bin/bash
-#PBS -N 'MMLDA_inf'
-#PBS -l walltime=10:00:0
-#PBS -l mem=8gb
-#PBS -e ${out_dir}/k${no_topics}_${out_name}.err
-#PBS -o ${out_dir}/k${no_topics}_${out_name}.out
+    ERR_FILE_PATH=${out_dir}/k${no_topics}_${out_name}.err
+    OUT_FILE_PATH=${out_dir}/k${no_topics}_${out_name}.out
     
     # converting relative paths to absolute for qsub
     setting=$(readlink -f ${setting})
@@ -105,12 +101,18 @@ else
     echo "Settings:" >> ${log_file}
     cat ${setting} >> ${log_file}
 
-    ${MMLDA_dir}/MMLDA inf ${setting} ${model} ${docs1} ${docs2} ${out_dir}/k${no_topics}_inf_${out_name} >> ${log_file}
-    ${MMLDA_dir}/MMLDA inf1 ${setting} ${model} ${docs1} ${out_dir}/k${no_topics}_inf1_${out_name} >> ${log_file}
-    ${MMLDA_dir}/MMLDA inf2 ${setting} ${model} ${docs2} ${out_dir}/k${no_topics}_inf2_${out_name} >> ${log_file}
+    cmd="${MMLDA_dir}/MMLDA inf ${setting} ${model} ${docs1} ${docs2} ${out_dir}/k${no_topics}_inf_${out_name}"
+    cmd="$cmd | tee -a ${log_file}; "
+    cmd="$cmd ${MMLDA_dir}/MMLDA inf1 ${setting} ${model} ${docs1} ${out_dir}/k${no_topics}_inf1_${out_name}"
+    cmd="$cmd | tee -a ${log_file}; "
+    cmd="$cmd ${MMLDA_dir}/MMLDA inf2 ${setting} ${model} ${docs2} ${out_dir}/k${no_topics}_inf2_${out_name}"
+    cmd="$cmd | tee -a ${log_file}"
+
+    $CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "$cmd" -walltime 1:00:00 -mem 8G -name "MMLDA_inf" \
+-joberr ${ERR_FILE_PATH} -jobout ${OUT_FILE_PATH}
 
     echo "Done" >> ${progress_file}
-EOJ
+
 fi
 
 

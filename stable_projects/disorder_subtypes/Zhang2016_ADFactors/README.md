@@ -27,19 +27,21 @@ The remaining folders offer our full code, allowing you to start from scratch on
 Note that this project uses generic functions from other folders, which may be updated over time. To download the exact code utilized for the PNAS paper, you can either
 
 - visit this link:
-[https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.3-Update_proj_refs_and_add_KRR_LITE](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.15.3-Update_proj_refs_and_add_KRR_LITE)
+[https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.18.1-Update_stable_project_unit_test](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.18.1-Update_stable_project_unit_test)
 
 or
 
 - run the following command, if you have Git installed
  
 ```
-git checkout -b Zhang2016_ADFactors v0.15.3-Update_proj_refs_and_add_KRR_LITE
+git checkout -b Zhang2016_ADFactors v0.18.1-Update_stable_project_unit_test
 ```
 
 ----
 
 ## Updates
+
+- Release v0.18.1 (20/01/2021): update unit test to accommodate to the new HPC.
 
 - Release v0.15.3 (16/10/2019): update reference
 

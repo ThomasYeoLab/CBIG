@@ -132,7 +132,7 @@ cd ${code_dir_step2b}
 mkdir -p ${output_dir_step2b}
 
 matlab -nodisplay -nosplash -nodesktop -r \
-"clear;clc;close all; \
+"clear;clc;close all;addpath(genpath(fullfile(getenv('CBIG_CODE_DIR'),'utilities','matlab')));\
 CBIG_ASDf_visualizeFactors('${output_dir_step2a}','${output_dir_step2b}','2');exit;"
 
 echo -e "Plotting factor visualization finished.\n\n" >> ${LF}
