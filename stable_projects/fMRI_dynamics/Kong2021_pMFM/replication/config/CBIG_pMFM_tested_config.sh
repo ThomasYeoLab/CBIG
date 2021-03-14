@@ -9,6 +9,7 @@ fi
 
 # PLEASE CHANGE: Please specify location of CBIG repository
 export CBIG_CODE_DIR=$HOME/storage/CBIG_private
+export CBIG_HCP_DIR=/mnt/isilon/CSC1/Yeolab/Data/HCP/S1200
 
 # PLEASE CHANGE: define locations for these libraries
 export FREESURFER_HOME=/apps/freesurfer/5.3.0

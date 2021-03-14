@@ -114,5 +114,5 @@ def CBIG_pMFM_generate_simualted_fc_fcd(gpu_index=0):
 
 
 if __name__ == '__main__':
-    warnings.filterwarnings("ignore", category=UserWarning)
+    warnings.filterwarnings("ignore", category=RuntimeWarning)
     CBIG_pMFM_generate_simualted_fc_fcd()

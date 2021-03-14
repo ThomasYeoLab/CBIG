@@ -9,6 +9,7 @@
     * `CBIG_pMFM_step5_generate_STDFCD_correlation_Schaefer100.m` this file is the function to compute the empirical and simulated SWSTD-FCD correlation
     * `CBIG_pMFM_step6_SWSTD_state_Schaefer100.m` this file is the function to perform SWSTD state analysis.
     * `CBIG_pMFM_step7_perturbation_analysis.py` this file is the wrapper to perform perturbation analysis
+	* `CBIG_pMFM_step8_gene_expression_analysis_desikan.m` this file is the wrapper to perform gene expression analysis 
 
 # Usage
 * Go to working directory using command: `cd $CBIG_CODE_DIR/stable_projects/fMRI_dynamics/Kong2021_pMFM/part2_pMFM_control_analysis/Schaefer100_parcellation/scripts` and follow the step order from step 1 to step 7 to run the scripts.

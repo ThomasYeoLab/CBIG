@@ -12,13 +12,13 @@ Except for this project, if you want to use the code for other stable projects f
 
 To download the version of the code that was last tested, you can either
 
-* visit this link: https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.19.0-Release_Kong2021_pMFM
+* visit this link: https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.19.1-Update_Kong2021_pMFM
 
 or
 
 * run the following command, if you have Git installed
 
-`git checkout -b Kong2021_pMFM v.0.19.0-Release_Kong2021_pMFM`
+`git checkout -b Kong2021_pMFM v.0.19.1-Update_Kong2021_pMFM`
 
 # USAGE
 ## Setup
@@ -37,8 +37,12 @@ or
 ## Unit tests
 * `unit_tests` this folder runs codes in `examples` and check with the reference output
 
+## Parametric Mean Field Model Data Preparation
+* `part0_pMFM_data_preparation` this folder contains scripts to generate the parcellated HCP time serise, FC and FCD
+* Please follow the README.md file this folder for the detailed information of each scripts
+
 ## Parametric Mean Field Model Main Results
-* `part1_pMFM_main` this folder contains scripts to generate main quantitaive results in the paper.
+* `part1_pMFM_main` this folder contains scripts to generate main quantitative results in the paper.
 * Please follow the README.md file this folder for the detailed information of each scripts
 
 ## Parametric Mean Field Model Control Analysis Results
@@ -47,7 +51,8 @@ or
 
 
 # UPDATES
-Release v0.19.0 (9/3/2021): Initial release of Kong2021_pMFM
+Release v0.19.0 (9/3/2021): Initial release of Kong2021_pMFM </br>
+Release v0.19.1 (14/3/2021): Release replication of Kong2021_pMFM
 
 # BUGS and QUESTIONS
 Please contact Kong Xiaolu at kxl920327@gmail.com and Thomas Yeo at yeoyeo02@gmail.com.

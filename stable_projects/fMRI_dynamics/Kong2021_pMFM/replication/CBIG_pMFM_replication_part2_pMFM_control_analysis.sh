@@ -1,0 +1,93 @@
+#!/bin/bash
+# this function runs replication of all results in our paper
+#
+# Written by Kong Xiaolu and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+
+root_dir=`dirname "$(readlink -f "$0")"`
+
+cd root_dir/part2_pMFM_main/Constant_I/scripts
+bash CBIG_pMFM_step1_training_conI_wrapper.sh
+bash CBIG_pMFM_step2_validation_conI_wrapper.sh
+bash CBIG_pMFM_step3_test_conI_wrapper.sh
+bash CBIG_pMFM_step4_conI_cleanup.sh
+
+cd root_dir/part2_pMFM_main/Constant_parameter/scripts
+bash CBIG_pMFM_step1_training_conpara_wrapper.sh
+bash CBIG_pMFM_step2_validation_conpara_wrapper.sh
+bash CBIG_pMFM_step3_test_conpara_wrapper.sh
+bash CBIG_pMFM_step4_generate_simulated_fc_fcd_conpara_wrapper.sh
+bash CBIG_pMFM_step5_conpara_cleanup.sh
+
+cd root_dir/part2_pMFM_main/Constant_sigma/scripts
+bash CBIG_pMFM_step1_training_consigma_wrapper.sh
+bash CBIG_pMFM_step2_validation_consigma_wrapper.sh
+bash CBIG_pMFM_step3_test_consigma_wrapper.sh
+bash CBIG_pMFM_step4_consigma_cleanup.sh
+
+cd root_dir/part2_pMFM_main/Constant_W/scripts
+bash CBIG_pMFM_step1_training_conw_wrapper.sh
+bash CBIG_pMFM_step2_validation_conw_wrapper.sh
+bash CBIG_pMFM_step3_test_conw_wrapper.sh
+bash CBIG_pMFM_step4_conw_cleanup.sh
+
+cd root_dir/part2_pMFM_main/Different_window_length/scripts
+bash CBIG_pMFM_test_different_window_wrapper.sh
+bash CBIG_pMFM_dw_cleanup.sh
+
+cd root_dir/part2_pMFM_main/FC_cost/scripts
+bash CBIG_pMFM_step1_training_fccost_wrapper.sh
+bash CBIG_pMFM_step2_validation_fccost_wrapper.sh
+bash CBIG_pMFM_step3_test_fccost_wrapper.sh
+bash CBIG_pMFM_step4_generate_simulated_fc_fcd_fccost_wrapper.sh
+bash CBIG_pMFM_step5_fccost_cleanup.sh
+
+cd root_dir/part2_pMFM_main/Gradient_only/scripts
+bash CBIG_pMFM_step1_training_gradient_wrapper.sh
+bash CBIG_pMFM_step2_validation_gradient_wrapper.sh
+bash CBIG_pMFM_step3_test_gradient_wrapper.sh
+bash CBIG_pMFM_step4_gradient_cleanup.sh
+
+cd root_dir/part2_pMFM_main/High_resolution/scripts
+bash CBIG_pMFM_test_high_resolution_wrapper.sh
+bash CBIG_pMFM_hr_cleanup.sh
+
+cd root_dir/part2_pMFM_main/Non_parametric/scripts
+bash CBIG_pMFM_step1_training_nonpara_wrapper.sh
+bash CBIG_pMFM_step2_validation_nonpara_wrapper.sh
+bash CBIG_pMFM_step3_test_nonpara_wrapper.sh
+bash CBIG_pMFM_step4_nonpara_cleanup.sh
+
+cd root_dir/part2_pMFM_main/Schaefer100_parcellation/scripts
+bash CBIG_pMFM_step1_training_Schaefer100_wrapper.sh
+bash CBIG_pMFM_step2_validation_Schaefer100_wrapper.sh
+bash CBIG_pMFM_step3_test_Schaefer100_wrapper.sh
+bash CBIG_pMFM_step4_generate_simulated_fc_fcd_Schaefer100_wrapper.sh
+bash CBIG_pMFM_step5_generate_STDFCD_correlation_Schaefer100_wrapper.sh
+bash CBIG_pMFM_step6_SWSTD_state_Schaefer100_wrapper.sh
+bash CBIG_pMFM_step7_perturbation_analysis_Schaefer100_wrapper.sh
+bash CBIG_pMFM_step8_gene_expression_analysis_schaefer_wrapper.sh
+bash CBIG_pMFM_step9_Schaefer100_cleanup.sh
+
+cd root_dir/part2_pMFM_main/SOMA_algorithm/scripts
+bash CBIG_pMFM_SOMA_training_wrapper.sh
+bash CBIG_pMFM_SOMA_cleanup.sh
+
+cd root_dir/part2_pMFM_main/STDFCD_permutation_Desikan/scripts
+bash CBIG_pMFM_step1_generate_permutation_order_desikan_wrapper.sh
+bash CBIG_pMFM_step2_STDFCD_permutation_correlation_desikan_wrapper.sh
+bash CBIG_pMFM_step3_perm_desikan_cleanup.sh
+
+cd root_dir/part2_pMFM_main/STDFCD_permutation_Schaefer100/scripts
+bash CBIG_pMFM_step1_generate_permutation_order_schaefer_wrapper.sh
+bash CBIG_pMFM_step2_STDFCD_permutation_correlation_schaefer_wrapper.sh
+bash CBIG_pMFM_step3_perm_schaefer_cleanup.sh
+
+cd root_dir/part2_pMFM_main/SWSTD_FCD_lowGS/scripts
+bash CBIG_pMFM_STDFCD_lowGS_wrapper.sh
+bash CBIG_pMFM_lowGS_cleanup.sh
+
+cd root_dir/part2_pMFM_main/T1T2_only/scripts
+bash CBIG_pMFM_step1_training_T1T2_wrapper.sh
+bash CBIG_pMFM_step2_validation_T1T2_wrapper.sh
+bash CBIG_pMFM_step3_test_T1T2_wrapper.sh
+bash CBIG_pMFM_step4_T1T2_cleanup.sh

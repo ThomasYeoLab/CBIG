@@ -76,5 +76,5 @@ def CBIG_mfm_validation_desikan_main(gpu_index=0,
 
 
 if __name__ == '__main__':
-    warnings.filterwarnings("ignore", category=UserWarning)
+    warnings.filterwarnings("ignore", category=RuntimeWarning)
     CBIG_mfm_validation_desikan_main(0)

@@ -42,7 +42,7 @@ def CBIG_mfm_test_desikan_main(gpu_index=0):
     vali_raw_all = np.zeros((3 * n_node + 1 + 8, 1))
 
     for i in range(1, 11):
-        load_file = 'random_seed_' + str(i) + '.csv'
+        load_file = 'random_initialization_' + str(i) + '.csv'
         load_path = os.path.join(input_path, load_file)
         xmin = fc.csv_matrix_read(load_path)
         index_mat = np.zeros((2, xmin.shape[1]))
@@ -113,5 +113,5 @@ def CBIG_mfm_test_desikan_main(gpu_index=0):
 
 
 if __name__ == '__main__':
-    warnings.filterwarnings("ignore", category=UserWarning)
+    warnings.filterwarnings("ignore", category=RuntimeWarning)
     CBIG_mfm_test_desikan_main()

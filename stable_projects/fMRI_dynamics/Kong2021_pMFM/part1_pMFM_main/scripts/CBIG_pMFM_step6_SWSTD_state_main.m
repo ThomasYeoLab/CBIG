@@ -18,7 +18,7 @@ end
 pc_th = 0.1;
 
 %% Compute empirical SWSTD state
-load('../output/step5_SWSTD_results/STD_FCD_empirical_rundata.mat', 'FCD_emp_allrun', 'SWSTD_emp_allrun')
+load('../output/step5_STDFCD_results/STD_FCD_empirical_rundata.mat', 'FCD_emp_allrun', 'SWSTD_emp_allrun')
 
 FCD_std = std(FCD_emp_allrun,1,2);
 run_num = size(FCD_std,1);
@@ -63,7 +63,7 @@ save(fullfile(output_dir, 'SWSTD_state_empirical.mat'), 'SWSTD_state_emp')
 
 
 %% Compute simulated SWSTD state
-load('../output/step5_SWSTD_results/STD_FCD_simulated_rundata.mat', 'FCD_sim_allrun', 'SWSTD_sim_allrun')
+load('../output/step5_STDFCD_results/STD_FCD_simulated_rundata.mat', 'FCD_sim_allrun', 'SWSTD_sim_allrun')
 
 FCD_std = std(FCD_sim_allrun,1,2);
 run_num = size(FCD_std,1);
@@ -93,8 +93,8 @@ for i = 1:run_num
     disp(['Finish run: ' num2str(i)])
 end
 
-SWSTD_state_sim_up = mean(sub_up_all,1);
-SWSTD_state_sim_down = mean(sub_down_all,1);
+SWSTD_state_sim_up = mean(var_up_all,1);
+SWSTD_state_sim_down = mean(var_down_all,1);
 SWSTD_state_sim = [SWSTD_state_sim_up', SWSTD_state_sim_down'];
 save(fullfile(output_dir, 'SWSTD_state_simulated.mat'), 'SWSTD_state_sim')
 

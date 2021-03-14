@@ -158,7 +158,8 @@ def CBIG_mfm_perturbation_simulation(parameter,
 
     torch.set_default_tensor_type('torch.cuda.FloatTensor')
 
-    range_list = np.load('../output/perturbation_simulation/range_list.npy')
+    range_list = np.load('../output/step7_perturbation_simulation' +
+                         '/range_list.npy')
     range_index = range_list[index]
     start_point = range_index[0] + 60
 
@@ -443,11 +444,12 @@ def CBIG_pMFM_generate_perturbed_FCD(gpu_index=0,
     emp_fc = fc.csv_matrix_read('../input/fc_test.csv')
     emp_fc = torch.from_numpy(emp_fc).type(torch.FloatTensor).cuda()
 
-    sim_grad_corr = sio.loadmat('../input/ROI_sim')
+    sim_grad_corr = sio.loadmat(
+        '../output/step5_STDFCD_results/STD_FCD_simulated.mat')
     sim_grad_corr = np.array(sim_grad_corr['SWSTD_FCD_sim'])
     sim_grad_corrM = np.tile(sim_grad_corr, [1, n_set])
     node_maskM = torch.from_numpy(sim_grad_corrM).cuda()
-    sim_grad_corr_sort = np.sort(sim_grad_corr)
+    sim_grad_corr_sort = torch.from_numpy(np.sort(sim_grad_corr)).cuda()
     if region_indi == 'top':
         node_mask = 1 * (node_maskM > sim_grad_corr_sort[-6]).type(
             torch.FloatTensor).cuda()
@@ -548,15 +550,17 @@ def CBIG_pMFM_analysis_perturbed_FCD(region_num=5):
             '../output/step7_perturbation_simulation/original/FCD/FCD_' +
             str(index) + '.npy')
         fcd_top = np.load('../output/step7_perturbation_simulation/top' +
-                          str(region_num) + '/FCD/FCD_' + str(index) + '.npy')
+                          str(region_num) + '_regions/FCD/FCD_' + str(index) +
+                          '.npy')
         bold_top = np.load('../output/step7_perturbation_simulation/top' +
-                           str(region_num) + '/TC/TC_' + str(index) + '.npy')
+                           str(region_num) + '_regions/TC/TC_' + str(index) +
+                           '.npy')
         fcd_bottom = np.load('../output/step7_perturbation_simulation/bottom' +
-                             str(region_num) + '/FCD/FCD_' + str(index) +
-                             '.npy')
+                             str(region_num) + '_regions/FCD/FCD_' +
+                             str(index) + '.npy')
         bold_bottom = np.load(
             '../output/step7_perturbation_simulation/bottom' +
-            str(region_num) + '/TC/TC_' + str(index) + '.npy')
+            str(region_num) + '_regions/TC/TC_' + str(index) + '.npy')
 
         if np.sum(bold_top[-1, :]) == 0 or np.isnan(np.sum(bold_top[-1, :])):
             continue
@@ -604,7 +608,7 @@ def CBIG_pMFM_analysis_perturbed_FCD(region_num=5):
 
 
 if __name__ == '__main__':
-    warnings.filterwarnings("ignore", category=UserWarning)
+    warnings.filterwarnings("ignore", category=RuntimeWarning)
     print('Start generating original siumulated data.')
     CBIG_pMFM_generate_simulated_original_data()
     print('Start determining perturbation starting time.')

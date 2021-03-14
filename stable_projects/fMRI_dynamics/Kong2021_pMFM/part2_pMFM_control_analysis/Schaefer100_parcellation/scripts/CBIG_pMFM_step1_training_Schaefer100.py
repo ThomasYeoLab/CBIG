@@ -227,6 +227,6 @@ def CBIG_mfm_optimization_desikan_main(gpu_index=0, random_seed=1):
 
 
 if __name__ == "__main__":
-    warnings.filterwarnings("ignore", category=UserWarning)
+    warnings.filterwarnings("ignore", category=RuntimeWarning)
     for i in range(1, 11):
         CBIG_mfm_optimization_desikan_main(random_seed=i)

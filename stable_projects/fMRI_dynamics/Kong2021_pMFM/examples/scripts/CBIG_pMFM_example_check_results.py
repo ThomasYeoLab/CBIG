@@ -35,7 +35,7 @@ def csv_matrix_read(filename):
 
 
 if __name__ == "__main__":
-    warnings.filterwarnings("ignore", category=UserWarning)
+    warnings.filterwarnings("ignore", category=RuntimeWarning)
     print('Start toy example execution')
     example.CBIG_mfm_optimization_desikan_main()
     print('Finish toy example execution')
