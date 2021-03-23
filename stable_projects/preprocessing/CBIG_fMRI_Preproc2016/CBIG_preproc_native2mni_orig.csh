@@ -1,5 +1,5 @@
 #!/bin/tcsh 
- 
+
 # Example: 
 #	$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_native2mni.csh 
 #	-s Sub0001_Ses1 -d ~/storage/fMRI_preprocess -anat_s Sub0001_Ses1_FS -anat_d ~/storage/sMRI_preprocess 
@@ -34,7 +34,7 @@ set down = ""         # downsample flag, FSL_MNI_FS_2mm for FreeSurfer 2mm space
 
 set force = 0;
 set nocleanup = 0;
-set sm = 7;
+set sm = 6;
 set FS_temp_2mm = "${CBIG_CODE_DIR}/data/templates/volume/FS_nonlinear_volumetric_space_4.5/gca_mean2mm.nii.gz"
 set MNI_temp_2mm = "${FSL_DIR}/data/standard/MNI152_T1_2mm_brain.nii.gz"
 set temp_2mm = ${MNI_temp_2mm}
@@ -108,7 +108,7 @@ if(-e $output) then
 	echo "[native2mni]: $output already exists." |& tee -a $LF
 else
 	set cmd = (CBIG_vol2vol_m3z.csh -src-id $anat_s -src-dir $anat_dir -targ-id $MNI_ref_id -targ-dir $MNI_ref_dir 
-                   -in $input -out $output -no-cleanup)
+                  -in $input -out $output -no-cleanup)
 	echo $cmd |& tee -a $LF
 	$cmd |& tee -a $LF
 	if(-e $output) then
@@ -254,14 +254,6 @@ foreach runfolder ($bold)
 	#########################
 	echo "======== Smooth in MNI152 2mm space with fwhm = $sm ========" |& tee -a $LF
 	set fcount = 0;
-        
-	if($?sm_mask) then
-		set inverted_sm_mask = $frame_dir/inverted_sm_mask.nii.gz
-        	set cmd = (fslmaths $sm_mask -mul -1 -add 1 -mas $final_mask $inverted_sm_mask)
-        	echo $cmd |& tee -a $LF
-        	eval $cmd
-  	endif
-
 	while($fcount < $nframes)
 		set fcount_str = `echo $fcount | awk '{printf ("%04d",$1)}'`
 		
@@ -274,58 +266,35 @@ foreach runfolder ($bold)
 			echo "[native2mni]: $output already exists." |& tee -a $LF
 		else
 			if($?sm_mask) then
-			    # if the user passes in a volume sm_mask, the procedure is
-			    # 1. smooth volume data within sm_mask
-			    # 2. smooth sm_mask within sm_mask
-			    # 3. divide smoothed volume by smoothed sm_mask (deal with boundary problem)
-                            set tmp1 = $frame_dir/tmp1_${fcount_str}.nii.gz
-	  		    set tmp2 = $frame_dir/tmp2_${fcount_str}.nii.gz
-	                    set tmp3 = $frame_dir/tmp3_${fcount_str}.nii.gz		
-                            set tmp4 = $frame_dir/tmp4_${fcount_str}.nii.gz
-                            set input_masksmoothed = $frame_dir/input_masksmoothed_${fcount_str}.nii.gz
-                            set input_outsidemask_smoothed = $frame_dir/input_outsidemask_smoothed_${fcount_str}.nii.gz
-
-			    set cmd = (fslmaths $input -mas $sm_mask -s $std -mas $sm_mask $tmp1)
-			    echo $cmd |& tee -a $LF
-			    eval $cmd
+				# if the user passes in a volume sm_mask, the procedure is
+				# 1. smooth volume data within sm_mask
+				# 2. smooth sm_mask within sm_mask
+				# 3. divide smoothed volume by smoothed sm_mask (deal with boundary problem)
+				set tmp1 = $frame_dir/tmp1_${fcount_str}.nii.gz
+				set tmp2 = $frame_dir/tmp2_${fcount_str}.nii.gz
 				
-			    set cmd = (fslmaths $sm_mask -s $std -mas $sm_mask $tmp2)
-		            echo $cmd |& tee -a $LF
-			    eval $cmd
+				set cmd = (fslmaths $input -s $std -mas $sm_mask $tmp1)
+				echo $cmd |& tee -a $LF
+				eval $cmd
 				
-			    set cmd = (fslmaths $tmp1 -div $tmp2 $input_masksmoothed)
-		            echo $cmd |& tee -a $LF
-			    eval $cmd
-
-                            #4. smooth outside of the mask, but inside the brain			    
-			    set cmd = (fslmaths $input -mas $inverted_sm_mask -s $std -mas $inverted_sm_mask $tmp3)
-			    echo $cmd |& tee -a $LF
-			    eval $cmd
-
-			    set cmd = (fslmaths $inverted_sm_mask -s $std -mas $inverted_sm_mask $tmp4)
-			    echo $cmd |& tee -a $LF
-			    eval $cmd
-
-			    set cmd = (fslmaths $tmp3 -div $tmp4 $input_outsidemask_smoothed)
-			    echo $cmd |& tee -a $LF
-			    eval $cmd
-
-                            #5. combine externally smoothed data with rest of the data
-			    set cmd = (fslmaths $input_masksmoothed -add $input_outsidemask_smoothed $output)
-                            echo $cmd |& tee -a $LF
-	                    eval $cmd
+				set cmd = (fslmaths $sm_mask -s $std -mas $sm_mask $tmp2)
+				echo $cmd |& tee -a $LF
+				eval $cmd
 				
+				set cmd = (fslmaths $tmp1 -div $tmp2 $output)
+				echo $cmd |& tee -a $LF
+				eval $cmd
 			else
-			    set cmd = (fslmaths $input -s $std $output)
-			    echo $cmd |& tee -a $LF
-			    eval $cmd
+				set cmd = (fslmaths $input -s $std $output)
+				echo $cmd |& tee -a $LF
+				eval $cmd
 			endif
 			
 			if(-e $output) then
-			    echo "[native2mni]: smooth to $output finished." |& tee -a $LF
+				echo "[native2mni]: smooth to $output finished." |& tee -a $LF
 			else
-			    echo "ERROR: smooth to $output failed." |& tee -a $LF
-			    exit 1;
+				echo "ERROR: smooth to $output failed." |& tee -a $LF
+				exit 1;
 			endif
 		endif
 		
@@ -485,8 +454,7 @@ while( $#argv != 0 )
 			breaksw
 		
 		# downsample flag, determine which MNI 2mm space the user wants to use
-		# "FSL_MNI_FS_2mm" for FreeSurfer 2mm space (128*128*128); 
-                # "FSL_MNI_2mm" for FSL MNI 2mm space (91*109*91)
+		# "FSL_MNI_FS_2mm" for FreeSurfer 2mm space (128*128*128); "FSL_MNI_2mm" for FSL MNI 2mm space (91*109*91)
 		case "-down":
 			if ( $#argv == 0 ) goto arg1err;
 			set down = $argv[1]; shift;
@@ -498,8 +466,7 @@ while( $#argv != 0 )
 			set final_mask = $argv[1]; shift;
 			breaksw
 			
-		# if nocleanup is turned on, it won't delete the folders with single frames, 
-                # otherwise these folders will be removed
+		# if nocleanup is turned on, it won't delete the folders with single frames, otherwise these folders will be removed
 		case "-nocleanup":
 			set nocleanup = 1
 			breaksw
@@ -566,8 +533,7 @@ if( $?down ) then
 	else if ( $down == "FSL_MNI_2mm" ) then
 		set temp_2mm = ${MNI_temp_2mm}
 	else
-		echo "ERROR: Wrong input for -down. 
-                      Please choose from FSL_MNI_FS_2mm and FSL_MNI_2mm. Current down = $down"
+		echo "ERROR: Wrong input for -down. Please choose from FSL_MNI_FS_2mm and FSL_MNI_2mm. Current down = $down"
 		exit 1;
 	endif
 endif
@@ -682,3 +648,5 @@ Example:
 	-bld '002 003' -BOLD_stem _rest_stc_mc_cen_resid_lp0.08 -REG_stem _rest_stc_mc_reg -down FSL_MNI_2mm -sm 6 -sm_mask
 	${CBIG_CODE_DIR}/data/templates/volume/FSL_MNI152_masks/SubcorticalLooseMask_MNI1mm_sm6_MNI2mm_bin0.2.nii.gz
 	-final_mask ${FSL_DIR}/data/standard/MNI152_T1_2mm_brain_mask_dil.nii.gz
+
+
