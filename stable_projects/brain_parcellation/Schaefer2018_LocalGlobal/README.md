@@ -24,6 +24,8 @@ Parcellations Release
 
   + Parcel names were obtained by matching with the components in [Yeo2011 split components](https://github.com/ThomasYeoLab/CBIG/tree/master/stable_projects/brain_parcellation/Yeo2011_fcMRI_clustering/1000subjects_reference/Yeo_JNeurophysiol11_SplitLabels). The abbreviations of parcel names can be found here: [7 networks](https://github.com/ThomasYeoLab/CBIG/blob/master/stable_projects/brain_parcellation/Yeo2011_fcMRI_clustering/1000subjects_reference/Yeo_JNeurophysiol11_SplitLabels/Yeo2011_7networks_N1000.split_components.glossary.csv), [17 networks](https://github.com/ThomasYeoLab/CBIG/blob/master/stable_projects/brain_parcellation/Yeo2011_fcMRI_clustering/1000subjects_reference/Yeo_JNeurophysiol11_SplitLabels/Yeo2011_17networks_N1000.split_components.glossary.csv).
 
+  + **Important note**: the color legends of networks ```Limbic A (TempPole)``` and ```Limbic B (OFC)``` for the 17 network figure was mistakenly switched when this figure was first created (it has been corrected since 23/03/2021). This error should not affect any downstream analysis using our parcellation, since the network names are only wrongly labelled in the figure below but are **correctly** labeled in our released parcellation files (i.e. cifti files, MNI nii.gz files and annot files). If you come across mislabeled figures in any papers, please kindly write to us, and we will help them double check if any of the downstream analysis was affected.
+  
   + Here we provide a visualization of the 400 parcel parcellation in ```fslr32k``` space, parcels were colored to match Yeo 7/17 network parcellation:
 
 <p align="center">
@@ -59,14 +61,14 @@ Except for this project, if you want to use the code for other stable projects f
 
 To download the version of the code that is last tested, you can either
 
-- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.18.1-Update_stable_project_unit_test](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.18.1-Update_stable_project_unit_test)
+- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.19.2-Yeo2011_Schaefer2018](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.19.2-Yeo2011_Schaefer2018)
 
 or
 
 - run the following command, if you have Git installed
 
 ```
-git checkout -b Schaefer2018_LocalGlobal v0.18.1-Update_stable_project_unit_test
+git checkout -b Schaefer2018_LocalGlobal v0.19.2-Yeo2011_Schaefer2018
 ```
 
 ---
@@ -141,6 +143,9 @@ Updates
     1. Update unit test to accommodate to the new HPC.
 
     2. Fix a minor bug in `CBIG_gwMRF_set_prams.m`
+
+- Release v0.19.2 (23/03/2021): Fix the mistakenly switched figure legend (Limbic A and Limbic B) in the 17 Network Color Table.
+
 ---
 
 Bugs and Questions

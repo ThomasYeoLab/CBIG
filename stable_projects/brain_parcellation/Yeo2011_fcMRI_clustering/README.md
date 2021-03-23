@@ -25,6 +25,8 @@ Specifically, the parcellations include:
 
 
     <img src="readme_figures/Yeo2011_network_parcellation_fs5.png" height="300" />
+    
+    You can find the names of the ordered 7/17 networks here: `1000subjects_reference/<7/17>NetworksOrderedNames.csv`.
 
 - **Yeo_JNeurophysiol11_SplitLabels**
 The original networks in 7/17 network brain parcellations were spatially distributed, so in this version we further splitted them into spatially connected components. For example, 51 components were obtained from the original 7 network parcellation and 114 components were obtained from the original 17 network parcellation. For more information, please check the `README.md` file under `Yeo_JNeurophysiol11_SplitLabels` folder.
@@ -52,14 +54,14 @@ There is a simple example in `examples` folder. Check how to run the example cod
 
 Note that this project uses generic functions from other folders, which may be updated over time. To download the version of the code that was last tested, you can either
 
-- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.18.1-Update_stable_project_unit_test](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.18.1-Update_stable_project_unit_test)
+- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.19.2-Yeo2011_Schaefer2018](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.19.2-Yeo2011_Schaefer2018)
 
 or
 
 - run the following command, if you have Git installed
  
 ```
-git checkout -b Yeo2011_fcMRI_clustering v0.18.1-Update_stable_project_unit_test
+git checkout -b Yeo2011_fcMRI_clustering v0.19.2-Yeo2011_Schaefer2018
 ```
 
 ----
@@ -109,6 +111,8 @@ git checkout -b Yeo2011_fcMRI_clustering v0.18.1-Update_stable_project_unit_test
     1. Update unit test to accommodate to the new HPC.
 
     2. Turned off "silhouette" option in the wrapper file `CBIG_Yeo2011_cluster_fcMRI_surf2surf_profiles.csh`.
+
+- Release v0.19.2 (23/03/2021): Add two tables that matches network order to network names for both the Yeo 7/17 network.
 
 ----
 
