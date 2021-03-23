@@ -107,7 +107,8 @@ set output = $volfolder/norm_MNI152_1mm.nii.gz
 if(-e $output) then
 	echo "[native2mni]: $output already exists." |& tee -a $LF
 else
-	set cmd = (CBIG_vol2vol_m3z.csh -src-id $anat_s -src-dir $anat_dir -targ-id $MNI_ref_id -targ-dir $MNI_ref_dir -in $input -out $output -no-cleanup)
+	set cmd = (CBIG_vol2vol_m3z.csh -src-id $anat_s -src-dir $anat_dir -targ-id $MNI_ref_id -targ-dir $MNI_ref_dir 
+                  -in $input -out $output -no-cleanup)
 	echo $cmd |& tee -a $LF
 	$cmd |& tee -a $LF
 	if(-e $output) then
@@ -203,7 +204,8 @@ foreach runfolder ($bold)
 		if(-e $output) then
 			echo "    [native2mni]: $output already exists." |& tee -a $LF
 		else
-			set cmd = (CBIG_vol2vol_m3z.csh -src-id $anat_s -src-dir $anat_dir -targ-id $MNI_ref_id -targ-dir $MNI_ref_dir -in $input -out $output -reg $regfile -no-cleanup)
+			set cmd = (CBIG_vol2vol_m3z.csh -src-id $anat_s -src-dir $anat_dir -targ-id $MNI_ref_id -targ-dir $MNI_ref_dir 
+                                   -in $input -out $output -reg $regfile -no-cleanup)
 			echo $cmd |& tee -a $LF
 			eval $cmd |& tee -a $LF
 			if(-e $output) then
@@ -258,7 +260,8 @@ foreach runfolder ($bold)
 		set input = $frame_dir/${fcount_str}_MNI1mm_MNI2mm.nii.gz
 		mkdir -p $frame_dir/sm
 		set output = $frame_dir/sm/${fcount_str}_MNI1mm_MNI2mm_sm${sm}.nii.gz
-		set std = `awk "BEGIN {print ${sm}/2.35482}"`    #Note that fwhm = 2.35482 * std, fslmaths -s is in unit of mm, not voxel.
+		set std = `awk "BEGIN {print ${sm}/2.35482}"`    
+                #Note that fwhm = 2.35482 * std, fslmaths -s is in unit of mm, not voxel.
 		if(-e $output) then
 			echo "[native2mni]: $output already exists." |& tee -a $LF
 		else
@@ -375,7 +378,8 @@ end
 which git
 if (! $status) then
 	echo "=======================Git: Last Commit of Current Function =======================" |& tee -a $LF
-	git -C ${CBIG_CODE_DIR} log -1 -- stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_native2mni.csh >> $LF
+	git -C ${CBIG_CODE_DIR} log -1 \
+        -- stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_native2mni.csh >> $LF
 endif
 
 
@@ -604,7 +608,8 @@ OPTIONAL ARGUMENTS:
 	                        does not want to do smoothing, he/she needs to pass in -sm 0.
 	-sm_mask    sm_mask   : mask for smoothing (e.g. a grey matter mask in MNI152 2mm). An example 
 	                        of the smooth mask is: 
-	                        ${CBIG_CODE_DIR}/data/templates/volume/FSL_MNI152_masks/SubcorticalLooseMask_MNI1mm_sm6_MNI2mm_bin0.2.nii.gz
+	                        ${CBIG_CODE_DIR}/data/templates/volume/FSL_MNI152_masks/
+                                SubcorticalLooseMask_MNI1mm_sm6_MNI2mm_bin0.2.nii.gz
 	                        If <sm_mask> is not passed in, the smoothing step will smooth everything
 	                        by the FWHM as specified by -sm flag.
 	-down       down      : downsample space, choose from FSL_MNI_FS_2mm (size: 128 x 128 x 128)
