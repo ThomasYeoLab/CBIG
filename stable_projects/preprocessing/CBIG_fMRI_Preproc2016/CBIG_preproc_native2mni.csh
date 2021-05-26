@@ -107,8 +107,7 @@ set output = $volfolder/norm_MNI152_1mm.nii.gz
 if(-e $output) then
 	echo "[native2mni]: $output already exists." |& tee -a $LF
 else
-	set cmd = (CBIG_vol2vol_m3z.csh -src-id $anat_s -src-dir $anat_dir -targ-id $MNI_ref_id -targ-dir $MNI_ref_dir 
-                   -in $input -out $output -no-cleanup)
+	set cmd = (CBIG_vol2vol_m3z.csh -src-id $anat_s -src-dir $anat_dir -targ-id $MNI_ref_id -targ-dir $MNI_ref_dir -in $input -out $output -no-cleanup)
 	echo $cmd |& tee -a $LF
 	$cmd |& tee -a $LF
 	if(-e $output) then
@@ -204,8 +203,7 @@ foreach runfolder ($bold)
 		if(-e $output) then
 			echo "    [native2mni]: $output already exists." |& tee -a $LF
 		else
-			set cmd = (CBIG_vol2vol_m3z.csh -src-id $anat_s -src-dir $anat_dir -targ-id $MNI_ref_id -targ-dir $MNI_ref_dir 
-                                   -in $input -out $output -reg $regfile -no-cleanup)
+			set cmd = (CBIG_vol2vol_m3z.csh -src-id $anat_s -src-dir $anat_dir -targ-id $MNI_ref_id -targ-dir $MNI_ref_dir -in $input -out $output -reg $regfile -no-cleanup)
 			echo $cmd |& tee -a $LF
 			eval $cmd |& tee -a $LF
 			if(-e $output) then
@@ -268,8 +266,7 @@ foreach runfolder ($bold)
 		set input = $frame_dir/${fcount_str}_MNI1mm_MNI2mm.nii.gz
 		mkdir -p $frame_dir/sm
 		set output = $frame_dir/sm/${fcount_str}_MNI1mm_MNI2mm_sm${sm}.nii.gz
-		set std = `awk "BEGIN {print ${sm}/2.35482}"`    
-                #Note that fwhm = 2.35482 * std, fslmaths -s is in unit of mm, not voxel.
+		set std = `awk "BEGIN {print ${sm}/2.35482}"`  #Note that fwhm = 2.35482 * std, fslmaths -s is in unit of mm, not voxel.
 		if(-e $output) then
 			echo "[native2mni]: $output already exists." |& tee -a $LF
 		else
@@ -409,8 +406,9 @@ end
 which git
 if (! $status) then
 	echo "=======================Git: Last Commit of Current Function =======================" |& tee -a $LF
-	git -C ${CBIG_CODE_DIR} log -1 \
-        -- stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_native2mni.csh >> $LF
+	pushd ${CBIG_CODE_DIR}
+        git log -1 -- ${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_native2mni.csh >> $LF
+        popd
 endif
 
 
@@ -485,8 +483,7 @@ while( $#argv != 0 )
 			breaksw
 		
 		# downsample flag, determine which MNI 2mm space the user wants to use
-		# "FSL_MNI_FS_2mm" for FreeSurfer 2mm space (128*128*128); 
-                # "FSL_MNI_2mm" for FSL MNI 2mm space (91*109*91)
+		# "FSL_MNI_FS_2mm" for FreeSurfer 2mm space (128*128*128); "FSL_MNI_2mm" for FSL MNI 2mm space (91*109*91)
 		case "-down":
 			if ( $#argv == 0 ) goto arg1err;
 			set down = $argv[1]; shift;
@@ -566,8 +563,7 @@ if( $?down ) then
 	else if ( $down == "FSL_MNI_2mm" ) then
 		set temp_2mm = ${MNI_temp_2mm}
 	else
-		echo "ERROR: Wrong input for -down. 
-                      Please choose from FSL_MNI_FS_2mm and FSL_MNI_2mm. Current down = $down"
+		echo "ERROR: Wrong input for -down. Please choose from FSL_MNI_FS_2mm and FSL_MNI_2mm. Current down = $down"
 		exit 1;
 	endif
 endif
@@ -642,8 +638,7 @@ OPTIONAL ARGUMENTS:
 	                        does not want to do smoothing, he/she needs to pass in -sm 0.
 	-sm_mask    sm_mask   : mask for smoothing (e.g. a grey matter mask in MNI152 2mm). An example 
 	                        of the smooth mask is: 
-	                        ${CBIG_CODE_DIR}/data/templates/volume/FSL_MNI152_masks/
-                                SubcorticalLooseMask_MNI1mm_sm6_MNI2mm_bin0.2.nii.gz
+	                        ${CBIG_CODE_DIR}/data/templates/volume/FSL_MNI152_masks/SubcorticalLooseMask_MNI1mm_sm6_MNI2mm_bin0.2.nii.gz
 	                        If <sm_mask> is not passed in, the smoothing step will smooth everything
 	                        by the FWHM as specified by -sm flag.
 	-down       down      : downsample space, choose from FSL_MNI_FS_2mm (size: 128 x 128 x 128)
@@ -680,5 +675,5 @@ Example:
 	$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_native2mni.csh 
 	-s Sub0001_Ses1 -d ~/storage/fMRI_preprocess -anat_s Sub0001_Ses1_FS -anat_d ~/storage/sMRI_preprocess 
 	-bld '002 003' -BOLD_stem _rest_stc_mc_cen_resid_lp0.08 -REG_stem _rest_stc_mc_reg -down FSL_MNI_2mm -sm 6 -sm_mask
-	${CBIG_CODE_DIR}/data/templates/volume/FSL_MNI152_masks/SubcorticalLooseMask_MNI1mm_sm6_MNI2mm_bin0.2.nii.gz
+        ${CBIG_CODE_DIR}/data/templates/volume/FSL_MNI152_masks/SubcorticalLooseMask_MNI1mm_sm6_MNI2mm_bin0.2.nii.gz
 	-final_mask ${FSL_DIR}/data/standard/MNI152_T1_2mm_brain_mask_dil.nii.gz
