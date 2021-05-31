@@ -4,12 +4,12 @@ function h = CBIG_DrawSurfaceMaps(lh_data, rh_data, ...
 % h = CBIG_DrawSurfaceMaps(lh_data, rh_data, mesh_name, ...
 %    surf_type, min_thresh, max_thresh, colors)
 %
-% This function visualizes a given surface data in freesurfer space. 
+% This function visualizes a given surface data in freesurfer space.
 % Threshold can be defined by min_thresh and max_thresh.
 %
 % Input:
-%      -lh_data, rh_data: 
-%       data of left/right hemisphere. Nx1 or 1xN vector for each, 
+%      -lh_data, rh_data:
+%       data of left/right hemisphere. Nx1 or 1xN vector for each,
 %       N = # of vertices in mesh_name.
 %
 %      -mesh_name:
@@ -50,11 +50,11 @@ function h = CBIG_DrawSurfaceMaps(lh_data, rh_data, ...
 warning('off', 'MATLAB:warn_r14_stucture_assignment');
 
 if(~exist('mesh_name', 'var'))
-   mesh_name = 'fsaverage'; 
+    mesh_name = 'fsaverage';
 end
 
 if(~exist('surf_type', 'var'))
-   surf_type = 'inflated'; 
+    surf_type = 'inflated';
 end
 
 pos = [0.020, 0.510, 0.325, 0.470;...
@@ -77,12 +77,18 @@ else
     colormap(m);
 end
 
-for hemis = {'lh' 'rh'}
+%Add threshold if not specified
+if(~exist('min_thresh', 'var'))
+    min_thresh=min([min(lh_data) min(rh_data)]);
+    max_thresh=max([max(lh_data) max(rh_data)]);
+end
 
+for hemis = {'lh' 'rh'}
+    
     hemi = hemis{1};
     mesh = CBIG_ReadNCAvgMesh(hemi, mesh_name, surf_type, 'cortex');
-    non_cortex = find(mesh.MARS_label == 1);  
-
+    non_cortex = find(mesh.MARS_label == 1);
+    
     if(strcmp(hemi, 'lh'))
         data = single(lh_data);
     elseif(strcmp(hemi, 'rh'))
@@ -91,7 +97,7 @@ for hemis = {'lh' 'rh'}
     
     % convert to row vector
     if(size(data, 1) ~= 1)
-       data = data';  
+        data = data';
     end
     
     % resample
@@ -106,22 +112,20 @@ for hemis = {'lh' 'rh'}
     end
     
     % threshold
-    if(exist('min_thresh', 'var'))
-        data(data < min_thresh) = min_thresh;
-        data(data > max_thresh) = max_thresh;
-        data(non_cortex(1)) = min_thresh;
-        data(non_cortex(2)) = max_thresh;
-    end
+    data(data < min_thresh) = min_thresh;
+    data(data > max_thresh) = max_thresh;
+    data(non_cortex(1)) = min_thresh;
+    data(non_cortex(2)) = max_thresh;
     
     % draw
     if(strcmp(hemi, 'lh'))
-        subplot('Position', pos(1, :)); 
+        subplot('Position', pos(1, :));
         s = TrisurfMeshData(mesh, data);
         shading interp;
         ncd = revert_shading_interp_behaviour(s, m);
         s.CData = ncd;
         view(-90, 0);
-        axis off; 
+        axis off;
         
         subplot('Position', pos(2, :));
         s = TrisurfMeshData(mesh, data);
@@ -138,17 +142,17 @@ for hemis = {'lh' 'rh'}
         s.CData = ncd;
         view(90, 90);
         axis off;
-
-        subplot('Position', pos(8, :)); 
+        
+        subplot('Position', pos(8, :));
         s = TrisurfMeshData(mesh, data);
         shading interp;
         ncd = revert_shading_interp_behaviour(s, m);
         s.CData = ncd;
         view(90, -90);
-        axis off;  
+        axis off;
         
     else
-
+        
         subplot('Position', pos(5, :));
         s = TrisurfMeshData(mesh, data);
         shading interp;
@@ -156,7 +160,7 @@ for hemis = {'lh' 'rh'}
         s.CData = ncd;
         view(90, 0);
         axis off;
-
+        
         subplot('Position', pos(6, :));
         s = TrisurfMeshData(mesh, data);
         shading interp;
@@ -164,7 +168,7 @@ for hemis = {'lh' 'rh'}
         s.CData = ncd;
         view(-90, 0);
         axis off;
-
+        
         subplot('Position', pos(4, :));
         s = TrisurfMeshData(mesh, data);
         shading interp;
@@ -172,7 +176,7 @@ for hemis = {'lh' 'rh'}
         s.CData = ncd;
         view(90, 90);
         axis off;
-
+        
         subplot('Position', pos(7, :));
         s = TrisurfMeshData(mesh, data);
         shading interp;
@@ -190,11 +194,11 @@ if(exist('min_thresh', 'var'))
 end
 
 end
-  
+
 
 function ncd = revert_shading_interp_behaviour(s, m)
 % shading interp behaviour is different across matlab versions
-% we revert the shading interp behaviour to be like r2014a 
+% we revert the shading interp behaviour to be like r2014a
 
 s = get(s);
 cdat = s.FaceVertexCData;

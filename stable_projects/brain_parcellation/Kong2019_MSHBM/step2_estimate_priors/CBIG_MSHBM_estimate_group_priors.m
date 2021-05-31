@@ -150,7 +150,7 @@ function Params = CBIG_MSHBM_estimate_group_priors(project_dir,mesh,num_sub,num_
 %
 % Written by Ru(by) Kong and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
-addpath('../lib/');
+addpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'brain_parcellation', 'Kong2019_MSHBM', 'lib'));
 
 pnames = {'max_iter' 'conv_th' 'save_all'};
 dflts =  {'50' '1e-5' '0'};
@@ -306,7 +306,7 @@ while(stop_inter == 0)
     save(fullfile(project_dir, 'priors', ['Params_iteration',num2str(Params.iter_inter),'.mat']), 'Params');
 end
 
-rmpath('../lib/');
+rmpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'brain_parcellation', 'Kong2019_MSHBM', 'lib'));
 
 end
 
@@ -590,7 +590,8 @@ function data = fetch_data(project_dir,num_session,num_sub,mesh)
 
 % read in input functional connectivity profiles
 if(~isempty(strfind(mesh,'fs_LR_32k')))
-    load('../lib/fs_LR_32k_medial_mask.mat');
+    load(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'brain_parcellation', 'Kong2019_MSHBM', 'lib', ...
+        'fs_LR_32k_medial_mask.mat'));
     for t = 1:num_session
         data_profile = fullfile(project_dir,'profile_list','training_set',['sess' num2str(t) '.txt']);
         profile_name = table2cell(readtable(data_profile,'Delimiter',' ','ReadVariableNames',false));

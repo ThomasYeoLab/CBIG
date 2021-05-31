@@ -1,8 +1,8 @@
 #!/bin/csh -f
 
-##############################
-## Written by Ru(by) Kong
-##############################
+########################################
+## Written by Ru(by) Kong, Zhang Shaoshi
+########################################
 
 set n = `echo $argv | grep -e -help | wc -l`
 
@@ -30,6 +30,7 @@ endif
 
 set walltime = '01:00:00'
 set ncpus = '1'
+set ngpus = ''
 set memory = '8GB'
 set sleeptime = '3'
 
@@ -44,36 +45,20 @@ parse_args_return:
 goto check_params;
 check_params_return:
 
-
-#############################################
-# Avoid large memory job being sent to shortQ 
-#############################################
-set hour = `echo $walltime | cut -d ':' -f1`
-set min = `echo $walltime | cut -d ':' -f2`
-set sec = `echo $walltime | cut -d ':' -f3`
-@ timenum = $hour * 3600 + $min * 60 + $sec
-if ( $timenum <= 600) then
-	if ( "$memory" =~ *"G"* ) then
-		set memnum = `(echo $memory | awk -F'G' '{ print $1 }')`
-		if ( $memnum > 750 ) then
-			echo "WARNING: Your job requires large memory: $memnum GB but small walltime: $walltime."
-			echo "WARNING: To avoid your job being sent to shortQ, your walltime will be adjusted to 00:20:00."
-			set walltime = 00:20:00
-		else if ( $memnum > 40 ) then
-			echo "WARNING: Your job requires large memory: $memnum GB but small walltime: $walltime."
-			echo "WARNING: To avoid your job being sent to shortQ, you might want to increase your walltime."
-		endif
-	endif
-endif
-
 #####################
 # Print out job info
 #####################
 echo "[JOB INFO]: Walltime = ${walltime}"
-echo "[JOB INFO]: Number of CPUs = ${ncpus}"
 echo "[JOB INFO]: Memory = ${memory}"
+echo "[JOB INFO]: Number of CPUs = ${ncpus}"
+
+if ( "$ngpus" != "" ) then
+    set cmd = "-V -q gpuQ -l walltime=${walltime} -l select=1:ncpus=${ncpus}:mem=${memory}:ngpus=${ngpus} -m ae"
+    echo "[JOB INFO]: Number of GPUs = ${ngpus}"
+else
+    set cmd = "-V -l walltime=${walltime} -l mem=${memory} -l nodes=1:ppn=${ncpus} -m ae"
+endif
 echo "[JOB INFO]: Command = ${cmd_script}"
-set cmd = "-V -l walltime=${walltime} -l mem=${memory} -l nodes=1:ppn=${ncpus} -m ae"
 
 if ( "$jobname" != "" ) then
     set cmd = "$cmd -N ${jobname}"
@@ -91,6 +76,10 @@ endif
 # check current node. Job can only be submitted from the headnode
 set currnode = `hostname`
 if ( "$currnode" != "headnode" ) then
+	if ( "$ngpus" != "" ) then
+		echo "ERROR: You are requesting GPUs but not submitting jobs from the headnode. Please submit jobs from the headnode."
+		exit 1
+	endif
 	echo "WARNING: ssh from $currnode to headnode ..."
 	# submit job
 	ssh headnode "cd $work_dir; qsub ${cmd} -- ${cmd_script}"
@@ -127,6 +116,11 @@ while( $#argv != 0 )
 		case "-ncpus":
 			if ( $#argv == 0 ) goto arg1err;
 			set ncpus = $argv[1]; shift;
+			breaksw	
+
+		case "-ngpus":
+			if ( $#argv == 0 ) goto arg1err;
+			set ngpus = $argv[1]; shift;
 			breaksw	
 		
 		case "-mem":
@@ -204,6 +198,8 @@ NAME:
     3. [DANGEROUS] If you have to submit job from compiler for some reasons, this script will ssh headnode and submit
        job for you. But your job command has to be a formatted as a script with/without input arguments, e.g.,
        "/path/my_job_script.sh input1 input2 input3"
+       If you request GPU in your job, directly running this script on the compiler node will not work. You MUST first ssh
+       to headnode and then run this script.
     4. If you want to run your job under conda enviroment, e.g. CBIG_py3, you must activate corresponding environment
        in "cmd" argument. For example, when you want to submit jobs under CBIG_py3, you need to use 
        "source activate CBIG_py3;<your_job_wrapper.sh>;source deactivate" as your "cmd" argument. 
@@ -230,6 +226,10 @@ REQUIRED ARGUMENTS:
 OPTIONAL ARGUMENTS:
     -walltime   <walltime>:         Specify the maximum run time (hours, minutes and seconds): HH:MM:SS. Default is 01:00:00.
     -ncpus      <ncpus>:            Specify the number of CPUs for a job. Default is 1.
+    -ngpus      <ngpus>:            Specify the number of GPUs for a job. If this flag is specified, the job will be sent to gpuQ
+                                    the requested CPUs are from the GPU nodes. These CPUs are used to facilitate GPU computation,
+                                    for example, in PyTorch DataLoader.
+                                    Each user is limited with a maximum of 4 GPUs. By default, this flag is not used.
     -mem        <memory>:           Specify the amount of maximum memory required (e.g. 3G). Default is 8G.
     -name       <jobname>:          The job name.         
     -joberr     <joberr_file>:      The path to the job error log file. e.g., "/path/myjoberr.log". Default is $HOME/cluster/STDIN.e????. 
@@ -243,4 +243,5 @@ EXAMPLE:
 	
     $CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "$cmd" 
     $CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "$cmd" -walltime 00:30:00 -mem 4G -ncpus 2
+    $CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "$cmd" -walltime 00:30:00 -mem 4G -ncpus 4 -ngpus 1
     $CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "$cmd" -walltime 00:30:00 -mem 4G -name "MYJOB" -joberr "/path/myjoberr.log" -jobout "/path/myjobout.log"

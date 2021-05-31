@@ -121,6 +121,16 @@ for k = 1:num_ker
             
             if(strcmp(ker_param(k).type, 'corr'))
                 FSM = CBIG_self_corr(feature_mat);
+                if(~isempty(isnan(feature_mat)))
+                    nan_set = find(isnan(sum(feature_mat,1)));
+                    for nan_s = nan_set
+                        for all_s = 1:size(feature_mat,2)
+                            nan_mask = ~isnan(feature_mat(:,nan_s)) & ~isnan(feature_mat(:,all_s));
+                            FSM(nan_s,all_s) = CBIG_corr(feature_mat(nan_mask,nan_s),feature_mat(nan_mask,all_s));
+                            FSM(all_s,nan_s) = FSM(nan_s,all_s);
+                        end
+                    end
+                end
             elseif(strcmp(ker_param(k).type, 'Exponential'))
                 FSM = exp(-1*ker_param(k).scale*squareform(pdist(feature_mat'))/K);
             elseif(strcmp(ker_param(k).type, 'Gaussian'))

@@ -1,0 +1,6 @@
+[submodule "external_packages/matlab/non_default_packages/Gaussian_Process/deck"]
+	path = external_packages/matlab/non_default_packages/Gaussian_Process/deck
+	url = https://github.com/jhadida/deck.git
+[submodule "external_packages/matlab/non_default_packages/Gaussian_Process/gpso"]
+	path = external_packages/matlab/non_default_packages/Gaussian_Process/gpso
+	url = https://github.com/jhadida/gpso.git

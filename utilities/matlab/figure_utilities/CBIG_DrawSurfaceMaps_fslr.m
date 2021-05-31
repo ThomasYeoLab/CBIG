@@ -17,7 +17,7 @@ function h = CBIG_DrawSurfaceMaps_fslr(lh_data, rh_data, mesh_name, surf_type, m
 %        fslr mesh that the label data will be projected onto.
 %        fslr = 'fs_LR_32k' or 'fs_LR_164k'
 %      - surf_type:
-%        surface template. Options are 'inflated', 'very_inflated', 
+%        surface template. Options are 'inflated', 'very_inflated',
 %        'midthickness_orig', 'white_orig', 'pial_orig', 'sphere'.
 %      - min_thresh, max_thresh (optional):
 %        minimum and maximum threshold for the colorscale of the projected
@@ -61,43 +61,46 @@ else
     colormap(m);
 end
 
+%Add threshold if not specified
+if(~exist('min_thresh', 'var'))
+    min_thresh=min([min(lh_data) min(rh_data)]);
+    max_thresh=max([max(lh_data) max(rh_data)]);
+end
+
+
 for hemis = {'lh','rh'}
     
     hemi = hemis{1};
-    mesh= CBIG_read_fslr_surface(hemi, mesh_name, surf_type);
-      
+    mesh= CBIG_read_fslr_surface(hemi, mesh_name, surf_type, 'medialwall.annot');
+    non_cortex = find(mesh.MARS_label == 1);
+    
     if(strcmp(hemi, 'lh'))
         data = single(lh_data);
     elseif(strcmp(hemi, 'rh'))
         data = single(rh_data);
     end
     
-    non_cortex = find(data==0);  
-
     % convert to row vector
     if(size(data, 1) ~= 1)
-       data = data';  
+        data = data';
     end
     
     %threshold
-    if(exist('min_thresh', 'var'))
-       data(data < min_thresh) = min_thresh;
-       data(data > max_thresh) = max_thresh;
-       if numel(non_cortex) >= 2
-           data(non_cortex(1)) = min_thresh;
-           data(non_cortex(2)) = max_thresh;
-       end
-    end
-
+    data(data < min_thresh) = min_thresh;
+    data(data > max_thresh) = max_thresh;
+    data(non_cortex(1)) = min_thresh;
+    data(non_cortex(2)) = max_thresh;
+    
+    
     % draw
     if(strcmp(hemi, 'lh'))
-        subplot('Position', pos(1, :)); 
+        subplot('Position', pos(1, :));
         s = TrisurfMeshData(mesh, data);
         shading interp;
         ncd = revert_shading_interp_behaviour(s, m);
         s.CData = ncd;
         view(-90, 0);
-        axis off; 
+        axis off;
         
         subplot('Position', pos(2, :));
         s = TrisurfMeshData(mesh, data);
@@ -114,17 +117,17 @@ for hemis = {'lh','rh'}
         s.CData = ncd;
         view(90, 90);
         axis off;
-
-        subplot('Position', pos(8, :)); 
+        
+        subplot('Position', pos(8, :));
         s = TrisurfMeshData(mesh, data);
         shading interp;
         ncd = revert_shading_interp_behaviour(s, m);
         s.CData = ncd;
         view(90, -90);
-        axis off;  
+        axis off;
         
     else
-
+        
         subplot('Position', pos(5, :));
         s = TrisurfMeshData(mesh, data);
         shading interp;
@@ -132,7 +135,7 @@ for hemis = {'lh','rh'}
         s.CData = ncd;
         view(90, 0);
         axis off;
-
+        
         subplot('Position', pos(6, :));
         s = TrisurfMeshData(mesh, data);
         shading interp;
@@ -140,7 +143,7 @@ for hemis = {'lh','rh'}
         s.CData = ncd;
         view(-90, 0);
         axis off;
-
+        
         subplot('Position', pos(4, :));
         s = TrisurfMeshData(mesh, data);
         shading interp;
@@ -148,7 +151,7 @@ for hemis = {'lh','rh'}
         s.CData = ncd;
         view(90, 90);
         axis off;
-
+        
         subplot('Position', pos(7, :));
         s = TrisurfMeshData(mesh, data);
         shading interp;
@@ -170,7 +173,7 @@ end
 
 function ncd = revert_shading_interp_behaviour(s, m)
 % shading interp behaviour is different across matlab versions
-% we revert the shading interp behaviour to be like r2014a 
+% we revert the shading interp behaviour to be like r2014a
 
 s = get(s);
 cdat = s.FaceVertexCData;

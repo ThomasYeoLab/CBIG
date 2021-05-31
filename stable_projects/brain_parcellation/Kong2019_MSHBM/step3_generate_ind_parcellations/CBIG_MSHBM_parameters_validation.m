@@ -153,7 +153,7 @@ if(~isempty(strfind(mesh,'fsaverage')))
     homo_with_weight = CBIG_ComputeParcellationHomogeneity_FS(lh_labels,rh_labels,mesh,lh_fMRI_files,rh_fMRI_files);
     
 elseif(~isempty(strfind(mesh,'fs_LR_32k')))
-    fMRI_files = fullfile(project_dir,'data_list','validation_fMRI_list',['rh_sub' subid '.txt']);
+    fMRI_files = fullfile(project_dir,'data_list','validation_fMRI_list',['sub' subid '.txt']);
     homo_with_weight = CBIG_ComputeParcellationHomogeneity_fslr(lh_labels,rh_labels,fMRI_files);
 end
 

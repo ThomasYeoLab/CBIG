@@ -319,10 +319,15 @@ disp(['Writing MNI files, ' num2str(p) ' Parcels, ' num2str(k) ' Networks.']);
 mni_name = fullfile(output_dir, 'MNI', ['Schaefer2018_',num2str(p),'Parcels_',num2str(k) ,'Networks_order']);
 project_to_MNI(lh_new, rh_new, mni_name);
 txt_name = fullfile(output_dir, 'MNI', ['Schaefer2018_',num2str(p),'Parcels_',num2str(k) ,'Networks_order.txt']);
-lut_name = fullfile(output_dir, 'MNI', ['Schaefer2018_',num2str(p),'Parcels_',num2str(k) ,'Networks_order.lut']);
+lut_name = fullfile(output_dir, 'MNI', ['Schaefer2018_',num2str(p),'Parcels_',num2str(k) ,'Networks_order_lut.txt']);
 cell2csv(txt_name, [num2cell(1:2*nparcels)', [lh_s.struct_names(2:end); rh_s.struct_names(2:end)], ...
     num2cell([lh_s.table(2:nparcels+1, 1:3); rh_s.table(2:nparcels+1, 1:3)]), num2cell(zeros(2*nparcels, 1))], '\t');
-CBIG_gwMRF_create_FSL_LUT(lut_name, [lh_s.table(2:end, 1:3); rh_s.table(2:end, 1:3)]);
+cell2csv(lut_name, [num2cell(1:2*nparcels)',...
+    num2cell([lh_s.table(2:nparcels+1, 1:3)./255; rh_s.table(2:nparcels+1, 1:3)./255]),...
+    [lh_s.struct_names(2:end); rh_s.struct_names(2:end)]], '\t');
+
+%NOTE the command below does not work for fsleyes. We have deprecated it.
+%CBIG_gwMRF_create_FSL_LUT(lut_name, [lh_s.table(2:end, 1:3); rh_s.table(2:end, 1:3)]);
 
 end
 

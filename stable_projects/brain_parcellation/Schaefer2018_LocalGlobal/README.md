@@ -61,14 +61,14 @@ Except for this project, if you want to use the code for other stable projects f
 
 To download the version of the code that is last tested, you can either
 
-- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.19.2-Yeo2011_Schaefer2018](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.19.2-Yeo2011_Schaefer2018)
+- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.20.0-Kong2022_ArealMSHBM](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.20.0-Kong2022_ArealMSHBM)
 
 or
 
 - run the following command, if you have Git installed
 
 ```
-git checkout -b Schaefer2018_LocalGlobal v0.19.2-Yeo2011_Schaefer2018
+git checkout -b Kong2022_ArealMSHBM v0.20.0-Kong2022_ArealMSHBM
 ```
 
 ---
@@ -146,6 +146,13 @@ Updates
 
 - Release v0.19.2 (23/03/2021): Fix the mistakenly switched figure legend (Limbic A and Limbic B) in the 17 Network Color Table.
 
+- Release v0.20.0 (31/5/2021)
+ 
+    1. Initial release of Kong2022_ArealMSHBM.
+    
+    2. Update Schaefer parcellations with new orderring based on Kong2022 17 networks.
+
+    3. A new function to visualize correlation matrix is created.
 ---
 
 Bugs and Questions

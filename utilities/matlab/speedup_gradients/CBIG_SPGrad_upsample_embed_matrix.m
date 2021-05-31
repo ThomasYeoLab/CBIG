@@ -33,7 +33,7 @@ if(strcmp(mesh,'fs_LR_32k'))
     lh_surf = CBIG_read_fslr_surface('lh', mesh, 'sphere', 'medialwall.annot');
     rh_surf = CBIG_read_fslr_surface('rh', mesh, 'sphere', 'medialwall.annot');
     if(strcmp(medial_mask,'NONE'))
-        medial_mask = [lh_avg_mesh.MARS_label == 1;rh_avg_mesh.MARS_label == 1];
+        medial_mask = [lh_surf.MARS_label == 1;rh_surf.MARS_label == 1];
     end
 elseif(~isempty(strfind(mesh,'fsaverage')))
     lh_surf = CBIG_ReadNCAvgMesh('lh', mesh, 'sphere', 'cortex');
@@ -67,7 +67,7 @@ else
     [emb, ~, ~] = MARS_linearInterpolate(lh_surf.vertices, lh_down_surf, lh_emb_down.emb');
     emb(:,medial_mask(1:size(lh_surf.vertices,2))) = 0;
     emb = emb';
-    save(lh_downsample_file,'emb');
+    save(lh_downsample_file, 'emb', '-v7.3');
     clear emb
 end
 if(size(rh_emb_down.emb,1) == size(rh_surf.vertices,2))
@@ -76,7 +76,7 @@ else
     [emb, ~, ~] = MARS_linearInterpolate(rh_surf.vertices, rh_down_surf, rh_emb_down.emb');
     emb(:,medial_mask(size(rh_surf.vertices,2)+1:end)) = 0;
     emb = emb';
-    save(rh_downsample_file,'emb');
+    save(rh_downsample_file, 'emb', '-v7.3');
 end
 
 

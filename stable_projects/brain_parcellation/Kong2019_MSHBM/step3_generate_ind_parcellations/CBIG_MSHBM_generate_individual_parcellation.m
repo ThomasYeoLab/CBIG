@@ -112,7 +112,7 @@ function [lh_labels, rh_labels] = CBIG_MSHBM_generate_individual_parcellation( .
 %
 % Written by Ru(by) Kong and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
-addpath('../lib/');
+addpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'brain_parcellation', 'Kong2019_MSHBM', 'lib'));
 
 if(nargin < 8)
     subject_set = 'test_set';
@@ -302,7 +302,7 @@ save(fullfile(out_dir, ...
     ['Ind_parcellation_MSHBM_sub',num2str(subid),'_w',num2str(setting_params.w),'_MRF',num2str(c),'.mat']), ...
     'lh_labels','rh_labels');
 
-rmpath('../lib/');
+rmpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'brain_parcellation', 'Kong2019_MSHBM', 'lib'));
 
 end
 
@@ -548,7 +548,8 @@ function data = fetch_data(project_dir,num_session,subid,mesh,subject_set)
 
 % read in input functional connectivity profiles
 if(~isempty(strfind(mesh,'fs_LR_32k')))
-    load('../lib/fs_LR_32k_medial_mask.mat');
+    load(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'brain_parcellation', 'Kong2019_MSHBM', 'lib', ...
+        'fs_LR_32k_medial_mask.mat'));
     for t = 1:num_session
         data_profile = fullfile(project_dir,'profile_list',subject_set,['sess' num2str(t) '.txt']);
         profile_name = table2cell(readtable(data_profile,'Delimiter',' ','ReadVariableNames',false));

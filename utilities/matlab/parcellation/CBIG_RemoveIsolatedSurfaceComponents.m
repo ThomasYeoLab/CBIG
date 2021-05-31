@@ -34,7 +34,7 @@ for i = 1:length(label_id)
             
             neighbor_labels = old_labels(neighbors); 
             neighbor_labels = neighbor_labels(neighbor_labels ~= label_id(i));
-            labels(index) = mode(neighbor_labels);
+            labels(index) = mode(neighbor_labels(neighbor_labels~=0));
         end
     end
 end

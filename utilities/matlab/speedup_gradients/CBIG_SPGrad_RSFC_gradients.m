@@ -21,6 +21,8 @@ function CBIG_SPGrad_RSFC_gradients(fMRI_files1, fMRI_files2, censor_files, lh_i
 %       <fMRI_files1> can also be a path which points to a single run if the input
 %       is fMRI data of a single run. 
 %       e.g. <path>/lh.Sub0033_Ses1.nii.gz.
+%       <fMRI_files1> can also be a 1x#run cell variable. Each element corresponds
+%       to the path to a single run of this subject.
 %
 %       'fs_LR*' spaces:
 %       the text file containing entire cortical surface data list,
@@ -29,6 +31,8 @@ function CBIG_SPGrad_RSFC_gradients(fMRI_files1, fMRI_files2, censor_files, lh_i
 %       <fMRI_files1> can also be a path which points to a single run if the input
 %       is fMRI data of a single run.
 %       e.g. <path>/Sub0033_Ses1.dtseries.nii.
+%       <fMRI_files1> can also be a 1x#run cell variable. Each element corresponds
+%       to the path to a single run of this subject.
 %
 %     - fMRI_files2:
 %       'fsaverage*' spaces:
@@ -38,6 +42,8 @@ function CBIG_SPGrad_RSFC_gradients(fMRI_files1, fMRI_files2, censor_files, lh_i
 %       <fMRI_files2> can also be a path which points to a single run if the input
 %       is fMRI data of a single run. 
 %       e.g. <path>/rh.Sub0033_Ses1.nii.gz.
+%       <fMRI_files2> can also be a 1x#run cell variable. Each element corresponds
+%       to the path to a single run of this subject.
 %
 %       'fs_LR*' spaces:
 %       This input is not useful for input in 'fs_LR*' spaces (you can pass in 'NONE').
@@ -53,6 +59,8 @@ function CBIG_SPGrad_RSFC_gradients(fMRI_files1, fMRI_files2, censor_files, lh_i
 %       <lh_ind_surf_file>/<rh_ind_surf_file> can also be a path which points to a
 %       single run if the input is the surface mesh file of a single run. 
 %       e.g. <path>/??????.?.midthickness.32k_fs_LR.surf.gii. 
+%       <lh_ind_surf_file>/<rh_ind_surf_file> can also be a 1x#run cell variable.
+%       Each element corresponds to the path to a single run of this subject.
 %       If there is no individual surface file, the user can pass in 'NONE' for both
 %       variables. 
 %
@@ -63,6 +71,11 @@ function CBIG_SPGrad_RSFC_gradients(fMRI_files1, fMRI_files2, censor_files, lh_i
 %        <outlier_text> can also be a path which points to the outlier file of a single run 
 %       if the input is fMRI data of a single run. 
 %       e.g. <path>/outlier_Sub0033_Ses1_run1.txt
+%       <censor_files> can also be a 1x#run cell variable. Each element corresponds
+%       to the path to the outlier file of a single run of this subject.
+%       Please note that the outlier file shouled be a text file contains a
+%       single column with binary numbers and its length is the number of 
+%       timepoints. The outliers are indicated by 0s and will be flaged out.
 %
 %     - mesh:
 %       resolution of surface mesh, e.g. 'fsaverage6', 'fs_LR_32k'
@@ -176,7 +189,7 @@ maxh = -100;
 
 %% Read in fMRI and censor file list
 % if fMRI file input is a text file contains fMRI file paths of multiple scans
-if (isempty([strfind(fMRI_files1, '.dtseries.nii') strfind(fMRI_files1, '.nii.gz') strfind(fMRI_files1, '.mgh')]))
+if(isempty([strfind(fMRI_files1, '.dtseries.nii') strfind(fMRI_files1, '.nii.gz') strfind(fMRI_files1, '.mgh')]))
     fMRI_filenames1 = CBIG_SPGrad_read_sub_list(fMRI_files1);
     if(~is_fsLR)
         fMRI_filenames2 = CBIG_SPGrad_read_sub_list(fMRI_files2);
@@ -201,9 +214,26 @@ if (isempty([strfind(fMRI_files1, '.dtseries.nii') strfind(fMRI_files1, '.nii.gz
         rh_ind_surf = repmat({rh_midsurf},1,length(fMRI_filenames1));
     end
 
-    
+% if fMRI file input is a cell structure
+elseif(strcmp(class(fMRI_files1), 'cell'))
+    fMRI_filenames1 = fMRI_files1;
+    if(~is_fsLR)
+        fMRI_filenames2 = fMRI_files2;
+    end
+    censor_filenames = censor_files;
+
+    if(strcmp(lh_ind_surf_file,'NONE'))
+        lh_ind_surf = repmat({lh_midsurf},1,length(fMRI_filenames1));
+    else
+        lh_ind_surf = lh_ind_surf_file;
+    end
+    if(strcmp(rh_ind_surf_file,'NONE'))
+        rh_ind_surf = repmat({rh_midsurf},1,length(fMRI_filenames1));
+    else
+        rh_ind_surf = rh_ind_surf_file;
+    end
 % if fMRI file input is the fMRI file path of a single scan
-else
+else    
     fMRI_filenames1{1} = fMRI_files1;
     if(~is_fsLR)
         fMRI_filenames2{1} = fMRI_files2;

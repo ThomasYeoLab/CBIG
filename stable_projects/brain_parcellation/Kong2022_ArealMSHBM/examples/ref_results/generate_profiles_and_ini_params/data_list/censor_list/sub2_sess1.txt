@@ -1,0 +1,1 @@
+/home/rkong/storage/CBIG_private/data/example_data/CoRR_HNU/subj02/subj02_sess1/qc/subj02_sess1_bld002_FDRMS0.2_DVARS50_motion_outliers.txt

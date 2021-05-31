@@ -1,0 +1,5 @@
+/mnt/isilon/CSC1/Yeolab/CodeMaintenance/ReplicationData/stable_projects/brain_parcellation/Kong2022_ArealMSHBM/ABCD_profile/NDARINVJ3MBD6X5/rh.bld003_sm6_fs6_fs3_profile.mat
+/mnt/isilon/CSC1/Yeolab/CodeMaintenance/ReplicationData/stable_projects/brain_parcellation/Kong2022_ArealMSHBM/ABCD_profile/NDARINVY609D78A/rh.bld003_sm6_fs6_fs3_profile.mat
+/mnt/isilon/CSC1/Yeolab/CodeMaintenance/ReplicationData/stable_projects/brain_parcellation/Kong2022_ArealMSHBM/ABCD_profile/NDARINV0P0GTDY0/rh.bld003_sm6_fs6_fs3_profile.mat
+/mnt/isilon/CSC1/Yeolab/CodeMaintenance/ReplicationData/stable_projects/brain_parcellation/Kong2022_ArealMSHBM/ABCD_profile/NDARINV1MKWVMP1/rh.bld003_sm6_fs6_fs3_profile.mat
+/mnt/isilon/CSC1/Yeolab/CodeMaintenance/ReplicationData/stable_projects/brain_parcellation/Kong2022_ArealMSHBM/ABCD_profile/NDARINV7W4K75L0/rh.bld003_sm6_fs6_fs3_profile.mat

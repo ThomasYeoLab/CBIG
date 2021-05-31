@@ -78,12 +78,15 @@ function CBIG_ComputeCorrelationProfile(seed_mesh, target, output_file1, output_
 %       e.g. <path>/outlier_Sub0033_Ses1_run1.txt
 %       
 %     - split_data
-%       string ('0' / '1') or scalar (0 / 1).
-%       If this flag is 1, for subject with only one run, this function
-%       will split it into two fake runs with equal length. For subject
-%       with multiple runs, it will not split any run.
+%       string or scalar. It can be '0' or other non-zero integer value.
+%       If this flag is a non-zero value K, for subject with only one run, this function
+%       will split it into K fake runs with equal length. For subject with multiple runs, 
+%       it will not split any run.
 %       If this flag is 0, whether the input subject is with one run or
 %       multiple runs, this function will not split any run.
+%       If this flag is 1, for subject with only one run, this function
+%       will split it into 2 fake runs with equal length. For subject with multiple runs, 
+%       it will not split any run.
 %
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
@@ -173,6 +176,10 @@ else
     if(ischar(split_data))
         split_data = str2num(split_data);
     end
+    if(split_data == 1)
+        fprintf('Split flag is set to be 1, will split data into 2 fake runs. \n');
+        split_data = 2;
+    end
 end
 
 % Compute profile for left hemi
@@ -213,16 +220,32 @@ for i = 1:length(varargin1)
     end
     
     % normalize series (note that series are now of dimensions: T x N) and compute correlation
-    if(split_data==1 && length(varargin1)==1)
-        s_series_1 = s_series(1:floor(size(s_series,1)/2), :);
-        s_series_2 = s_series(floor(size(s_series,1)/2)+1:end, :);
-        t_series_1 = t_series(1:floor(size(t_series,1)/2), :);
-        t_series_2 = t_series(floor(size(t_series,1)/2)+1:end, :);
-        
-        corr_mat1(:,:,1) = CBIG_corr(s_series_1, t_series_1);
-        corr_mat1(:,:,2) = CBIG_corr(s_series_2, t_series_2);
+    if(split_data~=0 && length(varargin1)==1)
+        for split = 1:split_data
+            rang_start = floor(size(s_series,1)/split_data) * (split - 1) + 1;
+            rang_end = floor(size(s_series,1)/split_data) * split;
+            if(split == split_data)
+                rang_end = size(s_series,1);
+            end
+            curr_s_series = s_series(rang_start:rang_end,:);
+            curr_t_series = t_series(rang_start:rang_end,:);
+            curr_corr_mat1 = CBIG_corr(curr_s_series, curr_t_series);
+
+            disp(['Fake run ' num2str(split) ', isnan: ' num2str(sum(sum(isnan(curr_corr_mat1)))) ' out of '...
+            num2str(numel(curr_corr_mat1))]);
+            tmp_corr = curr_corr_mat1;
+            tmp_corr(isnan(curr_corr_mat1)) = 0;
+            corr_mat1(:,:,split) = tmp_corr;
+        end
+        if(i == 1)
+            output = corr_mat1;
+        else
+            output = output + corr_mat1;
+        end
     else        
         corr_mat1 = CBIG_corr(s_series, t_series);
+        disp(['isnan: ' num2str(sum(isnan(corr_mat1(:)))) ' out of ' num2str(numel(corr_mat1))]);
+        corr_mat1(isnan(corr_mat1)) = 0;
         if(i == 1)
             output = corr_mat1;
         else
@@ -231,20 +254,10 @@ for i = 1:length(varargin1)
     end
     clear outliers
 end
-if(split_data==1 && length(varargin1)==1)
-    for run = 1:2
-        disp(['Fake run ' num2str(run) ', isnan: ' num2str(sum(sum(isnan(corr_mat1(:,:,run))))) ' out of '...
-         num2str(numel(corr_mat1(:,:,run)))]);
-        tmp_corr = corr_mat1(:, :, run);
-        tmp_corr(isnan(corr_mat1(:,:,run))) = 0;
-        corr_mat1(:, :, run) = tmp_corr;
-    end
-else
-    output = output / length(varargin1);
-    corr_mat1 = output;
-    disp(['isnan: ' num2str(sum(isnan(corr_mat1(:)))) ' out of ' num2str(numel(corr_mat1))]);
-    corr_mat1(isnan(corr_mat1)) = 0;
-end
+
+output = output / length(varargin1);
+corr_mat1 = output;
+
 
 % Compute profile for right hemi
 if(~isempty(strfind(target, 'fsaverage'))) 
@@ -279,16 +292,32 @@ if(~isempty(strfind(target, 'fsaverage')))
         s_series = [lh_seed_series rh_seed_series];
         
         % normalize series (note that series are now of dimensions: T x N) and compute correlation
-        if(split_data==1 && length(varargin2)==1)
-            s_series_1 = s_series(1:floor(size(s_series,1)/2), :);
-            s_series_2 = s_series(floor(size(s_series,1)/2)+1:end, :);
-            t_series_1 = t_series(1:floor(size(t_series,1)/2), :);
-            t_series_2 = t_series(floor(size(t_series,1)/2)+1:end, :);
-            
-            corr_mat2(:,:,1) = CBIG_corr(s_series_1, t_series_1);
-            corr_mat2(:,:,2) = CBIG_corr(s_series_2, t_series_2);
-        else
+        if(split_data~=0 && length(varargin1)==1)
+            for split = 1:split_data
+                rang_start = floor(size(s_series,1)/split_data) * (split - 1) + 1;
+                rang_end = floor(size(s_series,1)/split_data) * split;
+                if(split == split_data)
+                    rang_end = size(s_series,1);
+                end
+                curr_s_series = s_series(rang_start:rang_end,:);
+                curr_t_series = t_series(rang_start:rang_end,:);
+                curr_corr_mat2 = CBIG_corr(curr_s_series, curr_t_series);
+    
+                disp(['Fake run ' num2str(split) ', isnan: ' num2str(sum(sum(isnan(curr_corr_mat2)))) ' out of '...
+                num2str(numel(curr_corr_mat2))]);
+                tmp_corr = curr_corr_mat2;
+                tmp_corr(isnan(curr_corr_mat2)) = 0;
+                corr_mat2(:,:,split) = tmp_corr;
+            end
+            if(i == 1)
+                output = corr_mat2;
+            else
+                output = output + corr_mat2;
+            end
+        else        
             corr_mat2 = CBIG_corr(s_series, t_series);
+            disp(['isnan: ' num2str(sum(isnan(corr_mat2(:)))) ' out of ' num2str(numel(corr_mat2))]);
+            corr_mat2(isnan(corr_mat2)) = 0;
             if(i == 1)
                 output = corr_mat2;
             else
@@ -297,25 +326,14 @@ if(~isempty(strfind(target, 'fsaverage')))
         end
         clear outliers
     end
-    if(split_data==1 && length(varargin2)==1)
-        for run = 1:2
-            disp(['Fake run ' num2str(run) ', isnan: ' num2str(sum(sum(isnan(corr_mat2(:,:,run))))) ' out of '...
-             num2str(numel(corr_mat2(:,:,run)))]);
-            tmp_corr = corr_mat2(:, :, run);
-            tmp_corr(isnan(corr_mat2(:,:,run))) = 0;
-            corr_mat2(:, :, run) = tmp_corr;
-        end
-    else
-        output = output / length(varargin2);
-        corr_mat2 = output;
-        disp(['isnan: ' num2str(sum(isnan(corr_mat2(:)))) ' out of ' num2str(numel(corr_mat2))]);
-        corr_mat2(isnan(corr_mat2)) = 0;
-    end
+
+    output = output / length(varargin2);
+    corr_mat2 = output;
 end
 
 % combine both hemisphere and threshold
-if(split_data==1 && length(varargin1)==1)
-    for run = 1:2
+if(split_data~=0 && length(varargin1)==1)
+    for run = 1:split_data
         if(~isempty(strfind(target, 'fsaverage')))
             tmp = [corr_mat1(:,:,run) corr_mat2(:,:,run)];
         else

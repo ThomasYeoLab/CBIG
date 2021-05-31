@@ -17,6 +17,7 @@
 !/brain_parcellation/Yeo2011_fcMRI_clustering/**
 !/brain_parcellation/Kong2019_MSHBM/**
 !/brain_parcellation/Xue2021_IndCerebellum/**
+!/brain_parcellation/Kong2022_ArealMSHBM/**
 
 #Similarly
 !/disorder_subtypes/*

@@ -1,0 +1,1 @@
+/home/rkong/storage/CBIG_private/stable_projects/brain_parcellation/Kong2022_ArealMSHBM/examples/input/gradients/sub1/rh_emb_100_distance_matrix.mat

@@ -41,10 +41,10 @@ addpath(genpath(fullfile(getenv('CBIG_CODE_DIR'),...
 downsample = str2num(downsample);
 
 if(strcmp(mesh,'fs_LR_32k'))
-    lh_surf = CBIG_read_fslr_surface('lh', mesh, 'sphere', 'medialwall.annot');
-    rh_surf = CBIG_read_fslr_surface('lh', mesh, 'sphere', 'medialwall.annot');
+    lh_surf = CBIG_read_fslr_surface('lh','fs_LR_32k','sphere','medialwall.annot');
+    rh_surf = CBIG_read_fslr_surface('rh','fs_LR_32k','sphere','medialwall.annot');
     if(strcmp(medial_mask,'NONE'))
-        medial_mask = [lh_avg_mesh.MARS_label == 1;rh_avg_mesh.MARS_label == 1];
+        medial_mask = [lh_surf.MARS_label == 1;rh_surf.MARS_label == 1];
     end
 elseif(~isempty(strfind(mesh,'fsaverage')))
     lh_surf = CBIG_ReadNCAvgMesh('lh', mesh, 'sphere', 'cortex');

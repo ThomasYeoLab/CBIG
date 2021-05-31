@@ -31,26 +31,29 @@ Example Usage
    b) enter the following command:
 
       ```
-      freeview -v ${CBIG_CODE_DIR}/data/templates/volume/FSL5.0.8_MNI_templates/MNI152_T1_2mm_brain.nii.gz   Schaefer2018_400Parcels_7Networks_order_FSLMNI152_2mm.nii.gz:colormap=lut:lut=Schaefer2018_400Parcels_7Networks_order.txt
+      freeview -v ${CBIG_CODE_DIR}/data/templates/volume/FSL5.0.8_MNI_templates/MNI152_T1_2mm_brain.nii.gz   ./freeview_lut/Schaefer2018_400Parcels_7Networks_order_FSLMNI152_2mm.nii.gz:colormap=lut:lut=Schaefer2018_400Parcels_7Networks_order.txt
       ```  
    
    c) set colormap from `Grayscale` to `Lookup Table`  
 
 
-### fslview
+### fsleyes
 1) Make sure FSL has been set up and configured as usual (https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FslInstallation/ShellSetup)
  
 2) In terminal: 
 
-   a) `cd` to unzipped folder containing this README file, Schaefer2018_400Parcels_7Networks_order_FSLMNI152_2mm.nii.gz'
+   a) `cd` to unzipped folder containing this README file, Schaefer2018_400Parcels_17Networks_order_FSLMNI152_2mm.nii.gz
   
-   b) enter the following command:
+   b) open `fsleyes`: `File -> Add from file -> Schaefer2018_400Parcels_17Networks_order_FSLMNI152_2mm.nii.gz`
+  
+   c) In the overlay information panel, set overlay type as `Label image`. By default, fsleyes will set it as `3D/4D volume`
 
-     ```
-     fslview Schaefer2018_400Parcels_7Networks_order_FSLMNI152_2mm.nii.gz -l Schaefer2018_400Parcels_7Networks_order.lut
-     ```  
-  
-   c) set min to 1 and max to 401  
+   d) If your lookup tabels panel is not shown, go to `Settings -> Ortho View1 -> Lookup tabels`
+
+   e) In the lookup tabels panel, select `Load LUT`, choose `fsleyes_lut/Schaefer2018_400Parcels_17Networks_order.lut`. Wait for a few seconds then you will see the colored parcellation.
+
+Check for more details in the screenshot:
+![Schaefer_fsleyes](https://user-images.githubusercontent.com/20438248/118851796-ba356000-b904-11eb-8f33-33d05cd7fa8a.png) 
 
 ----
 

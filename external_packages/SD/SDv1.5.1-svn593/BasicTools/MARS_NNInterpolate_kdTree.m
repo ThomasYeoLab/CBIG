@@ -42,18 +42,18 @@ function [vals, seedVertices] = MARS_NNInterpolate_kdTree(points, mesh, data)
 
 % Check the first 100 points of the mesh and compare the radius.
 p_r_mesh = sum(mesh.vertices(:, 1:min(100, size(mesh.vertices, 2))).^2, 1);
-r_mesh = max(p_r_mesh);
+r_mesh = mean(p_r_mesh);
 if(abs(sum(p_r_mesh ./ r_mesh - 1))>1e-4)
     warning('Mesh surface is not a sphere.');
 end
 
 p_r_points = sum(points(:, 1:min(100, size(points, 2))).^2, 1);
-r_points = max(p_r_points);
+r_points = mean(p_r_points);
 if(abs(sum(p_r_points ./ r_points - 1))>1e-4)
     warning('Points surface is not a sphere.');
 end
 
-if(abs(r_mesh - r_points)>1e-4)
+if(abs(r_mesh - r_points) / r_points > 1e-4)
     warning('Two spheres do not have the same radius.');
 end
 

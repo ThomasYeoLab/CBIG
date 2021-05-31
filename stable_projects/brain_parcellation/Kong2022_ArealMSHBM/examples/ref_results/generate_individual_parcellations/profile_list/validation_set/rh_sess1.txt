@@ -1,0 +1,2 @@
+/home/rkong/storage/CBIG_private/stable_projects/brain_parcellation/Kong2022_ArealMSHBM/examples/input/profiles/sub1/sess1/rh.sub1_sess1_fsaverage6_roifsaverage3.surf2surf_profile_1.nii.gz
+/home/rkong/storage/CBIG_private/stable_projects/brain_parcellation/Kong2022_ArealMSHBM/examples/input/profiles/sub2/sess1/rh.sub2_sess1_fsaverage6_roifsaverage3.surf2surf_profile_1.nii.gz
