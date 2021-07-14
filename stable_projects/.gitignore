@@ -49,4 +49,5 @@
 !/predict_phenotypes/*
 !/predict_phenotypes/He2019_KRDNN/**
 !/predict_phenotypes/Nguyen2020_RNNAD/**
+!/predict_phenotypes/ChenTam2021_TRBPC/**
 
