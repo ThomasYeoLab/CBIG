@@ -60,7 +60,8 @@ def CBIG_mfm_optimization_desikan_main(gpu_index=0, random_seed=1):
     # Initializing input parameters
     highest_order = 1
     N = 3 * (highest_order + 1) + 1
-    gradient_data = fc.csv_matrix_read('../input/rsfc_gradient.csv')
+    gradient_data = fc.csv_matrix_read(
+        '../../../input/Desikan_input/rsfc_gradient.csv')
     gradient_data = gradient_data[:, 0]
     n_node = gradient_data.shape[0]
     dim = n_node * 3 + 1

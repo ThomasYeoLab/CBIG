@@ -266,7 +266,7 @@ def CBIG_pMFM_generate_simulated_original_data(gpu_index=0):
     parameter = torch.from_numpy(parameter).type(torch.FloatTensor).cuda()
 
     # Load data
-    sc_mat_raw = fc.csv_matrix_read('../input/sc_test.csv')
+    sc_mat_raw = fc.csv_matrix_read('../../input/Desikan_input/sc_test.csv')
     sc_mat = sc_mat_raw / sc_mat_raw.max() * 0.2
     sc_mat = torch.from_numpy(sc_mat).type(torch.FloatTensor).cuda()
 
@@ -434,14 +434,14 @@ def CBIG_pMFM_generate_perturbed_FCD(gpu_index=0,
     parameter = torch.from_numpy(parameter).type(torch.FloatTensor).cuda()
 
     # Load data
-    emp_fcd = sio.loadmat('../input/fcd_test.mat')
+    emp_fcd = sio.loadmat('../../input/Desikan_input/fcd_test.mat')
     emp_fcd = np.array(emp_fcd['test_aveM'])
 
-    sc_mat_raw = fc.csv_matrix_read('../input/sc_test.csv')
+    sc_mat_raw = fc.csv_matrix_read('../../input/Desikan_input/sc_test.csv')
     sc_mat = sc_mat_raw / sc_mat_raw.max() * 0.2
     sc_mat = torch.from_numpy(sc_mat).type(torch.FloatTensor).cuda()
 
-    emp_fc = fc.csv_matrix_read('../input/fc_test.csv')
+    emp_fc = fc.csv_matrix_read('../../input/Desikan_input/fc_test.csv')
     emp_fc = torch.from_numpy(emp_fc).type(torch.FloatTensor).cuda()
 
     sim_grad_corr = sio.loadmat(

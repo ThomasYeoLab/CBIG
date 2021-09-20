@@ -36,7 +36,7 @@ function generate_training_TC()
 HCP_dir = getenv('CBIG_HCP_DIR');
 
 %% loading training subject list
-load('../input/SC_set.mat', 'sub_train')
+load('../../../input/Desikan_input/subject_list.mat', 'sub_train')
 train_list = sub_train;
 run_list = {'rfMRI_REST1_LR','rfMRI_REST1_RL','rfMRI_REST2_LR','rfMRI_REST2_RL'};
 TC_train_dir = '../output/TC/train';
@@ -115,7 +115,7 @@ function generate_validation_TC()
 HCP_dir = getenv('CBIG_HCP_DIR');
 
 %% loading training subject list
-load('../input/SC_set.mat', 'sub_vali')
+load('../../../input/Desikan_input/subject_list.mat', 'sub_vali')
 vali_list = sub_vali;
 run_list = {'rfMRI_REST1_LR','rfMRI_REST1_RL','rfMRI_REST2_LR','rfMRI_REST2_RL'};
 TC_vali_dir = '../output/TC/validation';
@@ -194,7 +194,7 @@ function generate_test_TC()
 HCP_dir = getenv('CBIG_HCP_DIR');
 
 %% loading training subject list
-load('../input/SC_set.mat', 'sub_test')
+load('../../../input/Desikan_input/subject_list.mat', 'sub_test')
 test_list = sub_test;
 run_list = {'rfMRI_REST1_LR','rfMRI_REST1_RL','rfMRI_REST2_LR','rfMRI_REST2_RL'};
 TC_test_dir = '../output/TC/test';

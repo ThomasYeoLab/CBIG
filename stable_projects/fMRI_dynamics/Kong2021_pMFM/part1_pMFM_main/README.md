@@ -7,9 +7,10 @@
     * `CBIG_pMFM_step3_test_main.py` this file is the wrapper to perform estimated model parameter test process based on results of `CBIG_pMFM_step2_validation_main.py`. The script generates 1000 simulations for each parameter set and computes the averaged cost.
     * `CBIG_pMFM_step4_generate_simulated_fc_fcd.py` this file is the wrapper to generate simulated FC and FCD based on MFM and estimated model parameters from `CBIG_pMFM_step3_test_main.py`
     * `CBIG_pMFM_step5_generate_STDFCD_correlation_main.m` this file is the function to compute the empirical and simulated SWSTD-FCD correlation
+    * `CBIG_pMFM_step6_fitmodel.py` this file is the function to compute the distribution of FCD mean and the threshold if FCD mean follows the bi-modal distribution
     * `CBIG_pMFM_step6_SWSTD_state_main.m` this file is the function to perform SWSTD state analysis which corresponds to figure 5D and 5E in the paper.
     * `CBIG_pMFM_step7_perturbation_analysis.py` this file is the wrapper to perform perturbation analysis. This step takes about 1.5 days to finish.
-	* `CBIG_pMFM_step8_gene_expression_analysis_desikan.m` this file is the wrapper to perform gene expression analysis 
+    * `CBIG_pMFM_step8_gene_expression_analysis_desikan.m` this file is the wrapper to perform gene expression analysis 
 
 # Usage
 * Go to working directory using command: `cd $CBIG_CODE_DIR/stable_projects/fMRI_dynamics/Kong2021_pMFM/part1_pMFM_main/scripts` and follow the step order from step 1 to step 7 to run the scripts.

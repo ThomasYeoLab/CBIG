@@ -35,7 +35,8 @@ def CBIG_mfm_validation_desikan_main(gpu_index=0):
         os.makedirs(output_path)
 
     highest_order = 1
-    gradient_data = fc.csv_matrix_read('../input/rsfc_gradient.csv')
+    gradient_data = fc.csv_matrix_read(
+        '../../../input/Desikan_input/rsfc_gradient.csv')
     gradient_data = gradient_data[:, 0]
     n_node = gradient_data.shape[0]
     amatrix = np.zeros((n_node, highest_order + 1))

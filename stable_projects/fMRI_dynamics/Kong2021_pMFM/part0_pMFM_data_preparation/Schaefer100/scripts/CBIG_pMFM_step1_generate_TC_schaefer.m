@@ -36,7 +36,7 @@ function generate_training_TC()
 HCP_dir = getenv('CBIG_HCP_DIR');
 
 %% loading training subject list
-load('../input/SC_set.mat', 'sub_train')
+load('../../../input/Schaefer100_input/subject_list.mat', 'sub_train')
 train_list = sub_train;
 run_list = {'rfMRI_REST1_LR','rfMRI_REST1_RL','rfMRI_REST2_LR','rfMRI_REST2_RL'};
 TC_train_dir = '../output/TC/train';
@@ -45,7 +45,7 @@ if ~exist(TC_train_dir,'dir')
 end
 
 %% loading Schaefer 100 labeling fslr32k
-mesh_path = '../input';
+mesh_path = '../../../input/Schaefer100_input';
 mesh_file = fullfile(mesh_path,'Schaefer2018_100Parcels_17Networks_order.dlabel.nii');
 parcel_mesh = ft_read_cifti(mesh_file);
 
@@ -118,7 +118,7 @@ function generate_validation_TC()
 HCP_dir = getenv('CBIG_HCP_DIR');
 
 %% loading training subject list
-load('../input/SC_set.mat', 'sub_vali')
+load('../../../input/Schaefer100_input/subject_list.mat', 'sub_vali')
 vali_list = sub_vali;
 run_list = {'rfMRI_REST1_LR','rfMRI_REST1_RL','rfMRI_REST2_LR','rfMRI_REST2_RL'};
 TC_vali_dir = '../output/TC/validation';
@@ -127,7 +127,7 @@ if ~exist(TC_vali_dir,'dir')
 end
 
 %% loading Schaefer 100 labeling fslr32k
-mesh_path = '../input';
+mesh_path = '../../../input/Schaefer100_input';
 mesh_file = fullfile(mesh_path,'Schaefer2018_100Parcels_17Networks_order.dlabel.nii');
 parcel_mesh = ft_read_cifti(mesh_file);
 
@@ -201,7 +201,7 @@ function generate_test_TC()
 HCP_dir = getenv('CBIG_HCP_DIR');
 
 %% loading training subject list
-load('../input/SC_set.mat', 'sub_test')
+load('../../../input/Schaefer100_input/subject_list.mat', 'sub_test')
 test_list = sub_test;
 run_list = {'rfMRI_REST1_LR','rfMRI_REST1_RL','rfMRI_REST2_LR','rfMRI_REST2_RL'};
 TC_test_dir = '../output/TC/test';
@@ -210,7 +210,7 @@ if ~exist(TC_test_dir,'dir')
 end
 
 %% loading Schaefer 100 labeling fslr32k
-mesh_path = '../input';
+mesh_path = '../../../input/Schaefer100_input';
 mesh_file = fullfile(mesh_path,'Schaefer2018_100Parcels_17Networks_order.dlabel.nii');
 parcel_mesh = ft_read_cifti(mesh_file);
 

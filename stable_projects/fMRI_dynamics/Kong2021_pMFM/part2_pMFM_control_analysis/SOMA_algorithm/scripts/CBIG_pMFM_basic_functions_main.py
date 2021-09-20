@@ -629,14 +629,14 @@ def CBIG_combined_cost_train(parameter, n_dup):
     # Loading training data
     parameter = torch.from_numpy(parameter).type(torch.FloatTensor).cuda()
 
-    emp_fcd = sio.loadmat('../input/fcd_train.mat')
+    emp_fcd = sio.loadmat('../../../input/Desikan_input/fcd_train.mat')
     emp_fcd = np.array(emp_fcd['train_aveM'])
 
-    sc_mat_raw = csv_matrix_read('../input/sc_train.csv')
+    sc_mat_raw = csv_matrix_read('../../../input/Desikan_input/sc_train.csv')
     sc_mat = sc_mat_raw / sc_mat_raw.max() * 0.2
     sc_mat = torch.from_numpy(sc_mat).type(torch.FloatTensor).cuda()
 
-    emp_fc = csv_matrix_read('../input/fc_train.csv')
+    emp_fc = csv_matrix_read('../../../input/Desikan_input/fc_train.csv')
     emp_fc = torch.from_numpy(emp_fc).type(torch.FloatTensor).cuda()
 
     # Calculating simualted BOLD signal using MFM
@@ -680,14 +680,14 @@ def CBIG_combined_cost_validation(parameter, n_dup):
     # Loading validation data
     parameter = torch.from_numpy(parameter).type(torch.FloatTensor).cuda()
 
-    emp_fcd = sio.loadmat('../input/fcd_vali.mat')
+    emp_fcd = sio.loadmat('../../../input/Desikan_input/fcd_vali.mat')
     emp_fcd = np.array(emp_fcd['vali_aveM'])
 
-    sc_mat_raw = csv_matrix_read('../input/sc_vali.csv')
+    sc_mat_raw = csv_matrix_read('../../../input/Desikan_input/sc_vali.csv')
     sc_mat = sc_mat_raw / sc_mat_raw.max() * 0.2
     sc_mat = torch.from_numpy(sc_mat).type(torch.FloatTensor).cuda()
 
-    emp_fc = csv_matrix_read('../input/fc_vali.csv')
+    emp_fc = csv_matrix_read('../../../input/Desikan_input/fc_vali.csv')
     emp_fc = torch.from_numpy(emp_fc).type(torch.FloatTensor).cuda()
 
     # Calculating simualted BOLD signal using MFM
@@ -731,14 +731,14 @@ def CBIG_combined_cost_test(parameter, n_dup):
     parameter = np.tile(parameter, [1, n_dup])
     parameter = torch.from_numpy(parameter).type(torch.FloatTensor).cuda()
 
-    emp_fcd = sio.loadmat('../input/fcd_test.mat')
+    emp_fcd = sio.loadmat('../../../input/Desikan_input/fcd_test.mat')
     emp_fcd = np.array(emp_fcd['test_aveM'])
 
-    sc_mat_raw = csv_matrix_read('../input/sc_test.csv')
+    sc_mat_raw = csv_matrix_read('../../../input/Desikan_input/sc_test.csv')
     sc_mat = sc_mat_raw / sc_mat_raw.max() * 0.2
     sc_mat = torch.from_numpy(sc_mat).type(torch.FloatTensor).cuda()
 
-    emp_fc = csv_matrix_read('../input/fc_test.csv')
+    emp_fc = csv_matrix_read('../../../input/Desikan_input/fc_test.csv')
     emp_fc = torch.from_numpy(emp_fc).type(torch.FloatTensor).cuda()
 
     # Calculating simualted BOLD signal using MFM
@@ -782,14 +782,14 @@ def CBIG_combined_cost_test_highres(parameter, n_dup):
     parameter = np.tile(parameter, [1, n_dup])
     parameter = torch.from_numpy(parameter).type(torch.FloatTensor).cuda()
 
-    emp_fcd = sio.loadmat('../input/fcd_test.mat')
+    emp_fcd = sio.loadmat('../../../input/Desikan_input/fcd_test.mat')
     emp_fcd = np.array(emp_fcd['test_aveM'])
 
-    sc_mat_raw = csv_matrix_read('../input/sc_test.csv')
+    sc_mat_raw = csv_matrix_read('../../../input/Desikan_input/sc_test.csv')
     sc_mat = sc_mat_raw / sc_mat_raw.max() * 0.2
     sc_mat = torch.from_numpy(sc_mat).type(torch.FloatTensor).cuda()
 
-    emp_fc = csv_matrix_read('../input/fc_test.csv')
+    emp_fc = csv_matrix_read('../../../input/Desikan_input/fc_test.csv')
     emp_fc = torch.from_numpy(emp_fc).type(torch.FloatTensor).cuda()
 
     # Calculating simualted BOLD signal using MFM
@@ -837,20 +837,22 @@ def CBIG_combined_cost_test_differwin(parameter, n_dup, window_indi):
     parameter = torch.from_numpy(parameter).type(torch.FloatTensor).cuda()
 
     if window_indi == 'low':
-        emp_fcd = sio.loadmat('../input/fcd_test_low_window.mat')
+        emp_fcd = sio.loadmat(
+            '../../../input/Desikan_input/fcd_test_low_window.mat')
         window = 43
     elif window_indi == 'high':
-        emp_fcd = sio.loadmat('../input/fcd_test_high_window.mat')
+        emp_fcd = sio.loadmat(
+            '../../../input/Desikan_input/fcd_test_high_window.mat')
         window = 125
     else:
         raise ValueError('Input is not acceptable.')
     emp_fcd = np.array(emp_fcd['test_aveM'])
 
-    sc_mat_raw = csv_matrix_read('../input/sc_test.csv')
+    sc_mat_raw = csv_matrix_read('../../../input/Desikan_input/sc_test.csv')
     sc_mat = sc_mat_raw / sc_mat_raw.max() * 0.2
     sc_mat = torch.from_numpy(sc_mat).type(torch.FloatTensor).cuda()
 
-    emp_fc = csv_matrix_read('../input/fc_test.csv')
+    emp_fc = csv_matrix_read('../../../input/Desikan_input/fc_test.csv')
     emp_fc = torch.from_numpy(emp_fc).type(torch.FloatTensor).cuda()
 
     # Calculating simualted BOLD signal using MFM

@@ -35,7 +35,7 @@ function generate_permutation_order_empirical(o)
 %
 % Written by Kong Xiaolu and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
-load('../input/run_label_testset.mat','run_label');
+load('../../../input/Schaefer100_input/run_label_testset.mat','run_label');
 run_num = size(run_label, 1);
 perm_time = 100;
 perm_result_all = zeros(100,run_num,perm_time);

@@ -23,7 +23,7 @@ if ~exist(stdfcd_lowGS_dir,'dir')
     mkdir(stdfcd_lowGS_dir)
 end
 
-load('../input/GS_sort.mat', 'data_sort')
+load('../../../input/Desikan_input/GS_sort.mat', 'data_sort')
 
 
 window_len = 83;

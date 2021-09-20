@@ -8,7 +8,7 @@
 * `sc_train.csv` Group level SC matrix of training set
 * `sc_vali.csv` Group level SC matrix of validation set
 * `sc_test.csv` Group level SC matrix of test set
-* `sc_set.mat` Subject index of training, validation and test sets
+* `subject_list.mat` Subject index of training, validation and test sets
 
 * `fc_train.csv` Averaged empirical FC matrix of training set
 * `fc_vali.csv` Averaged empirical FC matrix of validation set
@@ -23,26 +23,35 @@
 * `GS_sort.mat` Variance of global signal for all HCP subjects. 
 	* This data is copied from [Orban2020_tod](https://github.com/ThomasYeoLab/CBIG/tree/master/stable_projects/preprocessing/Orban2020_tod)
 
-* `rsfc_gradient` Group level first principal gradient of training set
+* `rsfc_gradient.csv` Group level first principal gradient of training set
+* `rsfc_gradient_pc2.csv` Group level second principal gradient of training set
+* `rsfc_gradient_spinned.csv` Spinned group level first principal gradient of training set
 
 * `myelin.csv` Group level T1w/T2w myelin estimation of training set
+* `myelin_spinned.csv` Spinned group level T1w/T2w myelin estimation of training set
+
+* `intersubject_variability.mat` Group level inter-subject function connectivity variability of training set
+
+* `structual_gradient1.mat` Group level first gradient decomposition of structural covariance of training set
 
 * `run_label_testset.mat` Indicator of each run belonging to which subject. In detail, each run has a label of subject index. This information will used for bootstrapping.
 
 * `Desikan_68_region_description.mat` Region description of the Desikan 68
 
-* `gene_data.mat`,`gene_spin_data.mat`,`gene_expression_data.csv` are gene related data
+* `gene_data.mat`,`gene_spin_data.mat`,`gene_expression_data.csv`,`gene_gradient1.mat` are gene related data
 	* The scripts to generate gene expression data are from [Anderson 2020](https://www.nature.com/articles/s41467-020-16710-x)
 	* `gene_data.mat` Parcellated PVALB, SST and gene expression first principal component 
-	* `gene_spin_data.mat` 1000 spinned data for parcellated PVALB, SST and gene expression first principal component 
+	* `gene_spin_data.mat` 1000 spinned data for parcellated PVALB, SST and gene expression first principal component
 	* `gene_expression_data.csv` Gene expression data
+	* `gene_gradient1.mat` First principal component of gene expression data
+
+* `individual_input` folder contains the 12 individual data for training, validation and test
 	
 	
 ## Data in `Schaefer100_input`
 * `sc_train.csv` Group level SC matrix of training set
 * `sc_vali.csv` Group level SC matrix of validation set
 * `sc_test.csv` Group level SC matrix of test set
-* `sc_set.mat` Subject index of training, validation and test sets
 
 * `fc_train.csv` Averaged empirical FC matrix of training set
 * `fc_vali.csv` Averaged empirical FC matrix of validation set

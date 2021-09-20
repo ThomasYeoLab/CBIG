@@ -45,7 +45,7 @@ load('../output/step5_STDFCD_results/STD_FCD_empirical.mat', 'SWSTD_FCD_emp')
 load('../output/step5_STDFCD_results/STD_FCD_simulated.mat', 'SWSTD_FCD_sim')
     
 %% gene expression data
-load('../input/gene_data.mat','PVALB','SST','PC1')
+load('../../../input/Schaefer100_input/gene_data.mat','PVALB','SST','PC1')
 gene_diff = PVALB-SST;
 
 %% compute correlation
@@ -70,7 +70,7 @@ save('../output/step8_gene_expression_analysis/gene_expression_MFM_correlation.m
 
 
 %% load spin test data
-load('../input/gene_spin_data.mat','PC1_spin_data','PVALB_spin_data','SST_spin_data')
+load('../../../input/Schaefer100_input/gene_spin_data.mat','PC1_spin_data','PVALB_spin_data','SST_spin_data')
 gene_diff_spin = PVALB_spin_data-SST_spin_data;
 
 %% compute p-value for spin test
@@ -115,7 +115,7 @@ save('../output/step8_gene_expression_analysis/gene_expression_MFM_pvalue_spin_t
     'p_PC1_w','p_PC1_I','p_PC1_s')
 
 %% load random gene data
-gene_random_data = csvread('../input/gene_expression_data.csv');
+gene_random_data = csvread('../../../input/Schaefer100_input/gene_expression_data.csv');
 
 %% compute p-value for random gene test
 gene_num = size(gene_random_data, 1);
@@ -163,7 +163,7 @@ function gene_bootstrapping_analysis()
 % Written by Kong Xiaolu and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 %% bootstrapping on empirical SWSTD-FCD
-load('../input/run_label_testset.mat','run_label')
+load('../../../input/Schaefer100_input/run_label_testset.mat','run_label')
 rng(1)
 sub_num = max(run_label);
 run_num = zeros(sub_num,1);
@@ -219,7 +219,7 @@ for bt = 1:BT_num
 end
 
 %% compute bootstrapping SWSTD-FCD and MFM results correlation
-load('../input/gene_data.mat','PC1','PVALB','SST')
+load('../../../input/Schaefer100_input/gene_data.mat','PC1','PVALB','SST')
 gene_diff = PVALB-SST;
 
 PVALBSST_BT_empirical_correlation = corr(BT_correlation_empirical', gene_diff, 'type', 'Spearman');

@@ -5,20 +5,20 @@
 We developed a spatially heterogeneous large-scale dynamical circuit model that allowed for variation in local circuit properties across the human cortex. An advanced machine learning algorithm was used to estimate the model parameters from human resting-state fMRI data. We showed that parameterizing local circuit properties with both anatomical and functional gradients was necessary for generating realistic static and dynamical functional connectivity.
 # CODE RELEASE
 ## Download stand-alone repository
-Since the whole Github repository is too big, we provide a stand-alone version of only this project and its dependencies. To download this stand-alone repository, visit this link: https://github.com/ThomasYeoLab/Standalone_Kong2021_pMFM
+Since the whole Github repository is too big, we provide a stand-alone version of only this project and its dependencies. To download this stand-alone repository, visit this link: https://github.com/HeavenBluer/Parametric-MFM-Project
 
 ## Download whole repository
 Except for this project, if you want to use the code for other stable projects from out lab as well, you need to download the whole repository.
 
 To download the version of the code that was last tested, you can either
 
-* visit this link: https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.19.1-Update_Kong2021_pMFM
+* visit this link: https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.21.1-Update_Kong2021_pMFM
 
 or
 
 * run the following command, if you have Git installed
 
-`git checkout -b Kong2021_pMFM v.0.19.1-Update_Kong2021_pMFM`
+`git checkout -b Kong2021_pMFM v.0.21.1-Update_Kong2021_pMFM`
 
 # USAGE
 ## Setup
@@ -52,7 +52,8 @@ or
 
 # UPDATES
 Release v0.19.0 (9/3/2021): Initial release of Kong2021_pMFM </br>
-Release v0.19.1 (14/3/2021): Release replication of Kong2021_pMFM
+Release v0.19.1 (14/3/2021): Release replication of Kong2021_pMFM </br>
+Release v0.21.1 (16/9/2021): Release code for revision
 
 # BUGS and QUESTIONS
 Please contact Kong Xiaolu at kxl920327@gmail.com and Thomas Yeo at yeoyeo02@gmail.com.

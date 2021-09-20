@@ -61,9 +61,10 @@ def CBIG_mfm_optimization_desikan_main(gpu_index=0, random_seed=1):
     # Initializing input parameters
     highest_order = 1
     N = 2 * (2 * highest_order + 1) + 2
-    myelin_data = fc.csv_matrix_read('../input/myelin.csv')
+    myelin_data = fc.csv_matrix_read('../../../input/Desikan_input/myelin.csv')
     myelin_data = myelin_data[:, 0]
-    gradient_data = fc.csv_matrix_read('../input/rsfc_gradient.csv')
+    gradient_data = fc.csv_matrix_read(
+        '../../../input/Desikan_input/rsfc_gradient.csv')
     gradient_data = gradient_data[:, 0]
     n_node = myelin_data.shape[0]
     dim = n_node * 2 + 2

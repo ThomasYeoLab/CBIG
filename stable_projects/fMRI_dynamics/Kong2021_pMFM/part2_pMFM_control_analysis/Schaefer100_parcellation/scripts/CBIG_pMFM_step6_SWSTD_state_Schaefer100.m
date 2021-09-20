@@ -10,7 +10,7 @@ function CBIG_pMFM_step6_SWSTD_state_Schaefer100()
 %
 % Written by Kong Xiaolu and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
-load('../input/run_label_testset.mat', 'run_label')
+load('../../../input/Schaefer100_input/run_label_testset.mat', 'run_label')
 output_dir = '../output/step6_SWSTD_state';
 if ~exist(output_dir,'dir')
     mkdir(output_dir)

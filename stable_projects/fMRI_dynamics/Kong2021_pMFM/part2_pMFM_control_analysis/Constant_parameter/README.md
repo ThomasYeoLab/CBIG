@@ -1,6 +1,5 @@
 # Control analysis of setting model parameters (w, I, sigma) the same across regions
 * Here, w refers to recurrent connections; I refers to external input; sigma refers noise amplitude
-* `input` this folder contains the data to perform the estimation process of pMFM. Files in this folder are used by the scripts in `scripts` folder.
 * `scripts` this folder contains the scripts to generate the control analysis results of the paper. 
     * `CBIG_pMFM_basic_functions.py` this file contains all the necessary functions used in the pMFM analysis, such as using MFM to generate simulated fMRI signals; generating simulated FC and FCD.
     * `CBIG_pMFM_step1_training_conpara.py` this file is the wrapper to perform parameter estimation process. The process performs 10 random initializations and each random initialization takes 500 iterations. In total, there are 5000 candidate parameter sets.
