@@ -529,7 +529,7 @@ contain diffusion embedding matrices of RSFC gradients.
     
 In the terminal:
 ```
-cd $CBIG_CODE_DIR/stable_projects/brain_parcellation/Kong2022_ArealMSHBM/step3_generate_ind_parcellationstions
+cd $CBIG_CODE_DIR/stable_projects/brain_parcellation/Kong2022_ArealMSHBM/step3_generate_ind_parcellations
 ```
 
 Start Matlab, in Matlab command window, the user need to specify the following inputs:
