@@ -1,4 +1,4 @@
-function [y_p, y_t, acc, pred_stats] = CBIG_KRR_test_cv( bin_flag, kernel_train, kernel_test, ...
+function [y_p, y_t, acc, pred_stats, y_pred_train] = CBIG_KRR_test_cv( bin_flag, kernel_train, kernel_test, ...
     y_resid_train, y_resid_test, y_orig_test, with_bias, lambda, threshold, saving_stats )
 
 % [y_p, y_t, acc] = CBIG_KRR_test_cv( bin_flag, kernel_train, kernel_test, ...
@@ -108,6 +108,10 @@ function [y_p, y_t, acc, pred_stats] = CBIG_KRR_test_cv( bin_flag, kernel_train,
 %     for each metric defined in the input argument saving_stats for each
 %     target variable.
 %
+%   - y_pred_train
+%     Cell arrays (length #TargetVariable) of predicted target variables y of the 
+%     training subjects. It can be used for model interpretation.
+%
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 % Author: Jingwei Li and Ru(by) Kong
 
@@ -147,11 +151,15 @@ if sum(sum(isnan(y_resid_train))) > 0 || sum(sum(isnan(y_resid_test))) >0
             %%%%%%%%%%%%%%%%%%%% Without bias term
             y_out = K_test * alpha{i};
             y_p{i} = y_out;
+            y_pred_train{i} = NaN(length(nan_index),1);
+            y_pred_train{i}(~nan_index) = K * alpha{i};
         else
             %%%%%%%%%%%%%%%%%%%% With bias term
             N_test = size(y_resid_test, 1);
             y_out = K_test * alpha{i} + ones(N_test,1) .* beta{i};
             y_p{i} = y_out;
+            y_pred_train{i} = NaN(length(nan_index),1);
+            y_pred_train{i}(~nan_index) = K * alpha{i} + ones(N,1) .* beta{i};
         end
         y_out = y_out(~isnan(y_resid_test(:,i)));
         
@@ -197,14 +205,17 @@ else
     if(with_bias==0)
         %%%%%%%%%%%%%%%%%%%% Without bias term
         y_out = K_test * alpha;
+        y_train_out = K * alpha;
     else
         %%%%%%%%%%%%%%%%%%%% With bias term
         N_test = size(y_resid_test,1);
         y_out = K_test * alpha + ones(N_test,1) .* beta;
+        y_train_out = K * alpha + ones(N,1) .* beta;
     end
     
     for i = 1:size(y_resid_train,2)
         y_p{i} = y_out(:,i);
+        y_pred_train{i} = y_train_out(:,i);
         if(bin_flag==1)
             y_t{i} = y_orig_test(:,i);
             TP = length(find((y_out(:,i) > threshold) & (y_t{i}==1) == 1));

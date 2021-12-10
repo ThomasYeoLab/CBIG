@@ -185,9 +185,9 @@ if(~exist(fullfile(outdir, ['acc' y_resid_stem '.mat']), 'file'))
             for t = 1:length(threshold_set)
                 threshold = threshold_set(t);
                 fprintf('    threshold: %f\n', threshold)
-                [y_p{k,l,t}, y_t{k,l,t}, acc{k,l,t}, pred_stats{k,l,t}] = CBIG_KRR_test_cv( bin_flag,...
-                    FSM_train, FSM_test, curr_y_resid_train, curr_y_resid_test, curr_y_orig_test,...
-                    with_bias, lambda, threshold, metrics );
+                [y_p{k,l,t}, y_t{k,l,t}, acc{k,l,t}, pred_stats{k,l,t},y_pred_train{k,l,t}] = ...
+                    CBIG_KRR_test_cv( bin_flag, FSM_train, FSM_test, curr_y_resid_train, ...
+                    curr_y_resid_test, curr_y_orig_test, with_bias, lambda, threshold, metrics );
                 clear threshold
             end
             clear lambda
@@ -198,7 +198,7 @@ if(~exist(fullfile(outdir, ['acc' y_resid_stem '.mat']), 'file'))
     if(~exist(outdir, 'dir'))
         mkdir(outdir)
     end
-    save(fullfile(outdir, ['acc' y_resid_stem '.mat']), 'acc', 'y_p', 'y_t', 'pred_stats');
+    save(fullfile(outdir, ['acc' y_resid_stem '.mat']), 'acc', 'y_p', 'y_t', 'pred_stats', 'y_pred_train');
 else
     load(fullfile(outdir, ['acc' y_resid_stem '.mat']))
     if(size(acc,1)~=length(ker_param) || size(acc,2)~=length(lambda_set) || size(acc,3)~=length(threshold_set))

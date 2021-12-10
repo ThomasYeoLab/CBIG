@@ -48,11 +48,11 @@ function CBIG_KRR_workflow( setup_param, save_setup, sub_fold_file, y_file, ...
 %     4. feature_mat
 %        A matrix of the features used as the independent variable in the
 %        prediction. See the description of `feature_file` in the Compulsory
-%	 and Optional Variables section.
+%        and Optional Variables section.
 %     5. num_inner_folds
 %        A scalar, the number of inner-loop cross-validation folds. See the
 %        description of `num_inner_folds` in the Compulsory and Optional
-%	 Variables section.
+%        Variables section.
 %     6. outdir
 %        A string of the output directory. See the description of
 %        `outdir` in the Compulsory and Optional Variables section.
@@ -62,22 +62,25 @@ function CBIG_KRR_workflow( setup_param, save_setup, sub_fold_file, y_file, ...
 %     8. with_bias
 %        A string (choose from '0' or '1') or a scalar (choose from 0 or 1).
 %        See the description of `with_bias` in the Compulsory and Optional 
-%	 Variables section
+%        Variables section
 %     9. ker_param 
 %        A structure of all possible kernel parameters. See the description
 %        of `ker_param_file` in the Compulsory and Optional Variables section
 %     10.lambda_set
 %        A vector of all possible regularization parameters used for grid
 %        search. See the description of `lambda_set_file` in the Compulsory
-%	 and Optional Variables section.
+%        and Optional Variables section.
 %     11.threshold_set
 %        A vector of all possible thresholds to determine the separation
 %        point for binary target variables in the prediction. See the
 %        description of `threshold_set_file` in the Compulsory and 
-%	 Optional Variables section.
+%        Optional Variables section.
 %     12.metric
 %        A string indicating the metric used to define prediction loss. See the
 %        description of `metric` in the Compulsory and Optional Variables section.
+%     13.cov_X
+%        A matrix of the covariates to be regressed from features. See the 
+%        description of `cov_X_file` in the Compulsory and Optional Variables section.
 % 
 %   - save_setup
 %     A string or a scalar of 0 or 1. If the user passed in 1, then a
@@ -226,6 +229,13 @@ function CBIG_KRR_workflow( setup_param, save_setup, sub_fold_file, y_file, ...
 %       'MSE_norm'          - mean squared error divided by the variance
 %                             of the target variable of the training set
 % 
+%   - (..., 'cov_X_file', cov_X_file, ...)
+%     Full path of the file (.mat) storing the covariates which need to be 
+%     regressed from features. This file should contain a matrix named 'cov_X'
+%     with the dimensionality of #subjects x #regressors.
+%     If this option is not used, then 'cov_X' is assumed to be an empty matrix
+%     and no covariate will be regressed from the features.
+%
 % Written by Jingwei Li and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 %% Input arguments
@@ -242,7 +252,7 @@ if(~isempty(setup_param))
 else
     param_field_names = {'sub_fold', 'y','covariates','feature_mat',...
         'num_inner_folds','outdir','outstem', 'with_bias', 'ker_param',...
-        'lambda_set','threshold_set', 'metric'};
+        'lambda_set','threshold_set', 'metric', 'cov_X'};
     compulsory_variable = {'sub_fold_file', 'y_file','covariate_file','feature_file',...
         'num_inner_folds','outdir','outstem'};
     for check_var = 1:length(compulsory_variable)
@@ -261,10 +271,10 @@ else
         end
     end
     pnames = { 'with_bias'  'ker_param_file' 'lambda_set_file' 'threshold_set_file'...
-        'metric'};
-    dflts =  {1 [] [] [] 'predictive_COD'};
+        'metric', 'cov_X_file'};
+    dflts =  {1 [] [] [] 'predictive_COD' []};
     
-    [with_bias, ker_param_file, lambda_set_file, threshold_set_file, metric] ...
+    [with_bias, ker_param_file, lambda_set_file, threshold_set_file, metric, cov_X_file] ...
     = internal.stats.parseArgs(pnames, dflts, varargin{:});
     
     param.(param_field_names{8}) = with_bias;
@@ -300,6 +310,15 @@ else
     end
     
     param.(param_field_names{12}) = metric;
+
+    if isempty(cov_X_file)
+        param.(param_field_names{13}) = [];
+    else
+        currvar = load(cov_X_file);
+        names = fieldnames(currvar);
+        currname = names{1};
+        param.(param_field_names{13}) = currvar.(currname);
+    end
     
     if(save_setup==1 || strcmp(save_setup, '1'))
         stem = param.outstem;
@@ -335,7 +354,7 @@ CBIG_crossvalid_regress_covariates_from_y( ...
 
 %% step 2. Generate kernels
 fprintf('# Step 2: generate kernels.\n')
-CBIG_KRR_generate_kernels( param.feature_mat, param.sub_fold, param.outdir, param.ker_param )
+CBIG_KRR_generate_kernels( param.feature_mat, param.sub_fold, param.outdir, param.ker_param, [], param.cov_X )
 
 %% step 3. Inner-loop cross-validation
 fprintf('# Step 3: inner-loop cross-validation.\n')

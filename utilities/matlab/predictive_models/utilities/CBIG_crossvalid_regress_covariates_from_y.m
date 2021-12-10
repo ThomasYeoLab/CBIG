@@ -73,7 +73,9 @@ for test_fold = 1:num_test_folds
     if(~exist(outname, 'file'))
         if(ischar(regressors) && strcmpi(regressors, 'none'))
             y_resid = y_orig;
+            beta = [];
         else
+            beta = zeros(size(regressors,2)+1, size(y_in,2));
             for i = 1:size(y_in, 2)
                 train_ind = sub_fold(test_fold).fold_index==0;
                 test_ind = sub_fold(test_fold).fold_index==1;
@@ -86,8 +88,8 @@ for test_fold = 1:num_test_folds
                     X_test = regressors(test_ind,:);
                 end
                 
-                [y_resid(train_ind,i), beta] = CBIG_regress_X_from_y_train(y_in(train_ind,i), X_train);
-                y_resid(test_ind,i) = CBIG_regress_X_from_y_test(y_in(test_ind,i), X_test, beta);
+                [y_resid(train_ind,i), beta(:,i)] = CBIG_regress_X_from_y_train(y_in(train_ind,i), X_train);
+                y_resid(test_ind,i) = CBIG_regress_X_from_y_test(y_in(test_ind,i), X_test, beta(:,i));
                 
                 if(num_test_folds==1)
                     valid_ind = sub_fold(test_fold).fold_index==2;
@@ -96,12 +98,12 @@ for test_fold = 1:num_test_folds
                     else
                         X_valid = regressors(valid_ind,:);
                     end
-                    y_resid(valid_ind,i) = CBIG_regress_X_from_y_test(y_in(valid_ind,i), X_valid, beta);
+                    y_resid(valid_ind,i) = CBIG_regress_X_from_y_test(y_in(valid_ind,i), X_valid, beta(:,i));
                 end
             end
         end
         
-        save(outname, 'y_resid', 'y_orig');
+        save(outname, 'y_resid', 'y_orig', 'beta');
     else
         fprintf('Already exist. Skipping ...\n')
         load(outname)

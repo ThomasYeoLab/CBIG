@@ -32,7 +32,7 @@ function [y_hat, beta] = CBIG_regress_X_from_y_train(y, X)
 
 
 % check y in case there is nan
-nan_index_y = isnan(y);
+nan_index_y = isnan(sum(y,2));
 % check X in case there is nan, exclude this subject for all covariates
 nan_index_X = isnan(sum(X,2));
 
@@ -46,7 +46,7 @@ end
 y_hat = y;
 y_hat(nan_index,:) = NaN;
 
-y(nan_index) = [];
+y(nan_index, :) = [];
 if(~isempty(X))
     X(nan_index,:) = [];
 end
@@ -65,6 +65,6 @@ X = [ones(size(y,1),1) X];
 %  beta = ( X' * X )^-1 * X' * y
 %  Px1  =  PxN  NxP      PxN  Nx1
 beta = (X'*X)\(X'*y);
-y_hat(~isnan(y_hat)) = y - X*beta;
+y_hat(~nan_index,:) = y - X*beta;
 
 end

@@ -160,6 +160,7 @@ for test_fold = 1:num_test_folds
                 lambda_idx, threshold_idx}(metric_ind,i);
         end
         y_predict{test_fold}(:,i) = testloop.y_p{FSM_idx, lambda_idx, threshold_idx}{i};
+        y_pred_train{test_fold}(:,i) = testloop.y_pred_train{FSM_idx, lambda_idx, threshold_idx}{i};
         if(num_test_folds==1)
             y_predict_concat(:,i) = testloop.y_p{FSM_idx, lambda_idx, threshold_idx}{i};
         else
@@ -170,7 +171,7 @@ for test_fold = 1:num_test_folds
 end
 
 save(fullfile(data_dir, ['final_result' stem '.mat']), 'y_predict_concat', 'optimal_kernel', ...
-    'optimal_lambda', 'optimal_threshold', 'optimal_acc', 'optimal_stats')
+    'optimal_lambda', 'optimal_threshold', 'optimal_acc', 'optimal_stats', 'y_pred_train')
 
 
 end

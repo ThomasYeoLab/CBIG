@@ -330,6 +330,7 @@ You can check the output folder structure in this directory: `$CBIG_CODE_DIR/sta
 - Release v0.14.1 (03/09/2019): Optimized the speed of kernel regression scripts.
 - Release v0.15.3 (16/10/2019): add references; add LITE version of kernel regression code
 - Release v0.15.4 (05/11/2019): change default lambda set; add hyperparameter-tuning metric
+- Release v0.21.2 (09/12/2021): Add functionality to regress covariates from features within cross-validation stream.
 
 ## Bugs and questions
 Please contact Jingwei Li at jingweili.sjtu.nus@gmail.com and Ru(by) Kong at roo.cone@gmail.com.
