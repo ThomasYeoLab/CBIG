@@ -100,25 +100,27 @@ Except for this project, if you want to use the code for other stable projects f
 
 To download the version of the code that is last tested, you can either
 
-- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.20.1-Reorganize_Schaefer2018_Parcellation](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.20.1-Reorganize_Schaefer2018_Parcellation)
+- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.21.3-Reorganize_Schaefer2018_Parcellation](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.21.3-Reorganize_Schaefer2018_Parcellation)
 
 or
 
 - run the following command, if you have Git installed
 
 ```
-git checkout -b Reorganize_Schaefer2018_Parcellation v0.20.1-Reorganize_Schaefer2018_Parcellation
+git checkout -b Reorganize_Schaefer2018_Parcellation v0.21.3-Reorganize_Schaefer2018_Parcellation
 ```
 
 ---
 
 Updates
 =======
-- Release v0.20.1 (17/1/2022)
+- Release v0.21.3 (17/1/2022)
  
     1. Reorganize folder structure for Schaefer parcellation with Kong2022 17-network order.
     
     2. Modify path pointing to Schaefer parcellation with Kong2022 17-network order.
+
+    3. Add full name table for ROI name abbreviations.
 
 - Release v0.20.0 (31/5/2021)
  

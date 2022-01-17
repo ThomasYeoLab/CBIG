@@ -101,14 +101,14 @@ We provide pre-computed group priors of dMSHBM/cMSHBM/gMSHBM initializated by 10
 
 To download the version of the code that is last tested, you can either
 
-- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.20.1-Reorganize_Schaefer2018_Parcellation](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.20.1-Reorganize_Schaefer2018_Parcellation)
+- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.21.3-Reorganize_Schaefer2018_Parcellation](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.21.3-Reorganize_Schaefer2018_Parcellation)
 
 or
 
 - run the following command, if you have Git installed
 
 ```
-git checkout -b v0_20_1_Reorganize_Schaefer2018_Parcellation v0.20.1-Reorganize_Schaefer2018_Parcellation
+git checkout -b Reorganize_Schaefer2018_Parcellation v0.21.3-Reorganize_Schaefer2018_Parcellation
 ```
 
 ----
@@ -576,7 +576,7 @@ The generated individual parcellations will be saved under:
 
 Updates
 =======
-- Release v0.20.1 (17/1/2022)
+- Release v0.21.3 (17/1/2022)
  
     1. Reorganize folder structure for Schaefer parcellation with Kong2022 17-network order.
     
