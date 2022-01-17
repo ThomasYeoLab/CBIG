@@ -406,61 +406,53 @@ while(stop_em == 0)
     
     %% Estep
     fprintf('Estep..\n');
+        
+    stop_lambda = 0;
+    checklam = 0;
+    lambda_iter = 0;
+    while stop_lambda == 0
+        lambda_iter = lambda_iter+1;
+        log_vmf = permute(Params.s_t_nu,[1,2,4,3]);
+        log_vmf = mtimesx(data.series,log_vmf);%NxLxSxT
+        log_vmf = bsxfun(@times,permute(log_vmf,[2,1,3,4]),transpose(Params.kappa));%LxNxSxT
+        log_vmf(:,sum(log_vmf==0,1)==0)=bsxfun(@plus,Cdln(transpose(Params.kappa),setting_params.dim), ...
+                                        log_vmf(:,sum(log_vmf==0,1)==0));%LxNxSxT
+        log_vmf = sum(log_vmf,4);%NxLxS
+        idx = sum(log_vmf==0,1)~=0;
 
-    stop_comp2 = 0;
-    comp_iter2 = 0;
-    while stop_comp2 == 0
+        tmp_lambda = Params.s_lambda(sum(Params.theta,2)~=0,:);
+        %Speed up V_lambda_Product
+        V_lambda = CBIG_ArealMSHBM_V_lambda_Product_with_theta(setting_params.neighborhood,...
+                setting_params.V_same,...
+                setting_params.V_diff,...
+                double(tmp_lambda),...
+                setting_params.row_idx,...
+                setting_params.col_idx);        
+        V_temp = zeros(size(Params.s_lambda));
+        V_temp(sum(Params.theta,2)~=0,:) = V_lambda;
+        log_vmf = bsxfun(@plus,permute(log_vmf,[2,1,3]),setting_params.w*log(Params.theta)-...
+            2*setting_params.c*V_temp);
         
-        comp_iter2 = comp_iter2 + 1;
+        s_lambda = bsxfun(@minus,log_vmf,max(log_vmf,[],2));
+        s_lambda = exp(s_lambda);
+        s_lambda = bsxfun(@times, s_lambda, boundary_mask);
+        update_s_lambda = bsxfun(@rdivide,s_lambda,sum(s_lambda,2));
+    
+        mask_nan = repmat((isnan(sum(update_s_lambda,2))),1,setting_params.num_clusters,1);
+        update_s_lambda(mask_nan) = 0;
+        update_s_lambda = permute(update_s_lambda,[2,1,3]);
+        update_s_lambda(:,idx) = 0;
+        update_s_lambda = permute(update_s_lambda,[2,1,3]);
         
-        stop_lambda = 0;
-        checklam = 0;
-        lambda_iter = 0;
-        while stop_lambda == 0
-            lambda_iter = lambda_iter+1;
-            log_vmf = permute(Params.s_t_nu,[1,2,4,3]);
-            log_vmf = mtimesx(data.series,log_vmf);%NxLxSxT
-            log_vmf = bsxfun(@times,permute(log_vmf,[2,1,3,4]),transpose(Params.kappa));%LxNxSxT
-            log_vmf(:,sum(log_vmf==0,1)==0)=bsxfun(@plus,Cdln(transpose(Params.kappa),setting_params.dim), ...
-                                            log_vmf(:,sum(log_vmf==0,1)==0));%LxNxSxT
-            log_vmf = sum(log_vmf,4);%NxLxS
-            idx = sum(log_vmf==0,1)~=0;
-
-            tmp_lambda = Params.s_lambda(sum(Params.theta,2)~=0,:);
-            %Speed up V_lambda_Product
-            V_lambda = CBIG_ArealMSHBM_V_lambda_Product_with_theta(setting_params.neighborhood,...
-                    setting_params.V_same,...
-                    setting_params.V_diff,...
-                    double(tmp_lambda),...
-                    setting_params.row_idx,...
-                    setting_params.col_idx);        
-            V_temp = zeros(size(Params.s_lambda));
-            V_temp(sum(Params.theta,2)~=0,:) = V_lambda;
-            log_vmf = bsxfun(@plus,permute(log_vmf,[2,1,3]),setting_params.w*log(Params.theta)-...
-                2*setting_params.c*V_temp);
-            
-            s_lambda = bsxfun(@minus,log_vmf,max(log_vmf,[],2));
-            s_lambda = exp(s_lambda);
-            s_lambda = bsxfun(@times, s_lambda, boundary_mask);
-            update_s_lambda = bsxfun(@rdivide,s_lambda,sum(s_lambda,2));
-        
-            mask_nan = repmat((isnan(sum(update_s_lambda,2))),1,setting_params.num_clusters,1);
-            update_s_lambda(mask_nan) = 0;
-            update_s_lambda = permute(update_s_lambda,[2,1,3]);
-            update_s_lambda(:,idx) = 0;
-            update_s_lambda = permute(update_s_lambda,[2,1,3]);
-            
-            checklam_update = mean(mean(abs(update_s_lambda-Params.s_lambda)));
-            Params.s_lambda = update_s_lambda;
-            if(abs(checklam_update-checklam) <= setting_params.epsilon)
-                stop_lambda = 1;
-            end
-            checklam = checklam_update;
-            if(lambda_iter > 50)
-                stop_lambda = 1;
-                warning('lambda can not converge');
-            end
-            
+        checklam_update = mean(mean(abs(update_s_lambda-Params.s_lambda)));
+        Params.s_lambda = update_s_lambda;
+        if(abs(checklam_update-checklam) <= setting_params.epsilon)
+            stop_lambda = 1;
+        end
+        checklam = checklam_update;
+        if(lambda_iter > 50)
+            stop_lambda = 1;
+            warning('lambda can not converge');
         end
     end    
 

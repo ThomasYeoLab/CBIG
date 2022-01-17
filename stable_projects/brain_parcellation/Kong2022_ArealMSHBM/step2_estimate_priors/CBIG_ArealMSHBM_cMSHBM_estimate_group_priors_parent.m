@@ -743,13 +743,6 @@ end
 
 function fetch_data(project_dir, num_session, num_sub, mesh, tmp_dir)
 
-% read in gradient
-lh_data_gradient = fullfile(project_dir, 'gradient_list', 'training_set', ['gradient_list_lh.txt']);
-rh_data_gradient = fullfile(project_dir, 'gradient_list', 'training_set', ['gradient_list_rh.txt']);
-lh_gradient_name = table2cell(readtable(lh_data_gradient, 'Delimiter', ' ', 'ReadVariableNames', false));
-rh_gradient_name = table2cell(readtable(rh_data_gradient, 'Delimiter', ' ', 'ReadVariableNames', false));
-
-
 % read in input functional connectivity profiles
 if(~isempty(strfind(mesh,'fs_LR_32k')))
     for t = 1:num_session
@@ -760,13 +753,10 @@ if(~isempty(strfind(mesh,'fs_LR_32k')))
             fprintf('Session %d...It is subj %d...\n',t,i);
             avg_file = profile_name{i,1};
             profile_list{i,t} = avg_file;
-
-            lh_gradient_list{i,t} = lh_gradient_name{i,1};
-            rh_gradient_list{i,t} = rh_gradient_name{i,1};
         end
 
     end
-    save(fullfile(tmp_dir,'all_sub_profile_list.mat'),'profile_list','lh_gradient_list','rh_gradient_list');
+    save(fullfile(tmp_dir,'all_sub_profile_list.mat'),'profile_list');
 
 elseif(~isempty(strfind(mesh,'fsaverage')))
     for t = 1:num_session
@@ -782,13 +772,10 @@ elseif(~isempty(strfind(mesh,'fsaverage')))
             rh_avg_file=rh_profile_name{i,1};
             rh_profile_list{i,t} = rh_avg_file;
 
-            lh_gradient_list{i,t} = lh_gradient_name{i,1};
-            rh_gradient_list{i,t} = rh_gradient_name{i,1};
         end
 
     end
-    save([tmp_dir '/all_sub_profile_list.mat'],'lh_profile_list','rh_profile_list','lh_gradient_list',...
-        'rh_gradient_list');
+    save([tmp_dir '/all_sub_profile_list.mat'],'lh_profile_list','rh_profile_list');
 end
 
 end
