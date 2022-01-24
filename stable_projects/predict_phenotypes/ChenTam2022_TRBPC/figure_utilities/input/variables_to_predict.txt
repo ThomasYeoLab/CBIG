@@ -1,0 +1,36 @@
+anxious depressed
+withdrawn depressed
+somatic complaints
+social problems
+thought problems
+attention problems
+rulebreaking behavior
+aggressive behavior
+vocabulary
+attention
+working memory
+executive function
+processing speed
+episodic memory
+reading
+fluid cognition
+crystallized cognition
+overall cognition
+negative urgency
+lack of planning
+sensation seeking
+positive urgency
+lack perseverance
+behavioral inhibition
+reward responsiveness
+drive
+fun seeking
+total psychosis symptoms
+psychosis severity
+mania severity
+short delay recall
+long delay recall
+fluid intelligence
+visuospatial accuracy
+visuospatial reaction time
+visuospatial efficiency

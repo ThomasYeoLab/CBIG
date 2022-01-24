@@ -1,0 +1,31 @@
+vocabulary
+working memory
+reading
+crystallized cognition
+attention
+overall cognition
+executive function
+fluid cognition
+processing speed
+episodic memory
+short delay recall
+long delay recall
+fluid intelligence
+visuospatial accuracy
+visuospatial efficiency
+visuospatial reaction time
+lack of planning
+sensation seeking
+lack perseverance
+negative urgency
+positive urgency
+behavioral inhibition
+fun seeking
+reward responsiveness
+drive
+total psychosis symptoms
+psychosis severity
+thought problems
+attention problems
+anxious depressed
+social problems
