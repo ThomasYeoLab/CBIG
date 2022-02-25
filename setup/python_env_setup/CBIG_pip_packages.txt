@@ -1,6 +1,0 @@
-prov==1.4.0
-xvfbwrapper==0.2.8
-pydicom==0.9.9
-nibabel==2.0.2
-nipy==0.4.0
-nilearn==0.2.5.1

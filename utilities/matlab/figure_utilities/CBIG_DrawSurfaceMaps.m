@@ -19,10 +19,6 @@ function h = CBIG_DrawSurfaceMaps(lh_data, rh_data, ...
 %       Freesurfer surface template. Can be 'inflated', 'sphere', or
 %       'white'.
 %
-%      -data_type:
-%       Can be 'label' or 'metric', 'label' type is discrete parcellation
-%       labels while 'metric' type can be continuous value.
-%
 %      -min_thresh, max_thresh:
 %       min and max threshold for lh_data and rh_data. If they are not
 %       given, then there is no threshold.
@@ -211,7 +207,7 @@ for x = 1: length(cdat)
     for y = 1
         c = cdat(x, y);
         idxf(x, y) = ((c - cl(1)) / sz) * (size(m, 1) - 1);
-        ncd(x, y, 1: 3) = m(floor(idxf(x, y)) + 1, :);
+        ncd(x, y, 1: 3) = m(round(idxf(x, y)) + 1, :);
     end
 end
 end

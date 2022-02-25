@@ -233,7 +233,7 @@ for x = 1: length(cdat)
     for y = 1
         c = cdat(x, y);
         idxf(x, y) = ((c - cl(1)) / sz) * (size(m, 1) - 1);
-        ncd(x, y, 1: 3) = m(floor(idxf(x, y)) + 1, :);
+        ncd(x, y, 1: 3) = m(round(idxf(x, y)) + 1, :);
     end
 end
 end

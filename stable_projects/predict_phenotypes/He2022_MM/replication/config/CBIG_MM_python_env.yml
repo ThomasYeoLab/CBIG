@@ -1,0 +1,54 @@
+name: CBIG_He2022
+channels:
+  - https://repo.continuum.io/pkgs/free
+  - conda-forge
+  - conda-forge/label/broken
+  - pytorch
+  - defaults
+dependencies:
+  - blas=1.0
+  - cuda80=1.0
+  - cudatoolkit=8.0
+  - cudnn=6.0.21=cuda8.0_0
+  - expat=2.4.1
+  - freetype=2.10.4
+  - gstreamer=1.14.0
+  - intel-openmp=2019.0
+  - libgcc-ng=8.2.0
+  - libpng=1.6.37
+  - libstdcxx-ng=8.2.0
+  - matplotlib=3.3.4
+  - matplotlib-base=3.3.4
+  - numpy=1.19.2
+  - numpy-base=1.19.2
+  - openssl=1.1.1k
+  - pandas=1.1.5
+  - patsy=0.5.1
+  - pip=19.0.3
+  - python=3.6.13
+  - pytorch=0.4.0
+  - readline=8.1
+  - scipy=1.5.2
+  - seaborn=0.11.1
+  - six=1.11.0
+  - sqlite=3.36.0
+  - statsmodels=0.12.2
+  - tk=8.6.10
+  - yapf=0.31.0
+  - pip:
+    - bleach==1.5.0
+    - cython==0.29
+    - enum34==1.1.6
+    - html5lib==0.9999999
+    - keras==2.1.0
+    - markdown==3.0.1
+    - nibabel==2.4.0
+    - nilearn==0.5.1
+    - protobuf==3.6.1
+    - pyyaml==3.13
+    - scikit-learn==0.20.3
+    - sklearn==0.0
+    - tensorflow-gpu==1.4.0
+    - tensorflow-tensorboard==0.4.0
+    - werkzeug==0.14.1
+prefix: /home/the/miniconda3/envs/CBIG_He2022
