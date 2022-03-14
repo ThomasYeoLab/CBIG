@@ -245,7 +245,7 @@ for currfold = 1:length(params.sub_fold)
         end
         feat_test = feature_test;
         if ndims(feat_test) == 3
-            feat_test = reshape_3D_features(feat_test)
+            feat_test = reshape_3D_features(feat_test);
         end
     else
         [feat_train, feat_test] = CBIG_FC_FeatSel( feature_train, feature_test, y_train, curr_threshold );

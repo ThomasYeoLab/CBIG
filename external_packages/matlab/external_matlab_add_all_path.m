@@ -64,3 +64,8 @@ path_to_add = fullfile(ext_default_path, 'WashU_gradients');
 if(exist(path_to_add, 'dir'))
    addpath(genpath(path_to_add)); 
 end
+
+path_to_add = fullfile(ext_default_path, 'FDR');
+if(exist(path_to_add, 'dir'))
+   addpath(genpath(path_to_add)); 
+end

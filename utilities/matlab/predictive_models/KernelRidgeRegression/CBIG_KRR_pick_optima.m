@@ -103,6 +103,19 @@ function [optimal_acc, optimal_kernel, optimal_lambda, optimal_threshold] = ...
 %     A #TestFolds x #TargetVariable vector of optimal threshold for the
 %     case of bin_flag == 1 of each test fold and each measure to predict.
 %     If bin_flag == 0, then every entry of optimal_threshold is NaN.
+%
+%   - y_predict_concat (saved in final result mat file)
+%     A #TotalSubjects x #TargetVariable matrix of the predicted target variable for 
+%     each subject.
+%
+%   - optimal_stats (saved in final result mat file)
+%     A struct containing a #TestFolds x #TargetVariable matrix containing the 
+%     prediction for each possible accuracy metric (eg. corr, MAE, etc).
+%
+%   - y_pred_train (saved in final result mat file)
+%     A cell array of size equal to #TestFolds. Each cell contains a matrix of size
+%     #TrainingSubjects x #TargetVariable element of the predicted target variable 
+%     for the training subjects of each fold.
 %     
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 % Author: Jingwei Li and Ru(by) Kong

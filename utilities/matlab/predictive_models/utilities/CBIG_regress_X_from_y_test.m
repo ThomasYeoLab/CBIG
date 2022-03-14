@@ -1,6 +1,6 @@
-function y_hat = CBIG_regress_X_from_y_test(y, X, beta)
+function y_hat = CBIG_regress_X_from_y_test(y, X, beta, X_train_mean)
 
-% y_hat = CBIG_regress_X_from_y_test(y, X, beta)
+% y_hat = CBIG_regress_X_from_y_test(y, X, beta, X_train_mean)
 % 
 % This function applies the regression coefficients "beta" generated from
 % the training set (see CBIG_regress_X_from_y_train.m) to regress the
@@ -21,6 +21,10 @@ function y_hat = CBIG_regress_X_from_y_test(y, X, beta)
 %     A #covariates x 1 vector of regression coefficients used to regress
 %     the training set target variables. It is derived from the output of
 %     "CBIG_regress_X_from_y_train".
+%
+%   - X_train_mean
+%     A #covariates x 1 vector of the mean value of each covariate calculated
+%     from the training set. 
 % 
 % Outputs:
 %   - y_hat
@@ -51,7 +55,7 @@ if(~isempty(X))
 end
 
 % demean nusiance regressors
-X = bsxfun(@minus, X, mean(X));
+X = bsxfun(@minus, X, X_train_mean);
 
 % Add bias term for X
 

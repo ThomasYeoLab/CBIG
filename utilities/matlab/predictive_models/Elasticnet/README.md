@@ -89,11 +89,9 @@ The accuracies for the test folds are saved in `optimal_acc` under `<outstem>_fi
 ----
 ## Updates
 
-- Release vx.x.x (date): Initial release of Elasticnet regression package
+- Release v0.22.1 (08/03/2022): Fix bug in regressing covariates in functions calling `CBIG_regress_X_from_y_test.m`.
+- Release v0.17.3 (13/01/2021): Initial release of Elasticnet regression package
 
 ----
 ## Bugs and questions
 Please contact Leon Ooi at leonooiqr@gmail.com.
-
-
-

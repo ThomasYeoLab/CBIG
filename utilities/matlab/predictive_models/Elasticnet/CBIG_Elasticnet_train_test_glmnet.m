@@ -1,4 +1,4 @@
-function [acc_corr, y_predict, optimal_stats] = ...
+function [acc_corr, y_predict, y_pred_train, optimal_stats] = ...
     CBIG_Elasticnet_train_test_glmnet( feat_train, feat_test, y_train, y_test, ...
     alpha, lambda)
  
@@ -61,6 +61,10 @@ function [acc_corr, y_predict, optimal_stats] = ...
 %   - y_predict:
 %     A vector. It is the predicted values of the test set using the model
 %     fitted from the training set.
+%   - y_pred_train:
+%     A vector. It is the predicted values of the training set using the model
+%     fitted from the training set. It can be used for model
+%     interpretation.
 %   - optimal_stats:
 %     A struct with 7 fields (one for each test statistic, see above). 
 %     Each field contans a scalar of the test statistic accuracy.
@@ -87,6 +91,7 @@ fit=glmnet(feat_train,y_train, [], opts);
 
 %% testing
 y_predict = glmnetPredict(fit, feat_test);
+y_pred_train = glmnetPredict(fit, feat_train);
 
 % Print warning standard deviation of prediction is close to 0
 if std(y_predict) < 2e-10

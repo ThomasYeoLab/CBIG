@@ -228,6 +228,45 @@ function CBIG_KRR_workflow_LITE( setup_param, save_setup, sub_fold_file, y_file,
 %       'MSE_norm'          - mean squared error divided by the variance
 %                             of the target variable of the traning set
 % 
+%  Outputs:
+%   Three subfolds and one file will be generated in the output directory: 
+%   'y', 'innerloop_cv', 'test_cv', 'final_result_<outstem>.mat'.
+%
+%    In 'y', this folder contains the original y values and the y values 
+%            after the covariates have been regressed for each fold.
+% 
+%    In 'innerloop_cv', this folder contains the accuracy, loss and predicted 
+%            y value for each lambda value for the innerloop. The results 
+%            are saved in a separate mat file for each fold.
+% 
+%    In 'test_cv', this folder contains the accuracy, loss and predicted y 
+%            value for each lambda value for the outerloop. The results are 
+%            saved in a separate mat file for each fold.
+%
+%   In 'final_result_<outstem>.mat', it contains final accuracies for the test 
+%            folds. A mat file with the following fields are generated:   
+%   - optimal_acc 
+%     Test accuracy for each fold (given in correlation).
+% 
+%   - optimal_kernel 
+%     A #outerfolds x #behaviors struct containing the kernel type selected 
+%     for each test fold.
+% 
+%   - optimal_lambda 
+%     A #outerfolds x #behaviors matrix containing lambda selected for each 
+%     test fold.
+% 
+%   - optimal_threshold 
+%     A #outerfolds x #behaviors matrix containing the threshold selected 
+%     for each test fold.
+% 
+%   - y_predict_concat 
+%     A #subjects x #behaviors matrix of predicted target values.
+% 
+%   - optimal_stats 
+%     A cell array storing the accuracies of each possible accuracy metric 
+%     (eg. corr, MAE, etc). Each cell array is #outerfolds x #behaviors.
+%
 % Written by Jingwei Li and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 %% Input arguments

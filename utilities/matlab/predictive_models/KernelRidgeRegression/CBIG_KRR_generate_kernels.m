@@ -92,7 +92,7 @@ function CBIG_KRR_generate_kernels( feature_mat, sub_fold, outdir, ker_param, si
 %     folder for the test phase. (Training subjects at first, then followed
 %     by test subjects.)
 % 
-% Written by Jingwei Li, Ru(by) Kong and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+% Written by Jingwei, Ru(by) and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 % If feature_mat is a connectivity matrix, extract the lower triangular
 % entries and construct feature_mat as a #features x #subjects matrix.
@@ -128,12 +128,13 @@ if(num_test_folds == 1)
     if(~exist(curr_outdir, 'dir')); mkdir(curr_outdir); end
     if(exist('cov_X', 'var') && ~isempty(cov_X))
         fprintf('Regress covariates from features\n')
+        cov_X_train_mean = mean(cov_X(train_ind, :));
         [feature_resid(train_ind, :), beta] = CBIG_regress_X_from_y_train(...
             feature_mat(:, train_ind)', cov_X(train_ind, :));
         feature_resid(valid_ind, :) = CBIG_regress_X_from_y_test(...
-            feature_mat(:, valid_ind)', cov_X(valid_ind, :), beta);
+            feature_mat(:, valid_ind)', cov_X(valid_ind, :), beta, cov_X_train_mean);
         feature_resid(test_ind, :) = CBIG_regress_X_from_y_test(...
-            feature_mat(:, test_ind)', cov_X(test_ind, :), beta);
+            feature_mat(:, test_ind)', cov_X(test_ind, :), beta, cov_X_train_mean);
 
         feature_mat = feature_resid';
         clear feature_resid
@@ -192,10 +193,11 @@ else
         if(~exist(curr_outdir, 'dir')); mkdir(curr_outdir); end
         if(exist('cov_X', 'var') && ~isempty(cov_X))
             fprintf('Fold %d, regress covariates from features\n', test_fold)
+            cov_X_train_mean = mean(cov_X(train_ind, :));
             [feature_resid(train_ind, :), beta] = CBIG_regress_X_from_y_train(...
                 feature_mat(:, train_ind)', cov_X(train_ind, :));
             feature_resid(test_ind, :) = CBIG_regress_X_from_y_test(...
-                feature_mat(:, test_ind)', cov_X(test_ind, :), beta);
+                feature_mat(:, test_ind)', cov_X(test_ind, :), beta, cov_X_train_mean);
 
             feature_mat = feature_resid';
             clear feature_resid

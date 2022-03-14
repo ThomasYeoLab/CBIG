@@ -83,13 +83,17 @@ for test_fold = 1:num_test_folds
                 if(isempty(regressors))
                     X_train = [];
                     X_test = [];
+                    X_train_mean = [];
                 else
                     X_train = regressors(train_ind,:);
+                    X_train_mean = mean(X_train);
                     X_test = regressors(test_ind,:);
                 end
                 
-                [y_resid(train_ind,i), beta(:,i)] = CBIG_regress_X_from_y_train(y_in(train_ind,i), X_train);
-                y_resid(test_ind,i) = CBIG_regress_X_from_y_test(y_in(test_ind,i), X_test, beta(:,i));
+                [y_resid(train_ind,i), beta(:,i)] = ...
+                    CBIG_regress_X_from_y_train(y_in(train_ind,i), X_train);
+                y_resid(test_ind,i) = ...
+                    CBIG_regress_X_from_y_test(y_in(test_ind,i), X_test, beta(:,i), X_train_mean);
                 
                 if(num_test_folds==1)
                     valid_ind = sub_fold(test_fold).fold_index==2;
@@ -98,7 +102,8 @@ for test_fold = 1:num_test_folds
                     else
                         X_valid = regressors(valid_ind,:);
                     end
-                    y_resid(valid_ind,i) = CBIG_regress_X_from_y_test(y_in(valid_ind,i), X_valid, beta(:,i));
+                    y_resid(valid_ind,i) = CBIG_regress_X_from_y_test(y_in(valid_ind,i), X_valid, ...
+                        beta(:,i), X_train_mean);
                 end
             end
         end

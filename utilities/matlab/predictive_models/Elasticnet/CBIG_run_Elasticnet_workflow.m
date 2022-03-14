@@ -2,13 +2,9 @@ function CBIG_run_Elasticnet_workflow(params)
 
 % This function uses glmnet to perform an elastic-net regression and is
 % adapted from CBIG_LRR_workflow_1measure from the CBIG_repo. There are
-% 3 parameters that are optimised for elasticnet, lambda (the
-% regularisation parameter), alpha (the ratio of L1 to L2 regularisation),
-% and feature selection (the proportion of total features used for
-% prediction). Alpha and the feature selection parameter is optimized using
-% a Gaussian process. Lambda is optimized by choosing the best prediction
-% in a given set of lambda using a set value of alpha and feature
-% selection from the Gaussian process.
+% 2 parameters that are optimised for elasticnet: lambda (the
+% regularisation parameter) and alpha (the ratio of L1 to L2 regularisation). 
+% The two parameters are optimized using grid search.
 % 
 % Inputs:
 %   params is a struct containing the following fields:
@@ -105,6 +101,9 @@ function CBIG_run_Elasticnet_workflow(params)
 %   - y_predict 
 %     Predicted target values.
 %
+%   - y_pred_train
+%     Predicted target values of training subjects.
+%
 %   - optimal_statistics 
 %     A cell array of size equal to the number of folds. Each 
 %     element in the cell array is a structure storing the accuracies 
@@ -165,6 +164,7 @@ CBIG_crossvalid_regress_covariates_from_y( ...
 fprintf('# step 2: optimize elasticnet regression model and predict target measure.\n')
 
 y_predict = cell(length(params.sub_fold), 1);
+y_pred_train = cell(length(params.sub_fold), 1);
 acc_corr_test = zeros(length(params.sub_fold), 1);
 param_dir = fullfile(params.outdir, params.split_name, '/params');
 alpha_set = params.alpha;
@@ -242,8 +242,8 @@ for currfold = 1:length(params.sub_fold)
     %% step 3. Find outer-loop CV test accuracy
     fprintf('Test fold %d:\n', currfold);
 
-    [acc_corr, y_predict{currfold}, optimal_statistics{currfold}] = CBIG_Elasticnet_train_test_glmnet( ...
-        feat_train', feat_test', y_train, y_test, curr_alpha, curr_lambda);
+    [acc_corr, y_predict{currfold}, y_pred_train{currfold}, optimal_statistics{currfold}] = ...
+        CBIG_Elasticnet_train_test_glmnet(feat_train', feat_test', y_train, y_test, curr_alpha, curr_lambda);
     acc_corr_test(currfold, 1) = acc_corr;
 
     clear acc_corr
@@ -254,7 +254,7 @@ end
 opt_out = fullfile(params.outdir, params.split_name, ...
      'optimal_acc', [params.outstem '_final_acc.mat']);
 mkdir(fullfile(params.outdir, params.split_name, 'optimal_acc'))
-save(opt_out, 'acc_metric_train', 'acc_corr_test', 'optimal_statistics','y_predict')
+save(opt_out, 'acc_metric_train', 'acc_corr_test', 'optimal_statistics','y_predict','y_pred_train')
 fprintf('Finished!\n')
 
 rmpath(params.glmnet_dir)

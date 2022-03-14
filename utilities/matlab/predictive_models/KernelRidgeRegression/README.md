@@ -1,7 +1,7 @@
 # Kernel Ridge Regression
 
 ## References
-+ Li J, Kong R, Liegeois R, Orban C, Tan Y, Sun N, Holmes AJ, Sabuncu MR, Ge T, Yeo BTT, [**Global signal regression strengthens association between resting-state functional connectivity and behavior**](https://doi.org/10.1016/j.neuroimage.2019.04.016), Neuroimage, 2019, 196:126-141
++ Li J, Kong R, Liegeois R, Orban C, Tan Y, Sun N, Holmes AJ, Sabuncu MR, Ge T, Yeo BTT, [Global signal regression strengthens association between resting-state functional connectivity and behavior](https://doi.org/10.1016/j.neuroimage.2019.04.016), Neuroimage, 2019, 196:126-141
 + Kong R, Li J, Orban C, et al. [Spatial Topography of Individual-Specific Cortical Networks Predicts Human Cognition, Personality, and Emotion](https://academic.oup.com/cercor/article/29/6/2533/5033556). Cerebral Cortex, 29(6):2533-2551, 2019
 
 ---
@@ -27,7 +27,7 @@ Steps of this stream:
 
 ### How to use the scripts
 
-There are two sets of scripts you can use. The top-level wrapper functions of each set are `CBIG_KRR_workflow.m` and `CBIG_KRR_workflow_LITE.m` respectively. The usages of these two wrapper functions are the same. Therefore, the following sections will only discuss about `CBIG_KRR_workflow.m`. The functionality of these two sets of scripts (with or without `LITE` appendix) are slightly different. When `CBIG_KRR_workflow.m` is used, the functional similarity matrices for each fold are saved. If the user chooses Gaussian or exponential kernel, the mean and standard deviation of features are computed from the training subjects and applied on the test subjects for each fold. However, when `CBIG_KRR_workflow_LITE.m` is used, the functional simlarity matrix is only computed and saved once across all subjects so that less disk space is needed. In the folloing training and testing on each fold, the scripts grab the similarity matrix of current fold by indexing the entire similarity matrix. To achieve this, when users choose to use Gaussian or exponential kernel, the mean and standard deviation of features are computed among all subjects.
+There are two sets of scripts you can use. The top-level wrapper functions of each set are `CBIG_KRR_workflow.m` and `CBIG_KRR_workflow_LITE.m` respectively. The usages of these two wrapper functions are the same. Therefore, the following sections will only discuss about `CBIG_KRR_workflow.m`. The functionality of these two sets of scripts (with or without `LITE` appendix) are slightly different. When `CBIG_KRR_workflow.m` is used, the functional similarity matrices for each fold are saved. If the user chooses Gaussian or exponential kernel, the mean and standard deviation of features are computed from the training subjects and applied on the test subjects for each fold. However, when `CBIG_KRR_workflow_LITE.m` is used, the functional similarity matrix is only computed and saved once across all subjects so that less disk space is needed. In the following training and testing on each fold, the scripts grab the similarity matrix of current fold by indexing the entire similarity matrix. To achieve this, when users choose to use Gaussian or exponential kernel, the mean and standard deviation of features are computed among all subjects.
 
 To use `CBIG_KRR_workflow.m`, you can either pass in a single setup structure or file (the first argument `setup_param` of this function), or pass in a set of individual parameters (Compulsory variables and optional variables via varargin).
 
@@ -81,7 +81,7 @@ If the user decided to pass in the setup structure or file, then input variables
     * `y_types`: determines how the behavioral scores will be read in. `y_types{i} = 'continuous'` assumes the `i`-th behavioral scores listed in the CSV files are continuous values. Sometimes, there could be categorical measures written as strings in the CSV file (e.g. Alzhemier's disease diagnosis could be labeled as 'AD', 'MCI' or 'control'). In this case, you can set `y_types{i} = 'categorical'` for this measure. The number of cell arrays in `y_types` should match the number of cell arrays in `y_names`.
     * `subject_list`: a text file containing all subject IDs (each line corresponds to one subject ID). 
     * `outname` is the output filename. The matrix `y` will be saved in this file.
-    * `delimiter`: pass in a string as the delimeter if the columns in all the CSV files can be separated by the same `delimiter`. If the delimiters in the CSV files are different, you can use cell arrays to pass in the delimiters of each CSV file, e.g. `{',', ';'}` means the first CSV file is delimited by `,` and the second CSV file is delimited by `;`, and so on and so forth.
+    * `delimiter`: pass in a string as the delimiter if the columns in all the CSV files can be separated by the same `delimiter`. If the delimiters in the CSV files are different, you can use cell arrays to pass in the delimiters of each CSV file, e.g. `{',', ';'}` means the first CSV file is delimited by `,` and the second CSV file is delimited by `;`, and so on and so forth.
     
     Commands:
     ```
@@ -312,6 +312,45 @@ The usage of `CBIG_KRR_workflow.m` is roughly the same as the cross-validation s
 ```
 For the specification of other parameters, please refer to the cross-validation section.
 
+### Saved results
+
+When `CBIG_KRR_workflow.m` is run, a folder named `results` will be generated in the path specified in `outdir`. The `results` folder should contain 5 sub-folders: 
+
+   - `y`
+     This folder contains the original y values and the y values after the covariates have been regressed for each fold. 
+
+   - `FSM_innerloop`
+     This folder contains the kernels for training subjects only. It should be a #training subjects x #training subjects matrix. The kernels are saved in a separate folder for each fold.
+
+   - `FSM_test`
+     This folder contains the kernels for all subjects. It should be a #subjects x #subjects matrix. The kernels are saved in a separate folder for each fold.
+
+   - `innerloop_cv`
+     This folder contains the accuracy, loss and predicted y value for each lambda value for the innerloop. The results are saved in a separate mat file for each fold.
+
+   - `test_cv`
+     This folder contains the accuracy, loss and predicted y value for each lambda value for the outerloop. The results are saved in a separate mat file for each fold.
+
+The final accuracies for the test folds are saved in `outdir/results` under `final_result_<outstem>.mat` with the following fields: 
+
+   - `optimal_acc`
+     Test accuracy for each fold (given in correlation).
+
+   - `optimal_kernel`
+     A #outerfolds x #behaviors struct containing the kernel type selected for each test fold.
+
+   - `optimal_lambda`
+     A #outerfolds x #behaviors matrix containing lambda selected for each test fold.
+
+   - `optimal_threshold`
+     TA #outerfolds x #behaviors matrix containing the threshold selected for each test fold.
+
+   - `y_predict_concat` 
+     A #subjects x #behaviors matrix of predicted target values.
+
+   - `optimal_stats`
+     A cell array storing the accuracies of each possible accuracy metric (eg. corr, MAE, etc). Each cell array is #outerfolds x #behaviors.
+
 ## Example usage
 
 We provided a fake example to show how to use this workflow (for the K-fold cross-validation stream). See the readme file: `$CBIG_CODE_DIR/stable_projects/preprocessing/Li2019_GSR/examples/README.md`.
@@ -322,15 +361,16 @@ You can check the output folder structure in this directory: `$CBIG_CODE_DIR/sta
 
 ## Updates
 
-- Release v0.9.0 (13/02/2019): Initial release of general kernel regression package
-- Release v0.9.4 (01/04/2019): Renamed matlab variable `feature` to `feature_mat` to avoid clashing with matlab built-in function.
-- Release v0.13.1 (19/07/2019):
-  1. Added bias term in kernel regression cost funtion.
-  2. Added unit test scipt for general kernel regression package.
-- Release v0.14.1 (03/09/2019): Optimized the speed of kernel regression scripts.
-- Release v0.15.3 (16/10/2019): add references; add LITE version of kernel regression code
-- Release v0.15.4 (05/11/2019): change default lambda set; add hyperparameter-tuning metric
+- Release v0.22.1 (08/03/2022): Fix bug in regressing covariates in functions calling `CBIG_regress_X_from_y_test.m`.
 - Release v0.21.2 (09/12/2021): Add functionality to regress covariates from features within cross-validation stream.
+- Release v0.15.4 (05/11/2019): Change default lambda set; add hyperparameter-tuning metric.
+- Release v0.15.3 (16/10/2019): Add references; add LITE version of kernel regression code.
+- Release v0.14.1 (03/09/2019): Optimized the speed of kernel regression scripts.
+- Release v0.13.1 (19/07/2019):
+  1. Added bias term in kernel regression cost function.
+  2. Added unit test script for general kernel regression package.
+- Release v0.9.4 (01/04/2019): Renamed matlab variable `feature` to `feature_mat` to avoid clashing with matlab built-in function.
+- Release v0.9.0 (13/02/2019): Initial release of general kernel regression package
 
 ## Bugs and questions
 Please contact Jingwei Li at jingweili.sjtu.nus@gmail.com and Ru(by) Kong at roo.cone@gmail.com.

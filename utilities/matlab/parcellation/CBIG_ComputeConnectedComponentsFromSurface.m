@@ -4,12 +4,14 @@ function [ci, sizes, label_id] = CBIG_ComputeConnectedComponentsFromSurface(avg_
 % 
 %   [ci, sizes, label_id] = CBIG_ComputeConnectedComponentsFromSurface(avg_mesh, labels)
 %   Input:
-%       avg_mesh    : average mesh read from CBIG_ReadNCAvgMesh.m
-%       labels      : parcellation results
+%       avg_mesh    : average surface mesh read from CBIG_ReadNCAvgMesh.m
+%       OR CBIG_read_fslr_surface.m
+%       labels      : parcellation surface labels
 %   Output:
-%       ci          : component index vector
-%       sizes       : the size of each connected component
-%       label_id    : all labels' id 
+%       ci          : an array of cell of length k, each cell specifies the
+%       indices of each connected component
+%       sizes       : an array of cell of length k; each cell specifies the sizes of each connected component
+%       label_id    : a vector of length k; all unique indices of input labels 
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
