@@ -3,7 +3,7 @@ function CBIG_MM_KRR_classical(CBIG_CODE_DIR, subject_list, phe_csv, FC_file, ou
 % CBIG_MM_KRR_classical(CBIG_CODE_DIR, subject_list, phe_csv, FC_file, output_dir, rngs, phe, k, flag_pred_train)
 % 
 % This function runs the kernel ridge regression algorithm multiple times to one of
-% phenotypes (non-brain-imaging phenotypes) for UK Biobank dataset.
+% phenotypes (non-brain-imaging phenotypes) for the input dataset.
 %
 % Inputs:
 %   - CBIG_CODE_DIR
@@ -11,12 +11,12 @@ function CBIG_MM_KRR_classical(CBIG_CODE_DIR, subject_list, phe_csv, FC_file, ou
 %     (https://github.com/ThomasYeoLab/CBIG).
 % 
 %   - subject_list
-%     Full path of subject list of UK Biobank dataset. It should be a txt
+%     Full path of subject list of the dataset. It should be a txt
 %     file that contains #subject of line, while each line is the subject
 %     id of 1 subject.
 % 
 %   - phe_csv
-%     Full path of the phenotypes csv for UK Biobank dataset. It should contains the
+%     Full path of the phenotypes csv for the dataset. It should contains the
 %     phenotypes of each subjects.
 %  
 %   - FC_file
@@ -33,14 +33,14 @@ function CBIG_MM_KRR_classical(CBIG_CODE_DIR, subject_list, phe_csv, FC_file, ou
 %     string.
 % 
 %   - phe
-%     phenotypes (non-brain-imaging phenotypes) in UK Biobank dataset to perform the
+%     phenotypes (non-brain-imaging phenotypes) in dataset to perform the
 %     kernel ridge regression.
 % 
 %   - output_dir
 %     Full path of the output directory.
 %
 %   - k
-%     Number (integer) of the K for K shot (participants) learning
+%     Number (integer in string) of the K for K shot (participants) learning
 %
 %   - flag_pred_train
 %     flag for haufe transform to predict train data

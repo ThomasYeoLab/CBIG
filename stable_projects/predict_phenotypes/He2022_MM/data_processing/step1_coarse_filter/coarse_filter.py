@@ -348,6 +348,8 @@ def get_pfc(subject_list, roi=55, flag_HCP=False):
 
     Args:
         subject_list (ndarray): list of subjects eid
+        roi (int): number of roi for FC
+        flag_HCP (optional, bool): whether get data for HCP dataset
 
     Returns:
         Tuple: ndarray for partial FC, one is in NxN matrix, one is flatten

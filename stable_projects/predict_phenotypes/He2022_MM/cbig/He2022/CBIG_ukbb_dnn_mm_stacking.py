@@ -146,11 +146,13 @@ def main(args):
     meta_cor_npz = os.path.join(args.out_dir, log_str + '.npz')
     os.makedirs(os.path.join(args.out_dir), exist_ok=True)
     ks = [10, 20, 50, 100, 200]
-    n_rng = 100
+    n_rng = args.rng
 
     # load base prediction result
     if args.across_dataset:
         npz = os.path.join(args.out_dir, 'dnn_across_dataset_base.npz')
+    elif args.exp_dataset:
+        npz = os.path.join(args.out_dir, 'dnn_exp_dataset_base.npz')
     else:
         npz = os.path.join(args.out_dir, 'dnn_base.npz')
     npz = np.load(npz)
@@ -166,6 +168,8 @@ def main(args):
     # load original data
     if args.across_dataset:
         npz = os.path.join(args.in_dir, 'ukbb_dnn_input_cross_dataset.npz')
+    elif args.exp_dataset:
+        npz = os.path.join(args.in_dir, 'exp_dnn_input_test.npz')
     else:
         npz = os.path.join(args.in_dir, 'ukbb_dnn_input_test.npz')
     npz = np.load(npz, allow_pickle=True)
@@ -180,6 +184,11 @@ def main(args):
         npz = np.load(
             os.path.join(args.inter_dir,
                          'HCP_split_ind_' + str(n_rng) + '.npz'),
+            allow_pickle=True)
+    elif args.exp_dataset:
+        npz = np.load(
+            os.path.join(args.inter_dir,
+                         'exp_split_ind_' + str(n_rng) + '.npz'),
             allow_pickle=True)
     else:
         npz = np.load(
@@ -254,6 +263,7 @@ def get_args():
     parser.add_argument('--log_stem', type=str, default='meta_stacking')
     parser.add_argument('--seed', type=int, default=config.RAMDOM_SEED)
     parser.add_argument('--split', type=str, default='test')
+    parser.add_argument('--rng', type=int, default=100)
     parser.add_argument('--k_limit', type=int, default=33)
 
     restricted_alpha_parser = parser.add_mutually_exclusive_group(
@@ -272,6 +282,13 @@ def get_args():
     fine_tune_parser.add_argument(
         '--not-across-dataset', dest='across_dataset', action='store_false')
     parser.set_defaults(across_dataset=False)
+
+    exp_dataset_parser = parser.add_mutually_exclusive_group(required=False)
+    exp_dataset_parser.add_argument(
+        '--exp-dataset', dest='exp_dataset', action='store_true')
+    exp_dataset_parser.add_argument(
+        '--not-exp-dataset', dest='exp_dataset', action='store_false')
+    parser.set_defaults(exp_dataset=False)
 
     haufe_save_parser = parser.add_mutually_exclusive_group(required=False)
     haufe_save_parser.add_argument(

@@ -1,27 +1,35 @@
-function  CBIG_MM_check_example_results(out_dir)
+function  CBIG_MM_check_example_results(ref_output_dir, output_classical_dir, output_mm_dir)
 
 % CBIG_MM_check_example_results(out_dir)
 % This function checks if the generated example results are identical with
 % the reference files.
 %
 % Input:
-%   - out_dir: The output directory path saving results of example scripts (i.e. CBIG_MSHBM_example_wrapper.m)
+%   - ref_output_dir: The output directory path saving refernce results
+%   - output_classical_dir: The output directory path saving of KRR classical
+%   - output_mm_dir: The output directory path saving of KRR MM
 %
 % Written by He Tong and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
-CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
 
-% check the results
-ref_dir = fullfile(CBIG_CODE_DIR, 'stable_projects', ...
-    'predict_phenotypes', 'He2022_MM', 'examples', ...
-    'results');
+% get reference output folder
+ref_output = load(fullfile(ref_output_dir, 'output_KRR_classical_exp', 'final_result',...
+    'krr_classical_res_test.mat'));
+test_output = load(fullfile(output_classical_dir, 'final_result', 'krr_classical_res_test.mat'));
 
-ref_output = load(fullfile(ref_dir, 'final_result.mat'));
-test_output = load(fullfile(out_dir, 'final_result.mat'));
+% check KRR classical accuracy
+diff_cod = sum(sum(sum(abs(ref_output.meta_cod - test_output.meta_cod))));
+assert(diff_cod < 1e-6, sprintf('KRR classical meta_cod difference: %f', diff_cod));
+diff_cor = sum(sum(sum(abs(ref_output.meta_cor - test_output.meta_cor))));
+assert(diff_cor < 1e-6, sprintf('KRR classical meta_cor difference: %f', diff_cor));
 
-% check accuracy
-diff_acc = sum(sum(abs(ref_output.optimal_acc - test_output.optimal_acc)));
-assert(diff_acc < 1e-6, sprintf('optimal_acc difference: %f', diff_acc));
+ref_output = load(fullfile(ref_output_dir, 'output_KRR_mm', 'meta_result', 'meta_res_test.mat'));
+test_output = load(fullfile(output_mm_dir, 'meta_result', 'meta_res_test.mat'));
 
+% check KRR MM accuracy
+diff_cod = sum(sum(sum(abs(ref_output.meta_cod - test_output.meta_cod))));
+assert(diff_cod < 1e-6, sprintf('KRR MM meta_cod difference: %f', diff_cod));
+diff_cor = sum(sum(sum(abs(ref_output.meta_cor - test_output.meta_cor))));
+assert(diff_cor < 1e-6, sprintf('KRR MM meta_cor difference: %f', diff_cor));
 
 fprintf('Your example results are correct!\n')

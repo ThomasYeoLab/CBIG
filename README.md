@@ -7,7 +7,8 @@ CBIG repository is a package that provides the following useful tools:
 2. Brain parcellations and algorithms
 3. Mental disorder subtyping maps and algorithms
 4. fMRI dynamical models (including neural mass models)
-5. Registration between MNI and fsaverage space  
+5. Registration between MNI and fsaverage space
+6. Phenotypic prediction algorithms  
 
 For more info, please check `stable_projects` folder.
 

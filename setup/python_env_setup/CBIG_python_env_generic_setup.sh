@@ -22,7 +22,7 @@ if echo "$answer" | grep -iq "^y"; then
     if [ $install_conda -ne 0 ]; then
         # default installation directory
         INSTALLATION_DIR=$HOME/storage/miniconda
-        echo "-- Downloading Python packages manager (conda) --"
+        echo "-- Downloading Environment manager (conda) --"
         echo "After that, its path will be added into your .bashrc file."
         echo "conda's path: $INSTALLATION_DIR"
 
@@ -48,6 +48,13 @@ if echo "$answer" | grep -iq "^y"; then
         source ~/.bashrc
     else
         echo "conda exists at $(which conda). Skip installing conda..."
+    fi
+    # note that we need to update conda to 4.10+
+    echo "Checking installed conda version...."
+    conda --version
+    read -p "Conda version is required to be 4.10+. Do you want to update conda? (y/n) " answer
+    if echo "$answer" | grep -iq "^y"; then
+        conda update conda -c conda-forge
     fi
 
     # the default environment is python 3.6

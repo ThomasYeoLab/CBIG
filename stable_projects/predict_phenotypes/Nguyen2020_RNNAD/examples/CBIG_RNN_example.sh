@@ -31,10 +31,12 @@ python -m cbig.Nguyen2020.train --verbose \
     --checkpoint output/model.pt
 
 echo Apply trained model on validation set
-python -m cbig.Nguyen2020.predict --checkpoint output/model.pt --data output/val.pkl --prediction output/prediction_val.csv
+python -m cbig.Nguyen2020.predict --checkpoint output/model.pt --data output/val.pkl \
+    --prediction output/prediction_val.csv
 
 echo Evaluation prediction on validation set
-python -m cbig.Nguyen2020.evaluation --reference output/fold0_val.csv --prediction output/prediction_val.csv
+python -m cbig.Nguyen2020.evaluation --reference output/fold0_val.csv \
+    --prediction output/prediction_val.csv
 
 echo Create training and test data using the first fold, model filling
 python -m cbig.Nguyen2020.gen_cv_pickle \
@@ -46,25 +48,29 @@ python -m cbig.Nguyen2020.gen_cv_pickle \
     --out output/test.pkl
 
 echo Apply trained model on test set
-python -m cbig.Nguyen2020.predict --checkpoint output/model.pt --data output/test.pkl -o output/prediction_test.csv
+python -m cbig.Nguyen2020.predict --checkpoint output/model.pt \
+    --data output/test.pkl -p output/prediction_test.csv
 
 echo Evaluation prediction on test set
-python -m cbig.Nguyen2020.evaluation --reference output/fold0_test.csv --prediction output/prediction_test.csv
+python -m cbig.Nguyen2020.evaluation --reference output/fold0_test.csv \
+    --prediction output/prediction_test.csv
 
 echo Constant baseline
 python -m cbig.Nguyen2020.baseline_constant \
-     --spreadsheet $ROOTDIR/data/TADPOLE_D1_D2.csv \
-     --mask output/fold0_mask.csv \
-     --out output/constant_prediction.csv
+    --spreadsheet $ROOTDIR/data/TADPOLE_D1_D2.csv \
+    --mask output/fold0_mask.csv \
+    --out output/constant_prediction.csv
 
-python -m cbig.Nguyen2020.evaluation --reference output/fold0_test.csv --prediction output/constant_prediction.csv
+python -m cbig.Nguyen2020.evaluation --reference output/fold0_test.csv \
+    --prediction output/constant_prediction.csv
 
 echo SVM baseline
 python -m cbig.Nguyen2020.baseline_svm \
-     --spreadsheet $ROOTDIR/data/TADPOLE_D1_D2.csv \
-     --mask output/fold0_mask.csv \
-     --features $ROOTDIR/data/features \
-     --agamma .01 --vgamma .01 \
-     --out output/svm_prediction.csv
+    --spreadsheet $ROOTDIR/data/TADPOLE_D1_D2.csv \
+    --mask output/fold0_mask.csv \
+    --features $ROOTDIR/data/features \
+    --agamma .01 --vgamma .01 \
+    --out output/svm_prediction.csv
 
-python -m cbig.Nguyen2020.evaluation --reference output/fold0_test.csv --prediction output/svm_prediction.csv
+python -m cbig.Nguyen2020.evaluation --reference output/fold0_test.csv \
+    --prediction output/svm_prediction.csv

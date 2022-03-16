@@ -1,4 +1,4 @@
-function CBIG_MM_KRR_classical_summary(CBIG_CODE_DIR, prefix)
+function CBIG_MM_KRR_classical_summary(CBIG_CODE_DIR, data_dir, phe_list, n_rng, prefix)
 
 % CBIG_MM_KRR_classical_summary(CBIG_CODE_DIR)
 % 
@@ -8,25 +8,28 @@ function CBIG_MM_KRR_classical_summary(CBIG_CODE_DIR, prefix)
 %   - CBIG_CODE_DIR
 %     Full path of the ThomasYeoLab/CBIG repository in your local place
 %     (https://github.com/ThomasYeoLab/CBIG).
+%   - data_dir
+%     Full path of the input/output directory for the KRR classical.
+%   - phe_list
+%     Full path of phenotypes (non-brain-imaging phenotypes) list in dataset
+%     that performed the KRR classical.
+%   - n_rng
+%     Number (integer) of random number generator repeats of KRR classical. It can be number or
+%     string.
+%   - prefix
+%     str of the prefix for the dataset.
 %
 % Written by Tong He and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 % initialization
 if ~exist('prefix','var')
-    split = 'test';
     prefix = 'ukbb';
-else
-    split = 'diff_roi';
 end
-
-base_dir = fullfile(CBIG_CODE_DIR, ...
-    'stable_projects/predict_phenotypes/He2022_MM');
-input_dir = [getenv('CBIG_REPDATA_DIR'), '/stable_projects/predict_phenotypes/He2022_MM/'];
-
-n_rng = 100;
+if ischar(n_rng)
+    n_rng = str2num(n_rng);
+end
 ks = [10, 20, 50, 100, 200];
-data_dir = fullfile(base_dir, 'replication', ['output_KRR_classical_' prefix]);
-phe_list = fullfile(input_dir, [prefix '_' split '_final_phe_list.txt']);
+
 fileID = fopen(phe_list);
 temp = textscan(fileID, '%s');
 entry_name = temp{1};
@@ -35,7 +38,7 @@ entry_name = temp{1};
 warning('off', 'MATLAB:MKDIR:DirectoryExists');
 result_dir = fullfile(data_dir, 'final_result');
 mkdir(result_dir)
-result_file = fullfile(result_dir, ['krr_classical_res_' split '.mat']);
+result_file = fullfile(result_dir, 'krr_classical_res_test.mat');
 
 % load KRR result
 meta_cor = zeros(length(entry_name), n_rng, length(ks));

@@ -34,7 +34,10 @@ def update_net(net, param, args):
     Returns:
         nn.Module: updated net
     '''
-    tmp_x = torch.from_numpy(np.random.rand(4, 1485)).float().cuda()
+    if args.exp_dataset:
+        tmp_x = torch.from_numpy(np.random.rand(4, 190)).float().cuda()
+    else:
+        tmp_x = torch.from_numpy(np.random.rand(4, 1485)).float().cuda()
     # Generate a random input with shape of 4, 1485 to network
     # where 1485 is the number of element of flat 55*55 FC, 55 * 54 / 2
     tmp_y = net(tmp_x)
@@ -113,9 +116,15 @@ def fine_tune(x_test_tra, x_test_val, x_test_remain, y_test_tra, y_test_val,
     dset_test = ukbb_multi_task_dataset(x_test_remain, y_test_remain, True)
     testLoader = DataLoader(
         dset_test, batch_size=batch_size, shuffle=False, num_workers=8)
-    weight_path = os.path.join(
-        args.out_dir, 'trained_model_ukbb', 'dnn_model_save_base',
-        'CBIG_ukbb_dnn_run_0_epoch_' + str(opt_index) + '.pkl_torch')
+    if args.exp_dataset:
+        weight_path = os.path.join(
+            args.out_dir, 'trained_model_ukbb',
+            'dnn_model_save_base_exp_dataset',
+            'CBIG_ukbb_dnn_run_0_epoch_' + str(opt_index) + '.pkl_torch')
+    else:
+        weight_path = os.path.join(
+            args.out_dir, 'trained_model_ukbb', 'dnn_model_save_base',
+            'CBIG_ukbb_dnn_run_0_epoch_' + str(opt_index) + '.pkl_torch')
     net = torch.load(weight_path)
     tmp_path = os.path.join(
         args.out_dir,
@@ -286,16 +295,21 @@ def main(args):
 
     tuned_by = 'cod'
     log_str = args.log_stem + '_result_' + args.split + '_fine_tune'
+    if args.exp_dataset:
+        log_str += '_exp_dataset'
     meta_cor_npz = os.path.join(args.out_dir,
                                 log_str + '_gpu_' + str(args.gpu) + '.npz')
     meta_temp_npz = os.path.join(
         args.out_dir, 'tmp/' + log_str + '_rng_gpu_' + str(args.gpu) + '.npz')
     os.makedirs(os.path.join(args.out_dir, 'tmp'), exist_ok=True)
     ks = [10, 20, 50, 100, 200]
-    n_rng = 100
+    n_rng = args.rng
 
     # load base prediction result
-    npz = os.path.join(args.out_dir, 'dnn_base.npz')
+    if args.exp_dataset:
+        npz = os.path.join(args.out_dir, 'dnn_exp_dataset_base.npz')
+    else:
+        npz = os.path.join(args.out_dir, 'dnn_base.npz')
     npz = np.load(npz)
     tes_res_record = npz['tes_res_record']
     val_record = npz['val_' + tuned_by + '_record']
@@ -307,7 +321,10 @@ def main(args):
     y_pred = tes_res_record[0, index, :, :]
 
     # load original data
-    npz = os.path.join(args.in_dir, 'ukbb_dnn_input_test.npz')
+    if args.exp_dataset:
+        npz = os.path.join(args.in_dir, 'exp_dnn_input_test.npz')
+    else:
+        npz = os.path.join(args.in_dir, 'ukbb_dnn_input_test.npz')
     npz = np.load(npz, allow_pickle=True)
     x_test = npz['x_test']
     y_test = npz['y_test_different_set_phe']
@@ -315,9 +332,16 @@ def main(args):
     tra_phe = npz['tra_phe']
 
     # load data split
-    npz = np.load(
-        os.path.join(args.inter_dir, 'ukbb_split_ind_' + str(n_rng) + '.npz'),
-        allow_pickle=True)
+    if args.exp_dataset:
+        npz = np.load(
+            os.path.join(args.inter_dir,
+                         'exp_split_ind_' + str(n_rng) + '.npz'),
+            allow_pickle=True)
+    else:
+        npz = np.load(
+            os.path.join(args.inter_dir,
+                         'ukbb_split_ind_' + str(n_rng) + '.npz'),
+            allow_pickle=True)
     split_ind_dict = npz['split_ind_dict'].item()
 
     # perform meta matching with DNN and transfer learning
@@ -341,12 +365,14 @@ def main(args):
                np.nanmean(meta_cor_tuned[:i + 1, :, :]),
                np.nanmean(meta_cod[:i + 1, :, :]),
                np.nanmean(meta_cod_tuned[:i + 1, :, :])))
-        mean_cor = np.squeeze(
-            np.nanmean(np.nanmean(meta_cor[:i + 1, :, :], axis=2), axis=0))
-        mean_cod = np.squeeze(
-            np.nanmean(np.nanmean(meta_cod[:i + 1, :, :], axis=2), axis=0))
-        print(' '.join('%.6f' % tmp for tmp in mean_cor), ' COD ',
-              ' '.join('%.6f' % tmp for tmp in mean_cod))
+        mean_cor_tuned = np.squeeze(
+            np.nanmean(
+                np.nanmean(meta_cor_tuned[:i + 1, :, :], axis=2), axis=0))
+        mean_cod_tuned = np.squeeze(
+            np.nanmean(
+                np.nanmean(meta_cod_tuned[:i + 1, :, :], axis=2), axis=0))
+        print(' '.join('%.6f' % tmp for tmp in mean_cor_tuned), ' COD ',
+              ' '.join('%.6f' % tmp for tmp in mean_cod_tuned))
         np.savez(
             meta_temp_npz,
             meta_cor=meta_cor,
@@ -386,6 +412,14 @@ def get_args():
     parser.add_argument('--seed', type=int, default=config.RAMDOM_SEED)
     parser.add_argument('--gpu', type=int, default=0)
     parser.add_argument('--split', type=str, default='test')
+    parser.add_argument('--rng', type=int, default=100)
+
+    exp_dataset_parser = parser.add_mutually_exclusive_group(required=False)
+    exp_dataset_parser.add_argument(
+        '--exp-dataset', dest='exp_dataset', action='store_true')
+    exp_dataset_parser.add_argument(
+        '--not-exp-dataset', dest='exp_dataset', action='store_false')
+    parser.set_defaults(exp_dataset=False)
 
     # hyperparameter
     parser.add_argument('--lr', type=float, default=1e-3)

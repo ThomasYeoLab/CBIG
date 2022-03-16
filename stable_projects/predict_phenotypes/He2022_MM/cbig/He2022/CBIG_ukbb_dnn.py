@@ -53,6 +53,8 @@ def train(args):
     # load data
     if args.across_dataset:
         npz = os.path.join(args.in_dir, 'ukbb_dnn_input_cross_dataset.npz')
+    elif args.exp_dataset:
+        npz = os.path.join(args.in_dir, 'exp_dnn_input_test.npz')
     else:
         npz = os.path.join(args.in_dir, 'ukbb_dnn_input_test.npz')
     npz = np.load(npz)
@@ -66,7 +68,7 @@ def train(args):
         split_tra, split_val = train_test_split(
             np.arange(x_train_raw.shape[0]), test_size=0.2, random_state=seed)
     else:
-        split_file = os.path.join(args.in_dir,
+        split_file = os.path.join(args.inter_dir,
                                   'split_rng' + str(seed) + '.mat')
         split = np.squeeze(sio.loadmat(split_file)['sub_fold'][0][0][0])
         split_tra = split == 0
@@ -117,6 +119,8 @@ def train(args):
     dir_model_temp = os.path.join(dir_model, 'dnn_model_save_base')
     if args.across_dataset:
         dir_model_temp += '_cross_dataset'
+    if args.exp_dataset:
+        dir_model_temp += '_exp_dataset'
     os.makedirs(dir_model_temp, exist_ok=True)
 
     # Code running - with multiple ensemble runs
@@ -248,6 +252,8 @@ def train(args):
     model_str = 'dnn'
     if args.across_dataset:
         model_str += '_across_dataset'
+    if args.exp_dataset:
+        model_str += '_exp_dataset'
     mics_log(
         model_str,
         args.out_dir,
@@ -270,13 +276,26 @@ def get_args():
     # general parameters
     parser.add_argument('--in_dir', type=str, default=config.IN_DIR)
     parser.add_argument('--out_dir', '-o', type=str, default=config.OUT_DIR)
+    parser.add_argument('--inter_dir', type=str, default=config.INTER_DIR)
     parser.add_argument('--seed', type=int, default=config.RAMDOM_SEED)
     parser.add_argument('--batch_size', type=int, default=config.BATCH_SIZE)
     parser.add_argument('--epochs', type=int, default=config.EPOCHS)
     parser.add_argument('--runs', type=int, default=config.RUNS)
     parser.add_argument('--metric', type=str, default='cod')
     parser.add_argument('--gpu', type=int, default=0)
-    parser.add_argument('--across_dataset', type=bool, default=False)
+    across_dataset_parser = parser.add_mutually_exclusive_group(required=False)
+    across_dataset_parser.add_argument(
+        '--across-dataset', dest='across_dataset', action='store_true')
+    across_dataset_parser.add_argument(
+        '--not-across-dataset', dest='across_dataset', action='store_false')
+    parser.set_defaults(across_dataset=False)
+
+    exp_dataset_parser = parser.add_mutually_exclusive_group(required=False)
+    exp_dataset_parser.add_argument(
+        '--exp-dataset', dest='exp_dataset', action='store_true')
+    exp_dataset_parser.add_argument(
+        '--not-exp-dataset', dest='exp_dataset', action='store_false')
+    parser.set_defaults(exp_dataset=False)
 
     # hyperparameter
     parser.add_argument('--index', type=int, default=None)

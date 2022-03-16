@@ -109,11 +109,14 @@ def compute_diffusion_map(L, alpha=0.5, n_components=None, diffusion_time=0,
         eigen_solver = eigs
 
     # Step 4
+    # v0 is the starting point for iterative computation
+    # set v0 to aviod randomness
+    v0 = np.ones(min(M.shape))
     func = eigen_solver
     if n_components is not None:
-        lambdas, vectors = func(M, k=n_components + 1)
+        lambdas, vectors = func(M, k=n_components + 1, v0=v0)
     else:
-        lambdas, vectors = func(M, k=max(2, int(np.sqrt(ndim))))
+        lambdas, vectors = func(M, k=max(2, int(np.sqrt(ndim))), v0=v0)
     del M
 
     if func == eigsh:

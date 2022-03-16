@@ -1,5 +1,5 @@
 #! /bin/sh
-# Last successfully run on Jul 7th, 2019
+# Last successfully run on Jul 7th, 2019 with git repository version v0.13.0-He2019_KRDNN
 # Written by Minh Nguyen and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 # DO NOT CHANGE: This clears old freesurfer variables if they previously exists

@@ -19,24 +19,24 @@ echo Predict using 1st set of pre-trained weights
 python -m cbig.Nguyen2020.predict \
     --checkpoint save.seed0 \
     --data tadpole_test.pkl \
-    -o prediction0.csv
+    -p prediction0.csv
 
 echo Predict using 2nd set of pre-trained weights
 python -m cbig.Nguyen2020.predict \
     --checkpoint save.seed1 \
     --data tadpole_test.pkl \
-    -o prediction1.csv
+    -p prediction1.csv
 
 echo Predict using 3rd set of pre-trained weights
 python -m cbig.Nguyen2020.predict \
     --checkpoint save.seed2 \
     --data tadpole_test.pkl \
-    -o prediction2.csv
+    -p prediction2.csv
 
 echo Predict using 4th set of pre-trained weights
 python -m cbig.Nguyen2020.predict \
     --checkpoint save.seed3 \
     --data tadpole_test.pkl \
-    -o prediction3.csv
+    -p prediction3.csv
 
 python avg_prediction.py -f prediction{0,1,2,3}.csv -s D4Live

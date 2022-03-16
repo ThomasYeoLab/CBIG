@@ -7,6 +7,7 @@ https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 import os
 import random
+import argparse
 import numpy as np
 import pandas as pd
 import scipy.io as sio
@@ -25,15 +26,37 @@ def save_meta_set(dir_out, eid, phe, ind, pfc, df, name):
     df_tmp = df_tmp[['eid'] + phe]
     df_tmp = df_tmp.loc[df_tmp['eid'].isin(eid)]
     df_tmp.to_csv(os.path.join(dir_out, name + '_final.csv'))
+    return df_tmp
 
 
-def generate_data(dir_out):
-    # parameter for data generation
-    n_samples = 1000
-    n_roi = 10
-    n_features = int(n_roi * (n_roi - 1) / 2)
-    n_informative = int(n_features / 2)
-    n_targets = 10
+def generate_data(dataset):
+    base_dir = os.path.join(
+        os.getenv('CBIG_CODE_DIR'),
+        'stable_projects/predict_phenotypes/He2022_MM')
+    if dataset == 'exp':
+        dir_out = os.path.join(base_dir, 'examples/exp_input')
+        os.makedirs(dir_out, exist_ok=True)
+
+        # parameter for data generation
+        n_samples = 5000
+        n_tra_samples = 4000
+        n_roi = 20
+        n_features = int(n_roi * (n_roi - 1) / 2)
+        n_informative = 40
+        n_targets = 50
+        n_tra_targets = 40
+    elif dataset == 'unit_tests':
+        dir_out = os.path.join(base_dir, 'examples/unit_tests_input')
+        os.makedirs(dir_out, exist_ok=True)
+
+        # parameter for data generation
+        n_samples = 800
+        n_tra_samples = 400
+        n_roi = 8
+        n_features = int(n_roi * (n_roi - 1) / 2)
+        n_informative = 8
+        n_targets = 5
+        n_tra_targets = 3
 
     # generate data
     x, y = make_regression(
@@ -45,8 +68,6 @@ def generate_data(dir_out):
         random_state=seed)
 
     print('randomly generated x with shape', x.shape, 'y with shape', y.shape)
-    print('x (part of it):\n', x[:10, :5])
-    print('y (part of it):\n', y[:10, :5])
 
     # convert x to FC format
     index = np.tril(np.ones(n_roi), k=-1) == 1
@@ -74,18 +95,27 @@ def generate_data(dir_out):
     print(df)
 
     # split data and phenotype
-    ind_tra = range(0, int(n_samples / 2))
-    ind_tes = range(int(n_samples / 2), n_samples)
+    ind_tra = range(0, n_tra_samples)
+    ind_tes = range(n_tra_samples, n_samples)
     inds = range(0, n_samples)
     eid_tra = eid[ind_tra]
     eid_tes = eid[ind_tes]
-    phe_tra = phes[:int(n_targets / 2)]
-    phe_tes = phes[int(n_targets / 2):]
+    phe_tra = phes[:n_tra_targets]
+    phe_tes = phes[n_tra_targets:]
 
     # save out data generated
-    save_meta_set(dir_out, eid_tes, phe_tes, ind_tes, pfc, df, 'test')
-    save_meta_set(dir_out, eid_tra, phe_tra, ind_tra, pfc, df, 'train')
+    df_tes = save_meta_set(dir_out, eid_tes, phe_tes, ind_tes, pfc, df, 'test')
+    _ = save_meta_set(dir_out, eid_tra, phe_tra, ind_tra, pfc, df, 'train')
     save_meta_set(dir_out, eid, phes, inds, pfc, df, 'train_test')
+
+    np.savez(
+        os.path.join(dir_out, 'exp_dnn_input_test.npz'),
+        x_train_raw=x,
+        y_train_raw=df[phe_tra].values,
+        x_test=x[ind_tes, :],
+        y_test_different_set_phe=df_tes[phe_tes].values,
+        tra_phe=phe_tra,
+        tes_phe=phe_tes)
 
 
 if __name__ == "__main__":
@@ -93,9 +123,8 @@ if __name__ == "__main__":
     random.seed(seed)
     np.random.seed(seed)
 
-    base_dir = os.path.join(
-        os.getenv('CBIG_CODE_DIR'),
-        'stable_projects/predict_phenotypes/He2022_MM')
-    dir_out = os.path.join(base_dir, 'examples/exp_input')
-    os.makedirs(dir_out, exist_ok=True)
-    generate_data(dir_out)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-d", "--dataset", type=str, default="exp")
+    args = parser.parse_args()
+
+    generate_data(args.dataset)

@@ -161,4 +161,4 @@ The final processed data is going to be stored in `data_processed` (you can chan
 ----
 
 ## Bugs and Questions
-Please contact He Tong at hetong1115@gmail.com.
+Please contact Tong He at hetong1115@gmail.com, Lijun An at anlijun.cn@gmail.com and Pansheng Chen at chenpansheng@gmail.com.

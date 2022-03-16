@@ -22,9 +22,14 @@ sh CBIG_MM_KRR_classical_wrapper_UKBB.sh
 After all jobs finished in previous part, run following code in matlab:
 ```matlab
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-base_dir = fullfile(CBIG_CODE_DIR, 'stable_projects/predict_phenotypes/He2022_MM/replication');
-cd(base_dir)
-CBIG_MM_KRR_classical_summary(CBIG_CODE_DIR)
+base_dir = fullfile(CBIG_CODE_DIR, 'stable_projects', 'predict_phenotypes', 'He2022_MM');
+code_dir = fullfile(base_dir, 'KRR_CLASSICAL');
+cd(code_dir)
+data_dir = fullfile(base_dir, 'replication', 'output_KRR_classical_ukbb');
+phe_list = fullfile(getenv('CBIG_REPDATA_DIR'), 'stable_projects',...
+    'predict_phenotypes', 'He2022_MM', 'ukbb_test_final_phe_list.txt');
+n_rng = 100;
+CBIG_MM_KRR_classical_summary(CBIG_CODE_DIR, data_dir, phe_list, n_rng)
 ```
 
 #### Experiment 2 HCP dataset
@@ -37,9 +42,14 @@ sh CBIG_MM_KRR_classical_wrapper_HCP.sh
 After all jobs finished in previous part, run following code in matlab:
 ```matlab
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-base_dir = fullfile(CBIG_CODE_DIR, 'stable_projects/predict_phenotypes/He2022_MM/replication');
-cd(base_dir)
-CBIG_MM_KRR_classical_summary(CBIG_CODE_DIR, 'HCP')
+base_dir = fullfile(CBIG_CODE_DIR, 'stable_projects', 'predict_phenotypes', 'He2022_MM');
+code_dir = fullfile(base_dir, 'KRR_CLASSICAL');
+cd(code_dir)
+data_dir = fullfile(base_dir, 'replication', 'output_KRR_classical_HCP');
+phe_list = fullfile(getenv('CBIG_REPDATA_DIR'), 'stable_projects',...
+    'predict_phenotypes', 'He2022_MM', 'HCP_diff_roi_final_phe_list.txt');
+n_rng = 100;
+CBIG_MM_KRR_classical_summary(CBIG_CODE_DIR, data_dir, phe_list, n_rng, 'HCP')
 ```
 
 ### 2. KRR Meta-matching (experiment 1)
@@ -52,9 +62,14 @@ sh CBIG_MM_KRR_MM_wrapper.sh
 After all jobs finished in previous part, run following code in matlab:
 ```matlab
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-base_dir = fullfile(CBIG_CODE_DIR, 'stable_projects/predict_phenotypes/He2022_MM/replication');
-cd(base_dir)
-CBIG_MM_KRR_MM_summary(CBIG_CODE_DIR)
+base_dir = fullfile(CBIG_CODE_DIR, 'stable_projects', 'predict_phenotypes', 'He2022_MM');
+code_dir = fullfile(base_dir, 'KRR_MM');
+cd(code_dir)
+data_dir = fullfile(base_dir, 'replication', 'output_KRR_mm');
+krr_classical_dir = fullfile(base_dir, 'replication', 'output_KRR_classical_ukbb');
+input_dir = fullfile(getenv('CBIG_REPDATA_DIR'), 'stable_projects', 'predict_phenotypes', 'He2022_MM');
+mm_rng_nums = 100;
+CBIG_MM_KRR_MM_summary(CBIG_CODE_DIR, base_dir, data_dir, krr_classical_dir, input_dir, mm_rng_nums)
 ```
 
 ### 3. Run DNN
@@ -65,10 +80,10 @@ The DNN meta-matching uses the split from KRR classical and meta-matching, if yo
 cd $CBIG_CODE_DIR/stable_projects/predict_phenotypes/He2022_MM/replication
 
 # for experiment 1 UKBB only meta-matching
-python3 get_split.py
+python3 ../cbig/He2022/get_split.py
 
 # for experiment 2 HCP and UKBB cross datasets meta-matching
-python3 get_split.py -d HCP
+python3 ../cbig/He2022/get_split.py -d HCP
 ```
 
 ##### DNN data
@@ -102,7 +117,7 @@ disp(squeeze(mean(mean(result.meta_cod, 2), 1)))
 ```matlab
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
 base_dir = fullfile(CBIG_CODE_DIR, 'stable_projects', 'predict_phenotypes', 'He2022_MM');
-result_file = fullfile(base_dir, 'replication', 'output_KRR_classical_HCP', 'final_result', 'krr_classical_res_diff_roi.mat');
+result_file = fullfile(base_dir, 'replication', 'output_KRR_classical_HCP', 'final_result', 'krr_classical_res_test.mat');
 result = load(result_file);
 disp(squeeze(mean(mean(result.meta_cor, 2), 1)))
 % reference disp result:    0.0300    0.0475    0.0788    0.1116    0.1562
@@ -166,4 +181,4 @@ python3 ../cbig/He2022/CBIG_haufe_check.py
 ----
 
 ## Bugs and Questions
-Please contact He Tong at hetong1115@gmail.com.
+Please contact Tong He at hetong1115@gmail.com, Lijun An at anlijun.cn@gmail.com and Pansheng Chen at chenpansheng@gmail.com.

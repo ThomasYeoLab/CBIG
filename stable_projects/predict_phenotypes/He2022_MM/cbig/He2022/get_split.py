@@ -27,6 +27,8 @@ def get_phes(folder, dataset):
         txt = os.path.join(folder, 'ukbb_test_final_phe_list.txt')
     elif dataset == 'HCP':
         txt = os.path.join(folder, 'HCP_diff_roi_final_phe_list.txt')
+    elif dataset == 'exp':
+        txt = os.path.join(folder, 'exp_test_final_phe_list.txt')
     else:
         raise NameError('wrong dataset name')
     phes = np.genfromtxt(txt, dtype=str)
@@ -43,27 +45,51 @@ def get_split(dataset='ukbb'):
         None
     '''
 
-    base_dir = os.path.join(
-        os.environ['CBIG_CODE_DIR'],
-        'stable_projects/predict_phenotypes/He2022_MM/replication')
-
-    if dataset == 'ukbb':
-        n_subjects = 10000
-        classical_dir = os.path.join(base_dir, 'output_KRR_classical_ukbb')
+    if dataset == 'exp':
+        rngs = 3
+        n_subjects = 1000
+        base_dir = os.path.join(
+            os.environ['CBIG_CODE_DIR'],
+            'stable_projects/predict_phenotypes/He2022_MM/examples/exp_output')
+        input_dir = os.path.join(
+            os.environ['CBIG_CODE_DIR'],
+            'stable_projects/predict_phenotypes/He2022_MM/examples/exp_input')
+        classical_dir = os.path.join(base_dir, 'output_KRR_classical_exp')
         mm_dir = os.path.join(base_dir, 'output_KRR_mm')
-    elif dataset == 'HCP':
-        n_subjects = 1019
-        classical_dir = os.path.join(base_dir, 'output_KRR_classical_HCP')
+    elif dataset == 'unit_tests':
+        rngs = 2
+        n_subjects = 400
+        base_dir = os.path.join(
+            os.environ['CBIG_CODE_DIR'],
+            'stable_projects/predict_phenotypes/He2022_MM/unit_tests/output')
+        input_dir = os.path.join(os.environ['CBIG_CODE_DIR'],
+                                 'stable_projects', 'predict_phenotypes',
+                                 'He2022_MM', 'examples', 'unit_tests_input')
+        classical_dir = os.path.join(base_dir, 'output_KRR_classical_exp')
+        mm_dir = os.path.join(base_dir, 'output_KRR_mm')
+        dataset = 'exp'
     else:
-        raise NameError('wrong dataset name')
+        rngs = 100
+        base_dir = os.path.join(
+            os.environ['CBIG_CODE_DIR'],
+            'stable_projects/predict_phenotypes/He2022_MM/replication')
+        input_dir = os.path.join(
+            os.environ['CBIG_REPDATA_DIR'],
+            'stable_projects/predict_phenotypes/He2022_MM')
+        if dataset == 'ukbb':
+            n_subjects = 10000
+            classical_dir = os.path.join(base_dir, 'output_KRR_classical_ukbb')
+            mm_dir = os.path.join(base_dir, 'output_KRR_mm')
+        elif dataset == 'HCP':
+            n_subjects = 1019
+            classical_dir = os.path.join(base_dir, 'output_KRR_classical_HCP')
+        else:
+            raise NameError('wrong dataset name ' + dataset)
 
     output_dir = os.path.join(base_dir, 'output_intermediate')
     os.makedirs(output_dir, exist_ok=True)
 
-    input_dir = os.path.join(os.environ['CBIG_REPDATA_DIR'],
-                             'stable_projects/predict_phenotypes/He2022_MM')
     phes_tes = get_phes(input_dir, dataset)
-    rngs = 100
     ks = [10, 20, 50, 100, 200]
     split_ind_dict = {}
 
@@ -79,7 +105,6 @@ def get_split(dataset='ukbb'):
                     '_k_' + str(k) + '_rng_num_' + str(rng))
                 split_mat = os.path.join(folder,
                                          dataset + '_subject_split.mat')
-                # print(split_mat)
                 mat = sio.loadmat(split_mat)
                 split_ind_dict[phe][rng - 1, ik, :] = np.squeeze(
                     mat['sub_fold']['fold_index'][0][0])
@@ -93,7 +118,7 @@ def get_split(dataset='ukbb'):
     np.savez(npy, split_ind_dict=split_ind_dict)
 
     # get split file from KRR base
-    if dataset == 'ukbb':
+    if dataset != 'HCP':
         rngs = 1
         for rng in range(1, rngs + 1):
             folder = os.path.join(mm_dir, dataset + '_rng_num_' + str(rng))

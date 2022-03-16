@@ -1,20 +1,21 @@
 function [opt_entry, opt_k, opt_test_corr, opt_test_cod] = ...
-    CBIG_MM_KRR_MM(base_dir, data_dir, y_pred_all, test_csv, phe_tra, phe_tes, phe_tes_mat, rng_num, k, eval_func)
+    CBIG_MM_KRR_MM(data_dir, krr_classical_dir, y_pred_all, test_csv, phe_tra,...
+        phe_tes, phe_tes_mat, rng_num, k, prefix, eval_func)
 
 % [opt_entry, opt_k, opt_test_corr, opt_test_cod] = ...
-%   CBIG_MM_KRR_MM(base_dir, data_dir, y_pred_all, test_csv, phe_tra, phe_tes, phe_tes_mat, rng_num, k, eval_func)
+%   CBIG_MM_KRR_MM(data_dir, y_pred_all, test_csv, phe_tra,...
+%       phe_tes, phe_tes_mat, rng_num, k, prefix, eval_func)
 % 
 % This function runs the meta-matching with kernel ridge regression
-% algorithm to all testing non-brain-imaging phenotypes for UK Biobank
-% dataset.
+% algorithm to all testing non-brain-imaging phenotypes.
 %
 % Inputs:
-%   - base_dir
-%     Path of this project under CBIG_CODE_DIR.
-%
 %   - data_dir
 %     Path of the your output and intermediate values. You can
 %     also change this to any place you want.
+%
+%   - krr_classical_dir
+%     Path of the the KRR classcial output and intermediate values.
 %
 %   - y_pred_all
 %     Matrix with shape of #test meta-set subject * #training meta-set phenotypes.
@@ -22,8 +23,8 @@ function [opt_entry, opt_k, opt_test_corr, opt_test_cod] = ...
 %     subjects by the kernel ridge regression model trained on training meta-set.
 % 
 %   - test_csv
-%     Matlab table of the phenotpyes csv for test meta-set UK Biobank dataset. It 
-%     should contains the phenotpyes of each subjects.
+%     Matlab table of the phenotpyes csv for test meta-set. It should contains
+%     the phenotpyes of each subjects.
 %  
 %   - phe_tra
 %     Cell (string) of training meta-set phenotypes names.
@@ -42,14 +43,12 @@ function [opt_entry, opt_k, opt_test_corr, opt_test_cod] = ...
 %   - k
 %     Number (integer) of the K for K shot (participants) learning
 %
+%   - prefix
+%     str of the prefix for the dataset.
+%
 %   - eval_func
 %     String for evaluation method for Meta-matching, can be 'corr' for 
 %     correlation and 'cod' for COD.
-%
-%   - subj_meta_test
-%     Full path of subject list of test meta-set. It should be a txt
-%     file that contains #subject of line, while each line is the subject
-%     id of 1 subject.
 %
 % Outputs:
 %   - opt_entry
@@ -91,10 +90,9 @@ function [opt_entry, opt_k, opt_test_corr, opt_test_cod] = ...
     for i = 1:length(phe_tes)
 
         y_test = test_csv{:, phe_tes_mat{i}};
-        split_file_folder = fullfile(base_dir, 'replication', 'output_KRR_classical_ukbb',...
-            ['output_phe_', phe_tes{i}], ...
-            ['ukbb_', phe_tes{i}, '_k_', num2str(k), '_rng_num_', num2str(rng_num)]);
-        split_file = fullfile(split_file_folder, 'ukbb_subject_split.mat');
+        split_file_folder = fullfile(krr_classical_dir, ['output_phe_', phe_tes{i}], ...
+            [prefix '_', phe_tes{i}, '_k_', num2str(k), '_rng_num_', num2str(rng_num)]);
+        split_file = fullfile(split_file_folder, [prefix '_subject_split.mat']);
         k_split = load(split_file);
         k_index = logical((k_split.sub_fold.fold_index == 0)  + (k_split.sub_fold.fold_index == 2));
         test_index = (k_split.sub_fold.fold_index == 1);

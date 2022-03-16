@@ -12,10 +12,10 @@ Usage
 ==========
 
 - The example about how to use the code is detailed in `$CBIG_CODE_DIR/stable_projects/predict_phenotypes/He2022_MM/examples/README.md`
-- If you have access to UK Biobank dataset, you can replicate our result using the instructions detailed in `$CBIG_CODE_DIR/stable_projects/predict_phenotypes/He2022_MM/replication/README.md`.
+- If you have access to UK Biobank dataset and HCP dataset, you can replicate our result using the instructions detailed in `$CBIG_CODE_DIR/stable_projects/predict_phenotypes/He2022_MM/replication/README.md`.
 
 ----
 
 Bugs and Questions
 ====
-Please contact He Tong at hetong1115@gmail.com.
+Please contact Tong He at hetong1115@gmail.com, Lijun An at anlijun.cn@gmail.com and Pansheng Chen at chenpansheng@gmail.com.
