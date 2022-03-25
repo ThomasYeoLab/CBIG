@@ -15,11 +15,20 @@ set VERSION = '$Id: CBIG_preproc_ROIs2ROIs_VolAnatDistance.csh, v 1.0 2017/10/13
 
 set n = `echo $argv | grep -e -help | wc -l`
 
-# if there is no arguments or there is -help option 
-if( $#argv == 0 || $n != 0 ) then
+# if there is -help option 
+if( $n != 0 ) then
 	echo $VERSION
 	# print help	
 	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+	exit 0;
+endif
+
+# if there is no arguments
+if( $#argv == 0 ) then
+	echo $VERSION
+	# print help	
+	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+	echo "WARNING: No input arguments. See above for a list of available input arguments."
 	exit 0;
 endif
 
@@ -37,7 +46,8 @@ set root_dir = `dirname $root_dir`
 ###############################
 set default_flag = 0
 if ( $default_flag == 0 ) then
-	set cortical_ROIs_file = "$CBIG_CODE_DIR/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Parcellations/MNI/"
+	set cortical_ROIs_file = "$CBIG_CODE_DIR/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/\
+	Parcellations/MNI/"
 	set cortical_ROIs_file = "${cortical_ROIs_file}Schaefer2018_400Parcels_17Networks_order_FSLMNI152_1mm.nii.gz"
 	
 	set subcortical_ROIs_file = "$CBIG_CODE_DIR/data/templates/volume/FSL_MNI152_FS4.5.0/mri/aparc+aseg_182x218x182.nii.gz"
@@ -73,7 +83,8 @@ echo "[ROIs2ROIs VolAnatDistance]: subcortical_ROIs_file = $subcortical_ROIs_fil
 echo "[ROIs2ROIs VolAnatDistance]: output_name = $output_name"
 
 set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; );
-set cmd = ( $cmd CBIG_preproc_compute_ROIs2ROIs_VolAnatDistance $cortical_ROIs_file $subcortical_ROIs_file $output_name; )
+set cmd = ( $cmd CBIG_preproc_compute_ROIs2ROIs_VolAnatDistance $cortical_ROIs_file \
+$subcortical_ROIs_file $output_name; )
 set cmd = ( $cmd exit; '"' )
 echo $cmd
 eval $cmd
@@ -166,15 +177,17 @@ DESCRIPTION:
 	This function cannot resolve the overlap between cortical ROIs and subcortical ROIs. Pleasse make sure your input ROIs 
 	are not overlapped.
 	
-	Make sure your "cortical_ROIs_file" and "subcortical_ROIs_file" are in the same space and with the same vox2ras matrix. 
-	If both of them are passed in, the code will use the vox2ras matrix of "subcortical_ROIs_file". If the vox2ras matrices of 
-	the two files are not equal, the scripts will throw an error and exit.
+	Make sure your "cortical_ROIs_file" and "subcortical_ROIs_file" are in the same space and with the same 
+	vox2ras matrix. 
+	If both of them are passed in, the code will use the vox2ras matrix of "subcortical_ROIs_file". If the vox2ras 
+	matrices of the two files are not equal, the scripts will throw an error and exit.
 	
 ARGUMENTS:
 	-cortical_ROIs_file     cortical_ROIs_file :
-	 The full name of the cortical parcellation. The default one is the 400-ROIs parcellation of Schaefer et al. 2018 in MNI 
-	 1mm space:
-	 $CBIG_CODE_DIR/Schaefer2018_LocalGlobal/Parcellations/MNI/Schaefer2018_400Parcels_17Networks_order_FSLMNI152_1mm.nii.gz.
+	 The full name of the cortical parcellation. The default one is the 400-ROIs parcellation of Schaefer et al. 2018 
+	 in MNI 1mm space:
+	 $CBIG_CODE_DIR/Schaefer2018_LocalGlobal/Parcellations/MNI/Schaefer2018_400Parcels_17Networks_order_FSLMNI152
+	 _1mm.nii.gz.
 	 If you do not want to include any cortical part, you can use 'NONE'.
 	 
 	-subcortical_ROIs_file  subcortical_ROIs_file :
@@ -183,8 +196,8 @@ ARGUMENTS:
 	 If you do not want to include any subcortical part, you can use 'NONE'.
 	 
 	-output_name            output_name :
-	 The full name of the output distance matrix (matlab .mat file). The output file is a structure called "distance" which 
-	 contains two fields:
+	 The full name of the output distance matrix (matlab .mat file). The output file is a structure called "distance" 
+	 which contains two fields:
 	 (1) "distance.distance" is an M x M distance matrix, where M is the total number of ROIs (cortical + subcortical).
 	 (2) "distance.centroids" is an M x 3 matrix contains the centroids of all ROIs.
 	 The default one is 
@@ -195,14 +208,15 @@ ARGUMENTS:
 	 If you want to use all the default values of "-cortical_ROIs_file" "-subcortical_ROIs_file", and "-output_name", 
 	 you need to use this option.
 	                                                
-	The file in the repo: "$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/data/ROIs2ROIs_VolAnatDistance/
+	File "$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/data/ROIs2ROIs_VolAnatDistance/
 	ROIs2ROIs_dist_Schaefer2018_400Parcels_17Networks_order_19aseg_FSLMNI152_1mm.mat" is computed by using 
 	$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_ROIs2ROIs_VolAnatDistance.csh -default
 	
 EXAMPLE:
 	$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_ROIs2ROIs_VolAnatDistance.csh 
 	-cortical_ROIs_file
-	"$CBIG_CODE_DIR/Schaefer2018_LocalGlobal/Parcellations/MNI/Schaefer2018_400Parcels_17Networks_order_FSLMNI152_1mm.nii.gz"
+	"$CBIG_CODE_DIR/Schaefer2018_LocalGlobal/Parcellations/MNI/\
+	Schaefer2018_400Parcels_17Networks_order_FSLMNI152_1mm.nii.gz"
 	-subcortical_ROIs_file "$CBIG_CODE_DIR/data/templates/volume/FSL_MNI152_FS4.5.0/mri/aparc+aseg_182x218x182.nii.gz"
 	-output_name 
 	"$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/data/ROIs2ROIs_VolAnatDistance/

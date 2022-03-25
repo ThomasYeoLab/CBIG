@@ -9,10 +9,13 @@
 # This function does the following three steps:
 #	1. Create grey matter and whole brain masks (if they do not exist)
 #	2. Censor "bad" time points (implementation of Power et al. 2014). Detrend before censoring.
-#	3. Censoring QC. Compute the correlation and fractional difference between original signal and final signal. Plot the 0%, 20%, 40%, 60%, 80%, and 100% ranking voxels' time series (correlation and fractional difference respectively)
+#	3. Censoring QC. Compute the correlation and fractional difference between original signal and final signal. 
+#   Plot the 0%, 20%, 40%, 60%, 80%, and 100% ranking voxels' time series (correlation and fractional difference 
+#   respectively)
 #
 # Reference:
-# 1) Power, Jonathan D., et al. "Methods to detect, characterize, and remove motion artifact in resting state fMRI." Neuroimage 84 (2014): 320-341.
+# 1) Power, Jonathan D., et al. "Methods to detect, characterize, and remove motion artifact in resting state fMRI." 
+# Neuroimage 84 (2014): 320-341.
 #
 # Written by Jingwei Li.
 # Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
@@ -40,11 +43,20 @@ set nocleanup = 0;
 
 set n = `echo $argv | grep -e -help | wc -l`
 
-# if there is no arguments or there is -help option 
-if( $#argv == 0 || $n != 0 ) then
+# if there is -help option 
+if( $n != 0 ) then
 	echo $VERSION
 	# print help	
 	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+	exit 0;
+endif
+
+# if there is no arguments
+if( $#argv == 0 ) then
+	echo $VERSION
+	# print help	
+	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+	echo "WARNING: No input arguments. See above for a list of available input arguments."
 	exit 0;
 endif
 
@@ -237,9 +249,13 @@ foreach runfolder ($bold)
 	set qc_out_dir = "${sub_dir}/${subject}/qc/censor_interp"
 	mkdir -p $qc_out_dir
 	if ( -e ${censor_inter} && -e ${censor_final} ) then
-		$MATLAB -nodesktop -nodisplay -nosplash -r "addpath(fullfile('${root_dir}', 'utilities')); CBIG_preproc_CensorQC('${qc_out_dir}', '$subject', '$runfolder', '${BOLD}.nii.gz', '${censor_inter}', '${censor_final}', '${sub_dir}/${subject}/bold/mask/${subject}.brainmask.bin.nii.gz', '${sub_dir}/${subject}/bold/mask/${subject}.func.gm.nii.gz', '${outlier_file}'); exit" |& tee -a $LF
+		$MATLAB -nodesktop -nodisplay -nosplash -r "addpath(fullfile('${root_dir}', 'utilities')); \
+		CBIG_preproc_CensorQC('${qc_out_dir}', '$subject', '$runfolder', '${BOLD}.nii.gz', '${censor_inter}', \
+		'${censor_final}', '${sub_dir}/${subject}/bold/mask/${subject}.brainmask.bin.nii.gz', \
+		'${sub_dir}/${subject}/bold/mask/${subject}.func.gm.nii.gz', '${outlier_file}'); exit" |& tee -a $LF
 	else
-		echo "ERROR: One or two of the intermediate censoring result and final censoring result do not exist. Censoring QC cannot execute." |& tee -a $LF
+		echo "ERROR: One or two of the intermediate censoring result and final censoring result do not exist. \
+		Censoring QC cannot execute." |& tee -a $LF
 	endif
 	
 	# if -nocleanup is not turned on, delete the intermediate volume.
@@ -383,7 +399,8 @@ if ( "$BOLD_stem" == "" ) then
 endif
 
 if ( "$reg_stem" == "" ) then
-	echo "ERROR: reg stem not specified. For censoring step, we need to use registration information to create gray matter mask. Please set CBIG_preproc_bbregister before CBIG_preproc_censor in your configuration file."
+	echo "ERROR: reg stem not specified. For censoring step, we need to use registration information to create \
+	gray matter mask. Please set CBIG_preproc_bbregister before CBIG_preproc_censor in your configuration file."
 	exit 1;
 endif
 
@@ -493,10 +510,12 @@ OPTIONAL ARGUMENTS:
 OUTPUTS:
 	1. If -nocleanup flag is passed in, this function will output two BOLD volumes:
 	   (a) The final output volume (either with interpolation + replacement, or with bandpass + interpolation)
-	   <sub_dir>/<subject>/bold/<run_number>/<subject>_bld<run_number><BOLD_stem>_interp_FD<FD_thres>_DVARS<DVARS_thres>.nii.gz
+	   <sub_dir>/<subject>/bold/<run_number>/<subject>_bld<run_number><BOLD_stem>_interp_FD<FD_thres>
+	   _DVARS<DVARS_thres>.nii.gz
 	   
 	   (b) The intermediate output volume (all frames are interpolated from input uncensored frames)
-	   <sub_dir>/<subject>/bold/<run_number>/<subject>_bld<run_number><BOLD_stem>_interp_inter_FD<FD_thres>_DVARS<DVARS_thres>.nii.gz
+	   <sub_dir>/<subject>/bold/<run_number>/<subject>_bld<run_number><BOLD_stem>_interp_inter_FD<FD_thres>
+	   _DVARS<DVARS_thres>.nii.gz
 	   
 	   If -nocleanup is not passed in, only (a) will be output.
 	   

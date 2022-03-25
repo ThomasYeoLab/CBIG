@@ -2,17 +2,26 @@
 
 # Create grey plot (plot grey matter timeseries).
 #
-# Written by Jingwei Li and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+# Written by Jingwei Li, Xingyu Lyu, CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 set VERSION = '$Id: CBIG_preproc_QC_greyplot.csh, v 1.0 2016/06/09 $'
 
 set n = `echo $argv | grep -e -help | wc -l`
 
-# if there is no arguments or there is -help option 
-if( $#argv == 0 || $n != 0 ) then
+# if there is -help option 
+if( $n != 0 ) then
 	echo $VERSION
 	# print help	
 	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+	exit 0;
+endif
+
+# if there is no arguments
+if( $#argv == 0 ) then
+	echo $VERSION
+	# print help	
+	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+	echo "WARNING: No input arguments. See above for a list of available input arguments."
 	exit 0;
 endif
 
@@ -35,6 +44,8 @@ set grey_vox_fac = 200     # a factor used to adjust the height of grey matter t
 set tp_fac = 0.3           # a factor used to adjust the width of grey matter timeseries subplot
 set FD_th = 0.2            # the threshold of FD in censoring
 set DV_th = 50             # the threshold of DV in censoring
+set echo_number = 1	       # number of echos
+set nocleanup = 0          # default clean up intermediate files
 
 goto parse_args;
 parse_args_return:
@@ -177,7 +188,8 @@ if( -e $ROI_regressors_list ) then
 else 
 	set regression_done = 0
 	echo "[Greyplot]: Nuisance regression was not one of previous preprocessing steps." |& tee -a $LF
-	echo "[Greyplot]: Global signal in the plot will be generated based on the volume from last preprocessing step." |& tee -a $LF
+	echo "[Greyplot]: Global signal in the plot will be generated based on the volume from last \
+	preprocessing step." |& tee -a $LF
 endif
 
 
@@ -189,10 +201,14 @@ set wb_mask = "$boldfolder/mask/$subject.brainmask.bin.nii.gz"
 set gm_mask = $boldfolder/mask/$subject.func.gm.nii.gz
 foreach runfolder ($bold)
 	set fmri_file = $boldfolder/$runfolder/${subject}_bld${runfolder}${BOLD_stem}.nii.gz
-	set FD_file = $mc/${subject}_bld${runfolder}${mc_stem}_motion_outliers_FDRMS
-	set DV_file = $mc/${subject}_bld${runfolder}${mc_stem}_motion_outliers_DVARS
+	if ( $echo_number == 1 ) then
+		set FD_file = $mc/${subject}_bld${runfolder}${mc_stem}_motion_outliers_FDRMS
+		set DV_file = $mc/${subject}_bld${runfolder}${mc_stem}_motion_outliers_DVARS
+	else
+		set FD_file = $mc/${subject}_bld${runfolder}_e1${mc_stem}_motion_outliers_FDRMS
+		set DV_file = $mc/${subject}_bld${runfolder}_e1${mc_stem}_motion_outliers_DVARS
+	endif
 	set output = $qc/${subject}_bld${runfolder}${BOLD_stem}_greyplot.png
-	
 	if ( "$regression_done" == 0 ) then
 		set cmd = ( $MATLAB -nodesktop  -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; )
 		set cmd = ($cmd CBIG_preproc_QC_greyplot "'"$fmri_file"'"  "'"$FD_file"'"  "'"$DV_file"'"  "'"$output"'" )  
@@ -209,10 +225,47 @@ foreach runfolder ($bold)
 	echo $cmd |& tee -a $LF
 	eval $cmd |& tee -a $LF
 end
-echo "=========================== Creatting greyplot finished =========================" |& tee -a $LF
+echo "=========================== Creating greyplot finished =========================" |& tee -a $LF
 echo "" |& tee -a $LF
 
-
+###############################
+# call matlab function to plot multiecho QC if multiecho step has already been performed
+###############################
+echo "=========================== Creating Multi-echo QC greyplot begins =========================" |& tee -a $LF
+foreach runfolder ($bold)
+	if ( -e $sub_dir/$subject/qc/${subject}_bold${runfolder}_multi_echo_QC_greyplot.png ) then 
+		echo "Multi-echo QC greyplot already exists in run ${runfolder}." |& tee -a $LF
+	else if ( $echo_number > 1 && ! -e $sub_dir/$subject/qc/${subject}_bold${runfolder}_multi_echo_QC_greyplot.png ) then 
+		set before_MEICA = "$sub_dir/$subject/qc/bld${runfolder}_desc-optcom_bold.nii.gz"
+		set after_MEICA = "$sub_dir/$subject/qc/bld${runfolder}_desc-optcomDenoised_bold.nii.gz"
+		if ( ! -e $before_MEICA ) then 
+			echo "ERROR: Image bld${runfolder}_desc-optcom_bold.nii.gz missing. \
+			Skip creating Multi-echo QC greyplot." |& tee -a $LF
+		else if ( ! -e $after_MEICA ) then 
+			echo "ERROR: Image bld${runfolder}_desc-optcomDenoised_bold.nii.gz missing. \
+			Skip creating Multi-echo QC greyplot." |& tee -a $LF
+		else
+			pushd $boldfolder/mc/
+			set FDpath = `ls -d *motion_outliers_FDRMS`
+			popd
+			set FDpath = "$boldfolder/mc/$FDpath"
+			set cmd = ( $MATLAB -nodesktop  -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; )
+			set cmd = ( $cmd CBIG_preproc_multiecho_QC_greyplot "'"$before_MEICA"'" "'"$after_MEICA"'" )
+			set cmd = ( $cmd "'"$FDpath"'" \
+"'"$sub_dir/$subject/qc/${subject}_bold${runfolder}_multi_echo_QC_greyplot.png"'"; exit; '"')
+			echo $cmd |& tee -a $LF
+			eval $cmd |& tee -a $LF
+			if ( ! -e $sub_dir/$subject/qc/${subject}_bold${runfolder}_multi_echo_QC_greyplot.png ) then
+				echo "ERROR: Creating Multi-echo QC greyplot failed!" |& tee -a $LF
+				exit 1;
+			else if ( $nocleanup == 0 ) then
+				rm $sub_dir/$subject/qc/bld${runfolder}_desc-optcom_bold.nii.gz
+				rm $sub_dir/$subject/qc/bld${runfolder}_desc-optcomDenoised_bold.nii.gz
+			endif
+		endif
+	endif
+end
+echo "=========================== Creating Multi-echo QC greyplot finished =========================" |& tee -a $LF
 
 #########################
 # Output last commit of current function 
@@ -299,7 +352,16 @@ while( $#argv != 0 )
 			if ( $#argv == 0 ) goto arg1err;
 			set DV_th = "$argv[1]"; shift;
 			breaksw
-		
+
+		case "-echo_number"
+			if ( $#argv == 0 ) goto arg1err;
+			set echo_number = "$argv[1]"; shift;
+			breaksw
+
+		case "-nocleanup":
+			set nocleanup = 1;
+			breaksw
+
 		default:
 			echo ERROR: Flag $flag unrecognized.
 			echo $cmdline
@@ -308,7 +370,6 @@ while( $#argv != 0 )
 	endsw
 end
 goto parse_args_return;
-
 
 ############################################
 ##======check passed parameters
@@ -353,10 +414,8 @@ if ( "$mc_stem" == "" ) then
 	echo "ERROR: mc stem not specified"
 	exit 1;
 endif
-
 			
 goto check_params_return;
-
 
 #######################################################			
 ##======Error message		
@@ -386,6 +445,8 @@ DESCRIPTION:
 	This function
 	  1) Create whole brain and grey matter mask, if not exist.
 	  2) Call matlab function to create the greyplot.
+	  3) For multi-echo subject, call matlab function to create the greyplot 
+	     for multi-echo QC purpose.
 	
 	Greyplot contains 4 subplots: (1) framewise displacement trace;
 	(2) DVARS trace; (3) global signal; and (4) grey matter voxels 
@@ -402,7 +463,8 @@ REQUIRED ARGUMENTS:
 	                              three digits. If this subject has multiple runs, use a space 
 	                              as delimiter, e.g. '002 003'. NOTE: quote sign is necessary.
 	-BOLD_stem     BOLD_stem    : stem of input volume. E.g. if the input file name is
-	                              Sub0001_Ses1_bld002_rest_skip4_stc_mc_residc_interp_FDRMS0.2_DVARS50_bp_0.009_0.08.nii.gz,  
+	                              Sub0001_Ses1_bld002_rest_skip4_stc_mc_residc_interp_FDRMS0.\
+								  2_DVARS50_bp_0.009_0.08.nii.gz,  
 	                              then <BOLD_stem> = _rest_skip4_stc_mc_residc_interp_FDRMS0.2_DVARS50_bp_0.009_0.08. 
 	                              This input file is assumed to be stored in 
 	                              <sub_dir>/<subject>/bold/<run_number>.
@@ -430,17 +492,33 @@ OPTIONAL ARGUMENTS:
 	                              Default is 0.2.
 	-DV_th         DV_th        : it is the threshold for DVARS used in detecting censored frames.
 	                              Default is 50.
+	-echo_number   echo_number  : number of echoes of the subject. If it is a multi-echo subject, 
+	                              a greyplot for multi-echo QC will be generate. Default echo_number 
+	                              is set to be 1.
 	-help                       : help
 	-version                    : version
+	-nocleanup                  : do not delete intermediate volumes
 
 OUTPUTS:
 	For each run, the greyplot is saved as
 	<subject_dir>/<subject_id>/qc/<subject>_bld<run_number><BOLD_stem>_greyplot.png
 
+	For multi-echo QC greyplot, it is saved as:
+	<subject_dir>/<subject_id>/qc/<subject>_bold<run_number>_multi_echo_QC_greyplot.png
+
 EXAMPLE:
+	For single-echo case:
 	$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_QC_greyplot.csh 
 	-s Sub0001_Ses1 -d /storage/FMRI_preprocess -bld '002 003' -BOLD_stem 
 	_rest_skip4_stc_mc_residc_interp_FDRMS0.2_DVARS50_bp_0.009_0.08 -REG_stem _rest_skip4_stc_mc_reg
 	-MC_stem _rest_skip4_stc -grey_vox_fac 200 -tp_fac 0.3
+
+	For multi-echo case:
+	$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_QC_greyplot.csh 
+	-s sub005 -d /storage/FMRI_preprocess -anat_s sub005 
+	-anat_d /storage/FMRI_preprocess/sub005_T1/ -bld 001 -BOLD_stem 
+	_rest_skip4_stc_mc_sdc_me_residc_interp_FDRMS0.3_DVARS60_bp_0.009_0.08 
+	-REG_stem _rest_skip4_stc_mc_sdc_me_reg -MC_stem _rest_skip4_stc -FD_th 0.3 -DV_th 60
+	-echo_number 3 
 
 

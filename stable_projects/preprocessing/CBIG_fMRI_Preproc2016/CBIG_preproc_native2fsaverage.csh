@@ -44,11 +44,20 @@ set VERSION = '$Id: CBIG_preproc_native2fsaverage.csh v 1.0 2016/05/29'
 
 set n = `echo $argv | grep -e -help | wc -l`
 
-# if there is no arguments or there is -help option 
-if( $#argv == 0 || $n != 0 ) then
+# if there is -help option 
+if( $n != 0 ) then
 	echo $VERSION
 	# print help	
 	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+	exit 0;
+endif
+
+# if there is no arguments
+if( $#argv == 0 ) then
+	echo $VERSION
+	# print help	
+	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+	echo "WARNING: No input arguments. See above for a list of available input arguments."
 	exit 0;
 endif
 
@@ -324,8 +333,8 @@ if (! $status) then
 	echo "=======================Git: Last Commit of Current Function \
 =======================" |& tee -a $LF
 	pushd ${CBIG_CODE_DIR}
-	git log -1 \
--- ${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_native2fsaverage.csh >> $LF
+	git log -1 -- ${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016\
+/CBIG_preproc_native2fsaverage.csh >> $LF
 	popd
 endif
 

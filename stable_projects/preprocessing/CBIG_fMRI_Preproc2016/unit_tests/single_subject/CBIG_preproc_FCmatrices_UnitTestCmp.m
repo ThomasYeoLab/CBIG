@@ -63,14 +63,14 @@ function CBIG_preproc_FCmatrices_UnitTestCmp(preproc_out_dir, test_file_stem)
 
 
 if(~exist('test_file_stem', 'var'))
-    test_file_stem = ['rest_skip8_stc_mc_sdc_residc_interp_FDRMS0.3_DVARS60'...
+    test_file_stem = ['rest_skip8_stc_mc_sdc_me_residc_interp_FDRMS0.3_DVARS60'...
                      '_bp_0.009_0.08_fs6_sm6'];
 end
 
 % Beginning of the main code
 % Storing the ID of the 4 subjects chosen for the Unit Test and 
 % defining the 7 types of correlations within the brain. 
-subject_array = 'sub-NDARBF851NH6';
+subject_array = 'sub005';
 corr_label_array = {'all2all', 'lh2lh', 'lh2rh', 'lh2subcort', 'rh2rh',...
                     'rh2subcort', 'subcort2subcort'};
 
@@ -86,13 +86,13 @@ fid = fopen(fullfile(preproc_out_dir, 'inequal_corr_log.txt'),'wt');
 % test_path is the path to the FC matrices directory of the test data
 true_path = fullfile(getenv('CBIG_TESTDATA_DIR'), 'stable_projects', ...
     'preprocessing', 'CBIG_fMRI_Preproc2016', 'single_subject','data', ...
-    'sub-NDARBF851NH6', 'FC_metrics', 'Pearson_r');
+    subject_array, 'FC_metrics', 'Pearson_r');
                          
 test_path = fullfile(preproc_out_dir, subject_array, 'FC_metrics', 'Pearson_r'); 
 
 % Loop through each FC matrix and compare
 for j = 1: length(corr_label_array)
-    file_path_true = [subject_array '_rest_skip8_stc_mc_sdc_residc_'...
+    file_path_true = [subject_array '_rest_skip8_stc_mc_sdc_me_residc_'...
                  'interp_FDRMS0.3_DVARS60_bp_0.009_0.08_fs6_sm6_'...
                  corr_label_array{1,j} '.mat'];
     file_path_test = [subject_array '_' test_file_stem '_' ...

@@ -22,11 +22,20 @@ set VERSION = '$Id: CBIG_preproc_FCmetrics_wrapper.csh, v 1.0 2017/10/14 $'
 
 set n = `echo $argv | grep -e -help | wc -l`
 
-# if there is no arguments or there is -help option 
-if( $#argv == 0 || $n != 0 ) then
+# if there is -help option 
+if( $n != 0 ) then
 	echo $VERSION
 	# print help	
 	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+	exit 0;
+endif
+
+# if there is no arguments
+if( $#argv == 0 ) then
+	echo $VERSION
+	# print help	
+	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+	echo "WARNING: No input arguments. See above for a list of available input arguments."
 	exit 0;
 endif
 
@@ -149,14 +158,14 @@ else
 	echo "[FC metrics]: $subcortex_func_vol already exists." |& tee -a $LF
 endif
 
-echo "======================= Extracting 19 subcortical labels from aseg in functional space finished ======================" \
+echo "=================== Extracting 19 subcortical labels from aseg in functional space finished ==================" \
 |& tee -a $LF
 
 
 ################################################
 # Generate input lists for matlab function
 ################################################
-echo "=============================== Generate inout lists for matlab function =============================" |& tee -a $LF
+echo "============================= Generate inout lists for matlab function ===========================" |& tee -a $LF
 mkdir -p $FCmetrics_folder/lists
 set lh_surf_data_list = "$FCmetrics_folder/lists/lh.${subject}${surf_stem}_list.txt"
 set rh_surf_data_list = "$FCmetrics_folder/lists/rh.${subject}${surf_stem}_list.txt"
@@ -216,13 +225,13 @@ else
 		exit 1
 	endif
 endif
-echo "=========================== Generate input lists for matlab function finished ========================" |& tee -a $LF
+echo "========================= Generate input lists for matlab function finished ======================" |& tee -a $LF
 
 
 #######################################
 # Compute FC metrics
 #######################################
-echo "========================================== Compute FC metrics ==========================================" |& tee -a $LF
+echo "======================================= Compute FC metrics =======================================" |& tee -a $LF
 if ( $Pearson_r == 1 ) then
 	set output_dir = "$FCmetrics_folder/Pearson_r"
 	set output_prefix = "${subject}${surf_stem}"
@@ -254,7 +263,7 @@ if ( $Pearson_r == 1 ) then
 		endif
 	endif
 endif
-echo "====================================== Compute FC metrics finished =====================================" |& tee -a $LF
+echo "=================================== Compute FC metrics finished ==================================" |& tee -a $LF
 
 
 #########################
@@ -265,7 +274,8 @@ which git
 if (! $status) then
 	echo "=======================Git: Last Commit of Current Function =======================" |& tee -a $LF
 	pushd ${CBIG_CODE_DIR}
-	git log -1 -- ${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_FCmetrics_wrapper.csh >> $LF
+	git log -1 -- ${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/\
+CBIG_preproc_FCmetrics_wrapper.csh >> $LF
 	popd
 endif
 
@@ -443,8 +453,9 @@ DESCRIPTION:
 		54  Right-Amygdala
 		58  Right-Accumbens-area 
 		60  Right-VentralDC
-	where the numbers are defined by FreeSurfer color table. We choose these 19 subcortical ROIs to be consistent with CIFTI
-	grayordinate format. The final subcortical FC metrics will follow the ascending order of these ROIs (same as this list).
+	where the numbers are defined by FreeSurfer color table. We choose these 19 subcortical ROIs to be consistent with 
+	CIFTI grayordinate format. The final subcortical FC metrics will follow the ascending order of these ROIs 
+	(same as this list).
 	
 	This function does the following three steps:
 		1. Extract the 19 subcortical ROIs from aseg in subject-specific functional space.
@@ -461,41 +472,42 @@ REQUIRED ARGUMENTS:
 	 absolute path to <subject>. All preprocessed data of this subject are assumed to be stored in <sub_dir>/<subject>.
 	 
 	-bld  bold : 
-	 all bold run numbers of this subject. Each number must has three digits. If this subject has multiple runs, use a space 
-	 as delimiter, e.g. '002 003'. NOTE: quote sign is necessary.
+	 all bold run numbers of this subject. Each number must has three digits. If this subject has multiple runs, 
+	 use a space as delimiter, e.g. '002 003'. NOTE: quote sign is necessary.
 	 
 	-BOLD_stem  BOLD_stem :
-	 stem of input volume. This volume is used to extract the subcortical timeseries in subject-specific functional space. 
-	 E.g. if the input file name is Sub0001_Ses1_bld002_rest_skip4_stc_mc_residc_interp_FDRMS0.2_DVARS50_bp_0.009_0.08.nii.gz, 
-	 then <BOLD_stem> = _rest_stc_mc_resid. This input file is assumed to be stored in <sub_dir>/<subject>/bold/<run_number>.
+	 stem of input volume. This volume is used to extract the subcortical timeseries in subject-specific functional 
+	 space. E.g. if the input file name is Sub0001_Ses1_bld002_rest_skip4_stc_mc_residc_interp_FDRMS0.2_DVARS50_bp_
+	 0.009_0.08.nii.gz, then <BOLD_stem> = _rest_stc_mc_resid. This input file is assumed to be stored in <sub_dir>/
+	 <subject>/bold/<run_number>.
 	 
 	-SURF_stem  surf_stem :
-	 stem of input surface. The surfaces files are used to extract the cortical timseries. E.g. if the input file names are 
-	 like: lh(/rh).Sub0001_Ses1_bld002_rest_skip4_stc_mc_residc_interp_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6.nii.gz,
-	 then <surf_stem> = _rest_skip4_stc_mc_residc_interp_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6. The surface files are 
-	 assumed to be stored in <sub_dir>/<subject>/surf, and should be in the same space as "lh_cortical_ROIs_file" and
-	 "rh_cortical_ROIs_file" (i.e. if your "surf_stem" is xxx_fs5, your "lh_cortical_ROIs_file" and "rh_cortical_ROIs_file"
-	 need to be in fsaverage5 space as well).
+	 stem of input surface. The surfaces files are used to extract the cortical timseries. E.g. if the input 
+	 file names are: lh(/rh).Sub0001_Ses1_bld002_rest_skip4_stc_mc_residc_interp_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_\
+	 sm6.nii.gz, then <surf_stem> = _rest_skip4_stc_mc_residc_interp_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6. 
+	 The surface files are assumed to be stored in <sub_dir>/<subject>/surf, and should be in the same space as 
+	 "lh_cortical_ROIs_file" and "rh_cortical_ROIs_file" (i.e. if your "surf_stem" is xxx_fs5, your 
+	 "lh_cortical_ROIs_file" and "rh_cortical_ROIs_file" need to be in fsaverage5 space as well).
 	 
 	-OUTLIER_stem  outlier_stem : 
-	 outlier text file stem. The number of lines in this file is equal to the total number of frames. Each line is a number 
-	 of 0 or 1 (0-censored, 1-keep). E.g. if the outlier file is Sub0001_Ses1_bld002_FDRMS0.2_DVARS50_motion_outliers.txt, 
-	 then <outlier_stem> = _FDRMS0.2_DVARS50_motion_outliers.txt. The outlier file is assumed to be stored in 
-	 <sub_dir>/<subject>/qc.
+	 outlier text file stem. The number of lines in this file is equal to the total number of frames. Each line is 
+	 a number of 0 or 1 (0-censored, 1-keep). E.g. if the outlier file is Sub0001_Ses1_bld002_FDRMS0.2_DVARS50_motion
+	 _outliers.txt, then <outlier_stem> = _FDRMS0.2_DVARS50_motion_outliers.txt. The outlier file is assumed to be 
+	 stored in <sub_dir>/<subject>/qc.
 	 
 	-Pearson_r :
 	 to compute ROIs to ROIs static Pearson's correlation.
 	                              
 OPTIONAL ARGUMENTS:
 	-lh_cortical_ROIs_file  lh_cortical_ROIs_file : 
-	 The cortical ROIs file of left hemisphere (with absolute path). If the users do not pass in this, the default is to use 
-	 the 400-parcels parcellation of Schaefer et al. 2018:
-	 "$CBIG_CODE_DIR/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Parcellations/FreeSurfer5.3/fsaverage6/
-	  label/lh.Schaefer2018_400Parcels_17Networks_order.annot"
+	 The cortical ROIs file of left hemisphere (with absolute path). If the users do not pass in this, 
+	 the default is to use the 400-parcels parcellation of Schaefer et al. 2018:
+	 "$CBIG_CODE_DIR/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Parcellations/FreeSurfer5.3/
+	 fsaverage6/label/lh.Schaefer2018_400Parcels_17Networks_order.annot"
 	 
 	-rh_cortical_ROIs_file  rh_cortical_ROIs_file :
-	 The cortical ROIs file of right hemisphere (with absolute path). If the users do not pass in this, the default is to use 
-	 the 400-parcels parcellation of Schaefer et al. 2018:
+	 The cortical ROIs file of right hemisphere (with absolute path). If the users do not pass in this, 
+	 the default is to use the 400-parcels parcellation of Schaefer et al. 2018:
 	 "$CBIG_CODE_DIR/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Parcellations/FreeSurfer5.3/fsaverage6/
 	  label/rh.Schaefer2018_400Parcels_17Networks_order.annot"
 	  

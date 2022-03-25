@@ -12,4 +12,4 @@ CBIG_preproc_bandpass -low_f 0.009 -high_f 0.08 -detrend
 CBIG_preproc_QC_greyplot -FD_th 0.2 -DV_th 50
 CBIG_preproc_native2fsaverage -proj fsaverage6 -sm 6 -down fsaverage5
 CBIG_preproc_FC_metrics -Pearson_r -censor
-CBIG_preproc_native2mni_ants -sm_mask ${CBIG_CODE_DIR}/data/templates/volume/FSL_MNI152_masks/SubcorticalLooseMask_MNI1mm_sm6_MNI2mm_bin0.2.nii.gz -final_mask ${FSL_DIR}/data/standard/MNI152_T1_2mm_brain_mask_dil.nii.gz
+CBIG_preproc_native2mni_ants -final_mask ${FSL_DIR}/data/standard/MNI152_T1_2mm_brain_mask_dil.nii.gz

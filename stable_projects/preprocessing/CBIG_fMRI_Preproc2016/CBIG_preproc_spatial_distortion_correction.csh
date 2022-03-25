@@ -14,23 +14,35 @@
 # 2) Unwarp the functional image using FUGUE:
 #    This step applies the warping field generated from the processed fieldmaps to 
 #    the functional image
+# 3) In the case of multi-echo acquisition, distortion correction is only done on the first echo 
+#    and the warping field (combined with the transformation matrices from motion correction) 
+#    is applied to the rest of the echoes.
 # The unwarping method is taken from Midnight Scan Club (MSC) preprocessing pipeline, epi_unwarp_MSC,
 # which is written by Tyler Blazey 
 # (https://github.com/MidnightScanClub/MSCcodebase/blob/master/Processing/epi_unwarp_MSC).
 #############################################
-# Author: Shaoshi Zhang
+# Author: Shaoshi Zhang, Xingyu Lyu
 # Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 set VERSION = '$Id: CBIG_preproc_spatial_distortion_correction.csh, v 1.0 2018/11/1 $'
 
 set n = `echo $argv | grep -e -help | wc -l`
 
-# if there is no arguments or there is -help option 
-if( $#argv == 0 || $n != 0 ) then
-        echo $VERSION
-        # print help    
-        cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
-        exit 0;
+# if there is -help option 
+if( $n != 0 ) then
+	echo $VERSION
+	# print help	
+	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+	exit 0;
+endif
+
+# if there is no arguments
+if( $#argv == 0 ) then
+	echo $VERSION
+	# print help	
+	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+	echo "WARNING: No input arguments. See above for a list of available input arguments."
+	exit 0;
 endif
 
 set subject = ""
@@ -59,10 +71,9 @@ set topup_config = ""       #config file for topup (use default if not specified
 set sig_threshold = 0.9     #signal loss threshold. Default is 0.9
 set fmri_bet = 0.2          #BET fractional intensity threshold for fMRI image. Default is 0.2
 set mag_bet = 0.3           #BET fractional intensity threshold for magnitude image. Default is 0.3
+set echo_number = 1  	    #number of echos default to be 1
+set echo_stem = ""
 
-
-
-		
 goto parse_args;
 parse_args_return:
 
@@ -125,8 +136,8 @@ if ( $fpm == "mag+phasediff" ) then
           echo "ERROR: delta TE not specified. Exit." |& tee -a $LF
           exit 1
      endif
-     imcp $mag $sdc/magnitude
-     imcp $phase $sdc/phase_difference
+     rsync $mag $sdc/magnitude.nii.gz
+     rsync $phase $sdc/phase_difference.nii.gz
      set mag = magnitude
      set phase = phase_difference
 
@@ -247,245 +258,270 @@ endif
 echo "=======================Fieldmap processing done=======================" |& tee -a $LF
 echo "" |& tee -a $LF
 
-
+## For multi-echo case, here we do spatial distortion correction only on the first echo, 
+## then apply the warping to the rest of echoes.
+## set echo_stem based on echo number
+if ($echo_number != 1) then
+	set echo_stem = _e1
+endif
 
 ##########################################
 # Unwarp BOLD images
 ########################################## 
 foreach curr_bold ($zpdbold) 
-     cd $boldfolder/$curr_bold
-     set boldfile = "$subject"_bld"$curr_bold""$BOLD_stem"
+	cd $boldfolder/$curr_bold
+	set boldfile = "$subject"_bld"$curr_bold$echo_stem$BOLD_stem"
 #copy over processed magnitude, phase fieldmap image, and brain mask
-     set cmd = ( imcp $sdc/$mag_brain_mask fmap_magnitude_brain_mask )
-     eval $cmd
-     set cmd = ( imcp $sdc/$mag fmap_magnitude_brain )
-     eval $cmd
-     set cmd = ( imcp $sdc/$phase fmap_phase )
-     eval $cmd
+	set cmd = ( rsync $sdc/$mag_brain_mask.nii.gz fmap_magnitude_brain_mask.nii.gz )
+	eval $cmd
+	set cmd = ( rsync $sdc/$mag.nii.gz fmap_magnitude_brain.nii.gz )
+	eval $cmd
+	set cmd = ( rsync $sdc/$phase.nii.gz fmap_phase.nii.gz )
+	eval $cmd
 end
 
 foreach curr_bold ($zpdbold) 
-cd $boldfolder/$curr_bold
-set boldfile = "$subject"_bld"$curr_bold""$BOLD_stem"
+	cd $boldfolder/$curr_bold
+	set boldfile = "$subject"_bld"$curr_bold$echo_stem$BOLD_stem"
+	echo "=======================Create Brain Mask=======================" |& tee -a $LF
 
-echo "=======================Create Brain Mask=======================" |& tee -a $LF
+	set mag_brain_mask = fmap_magnitude_brain_mask
+	set mag = fmap_magnitude_brain
+	set phase = fmap_phase
 
-set mag_brain_mask = fmap_magnitude_brain_mask
-set mag = fmap_magnitude_brain
-set phase = fmap_phase
+	#Extract the reference frame
+	echo "Reference frame for $boldfile.nii.gz --> $ref" |& tee -a $LF
+	set cmd = ( fslroi $boldfile "$boldfile"_"$ref" $ref 1 )
+	echo $cmd |& tee -a $LF
+	eval $cmd
 
-#Extract the reference frame
-echo "Reference frame for $boldfile.nii.gz --> $ref" |& tee -a $LF
-set cmd = ( fslroi $boldfile "$boldfile"_"$ref" $ref 1 )
-echo $cmd |& tee -a $LF
-eval $cmd
+	#fMRI brain extraction
+	set cmd = ( bet "$boldfile"_"$ref" "$boldfile"_"$ref"_brain -m -f $fmri_bet -R )
+	echo $cmd |& tee -a $LF
+	eval $cmd
 
-#fMRI brain extraction
-set cmd = ( bet "$boldfile"_"$ref" "$boldfile"_"$ref"_brain -m -f $fmri_bet -R )
-echo $cmd |& tee -a $LF
-eval $cmd
+	#Create inverted field map brain mask
+	set cmd = ( fslmaths $phase -abs -bin -mas "$mag_brain_mask" -mul -1 -add 1 -bin "$phase"_inv_brain_mask )
+	echo $cmd |& tee -a $LF
+	eval $cmd
+			
+	#Cluster inverted brain mask
+	set cmd = ( cluster -i "$phase"_inv_brain_mask -t 0.5 --no_table -o "$phase"_inv_brain_mask_clust )
+	echo $cmd |& tee -a $LF
+	eval $cmd 
+			
+	#Save intensity of largest cluster 
+	set max = `fslstats "$phase"_inv_brain_mask_clust -R | awk '{print $2}'`
 
-#Create inverted field map brain mask
-set cmd = ( fslmaths $phase -abs -bin -mas "$mag_brain_mask" -mul -1 -add 1 -bin "$phase"_inv_brain_mask )
-echo $cmd |& tee -a $LF
-eval $cmd
-		 
-#Cluster inverted brain mask
-set cmd = ( cluster -i "$phase"_inv_brain_mask -t 0.5 --no_table -o "$phase"_inv_brain_mask_clust )
-echo $cmd |& tee -a $LF
-eval $cmd 
+	#Threshhold the image by max, then invert again. Get a new, tighter brain mask.
+	set cmd = ( fslmaths "$phase"_inv_brain_mask_clust -thr $max -bin -mul -1 -add 1 -bin )
+	set cmd = ( $cmd -mas "$mag_brain_mask" "$mag_brain_mask" )
+	echo $cmd |& tee -a $LF
+	eval $cmd 
+			
+	#Use the new brain mask on the phase image
+	set cmd = ( fslmaths "$phase" -mas "$mag_brain_mask" "$phase"_masked )
+	echo $cmd |& tee -a $LF
+	eval $cmd
+	set phase = "$phase"_masked 
+
+	#Get a 50% brain mask
+	set fifty = `fslstats "$mag" -P 98 | awk '{print ( $1 / 2 ) }'`
+	set cmd = ( fslmaths "$mag" -thr $fifty -bin "$mag"_fifty_mask )
+	echo $cmd |& tee -a $LF
+	eval $cmd 
+
+	#Erode the original brain mask
+	set cmd = ( fslmaths "$mag_brain_mask" -ero "$mag_brain_mask"_eroded )
+	echo $cmd |& tee -a $LF
+	eval $cmd 
+
+	#Add eroded and fifty masks
+	set cmd = ( fslmaths "$mag_brain_mask"_eroded -add "$mag"_fifty_mask -thr 0.5 -bin "$mag_brain_mask" )
+	echo $cmd |& tee -a $LF
+	eval $cmd 
+			
+	#Mask the phase image again
+	set cmd = ( fslmaths "$phase" -mas "$mag_brain_mask" "$phase" )
+	echo $cmd |& tee -a $LF
+	eval $cmd 
+
+	#Erode brain mask again
+	set cmd = ( fslmaths "$mag_brain_mask" -ero "$mag_brain_mask"_eroded )
+	echo $cmd |& tee -a $LF
+	eval $cmd 
+
+	echo "=======================Brain Mask Created=======================" |& tee -a $LF
+	echo "" |& tee -a $LF
+	echo "=======================Apply filetring on phase image=======================" |& tee -a $LF
+
+	#Create filter
+	set filter = "$phase"_filter_despike
+	set cmd = ( fugue --loadfmap="$phase" --mask="$mag_brain_mask" --despike --despikethreshold=2.1 --savefmap="$filter" )
+	echo $cmd |& tee -a $LF
+	eval $cmd 
+
+	#Apply the filter to brain edges
+	set cmd = ( fslmaths "$filter" -sub "$phase" -mas "$mag_brain_mask"_eroded -add "$phase" "$phase"_filtered )
+	echo $cmd |& tee -a $LF
+	eval $cmd 
+	set phase = "$phase"_filtered
+
+	#Shift median to 0
+	set median = `fslstats "$phase" -k "$mag_brain_mask" -P 50`
+	set cmd = ( fslmaths "$phase" -sub $median "$phase"_norm )
+	echo $cmd |& tee -a $LF
+	eval $cmd
+	set phase = "$phase"_norm
+	echo "=======================Filtering done=======================" |& tee -a $LF
+	echo "" |& tee -a $LF
+
+	echo "=======================Calculating warping field=======================" |& tee -a $LF
+	set xfm = "$boldfile"_"$ref"_brain_to_fmap_mag_brain_signal_lossed_distorted.mat
+	set inv_xfm = fmap_mag_brain_signal_lossed_distorted_to_"$boldfile"_"$ref"_brain.mat
 		
-#Save intensity of largest cluster 
-set max = `fslstats "$phase"_inv_brain_mask_clust -R | awk '{print $2}'`
+	#Estimate signal loss from phase image. Range goes from 0 (no signal) to 1 (full signal)
+	set cmd = ( sigloss -i "$phase" --te="$TE" -m "$mag_brain_mask" -s "$phase"_signal_loss )
+	echo $cmd |& tee -a $LF 
+	eval $cmd 
 
-#Threshhold the image by max, then invert again. Get a new, tighter brain mask.
-set cmd = ( fslmaths "$phase"_inv_brain_mask_clust -thr $max -bin -mul -1 -add 1 -bin )
-set cmd = ( $cmd -mas "$mag_brain_mask" "$mag_brain_mask" )
-echo $cmd |& tee -a $LF
-eval $cmd 
-		 
-#Use the new brain mask on the phase image
-set cmd = ( fslmaths "$phase" -mas "$mag_brain_mask" "$phase"_masked )
-echo $cmd |& tee -a $LF
-eval $cmd
-set phase = "$phase"_masked 
+	#Multiply fieldmap magnitude image by signal loss image. Will result in a magnitude with areas of signal loss.
+	set cmd = ( fslmaths "$phase"_signal_loss -mul "$mag" fmap_mag_brain_signal_lossed -odt float )
+	echo $cmd |& tee -a $LF
+	eval $cmd 
 
-#Get a 50% brain mask
-set fifty = `fslstats "$mag" -P 98 | awk '{print ( $1 / 2 ) }'`
-set cmd = ( fslmaths "$mag" -thr $fifty -bin "$mag"_fifty_mask )
-echo $cmd |& tee -a $LF
-eval $cmd 
+	#Run fugue on the signal lossed magnitude image. Will distort it according to the fieldmap phase image. 
+	set cmd = ( fugue -i fmap_mag_brain_signal_lossed --loadfmap="$phase" )
+	set cmd = ( $cmd --mask="$mag_brain_mask" -w fmap_mag_brain_signal_lossed_distorted )
+	set cmd = ( $cmd --nokspace --unwarpdir='y-' --dwell="$ees" )
+	echo $cmd |& tee -a $LF
+	eval $cmd 
 
-#Erode the original brain mask
-set cmd = ( fslmaths "$mag_brain_mask" -ero "$mag_brain_mask"_eroded )
-echo $cmd |& tee -a $LF
-eval $cmd 
+	#Do the same thing for the signal_loss phase image.
+	set cmd = ( fugue -i "$phase"_signal_loss --loadfmap="$phase" --dwell="$ees" )
+	set cmd = ( $cmd -w "$phase"_signal_loss_distorted --nokspace --unwarpdir='y-' )
+	set cmd = ( $cmd --mask="$mag_brain_mask" )
+	echo $cmd |& tee -a $LF
+	eval $cmd 
 
-#Add eroded and fifty masks
-set cmd = ( fslmaths "$mag_brain_mask"_eroded -add "$mag"_fifty_mask -thr 0.5 -bin "$mag_brain_mask" )
-echo $cmd |& tee -a $LF
-eval $cmd 
-		 
-#Mask the phase image again
-set cmd = ( fslmaths "$phase" -mas "$mag_brain_mask" "$phase" )
-echo $cmd |& tee -a $LF
-eval $cmd 
+	#Threshhold the distorted signal loss brain according to user chosen signal loss threshhold
+	set cmd = ( fslmaths "$phase"_signal_loss_distorted -thr "$sig_threshold" )
+	set cmd = ( $cmd "$phase"_signal_loss_distorted )
+	echo $cmd |& tee -a $LF
+	eval $cmd 
 
-#Erode brain mask again
-set cmd = ( fslmaths "$mag_brain_mask" -ero "$mag_brain_mask"_eroded )
-echo $cmd |& tee -a $LF
-eval $cmd 
+	#Register the distorted magnitude to the distorted functional image.
+	#Generate func --> fmap_mag 
+	#Use the threshholded signal loss brain as weighting (areas with 0 will be ignored)
+	set cmd = ( flirt -ref fmap_mag_brain_signal_lossed_distorted -in "$boldfile"_"$ref"_brain )
+	set cmd = ( $cmd -omat $xfm -refweight "$phase"_signal_loss_distorted -dof 6 )
+	set cmd = ( $cmd -out "$boldfile"_"$ref"_brain_to_fmap_mag_brain_signal_lossed_distorted )
+	echo $cmd |& tee -a $LF
+	eval $cmd 
 
-echo "=======================Brain Mask Created=======================" |& tee -a $LF
-echo "" |& tee -a $LF
-echo "=======================Apply filetring on phase image=======================" |& tee -a $LF
+	#Invert transformation to get fmap_mag --> func
+	set cmd = ( convert_xfm -omat $inv_xfm -inverse $xfm )
+	echo $cmd |& tee -a $LF
+	eval $cmd 
 
-#Create filter
-set filter = "$phase"_filter_despike
-set cmd = ( fugue --loadfmap="$phase" --mask="$mag_brain_mask" --despike --despikethreshold=2.1 --savefmap="$filter" )
-echo $cmd |& tee -a $LF
-eval $cmd 
+	#Apply transformation to original magnitude image for QA purposes
+	set cmd = ( flirt -in "$mag" -ref "$boldfile"_"$ref"_brain -applyxfm -init )
+	set cmd = ( $cmd $inv_xfm -out fmap_mag_brain_to_"$boldfile"_"$ref"_brain )
+	echo $cmd |& tee -a $LF
+	eval $cmd 
 
-#Apply the filter to brain edges
-set cmd = ( fslmaths "$filter" -sub "$phase" -mas "$mag_brain_mask"_eroded -add "$phase" "$phase"_filtered )
-echo $cmd |& tee -a $LF
-eval $cmd 
-set phase = "$phase"_filtered
+	#Apply transformation (fmap_mag --> func) to the field phase image, the result will be 
+	#phase image registered to functional image
+	set cmd = ( flirt -in "$phase" -ref "$boldfile"_"$ref"_brain -applyxfm )
+	set cmd = ( $cmd -init $inv_xfm -out "$phase"_to_"$boldfile"_"$ref"_brain )
+	echo $cmd |& tee -a $LF
+	eval $cmd 
+	set phase = "$phase"_to_"$boldfile"_"$ref"_brain
 
-#Shift median to 0
-set median = `fslstats "$phase" -k "$mag_brain_mask" -P 50`
-set cmd = ( fslmaths "$phase" -sub $median "$phase"_norm )
-echo $cmd |& tee -a $LF
-eval $cmd
-set phase = "$phase"_norm
-echo "=======================Filtering done=======================" |& tee -a $LF
-echo "" |& tee -a $LF
+	#Apply transform to mask
+	set cmd = ( flirt -in "$mag_brain_mask" -ref "$boldfile"_"$ref"_brain -applyxfm )
+	set cmd = ( $cmd -init $inv_xfm -out fmap_mag_brain_mask_to_"$boldfile"_"$ref"_brain )
+	echo $cmd |& tee -a $LF
+	eval $cmd  
 
-echo "=======================Calculating warping field=======================" |& tee -a $LF
-set xfm = "$boldfile"_"$ref"_brain_to_fmap_mag_brain_signal_lossed_distorted.mat
-set inv_xfm = fmap_mag_brain_signal_lossed_distorted_to_"$boldfile"_"$ref"_brain.mat
-	
-#Estimate signal loss from phase image. Range goes from 0 (no signal) to 1 (full signal)
-set cmd = ( sigloss -i "$phase" --te="$TE" -m "$mag_brain_mask" -s "$phase"_signal_loss )
-echo $cmd |& tee -a $LF 
-eval $cmd 
+	#Rebinarize mask
+	set cmd = ( fslmaths fmap_mag_brain_mask_to_"$boldfile"_"$ref"_brain -thr 0.5 -bin )
+	set cmd = ( $cmd fmap_mag_brain_mask_to_"$boldfile"_"$ref"_brain )
+	echo $cmd |& tee -a $LF
+	eval $cmd |& tee 
+				
+	#dilate brain mask slightly in order to prevent erosion
+	set cmd = ( fslmaths fmap_mag_brain_mask_to_"$boldfile"_"$ref"_brain -dilM )
+	set cmd = ( $cmd -dilM -ero fmap_mag_brain_mask_to_"$boldfile"_"$ref"_brain )
+	echo $cmd |& tee -a $LF
+	eval $cmd  
 
-#Multiply fieldmap magnitude image by signal loss image. Will result in a magnitude with areas of signal loss.
-set cmd = ( fslmaths "$phase"_signal_loss -mul "$mag" fmap_mag_brain_signal_lossed -odt float )
-echo $cmd |& tee -a $LF
-eval $cmd 
+	#Run fugue using the registerted phase image on the distorted func. 
+	#Will unwarp the func reference frame and save the shift map that does this.
+	set cmd = ( fugue --loadfmap="$phase" --dwell=$ees -u "$boldfile"_"$ref"_unwarped )
+	set cmd = ( $cmd  -i "$boldfile"_"$ref" --saveshift="$boldfile"_"$ref"_unwarp_shift )
+	set cmd = ( $cmd --mask=fmap_mag_brain_mask_to_"$boldfile"_"$ref"_brain --unwarpdir='y-' )
+	echo $cmd |& tee -a $LF
+	eval $cmd 
 
-#Run fugue on the signal lossed magnitude image. Will distort it according to the fieldmap phase image. 
-set cmd = ( fugue -i fmap_mag_brain_signal_lossed --loadfmap="$phase" )
-set cmd = ( $cmd --mask="$mag_brain_mask" -w fmap_mag_brain_signal_lossed_distorted )
-set cmd = ( $cmd --nokspace --unwarpdir='y-' --dwell="$ees" )
-echo $cmd |& tee -a $LF
-eval $cmd 
+	#Convert the shiftwarp to an absolute warp
+	set cmd = ( convertwarp -s "$boldfile"_"$ref"_unwarp_shift -r "$boldfile"_"$ref" )
+	set cmd = ( $cmd --shiftdir='y-' -o "$boldfile"_"$ref"_unwarp_shift_warp ) 
+	echo $cmd |& tee -a $LF
+	eval $cmd 
 
-#Do the same thing for the signal_loss phase image.
-set cmd = ( fugue -i "$phase"_signal_loss --loadfmap="$phase" --dwell="$ees" )
-set cmd = ( $cmd -w "$phase"_signal_loss_distorted --nokspace --unwarpdir='y-' )
-set cmd = ( $cmd --mask="$mag_brain_mask" )
-echo $cmd |& tee -a $LF
-eval $cmd 
+	echo "=======================Calculate warping field finished=======================" |& tee -a $LF
+	echo "" |& tee -a $LF
+	echo "=======================Unwarp BOLD image=======================" |& tee -a $LF
+	#check existence of relevant input images for applywarp
+	if ( ! -e "$boldfile"_"$ref"_unwarp_shift_warp.nii.gz ) then
+		echo "[ERROR] Warping field missing, please check if FSL version is 5.0.10 or above." |& tee -a $LF
+		exit 1
+	endif
 
-#Threshhold the distorted signal loss brain according to user chosen signal loss threshhold
-set cmd = ( fslmaths "$phase"_signal_loss_distorted -thr "$sig_threshold" )
-set cmd = ( $cmd "$phase"_signal_loss_distorted )
-echo $cmd |& tee -a $LF
-eval $cmd 
+	if ( ! -e "$boldfile"_mc.cat ) then
+		echo "[ERROR] motion correction transformation matrices missing!" |& tee -a $LF
+		exit 1
+	endif
+	#apply motion correction transformation matrices and unwarping field at the same time to
+	#reduce the number of interpolation
 
-#Register the distorted magnitude to the distorted functional image.
-#Generate func --> fmap_mag 
-#Use the threshholded signal loss brain as weighting (areas with 0 will be ignored)
-set cmd = ( flirt -ref fmap_mag_brain_signal_lossed_distorted -in "$boldfile"_"$ref"_brain )
-set cmd = ( $cmd -omat $xfm -refweight "$phase"_signal_loss_distorted -dof 6 )
-set cmd = ( $cmd -out "$boldfile"_"$ref"_brain_to_fmap_mag_brain_signal_lossed_distorted )
-echo $cmd |& tee -a $LF
-eval $cmd 
+	set cmd = ( applywarp -i "$boldfile" -o "$boldfile"_mc_sdc -r "$boldfile" --abs )
+	set cmd = ( $cmd -w "$boldfile"_"$ref"_unwarp_shift_warp --premat="$boldfile"_mc.cat --interp=spline )
+	echo $cmd |& tee -a $LF
+	eval $cmd
 
-#Invert transformation to get fmap_mag --> func
-set cmd = ( convert_xfm -omat $inv_xfm -inverse $xfm )
-echo $cmd |& tee -a $LF
-eval $cmd 
+	echo "=======================Unwarping done!=======================" |& tee -a $LF
+	echo "" |& tee -a $LF
 
-#Apply transformation to original magnitude image for QA purposes
-set cmd = ( flirt -in "$mag" -ref "$boldfile"_"$ref"_brain -applyxfm -init )
-set cmd = ( $cmd $inv_xfm -out fmap_mag_brain_to_"$boldfile"_"$ref"_brain )
-echo $cmd |& tee -a $LF
-eval $cmd 
+	#########################
+	# apply warping on other echoes for multi-echo data
+	#########################
+	echo "====================== apply warp on other echos ======================" |& tee -a $LF
+	set i = 2
+	while ( $i <= $echo_number)
+		set cmd = ( applywarp -i $subject"_bld"${curr_bold}_e${i}${BOLD_stem}.nii.gz )
+		set cmd = ( $cmd -o "$subject"_bld"$curr_bold"_e$i"$BOLD_stem"_mc_sdc.nii.gz )
+		set cmd = ( $cmd -r "$subject"_bld"$curr_bold"_e${i}${BOLD_stem}.nii.gz --abs )
+		set cmd = ( $cmd -w "$subject"_bld"$curr_bold"_e1"$BOLD_stem"_"$ref"_unwarp_shift_warp.nii.gz )
+		set cmd = ( $cmd --premat="$subject"_bld"$curr_bold"_e1"$BOLD_stem"_mc.cat --interp=spline )
+		echo $cmd |& tee -a $LF
+		eval $cmd
+		@ i++
+	end
+	echo "====================== apply warp on other echos finished ======================" |& tee -a $LF
 
-#Apply transformation (fmap_mag --> func) to the field phase image, the result will be 
-#phase image registered to functional image
-set cmd = ( flirt -in "$phase" -ref "$boldfile"_"$ref"_brain -applyxfm )
-set cmd = ( $cmd -init $inv_xfm -out "$phase"_to_"$boldfile"_"$ref"_brain )
-echo $cmd |& tee -a $LF
-eval $cmd 
-set phase = "$phase"_to_"$boldfile"_"$ref"_brain
+	#tidy up the space
+	if ( ! -e unwarping ) then
+		mkdir warping
+	endif
+	mv fmap* warping/
+	mv "$boldfile"_"$ref"* warping/
 
-#Apply transform to mask
-set cmd = ( flirt -in "$mag_brain_mask" -ref "$boldfile"_"$ref"_brain -applyxfm )
-set cmd = ( $cmd -init $inv_xfm -out fmap_mag_brain_mask_to_"$boldfile"_"$ref"_brain )
-echo $cmd |& tee -a $LF
-eval $cmd  
-
-#Rebinarize mask
-set cmd = ( fslmaths fmap_mag_brain_mask_to_"$boldfile"_"$ref"_brain -thr 0.5 -bin )
-set cmd = ( $cmd fmap_mag_brain_mask_to_"$boldfile"_"$ref"_brain )
-echo $cmd |& tee -a $LF
-eval $cmd |& tee 
-			  
-#dilate brain mask slightly in order to prevent erosion
-set cmd = ( fslmaths fmap_mag_brain_mask_to_"$boldfile"_"$ref"_brain -dilM )
-set cmd = ( $cmd -dilM -ero fmap_mag_brain_mask_to_"$boldfile"_"$ref"_brain )
-echo $cmd |& tee -a $LF
-eval $cmd  
-
-#Run fugue using the registerted phase image on the distorted func. 
-#Will unwarp the func reference frame and save the shift map that does this.
-set cmd = ( fugue --loadfmap="$phase" --dwell=$ees -u "$boldfile"_"$ref"_unwarped )
-set cmd = ( $cmd  -i "$boldfile"_"$ref" --saveshift="$boldfile"_"$ref"_unwarp_shift )
-set cmd = ( $cmd --mask=fmap_mag_brain_mask_to_"$boldfile"_"$ref"_brain --unwarpdir='y-' )
-echo $cmd |& tee -a $LF
-eval $cmd 
-
-#Convert the shiftwarp to an absolute warp
-set cmd = ( convertwarp -s "$boldfile"_"$ref"_unwarp_shift -r "$boldfile"_"$ref" )
-set cmd = ( $cmd --shiftdir='y-' -o "$boldfile"_"$ref"_unwarp_shift_warp ) 
-echo $cmd |& tee -a $LF
-eval $cmd 
-
-echo "=======================Calculate warping field finished=======================" |& tee -a $LF
-echo "" |& tee -a $LF
-echo "=======================Unwarp BOLD image=======================" |& tee -a $LF
-#check existence of relevant input images for applywarp
-if ( ! -e "$boldfile"_"$ref"_unwarp_shift_warp.nii.gz ) then
-    echo "[ERROR] Warping field missing, please check if FSL version is 5.0.10 or above." |& tee -a $LF
-    exit 1
-endif
-
-if ( ! -e "$boldfile"_mc.cat ) then
-    echo "[ERROR] motion correction transformation matrices missing!" |& tee -a $LF
-    exit 1
-endif
-#apply motion correction transformation matrices and unwarping field at the same time to
-#reduce the number of interpolation
-
-set cmd = ( applywarp -i "$boldfile" -o "$boldfile"_mc_sdc -r "$boldfile" --abs )
-set cmd = ( $cmd -w "$boldfile"_"$ref"_unwarp_shift_warp --premat="$boldfile"_mc.cat --interp=spline )
-echo $cmd |& tee -a $LF
-eval $cmd
-
-echo "=======================Unwarping done!=======================" |& tee -a $LF
-echo "" |& tee -a $LF
-
-#tidy up the space
-if ( ! -e unwarping ) then
-     mkdir warping
-endif
-mv fmap* warping/
-mv "$boldfile"_"$ref"* warping/
-
+	#clean up intermediate files
+	if ( $nocleanup != 1 ) then
+		rm -r warping
+	endif
 end
 
 #########################
@@ -496,7 +532,8 @@ which git
 if (! $status) then
 	echo "=======================Git: Last Commit of Current Function =======================" |& tee -a $LF
 	pushd ${CBIG_CODE_DIR}
-	git log -1 -- ${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_spatial_distortion_correction.csh\
+	git log -1 --\
+	${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_spatial_distortion_correction.csh \
 >> $LF
 	popd
 endif
@@ -633,6 +670,12 @@ while( $#argv != 0 )
 			set nocleanup = 1;
 			breaksw
 
+		#echo number
+		case "-echo_number":
+			set echo_number = $argv[1]; shift;
+			breaksw
+
+
                 default:
                         echo ERROR: Flag $flag unrecognized.
                         echo $cmdline
@@ -723,13 +766,15 @@ DESCRIPTION:
 	    <sub>_bld<bold_run>_<bold_stem>_mc.cat under <sub_dir>/<sub/>bold/<bold_run>.
 	    Warping field and motion correction transformation matrices will be applied together to 
 	    reduce the number of interpolation.
+	 4) In the case of multi-echo acquisition, distortion correction is only done on the first echo 
+	    and the warping field (combined with the transformation matrices from motion correction) is 
+		applied to the rest of the echoes.
 	    
 	 The method of calculating the warping field is taken from Midnight Scan Club (MSC) preprocessing pipeline,
 	 epi_unwarp_MSC, which is written by Tyler Blazey 
 	 (https://github.com/MidnightScanClub/MSCcodebase/blob/master/Processing/epi_unwarp_MSC).
 
 	 See spatial_distortion_correction_readme for more details. 
-
 
 REQUIRED ARGUMENTS:
 	-s  <subject_id>           			: subject's ID
@@ -748,7 +793,7 @@ REQUIRED ARGUMENTS:
 
 OPTIONAL ARGUMENTS:
 	-m <magnitude image>				: absolute path of the magnitude image
-	-p <phase image>					: absolute path of the phase image
+	-p <phase image>					: absolute path of the phase difference image
 	-delta <delta_te>					: differene of echo time of two magnitude images (ms) 
 	-j_minus <j- image>					: absolute path of the j- image
 	-j_plus <j+ image>					: absolute paht of the j image
@@ -761,13 +806,16 @@ OPTIONAL ARGUMENTS:
 	-sig <signal loss threshold>		: signal loss threshold, default is 0.1
 	-fmri_bet <fmri_bet>				: BET threshold for fMRI image, default is 0.2
 	-mag_bet <mag_bet>					: BET threshold for fieldmap magnitude image, default is 0.3
+	-echo_number <echo_number>			: number of echoes. For single echo data, default is 1.
+    -nocleanup                          : use this flag to keep all intermediate files
 	-help								: help
 	-version							: version
-	
 
 OUTPUTS:
 	(1) A NIFTI volume after spatial distortion correction
 	    <sub_dir>/<subject>/bold/<bold_run>/<subject>_bld<bold_run>_<BOLD_stem>_mc_sdc.nii.gz
+		For multi-echo case, NIFTI volumes after spatial distortion correction for every echo
+		<sub_dir>/<subject>/bold/<bold_run>/<subject>_bld<bold_run>_e<echo_number>_<BOLD_stem>_mc_sdc.nii.gz
 	(2) Unwarping folder containins:
 		fmap_magnitude_brain		:brain extracted magnitude image, obtained from fieldmap and used for masking purpose
 		fmap_magnitude_brain_mask	:mask obtained from fmap_magnitude_brain
@@ -796,8 +844,13 @@ EXAMPLE:
 	sub-NDARAA536PTU_phasediff.nii.gz -delta 4.76 -ees 0.55 -te 40 
 
 	./CBIG_preproc_spatial_distortion_correction.csh -s sub-NDARWN691CG7 -d ~/storage/fMIR_preprocess -bld '001 002'\
-	 -BOLD_stem _rest -fpm oppo_PED -j_minus /data/HBN/rawData_release1_4/RU/sub-NDARWN691CG7/fmap/ \
+	-BOLD_stem _rest -fpm oppo_PED -j_minus /data/HBN/rawData_release1_4/RU/sub-NDARWN691CG7/fmap/ \
 	sub-NDARWN691CG7_dir-AP_acq-fMRI_epi.nii.gz -j_plus /data/HBN/rawData_release1_4/RU/sub-NDARWN691CG7/\
 	fmap/sub-NDARWN691CG7_dir-PA_acq-fMRI_epi.nii.gz -j_minus_trt 0.04565 -j_plus_trt 0.04565 -ees .580013000 -te 30.00
+
+Example for multi-echo case:
+	CBIG_preproc_spatial_distortion_correction.csh -s sub005 -d ~/storage/fMIR_preprocess -bld 001\
+	-echo_number 3 -BOLD_stem _rest_skip8_stc -fpm mag+phasediff\
+	-m /data/sub005/magnitude1.nii.gz -p /data/sub005/phase_diff.nii.gz -delta 2.46 -ees 0.25 -te 12
 
 

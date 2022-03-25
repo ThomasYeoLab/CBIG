@@ -23,11 +23,20 @@ set VERSION = '$Id: CBIG_preproc_regression.csh, v 1.0 2016/06/18 $'
 
 set n = `echo $argv | grep -e -help | wc -l`
 
-# if there is no arguments or there is -help option 
-if( $#argv == 0 || $n != 0 ) then
+# if there is -help option 
+if( $n != 0 ) then
 	echo $VERSION
 	# print help	
 	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+	exit 0;
+endif
+
+# if there is no arguments
+if( $#argv == 0 ) then
+	echo $VERSION
+	# print help	
+	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+	echo "WARNING: No input arguments. See above for a list of available input arguments."
 	exit 0;
 endif
 
@@ -60,8 +69,10 @@ set mt_diff_flag = 1;     # Default to include derivatives of motion parameters
 set aCompCor_diff_flag = 0 # Default to not include derivatives of aCompCor PCs
 set other_diff_flag = 1;   # Default to include derivatives of other regressors
 set polynomial_fit = 1    # Default demean and remove the linear trend
+set ext_regressor_stem = ""
 set per_run = 0			  # Default regress out all runs jointly
 set censor = 0			  # Default use all frames to do regression
+set save_beta = 0		# Default not save beta coefficients
 set detrend_method = "detrend" # Default use detrend method when creating motion regressor
 set force = 0
 
@@ -466,6 +477,18 @@ if (($all_regressor_exist_flag == 0) || ($force == 1)) then
 			paste $tmp1 > $all_regressor_file
 		endif
 		
+		# merg with external regressor
+		if ($ext_regressor_stem != "") then
+			set ext_regressor_file = "$regress_folder/$subject"_bld"${curr_bold}_${ext_regressor_stem}.txt"
+			echo ${ext_regressor_file} |& tee -a $LF 
+			if(! -e $ext_regressor_file) then
+			    echo "ERROR: The external regressor does not exist." |& tee -a $LF
+			    exit 1;
+		    endif
+			paste -d " " $all_regressor_file ${ext_regressor_file} > ${all_regressor_file}.tmp
+			mv ${all_regressor_file}.tmp ${all_regressor_file}
+		endif
+		
 		#rm $tmp1
 		set i = `expr $i + 1`
 	end
@@ -484,7 +507,7 @@ if ($motion12_itamar || $whole_brain || $wm || $csf || $aCompCor) then
 	if (($resid_exist_flag == 0) || ($force == 1)) then
 		set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r '"' 'addpath(fullfile('"'"$root_dir"'"','\
 "'"utilities"'"'))'; CBIG_glm_regress_vol "'"$fMRI_list"'" "'"$resid_list"'" "'"$all_regressors_list"'" \
-"'"$polynomial_fit"'" "'"$censor_list"'" "'"$per_run"'"; exit '"' )
+"'"$polynomial_fit"'" "'"$censor_list"'" "'"$per_run"'" "'"$save_beta"'"; exit '"' )
 		echo $cmd |& tee -a $LF
 		eval $cmd |& tee -a $LF
 	else
@@ -646,7 +669,13 @@ while( $#argv != 0 )
 			if ( $#argv == 0 ) goto arg1err;
 			set polynomial_fit = $argv[1]; shift;
 			breaksw
-
+			
+		#add external regressors
+		case "-ext_regressor_stem"
+			if ( $#argv == 0 ) goto arg1err;
+			set ext_regressor_stem = $argv[1]; shift;
+			breaksw
+			
 		#regress out the regressors for each run seperately	
 		case "-per_run":
 			set per_run = 1;
@@ -655,6 +684,11 @@ while( $#argv != 0 )
 		#do regression without the censor frames, then apply the beta to all frames 	
 		case "-censor"
 			set censor = 1; 
+			breaksw
+		
+		#save the beta coefficients of the regression
+		case "-save_beta"
+			set save_beta = 1; 
 			breaksw
 			
 		#use different detrend methods to detrend the motion regressors
@@ -826,9 +860,20 @@ OPTIONAL ARGUMENTS:
 	                                    [1,1,1...1]' will be added into the first column and a Mx1 matrix
 	                                    linspace(-1, 1, M)' will be added into the second column of the
 	                                    regressor matrix. See CBIG_glm_regress_matrix.m for details.
+	-ext_regressor_stem               : The stem of the external regressor files. Users can use this option to pass in
+	                                    one external regressor file for each run. We assume that the external regressors
+	                                    are stored in <subject_dir>/<subject_id>/bold/regression/ and the regressor
+	                                    files should have the filename 
+	                                    <subject_id>_bld<run_number>_<ext_regressor_stem>.txt
+	                                    E.g. subject1_bld001_task_regressors.txt when ext_regressor_stem=task_regressor
+	                                    The regressor file should be a .txt file containing numbers. Each row 
+	                                    corresponds to one frame in the current run and each column corresopnds to one
+	                                    regressor. The columns should be separated by space.
 	-per_run                          : If this option is used, regress out the regressors for each run separately. 
 	                                    Default is to regress all runs jointly.
 	-censor                           : fit beta coefficients without censored frames, then apply beta to all frames
+	-save_beta                        : If this option is used, the beta coefficients in the regression will be saved.
+	                                    Default is not to save beta
 	-force                            : update results, if output file exists then overwrite
 	-help                             : help
 	-version                          : version
@@ -842,6 +887,13 @@ OUTPUTS:
 	    (if -censor is not used)
 	    or
 	    <sub_dir>/<subject_id>/bold/<run_number>/<subject_id>_bld<run_number><BOLD_stem>_residc.nii.gz 
+	    (if -censor is used)
+	    
+	(3) The beta coefficients of regression (if -save_beta is used)
+	    <sub_dir>/<subject_id>/bold/<run_number>/<subject_id>_bld<run_number><BOLD_stem>_resid_beta.nii.gz 
+	    (if -censor is not used)
+	    or
+	    <sub_dir>/<subject_id>/bold/<run_number>/<subject_id>_bld<run_number><BOLD_stem>_residc_beta.nii.gz 
 	    (if -censor is used)
 
 EXAMPLES:

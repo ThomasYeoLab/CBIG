@@ -40,11 +40,20 @@ set temp_1mm = "${FSL_DIR}/data/standard/MNI152_T1_1mm_brain.nii.gz"
 # Print help or version
 set n = `echo $argv | grep -e -help | wc -l`
 
-# if there is no arguments or there is -help option 
-if( $#argv == 0 || $n != 0 ) then
+# if there is -help option 
+if( $n != 0 ) then
 	echo $VERSION
 	# print help	
 	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+	exit 0;
+endif
+
+# if there is no arguments
+if( $#argv == 0 ) then
+	echo $VERSION
+	# print help	
+	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+	echo "WARNING: No input arguments. See above for a list of available input arguments."
 	exit 0;
 endif
 
@@ -102,7 +111,8 @@ else
 	echo $cmd |& tee -a $LF
 	eval $cmd |& tee -a $LF
 
-	set cmd = (CBIG_antsReg_vol2vol.sh -r $temp_1mm -i $mri_nii -d $volfolder -p $warp_prefix  -j $iter_affine -k $iter_SyN)
+	set cmd = (CBIG_antsReg_vol2vol.sh -r $temp_1mm -i $mri_nii -d $volfolder -p $warp_prefix  \
+-j $iter_affine -k $iter_SyN)
 	echo $cmd |& tee -a $LF
 	eval $cmd |& tee -a $LF
 
@@ -432,6 +442,7 @@ foreach runfolder ($bold)
 				echo "[native2mni_ants]: Applying final mask finished. The output is $output" |& tee -a $LF
 			else
 				echo "ERROR: Applying final mask failed." |& tee -a $LF
+				exit 1
 			endif			
 		endif
         endif
@@ -457,7 +468,8 @@ which git
 if (! $status) then
 	echo "=======================Git: Last Commit of Current Function =======================" |& tee -a $LF
 	pushd ${CBIG_CODE_DIR}
-	git log -1 -- ${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_native2mni_ants.csh >> $LF
+	git log -1 -- ${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/\
+CBIG_preproc_native2mni_ants.csh >> $LF
 	popd
 endif
 

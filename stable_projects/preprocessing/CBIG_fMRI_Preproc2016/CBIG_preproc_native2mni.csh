@@ -44,11 +44,20 @@ set MNI_ref_id = "FSL_MNI152_FS4.5.0"
 # Print help or version
 set n = `echo $argv | grep -e -help | wc -l`
 
-# if there is no arguments or there is -help option 
-if( $#argv == 0 || $n != 0 ) then
+# if there is -help option 
+if( $n != 0 ) then
 	echo $VERSION
 	# print help	
 	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+	exit 0;
+endif
+
+# if there is no arguments
+if( $#argv == 0 ) then
+	echo $VERSION
+	# print help	
+	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+	echo "WARNING: No input arguments. See above for a list of available input arguments."
 	exit 0;
 endif
 
@@ -107,7 +116,8 @@ set output = $volfolder/norm_MNI152_1mm.nii.gz
 if(-e $output) then
 	echo "[native2mni]: $output already exists." |& tee -a $LF
 else
-	set cmd = (CBIG_vol2vol_m3z.csh -src-id $anat_s -src-dir $anat_dir -targ-id $MNI_ref_id -targ-dir $MNI_ref_dir -in $input -out $output -no-cleanup)
+	set cmd = (CBIG_vol2vol_m3z.csh -src-id $anat_s -src-dir $anat_dir -targ-id $MNI_ref_id -targ-dir $MNI_ref_dir \
+	-in $input -out $output -no-cleanup)
 	echo $cmd |& tee -a $LF
 	$cmd |& tee -a $LF
 	if(-e $output) then
@@ -203,7 +213,8 @@ foreach runfolder ($bold)
 		if(-e $output) then
 			echo "    [native2mni]: $output already exists." |& tee -a $LF
 		else
-			set cmd = (CBIG_vol2vol_m3z.csh -src-id $anat_s -src-dir $anat_dir -targ-id $MNI_ref_id -targ-dir $MNI_ref_dir -in $input -out $output -reg $regfile -no-cleanup)
+			set cmd = (CBIG_vol2vol_m3z.csh -src-id $anat_s -src-dir $anat_dir -targ-id $MNI_ref_id \
+			-targ-dir $MNI_ref_dir -in $input -out $output -reg $regfile -no-cleanup)
 			echo $cmd |& tee -a $LF
 			eval $cmd |& tee -a $LF
 			if(-e $output) then
@@ -240,6 +251,7 @@ foreach runfolder ($bold)
 				echo "    [native2mni]: downsample to $output finished." |& tee -a $LF
 			else
 				echo "    ERROR: downsample to $output failed." |& tee -a $LF
+				exit 1;
 			endif
 		endif
 		
@@ -258,7 +270,8 @@ foreach runfolder ($bold)
 		set input = $frame_dir/${fcount_str}_MNI1mm_MNI2mm.nii.gz
 		mkdir -p $frame_dir/sm
 		set output = $frame_dir/sm/${fcount_str}_MNI1mm_MNI2mm_sm${sm}.nii.gz
-		set std = `awk "BEGIN {print ${sm}/2.35482}"`    #Note that fwhm = 2.35482 * std, fslmaths -s is in unit of mm, not voxel.
+		#Note that fwhm = 2.35482 * std, fslmaths -s is in unit of mm, not voxel.
+		set std = `awk "BEGIN {print ${sm}/2.35482}"`    
 		if(-e $output) then
 			echo "[native2mni]: $output already exists." |& tee -a $LF
 		else
@@ -351,6 +364,7 @@ foreach runfolder ($bold)
 				echo "[native2mni]: Applying final mask finished. The output is $output" |& tee -a $LF
 			else
 				echo "ERROR: Applying final mask failed." |& tee -a $LF
+				exit 1;
 			endif			
 		endif
 	endif
@@ -606,7 +620,8 @@ OPTIONAL ARGUMENTS:
 	                        does not want to do smoothing, he/she needs to pass in -sm 0.
 	-sm_mask    sm_mask   : mask for smoothing (e.g. a grey matter mask in MNI152 2mm). An example 
 	                        of the smooth mask is: 
-	                        ${CBIG_CODE_DIR}/data/templates/volume/FSL_MNI152_masks/SubcorticalLooseMask_MNI1mm_sm6_MNI2mm_bin0.2.nii.gz
+	                        ${CBIG_CODE_DIR}/data/templates/volume/FSL_MNI152_masks/\
+							SubcorticalLooseMask_MNI1mm_sm6_MNI2mm_bin0.2.nii.gz
 	                        If <sm_mask> is not passed in, the smoothing step will smooth everything
 	                        by the FWHM as specified by -sm flag.
 	-down       down      : downsample space, choose from FSL_MNI_FS_2mm (size: 128 x 128 x 128)

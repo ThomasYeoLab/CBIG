@@ -1,7 +1,8 @@
 #!/bin/csh -f
 
 # Example: 
-# csh CBIG_preproc_despiking.csh -s Sub0001_Ses1 -d ~/storage/fMRI_preprocess -bld '002 003' -BOLD_stem _rest_skip5_stc_mc_residc 
+# csh CBIG_preproc_despiking.csh -s Sub0001_Ses1 -d ~/storage/fMRI_preprocess -bld '002 003' \
+# -BOLD_stem _rest_skip5_stc_mc_residc 
 #
 # This function uses AFNI 3dDespike to perform despiking. 
 #
@@ -22,11 +23,20 @@ set VERSION = '$Id: CBIG_preproc_despiking.csh v 1.0 2017/09/22'
 
 set n = `echo $argv | grep -e -help | wc -l`
 
-# if there is no arguments or there is -help option 
-if( $#argv == 0 || $n != 0 ) then
+# if there is -help option 
+if( $n != 0 ) then
 	echo $VERSION
 	# print help	
 	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+	exit 0;
+endif
+
+# if there is no arguments
+if( $#argv == 0 ) then
+	echo $VERSION
+	# print help	
+	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+	echo "WARNING: No input arguments. See above for a list of available input arguments."
 	exit 0;
 endif
 
@@ -213,7 +223,8 @@ REQUIRED ARGUMENTS:
 	                            use a space as delimiter, e.g. '002 003'. 
 	                            NOTE: quote sign is necessary.
 	-BOLD_stem    <BOLD_stem> : stem of input file, e.g. if the input file name is
-	                            Sub0001_Ses1_bld002_rest_skip5_stc_mc_residc.nii.gz, the BOLD_stem will be _rest_skip5_stc_mc_residc.
+	                            Sub0001_Ses1_bld002_rest_skip5_stc_mc_residc.nii.gz, 
+								the BOLD_stem will be _rest_skip5_stc_mc_residc.
 	                            This input file should be stored in 
 	                            <sub_dir>/<subject>/bold/<run_number>/
 
@@ -225,5 +236,5 @@ Example:
 	csh CBIG_preproc_despiking.csh -s Sub0001_Ses1 -d ~/storage/fMRI_preprocess -bld
 	'002 003' -BOLD_stem _rest_skip5_stc_mc_residc 
 
-Written by Written by Xing Qian (Helen's lab) and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+
 

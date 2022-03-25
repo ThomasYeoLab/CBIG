@@ -19,13 +19,23 @@ set VERSION = '$Id: CBIG_preproc_bandpass_fft.csh, v 1.0 2016/06/18 $'
 
 set n = `echo $argv | grep -e -help | wc -l`
 
-# if there is no arguments or there is -help option 
-if( $#argv == 0 || $n != 0 ) then
+# if there is -help option 
+if( $n != 0 ) then
 	echo $VERSION
 	# print help	
 	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
 	exit 0;
 endif
+
+# if there is no arguments
+if( $#argv == 0 ) then
+	echo $VERSION
+	# print help	
+	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+	echo "WARNING: No input arguments. See above for a list of available input arguments."
+	exit 0;
+endif
+
 
 set n = `echo $argv | grep -e -version | wc -l`
 if($n != 0) then
@@ -123,7 +133,11 @@ foreach curr_bold ($zpdbold)
 		if ( (! -e  $boldfile"_bp_"$low_f"_"$high_f".nii.gz") || ($force == 1) ) then
 			set fMRI_file = $boldfile".nii.gz"
 			set output_file = $boldfile"_bp_"$low_f"_"$high_f".nii.gz"
-			$MATLAB -nojvm -nodesktop -nodisplay -nosplash -r "addpath(fullfile('$root_dir','utilities'));CBIG_bandpass_vol '$fMRI_file' '$output_file' '$low_f' '$high_f' '$detrend' '$retrend' '$censor_file';exit " |& tee -a $LF		
+			set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r '"' \
+             'addpath(fullfile('"'"'$root_dir'"'"','"'"'utilities'"'"'))'; \
+             CBIG_bandpass_vol "'"$fMRI_file"'" "'"$output_file"'" "'"$low_f"'" "'"$high_f"'" "'"$detrend"'" \
+             "'"$retrend"'" "'"$censor_file"'"; exit '"' );
+			eval $cmd |& tee -a $LF	
 		else
 			echo "=======================Bandpass has been done!=======================" |& tee -a $LF
 		endif
@@ -146,7 +160,7 @@ if (! $status) then
 endif
 
 echo "*********************************************************************" |& tee -a $LF
-exit 1;
+exit 0;
 
 
 ##########################################

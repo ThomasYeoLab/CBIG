@@ -12,26 +12,36 @@
 # 5) 1 frame before 2 frames after each removed frame will also be removed, as well as kept segments of data lasting 
 #    fewer than $discard_seg contiguous frames will be removed. If not specified, the default is 5.
 # 6) discard the run which has more than <rm_run_th>% of frames being removed
+# 7) For multi-echo case, here we do motion correction only on the first echo, and the DVARS and FD are computed 
+#    based on the first echo only then apply the transformation matrices to the rest of echoes.
 # Example: 
 #	$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_fslmcflirt_outliers.csh 
 #	-s Sub0033_Ses1 -d ~/storage/FMRI_preprocess -bld '002 003' -BOLD_stem _rest_skip4_stc -nframe 0 
 #	-FD_th 0.2 -DVARS 50 -discard-run 50 -rm-seg 5
 #############################################
-# Author: RU(BY) KONG
+# Author: RU(BY) KONG, XINGYU LYU
 # Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 set VERSION = '$Id: CBIG_preproc_fslmcflirt_outliers.csh, v 1.0 2016/06/09 $'
 
 set n = `echo $argv | grep -e -help | wc -l`
 
-# if there is no arguments or there is -help option 
-if( $#argv == 0 || $n != 0 ) then
+# if there is -help option 
+if( $n != 0 ) then
 	echo $VERSION
 	# print help	
 	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
 	exit 0;
 endif
 
+# if there is no arguments
+if( $#argv == 0 ) then
+	echo $VERSION
+	# print help	
+	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+	echo "WARNING: No input arguments. See above for a list of available input arguments."
+	exit 0;
+endif
 
 set n = `echo $argv | grep -e -version | wc -l`
 if($n != 0) then
@@ -51,6 +61,10 @@ set nocleanup = 0; # Default clean up intermediate file
 set discard_seg = 5; # Default will remove kept segments of data lasting fewer than 5 contiguous frames
 set rm_run_th = 50; # Default will discard the run which has more than 50% of frames being removed
 set spline_final = 0; # spline_final flag in mcflirt, 0 for trilinear interpolation, 1 for spline interpolation
+set low_f = ""; # default no filtering of respiratory pseudomotion
+set high_f = ""; # default no filtering of respiratory pseudomotion
+set echo_number = 1 # number of echos default to be 1
+set echo_stem = ""
 
 goto parse_args;
 parse_args_return:
@@ -105,7 +119,12 @@ cd $boldfolder
 set base_bold = $boldfolder/$zpdbold[1]
 echo "[MC]: base_bold = $base_bold" |& tee -a $LF
 
-
+## For multi-echo case, here we do motion correction only on the first echo, 
+## then apply the transformation matrices to the rest of echoes.
+## set echo_stem based on echo number
+if ($echo_number != 1) then
+	set echo_stem = _e1
+endif
 
 #############################################
 # Generate Template use n-th frame of the first run
@@ -113,8 +132,7 @@ echo "[MC]: base_bold = $base_bold" |& tee -a $LF
 
 echo "=========Generate template.nii.gz..(n-th frame of the base_bold, default is 1st frame)=========" |& tee -a $LF
 pushd $base_bold
-
-set base_boldfile = $subject"_bld"$zpdbold[1]$BOLD_stem
+set base_boldfile = $subject"_bld"$zpdbold[1]$echo_stem$BOLD_stem
 echo "[MC]: use $nframe +1 as the template" |& tee -a $LF
 if ( (! -e  $boldfolder/mc_template.nii.gz) || ($force == 1)) then
 	#Motion correction template is the nframe = $nframe, default is the first frame
@@ -136,8 +154,7 @@ echo "" |& tee -a $LF
 echo "=======================Merge each run with template=======================" |& tee -a $LF
 foreach curr_bold ($zpdbold)
 	pushd $curr_bold
-	
-	set boldfile = $subject"_bld"$curr_bold$BOLD_stem
+	set boldfile = $subject"_bld"$curr_bold$echo_stem$BOLD_stem
 	echo "[MC]: boldfile = $boldfile" |& tee -a $LF
 	if ( (! -e  $boldfile"_merge.nii.gz") || ($force == 1) ) then
 		fslmerge -t $boldfile"_merge" $template $boldfile |& tee -a $LF
@@ -157,8 +174,7 @@ echo "" |& tee -a $LF
 echo "=======================Motion correction: mcflirt and split=======================" |& tee -a $LF
 foreach curr_bold ($zpdbold)
 	pushd $curr_bold
-	
-	set boldfile = $subject"_bld"$curr_bold$BOLD_stem
+	set boldfile = $subject"_bld"$curr_bold$echo_stem$BOLD_stem
 	if ( (! -e  $boldfile"_mc.nii.gz") || ($force == 1) ) then
 		set cmd = "mcflirt -in ${boldfile}_merge.nii.gz -out ${boldfile}_mc -plots -refvol 0 -rmsrel -rmsabs -mats"
 		if ($spline_final == 1) then
@@ -173,8 +189,7 @@ foreach curr_bold ($zpdbold)
 	else
 		echo "=======================mcflirt and split already done!=======================" |& tee -a $LF
 	endif
-	rm ${boldfile}_mc.mat/MAT_0000
-	cat ${boldfile}_mc.mat/MAT* > ${boldfile}_mc.cat
+
 	ln -s $boldfolder/$curr_bold/${boldfile}_mc_rel.rms $qc/${subject}_bld${curr_bold}_mc_rel.rms
 	ln -s $boldfolder/$curr_bold/${boldfile}_mc_abs.rms $qc/${subject}_bld${curr_bold}_mc_abs.rms
 	ln -s $boldfolder/$curr_bold/${boldfile}_mc_rel_mean.rms $qc/${subject}_bld${curr_bold}_mc_rel_mean.rms
@@ -185,7 +200,6 @@ end
 echo "=======================mcflirt and split done!=======================" |& tee -a $LF
 echo "" |& tee -a $LF
 
-
 #############################################
 # Plot mcflirt parameters
 #############################################
@@ -194,10 +208,10 @@ foreach curr_bold ($zpdbold)
 	pushd $curr_bold
 	
 	pwd |& tee -a $LF
-	set mc_par_file = "${subject}_bld${curr_bold}${BOLD_stem}_mc.par"
-	set mc_abs_rms_file = "${subject}_bld${curr_bold}${BOLD_stem}_mc_abs.rms"
-	set mc_rel_rms_file = "${subject}_bld${curr_bold}${BOLD_stem}_mc_rel.rms"
-	set outname_prefix = "${subject}_bld${curr_bold}${BOLD_stem}_mc"
+	set mc_par_file = ${boldfile}_mc.par
+	set mc_abs_rms_file = ${boldfile}_mc_abs.rms
+	set mc_rel_rms_file = ${boldfile}_mc_rel.rms
+	set outname_prefix = ${boldfile}_mc
 	
 	set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; \
 		CBIG_preproc_plot_mcflirt_par $mc_par_file $mc_abs_rms_file $mc_rel_rms_file $qc $outname_prefix; exit; '"' );
@@ -208,7 +222,6 @@ foreach curr_bold ($zpdbold)
 end
 echo "=========================== Plot mcflirt parameters done =============================" |& tee -a $LF
 
-
 #############################################
 #compute FDRMS and DVARS
 #############################################
@@ -216,8 +229,7 @@ echo "=========================== Plot mcflirt parameters done =================
 echo "=======================FSL motion outliers=======================" |& tee -a $LF
 foreach curr_bold ($zpdbold)
 	pushd $curr_bold
-	
-	set boldfile = $subject"_bld"$curr_bold$BOLD_stem
+	set boldfile = $subject"_bld"$curr_bold$echo_stem$BOLD_stem
 	mkdir -p $mc/tmp_outliers/$curr_bold
 	
 	# Use DVARS as metric
@@ -235,10 +247,8 @@ foreach curr_bold ($zpdbold)
 	#Use FDRMS as metric
 	if ( (! -e $mc/${boldfile}_motion_outliers_FDRMS) || ($force == 1) ) then
 		echo "[MC]: bold = $curr_bold Perform FSL motion outliers with metric = fdrms" |& tee -a $LF
-	
-		set cmd = "fsl_motion_outliers -i $boldfile -o $mc/${boldfile}_motion_outliers_confound_FDRMS \
-					-s $mc/${boldfile}_motion_outliers_FDRMS -p $mc/${boldfile}_motion_outliers_FDRMS \
-					-t $mc/tmp_outliers/$curr_bold --fdrms"
+		set cmd = "${root_dir}/utilities/CBIG_preproc_compute_FDRMS_wrapper.sh \
+		$boldfile $mc $mc/tmp_outliers/$curr_bold "$low_f" "$high_f""			
 		echo $cmd |& tee -a $LF
 		eval $cmd >> $LF
 	else
@@ -254,11 +264,10 @@ echo "" |& tee -a $LF
 # Outlier Detection
 #############################################
 
-echo "=======================Compute correlation between DVARS and FDRMS and detect the motion outliers=======================" |& tee -a $LF
+echo "=============Compute correlation between DVARS and FDRMS and detect the motion outliers===========" |& tee -a $LF
 foreach curr_bold ($zpdbold)
 	pushd $curr_bold
-	
-	set boldfile = $subject"_bld"$curr_bold$BOLD_stem
+	set boldfile = $subject"_bld"$curr_bold$echo_stem$BOLD_stem
 	if ( (! -e "$qc/${subject}_bld${curr_bold}_FDRMS${fd_th}_DVARS${dv_th}_motion_outliers.txt") || ($force == 1) ) then
 		set output = "$qc/${subject}_bld${curr_bold}"
 		set dvars_file = "$mc/${boldfile}_motion_outliers_DVARS"
@@ -284,8 +293,7 @@ echo "*********************************************************************" |& 
 if ( $nocleanup != 1 ) then
 	foreach curr_bold ($zpdbold)
 		pushd $curr_bold
-		
-		set boldfile = $subject"_bld"$curr_bold$BOLD_stem
+		set boldfile = $subject"_bld"$curr_bold$echo_stem$BOLD_stem
 		set mergefile = $boldfile"_merge.nii.gz"
 		rm $mergefile
 		
@@ -293,12 +301,12 @@ if ( $nocleanup != 1 ) then
 	end
 endif
 
-
 ###############################################
 # check if the number of outliers exceeds 50% of total number of frames
 ###############################################
 if ($rm_run == 1) then 
-	echo "========= check if the number of outliers exceeds $rm_run_th% of total number of frames for each run =========" |& tee -a $LF
+	echo "========= check if the number of outliers exceeds $rm_run_th% of total number of frames for each run ===== \
+	====" |& tee -a $LF
 	set bold_file = "$sub_dir/$subject/logs/${subject}.bold"
 	echo "[MC]: bold_file = $bold_file" |& tee -a $LF
 	foreach runfolder ($zpdbold)
@@ -326,6 +334,32 @@ if ($rm_run == 1) then
 endif
 
 #########################
+# apply transformation on other echoes for multi-echo data
+#########################
+echo "====================== apply transformation on other echos ======================" |& tee -a $LF
+cd $sub_dir/$subject/bold
+foreach curr_bold ($zpdbold)
+	pushd $curr_bold
+	set i = 2
+	while ( $i <= $echo_number)
+		set xfm_dir="$subject"_bld"$curr_bold"_e1"$BOLD_stem"_mc.mat
+		set cmd = (applyxfm4D "$subject"_bld"$curr_bold"_e$i"$BOLD_stem".nii.gz) 
+		set cmd = ( $cmd "$subject"_bld"$curr_bold"_e$i"$BOLD_stem".nii.gz)
+		set cmd = ( $cmd "$subject"_bld"$curr_bold"_e$i"$BOLD_stem"_mc.nii.gz ${xfm_dir} -fourdigit)
+		echo $cmd |& tee -a $LF
+		eval $cmd
+		@ i++
+	end
+	# remove MAT_0000 for spatial distortion correction
+	echo "=========remove MAT_0000 and generate transformation matrix========="
+	set boldfile = $subject"_bld"$curr_bold$echo_stem$BOLD_stem
+	rm ${boldfile}_mc.mat/MAT_0000
+	cat ${boldfile}_mc.mat/MAT* > ${boldfile}_mc.cat
+	popd
+end
+echo "====================== apply transformation on other echos finished ======================" |& tee -a $LF
+
+#########################
 # Output last commit of current function 
 #########################
 # check if git exists
@@ -337,8 +371,10 @@ if (! $status) then
 		CBIG_preproc_fslmcflirt_outliers.csh >> $LF
 	popd
 endif
+echo "******************************************************************************"  |& tee -a $LF
+echo ""
 
-exit 1;
+exit 0;
 
 ##########################################
 # Parse Arguments 
@@ -398,7 +434,7 @@ while( $#argv != 0 )
 			
 		#clean up intermediate files
 		case "-nocleanup":
-			set nocleanup =1;
+			set nocleanup = 1;
 			breaksw
 		
 		#throw run which has more than 50% frames detected as outliers
@@ -417,6 +453,24 @@ while( $#argv != 0 )
 		#spline_final flag to use spline interpolation in mcflirt
 		case "-spline_final":
 			set spline_final = 1;
+			breaksw
+			
+		# start frequency of respiration. The motion parameters between low_f and high_f will be filtered out
+		case "-low_f":
+			if ( $#argv == 0 ) goto arg1err;
+			set low_f = "$argv[1]"; shift;
+			breaksw
+			
+		# stop frequency of respiration. The motion parameters between low_f and high_f will be filtered out
+		case "-high_f":
+			if ( $#argv == 0 ) goto arg1err;
+			set high_f = "$argv[1]"; shift;
+			breaksw
+
+		#number of echos
+		case "-echo_number":
+			if ( $#argv == 0 ) goto arg1err;
+			set echo_number = "$argv[1]"; shift;
 			breaksw
 
 		default:
@@ -450,6 +504,7 @@ if ( "$BOLD_stem" == "" ) then
 	echo "ERROR: input file stem not specified"
 	exit 1;
 endif
+
 goto check_params_return;
 
 ##########################################
@@ -472,7 +527,9 @@ NAME:
 DESCRIPTION:
 	This function 
 	  1) uses mcflirt to do the motion correction. 
-	  2) uses fsl_motion_outliers to obtain FDRMS and DVARS. 
+	  2) uses fsl_motion_outliers to obtain FDRMS and DVARS. It can also perfrom respiratory pseudomotion filtering
+	     on motion parameters before computing FDRMS if -low_f is passed in. See respiratory_pseudomotion_filtering.md
+	     for more details.
 	  3) uses DV_th and FD_th as threholds of DVARS and FDRMS to find outliers (high-motion frames). 
 	     The default DV_th is 50; the default FD_th is 0.2. Frames either above FD_th or above DV_th 
 	     will be regarded as outliers. 
@@ -482,7 +539,8 @@ DESCRIPTION:
 	  5) discards the run which has more than <rm_run_th>% of frames of outliers.
 	     In the output motion outlier text file, 0 means removing this frame, 1 means keeping this 
 	     frame. 
-
+	  6) For multi-echo case, here we do motion correction only on the first echo and FD and DVARS are computed 
+	     by first echo only, then apply the transformation matrices to the rest of echoes.
 
 REQUIRED ARGUMENTS:
 	-s  <subject_id>           : subject's ID
@@ -505,7 +563,15 @@ OPTIONAL ARGUMENTS:
 	-rm-seg  <discard_seg>     : label the low-motion segments of data lasting fewer than <discard_seg> 
 	                             contiguous frames as outliers.
 	-spline_final              : interpolation method used in mcflirt, if the this option is used, the
-								 interpolation method is spline, otherwise it is trilinear
+	                             interpolation method is spline, otherwise it is trilinear
+	-low_f                     : start frequency of respiration. If the both this argument and high_f is used, the
+	                             motion parameters will go through a bandstop filter to filter out the respiration
+	                             pseudomotion, where the stop band is between low_f and high_f. If only this argument
+	                             is used, the motion paramters will go through a lowpass filter, where the stop
+	                             frequency is low_f. See respiratory_pseudomotion_filtering.md for more details
+	-high_f                    : stop frequency of respiration. It can only be used together with low_f
+	-echo_number <echo_number> : number of echoes. For single echo data, default set to be 1.
+    -nocleanup                 : use this flag to keep all intermediate files
 	-help                      : help
 	-version                   : version
 
@@ -545,6 +611,3 @@ EXAMPLE:
 	$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_fslmcflirt_outliers.csh 
 	-s Sub0033_Ses1 -d ~/storage/FMRI_preprocess -bld '002 003' -BOLD_stem _rest_skip4_stc -nframe 0 
 	-FD_th 0.2 -DVARS 50 -discard-run 50 -rm-seg 5
-
-
-
