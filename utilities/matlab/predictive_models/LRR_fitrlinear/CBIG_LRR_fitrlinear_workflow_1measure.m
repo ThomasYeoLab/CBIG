@@ -61,6 +61,12 @@ function [ acc_corr_train, acc_corr_test, y_predict] = CBIG_LRR_fitrlinear_workf
 %
 %
 %
+%   - params.cov_X (optional)
+%     A matrix specifiying the covariates which need to be regressed from features.
+%     Each row corresponds to one subject. Each column corresponds to one covariate.
+%     If no covariate needs to be regressed from features, either skip this field, 
+%     or set params.cov_X = [].
+%
 %   - params.gpso_dir (optional)
 %     A string, the full path of the directory to store the cloned git
 %     repository for Gaussian process code. Current script needs the
@@ -156,7 +162,7 @@ CBIG_crossvalid_regress_covariates_from_y( ...
     params.y, params.covariates, params.sub_fold, params.outdir, params.outstem);
 
 %% step2. For each fold, use Gaussian process to optimize the linear ridge regression model
-param_dir = [params.outdir '/params'];
+param_dir = fullfile(params.outdir, 'params');
 fprintf('# step 2: optimize linear ridge regression model and predict target measure.\n')
 fprintf('# Evaluations of GP: %d; depth: %d\n', params.eval, params.tree);
 y_predict = cell(length(params.sub_fold), 1);
@@ -173,11 +179,24 @@ for currfold = 1:length(params.sub_fold)
     y_test = y_resid(params.sub_fold(currfold).fold_index==1);
     
     if(ndims(params.feature_mat) == 3)
-        feature_train = params.feature_mat(:,:, params.sub_fold(currfold).fold_index==0);
-        feature_test = params.feature_mat(:,:, params.sub_fold(currfold).fold_index==1);
+        feature_train = reshape_3D_features(params.feature_mat(:,:, params.sub_fold(currfold).fold_index==0));
+        feature_test = reshape_3D_features(params.feature_mat(:,:, params.sub_fold(currfold).fold_index==1));
     else
         feature_train = params.feature_mat(:, params.sub_fold(currfold).fold_index==0);
         feature_test = params.feature_mat(:, params.sub_fold(currfold).fold_index==1);
+    end
+
+    if(isfield(params, 'cov_X') && ~isempty(params.cov_X) && ~strcmpi(params.cov_X, 'none'))
+        [feature_train, beta] = CBIG_regress_X_from_y_train(feature_train', ...
+            params.cov_X(params.sub_fold(currfold).fold_index==0, :));
+        cov_X_train_mean = mean(params.cov_X(params.sub_fold(currfold).fold_index==0, :));
+        feature_test = CBIG_regress_X_from_y_test(feature_test', ...
+            params.cov_X(params.sub_fold(currfold).fold_index==1, :), beta, cov_X_train_mean);
+
+        feature_train = feature_train';
+        feature_test = feature_test';
+
+        save(fullfile(curr_param_dir, 'feature_regress_beta.mat'), 'beta')
     end
     
     %% step 2.1. select hyperparameters: feature selection & inner-loop CV using GPSO
@@ -201,11 +220,7 @@ for currfold = 1:length(params.sub_fold)
 	if curr_threshold < 1
 	    [feat_train, ~] = CBIG_FC_FeatSel( feature_train, feature_test, y_train, curr_threshold );
 	else
-        if ndims(feature_train) == 3
-            feat_train = reshape_3D_features(feature_train);
-        else
-            feat_train = feature_train;
-        end
+        feat_train = feature_train;
 	end
         [curr_acc_train, curr_y_pred] = CBIG_LRR_fitrlinear_innerloop_cv( feat_train', y_train, ...
 	    curr_lambda, params.num_inner_folds, params.metric );

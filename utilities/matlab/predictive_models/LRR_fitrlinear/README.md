@@ -67,6 +67,7 @@ The accuracies for the test folds are saved in `optimal_acc` under `<outstem>_fi
 ----
 ## Updates
 
+- Release v0.22.4 (31/03/2022): Add functionality to regress covariates from feature_mat.
 - Release v0.22.1 (08/03/2022): Fix bug in regressing covariates in functions calling `CBIG_regress_X_from_y_test.m`.
 - Release v0.17.3 (13/01/2021): Initial release of this fitrlinear-based linear ridge regression package.
 
