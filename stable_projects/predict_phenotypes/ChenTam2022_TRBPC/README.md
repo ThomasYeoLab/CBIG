@@ -1,6 +1,6 @@
 # Task-Rest Behavioral Prediction in Children (TRBPC)
 # REFERENCE
-* Chen, J., Tam, A., Kebets, V., Orban, C., Ooi, L.Q.R., Marek, S., Dosenbach, N., Eickhoff, S., Bzdok, D., Holmes, A.J. and Yeo, B.T., 2020. Shared and unique brain network features predict cognition, personality and mental health in childhood. BioRxiv.
+* Chen, J., Tam, A., ... & Yeo, B. T. (2022). [Shared and unique brain network features predict cognitive, personality, and mental health scores in the ABCD study](https://www.nature.com/articles/s41467-022-29766-8). *Nature Communications*, 13(1), 1-17.
 
 # BACKGROUND
 We used resting-state and task functional connectivity to predict a wide range of behaviors, spanning cognition, mental health symptoms, and personality, in the Adolescent Brain Cognitive Development study. We found that combining resting-state and task functional connectivity improves the prediction of cognition and personality. We also found that cognition, mental health, and personality were predicted by distinct patterns of brain organization.
@@ -16,10 +16,10 @@ Except for this project, if you want to use the code for other stable projects f
 
 To download the version of the code that was last tested, you can either
 
-visit this link: https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.21.4-Update_ChenTam2022_TRBPC
+visit this link: https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.22.5-Update_ChenTam2022_TRBPC
 
 run the following command, if you have Git installed
-git checkout -b ChenTam2022_TRBPC v0.21.4-Update_ChenTam2022_TRBPC
+git checkout -b ChenTam2022_TRBPC v0.22.5-Update_ChenTam2022_TRBPC
 
 # USAGE
 ## Setup
@@ -50,6 +50,7 @@ git checkout -b ChenTam2022_TRBPC v0.21.4-Update_ChenTam2022_TRBPC
 
 
 # UPDATES
+* Release v0.22.5 (04/05/2022): Replace bioRxiv article with the published version for the reference
 * Release v0.21.4 (24/01/2022): Add codes for new analyses during the paper revision
 * Release v0.21.0 (15/07/2021): Initial release of ChenTam2022_TRBPC project
 
