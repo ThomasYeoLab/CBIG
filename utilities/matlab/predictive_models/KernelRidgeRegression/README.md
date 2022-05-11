@@ -27,7 +27,7 @@ Steps of this stream:
 
 ### How to use the scripts
 
-There are two sets of scripts you can use. The top-level wrapper functions of each set are `CBIG_KRR_workflow.m` and `CBIG_KRR_workflow_LITE.m` respectively. The usages of these two wrapper functions are the same. Therefore, the following sections will only discuss about `CBIG_KRR_workflow.m`. The functionality of these two sets of scripts (with or without `LITE` appendix) are slightly different. When `CBIG_KRR_workflow.m` is used, the functional similarity matrices for each fold are saved. If the user chooses Gaussian or exponential kernel, the mean and standard deviation of features are computed from the training subjects and applied on the test subjects for each fold. However, when `CBIG_KRR_workflow_LITE.m` is used, the functional similarity matrix is only computed and saved once across all subjects so that less disk space is needed. In the following training and testing on each fold, the scripts grab the similarity matrix of current fold by indexing the entire similarity matrix. To achieve this, when users choose to use Gaussian or exponential kernel, the mean and standard deviation of features are computed among all subjects.
+There are two sets of scripts you can use. The top-level wrapper functions of each set are `CBIG_KRR_workflow.m` and `CBIG_KRR_workflow_LITE.m` respectively. The usages of these two wrapper functions are the same. Therefore, the following sections will only discuss about `CBIG_KRR_workflow.m`. The functionality of these two sets of scripts (with or without `LITE` appendix) are slightly different. When `CBIG_KRR_workflow.m` is used, the functional similarity matrices for each fold are saved. If the user chooses Gaussian or exponential kernel, the mean and standard deviation of features are computed from the training subjects and applied on the test subjects for each fold. However, when `CBIG_KRR_workflow_LITE.m` is used, the functional similarity matrix is only computed and saved once across all subjects so that less disk space is needed. In the following training and testing on each fold, the scripts grab the similarity matrix of current fold by indexing the entire similarity matrix. **`CBIG_KRR_workflow_LITE.m` is only able to support correlation kernel**.
 
 To use `CBIG_KRR_workflow.m`, you can either pass in a single setup structure or file (the first argument `setup_param` of this function), or pass in a set of individual parameters (Compulsory variables and optional variables via varargin).
 
@@ -361,6 +361,7 @@ You can check the output folder structure in this directory: `$CBIG_CODE_DIR/sta
 
 ## Updates
 
+- Release v0.22.6 (11/05/2022): Removed option of Gaussian and Exponential kernels from `CBIG_KRR_generate_kernels_LITE.m`.
 - Release v0.22.1 (08/03/2022): Fix bug in regressing covariates in functions calling `CBIG_regress_X_from_y_test.m`.
 - Release v0.21.2 (09/12/2021): Add functionality to regress covariates from features within cross-validation stream.
 - Release v0.15.4 (05/11/2019): Change default lambda set; add hyperparameter-tuning metric.

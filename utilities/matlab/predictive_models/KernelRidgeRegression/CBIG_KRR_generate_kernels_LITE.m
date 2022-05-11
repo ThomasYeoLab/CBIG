@@ -109,16 +109,7 @@ for k = 1:num_ker
     %% Depending on kernel parameters, compute kernels
     if(~exist(outname, 'file'))
         if(~exist('similarity_mat', 'var') || isempty(similarity_mat))
-            if(~strcmp(ker_param(k).type, 'corr'))
-                K = size(feature_mat, 1); % number of features
-                SD = std(feature_mat, 0, 2);
-                mu = mean(feature_mat, 2);
-                
-                % znormalize feature_mat by SD and mu
-                feature_mat = bsxfun(@minus, feature_mat, mu);
-                feature_mat = bsxfun(@rdivide, feature_mat, SD);
-            end
-            
+        
             if(strcmp(ker_param(k).type, 'corr'))
                 FSM = CBIG_self_corr(feature_mat);
                 if(~isempty(isnan(feature_mat)))
@@ -131,12 +122,8 @@ for k = 1:num_ker
                         end
                     end
                 end
-            elseif(strcmp(ker_param(k).type, 'Exponential'))
-                FSM = exp(-1*ker_param(k).scale*squareform(pdist(feature_mat'))/K);
-            elseif(strcmp(ker_param(k).type, 'Gaussian'))
-                FSM = exp(-1*ker_param(k).scale*squareform(pdist(feature_mat').^2)/K);
             else
-                error('Unknown kernel type: %s', ker_param(k).type);
+                error('Only correlation kernel is supported!');
             end
         else
             FSM = similarity_mat;
