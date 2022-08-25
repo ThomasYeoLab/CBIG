@@ -33,8 +33,8 @@ main(){
         eval $cmd
         ;;
       inverse)
-        cmd="${ANTs_dir}/antsApplyTransforms -d 3 $vol4d -i $input -r $target -n $interp -t [$affine, 1] -t $inverse"
-        cmd="$cmd $fmri_warp -o $output"
+        cmd="${ANTs_dir}/antsApplyTransforms -d 3 $vol4d -i $input -r $target -n $interp $fmri_warp -t [$affine, 1]"
+        cmd="$cmd -t $inverse -o $output"
         echo $cmd
         eval $cmd
         ;;

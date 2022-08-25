@@ -88,14 +88,14 @@ case 'Schaefer_Kong17'
         'brain_parcellation', 'Schaefer2018_LocalGlobal', 'Parcellations', 'HCP', 'fslr32k', 'cifti',...
         ['Schaefer2018_' num2str(res) 'Parcels_Kong2022_17Networks_order.dlabel.nii']), 'mapname', 'array');
     parcelname = group_labels.dlabellabel';
-    network_order_struct = {{'DefaultA', 'DefaultB', 'DefaultC'},
+    network_order_struct = {{'DefaultC', 'DefaultB', 'DefaultA'},
+                            {'ContC', 'ContB', 'ContA'},
                             {'Language'},
-                            {'ContA', 'ContB', 'ContC'},
-                            {'SalVenAttnA', 'SalVenAttnB'},
-                            {'DorsAttnA', 'DorsAttnB'},
+                            {'SalVenAttnB', 'SalVenAttnA'},
+                            {'DorsAttnB', 'DorsAttnA'},
                             {'Aud'},
-                            {'SomMotA', 'SomMotB'},
-                            {'VisualA', 'VisualB', 'VisualC'}};                           
+                            {'SomMotB', 'SomMotA'}
+                            {'VisualC', 'VisualB', 'VisualA'}};                           
 
 case 'Yeo17'
     group_labels = ft_read_cifti(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects',...
