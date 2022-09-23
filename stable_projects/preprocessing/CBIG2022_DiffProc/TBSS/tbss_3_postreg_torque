@@ -1,0 +1,232 @@
+#!/bin/sh
+
+#   tbss_3_postreg - post-registration processing
+#
+#   Stephen Smith, FMRIB Image Analysis Group
+#
+#   Copyright (C) 2005-2008 University of Oxford
+#
+#   Part of FSL - FMRIB's Software Library
+#   http://www.fmrib.ox.ac.uk/fsl
+#   fsl@fmrib.ox.ac.uk
+#   
+#   Developed at FMRIB (Oxford Centre for Functional Magnetic Resonance
+#   Imaging of the Brain), Department of Clinical Neurology, Oxford
+#   University, Oxford, UK
+#   
+#   
+#   LICENCE
+#   
+#   FMRIB Software Library, Release 5.0 (c) 2012, The University of
+#   Oxford (the "Software")
+#   
+#   The Software remains the property of the University of Oxford ("the
+#   University").
+#   
+#   The Software is distributed "AS IS" under this Licence solely for
+#   non-commercial use in the hope that it will be useful, but in order
+#   that the University as a charitable foundation protects its assets for
+#   the benefit of its educational and research purposes, the University
+#   makes clear that no condition is made or to be implied, nor is any
+#   warranty given or to be implied, as to the accuracy of the Software,
+#   or that it will be suitable for any particular purpose or for use
+#   under any specific conditions. Furthermore, the University disclaims
+#   all responsibility for the use which is made of the Software. It
+#   further disclaims any liability for the outcomes arising from using
+#   the Software.
+#   
+#   The Licensee agrees to indemnify the University and hold the
+#   University harmless from and against any and all claims, damages and
+#   liabilities asserted by third parties (including claims for
+#   negligence) which arise directly or indirectly from the use of the
+#   Software or the sale of any products based on the Software.
+#   
+#   No part of the Software may be reproduced, modified, transmitted or
+#   transferred in any form or by any means, electronic or mechanical,
+#   without the express permission of the University. The permission of
+#   the University is not required if the said reproduction, modification,
+#   transmission or transference is done without financial return, the
+#   conditions of this Licence are imposed upon the receiver of the
+#   product, and all original and amended source code is included in any
+#   transmitted product. You may be held legally responsible for any
+#   copyright infringement that is caused or encouraged by your failure to
+#   abide by these terms and conditions.
+#   
+#   You are not permitted under this Licence to use this Software
+#   commercially. Use for which any financial return is received shall be
+#   defined as commercial use, and includes (1) integration of all or part
+#   of the source code or the Software into a product for sale or license
+#   by or on behalf of Licensee to third parties or (2) use of the
+#   Software or any derivative of it for research with the final aim of
+#   developing software products for sale or license to a third party or
+#   (3) use of the Software or any derivative of it for research with the
+#   final aim of developing non-software products for sale or license to a
+#   third party, or (4) use of the Software to provide any service to an
+#   external organisation for which payment is received. If you are
+#   interested in using the Software commercially, please contact Oxford
+#   University Innovation ("OUI"), the technology transfer company of the
+#   University, to negotiate a licence. Contact details are:
+#   Innovation@innovation.ox.ac.uk quoting reference DE/9564.
+export LC_ALL=C
+
+Usage() {
+    cat <<EOF
+
+Usage: tbss_3_postreg [options]
+
+Choose ONE of:
+ -S   : derive mean_FA and mean_FA_skeleton from mean of all subjects in study (recommended)
+ -T   : use FMRIB58_FA and its skeleton instead of study-derived mean and skeleton
+
+EOF
+    exit 1
+}
+
+[ "$1" = "" ] && Usage
+
+if [ $1 = -S ] ; then
+    SKELETON=0
+elif [ $1 = -T ] ; then
+    SKELETON=1
+else
+    Usage
+fi
+
+echo [`date`] [`hostname`] [`uname -a`] [`pwd`] [$0 $@] >> .tbsslog
+
+cd FA
+
+# exit if tbss directory and FA directory not set up
+if [ ! -d "$tbssdir" ] || [ ! -d "$FAdir" ] ; then
+	echo "ERROR: tbss and/or FA directory not found..."
+	exit 1
+fi
+
+/bin/rm -f all.msf
+
+if [ `${FSLDIR}/bin/imtest target` = 1 ] ; then
+    echo "using pre-chosen target for registration"
+    best=target
+else
+    echo "finding best target"
+
+    n=`$FSLDIR/bin/imglob *_FA.nii* *_FA.img* *_FA.hdr* | wc -w`
+
+    for f in `$FSLDIR/bin/imglob *_FA.nii* *_FA.img* *_FA.hdr*` ; do
+
+	meanscore=0
+	medianscore=0
+
+	for g in `$FSLDIR/bin/imglob *_FA.nii* *_FA.img* *_FA.hdr*` ; do
+	
+	    thismeanscore=`cat ${g}_to_${f}_warp.msf | awk '{print $1}'`
+	    thismedianscore=`cat ${g}_to_${f}_warp.msf | awk '{print $2}'`
+
+	    meanscore=`echo "10 k $meanscore $thismeanscore + p" | dc -`
+	    medianscore=`echo "10 k $medianscore $thismedianscore + p" | dc -`
+	done
+
+	meanscore=`echo "10 k $meanscore $n / p" | dc -`
+	medianscore=`echo "10 k $medianscore $n / p" | dc -`
+
+	echo "$f $meanscore $medianscore"
+	echo "$f $meanscore $medianscore" >> all.msf
+
+    done
+
+    best=`cat all.msf | sort -k 2 -n | head -n 1 | awk '{print $1}'`
+    echo "best target is $best - now registering this to standard space"
+
+    $FSLDIR/bin/imcp $best target
+fi
+
+echo $best > best.msf
+
+mkdir -p ../stats
+
+	# is target already in MNI152 space? (kludge)
+	if [ `${FSLDIR}/bin/imtest target` = 1 ] && [ `$FSLDIR/bin/fslval $best dim1` = 182 ] && [ `$FSLDIR/bin/fslval $best dim2` = 218 ] && [ `$FSLDIR/bin/fslval $best dim3` = 182 ] ; then
+
+	    echo "transforming all FA images into MNI152 space"
+	    filelist=`$FSLDIR/bin/imglob *_FA.nii* *_FA.img* *_FA.hdr*`;
+	    # check that all the registration results are there!
+	    missingwarps="";
+	    for f in $filelist ; do
+		if [ `${FSLDIR}/bin/imtest ${f}_to_target_warp` = 0 ] ; then
+		    missingwarps="$missingwarps ${f}_to_target_warp"
+		fi
+	    done
+	    if [ `echo $missingwarps | wc -c` -gt 1 ] ; then
+		echo "ERROR:: cannot find the following warp results:"
+		echo "    $missingwarps"
+		echo "Please wait for registration (fnirt) to finish or re-run registrations";
+		exit 1;
+	    fi
+
+	    jobname='tbss_3_warp'
+
+	    for f in $filelist ; do
+		if [ -e "$FAdir/${f}_to_target.nii.gz" ]; then
+			echo "${f}_to_target exists: skipping processing"
+		else		
+			# run in scheduler
+			cmd="$FSLDIR/bin/applywarp -i $FAdir/$f -o $FAdir/${f}_to_target -r $FAdir/target -w $FAdir/${f}_to_target_warp --rel"
+			ssh headnode "$CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd '$cmd' -walltime 01:00:00 \
+				-name $jobname -mem 3GB -joberr '$tbssdir' -jobout '$tbssdir' "			
+			sleep 2
+		fi
+	    done
+
+	    # wait until all jobs run: counted by username and job name
+	    echo "Waiting for all jobs to complete before moving on..."
+	    user_id=$( whoami )
+	    running_jobs=$( ssh headnode "qselect -u $user_id -N $jobname | wc -l" )
+	    start=$SECONDS
+	    while [ $running_jobs -gt 0 ]; do
+		duration_min=$((( $SECONDS - $start ) / 60))
+		echo "	${duration_min}m: $running_jobs jobs  still running"
+		sleep 1m
+		running_jobs=$( ssh headnode "qselect -u $user_id -N $jobname | wc -l" )
+	    done
+
+	    mkdir -p FA/scheduler_logs
+	    mv $tbssdir/*.headnode.* $tbssdir/FA/scheduler_logs
+
+	else
+
+	    echo "affine-registering target to MNI152 space"
+	    $FSLDIR/bin/fslmaths target -bin target_mask
+	    $FSLDIR/bin/flirt -in target -inweight target_mask -ref $FSLDIR/data/standard/FMRIB58_FA_1mm -omat target_to_MNI152.mat -out target_to_MNI152
+
+	    echo "transforming (and upsampling) all FA images into MNI152 space"
+	    for f in `$FSLDIR/bin/imglob *_FA.nii* *_FA.img* *_FA.hdr*` ; do
+		echo $f
+		$FSLDIR/bin/applywarp -i $f -o ${f}_to_target -r $FSLDIR/data/standard/FMRIB58_FA_1mm -w ${f}_to_${best}_warp --postmat=target_to_MNI152.mat
+	    done
+
+	fi
+
+echo "merging all upsampled FA images into single 4D image" # needs to be run in compiler
+$FSLDIR/bin/fslmerge -t ../stats/all_FA `$FSLDIR/bin/imglob *_FA_to_target.*`
+cd ../stats
+
+# create mean FA
+echo "creating valid mask and mean FA"
+$FSLDIR/bin/fslmaths all_FA -max 0 -Tmin -bin mean_FA_mask -odt char
+$FSLDIR/bin/fslmaths all_FA -mas mean_FA_mask all_FA
+$FSLDIR/bin/fslmaths all_FA -Tmean mean_FA
+
+# create skeleton
+if [ $SKELETON = 0 ] ; then
+    echo "skeletonising mean FA"
+    $FSLDIR/bin/tbss_skeleton -i mean_FA -o mean_FA_skeleton
+else
+    $FSLDIR/bin/fslmaths $FSLDIR/data/standard/FMRIB58_FA_1mm -mas mean_FA_mask mean_FA
+    $FSLDIR/bin/fslmaths mean_FA -bin mean_FA_mask
+    $FSLDIR/bin/fslmaths all_FA -mas mean_FA_mask all_FA
+    $FSLDIR/bin/imcp $FSLDIR/data/standard/FMRIB58_FA-skeleton_1mm mean_FA_skeleton
+fi
+
+#echo "now view mean_FA_skeleton to check whether the default threshold of 0.2 needs changing, when running:"
+#echo "tbss_4_prestats <threshold>"
+

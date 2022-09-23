@@ -1,0 +1,37 @@
+name: MRtrix_env
+channels:
+  - mrtrix3
+  - conda-forge
+  - defaults
+dependencies:
+  - _libgcc_mutex=0.1=main
+  - ca-certificates=2020.10.14=0
+  - dbus=1.13.18=hb2f20db_0
+  - expat=2.2.10=he6710b0_2
+  - fftw=3.3.8=h7b6447c_3
+  - fontconfig=2.13.0=h9420a91_0
+  - freetype=2.10.4=h5ab3b9f_0
+  - glib=2.66.1=h92f7085_0
+  - gst-plugins-base=1.14.0=hbbd80ab_1
+  - gstreamer=1.14.0=hb31296c_0
+  - icu=58.2=he6710b0_3
+  - jpeg=9b=h024ee3a_2
+  - libedit=3.1.20191231=h14c3975_1
+  - libffi=3.3=he6710b0_2
+  - libgcc-ng=9.1.0=hdf63c60_0
+  - libpng=1.6.37=hbc83047_0
+  - libstdcxx-ng=9.1.0=hdf63c60_0
+  - libtiff=4.1.0=h2733197_1
+  - libuuid=1.0.3=h1bed415_2
+  - libxcb=1.14=h7b6447c_0
+  - libxml2=2.9.10=hb55368b_3
+  - lz4-c=1.9.2=heb0550a_3
+  - mrtrix3=3.0.2=h6bb024c_0
+  - ncurses=6.2=he6710b0_1
+  - openssl=1.1.1h=h7b6447c_0
+  - pcre=8.44=he6710b0_0
+  - qt=5.9.7=h5867ecd_1
+  - sqlite=3.33.0=h62c20be_0
+  - xz=5.2.5=h7b6447c_0
+  - zlib=1.2.11=h7b6447c_3
+  - zstd=1.4.5=h9ceee32_0

@@ -1,0 +1,18 @@
+f=$1
+tbssdir=$2
+
+echo processing $f
+
+# erode a little and zero end slices
+X=`${FSLDIR}/bin/fslval $tbssdir/$f dim1`; X=`echo "$X 2 - p" | dc -`
+Y=`${FSLDIR}/bin/fslval $tbssdir/$f dim2`; Y=`echo "$Y 2 - p" | dc -`
+Z=`${FSLDIR}/bin/fslval $tbssdir/$f dim3`; Z=`echo "$Z 2 - p" | dc -`
+$FSLDIR/bin/fslmaths $tbssdir/$f -min 1 -ero -roi 1 $X 1 $Y 1 $Z 0 1 $tbssdir/FA/${f}_FA
+
+# create mask (for use in FLIRT & FNIRT)
+$FSLDIR/bin/fslmaths $tbssdir/FA/${f}_FA -bin $tbssdir/FA/${f}_FA_mask
+
+$FSLDIR/bin/fslmaths $tbssdir/FA/${f}_FA_mask -dilD -dilD -sub 1 -abs \
+	-add $tbssdir/FA/${f}_FA_mask $tbssdir/FA/${f}_FA_mask -odt char
+
+$FSLDIR/bin/immv $tbssdir/$f $tbssdir/origdata

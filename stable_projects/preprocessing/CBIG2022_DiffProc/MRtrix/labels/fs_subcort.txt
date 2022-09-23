@@ -1,0 +1,25 @@
+#$Id: FreeSurferColorLUT.txt,v 1.70.2.7 2012/08/27 17:20:08 nicks Exp $
+
+#No. Label Name:                            R   G   B   A
+
+0   Unknown                                 0   0   0   0
+
+1  Left-Thalamus-Proper                    0   118 14  0
+2  Left-Caudate                            122 186 220 0
+3  Left-Putamen                            236 13  176 0
+4  Left-Pallidum                           12  48  255 0
+5  Left-Hippocampus                        220 216 20  0
+6  Left-Amygdala                           103 255 255 0
+7  Left-Accumbens-area                     255 165 0   0
+8  Left-VentralDC                          165 42  42  0
+
+9  Right-Thalamus-Proper                   0   118 14  0
+10  Right-Caudate                           122 186 220 0
+11  Right-Putamen                           236 13  176 0
+12  Right-Pallidum                          13  48  255 0
+13  Right-Hippocampus                       220 216 20  0
+14  Right-Amygdala                          103 255 255 0
+15  Right-Accumbens-area                    255 165 0   0
+16  Right-VentralDC                         165 42  42  0
+
+17  Brain-Stem                              119 159 176 0

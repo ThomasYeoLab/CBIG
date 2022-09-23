@@ -1,6 +1,6 @@
 #! /bin/sh
-# Last successfully run on Jul 7th, 2019
-# Written by Minh Nguyen and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+# Last successfully run on May 27th, 2021 with git repository version v0.19.2-Yeo2011_Schaefer2018-develop-24-gd2f3c6b4
+# Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 # DO NOT CHANGE: This clears old freesurfer variables if they previously exists
 if [ -n "$FREESURFER_HOME" ]; then
@@ -11,16 +11,20 @@ fi
 export CBIG_CODE_DIR=$HOME/storage/CBIG_private
 
 # PLEASE CHANGE: define locations for these libraries
-export FREESURFER_HOME=/apps/arch/Linux_x86_64/freesurfer/5.3.0
-export CBIG_MATLAB_DIR=/apps/arch/Linux_x86_64/matlab/R2018b
-export CBIG_SPM_DIR=/apps/arch/Linux_x86_64/spm/spm12
-export CBIG_AFNI_DIR=/apps/arch/Linux_x86_64/afni/AFNI_2011_12_21_1014/linux_openmp_64
-export CBIG_ANTS_DIR=/apps/arch/Linux_x86_64/ants/ants_v2.2.0/BUILD/bin/
-export CBIG_WB_DIR=/apps/arch/Linux_x86_64/HCP/workbench-1.1.1/
-export CBIG_FSLDIR=/apps/arch/Linux_x86_64/fsl/5.0.8
-export CBIG_TESTDATA_DIR=NA
-export CBIG_REPDATA_DIR=NA
-export CBIG_SCHEDULER_DIR=NA
+export FREESURFER_HOME=/apps/freesurfer/5.3.0
+export CBIG_MATLAB_DIR=/apps/matlab/R2018b
+export CBIG_SPM_DIR=/apps/spm/spm12
+export CBIG_AFNI_DIR=/apps/afni/AFNI_2011_12_21_1014/linux_openmp_64
+export CBIG_ANTS_DIR=/apps/ants/ants_v2.2.0/BUILD/bin/
+export CBIG_WB_DIR=/apps/HCP/workbench-1.1.1/
+export CBIG_FSLDIR=/apps/fsl/5.0.10
+
+# DO NOT CHANGE: define locations for unit tests data and replication data
+export CBIG_TESTDATA_DIR=/mnt/isilon/CSC1/Yeolab/CodeMaintenance/UnitTestData
+export CBIG_REPDATA_DIR=/mnt/isilon/CSC1/Yeolab/CodeMaintenance/ReplicationData
+
+# DO NOT CHANGE: define scheduler location
+export CBIG_SCHEDULER_DIR=/opt/pbs/bin
 
 # DO NOT CHANGE: set up your environment with the configurations above
 SETUP_PATH=$CBIG_CODE_DIR/setup/CBIG_generic_setup.sh
@@ -28,7 +32,7 @@ source $SETUP_PATH
 
 # DO NOT CHANGE: set up temporary directory for MRIread from FS6.0 for CBIG 
 # members using the HPC, Other users should comment this out
-export TMPDIR=/tmpstore
+export TMPDIR=/tmp
 
 # Do NOT CHANGE: set up MATLABPATH so that MATLAB can find startup.m in our repo 
 export MATLABPATH=$CBIG_CODE_DIR/setup
