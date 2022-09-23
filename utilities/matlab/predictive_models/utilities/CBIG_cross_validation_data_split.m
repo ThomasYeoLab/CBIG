@@ -60,7 +60,7 @@ function sub_fold = CBIG_cross_validation_data_split( subject_list, family_csv, 
 %   'Subject', 'Family_ID', 20, 1, ...
 %   '/data/users/jingweil/storage/MyProject/GSR/code_release/test/kernel_regression/HCP', ',' )
 % 
-% Written by Jingwei Li, Ru(by) Kong and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+% Written by Jingwei, Ru(by) and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 
 if(~exist('delimiter', 'var'))
@@ -94,7 +94,7 @@ end
 % split families into folds with random seed
 fold_list = cell(num_folds,1);
 subfold_amount = ceil(num_sub/num_folds);
-rng(seed);
+rng(seed, 'twister');
 index = randperm(num_fam);
 curr_fold = 0;
 for i = 1:num_fam

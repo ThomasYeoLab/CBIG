@@ -26,7 +26,7 @@ function M = CBIG_uniform_rand_rotation(num_rotations, seed)
 % num_rotations = 5000;
 % seed = 2;
 % M = CBIG_uniform_rand_rotation(num_rotations, seed);
-%Written by Trevor Tan and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+%Written by Ruby Kong and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
     if nargin == 0 % If no input for num_rotations, set default num_rotations as 1000
         num_rotations = 1000;
