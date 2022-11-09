@@ -3,7 +3,21 @@
 
 # DO NOT CHANGE: This clears old freesurfer variables if they previously exists
 if [ -n "$FREESURFER_HOME" ]; then
-	$FREESURFER_HOME/bin/clear_fs_env.csh 
+    # Save LD_LIBRARY_PATH to restore it later. This variable defines shared libraries used
+    # by matlab to open GUI/compute/etc.
+    # clear_fs_env.csh removes it when clearing old freesurfer variables but does not set it back again.
+    LD_LIBRARY_PATH_CURRENT=$LD_LIBRARY_PATH
+
+    # Clear old freesurfer variables
+	while read cmd var; do
+		if [[ $cmd == "unsetenv" ]]; then
+			eval "unset $var"
+		fi
+	done < $FREESURFER_HOME/bin/clear_fs_env.csh
+
+    # Restore old LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH_CURRENT
+    unset LD_LIBRARY_PATH_CURRENT
 fi
 
 # PLEASE CHANGE: Please specify location of CBIG repository

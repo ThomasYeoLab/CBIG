@@ -3,7 +3,17 @@
 
 # DO NOT CHANGE: This clears old freesurfer variables if they previously exists
 if( $?FREESURFER_HOME ) then
+    # Save LD_LIBRARY_PATH to restore it later. This variable defines shared libraries used
+    # by matlab to open GUI/compute/etc.
+    # clear_fs_env.csh removes it when clearing old freesurfer variables but does not set it back again.
+    set LD_LIBRARY_PATH_CURRENT=$LD_LIBRARY_PATH
+
+    # Clear old freesurfer variables
 	source $FREESURFER_HOME/bin/clear_fs_env.csh 
+
+    # Restore old LD_LIBRARY_PATH
+    setenv LD_LIBRARY_PATH $LD_LIBRARY_PATH_CURRENT
+    unset LD_LIBRARY_PATH_CURRENT
 endif
 
 # PLEASE CHANGE: Please specify location of CBIG repository
@@ -34,7 +44,7 @@ source $SETUP_PATH
 setenv TMPDIR /tmp
 
 # Do NOT CHANGE: set up MATLABPATH so that MATLAB can find startup.m in our repo 
-setenv MATLABPATH = $CBIG_CODE_DIR/setup
+setenv MATLABPATH $CBIG_CODE_DIR/setup
 
 # specified the default Python environment.
 # Please UNCOMMENT if you follow CBIG's set up for Python environments.
