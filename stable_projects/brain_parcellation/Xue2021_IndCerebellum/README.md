@@ -190,7 +190,7 @@ This will also create a .nii.gz file and a freesurfer lookup table text file und
 
 ## Visualization
 
-For visualization purpose, this study projects the volume parcellations to flatmaps using SUIT toolbox. Details can be found here: [Flatmap](http://www.diedrichsenlab.org/imaging/suit_flatmap.htm)
+For visualization purpose, this study projects the volume parcellations to flatmaps using SUIT toolbox. Details can be found here: [Flatmap](https://www.diedrichsenlab.org/imaging/suit_flatmap.htm)
 
 To project the volume parcellation to flatmap, use the following Matlab command:
 
@@ -203,7 +203,7 @@ Note that the input volume file should be unzipped first.
 To visualize the flatmap in matlab, use the following command:
 
 ```
-suit_plotflatmap(flat2, 'type', 'label', 'cmap', 'colormap.txt');
+suit_plotflatmap(flat, 'type', 'label', 'cmap', 'colormap.txt');
 ```
 
 The colormap should be a text file. Each line shoule be `<Network_name> <R> <G> <B>`.

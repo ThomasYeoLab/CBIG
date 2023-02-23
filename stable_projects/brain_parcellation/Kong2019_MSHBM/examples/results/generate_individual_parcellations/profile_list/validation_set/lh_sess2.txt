@@ -1,0 +1,2 @@
+/home/rkong/storage/CBIG_private/data/example_data/CoRR_HNU/subj01/subj01_sess1/profiles/lh.sub1_sess1_fsaverage5_roifsaverage3.surf2surf_profile_2.nii.gz
+/home/rkong/storage/CBIG_private/data/example_data/CoRR_HNU/subj02/subj02_sess1/profiles/lh.sub2_sess1_fsaverage5_roifsaverage3.surf2surf_profile_2.nii.gz

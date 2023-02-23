@@ -1,0 +1,200 @@
+17networks_LH_TempPar_Temp
+1 12 48 255 255
+17networks_LH_DefaultC_PHC
+2 0 0 130 255
+17networks_LH_DefaultC_RSC
+3 0 0 130 255
+17networks_LH_DefaultB_IPL
+4 205 62 78 255
+17networks_LH_DefaultB_PFCd_1
+5 205 62 78 255
+17networks_LH_DefaultB_PFCd_2
+6 205 62 78 255
+17networks_LH_DefaultB_PFCv_1
+7 205 62 78 255
+17networks_LH_DefaultB_PFCv_2
+8 205 62 78 255
+17networks_LH_DefaultB_Temp_1
+9 205 62 78 255
+17networks_LH_DefaultB_Temp_2
+10 205 62 78 255
+17networks_LH_DefaultA_IPL
+11 255 255 0 255
+17networks_LH_DefaultA_PCC
+12 255 255 0 255
+17networks_LH_DefaultA_PFCd
+13 255 255 0 255
+17networks_LH_DefaultA_PFCm
+14 255 255 0 255
+17networks_LH_ContC_PCC
+15 119 140 176 255
+17networks_LH_ContC_pCun
+16 119 140 176 255
+17networks_LH_ContB_FPole
+17 135 50 74 255
+17networks_LH_ContA_IPS_1
+18 230 148 34 255
+17networks_LH_ContA_IPS_2
+19 230 148 34 255
+17networks_LH_ContA_PrCv
+20 230 148 34 255
+17networks_LH_LimbicA_Temp
+21 220 248 164 255
+17networks_LH_LimbicA_TempPole
+22 220 248 164 255
+17networks_LH_LimbicB_OFC
+23 122 135 50 255
+17networks_LH_SalVentAttnB_FrMed
+24 255 152 213 255
+17networks_LH_SalVentAttnB_PFCl
+25 255 152 213 255
+17networks_LH_SalVentAttnA_Ins_1
+26 196 58 250 255
+17networks_LH_SalVentAttnA_Ins_2
+27 196 58 250 255
+17networks_LH_SalVentAttnA_SPL
+28 196 58 250 255
+17networks_LH_DorsAttnB_PostC_1
+29 0 118 14 255
+17networks_LH_DorsAttnB_PostC_2
+30 0 118 14 255
+17networks_LH_DorsAttnB_PrC
+31 0 118 14 255
+17networks_LH_DorsAttnB_PrCd
+32 0 118 14 255
+17networks_LH_DorsAttnB_SPL
+33 0 118 14 255
+17networks_LH_DorsAttnA_SPL
+34 74 155 60 255
+17networks_LH_DorsAttnA_TempOcc
+35 74 155 60 255
+17networks_LH_SomMotB_1
+36 42 204 164 255
+17networks_LH_SomMotB_2
+37 42 204 164 255
+17networks_LH_SomMotB_Ins
+38 42 204 164 255
+17networks_LH_SomMotB_ParOper
+39 42 204 164 255
+17networks_LH_SomMotA_1
+40 70 130 180 255
+17networks_LH_SomMotA_2
+41 70 130 180 255
+17networks_LH_SomMotA_3
+42 70 130 180 255
+17networks_LH_SomMotA_4
+43 70 130 180 255
+17networks_LH_VisPeri_1
+44 255 0 0 255
+17networks_LH_VisPeri_2
+45 255 0 0 255
+17networks_LH_VisPeri_3
+46 255 0 0 255
+17networks_LH_VisCent_1
+47 120 18 134 255
+17networks_LH_VisCent_2
+48 120 18 134 255
+17networks_LH_VisCent_3
+49 120 18 134 255
+17networks_LH_VisCent_4
+50 120 18 134 255
+17networks_RH_TempPar_IPL
+51 12 48 255 255
+17networks_RH_TempPar_Temp
+52 12 48 255 255
+17networks_RH_DefaultC_PHC
+53 0 0 130 255
+17networks_RH_DefaultC_RSC
+54 0 0 130 255
+17networks_RH_DefaultB_PFCd_1
+55 205 62 78 255
+17networks_RH_DefaultB_Temp_1
+56 205 62 78 255
+17networks_RH_DefaultA_PCC
+57 255 255 0 255
+17networks_RH_DefaultA_PFCm
+58 255 255 0 255
+17networks_RH_ContC_PCC
+59 119 140 176 255
+17networks_RH_ContC_pCun
+60 119 140 176 255
+17networks_RH_ContB_FPole
+61 135 50 74 255
+17networks_RH_ContB_IPL
+62 135 50 74 255
+17networks_RH_ContB_PFCd
+63 135 50 74 255
+17networks_RH_ContB_Temp
+64 135 50 74 255
+17networks_RH_ContA_IPS_1
+65 230 148 34 255
+17networks_RH_ContA_PrCv
+66 230 148 34 255
+17networks_RH_LimbicA_Temp
+67 220 248 164 255
+17networks_RH_LimbicA_TempPole
+68 220 248 164 255
+17networks_RH_LimbicB_OFC
+69 122 135 50 255
+17networks_RH_LimbicB_PFCv
+70 122 135 50 255
+17networks_RH_SalVentAttnB_FrMed
+71 255 152 213 255
+17networks_RH_SalVentAttnB_PFCd
+72 255 152 213 255
+17networks_RH_SalVentAttnB_PFCl
+73 255 152 213 255
+17networks_RH_SalVentAttnB_PFCv
+74 255 152 213 255
+17networks_RH_SalVentAttnA
+75 196 58 250 255
+17networks_RH_SalVentAttnA_Ins_1
+76 196 58 250 255
+17networks_RH_SalVentAttnA_Ins_2
+77 196 58 250 255
+17networks_RH_SalVentAttnA_ParOper
+78 196 58 250 255
+17networks_RH_SalVentAttnA_SPL
+79 196 58 250 255
+17networks_RH_DorsAttnB_PostC_1
+80 0 118 14 255
+17networks_RH_DorsAttnB_PostC_2
+81 0 118 14 255
+17networks_RH_DorsAttnB_PrC
+82 0 118 14 255
+17networks_RH_DorsAttnB_PrCd
+83 0 118 14 255
+17networks_RH_DorsAttnB_SPL
+84 0 118 14 255
+17networks_RH_DorsAttnA_IPS
+85 74 155 60 255
+17networks_RH_DorsAttnA_SPL
+86 74 155 60 255
+17networks_RH_DorsAttnA_TempOcc
+87 74 155 60 255
+17networks_RH_SomMotB_1
+88 42 204 164 255
+17networks_RH_SomMotB_2
+89 42 204 164 255
+17networks_RH_SomMotB_Ins
+90 42 204 164 255
+17networks_RH_SomMotA_1
+91 70 130 180 255
+17networks_RH_SomMotA_2
+92 70 130 180 255
+17networks_RH_SomMotA_3
+93 70 130 180 255
+17networks_RH_VisPeri_1
+94 255 0 0 255
+17networks_RH_VisPeri_2
+95 255 0 0 255
+17networks_RH_VisPeri_3
+96 255 0 0 255
+17networks_RH_VisCent_1
+97 120 18 134 255
+17networks_RH_VisCent_2
+98 120 18 134 255
+17networks_RH_VisCent_3
+99 120 18 134 255
+17networks_RH_VisCent_4
+100 120 18 134 255

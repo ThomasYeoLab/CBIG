@@ -1,4 +1,4 @@
-function  CBIG_IndCBM_check_example_results(output_dir)
+function tf = CBIG_IndCBM_check_example_results(output_dir)
 
 % CBIG_IndCBM_check_example_results(output_dir)
 %
@@ -24,9 +24,18 @@ new_sub2 = ft_read_cifti(fullfile(output_dir, 'parcellation', 'sub2', 'IndCBM_pa
 diff_sub1 = sum(ref_sub1.dscalar ~= new_sub1.dscalar);
 diff_sub2 = sum(ref_sub2.dscalar ~= new_sub2.dscalar);
 
-assert(diff_sub1 == 0, sprintf('%d labels are different for subject 1 ', diff_sub1));
-assert(diff_sub2 == 0, sprintf('%d labels are different for subject 1 ', diff_sub2));
-fprintf('Your example results are correct!\n')
+tf = true;
+if(diff_sub1 ~= 0)
+    sprintf('%d labels are different for subject 1 ', diff_sub1);
+    tf = false;
+end
+if(diff_sub2 ~= 0)
+    sprintf('%d labels are different for subject 2 ', diff_sub2);
+    tf = false;
+end
+if(tf)
+    fprintf('Your example results are correct!\n');
+end
 fclose('all');
 
 end

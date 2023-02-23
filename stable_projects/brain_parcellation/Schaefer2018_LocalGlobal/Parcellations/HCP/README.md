@@ -25,9 +25,11 @@ Example Usage
 
 2) In terminal:
 
-   a) `wb_view`  
+   a) `wb_view`
    
-   b) open an underlying fslr32k spec file on which the parcellation will be overlaid  
+   b) load fslr32k surface files for both hemispheres. For example, you can use these files under this directory `CBIG/data/templates/surface/fs_LR_32k/` in our [public repo](https://github.com/ThomasYeoLab/CBIG):
+   - [fsaverage.L.very_inflated.32k_fs_LR.surf.gii](https://github.com/ThomasYeoLab/CBIG/blob/master/data/templates/surface/fs_LR_32k/fsaverage.L.very_inflated.32k_fs_LR.surf.gii)
+   - [fsaverage.R.very_inflated.32k_fs_LR.surf.gii](https://github.com/ThomasYeoLab/CBIG/blob/master/data/templates/surface/fs_LR_32k/fsaverage.R.very_inflated.32k_fs_LR.surf.gii)
    
    c) select file-> open file  
    

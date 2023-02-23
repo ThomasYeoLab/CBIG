@@ -83,4 +83,20 @@ The lookup table can be found in:
 
 `$CBIG_CODE_DIR/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Parcellations/project_to_individual/Schaefer2018_<N>Parcels_<7/17>Networks_order_LUT.txt`
 
+### Anatomical statistics using Schaefer2018 parcellation
 
+If you need to calculate the anatomical statistics such as cortical thickness using Schaefer2018 parcellation on the surface, please use `mris_anatomical_stats` to compute:
+
+```
+mris_anatomical_stats <subject_name> lh \
+  -f $SUBJECTS_DIR/<subject_name>/stats/lh.Schaefer2018_<N>Parcels_<7/17>Networks.stats \
+  -b -a $SUBJECTS_DIR/<subject_name>/label/lh.Schaefer2018_<N>Parcels_<7/17>Networks.annot
+
+mris_anatomical_stats <subject_name> rh \
+  -f $SUBJECTS_DIR/<subject_name>/stats/rh.Schaefer2018_<N>Parcels_<7/17>Networks.stats \
+  -b -a $SUBJECTS_DIR/<subject_name>/label/rh.Schaefer2018_<N>Parcels_<7/17>Networks.annot
+```
+
+This command requires annot files generated from the [previous step](#1-schaefer2018-parcellation-in-individual-surface-space).
+
+Results will be stored in `$SUBJECTS_DIR/<subject_name>/stats/?h.Schaefer2018_<N>Parcels_<7/17>Networks.stats`

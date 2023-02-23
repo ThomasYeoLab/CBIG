@@ -67,19 +67,30 @@ git checkout -b Yeo2011_fcMRI_clustering v0.19.2-Yeo2011_Schaefer2018
 ----
 
 ## Updates
-- Release v0.4.3 (09/10/2017): Release Yeo2011 brain parcellation.
-- Release v0.4.5 (01/12/2017):
+- Release v0.19.2 (23/03/2021): Add two tables that matches network order to network names for both the Yeo 7/17 network.
 
-	**Yeo2011_fcMRI_clustering**
-	
-	1. Add Yeo2011 parcellations with split labels.
-	
-- Release v0.4.10 (01/02/2018):
+- Release v0.18.1 (20/01/2021): 
 
-    1. Add project-specific prefix `Yeo2011` in all scripts names.
-    
-    2. Add `config`, `unit_tests`, and `examples` folders.
-    
+    1. Update unit test to accommodate to the new HPC.
+
+    2. Turned off "silhouette" option in the wrapper file `CBIG_Yeo2011_cluster_fcMRI_surf2surf_profiles.csh`.
+
+- Release v0.17.0 (19/02/2020): Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths.
+
+- Release v0.14.3 (16/09/2019):
+
+    1. Update some component names. For details, please refer to this readme: [Update_20190916_README.md](https://github.com/ThomasYeoLab/CBIG/tree/master/stable_projects/brain_parcellation/Yeo2011_fcMRI_clustering/1000subjects_reference/Yeo_JNeurophysiol11_SplitLabels/Updates/Update_20190916_README.md)
+
+- Release v0.9.7 (16/04/2019):
+
+    1. Update the annot files of the split components parcellation. The colortable of the previous annot file `1000subjects_reference/Yeo_JNeurophysiol11_SplitLabels/fsaverage5/label/<?h>.Yeo2011_<7/17>Networks_N1000.split_components.annot` included components from both hemisphere. Now the components of the other hemisphere in the colortable are removed.
+
+    2. Add instruction and lookup tables for projecting Yeo2011 parcellation to individual subjects under `1000subjects_reference/Yeo_JNeurophysiol11_SplitLabels/project_to_individual`.
+
+- Release v0.8.2 (01/02/2019):
+
+    1. Release RAS centroid coordinates of Yeo2011 parcellations in MNI 1mm and 2mm space. The coordinate csv files can be found under `1000subjects_reference/Yeo_JNeurophysiol11_SplitLabels/MNI152`. 
+
 - Release v0.4.12 (09/04/2018): 
 
     1. Add project-specific prefix `Yeo2011` for two scripts of **Yeo2011_fcMRI_clustering**: `1000subjects_reference/Yeo_JNeurophysiol11_SplitLabels/scripts/CBIG_DownsampleMNI1mmParcellationTo2mm.csh` and `1000subjects_reference/Yeo_JNeurophysiol11_SplitLabels/scripts/CBIG_ProjectSplitLabels2MNI1mm.m`, which were missing in release v0.4.10.
@@ -90,29 +101,19 @@ git checkout -b Yeo2011_fcMRI_clustering v0.19.2-Yeo2011_Schaefer2018
     
     4. Update some README.md files.
 
-- Release v0.8.2 (01/02/2019):
+- Release v0.4.10 (01/02/2018):
 
-    1. Release RAS centroid coordinates of Yeo2011 parcellations in MNI 1mm and 2mm space. The coordinate csv files can be found under `1000subjects_reference/Yeo_JNeurophysiol11_SplitLabels/MNI152`. 
+    1. Add project-specific prefix `Yeo2011` in all scripts names.
+    
+    2. Add `config`, `unit_tests`, and `examples` folders.
+    
+- Release v0.4.5 (01/12/2017):
 
-- Release v0.9.7 (16/04/2019):
-
-    1. Update the annot files of the split components parcellation. The colortable of the previous annot file `1000subjects_reference/Yeo_JNeurophysiol11_SplitLabels/fsaverage5/label/<?h>.Yeo2011_<7/17>Networks_N1000.split_components.annot` included components from both hemisphere. Now the components of the other hemisphere in the colortable are removed.
-
-    2. Add instruction and lookup tables for projecting Yeo2011 parcellation to individual subjects under `1000subjects_reference/Yeo_JNeurophysiol11_SplitLabels/project_to_individual`.
-
-- Release v0.14.3 (16/09/2019):
-
-    1. Update some component names. For details, please refer to this readme: [Update_20190916_README.md](https://github.com/ThomasYeoLab/CBIG/tree/master/stable_projects/brain_parcellation/Yeo2011_fcMRI_clustering/1000subjects_reference/Yeo_JNeurophysiol11_SplitLabels/Updates/Update_20190916_README.md)
-
-- Release v0.17.0 (19/02/2020): Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths.
-
-- Release v0.18.1 (20/01/2021): 
-
-    1. Update unit test to accommodate to the new HPC.
-
-    2. Turned off "silhouette" option in the wrapper file `CBIG_Yeo2011_cluster_fcMRI_surf2surf_profiles.csh`.
-
-- Release v0.19.2 (23/03/2021): Add two tables that matches network order to network names for both the Yeo 7/17 network.
+	**Yeo2011_fcMRI_clustering**
+	
+	1. Add Yeo2011 parcellations with split labels.
+	
+- Release v0.4.3 (09/10/2017): Release Yeo2011 brain parcellation.
 
 ----
 

@@ -18,6 +18,7 @@
 !/brain_parcellation/Kong2019_MSHBM/**
 !/brain_parcellation/Xue2021_IndCerebellum/**
 !/brain_parcellation/Kong2022_ArealMSHBM/**
+!/brain_parcellation/Yan2023_homotopic/**
 
 #Similarly
 !/disorder_subtypes/*

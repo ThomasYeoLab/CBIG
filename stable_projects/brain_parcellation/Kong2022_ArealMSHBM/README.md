@@ -452,7 +452,7 @@ Assuming each validation subject has `T` sessions, the individual parcellation w
     
     for data in `fsaverage6`  or
     
-    + `<output_dir>/profile_list/test_set/sess?.txt`
+    + `<output_dir>/profile_list/validation_set/sess?.txt`
 
 	for data in `fs_LR_32k`.
     
@@ -476,7 +476,7 @@ contain diffusion embedding matrices of RSFC gradients.
 
 In the terminal:
 ```
-cd $CBIG_CODE_DIR/stable_projects/brain_parcellation/Kong2022_ArealMSHBM/step3_generate_ind_parcellationstions
+cd $CBIG_CODE_DIR/stable_projects/brain_parcellation/Kong2022_ArealMSHBM/step3_generate_ind_parcellations
 ```
 
 Start Matlab, in Matlab command window, the user need to specify the following inputs:
@@ -484,7 +484,7 @@ Start Matlab, in Matlab command window, the user need to specify the following i
 **Input: (string)**
 + `output_dir`: output directory.
 + `mesh`: data surface space. For exammple, `'fsaverage6'` or `'fs_LR_32k'`.
-+ `num_sessions`: number of sessions the user want to use to estimate the priors.
++ `num_sess`: number of sessions the user want to use to estimate the priors.
 + `num_clusters`: number of networks.
 + `subid`: the validation subject number, for example, `'4'` indicates the 4th subject in the validation set profile list.
 + `w`: the weight of group spatial prior `Params.theta`. For example, `'100'`. A large `w` indicates strong weight of `Params.theta`. The estimated individual-level parcellation will be very similar to the group-level parcellation with very large `w`.
@@ -501,7 +501,7 @@ c_set = <a set of parameters for c> % e.g. c_set = [30 40 50 60];
 for i = 1:length(w_set)
     for j = 1:length(c_set)
         for sub = 1:num_validation_subjects
-            homo_with_weight(sub,:) = CBIG_ArealMSHBM_parameters_validation(output_dir,mesh,num_sess,num_clusters,num2str(sub), num2str(w_set(i)),num2str(c_set(j)),method);
+            homo_with_weight(sub,:) = CBIG_ArealMSHBM_parameters_validation(output_dir,mesh,num_sess,num_clusters,num2str(sub), num2str(w_set(i)),num2str(c_set(j)),num2str(beta),method);
         end
         homo(i,j) = mean(mean(homo_with_weight));
     end
@@ -544,7 +544,7 @@ contain diffusion embedding matrices of RSFC gradients.
     
 In the terminal:
 ```
-cd $CBIG_CODE_DIR/stable_projects/brain_parcellation/Kong2022_ArealMSHBM/step3_generate_ind_parcellationstions
+cd $CBIG_CODE_DIR/stable_projects/brain_parcellation/Kong2022_ArealMSHBM/step3_generate_ind_parcellations
 ```
 
 Start Matlab, in Matlab command window, the user need to specify the following inputs:

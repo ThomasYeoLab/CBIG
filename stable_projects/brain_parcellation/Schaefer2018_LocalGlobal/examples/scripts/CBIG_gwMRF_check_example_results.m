@@ -11,6 +11,10 @@ function [if_both_hemi_match] = CBIG_gwMRF_check_example_results(output_folder, 
 %
 % Written by Xiaoxuan Yan and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
+% check if replacing example results
+CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
+load(fullfile(CBIG_CODE_DIR, 'unit_tests', 'replace_unittest_flag'));
+
 if(~ischar(seed))
     seed = num2str(seed);
 end
@@ -71,9 +75,16 @@ else % Too many voxels are different
     if_both_hemi_match = false;
 end
 
-% produce final parcellation visualization if both hemisphere match
-if(if_both_hemi_match)
-    fprintf('Hurray! Example results for both hemispheres match.\n');
-    CBIG_DrawSurfaceMaps(my_seed.results.lh_label, my_seed.results.rh_label, 'fsaverage6', 'inflated');
+% check if we need to replace example results
+if(replace_unittest_flag)
+    disp('Replacing example reference results for Schaefer2018 LocalGlobal Parcellation...');
+    copyfile(fullfile(output_folder, 'clustering', my_mat.name),...
+     fullfile(example_dir,'example_results','clustering',ref_mat.name));
+else
+    % produce final parcellation visualization if both hemisphere match
+    if(if_both_hemi_match)
+        fprintf('Hurray! Example results for both hemispheres match.\n');
+        CBIG_DrawSurfaceMaps(my_seed.results.lh_label, my_seed.results.rh_label, 'fsaverage6', 'inflated');
+    end
 end
 end 

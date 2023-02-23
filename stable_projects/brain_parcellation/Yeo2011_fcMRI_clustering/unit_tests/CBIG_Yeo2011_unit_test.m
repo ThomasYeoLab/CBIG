@@ -3,6 +3,8 @@ classdef CBIG_Yeo2011_unit_test < matlab.unittest.TestCase
 
     methods (Test)
         function test_example(testCase)
+            CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
+            load(fullfile(CBIG_CODE_DIR, 'unit_tests', 'replace_unittest_flag'));
             % Create output folder
             script_dir = fileparts(mfilename('fullpath'));
             pos_v = strfind(script_dir, filesep);
@@ -18,8 +20,16 @@ classdef CBIG_Yeo2011_unit_test < matlab.unittest.TestCase
             addpath(fullfile(example_dir, 'scripts'));
             CBIG_Yeo2011_generate_example_results(output_dir);
             
-            % Compare results
-            assert(CBIG_Yeo2011_check_example_results(output_dir), sprintf('Result check failed.'));
+            if(replace_unittest_flag)
+                disp('Replacing unit test reference results for CBIG_Yeo2011_unit_test...');
+                CBIG_Yeo2011_check_example_results(output_dir);
+                out_file = fullfile(output_dir, 'clustering', 'HNU_example_clusters017_scrub.mat');
+                ref_file = fullfile(example_dir, 'results', 'HNU_example_clusters017_scrub.mat');
+                copyfile(out_file, ref_file);
+            else
+                % Compare results
+                assert(CBIG_Yeo2011_check_example_results(output_dir), sprintf('Result check failed.'));
+            end
             rmdir(output_dir, 's');
             rmpath(fullfile(example_dir, 'scripts'));
         end

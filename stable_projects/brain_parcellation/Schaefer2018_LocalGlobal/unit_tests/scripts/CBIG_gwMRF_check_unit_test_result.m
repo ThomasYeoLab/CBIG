@@ -17,6 +17,9 @@ function [] = CBIG_gwMRF_check_unit_test_result(output_dir)
 % Written by Yang Qing and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 
+% check if replacing example results
+CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
+load(fullfile(CBIG_CODE_DIR, 'unit_tests', 'replace_unittest_flag'));
 
 ref_dir = fullfile(getenv('CBIG_TESTDATA_DIR'), 'stable_projects', ...
     'brain_parcellation', 'Schaefer2018_LocalGlobal', 'results');
@@ -47,6 +50,11 @@ else
         fprintf('[PASSED]\t LH time matrices are the same \n');
     end 
     
+    if(replace_unittest_flag)
+        disp('Replacing reference results for lh concatenated time matrices...');
+        copyfile(fullfile(output_dir, 'time_data', 'lh_time_matrix.mat'),...
+         fullfile(ref_dir, 'time_data', 'lh_time_matrix.mat'));
+    end
     % release some memory
     clear ref_lh_time;
     clear lh_time;
@@ -66,7 +74,13 @@ else
     else
          fprintf('[PASSED]\t RH time matrices are the same \n');
     end
-    
+
+        
+    if(replace_unittest_flag)
+        disp('Replacing reference results for rh concatenated time matrices...');
+        copyfile(fullfile(output_dir, 'time_data', 'rh_time_matrix.mat'),...
+         fullfile(ref_dir, 'time_data', 'rh_time_matrix.mat'));
+    end
     % release some memory
     clear ref_rh_time;
     clear rh_time;
@@ -102,6 +116,11 @@ else
         fprintf('[PASSED]\t LH mult matrices are the same \n');
     end 
      
+    if(replace_unittest_flag)
+        disp('Replacing reference results for lh premultiplied product matrices...');
+        copyfile(load(fullfile(output_dir, 'mult_mat', 'lh_mult_matrix.mat')),...
+         fullfile(ref_dir, 'mult_mat', 'lh_mult_matrix.mat'));
+    end
     % release some memory
     clear ref_lh_mult;
     clear lh_mult;
@@ -124,6 +143,11 @@ else
          fprintf('[PASSED]\t RH mult matrices are the same \n');
     end
     
+    if(replace_unittest_flag)
+        disp('Replacing reference results for rh premultiplied product matrices...');
+        copyfile(load(fullfile(output_dir, 'mult_mat', 'rh_mult_matrix.mat')),...
+         fullfile(ref_dir, 'mult_mat', 'rh_mult_matrix.mat'));
+    end
     % release some memory
     clear ref_rh_mult;
     clear rh_mult;
@@ -159,6 +183,12 @@ else
         fprintf('[FAILED]\t RH intermediate parcellations of seed 2 are different, overlap_percentage = %f \n', ...
             abs(cost_rh)/37471);
     end
+end
+
+if(replace_unittest_flag)
+    disp('Replacing reference results for parcellation labels...');
+    copyfile(fullfile(output_dir, 'clustering', 'inbetween_results', file_seed2),...
+    fullfile(ref_dir, 'clustering', 'inbetween_results', file_seed2));
 end
 
 fprintf('[DONE]\t Unit test is done. \n');

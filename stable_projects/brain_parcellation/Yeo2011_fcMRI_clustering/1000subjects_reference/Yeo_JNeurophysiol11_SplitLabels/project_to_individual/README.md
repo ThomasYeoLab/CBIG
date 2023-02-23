@@ -27,7 +27,7 @@ Here we provide the procedure of generating:
 
 For the original version, there are two ways to generate the individual parcellation. You can choose either using `mri_surf2surf` or `mris_ca_label`.
 
-1. Using `mri_surf2surf` to project Schaefer2018 parcellation to individual space:
+1. Using `mri_surf2surf` to project Yeo2011 parcellation to individual space:
 
 ```
 mri_surf2surf --hemi lh \
@@ -57,7 +57,7 @@ mris_ca_label -l $SUBJECTS_DIR/<subject_name>/label/rh.cortex.label \
   $SUBJECTS_DIR/<subject_name>/label/rh.Yeo2011_<7/17>Networks_N1000.annot
 ```
 
-The gcs files for Yeo2011 parcellation are not stored in this repository. If you need these files, please contact Xue Aihuiping at xueaihuiping@gmail.com.
+The gcs files for Yeo2011 parcellation can be downloaded [here](https://www.dropbox.com/s/6w9nmaid670ru0h/gcs_Yeo2011.zip?dl=0). If you have trouble downloading the files, please contact Xue Aihuiping at xueaihuiping@gmail.com.
 
 **Split components version:**
 
@@ -126,4 +126,36 @@ The lookup table can be found in:
 **Split components version:**
 
 `$CBIG_CODE_DIR/stable_projects/brain_parcellation/Yeo2011_fcMRI_clustering/1000subjects_reference/project_to_individual/Yeo2011_<7/17>networks_Split_Components_LUT.txt`
+
+### Anatomical statistics using Yeo2011 parcellation
+
+If you need to calculate the anatomical statistics such as cortical thickness using Yeo2011 parcellation on the surface, please use `mris_anatomical_stats` to compute.
+
+**Original version:**
+
+```
+mris_anatomical_stats <subject_name> lh \
+  -f $SUBJECTS_DIR/<subject_name>/stats/lh.Yeo2011_<7/17>Networks_N1000.stats \
+  -b -a $SUBJECTS_DIR/<subject_name>/label/lh.Yeo2011_<7/17>Networks_N1000.annot
+
+mris_anatomical_stats <subject_name> rh \
+  -f $SUBJECTS_DIR/<subject_name>/stats/rh.Yeo2011_<7/17>Networks_N1000.stats \
+  -b -a $SUBJECTS_DIR/<subject_name>/label/rh.Yeo2011_<7/17>Networks_N1000.annot 
+```
+
+**Split components version:**
+
+```
+mris_anatomical_stats <subject_name> lh \
+  -f $SUBJECTS_DIR/<subject_name>/stats/lh.Yeo2011_<7/17>Networks_N1000.split_components.stats \
+  -b -a $SUBJECTS_DIR/<subject_name>/label/lh.Yeo2011_<7/17>Networks_N1000.split_components.annot
+
+mris_anatomical_stats <subject_name> rh \
+  -f $SUBJECTS_DIR/<subject_name>/stats/rh.Yeo2011_<7/17>Networks_N1000.split_components.stats \
+  -b -a $SUBJECTS_DIR/<subject_name>/label/rh.Yeo2011_<7/17>Networks_N1000.split_components.annot 
+```
+
+This command requires annot files generated from the [previous step](#1-yeo2011-parcellation-in-individual-surface-space).
+
+Results will be stored in `$SUBJECTS_DIR/<subject_name>/stats/?h.Yeo2011_<7/17>Networks_N1000.stats` or `$SUBJECTS_DIR/<subject_name>/stats/?h.Yeo2011_<7/17>Networks_N1000.split_components.stats` 
 

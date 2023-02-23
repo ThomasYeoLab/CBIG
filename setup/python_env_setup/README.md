@@ -26,7 +26,7 @@ cd $CBIG_CODE_DIR/setup/python_env_setup
 bash CBIG_python_env_generic_setup.sh
 ```
 
-**[IMPORTANT]** To test if the setup is successful, **log out and log in again** before running:
+**[IMPORTANT]** To test if CBIG_py3 is successful, **log out and log in again** before running:
 
 ```bash
 source activate CBIG_py3
@@ -38,6 +38,28 @@ When `CBIG_python_env_setup_unit_test.py` is successful, you should see a messag
 ```
 ================== 8 passed in 18.28s ==================
 ```
+
+## Aws-cli package
+
+Now we also provide the installation script in `CBIG_python_env_aws_setup.sh` for another environment called `CBIG_py3_aws`, which only contains package aws-cli for HCP data downloading. 
+
+To use aws-cli, firstly you need follow the instructions [here](https://wiki.humanconnectome.org/display/PublicData/How+To+Connect+to+Connectome+Data+via+AWS) on how to create AWS credentials and connect to AWS data using these credentials. After that, you need to generate your configure [here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html) and **save it (otherwise you need to regenerate it)**. 
+
+After the above steps have been done, you can execute this script `CBIG_python_env_aws_setup.sh` and install aws-cli. The command for quick installation is as following:
+
+```
+cd $CBIG_CODE_DIR/setup/python_env_setup
+sh CBIG_python_env_aws_setup.sh
+```
+
+**[IMPORTANT]** To test if CBIG_py3_aws is successful, **log out and log in again** before running:
+
+```bash
+source activate CBIG_py3_aws
+aws configure
+```
+
+If successfully installed, it will ask you to input configuration basis. If you've obtained and saved your configuration basis, then you can input them. If you do not have configuration basis, please refer to the above paragraph for instructions.
 
 # Install other packages for your own needs
 
