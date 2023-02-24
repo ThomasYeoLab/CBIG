@@ -149,7 +149,8 @@ if [ ! -f $KRR_dir/setup_file.mat ]; then
 	param.lambda_set = [0 0.1 1 5 10 50 100 500 1000]; \
 	param.threshold_set = []; \
 	param.metric = 'corr'; \
-	
+	param.cov_X = []; \
+
 	save(fullfile('$KRR_dir', 'setup_file.mat'), '-struct', 'param'); \
 	exit; \" "
 	eval $cmd

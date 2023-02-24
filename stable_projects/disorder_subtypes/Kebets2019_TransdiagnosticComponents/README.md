@@ -88,20 +88,19 @@ and was modified from the code written by Valeria Kebets, Daniela Zöller and Di
 
 # Updates
 
-- Release v0.11.0 (14/06/2019): Initial release of the Kebets2019_TransdiagnosticComponents project
+- Release v.x.x (15/05/2020): Split the example wrapper into functions to generate and check the example data.
 
-- Release v0.13.3 (18/07/2019): Release of code for Kebets2019_TransdiagnosticComponents
-
-- Release v0.13.4 (14/08/2019): Updated `Table S7_sumCorr.csv` & `Schaefer2018_400Parcels_17Networks_19Subcortical.csv` with corrected labels
-
-- Release v0.14.2 (09/09/2019): Corrected group resampling in bootstrap function, and added random number generation to bootstrap & permutation functions
+- Release v0.17.0 (19/02/2020): Added new environment variables to avoid possible problems caused by hard-coded absolute paths, added names of behavioral variables, and reduced the size of the example data.
 
 - Release v0.15.1 (08/10/2019): Released RSFC matrices, and updated `Table S7_sumCorr.csv` & `Schaefer2018_400Parcels_17Networks_19Subcortical.csv` with corrected labels
 
-- Release v0.17.0 (19/02/2020): Added new environment variables to avoid possible problems caused by hard-coded absolute paths, added names of behavioral variables, and reduced the size of the example data.
-    
-- Release v.x.x (15/05/2020): Split the example wrapper into functions to generate and check the example data.
+- Release v0.14.2 (09/09/2019): Corrected group resampling in bootstrap function, and added random number generation to bootstrap & permutation functions
 
+- Release v0.13.4 (14/08/2019): Updated `Table S7_sumCorr.csv` & `Schaefer2018_400Parcels_17Networks_19Subcortical.csv` with corrected labels
+
+- Release v0.13.3 (18/07/2019): Release of code for Kebets2019_TransdiagnosticComponents
+
+- Release v0.11.0 (14/06/2019): Initial release of the Kebets2019_TransdiagnosticComponents project
 
 ----
 

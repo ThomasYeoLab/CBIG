@@ -35,16 +35,15 @@ git checkout -b Liegeois2017_Surrogates v0.15.3-Update_proj_refs_and_add_KRR_LIT
 
 ## Updates
 
-- Release v0.4.0 (17/09/2017): Initial release of Liegeois2017_Surrogates.
-- Release v0.4.1 (17/09/2017): Update this README.md.
-- Release v0.4.2 (09/10/2017): Add `CBIG_tested_config.sh` for Liegeois2017_Surrogates.
+- Release v0.15.3 (16/10/2019): Update README files.
 - Release v0.4.10 (01/02/2018):
     
     1. Add project-specific prefix `RL2017` for all scripts names.
     
     2. Add `config`, `unit_tests`, and `examples` folders.
-
-- Release v0.15.3 (16/10/2019): Update README files.
+- Release v0.4.2 (09/10/2017): Add `CBIG_tested_config.sh` for Liegeois2017_Surrogates.
+- Release v0.4.1 (17/09/2017): Update this README.md.
+- Release v0.4.0 (17/09/2017): Initial release of Liegeois2017_Surrogates.
 
 ----
 

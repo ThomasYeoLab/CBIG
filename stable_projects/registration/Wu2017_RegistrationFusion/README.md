@@ -61,17 +61,18 @@ git checkout -b Wu2017_RegistrationFusion v0.18.1-Update_stable_project_unit_tes
 
 ## Updates
 
-- Release v0.5.0 (15/04/2018): Initial release of Wu2017 Registration Fusion project.
-- Release v0.6.4 (13/08/2018): Added stand-alone scripts for Colin27-to-fsaverage projections; added example.
-- Release v0.6.5 (17/08/2018): Updated publication details
+- Release v0.18.1 (20/01/2021): Remove the "verbose option" in rsync in some of the scripts.
+- Release v0.17.0 (19/02/2020): Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths.
+- Release v0.11.1 (18/06/2019): Added information for stand-alone scripts in relevant README files
+- Release v0.10.3 (26/05/2019): Added stand-alone scripts for conversion between MNI152 coordinates and fsaverage vertices
 - Release v0.9.3 (20/03/2019): 
   1. Fix typos in `CBIG_RF_projectVol2fsaverage_single.m` that set wrong file names for default warps
   2. Rename subfolder `example` to `examples` to pass CBIG pre-push hooks
   3. Fix typos in `examples/README.md` that set wrong file names in freeview visualization command
-- Release v0.10.3 (26/05/2019): Added stand-alone scripts for conversion between MNI152 coordinates and fsaverage vertices
-- Release v0.11.1 (18/06/2019): Added information for stand-alone scripts in relevant README files
-- Release v0.17.0 (19/02/2020): Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths.
-- Release v0.18.1 (20/01/2020): Remove the "verbose option" in rsync in some of the scripts.
+- Release v0.6.5 (17/08/2018): Updated publication details
+- Release v0.6.4 (13/08/2018): Added stand-alone scripts for Colin27-to-fsaverage projections; added example.
+- Release v0.5.0 (15/04/2018): Initial release of Wu2017 Registration Fusion project.
+
 ----
 
 ## Bugs and Questions

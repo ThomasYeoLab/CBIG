@@ -128,6 +128,20 @@ for i = 1:length(reffields)
                     reffields{i}, subfields{j}, maxdif))
             end
         end
+    elseif strcmp(reffields{i}, 'y_pred_train')
+        for j = 1:length(curr_outfield)
+            sub_outfield = curr_outfield{j};
+            sub_reffield = curr_reffield{j};
+            
+            if(all(reshape(isnan(sub_reffield), [numel(sub_reffield) 1])))
+                assert(all(reshape(isnan(sub_outfield), [numel(sub_outfield) 1])), sprintf(...
+                    '\treference variable %s %i is NaN, but output is not.\n', reffields{i}, j))
+            else
+                maxdif = max(abs(sub_reffield(:) - sub_outfield(:)));
+                assert(maxdif<1e-10, sprintf('\tvariable %s %i differed by (max abs diff) %f.', ...
+                    reffields{i}, j, maxdif));
+            end
+        end    
     else
         if(all(reshape(isnan(curr_reffield), [numel(curr_reffield) 1])))
             assert(all(reshape(isnan(curr_outfield), [numel(curr_outfield) 1])), sprintf(...

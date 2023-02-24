@@ -57,7 +57,7 @@ To run `CBIG_compute_PFM_general.m`, followings are used as an input.
 ----
 ## Updates
 
-- Release vxxx (8/22/2022): Initial release of PFM utilities
+- Release v0.27.0 (24/02/2023): Initial release of PFM utilities
 
 ----
 ## Bugs and questions

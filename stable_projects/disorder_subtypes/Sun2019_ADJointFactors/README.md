@@ -81,11 +81,11 @@ In the folder `examples`, we provide toy example code on how to estimate & visua
 ----
 
 # Updates
-- Release v0.10.0 (05/04/2019): Initial release of Sun2019_ADJointFactors project
-- Release v0.10.4 (07/06/2019): Update README.md
-- Release v0.15.3 (16/10/2019): Update reference
-- Release v0.17.0 (19/02/2020): Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths.
 - Release v0.18.1 (20/01/2021): Update unit test to accommodate to the new HPC.
+- Release v0.17.0 (19/02/2020): Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths.
+- Release v0.15.3 (16/10/2019): Update reference
+- Release v0.10.4 (07/06/2019): Update README.md
+- Release v0.10.0 (05/04/2019): Initial release of Sun2019_ADJointFactors project
 
 
 ----

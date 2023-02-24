@@ -53,7 +53,18 @@ git checkout -b Li2019_GSR v0.18.1-Update_stable_project_unit_test
 Updates
 ===========
 
-- Release v0.9.0 (13/02/2019): Initial release of Li2019_GSR project.
+- Release v0.18.1 (20/01/2021):
+  1. Update unit test to accommodate to the new HPC.
+  
+- Release v0.17.0 (19/02/2020): Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths.
+
+- Release v0.15.3 (16/10/2019): Pass `lambda_set` into general KRR code instead of using the default.
+
+- Release v0.13.1 (19/07/2019):
+  1. Updated example script and setup file.
+  2. Moved locations of some dependencies (general code to estimate variance components).
+  3. Included a no-bias flag in the scripts because the general kernel regression code was modified to handle the bias term by default.
+  4. Update reference in the readme
 
 - Release v0.9.4 (01/04/2019): 
   1. Added a script to generate the stand-alone repository for this project
@@ -62,19 +73,8 @@ Updates
   4. Added an input argument to let users specify the output directory of to save all the outputs from running the scripts in `examples`.
   5. Shortened the runtime of the `intelligence_scores` unit test.
   6. Rename matlab variable `feature` to `feature_mat` to avoid clashing with matlab built-in function.
-  
-- Release v0.13.1 (19/07/2019):
-  1. Updated example script and setup file.
-  2. Moved locations of some dependencies (general code to estimate variance components).
-  3. Included a no-bias flag in the scripts because the general kernel regression code was modified to handle the bias term by default.
-  4. Update reference in the readme
-
-- Release v0.15.3 (16/10/2019): Pass `lambda_set` into general KRR code instead of using the default.
-
-- Release v0.17.0 (19/02/2020): Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths.
-
-- Release v0.18.1 (20/01/2021):
-  1. Update unit test to accommodate to the new HPC.
+    
+- Release v0.9.0 (13/02/2019): Initial release of Li2019_GSR project.
 
 Bugs and Questions
 ==========

@@ -86,12 +86,12 @@ Except for this project, if you want to use the code for other stable projects f
 
 ## Updates
 
-- Release v0.8.0 (21/01/2019): Initial release of Ngo2019 Author-Topic Model for Curated Meta-analysis project.
-- Release v0.9.1 (21/02/2019): Added instruction for performing co-activation mapping experiment and references of the self-generated thought dataset.
-- Release v0.10.1 (21/03/2019): Added checks for input data. Reduced runtime for unit test.
-- Release v0.12.1 (09/07/2019): Update visualization function to use HCP Workbench instead of Caret.
-- Release v0.15.3 (16/10/2019): Update reference.
 - Release v0.17.0 (19/02/2020): Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths.
+- Release v0.15.3 (16/10/2019): Update reference.
+- Release v0.12.1 (09/07/2019): Update visualization function to use HCP Workbench instead of Caret.
+- Release v0.10.1 (21/03/2019): Added checks for input data. Reduced runtime for unit test.
+- Release v0.9.1 (21/02/2019): Added instruction for performing co-activation mapping experiment and references of the self-generated thought dataset.
+- Release v0.8.0 (21/01/2019): Initial release of Ngo2019 Author-Topic Model for Curated Meta-analysis project.
 
 ----
 

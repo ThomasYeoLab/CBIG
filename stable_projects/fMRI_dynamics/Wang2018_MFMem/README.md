@@ -51,11 +51,11 @@ The sub-folder `extra_4p` contains all matlab data, functions and scripts to sho
 ----
 
 ## Updates
-- Release v0.7.0 (12/09/2018): Initial Release.
+- Release v0.18.1 (20/01/2021): Update unit test to accommodate to the new HPC.
 
 - Release v0.17.0 (19/02/2020): Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths.
 
-- Release v0.18.1 (20/01/2021): Update unit test to accommodate to the new HPC.
+- Release v0.7.0 (12/09/2018): Initial Release.
 
 ----
 

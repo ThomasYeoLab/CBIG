@@ -68,9 +68,9 @@ Except for this project, if you want to use the code for other stable projects f
 ----
 
 ## Updates
-- Release v0.12.0 (01/07/2019): Initial release of Yeo 2015 Author-Topic model with EM and Gibbs Sampling Inference. 
-- Release v0.12.2 (09/07/2019): Update visualization function to use HCP Workbench instead of Caret.
 - Release v0.15.3 (16/10/2019): Update reference.
+- Release v0.12.2 (09/07/2019): Update visualization function to use HCP Workbench instead of Caret.
+- Release v0.12.0 (01/07/2019): Initial release of Yeo 2015 Author-Topic model with EM and Gibbs Sampling Inference. 
 
 ----
 

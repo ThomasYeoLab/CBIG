@@ -33,9 +33,9 @@ git checkout -b Orban2020_tod v0.18.1-Update_stable_project_unit_test
 
 ## Updates
 
-+ Release v0.16.0 (19/12/2019): Initial release of Orban2020_tod
-+ Release v0.16.2 (11/02/2020): Updated README file for Orban2020_tod and changed labeling convention from 'std' to 'SD' in csv files
 + Release v0.18.1 (20/01/2021): Update config file.
++ Release v0.16.2 (11/02/2020): Updated README file for Orban2020_tod and changed labeling convention from 'std' to 'SD' in csv files
++ Release v0.16.0 (19/12/2019): Initial release of Orban2020_tod
 
 ## Bugs and Questions
 

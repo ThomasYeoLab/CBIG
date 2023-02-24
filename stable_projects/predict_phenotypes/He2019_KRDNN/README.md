@@ -52,21 +52,22 @@ If you want to use the code from our lab's other stable projects (other than He2
 ----
 
 ## Updates
-- Release v0.13.0 (10/07/2019): Initial release of He2019_KRDNN project
-- Release v0.13.2 (22/07/2019):
-    1. Update RNG generator in MATLAB for compatibility
-    2. Update title of paper in README files
-    3. Add information about hyperparameter in replication/README.md
-- Release v0.14.1 (03/09/2019):
-    1. Add trained models / weights of UK Biobank dataset
-    2. Optimize the speed of kernel regression scripts
+- Release v0.18.1 (20/01/2021):
+    1. Update unit test to accommodate to the new HPC.
 - Release v0.16.1 (11/02/2020):
     1. Update link of paper
     2. readme update
     3. unit test and example update
     4. config file update
-- Release v0.18.1 (20/01/2021):
-    1. Update unit test to accommodate to the new HPC.
+- Release v0.14.1 (03/09/2019):
+    1. Add trained models / weights of UK Biobank dataset
+    2. Optimize the speed of kernel regression scripts    
+- Release v0.13.2 (22/07/2019):
+    1. Update RNG generator in MATLAB for compatibility
+    2. Update title of paper in README files
+    3. Add information about hyperparameter in replication/README.md
+- Release v0.13.0 (10/07/2019): Initial release of He2019_KRDNN project
+
 ----
 
 ## Bugs and Questions

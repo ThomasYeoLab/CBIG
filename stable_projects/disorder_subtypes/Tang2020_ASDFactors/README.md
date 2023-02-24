@@ -56,10 +56,11 @@ In the folder `examples`, we provide toy example code on how to convert RSFC dat
 ----
 
 ## Updates
-* Release v0.15.0 (07/10/2019): Initial release of Tang2020_ASDFactors
-* Release v0.15.2 (13/10/2019): Update README and figure utils
-* Release v0.17.0 (19/02/2020): Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths.
 * Release v0.18.1 (20/01/2021): Update unit test to accommodate to the new HPC.
+* Release v0.17.0 (19/02/2020): Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths.
+* Release v0.15.2 (13/10/2019): Update README and figure utils
+* Release v0.15.0 (07/10/2019): Initial release of Tang2020_ASDFactors
+
 ----
 
 ## Bugs and Questions
