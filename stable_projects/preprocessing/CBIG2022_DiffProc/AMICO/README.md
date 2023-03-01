@@ -53,12 +53,6 @@ $CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_diffusion_processing2022/AMICO
 
 ----
 
-## Updates
-
-- Release v0.x.x (x/x/20xx): Initial release of CBIG diffusion processing pipeline.
-  
-----
-
 ## Bugs and Questions
 
 Please contact Leon Ooi at leonooiqr@gmail.com and Thomas Yeo at yeoyeo02@gmail.com.
