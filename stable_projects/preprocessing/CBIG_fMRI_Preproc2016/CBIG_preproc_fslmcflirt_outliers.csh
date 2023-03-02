@@ -206,8 +206,8 @@ echo "" |& tee -a $LF
 echo "=========================== Plot mcflirt parameters =============================" |& tee -a $LF
 foreach curr_bold ($zpdbold)
 	pushd $curr_bold
-	
 	pwd |& tee -a $LF
+	set boldfile = $subject"_bld"$curr_bold$echo_stem$BOLD_stem
 	set mc_par_file = ${boldfile}_mc.par
 	set mc_abs_rms_file = ${boldfile}_mc_abs.rms
 	set mc_rel_rms_file = ${boldfile}_mc_rel.rms
