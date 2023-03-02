@@ -404,7 +404,8 @@ while( $#argv != 0 )
 		#anatomical path
 		case "-anat_d":
 			if ($#argv == 0) goto arg1err;
-			set anat_dir = $argv[1]; shift;
+			set anat_dir = `dirname $argv[1]`; 
+			shift;
 			breaksw
 			
 		#bold run number	

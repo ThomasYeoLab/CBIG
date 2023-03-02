@@ -99,6 +99,9 @@ cd $boldfolder
 
 foreach curr_bold ($zpdbold)
 	pushd $curr_bold
+	echo "SUBJECTS DIR: $SUBJECTS_DIR" |& tee -a $LF 
+	echo "CURR BOLD"
+	echo $curr_bold
 	mkdir -p bbr_orig
 	set boldfile = $subject"_bld"$curr_bold$BOLD_stem
 	if ( (! -e bbr_orig/$boldfile'_reg.dat') || ($force == 1)) then
@@ -271,7 +274,8 @@ while( $#argv != 0 )
 		case "-anat_d":
 			if ($#argv == 0) goto arg1err;
 			set anat_dir = $argv[1];
-			setenv SUBJECTS_DIR $argv[1]; shift;
+			setenv SUBJECTS_DIR `dirname $argv[1]`; 
+			shift;
 			breaksw
 			
 		#bold run number
