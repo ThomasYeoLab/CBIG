@@ -275,6 +275,7 @@ foreach curr_bold ($zpdbold)
 		set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; \
 			CBIG_preproc_DVARS_FDRMS_Correlation $dvars_file $fd_file $output; \
 			CBIG_preproc_motion_outliers $dvars_file $fd_file $fd_th $dv_th $discard_seg $output; exit; '"' );
+		echo $cmd |& tee -a $LF
 		eval $cmd |& tee -a $LF
 	else
 		echo "[MC]: Motion outliers detection already created!" |& tee -a $LF

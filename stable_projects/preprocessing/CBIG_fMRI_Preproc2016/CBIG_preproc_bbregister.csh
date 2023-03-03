@@ -274,7 +274,7 @@ while( $#argv != 0 )
 		case "-anat_d":
 			if ($#argv == 0) goto arg1err;
 			set anat_dir = $argv[1];
-			setenv SUBJECTS_DIR `dirname $argv[1]`; 
+			setenv SUBJECTS_DIR $argv[1]; 
 			shift;
 			breaksw
 			
