@@ -264,6 +264,12 @@ foreach runfolder ($bold)
 	#########################
 	echo "======== Smooth in MNI152 2mm space with fwhm = $sm ========" |& tee -a $LF
 	set fcount = 0;
+	if($?sm_mask) then
+		set inverted_sm_mask = $frame_dir/inverted_sm_mask.nii.gz
+        	set cmd = (fslmaths $sm_mask -mul -1 -add 1 -mas $final_mask $inverted_sm_mask)
+        	echo $cmd |& tee -a $LF
+        	eval $cmd
+  	endif
 	while($fcount < $nframes)
 		set fcount_str = `echo $fcount | awk '{printf ("%04d",$1)}'`
 		
@@ -282,16 +288,39 @@ foreach runfolder ($bold)
 				# 3. divide smoothed volume by smoothed sm_mask (deal with boundary problem)
 				set tmp1 = $frame_dir/tmp1_${fcount_str}.nii.gz
 				set tmp2 = $frame_dir/tmp2_${fcount_str}.nii.gz
+				set tmp3 = $frame_dir/tmp3_${fcount_str}.nii.gz		
+				set tmp4 = $frame_dir/tmp4_${fcount_str}.nii.gz
+				set input_masksmoothed = $frame_dir/input_masksmoothed_${fcount_str}.nii.gz
+				set input_outsidemask_smoothed = $frame_dir/input_outsidemask_smoothed_${fcount_str}.nii.gz
+
+			    set cmd = (fslmaths $input -mas $sm_mask -s $std -mas $sm_mask $tmp1)
 				
-				set cmd = (fslmaths $input -s $std -mas $sm_mask $tmp1)
 				echo $cmd |& tee -a $LF
 				eval $cmd
 				
 				set cmd = (fslmaths $sm_mask -s $std -mas $sm_mask $tmp2)
 				echo $cmd |& tee -a $LF
 				eval $cmd
-				
-				set cmd = (fslmaths $tmp1 -div $tmp2 $output)
+
+				set cmd = (fslmaths $tmp1 -div $tmp2 $input_masksmoothed)
+		            echo $cmd |& tee -a $LF
+			    eval $cmd
+
+                            #4. smooth outside of the mask, but inside the brain			    
+			    set cmd = (fslmaths $input -mas $inverted_sm_mask -s $std -mas $inverted_sm_mask $tmp3)
+			    echo $cmd |& tee -a $LF
+			    eval $cmd
+
+			    set cmd = (fslmaths $inverted_sm_mask -s $std -mas $inverted_sm_mask $tmp4)
+			    echo $cmd |& tee -a $LF
+			    eval $cmd
+
+			    set cmd = (fslmaths $tmp3 -div $tmp4 $input_outsidemask_smoothed)
+			    echo $cmd |& tee -a $LF
+			    eval $cmd
+
+                            #5. combine externally smoothed data with rest of the data
+			    set cmd = (fslmaths $input_masksmoothed -add $input_outsidemask_smoothed $output)
 				echo $cmd |& tee -a $LF
 				eval $cmd
 			else
