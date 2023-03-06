@@ -63,6 +63,7 @@ switch filt_type
         W_notch = [f_min,f_max]/fNy;
         Wn = mean(W_notch);
         bw = diff(W_notch);
+        fprintf("%s, %s", Wn, bw)
         [b_filt, a_filt] = iirnotch(Wn, bw);
         num_f_apply = floor(order / 2); % if order<4 apply filter 1x, if order=4 2x, if order=6 3x
 

@@ -38,23 +38,32 @@ function CBIG_preproc_filter_out_respiratory_pseudomotion(bold_file, ...
 % Written by Jianzhong Chen and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 %
 % Reference: Fair et al., Correction of respiratory artifacts in MRI head motion parameters
-
+fprintf("Script starting")
 %% input sanity check
 TR = CBIG_preproc_infer_TR(bold_file);
+fprintf("Sanity check passed")
 
 if strcmp(f_min, '')
     error('f_min cannnot be empty');
 end
 
 %% load motion file and filter out respiratory pseudomotion
+fprintf("Loading motion\n")
 motion = load(motion_file);
+fprintf("Loading motion\n")
+%% fprintf("%s\n", motion)
+fprintf("%s\n", TR)
+fprintf("%s\n", f_min)
+fprintf("%s\n", f_max)
 motion_filt = CBIG_preproc_motion_filtering(motion, TR, f_min, f_max);
 
 %% compute FDRMS from motion parameters and save out results
+fprintf("Computing FDRMS")
 FDRMS = CBIG_preproc_compute_FDRMS_from_motion_parameters(motion_filt);
 dlmwrite(out_FD, FDRMS, '\n');
 
 %% filter out respiratory pseudomotion from motion regressors
+fprintf("Filtering")
 motion = load(motion_regressors);
 motion_filt = CBIG_preproc_motion_filtering(motion, TR, f_min, f_max);
 copyfile(motion_regressors, [motion_regressors '.unfiltered']);

@@ -198,12 +198,14 @@ if (per_run == 0)
         
         if (isempty(strfind(fMRI_name{i}, '.dtseries.nii')))
             % if output volume is nifti file
+            size(res)
+            display(mri_size)
             mri.vol = reshape(res, mri_size);
             MRIwrite(mri, output_name{i});
         else
             % if output volume is cifti file
             output_name{i} = regexprep(output_name{i}, '.dtseries.nii', '');
-            mri.dtseries = reshape(res, mri_size);
+            mri.vol = reshape(res, mri_size(i, :));
             ft_write_cifti(output_name{i}, mri, 'parameter', 'dtseries');
         end
     end
