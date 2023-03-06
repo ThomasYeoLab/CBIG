@@ -138,12 +138,12 @@ if (per_run == 0)
             mri = MRIread(fMRI_name{i});
             vol_2d = single(mri.vol);
             mri.vol = [];
-            mri_size = size(vol_2d);
-            vol_2d = reshape(vol_2d, [mri_size(1)*mri_size(2)*mri_size(3) mri_size(4)]);
+            mri_size(i, :) = size(vol_2d);
+            vol_2d = reshape(vol_2d, [mri_size(i, 1)*mri_size(i, 2)*mri_size(i, 3) mri_size(i, 4)]);
         else
             % if input volume is cifti file
             mri = ft_read_cifti(fMRI_name{i});
-            mri_size = size(mri.dtseries);
+            mri_size(i, :) = size(mri.dtseries);
             vol_2d = single(mri.dtseries);
             mri.dtseries = [];
         end
@@ -198,14 +198,12 @@ if (per_run == 0)
         
         if (isempty(strfind(fMRI_name{i}, '.dtseries.nii')))
             % if output volume is nifti file
-            size(res)
-            display(mri_size)
             mri.vol = reshape(res, mri_size(i, :));
             MRIwrite(mri, output_name{i});
         else
             % if output volume is cifti file
             output_name{i} = regexprep(output_name{i}, '.dtseries.nii', '');
-            mri.vol = reshape(res, mri_size(i, :));
+            mri.dtseries = reshape(res, mri_size(i, :));
             ft_write_cifti(output_name{i}, mri, 'parameter', 'dtseries');
         end
     end
@@ -242,12 +240,12 @@ elseif (per_run == 1)
             mri = MRIread(fMRI_name{i});
             vol_2d = single(mri.vol);
             mri.vol = [];
-            mri_size = size(vol_2d);
-            vol_2d = reshape(vol_2d, [mri_size(1)*mri_size(2)*mri_size(3) mri_size(4)]);
+            mri_size(i, :) = size(vol_2d);
+            vol_2d = reshape(vol_2d, [mri_size(i, 1)*mri_size(i, 2)*mri_size(i, 3) mri_size(i, 4)]);
         else
             % if input volume is cifti file
             mri = ft_read_cifti(fMRI_name{i});
-            mri_size = size(mri.dtseries);
+            mri_size(i, :) = size(mri.dtseries);
             vol_2d = single(mri.dtseries);
             mri.dtseries = [];
         end
@@ -283,12 +281,12 @@ elseif (per_run == 1)
         
         if isempty(strfind(fMRI_name{i}, '.dtseries.nii'))
             % if input volume is nifti file
-            mri.vol = reshape(resid_mtx, mri_size);
+            mri.vol = reshape(resid_mtx, mri_size(i, :));
             MRIwrite(mri, output_name{i});
         else
             % if input volume is cifti file
             output_name{i} = regexprep(output_name{i}, '.dtseries.nii', '');
-            mri.dtseries = reshape(resid_mtx, mri_size);
+            mri.dtseries = reshape(resid_mtx, mri_size(i, :));
             ft_write_cifti(output_name{i}, mri, 'parameter', 'dtseries');
         end
         
