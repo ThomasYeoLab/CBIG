@@ -200,7 +200,7 @@ if (per_run == 0)
             % if output volume is nifti file
             size(res)
             display(mri_size)
-            mri.vol = reshape(res, mri_size);
+            mri.vol = reshape(res, mri_size(i, :));
             MRIwrite(mri, output_name{i});
         else
             % if output volume is cifti file
