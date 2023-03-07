@@ -14,7 +14,7 @@
 #     4. Smooth downsampled data (specified by -sm)
 #     5. Apply final mask, if any
 #
-# Written by Jingwei Li and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+# Written by Jingwei Li and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/bplob/master/LICENSE.md
 
 #BOLD: basename of each run input
 #boldfolder: directory of /bold
@@ -204,29 +204,32 @@ foreach runfolder ($bold)
 	### project to MNI152 1mm space
 	###################################
 	echo "======== Project $runfolder to MNI152 1mm space ========" |& tee -a $LF
-	set fcount = 0;
-	while($fcount < $nframes)
-		set fcount_str = `echo $fcount | awk '{printf ("%04d",$1)}'`
+	echo CBIG_helper_preproc_native2mni_project1mm.csh 1 $frame_dir $anat_s $anat_dir $MNI_ref_id $MNI_ref_dir $regfile $LF
+	@ nframes_dec = $nframes - 1
+	parallel -j 16 CBIG_helper_preproc_native2mni_project1mm.csh {} $frame_dir $anat_s $anat_dir $MNI_ref_id $MNI_ref_dir $regfile $LF ::: `seq 0 $nframes_dec`
+	# set fcount = 0;
+	# while($fcount < $nframes)
+	# 	set fcount_str = `echo $fcount | awk '{printf ("%04d",$1)}'`
 		
-		set input = $frame_dir/orig_frames${fcount_str}.nii.gz
-		set output = $frame_dir/${fcount_str}_MNI1mm.nii.gz
-		if(-e $output) then
-			echo "    [native2mni]: $output already exists." |& tee -a $LF
-		else
-			set cmd = (CBIG_vol2vol_m3z.csh -src-id $anat_s -src-dir $anat_dir -targ-id $MNI_ref_id \
-			-targ-dir $MNI_ref_dir -in $input -out $output -reg $regfile -no-cleanup)
-			echo $cmd |& tee -a $LF
-			eval $cmd |& tee -a $LF
-			if(-e $output) then
-				echo "    [native2mni]: projection to $output finished." |& tee -a $LF
-			else
-				echo "    ERROR: projection to $output failed." |& tee -a $LF
-				exit 1;
-			endif
-		endif
+	# 	set input = $frame_dir/orig_frames${fcount_str}.nii.gz
+	# 	set output = $frame_dir/${fcount_str}_MNI1mm.nii.gz
+	# 	if(-e $output) then
+	# 		echo "    [native2mni]: $output already exists." |& tee -a $LF
+	# 	else
+	# 		set cmd = (CBIG_vol2vol_m3z.csh -src-id $anat_s -src-dir $anat_dir -targ-id $MNI_ref_id \
+	# 		-targ-dir $MNI_ref_dir -in $input -out $output -reg $regfile -no-cleanup)
+	# 		echo $cmd |& tee -a $LF
+	# 		eval $cmd |& tee -a $LF
+	# 		if(-e $output) then
+	# 			echo "    [native2mni]: projection to $output finished." |& tee -a $LF
+	# 		else
+	# 			echo "    ERROR: projection to $output failed." |& tee -a $LF
+	# 			exit 1;
+	# 		endif
+	# 	endif
 		
-		@ fcount = $fcount + 1
-	end
+	# 	@ fcount = $fcount + 1
+	# end
 	echo "======== Projection of $runfolder to MNI152 1mm space finished. ========" |& tee -a $LF
 	echo "" |& tee -a $LF
 	
