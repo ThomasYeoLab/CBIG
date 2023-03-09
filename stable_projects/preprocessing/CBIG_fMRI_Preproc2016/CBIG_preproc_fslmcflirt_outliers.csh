@@ -183,8 +183,9 @@ foreach curr_bold ($zpdbold)
 		echo $cmd |& tee -a $LF
 		eval $cmd >> $LF
 		mv $boldfile"_mc.nii.gz" $boldfile"_mc_tmp.nii.gz"
-		set numof_tps = `fslnvols $boldfile".nii.gz"` 
-		fslroi $boldfile"_mc_tmp" $boldfile"_mc" 1 $numof_tps |& tee -a $LF
+		set numof_tps = `fslnvols $boldfile"_mc_tmp"`
+		set numof_tps = `echo "$numof_tps-1" | bc`
+		fslroi $boldfile"_mc_tmp" $boldfile"_mc" 0 $numof_tps |& tee -a $LF
 		rm $boldfile"_mc_tmp.nii.gz"
 	else
 		echo "=======================mcflirt and split already done!=======================" |& tee -a $LF
