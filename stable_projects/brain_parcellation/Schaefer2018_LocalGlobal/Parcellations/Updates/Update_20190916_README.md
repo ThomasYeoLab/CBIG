@@ -93,7 +93,7 @@ This `.mat` file is a 20x3 cell matrix, where 20 corresponds to 20 different res
 
 If the user would like to generate the mapping vector on their own, we also provide a script:
 
-+ `${CBIG_CODE_DIR}/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Parcellations/Code/CBIG_gwMRF_index_trans_btwn2versions.m`
++ `${CBIG_CODE_DIR}/utilities/matlab/FC/CBIG_ReorderParcelIndex.m`
 
 Bugs and Questions
 ====

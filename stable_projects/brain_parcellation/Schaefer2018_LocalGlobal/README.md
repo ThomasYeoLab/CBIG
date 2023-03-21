@@ -100,20 +100,22 @@ Except for this project, if you want to use the code for other stable projects f
 
 To download the version of the code that is last tested, you can either
 
-- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.21.3-Reorganize_Schaefer2018_Parcellation](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.21.3-Reorganize_Schaefer2018_Parcellation)
+- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.27.2-update_reorder_func](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.27.2-update_reorder_func)
 
 or
 
 - run the following command, if you have Git installed
 
 ```
-git checkout -b Reorganize_Schaefer2018_Parcellation v0.21.3-Reorganize_Schaefer2018_Parcellation
+git checkout -b update_reorder_func v0.27.2-update_reorder_func
 ```
 
 ---
 
 Updates
 =======
+- Release v0.27.2 (21/3/2023): Rename `CBIG_gwMRF_index_trans_btwn2versions.m` to `CBIG_ReorderParcelIndex.m` and move to `$CBIG_CODE_DIR/utilities/matlab/FC` folder.
+
 - Release v0.21.3 (17/1/2022)
  
     1. Reorganize folder structure for Schaefer parcellation with Kong2022 17-network order.

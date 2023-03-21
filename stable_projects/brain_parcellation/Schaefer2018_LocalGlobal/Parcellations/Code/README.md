@@ -35,7 +35,7 @@ sh CBIG_gwMRF_copy_fs_average.sh
 
 Mapping parcellation ordering between versions
 =============
-Since the parcellation indices might change between different releases, we provide a function that compares two versions and generates a vector of indices to map the old parcellation ordering to the new parcellation ordering. Please refer to `CBIG_gwMRF_index_trans_btwn2versions.m`
+Since the parcellation indices might change between different releases, we provide a function that compares two versions and generates a vector of indices to map the old parcellation ordering to the new parcellation ordering. Please refer to `${CBIG_CODE_DIR}/utilities/matlab/FC/CBIG_ReorderParcelIndex.m`
 
 ----
 
