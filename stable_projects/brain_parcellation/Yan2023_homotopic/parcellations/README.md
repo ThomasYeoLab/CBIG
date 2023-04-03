@@ -21,14 +21,34 @@ For each resolution, there are three different versions where the ROIs are match
 * VERSION 2. `<#ROIs>Parcels_Yeo2011_17Networks` under `yeo17` folders.
 * VERSION 3. `<#ROIs>Parcels_Kong2022_17Networks` under `kong17` folders.
 
-Note that the ROIs are identical across these three different versions, but only differ in their assignment to different networks.
+We matched each parcel to a specific network based on maximal spatial overlap, i.e., if a parcel has 80% overlap with network A and 20% with network B, it would be assigned to network A.
 
+Note that the vertices enclosed in each ROI are identical across these three different versions, and the ROIs only differ in their assignment to different networks.
 
 Homotopic Correspondence
 =====================
 As mentioned in the paper, the parcellation boundary for the left and right hemispheres do not overlap perfectly. However, each homotopic parcel pair typically occupy roughly symmetric locations across the hemispheres.
 
 Let's take the 400-region parcellation as an example. On the left hemisphere, the parcels are ordered from 1 ~ 200; on the right hemispheres, the parcels are ordered from 201 ~ 400. Parcel 1 correspondes to parcel 201 and so on. Note that for the FreeSurfer version, since there are separate ```.annot``` files for each hemispheres, the parcels are numbered from 1 ~ 200 on within each file.
+
+Parcel Naming Convention
+========================
+
+Let's look at a few examples.
+
+The first row in `./MNI/kong17/freeview_lut/100Parcels_Kong2022_17Networks_LUT.txt`:
+
+> 1 17networks_LH_DefaultC_PHC 0 0 130 0
+
+indicates that the current 100-level parcellation was matched to Kong2022 networks, parcel 1 is on the left hemisphere, assigned to the DefaultC network and resides roughly on the PHC cortex. `0 0 130` is just the RGB color code for this parcel, and the last trailing `0` doesn't make any difference.
+
+The last row in `./MNI/yeo7/freeview_lut/200Parcels_Yeo2011_7Networks_LUT.txt`:
+
+> 200 7networks_RH_Vis_Striate_2 120 18 134 0
+
+indicates that the current 200-level parcellation was matched to Yeo7 networks, parcel 200 is on the right hemisphere, assigned to the Visual network and resides roughly on the stiate cortex. `0 0 130` is just the RGB color code for this parcel, and the last trailing `0` doesn't make any difference.
+
+For abbreviations used in the parcel names (anatomic locations), refer to the table in the following section `Parcel Name Abbreviations`.
 
 
 Parcel Name Abbreviations
