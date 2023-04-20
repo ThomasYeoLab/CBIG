@@ -19,19 +19,25 @@ end
 ref_results_dir = fullfile(CBIG_REPDATA_DIR, 'stable_projects', 'brain_parcellation', 'Yan2023_homotopic');
 
 %% step 1: check if premultiplied matrix are identical
-load(fullfile(ref_results_dir, 'GSP_fullset_full_corr_single.mat'), 'final_PMM', 'dim');
-ref_dim = dim;
-ref_final_PMM = final_PMM;
+ref = matfile(fullfile(ref_results_dir, 'GSP_fullset_full_corr_single.mat'));
+ref_dim = ref.dim;
 
-user_PMM = fullfile(output_dir, 'premultiplied_matrix_single.mat');
-assert(logical(exist(user_PMM, 'file')), 'User failed to generate premultiplied matrix.');
-load(user_PMM, 'final_PMM', 'dim');
-user_dim = dim;
-user_final_PMM = final_PMM;
+user_PMM_dir = fullfile(output_dir, 'premultiplied_matrix_single.mat');
+assert(logical(exist(user_PMM_dir, 'file')), 'User failed to generate premultiplied matrix.');
 
-pmm_diff = mean(abs(ref_final_PMM(:) - user_final_PMM(:)));
+user = matfile(user_PMM_dir);
+user_dim = user.dim;
 
-if(pmm_diff <= 1e-5 && ref_dim == user_dim)
+pmm_diff = 0;
+% performing partial check (1 row from every 100 rows), since it would take
+% hours to check the entire PMM.
+for i = 1:50:length(ref.final_PMM(:,1))
+    ref_row = ref.final_PMM(i,:);
+    user_row = user.final_PMM(i,:);
+    pmm_diff = pmm_diff + mean(abs(ref_row - user_row));
+end
+
+if(pmm_diff <= 1e-6 && ref_dim == user_dim)
     disp('Successfully generated the premultiplied matrix and the result matched the reference.');
 else
     disp('FAIL!')

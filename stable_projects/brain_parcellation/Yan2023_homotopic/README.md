@@ -36,8 +36,10 @@ We have released three multiple folders in relation to the code:
 
 Updates
 =======
-- Release v0.26.0 (23/2/2023): Initial release of Yan2023 parcellations.
+- Release v0.28.2 (20/04/2023): Included Yan2023 parcellation in the `CBIG_PlotCorrMatNetOrder` function (`/utilities/matlab/figure_utilities/PlotCorrMat/CBIG_PlotCorrMatNetOrder`).
+
+- Release v0.28.1 (03/04/2023): Release of Yan2023 parcellation code.
 
 - Release v0.27.0 (24/02/2023): Update README. Included parcellation visualizations.
 
-- Release v0.28.1 (03/04/2023): Release of Yan2023 parcellation code.
+- Release v0.26.0 (23/2/2023): Initial release of Yan2023 parcellations.

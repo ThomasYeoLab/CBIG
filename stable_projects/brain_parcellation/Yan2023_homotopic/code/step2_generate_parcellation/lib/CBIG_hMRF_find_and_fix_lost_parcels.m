@@ -52,7 +52,7 @@ num_clusters_per_hemi = params.num_cluster_per_hemi;
 [lh_full_label, rh_full_label] = CBIG_hMRF_get_left_right_overlapping_labels(lh_mask, rh_mask,...
     label, num_clusters_per_hemi);
 
-disp('Merging singular parcels on both hemispheres...');
+disp('Checking if there are singular parcels on both hemispheres...');
 [exist_on_lh_only, exist_on_rh_only] = profile_lost_parcels(lh_full_label, rh_full_label,...
     lh_mask, rh_mask, num_clusters_per_hemi);
 
@@ -67,14 +67,13 @@ if(~isempty(exist_on_rh_only))
         num_cortical_verts+1:end), exist_on_rh_only, rh_full_label, rh_avg_mesh, rh_mask);
 end
 
-disp('After merging singular parcels on both hemispheres...');
+% check if there are still singular parcels on either hemisphere
 [exist_on_lh_only, exist_on_rh_only] = profile_lost_parcels(lh_full_label,rh_full_label, lh_mask, rh_mask,...
-    num_clusters_per_hemi);
+num_clusters_per_hemi);
 assert(isempty(exist_on_lh_only), 'lh still have singular parcels.');
 assert(isempty(exist_on_rh_only), 'rh still have singular parcels.');
 
-disp('Assigning empty clusters that are lost on both hemispheres...');
-disp('Parcels that are lost on both hemispheres: ');
+disp('Checking if there are parcels missing on both hemispheres...');
 [~, ~, lh_rh_both_missing, ~, ~] = profile_lost_parcels(lh_full_label,rh_full_label, lh_mask, rh_mask,...
 num_clusters_per_hemi);
 
@@ -84,10 +83,10 @@ if(~isempty(lh_rh_both_missing))
     rh_full_label, lh_mask, rh_mask, avg_mesh, num_clusters_per_hemi, lh_rh_both_missing, params);
 end
 
-disp('After assigning empty clusters that are lost on both hemispheres...');
+
+% check if there are still any singular parcel on either hemisphere, or lost on both hemispheres
 [exist_on_lh_only, exist_on_rh_only, lh_rh_both_missing] = profile_lost_parcels(lh_full_label,rh_full_label,...
 lh_mask, rh_mask, num_clusters_per_hemi);
-
 assert(isempty(exist_on_lh_only), 'lh still have singular parcels.');
 assert(isempty(exist_on_rh_only), 'rh still have singular parcels.');
 assert(isempty(lh_rh_both_missing), 'There are parcels lost on both hemispheres that remain unassigned.');

@@ -190,9 +190,9 @@ CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
 input_data_dir = fullfile(CBIG_CODE_DIR, 'stable_projects', 'brain_parcellation', 'Yan2023_homotopic', 'code',...
  'step2_generate_parcellation', 'input');
 params.a = 1;
-params.nborhood_file = fullfile(input_data_dir, 'fsaverage6', 'fs_nborhood_derived_from_fs6.mat');
-params.lh_vert2rh_vert = fullfile(input_data_dir, 'fsaverage6', 'fs6_lh_to_rh.mat');
-params.rh_vert2lh_vert = fullfile(input_data_dir, 'fsaverage6', 'fs6_rh_to_lh.mat');
+params.nborhood_file = fullfile(input_data_dir, 'fsaverage6', 'derived_nborhood.mat');
+params.lh_vert2rh_vert = fullfile(input_data_dir, 'fsaverage6', 'lh_to_rh.mat');
+params.rh_vert2lh_vert = fullfile(input_data_dir, 'fsaverage6', 'rh_to_lh.mat');
 params.CS = fullfile(input_data_dir, 'VGD11b_central_sulcus.mat');
 params.V1 = fullfile(input_data_dir, 'V1_anchors.mat');
 params.graphCutIterations = 1000;

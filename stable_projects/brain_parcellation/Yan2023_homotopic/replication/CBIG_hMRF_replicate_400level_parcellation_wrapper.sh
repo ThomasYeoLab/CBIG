@@ -9,6 +9,7 @@ if [ -d $out_dir ]; then
     rm -r $out_dir
 fi
 mkdir -p $out_dir
+mkdir -p ${out_dir}/temp
 
 rep_code_folder="${CBIG_CODE_DIR}/stable_projects/brain_parcellation/Yan2023_homotopic/replication"
 
@@ -26,8 +27,9 @@ sh ${rep_code_folder}/CBIG_hMRF_generate_subject_fullpath_GSP.sh  ${subject_list
 step1_job_name="pmm_rep"
 sh ${rep_code_folder}/CBIG_hMRF_generate_premultiplied_matrix.sh ${out_dir} ${step1_job_name}\
  ${lh_out_file} ${rh_out_file}
-sh $CBIG_CODE_DIR/utilities/scripts/CBIG_check_job_status -n "${step1_job_name}"
+
 lhrh_avg_file="${out_dir}/premultiplied_matrix_single.mat"
+sh $CBIG_CODE_DIR/utilities/scripts/CBIG_check_job_status -n ${step1_job_name} -o ${lhrh_avg_file}
 
 ############################################
 # Step 3: replicate level 400 parcellation #
@@ -40,6 +42,15 @@ w_xyz=150000
 decrease_d=true
 decrease_c=false
 premature_stopping=true
+step3_job_name="parc${num_cluster}"
 
 sh ${rep_code_folder}/CBIG_hMRF_generate_parcellation.sh ${out_dir} ${start_seed} ${num_cluster}\
- ${c} ${d} ${w_xyz} ${decrease_d} ${decrease_c} ${premature_stopping} ${lhrh_avg_file}
+ ${c} ${d} ${w_xyz} ${decrease_d} ${decrease_c} ${premature_stopping} ${lhrh_avg_file} ${step3_job_name}
+
+step3_out="${out_dir}/results/400parcels_C1.4e+05_K15_Wxyz1.5e+05_D50000_A1_iterations_100_seed_835.mat"
+sh $CBIG_CODE_DIR/utilities/scripts/CBIG_check_job_status -n ${step3_job_name} -o ${step3_out}
+
+echo "The parcellation file have been successfully generated. Please use the CBIG_hMRF_check_replication_results\
+ function to check against our results."
+
+rm -r ${out_dir}/temp

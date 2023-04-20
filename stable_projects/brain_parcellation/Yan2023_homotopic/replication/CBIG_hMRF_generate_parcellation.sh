@@ -27,6 +27,7 @@ decrease_d=$7
 decrease_c=$8
 premature_stopping=$9
 lhrh_avg_file=${10}
+job_name=${11}
 
 #######################################
 # Fixed Parameters across resolutions #
@@ -48,6 +49,15 @@ my_cmd="${my_cmd} CBIG_hMRF_wrapper_generate_homotopic_parcellation ${lhrh_avg_f
  'decrease_c' ${decrease_c} 'decrease_d' ${decrease_d} 'premature_stopping' ${premature_stopping}\
   ; exit;\" |tee -a ${MANUAL_LOG_FILE}"
 
-$CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "${my_cmd}" -walltime "30:00:00" -mem '75G' -name "parc${num_cluster}" \
+# circumvent the bug ssh from compiler to head node
+temp_script="${out_dir}/temp/temp_script_generate_parcellation.sh"
+if [ -f "${temp_script}" ]; then
+    rm ${temp_script}
+fi
+echo '#!/bin/bash' >> ${temp_script}
+echo ${my_cmd} >> ${temp_script}
+chmod 755 ${temp_script}
+
+$CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "${temp_script}" -walltime "30:00:00" -mem '75G' -name "${job_name}" \
 -joberr ${STD_ERR_FILE} -jobout ${STD_OUT_FILE} 
 # Do not remove double quotes. Else the interpreter cannot recognize my_cmd as an entire string

@@ -32,6 +32,6 @@ The above script calls 3 wrapper functions:
 The total time for replicating the 400-level parcellation should be within 10 hours.
 To check the replication results, open Matlab and `cd` to the current directory, run `CBIG_hMRF_check_replication_results(your_output_dir)`.
 
-Replicating results for other resolutions (100~300, 500~1000)
+Replicating results for other resolutions (100 to 1000, excluding 400)
 ============================================================
 Please refer to the wrapper files under `${CBIG_REPDATA_DIR}/stable_projects/brain_parcellation/Yan2023_homotopic/all_resolution_wrapper` to replicate the parcellations for all resolutions other than the 400 version.

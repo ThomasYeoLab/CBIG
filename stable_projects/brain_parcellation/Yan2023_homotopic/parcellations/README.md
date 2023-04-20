@@ -46,7 +46,7 @@ The last row in `./MNI/yeo7/freeview_lut/200Parcels_Yeo2011_7Networks_LUT.txt`:
 
 > 200 7networks_RH_Vis_Striate_2 120 18 134 0
 
-indicates that the current 200-level parcellation was matched to Yeo7 networks, parcel 200 is on the right hemisphere, assigned to the Visual network and resides roughly on the stiate cortex. `0 0 130` is just the RGB color code for this parcel, and the last trailing `0` doesn't make any difference.
+indicates that the current 200-level parcellation was matched to Yeo7 networks, parcel 200 is on the right hemisphere, assigned to the Visual network and resides roughly on the stiate cortex. `120 18 134` is just the RGB color code for this parcel, and the last trailing `0` doesn't make any difference.
 
 For abbreviations used in the parcel names (anatomic locations), refer to the table in the following section `Parcel Name Abbreviations`.
 

@@ -1,8 +1,6 @@
 function lh_rh_Neighborhood = CBIG_hMRF_generate_fs6_lhrh_nborhood(outdir)
 % CBIG_hMRF_generate_fs6_lhrh_nborhood(outdir)
 % 
-% WARNING: to run this script, you must run under Freesurfer 6.0.0.
-
 % The left and right fsaverage6 hemispheres were first registered using the Freesurfer's 'mris_left_right_register'
 % function. After registration, the closest right hemisphere vertex was found for each left hemisphere vertex.
 % Similarly, the closest left hemisphere vertex was found for each right hemisphere vertex. Here, the closest vertex
@@ -28,8 +26,8 @@ hMRF_code_dir = fullfile(CBIG_CODE_DIR, 'stable_projects', 'brain_parcellation',
 fs6_surf_dir = fullfile(hMRF_code_dir, 'utilities', 'input'); % the folder contains freesurfer fsaverage6 info
 
 % match by min distance
-lh_mesh6_sym = ReadNCAvgMesh_add_input_var('lh', 'fsaverage6', 'sphere.left_right', 'cortex', fs6_surf_dir);
-rh_mesh6_sym = ReadNCAvgMesh_add_input_var('rh', 'fsaverage6', 'sphere.left_right', 'cortex', fs6_surf_dir);
+lh_mesh6_sym = ReadNCAvgMesh_additional_input_var('lh', 'fsaverage6', 'sphere.left_right', 'cortex', fs6_surf_dir);
+rh_mesh6_sym = ReadNCAvgMesh_additional_input_var('rh', 'fsaverage6', 'sphere.left_right', 'cortex', fs6_surf_dir);
 lh_verts = lh_mesh6_sym.vertices;
 rh_verts = rh_mesh6_sym.vertices;
 
@@ -94,12 +92,12 @@ end
 end
 
 
-function avg_mesh = ReadNCAvgMesh_add_input_var(hemi, mesh_name, surf_type, label, SUBJECTS_DIR)
+function avg_mesh = ReadNCAvgMesh_additional_input_var(hemi, mesh_name, surf_type, label, SUBJECTS_DIR)
 
 % Read the average mesh (from FREESURFER) of normal control people. This is modified based on CBIG_ReadNCAvgMesh
 % since here we need to specify SUBJECTS_DIR.
 % 
-%   avg_mesh = ReadNCAvgMesh_add_input_var(hemi, mesh_name, surf_type, label, SUBJECTS_DIR)
+%   avg_mesh = ReadNCAvgMesh_additional_input_var(hemi, mesh_name, surf_type, label, SUBJECTS_DIR)
 %   Input:
 %       hemi        : 'lh' or 'rh'
 %       mesh_name   : 'fsaverage6', 'fsaverage5', 'fsaverage4'

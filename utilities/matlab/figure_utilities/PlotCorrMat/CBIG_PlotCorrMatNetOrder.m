@@ -32,16 +32,19 @@ function CBIG_PlotCorrMatNetOrder(res, corr_mat, netorder, scalelim)
 %   - netorder: string
 %       The predefined order type: 
 %       1) 'Schaefer_Yeo17': The Schaefer parcellations with Yeo2011 17network ordering 
-%       1) 'Schaefer_Yeo7': The Schaefer parcellations with Yeo2011 7network ordering 
-%       1) 'Schaefer_Kong17': The Schaefer parcellations with Kong2022 17network ordering 
-%       1) 'Yeo17': The Yeo2011 17 network parcellations with split components
-%       1) 'Yeo7': The Yeo2011 7 network parcellations with split components 
+%       2) 'Schaefer_Yeo7': The Schaefer parcellations with Yeo2011 7network ordering 
+%       3) 'Schaefer_Kong17': The Schaefer parcellations with Kong2022 17network ordering 
+%       4) 'Yeo17': The Yeo2011 17 network parcellations with split components
+%       5) 'Yeo7': The Yeo2011 7 network parcellations with split components 
+%       6) 'Yan_Yeo17': The Yan parcellations with Yeo2011 17network ordering 
+%       7) 'Yan_Yeo7': The Yan parcellations with Yeo2011 7network ordering 
+%       8) 'Yan_Kong17': The Yan parcellations with Kong2022 17network ordering 
 %       Check <network_order_struct> variable in the current script for ordering details.
 %       
 %   - scalelim: ([lim_min limmax])
 %       The range of the colormap. The <scalelim> should be a 1x2 vector where <lim_min> and <lim_max>
 %       are the mininum and maximum value of the range. By default, <lim_min> is the -1*maximum
-%       abosulute value of corr_mat, <lim_max> is the maximum abosulute value of corr_mat.
+%       absolute value of corr_mat, <lim_max> is the maximum abosulute value of corr_mat.
 %
 % Examples:
 % corr_mat = rand(419,419);
@@ -125,6 +128,49 @@ case 'Yeo7'
                             {'DorsAttn'},
                             {'SomMot'},
                             {'Vis'}};
+
+case 'Yan_Kong17'
+    group_labels = ft_read_cifti(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects',...
+    'brain_parcellation', 'Yan2023_homotopic', 'parcellations', 'HCP', 'fsLR32k', 'kong17',...
+    [num2str(res) 'Parcels_Kong2022_17Networks.dlabel.nii']), 'mapname', 'array');
+    
+    parcelname = group_labels.dlabellabel';
+    network_order_struct = {{'DefaultC', 'DefaultB', 'DefaultA'},
+                            {'ContC', 'ContB', 'ContA'},
+                            {'Language'},
+                            {'SalVenAttnB', 'SalVenAttnA'},
+                            {'DorsAttnB', 'DorsAttnA'},
+                            {'Aud'},
+                            {'SomMotB', 'SomMotA'}
+                            {'VisualC', 'VisualB', 'VisualA'}};
+
+case 'Yan_Yeo17'
+    group_labels = ft_read_cifti(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects',...
+    'brain_parcellation', 'Yan2023_homotopic', 'parcellations', 'HCP', 'fsLR32k', 'yeo17',...
+    [num2str(res) 'Parcels_Yeo2011_17Networks.dlabel.nii']), 'mapname', 'array');
+
+    parcelname = group_labels.dlabellabel';
+    network_order_struct = {{'TempPar'},
+                            {'DefaultC', 'DefaultB', 'DefaultA'},
+                            {'ContC', 'ContB', 'ContA'},
+                            {'LimbicA', 'LimbicB'},
+                            {'SalVentAttnB', 'SalVentAttnA'},
+                            {'DorsAttnB', 'DorsAttnA'},
+                            {'SomMotB', 'SomMotA'},
+                            {'VisPeri', 'VisCent'}};
+case 'Yan_Yeo7'
+    group_labels = ft_read_cifti(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects',...
+    'brain_parcellation', 'Yan2023_homotopic', 'parcellations', 'HCP', 'fsLR32k', 'yeo7',...
+    [num2str(res) 'Parcels_Yeo2011_7Networks.dlabel.nii']), 'mapname', 'array');
+
+    parcelname = group_labels.dlabellabel';
+    network_order_struct = {{'Default'},
+                            {'Cont'},
+                            {'Limbic'},
+                            {'SalVentAttn'},
+                            {'DorsAttn'},
+                            {'SomMot'},
+                            {'Vis'}};                        
 end
 
 CBIG_PlotCorrMat_general(res, corr_mat, parcelname, network_order_struct, scalelim);

@@ -36,6 +36,14 @@ my_cmd="${my_cmd} matlab -nosplash -nodisplay -nodesktop -r \"clear;clc;close al
 my_cmd="${my_cmd} CBIG_hMRF_generate_premultiplied_matrix ${out_dir} ${lh_fmri_fullpath_txt}\
  ${rh_fmri_fullpath_txt} ${mesh_type}; exit;\" |tee -a ${MANUAL_LOG_FILE}"
 
-$CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "${my_cmd}" -walltime "10:00:00" -mem 200G -name ${job_name} \
+# circumvent the bug ssh from compiler to head node
+temp_script="${out_dir}/temp/temp_script_generate_PMM.sh"
+if [ -f "${temp_script}" ]; then
+    rm ${temp_script}
+fi
+echo '#!/bin/bash' >> ${temp_script}
+echo ${my_cmd} >> ${temp_script}
+chmod 755 ${temp_script}
+
+$CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "${temp_script}" -walltime "10:00:00" -mem 200G -name ${job_name} \
 -joberr ${STD_ERR_FILE} -jobout ${STD_OUT_FILE}
-# Do not remove double quotes. Else the interpreter cannot recognize my_cmd as an entire string

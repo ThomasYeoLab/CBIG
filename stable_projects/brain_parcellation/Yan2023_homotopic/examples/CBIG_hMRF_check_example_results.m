@@ -17,28 +17,26 @@ ref_results_dir = fullfile(CBIG_CODE_DIR, 'stable_projects', 'brain_parcellation
     'examples', 'ref_results');
 
 %% step 1: check if normalized time courses are accurate
-% since premultiplied matrix is too big and takes extra time and space for comparison
-
 % lh
-load(fullfile(ref_results_dir, 'time_data', 'lh_time_matrix.mat'), 'lh_time_mat');
-lh_ref_time_course = lh_time_mat;
+load(fullfile(ref_results_dir, 'time_data', 'lh_time_matrix_partial.mat'), 'lh_time_mat_partial');
+lh_ref_time_course = lh_time_mat_partial;
 
 lh_user_time_course_dir = fullfile(output_dir, 'time_data', 'lh_time_matrix.mat');
 assert(logical(exist(lh_user_time_course_dir, 'file')),...
 'User failed to generate left hemisphere concatenated time courses.');
 load(lh_user_time_course_dir, 'lh_time_mat');
-lh_user_time_course = lh_time_mat;
+lh_user_time_course = lh_time_mat(:, 1:20);
 lh_time_course_mean_diff = mean(abs(lh_user_time_course(:) - lh_ref_time_course(:)));
 
 % rh
-load(fullfile(ref_results_dir, 'time_data', 'rh_time_matrix.mat'), 'rh_time_mat');
-rh_ref_time_course = rh_time_mat;
+load(fullfile(ref_results_dir, 'time_data', 'rh_time_matrix_partial.mat'), 'rh_time_mat_partial');
+rh_ref_time_course = rh_time_mat_partial;
 
 rh_user_time_course_dir = fullfile(output_dir, 'time_data', 'rh_time_matrix.mat');
 assert(logical(exist(rh_user_time_course_dir, 'file')),...
 'User failed to generate left hemisphere concatenated time courses.');
 load(rh_user_time_course_dir, 'rh_time_mat');
-rh_user_time_course = rh_time_mat;
+rh_user_time_course = rh_time_mat(:, 1:20);
 rh_time_course_mean_diff = mean(abs(rh_user_time_course(:) - rh_ref_time_course(:)));
 
 if(lh_time_course_mean_diff <= 1e-5 && rh_time_course_mean_diff <= 1e-5)
@@ -50,7 +48,26 @@ else
     disp(['Right hemisphere time courses difference: ' num2str(rh_time_course_mean_diff)]);
 end
 
-%% step 2: check if resultant parcellation is matched
+%% step 2: check if resultant premultiplied matrices would match
+load(fullfile(ref_results_dir, 'premultiplied_matrix_partial.mat'), 'final_PMM_partial');
+ref_pmm = final_PMM_partial;
+
+user_pmm_dir = fullfile(output_dir, 'premultiplied_matrix_single.mat');
+assert(logical(exist(user_pmm_dir, 'file')), 'User failed to generate premultiplied matrix.');
+load(user_pmm_dir, 'final_PMM');
+user_pmm = final_PMM(1:20, :);
+
+pmm_mean_diff = mean(abs(user_pmm(:) - ref_pmm(:)));
+if(pmm_mean_diff <= 1e-5)
+    disp('Successfully generated premultipled matrix and your result matched ours.');
+else
+    disp('FAIL!')
+    disp('The mean difference between your results and reference results is ...');
+    disp(['Partial premultiplied matrices difference: ' num2str(pmm_mean_diff)]);
+end
+
+
+%% step 3: check if resultant parcellation is matched
 load(fullfile(ref_results_dir, 'parcellation_seed_835',...
     '100parcels_C1.0e+02_K15_Wxyz1.5e+03_D10_A1_iterations_3_seed_835.mat'), 'results');
 ref_label = results.full_label;
@@ -69,6 +86,7 @@ else
     disp(['The total number of different labels between the user and reference labels is '...
         num2str(total_label_diff_count)]);
 end
+
 end
 
 
