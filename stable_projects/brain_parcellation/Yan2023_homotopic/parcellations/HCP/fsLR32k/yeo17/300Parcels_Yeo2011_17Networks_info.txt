@@ -298,149 +298,149 @@
 149 120 18 134 255
 17networks_LH_VisCent_Striate
 150 120 18 134 255
-17networks_RH_TempPar_IPL
-151 12 48 255 255
-17networks_RH_TempPar_ST
-152 12 48 255 255
 17networks_RH_TempPar_Temp_1
-153 12 48 255 255
+151 12 48 255 255
 17networks_RH_TempPar_Temp_2
-154 12 48 255 255
+152 12 48 255 255
 17networks_RH_TempPar_Temp_3
-155 12 48 255 255
+153 12 48 255 255
 17networks_RH_TempPar_Temp_4
-156 12 48 255 255
-17networks_RH_TempPar_Temp_5
-157 12 48 255 255
+154 12 48 255 255
 17networks_RH_DefaultC_IPL_1
-158 0 0 130 255
+155 0 0 130 255
 17networks_RH_DefaultC_IPL_2
-159 0 0 130 255
+156 0 0 130 255
 17networks_RH_DefaultC_PHC_1
-160 0 0 130 255
-17networks_RH_DefaultC_RSC_1
-161 0 0 130 255
-17networks_RH_DefaultC_RSC_2
-162 0 0 130 255
-17networks_RH_DefaultB_PFCd_1
-163 205 62 78 255
-17networks_RH_DefaultB_PFCd_2
-164 205 62 78 255
-17networks_RH_DefaultB_PFCv_1
-165 205 62 78 255
-17networks_RH_DefaultB_PFCv_2
-166 205 62 78 255
-17networks_RH_DefaultB_TempPole
-167 205 62 78 255
-17networks_RH_DefaultB_Temp_1
-168 205 62 78 255
-17networks_RH_DefaultA_FPole
-169 255 255 0 255
-17networks_RH_DefaultA_IPL_1
-170 255 255 0 255
-17networks_RH_DefaultA_IPL_2
-171 255 255 0 255
-17networks_RH_DefaultA_PCC_1
-172 255 255 0 255
-17networks_RH_DefaultA_PCC_2
-173 255 255 0 255
-17networks_RH_DefaultA_PCC_3
-174 255 255 0 255
-17networks_RH_DefaultA_PFCd_1
-175 255 255 0 255
-17networks_RH_DefaultA_PFCd_2
-176 255 255 0 255
-17networks_RH_DefaultA_PFCm_1
-177 255 255 0 255
-17networks_RH_DefaultA_PFCm_2
-178 255 255 0 255
-17networks_RH_DefaultA_PFCm_3
-179 255 255 0 255
-17networks_RH_DefaultA_Temp
-180 255 255 0 255
-17networks_RH_ContC_PCC
-181 119 140 176 255
-17networks_RH_ContC_pCun_1
-182 119 140 176 255
-17networks_RH_ContC_pCun_2
-183 119 140 176 255
-17networks_RH_ContB_FPole_1
-184 135 50 74 255
-17networks_RH_ContB_FPole_2
-185 135 50 74 255
-17networks_RH_ContB_IPL_1
-186 135 50 74 255
-17networks_RH_ContB_IPS
-187 135 50 74 255
-17networks_RH_ContB_PFCd_1
-188 135 50 74 255
-17networks_RH_ContB_PFCd_2
-189 135 50 74 255
-17networks_RH_ContB_PFCl
-190 135 50 74 255
-17networks_RH_ContB_PFCv_1
-191 135 50 74 255
-17networks_RH_ContB_PFCv_2
-192 135 50 74 255
-17networks_RH_ContB_PrC
-193 135 50 74 255
-17networks_RH_ContB_Temp
-194 135 50 74 255
-17networks_RH_ContA_Cingm
-195 230 148 34 255
-17networks_RH_ContA_IPS_1
-196 230 148 34 255
-17networks_RH_ContA_IPS_2
-197 230 148 34 255
-17networks_RH_ContA_IPS_3
-198 230 148 34 255
-17networks_RH_ContA_PFCd
-199 230 148 34 255
-17networks_RH_ContA_PFCl_1
-200 230 148 34 255
-17networks_RH_ContA_PFCl_2
-201 230 148 34 255
-17networks_RH_ContA_PFCl_3
-202 230 148 34 255
-17networks_RH_ContA_PrCv
-203 230 148 34 255
-17networks_RH_ContA_TempOcc
-204 230 148 34 255
+157 0 0 130 255
 17networks_RH_LimbicA_PHC
-205 220 248 164 255
-17networks_RH_LimbicA_TempPole_1
-206 220 248 164 255
-17networks_RH_LimbicA_TempPole_2
-207 220 248 164 255
-17networks_RH_LimbicA_Temp_1
-208 220 248 164 255
-17networks_RH_LimbicA_Temp_2
-209 220 248 164 255
-17networks_RH_LimbicB_FPole_1
-210 122 135 50 255
-17networks_RH_LimbicB_OFC_1
-211 122 135 50 255
-17networks_RH_LimbicB_OFC_2
-212 122 135 50 255
-17networks_RH_LimbicB_OFC_3
-213 122 135 50 255
-17networks_RH_LimbicB_OFC_4
-214 122 135 50 255
-17networks_RH_SalVentAttnB_FrMed
-215 255 152 213 255
-17networks_RH_SalVentAttnB_IPL
-216 255 152 213 255
-17networks_RH_SalVentAttnB_Ins_1
-217 255 152 213 255
-17networks_RH_SalVentAttnB_Ins_2
-218 255 152 213 255
-17networks_RH_SalVentAttnB_PFCl_1
-219 255 152 213 255
-17networks_RH_SalVentAttnB_PFCl_2
-220 255 152 213 255
+158 220 248 164 255
+17networks_RH_DefaultC_RSC_1
+159 0 0 130 255
+17networks_RH_DefaultC_RSC_2
+160 0 0 130 255
+17networks_RH_ContB_IPL_1
+161 135 50 74 255
+17networks_RH_TempPar_IPL
+162 12 48 255 255
+17networks_RH_DefaultA_IPL_2
+163 255 255 0 255
+17networks_RH_DefaultB_PFCd_1
+164 205 62 78 255
+17networks_RH_DefaultB_PFCd_2
+165 205 62 78 255
+17networks_RH_ContB_PFCd_1
+166 135 50 74 255
+17networks_RH_DefaultA_PFCd_2
+167 255 255 0 255
+17networks_RH_DefaultB_PFCv_1
+168 205 62 78 255
+17networks_RH_DefaultB_PFCv_2
+169 205 62 78 255
 17networks_RH_SalVentAttnB_PFCv_1
-221 255 152 213 255
+170 255 152 213 255
 17networks_RH_SalVentAttnB_PFCv_2
+171 255 152 213 255
+17networks_RH_ContB_PFCv_2
+172 135 50 74 255
+17networks_RH_DefaultB_TempPole
+173 205 62 78 255
+17networks_RH_DefaultB_Temp_1
+174 205 62 78 255
+17networks_RH_TempPar_Temp_5
+175 12 48 255 255
+17networks_RH_DefaultA_Temp
+176 255 255 0 255
+17networks_RH_DefaultA_FPole
+177 255 255 0 255
+17networks_RH_DefaultA_IPL_1
+178 255 255 0 255
+17networks_RH_DefaultA_PCC_1
+179 255 255 0 255
+17networks_RH_DefaultA_PCC_2
+180 255 255 0 255
+17networks_RH_DefaultA_PCC_3
+181 255 255 0 255
+17networks_RH_DefaultA_PFCd_1
+182 255 255 0 255
+17networks_RH_ContB_PFCd_2
+183 135 50 74 255
+17networks_RH_DefaultA_PFCm_1
+184 255 255 0 255
+17networks_RH_DefaultA_PFCm_2
+185 255 255 0 255
+17networks_RH_DefaultA_PFCm_3
+186 255 255 0 255
+17networks_RH_ContC_PCC
+187 119 140 176 255
+17networks_RH_ContC_pCun_1
+188 119 140 176 255
+17networks_RH_ContC_pCun_2
+189 119 140 176 255
+17networks_RH_ContB_FPole_1
+190 135 50 74 255
+17networks_RH_SalVentAttnB_IPL
+191 255 152 213 255
+17networks_RH_ContB_IPS
+192 135 50 74 255
+17networks_RH_ContB_PFCl
+193 135 50 74 255
+17networks_RH_ContB_PFCv_1
+194 135 50 74 255
+17networks_RH_ContB_Temp
+195 135 50 74 255
+17networks_RH_ContA_Cingm
+196 230 148 34 255
+17networks_RH_ContA_IPS_1
+197 230 148 34 255
+17networks_RH_ContA_IPS_2
+198 230 148 34 255
+17networks_RH_ContA_IPS_3
+199 230 148 34 255
+17networks_RH_ContA_PFCd
+200 230 148 34 255
+17networks_RH_ContA_PFCl_1
+201 230 148 34 255
+17networks_RH_ContA_PFCl_2
+202 230 148 34 255
+17networks_RH_ContA_PFCl_3
+203 230 148 34 255
+17networks_RH_SalVentAttnB_PFCl_2
+204 255 152 213 255
+17networks_RH_ContB_PrC
+205 135 50 74 255
+17networks_RH_ContA_PrCv
+206 230 148 34 255
+17networks_RH_ContA_TempOcc
+207 230 148 34 255
+17networks_RH_SomMotB_ST_3
+208 42 204 164 255
+17networks_RH_LimbicA_TempPole_1
+209 220 248 164 255
+17networks_RH_LimbicA_TempPole_2
+210 220 248 164 255
+17networks_RH_LimbicA_Temp_1
+211 220 248 164 255
+17networks_RH_LimbicA_Temp_2
+212 220 248 164 255
+17networks_RH_LimbicB_FPole_1
+213 122 135 50 255
+17networks_RH_ContB_FPole_2
+214 135 50 74 255
+17networks_RH_LimbicB_OFC_1
+215 122 135 50 255
+17networks_RH_LimbicB_OFC_2
+216 122 135 50 255
+17networks_RH_LimbicB_OFC_3
+217 122 135 50 255
+17networks_RH_LimbicB_OFC_4
+218 122 135 50 255
+17networks_RH_SalVentAttnB_FrMed
+219 255 152 213 255
+17networks_RH_SalVentAttnB_Ins_1
+220 255 152 213 255
+17networks_RH_SalVentAttnB_Ins_2
+221 255 152 213 255
+17networks_RH_SalVentAttnB_PFCl_1
 222 255 152 213 255
 17networks_RH_SalVentAttnA_FrMed_1
 223 196 58 250 255
@@ -486,100 +486,100 @@
 243 0 118 14 255
 17networks_RH_DorsAttnB_SPL_2
 244 0 118 14 255
-17networks_RH_DorsAttnB_TempOcc
-245 0 118 14 255
-17networks_RH_DorsAttnA_ExStr_1
-246 74 155 60 255
-17networks_RH_DorsAttnA_ExStr_2
-247 74 155 60 255
-17networks_RH_DorsAttnA_IPS
-248 74 155 60 255
-17networks_RH_DorsAttnA_SPL_1
-249 74 155 60 255
-17networks_RH_DorsAttnA_SPL_2
-250 74 155 60 255
-17networks_RH_DorsAttnA_TempOcc_1
-251 74 155 60 255
-17networks_RH_DorsAttnA_TempOcc_2
-252 74 155 60 255
-17networks_RH_DorsAttnA_TempOcc_3
-253 74 155 60 255
-17networks_RH_DorsAttnA_pCun
-254 74 155 60 255
-17networks_RH_SomMotB_1
-255 42 204 164 255
-17networks_RH_SomMotB_2
-256 42 204 164 255
-17networks_RH_SomMotB_3
-257 42 204 164 255
-17networks_RH_SomMotB_4
-258 42 204 164 255
-17networks_RH_SomMotB_5
-259 42 204 164 255
-17networks_RH_SomMotB_Ins_1
-260 42 204 164 255
-17networks_RH_SomMotB_Ins_2
-261 42 204 164 255
-17networks_RH_SomMotB_Ins_3
-262 42 204 164 255
-17networks_RH_SomMotB_Ins_4
-263 42 204 164 255
-17networks_RH_SomMotB_ST_1
-264 42 204 164 255
-17networks_RH_SomMotB_ST_2
-265 42 204 164 255
-17networks_RH_SomMotB_ST_3
-266 42 204 164 255
-17networks_RH_SomMotA_1
-267 70 130 180 255
-17networks_RH_SomMotA_10
-268 70 130 180 255
-17networks_RH_SomMotA_11
-269 70 130 180 255
-17networks_RH_SomMotA_12
-270 70 130 180 255
-17networks_RH_SomMotA_13
-271 70 130 180 255
-17networks_RH_SomMotA_14
-272 70 130 180 255
-17networks_RH_SomMotA_15
-273 70 130 180 255
-17networks_RH_SomMotA_2
-274 70 130 180 255
-17networks_RH_SomMotA_3
-275 70 130 180 255
-17networks_RH_SomMotA_4
-276 70 130 180 255
-17networks_RH_SomMotA_5
-277 70 130 180 255
-17networks_RH_SomMotA_6
-278 70 130 180 255
-17networks_RH_SomMotA_7
-279 70 130 180 255
-17networks_RH_SomMotA_8
-280 70 130 180 255
-17networks_RH_SomMotA_9
-281 70 130 180 255
 17networks_RH_SomMotA_SPL
-282 70 130 180 255
+245 70 130 180 255
+17networks_RH_DorsAttnB_TempOcc
+246 0 118 14 255
+17networks_RH_DorsAttnA_IPS
+247 74 155 60 255
+17networks_RH_DorsAttnA_SPL_1
+248 74 155 60 255
+17networks_RH_DorsAttnA_SPL_2
+249 74 155 60 255
+17networks_RH_DorsAttnA_TempOcc_1
+250 74 155 60 255
+17networks_RH_DorsAttnA_TempOcc_2
+251 74 155 60 255
+17networks_RH_DorsAttnA_TempOcc_3
+252 74 155 60 255
+17networks_RH_DorsAttnA_pCun
+253 74 155 60 255
+17networks_RH_SomMotB_1
+254 42 204 164 255
+17networks_RH_SomMotB_2
+255 42 204 164 255
+17networks_RH_SomMotB_3
+256 42 204 164 255
+17networks_RH_SomMotB_4
+257 42 204 164 255
+17networks_RH_SomMotB_5
+258 42 204 164 255
+17networks_RH_SomMotB_Ins_1
+259 42 204 164 255
+17networks_RH_SomMotB_Ins_2
+260 42 204 164 255
+17networks_RH_SomMotB_Ins_3
+261 42 204 164 255
+17networks_RH_SomMotB_Ins_4
+262 42 204 164 255
+17networks_RH_SomMotB_ST_1
+263 42 204 164 255
+17networks_RH_SomMotB_ST_2
+264 42 204 164 255
+17networks_RH_TempPar_ST
+265 12 48 255 255
+17networks_RH_SomMotA_1
+266 70 130 180 255
+17networks_RH_SomMotA_10
+267 70 130 180 255
+17networks_RH_SomMotA_11
+268 70 130 180 255
+17networks_RH_SomMotA_12
+269 70 130 180 255
+17networks_RH_SomMotA_13
+270 70 130 180 255
+17networks_RH_SomMotA_14
+271 70 130 180 255
+17networks_RH_SomMotA_15
+272 70 130 180 255
+17networks_RH_SomMotA_2
+273 70 130 180 255
+17networks_RH_SomMotA_3
+274 70 130 180 255
+17networks_RH_SomMotA_4
+275 70 130 180 255
+17networks_RH_SomMotA_5
+276 70 130 180 255
+17networks_RH_SomMotA_6
+277 70 130 180 255
+17networks_RH_SomMotA_7
+278 70 130 180 255
+17networks_RH_SomMotA_8
+279 70 130 180 255
+17networks_RH_SomMotA_9
+280 70 130 180 255
 17networks_RH_VisPeri_ExStrInf_1
-283 255 0 0 255
+281 255 0 0 255
 17networks_RH_VisPeri_ExStrInf_2
-284 255 0 0 255
+282 255 0 0 255
 17networks_RH_VisPeri_ExStrInf_3
-285 255 0 0 255
+283 255 0 0 255
 17networks_RH_VisPeri_ExStrInf_4
-286 255 0 0 255
+284 255 0 0 255
 17networks_RH_VisPeri_ExStrSup_1
-287 255 0 0 255
+285 255 0 0 255
 17networks_RH_VisPeri_ExStrSup_2
-288 255 0 0 255
+286 255 0 0 255
 17networks_RH_VisPeri_Striate_1
-289 255 0 0 255
+287 255 0 0 255
 17networks_RH_VisPeri_Striate_2
-290 255 0 0 255
+288 255 0 0 255
 17networks_RH_VisCent_ExStr_1
-291 120 18 134 255
+289 120 18 134 255
+17networks_RH_DorsAttnA_ExStr_1
+290 74 155 60 255
+17networks_RH_DorsAttnA_ExStr_2
+291 74 155 60 255
 17networks_RH_VisCent_ExStr_2
 292 120 18 134 255
 17networks_RH_VisCent_ExStr_3

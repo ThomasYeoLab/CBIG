@@ -31,6 +31,10 @@ As mentioned in the paper, the parcellation boundary for the left and right hemi
 
 Let's take the 400-region parcellation as an example. On the left hemisphere, the parcels are ordered from 1 ~ 200; on the right hemispheres, the parcels are ordered from 201 ~ 400. Parcel 1 correspondes to parcel 201 and so on. Note that for the FreeSurfer version, since there are separate ```.annot``` files for each hemispheres, the parcels are numbered from 1 ~ 200 on within each file.
 
+Also note that, for each homotopic parcel pair, they might have been assigned to different networks due to the asymmetry of large-scale brain networks. For example, in `./HCP/fsLR32k/kong17/100Parcels_Kong2022_17Networks_info.txt`:
+
+> Line 27~28, parcel 14 `17networks_LH_DefaultA_RSC` corresponds to Line 127-128, parcel 64 `17networks_RH_DefaultC_RSC`. This pair of homotopic parcels belong to different sub default mode networks.
+
 Parcel Naming Convention
 ========================
 
