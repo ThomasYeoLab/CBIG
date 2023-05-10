@@ -1,6 +1,8 @@
-function CBIG_preproc_CensorQC(QC_dir, subject, run_num, before_cen, interm_cen, after_cen, whole_mask_file, GM_mask_file, outlier_file)
+function CBIG_preproc_CensorQC(QC_dir, subject, run_num, before_cen, interm_cen, after_cen, whole_mask_file, ...
+    GM_mask_file, outlier_file)
 
-% CBIG_preproc_CensorQC(QC_dir, subject, run_num, before_cen, interm_cen, after_cen, whole_mask_file, GM_mask_file, outlier_file)
+% CBIG_preproc_CensorQC(QC_dir, subject, run_num, before_cen, interm_cen, after_cen, whole_mask_file, 
+% GM_mask_file, outlier_file)
 %
 % This function conducts QC steps for censoring results for one run
 % (run_num) of one subject (subject), and save out QC results to QC_dir.
@@ -50,7 +52,8 @@ function CBIG_preproc_CensorQC(QC_dir, subject, run_num, before_cen, interm_cen,
 %       The nifti file name (full path) of the interpolated volume,
 %       which is the intermediate result
 %       e.g.
-%       '<path_to_subject>/Sub0001_Ses1/bold/002/Sub0001_Ses1_bld002_rest_skip4_stc_mc_interp_inter_FDRMS0.2_DVARS50.nii.gz'
+%       '<path_to_subject>/Sub0001_Ses1/bold/002/
+%           Sub0001_Ses1_bld002_rest_skip4_stc_mc_interp_inter_FDRMS0.2_DVARS50.nii.gz'
 %
 %     - after_cen: 
 %       The nifti file name (full path) of the final volume. 
@@ -70,7 +73,8 @@ function CBIG_preproc_CensorQC(QC_dir, subject, run_num, before_cen, interm_cen,
 %       '<path_to_subject>/Sub0001_Ses1/qc/Sub0001_Ses1_bld002_FDRMS0.2_DVARS50_motion_outliers.txt'
 %
 % Example:
-% CBIG_preproc_CensorQC('<path_to_subject>/Sub0001_Ses1/qc', 'Sub0001_Ses1', '002', before_cen, interm_cen, after_cen, whole_mask_file, GM_mask_file, outlier_file)
+% CBIG_preproc_CensorQC('<path_to_subject>/Sub0001_Ses1/qc', 'Sub0001_Ses1', '002', before_cen, interm_cen, ...
+%     after_cen, whole_mask_file, GM_mask_file, outlier_file)
 %
 % Date: Jun.14, 2016
 %
@@ -129,11 +133,11 @@ vol_m_GM_inmask = vol_m(GM_mask_vol~=0,:);
 vol2_GM_inmask = vol2(GM_mask_vol~=0,:);
 
 % rank by fractional difference and plot
-CBIG_preproc_CensorQC_sort_plot(vol1_GM_inmask, vol_m_GM_inmask, vol2_GM_inmask, N_GM_inmask, outliers, ...
+CBIG_preproc_CensorQC_sort_plot(vol1_GM_inmask, vol_m_GM_inmask, vol2_GM_inmask, outliers, ...
     frac_diff_GM, corr_GM, [QC_dir '/' subject '_bld' run_num '_interp_FracDiff_GM_6plots'], 'FRAC_DIFF');
 
 % rank by correlation and plot
-CBIG_preproc_CensorQC_sort_plot(vol1_GM_inmask, vol_m_GM_inmask, vol2_GM_inmask, N_GM_inmask, outliers, ...
+CBIG_preproc_CensorQC_sort_plot(vol1_GM_inmask, vol_m_GM_inmask, vol2_GM_inmask, outliers, ...
     frac_diff_GM, corr_GM, [QC_dir '/' subject '_bld' run_num '_interp_corr_GM_6plots'], 'CORR');
 
 clear N_GM_inmask vol1_GM_inmask vol_m_GM_inmask vol2_GM_inmask 
@@ -143,11 +147,11 @@ clear N_GM_inmask vol1_GM_inmask vol_m_GM_inmask vol2_GM_inmask
 %%%%%% Within whole brain mask
 
 % rank by fractional difference and plot
-CBIG_preproc_CensorQC_sort_plot(vol1, vol_m, vol2, N, outliers, frac_diff_whole, corr_whole, ...
+CBIG_preproc_CensorQC_sort_plot(vol1, vol_m, vol2, outliers, frac_diff_whole, corr_whole, ...
     [QC_dir '/' subject '_bld' run_num '_interp_FracDiff_whole_6plots'], 'FRAC_DIFF');
 
 % rank by correlation and plot
-CBIG_preproc_CensorQC_sort_plot(vol1, vol_m, vol2, N, outliers, frac_diff_whole, corr_whole, ...
+CBIG_preproc_CensorQC_sort_plot(vol1, vol_m, vol2, outliers, frac_diff_whole, corr_whole, ...
     [QC_dir '/' subject '_bld' run_num '_interp_corr_whole_6plots'], 'CORR');
 
 

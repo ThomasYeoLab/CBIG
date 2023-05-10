@@ -17,11 +17,11 @@ set output_dir = $3
 
 foreach run ($runs)
 
-	set cmd = ( matlab -nodesktop -nosplash -r '"' 'addpath(fullfile(getenv('"'"CBIG_CODE_DIR"'"'), \
-	    '"'"stable_projects"'"', '"'"preprocessing"'"', '"'"CBIG_fMRI_Preproc2016"'"', '"'"utilities"'"'))'; \
-	    CBIG_preproc_compare_two_pipelines $pipe_dir1 $pipe_name1 $pipe_stem1 $pipe_dir2 $pipe_name2 $pipe_stem2 \
-	    $subject_id $run $output_dir vol; exit; '"' )
-	echo $cmd
-	eval $cmd
+    set cmd = ( matlab -nodesktop -nosplash -r '"' 'addpath(fullfile(getenv('"'"CBIG_CODE_DIR"'"'), \
+        '"'"stable_projects"'"', '"'"preprocessing"'"', '"'"CBIG_fMRI_Preproc2016"'"', '"'"utilities"'"'))'; \
+        CBIG_preproc_compare_two_pipelines $pipe_dir1 $pipe_name1 $pipe_stem1 $pipe_dir2 $pipe_name2 $pipe_stem2 \
+        $subject_id $run $output_dir vol; exit; '"' )
+    echo $cmd
+    eval $cmd
 
 end

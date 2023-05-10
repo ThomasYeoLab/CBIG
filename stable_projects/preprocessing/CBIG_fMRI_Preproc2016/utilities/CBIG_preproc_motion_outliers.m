@@ -5,32 +5,32 @@ function CBIG_preproc_motion_outliers(DVARS_file,FDRMS_file,FD_th,DV_th,discard_
 % This function is used to find the outliers with DVARS threshold DV_th and
 % FDRMS threshold FD_th. After threholding, one frame before two frame after
 % will also be removed. The default DV_th is 50, default FD_th is 0.2
-% INPUT:                                                                   
-% 	- DVARS_file:
+% INPUT:
+%   - DVARS_file:
 %       a file contains DVARS values as a TX1 column, T is the number of
-%       frames (include the first frame, whose value supposed to be 0) 
+%       frames (include the first frame, whose value supposed to be 0)
 %
-%	- FDRMS_file:
+%   - FDRMS_file:
 %       a file contains FDRMS values as a TX1 column, T is the number of
-%       frames (include the first frame, whose value supposed to be 0) 
+%       frames (include the first frame, whose value supposed to be 0)
 %
-% 	- FD_th: 
+%   - FD_th:
 %       the threshold of FDRMS, default is 0.2
 %
-% 	- DV_th: 
+%   - DV_th:
 %       the threshold of DVARS, default is 50
 %
-%   - discard_seg: 
+%   - discard_seg:
 %       uncensored segments of data lasting fewer than discard_seg
-%       contiguous frames will be removed, default is 5. 
+%       contiguous frames will be removed, default is 5.
 %
 %   - output_dir_name:
 %       the directory to store all output figures (full path).
 %
-% OUTPUT:                                                                  
-% 	txt file: SUBJECT_bldXXX_FDRMSxxx_DVARSxxx_motion_outliers.txt, this file contains a Tx1
-% 			  vector where 1 means kept, 0 means removed.
-% 	Figure: SUBJECT_bldXXX_FDRMSxxx_DVARSxxx.png
+% OUTPUT:
+%   txt file: SUBJECT_bldXXX_FDRMSxxx_DVARSxxx_motion_outliers.txt, this file contains a Tx1
+%             vector where 1 means kept, 0 means removed.
+%   Figure: SUBJECT_bldXXX_FDRMSxxx_DVARSxxx.png
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
@@ -52,12 +52,12 @@ end
 %% Detect outliers with DVARS threhold
 DV_th = str2num(DV_th);
 % 1 means the frame below the threshold is kept, 0 means the frame above the threshold is removed
-DV_vect = (dvars <= DV_th); 
+DV_vect = (dvars <= DV_th);
 
 %% Detect outliers with FDRMS threhold
 FD_th = str2num(FD_th);
 % 1 means the frame below the threshold is kept, 0 means the frame above the threshold is removed
-FD_vect = (fd <= FD_th); 
+FD_vect = (fd <= FD_th);
 
 %% Continue removing one frame before and two frames after
 DV_censor = (DV_vect & [DV_vect(2:end,1); 1] & [1; DV_vect(1:end-1)] & [1;1; DV_vect(1:end-2)]);
@@ -68,7 +68,7 @@ FD_censor = (FD_vect & [FD_vect(2:end,1); 1] & [1; FD_vect(1:end-1)] & [1;1; FD_
 pos_set = [0.08 0.55 0.89 0.4; ...
     0.08 0.06 0.89 0.4];
 
-figure; 
+figure;
 set(gcf,'Visible','off');
 set(gcf, 'Position', [0,0,960,800]);
 g = subplot(2,1,1);
@@ -91,7 +91,7 @@ clear xlim
 
 
 % Plot DVARS
-g = subplot(2,1,2); 
+g = subplot(2,1,2);
 set(g, 'Position', pos_set(2,:));
 hold on
 plot(dvars, 'LineWidth', 2);

@@ -1,4 +1,4 @@
-function CBIG_preproc_CensorQC_sort_plot(vol1_inmask, vol_m_inmask, vol2_inmask, N_inmask, outliers,...
+function CBIG_preproc_CensorQC_sort_plot(vol1_inmask, vol_m_inmask, vol2_inmask, outliers,...
     FRAC_DIFF_inmask, CORR_inmask, outname_noext, measure_name)
 
 % CBIG_preproc_CensorQC_sort_plot(vol1_inmask, vol_m_inmask, vol2_inmask,
@@ -32,10 +32,6 @@ function CBIG_preproc_CensorQC_sort_plot(vol1_inmask, vol_m_inmask, vol2_inmask,
 %     - vol2_inmask: 
 %       A num_voxels x num_timepoints matrix. It is the final volume within
 %       a mask (whole brain mask or gray matter mask) after censoring.
-%
-%     - N_inmask: 
-%       A scalar, the number of voxels within mask (gray matter or whole
-%       brain). It equals to num_voxels.
 %
 %     - outliers: 
 %       A num_timepoints x 1 binary vector, where 1 indicates "bad" time
@@ -76,6 +72,15 @@ if size(outliers,2) > 1
     error('Input argument ''outliers'' should be a column vector');
 end
 
+% Remove NaN
+nan_index = isnan(FRAC_DIFF_inmask) | isnan(CORR_inmask);
+N_inmask = sum(nan_index == 0);
+FRAC_DIFF_inmask(nan_index) = [];
+CORR_inmask(nan_index) = [];
+vol1_inmask(nan_index, :) = [];
+vol_m_inmask(nan_index, :) = [];
+vol2_inmask(nan_index, :) = [];
+
 if(strcmp(measure_name, 'FRAC_DIFF'))
     [measure_sorted, measure_ind] = sort(FRAC_DIFF_inmask, 'ascend');
 elseif(strcmp(measure_name, 'CORR'))
@@ -112,15 +117,14 @@ for i = 1:6
     % plot the three BOLD signals: original, interpolated, final
     g = subplot(3,2,i);
     hold on
-    plot(1:length(outliers), vol1_inmask(measure_ind(n),:), 'b', 'LineWidth', 2);
-    plot(1:length(outliers), vol_m_inmask(measure_ind(n),:), 'g', 'LineWidth', 2)
-    plot(1:length(outliers), vol2_inmask(measure_ind(n),:), 'k--', 'LineWidth', 2);
-    l = legend('Before Censoring', 'Intermediate', 'Censoring Final', 'Location', 'northwest');
-    set(l, 'FontSize', 27)
+    f1 = plot(1:length(outliers), vol1_inmask(measure_ind(n),:), 'b', 'LineWidth', 2);
+    f2 = plot(1:length(outliers), vol_m_inmask(measure_ind(n),:), 'g', 'LineWidth', 2);
+    f3 = plot(1:length(outliers), vol2_inmask(measure_ind(n),:), 'k--', 'LineWidth', 2);
     set(gca, 'XTick', 0:floor(length(outliers)/10):length(outliers));
-    set(gca, 'FontSize', 27)
+    set(gca, 'FontSize', 15)
     set(gcf, 'Position', [0,0,1600,1000]);
     set(g, 'Position', pos_set(i,:));
+    set(g, 'XLim', [0, length(outliers)]);
     
     pause(1)
     yl = ylim;
@@ -131,6 +135,9 @@ for i = 1:6
     % plot red vertical lines to indicate removed frames
     plot(repmat(outlier_1', 2, 1), repmat([yl(1); yl(2)+0.5*(yl(2)-yl(1))], 1, length(outlier_1)), 'r', 'LineWidth', 1);
     hold off
+    
+    l = legend([f1, f2, f3], 'Before Censoring', 'Intermediate', 'Censoring Final', 'Location', 'northwest');
+    set(l, 'FontSize', 15);
     
     % title
     if(strcmp(measure_name, 'FRAC_DIFF'))
@@ -144,7 +151,7 @@ for i = 1:6
     else
         warning('No matched measure name!')
     end
-    set(ti, 'FontSize', 27)
+    set(ti, 'FontSize', 15)
     
 end
 % hgexport(gcf, outname_noext)

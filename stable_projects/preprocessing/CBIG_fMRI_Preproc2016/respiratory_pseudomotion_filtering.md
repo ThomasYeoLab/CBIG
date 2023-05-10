@@ -29,12 +29,12 @@
   - If both -low_f and -high_f are provided we use bandstop filter and the stopband is [low_f,high_f]
   - If -low_f is not provided we don't perform respiratory pseudomotion filtering
 * Example for bandstop filtering: $CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_fslmcflirt_outliers.csh 
-	-s ABCD_sub1 -d ~/storage/FMRI_preprocess -bld '002 003' -BOLD_stem _rest_skip4_stc -nframe 0 
-	-FD_th 0.2 -DVARS 50 -discard-run 50 -rm-seg 5 -low_f 0.31 -high_f 0.43
+    -s ABCD_sub1 -d ~/storage/FMRI_preprocess -bld '002 003' -BOLD_stem _rest_skip4_stc -nframe 0 
+    -FD_th 0.2 -DVARS 50 -discard-run 50 -rm-seg 5 -low_f 0.31 -high_f 0.43
 * Example for lowpass filtering: $CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_fslmcflirt_outliers.csh 
-	-s ABCD_sub1 -d ~/storage/FMRI_preprocess -bld '002 003' -BOLD_stem _rest_skip4_stc -nframe 0 
-	-FD_th 0.2 -DVARS 50 -discard-run 50 -rm-seg 5 -low_f 0.1
-	
+    -s ABCD_sub1 -d ~/storage/FMRI_preprocess -bld '002 003' -BOLD_stem _rest_skip4_stc -nframe 0 
+    -FD_th 0.2 -DVARS 50 -discard-run 50 -rm-seg 5 -low_f 0.1
+
 ## References
 
 Fleming, S., Thompson, M., Stevens, R., Heneghan, C., Plüddemann, A., Maconochie, I., Tarassenko, L., and Mant, D., 2011. Normal ranges of heart rate and respiratory rate in children from birth to 18 years of age: a systematic review of observational studies. The Lancet, 377 (9770), 1011-1018.

@@ -5,7 +5,7 @@ set outdir = $1   # Your output directory
 set fmrinii_dir = "$CBIG_TESTDATA_DIR/stable_projects/preprocessing"
 set fmrinii_dir = "$fmrinii_dir/CBIG_fMRI_Preproc2016/single_subject/scripts/fmrinii"
 set config_file = "$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016"
-set config_file = "$config_file/unit_tests/single_subject/prepro_aCompCor.config"
+set config_file = "$config_file/unit_tests/single_subject/prepro_aCompCor_deoblique.config"
 set anat_dir = "$CBIG_TESTDATA_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/single_subject/data"
 
 set curr_sub = "Sub1116_Ses1"

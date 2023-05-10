@@ -2,22 +2,22 @@ function CBIG_preproc_DVARS_FDRMS_Correlation(DVARS_file,FDRMS_file,output_dir_n
 
 %CBIG_preproc_DVARS_FDRMS_Correlation(DVARS_file,FDRMS_file,output_dir_name)
 %
-% This function is used to compute the correlation between DVARS and FDRMS. 
-% This correlation shows whether DVARS and FDRMS are able to caputure      
-% the same movement trend. High correlation indicates both DVARS and FDRMS 
-% caputure the same motion feature.                                            
+% This function is used to compute the correlation between DVARS and FDRMS.
+% This correlation shows whether DVARS and FDRMS are able to caputure
+% the same movement trend. High correlation indicates both DVARS and FDRMS
+% caputure the same motion feature.
 %
-% INPUT:                                                                   
-%      -DVARS_file: 
-%       a file contains DVARS values as a T x 1 column, where T is the 
-%	number of frames (including the first frame, whose value is 0)
-%                    
-%      -FDRMS_file: 
-%       a file contains FDRMS values as a T x 1 column, where T is the 
-%	number of frames (including the first frame, whose value is 0)                    
+% INPUT:
+%      -DVARS_file:
+%       a file contains DVARS values as a T x 1 column, where T is the
+%       number of frames (including the first frame, whose value is 0)
 %
-% OUTPUT:                                                                 
-%      Figure: SUBJECT_bldXXX_DVARS_FDRMS_correlation.jpg                    
+%      -FDRMS_file:
+%       a file contains FDRMS values as a T x 1 column, where T is the
+%       number of frames (including the first frame, whose value is 0)
+%
+% OUTPUT:
+%      Figure: SUBJECT_bldXXX_DVARS_FDRMS_correlation.jpg
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 

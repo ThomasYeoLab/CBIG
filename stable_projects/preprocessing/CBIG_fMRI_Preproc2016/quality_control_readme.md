@@ -1,7 +1,7 @@
 # Quality control
 
 ## T1 - T2 registration:
-	
+
 - View the intra-subject registration cost `${sub_dir}/${subject}/qc/CBIG_preproc_bbregister_intra_sub_reg.cost`. It is acceptable if the number is lower than 0.5. If it is too large, e.g. 0.7 or 0.8, this subject should be discard.
  
 - Visualization check by tkregister2. The user can check the registration by looking at the alignment of the green line and the boundary of grey matter, and also by clicking "compare" to load in anatomical image and compare. The user is able to select different space coordinates to check the alignment in different position. The following three lines are the commands that the user would need. (`REG_stem` is the stem that passed into registration step, i.e. the stem of the image at which step that the user wants to use for registration)
@@ -11,7 +11,7 @@ cd ${sub_dir}/${subject}/bold/${run_folder}
 setenv SUBJECTS_DIR ${anat_d}
 tkregister2 --mov ${subject}_bld${run_folder}${REG_stem}.nii.gz --reg ${subject}_bld${run_folder}${REG_stem}_reg.dat --surf
 ```
-	  
+      
 ----
 
 ## Motion correction and motion scrubbing (censoring)
@@ -73,7 +73,7 @@ Power et al. "Methods to detect, characterize, and remove motion artifact in res
 
   Min, max, mean, and median fractional difference within whole brain mask:
   `${sub_dir}/${subject}/qc/censor_interp/${subject}_bld${run_folder}_interp_FracDiff_GM.txt`
-	
+
 - Censoring correlation and fractional difference volumes
 
   If the users want to further know the most different regions before and after censoring, they can visualize by:
@@ -97,7 +97,7 @@ If you are using our default configuration file, the pipeline will generate a "g
 `${sub_dir}/${subject}/qc/${subject}_bld${run_folder}${BOLD_stem}_greyplot.png`
 
 If you want to check the "grey plot" after different preprocessing steps, you can specify `CBIG_preproc_QC_greyplot -FD_th ${your_FD_threshold} -DV_th ${your_DVARS_threshold}` multiple times in the configuration file (but must be after `CBIG_preproc_bbregister` step because it needs intra-subject registration information to create masks).
-	
+
 ## Volumetric projection (inter-subject registration):
 
 For checking purpose, our pipeline also projects the subject anatomical image to MNI 1mm space. To check if the volumetric projection (if any) has been done properly, the user can load in the projected anatomical image and the MNI 1mm template together to see if they are aligned. Here is the command:

@@ -16,8 +16,8 @@ fi
 if [ -z "$low_f" ];then
     echo "running fsl_motion_outliers to compute FDRMS"
     fsl_motion_outliers -i $bold_file -o $outdir/${bold_file}_motion_outliers_confound_FDRMS \
-					    -s $outdir/${bold_file}_motion_outliers_FDRMS -p $outdir/${bold_file}_motion_outliers_FDRMS \
-					    -t $tmp_dir --fdrms
+                        -s $outdir/${bold_file}_motion_outliers_FDRMS -p $outdir/${bold_file}_motion_outliers_FDRMS \
+                        -t $tmp_dir --fdrms
 else
     echo "running respiratory pseudomotion filtering"
     mkdir -p $tmp_dir

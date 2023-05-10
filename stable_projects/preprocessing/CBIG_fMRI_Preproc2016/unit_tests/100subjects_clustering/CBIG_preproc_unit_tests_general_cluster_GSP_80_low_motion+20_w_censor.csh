@@ -9,11 +9,11 @@ set subject_list = "$subject_list/100subjects_clustering/GSP_80_low_motion+20_w_
 # create fake dir for each subject in your data dir, and make symbolic links to original data dir
 set your_subject_dir = "${your_out_dir}/preproc_out"
 foreach s (`cat $subject_list`)
-	mkdir -p ${your_subject_dir}/$s
-	ln -s ${data_dir}/$s/surf ${your_subject_dir}/$s/
-	ln -s ${data_dir}/$s/logs ${your_subject_dir}/$s/
-	ln -s ${data_dir}/$s/qc ${your_subject_dir}/$s/
-	ln -s ${data_dir}/$s/bold ${your_subject_dir}/$s/
+    mkdir -p ${your_subject_dir}/$s
+    ln -s ${data_dir}/$s/surf ${your_subject_dir}/$s/
+    ln -s ${data_dir}/$s/logs ${your_subject_dir}/$s/
+    ln -s ${data_dir}/$s/qc ${your_subject_dir}/$s/
+    ln -s ${data_dir}/$s/bold ${your_subject_dir}/$s/
 end
 
 set out_dir = "${your_out_dir}/clustering"
@@ -40,16 +40,16 @@ cd $work_dir
 set log_file = "${out_dir}/clust_100sub_ut.log"
 
 if( $scrub_flag == 1 ) then
-	set cmd = "${code_dir}/CBIG_Yeo2011_general_cluster_fcMRI_surf2surf_profiles.csh -sd"
-	set cmd = "$cmd ${your_subject_dir} -sub_ls ${subject_list} -surf_stem ${surf_stem} -n ${num_clusters} -out_dir"
-	set cmd = "$cmd ${out_dir} -cluster_out ${out_dir}/GSP_80_low_mt_20_w_censor_clusters${formated_cluster}_scrub"
-	set cmd = "$cmd -tries 1000 -outlier_stem ${outlier_stem}"
+    set cmd = "${code_dir}/CBIG_Yeo2011_general_cluster_fcMRI_surf2surf_profiles.csh -sd"
+    set cmd = "$cmd ${your_subject_dir} -sub_ls ${subject_list} -surf_stem ${surf_stem} -n ${num_clusters} -out_dir"
+    set cmd = "$cmd ${out_dir} -cluster_out ${out_dir}/GSP_80_low_mt_20_w_censor_clusters${formated_cluster}_scrub"
+    set cmd = "$cmd -tries 1000 -outlier_stem ${outlier_stem}"
 else
-	set cmd = "${code_dir}/CBIG_Yeo2011_general_cluster_fcMRI_surf2surf_profiles.csh -sd" 
-	set cmd = "$cmd ${your_subject_dir} -sub_ls ${subject_list} -surf_stem ${surf_stem} -n ${num_clusters} -out_dir"
-	set cmd = "$cmd ${out_dir} -cluster_out \
+    set cmd = "${code_dir}/CBIG_Yeo2011_general_cluster_fcMRI_surf2surf_profiles.csh -sd" 
+    set cmd = "$cmd ${your_subject_dir} -sub_ls ${subject_list} -surf_stem ${surf_stem} -n ${num_clusters} -out_dir"
+    set cmd = "$cmd ${out_dir} -cluster_out \
           ${out_dir}/GSP_80_low_mt_20_w_censor_clusters${formated_cluster}_noscrub"
-	set cmd = "$cmd -tries 1000 "
+    set cmd = "$cmd -tries 1000 "
 endif
 
 set cmd = "$cmd | tee -a ${log_file}"

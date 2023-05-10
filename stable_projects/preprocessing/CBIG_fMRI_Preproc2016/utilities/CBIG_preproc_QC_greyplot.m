@@ -32,7 +32,7 @@ function CBIG_preproc_QC_greyplot( fmri_file, FD_file, DV_file, output, varargin
 %                          | 'fmri_file' is a CIFTI greyordinate file, then
 %                          | GM_mask is not needed. As other mask inputs, 
 %                          | it is the full path to the grey mattter mask.
-%                          | E.g. '<path-to-mask>/Sub0001_Ses1.gm.func.nii.gz'
+%                          | E.g. '<path-to-mask>/Sub0001_Ses1.func.gm.nii.gz'
 %       --------------------------------------------------------------------
 %        'WB_mask'         | The filename of whole brain mask (full name).
 %                          | If fmri_file is a CIFTI file, the user should

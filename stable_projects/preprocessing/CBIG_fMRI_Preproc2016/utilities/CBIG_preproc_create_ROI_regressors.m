@@ -8,7 +8,7 @@ function CBIG_preproc_create_ROI_regressors(fMRI_list, output_list, WB_mask, WM_
 % It will
 %
 % 1) read in fMRI volumetric data from fMRI data list (fMRI_list) and 
-%    reshape each input 4D volume to a NxT matrix, where T is number of time 
+%    reshape each input 4D volume to a NxT matrix, where T is number of time
 %    points of each timecourse, N is the number of voxels.
 %
 % 2) apply the mask to each column of NxT matrix and average the signal in
@@ -80,7 +80,7 @@ for i = 1:num_of_fMRI
     
     all_regressors = [];
     if (~isempty(WB_mask))
-    	WB_regressor = mtx2regressor(vol_2d, WB_mask, diff_flag);
+        WB_regressor = mtx2regressor(vol_2d, WB_mask, diff_flag);
         if(~isempty(find(isnan(WB_regressor))))
             WB_regressor = [];
             fprintf('WARNING: Whole brain mask is empty. The whole brain regressor is empty.\n');
@@ -88,7 +88,7 @@ for i = 1:num_of_fMRI
         all_regressors = [all_regressors WB_regressor];
     end
     if (~isempty(WM_mask))
-    	WM_regressor = mtx2regressor(vol_2d, WM_mask, diff_flag);
+        WM_regressor = mtx2regressor(vol_2d, WM_mask, diff_flag);
         if(~isempty(find(isnan(WM_regressor))))
             WM_regressor = [];
             fprintf('WARNING: White matter mask is empty. The white matter regressor is empty.\n');
@@ -96,7 +96,7 @@ for i = 1:num_of_fMRI
         all_regressors = [all_regressors WM_regressor];
     end
     if (~isempty(CSF_mask))
-    	CSF_regressor = mtx2regressor(vol_2d, CSF_mask, diff_flag);
+        CSF_regressor = mtx2regressor(vol_2d, CSF_mask, diff_flag);
         if(~isempty(find(isnan(CSF_regressor))))
             CSF_regressor = [];
             fprintf('WRANING: Ventricles mask is empty. The ventricles regressor is empty.\n');

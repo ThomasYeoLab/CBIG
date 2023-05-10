@@ -22,9 +22,6 @@ function CBIG_preproc_multiecho_QC_greyplot(before_MEICA, after_MEICA, FDpath, o
 %     - FDpath:
 %       The absolute file path to FDRMS file
 %       E.g. '<path-to-image>/sub005_bld001_e1_rest_skip4_stc_motion_outliers_FDRMS'
-%     - GM_mask:
-%       The absolute file path to grey matter brain mask.
-%       E.g. '<path-to-image>/sub005.func.gm.nii.gz'
 %     - output:
 %       Absolute file path and file name to output, which is the QC greyplot
 %       E.g. '<path-to-output>/sub005_bold001_greyplot.png'
@@ -34,7 +31,7 @@ function CBIG_preproc_multiecho_QC_greyplot(before_MEICA, after_MEICA, FDpath, o
 %     '<path-to-image>/desc-optcom_bold.nii.gz', ...
 %     '<path-to-image>/desc-optcomDenoised_bold.nii.gz', ...
 %     '<path-to-FD>/sub005_bld001_e1_rest_skip4_stc_motion_outliers_FDRMS', ...
-%     '<path-to-gm_mask>/sub005.func.gm.nii.gz','<path-to-output>/sub005_bold001_greyplot.png')
+%     '<path-to-output>/sub005_bold001_greyplot.png')
 % 
 % Written by Lyu Xingyu and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 

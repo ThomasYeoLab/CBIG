@@ -232,7 +232,7 @@ classdef CBIG_preproc_single_subject_unit_test < matlab.unittest.TestCase
                 'preprocessing', 'CBIG_fMRI_Preproc2016', 'unit_tests', 'single_subject'))
         end
         
-        function test_aCompCor(testCase)
+        function test_aCompCor_deoblique(testCase)
             %% path setting
             addpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', ...
                 'preprocessing', 'CBIG_fMRI_Preproc2016', 'utilities'));
@@ -240,7 +240,7 @@ classdef CBIG_preproc_single_subject_unit_test < matlab.unittest.TestCase
                 'preprocessing', 'CBIG_fMRI_Preproc2016', 'unit_tests', 'single_subject'))
             UnitTestDir = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects',...
                 'preprocessing', 'CBIG_fMRI_Preproc2016', 'unit_tests');
-            OutputDir = fullfile(UnitTestDir, 'output', 'aCompCor');
+            OutputDir = fullfile(UnitTestDir, 'output', 'aCompCor_deoblique');
             load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag'));
             
             %create output dir (IMPORTANT)
@@ -252,7 +252,7 @@ classdef CBIG_preproc_single_subject_unit_test < matlab.unittest.TestCase
             
             %% call CBIG_fMRI_Preproc2016 single_subject unit test script to generate results
             cmd = [fullfile(UnitTestDir, 'single_subject', ...
-                'CBIG_preproc_unit_tests_call_fMRI_preproc_aCompCor.csh'), ' ', OutputDir];
+                'CBIG_preproc_unit_tests_call_fMRI_preproc_aCompCor_deoblique.csh'), ' ', OutputDir];
             system(cmd); % this will submit a job to HPC
             
             
@@ -267,12 +267,12 @@ classdef CBIG_preproc_single_subject_unit_test < matlab.unittest.TestCase
             end
             
             if(replace_unittest_flag)
-                disp('Replacing single aCompCor preprocessing unit test results...')
+                disp('Replacing aCompCor and deoblique preprocessing unit test results...')
                 disp('Make sure that the reference directory and its parent directory have write permission!')
                 ref_dir = fullfile(getenv('CBIG_TESTDATA_DIR'), 'stable_projects', 'preprocessing', ...
-                    'CBIG_fMRI_Preproc2016', 'single_subject', 'aCompCor');
+                    'CBIG_fMRI_Preproc2016', 'single_subject', 'aCompCor_deoblique');
                 output_dir = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', ...
-                    'CBIG_fMRI_Preproc2016', 'unit_tests', 'output', 'aCompCor', 'Sub1116_Ses1');
+                    'CBIG_fMRI_Preproc2016', 'unit_tests', 'output', 'aCompCor_deoblique', 'Sub1116_Ses1');
                 ref_dir_subject = fullfile(ref_dir,'Sub1116_Ses1');
                 if(exist(ref_dir_subject, 'dir'))
                     rmdir(ref_dir_subject, 's')
@@ -281,7 +281,7 @@ classdef CBIG_preproc_single_subject_unit_test < matlab.unittest.TestCase
             else
                 %% check volume files
                 pipe_dir1 = fullfile(getenv('CBIG_TESTDATA_DIR'), 'stable_projects', 'preprocessing', ...
-                    'CBIG_fMRI_Preproc2016', 'single_subject', 'aCompCor');
+                    'CBIG_fMRI_Preproc2016', 'single_subject', 'aCompCor_deoblique');
                 pipe_stem1 = '_rest_skip4_stc_mc_resid';
                 
                 pipe_dir2 = OutputDir;
@@ -290,6 +290,23 @@ classdef CBIG_preproc_single_subject_unit_test < matlab.unittest.TestCase
                 subject_id = 'Sub1116_Ses1';
                 runs = {'002', '003'};
                 
+                % check deoblique
+                vol_test_file = fullfile(pipe_dir2, subject_id, 'bold', runs{1}, ...
+                    [subject_id '_bld' runs{1} '_rest.nii.gz']);
+                
+                cmd = ['3dinfo -is_oblique ' vol_test_file];
+                [~, obl_test] = system(cmd);
+                if(contains(obl_test, '1'))
+                    assert('Output data is oblique.');
+                end
+                
+                cmd = ['3dinfo -orient ' vol_test_file];
+                [~, ori_test] = system(cmd);
+                if(~contains(ori_test, 'RPI'))
+                    assert(['Orientation is ' ori_test]);
+                end
+                
+                % check final volume
                 for i = 1:length(runs)
                     vol_ref_file = fullfile(pipe_dir1,subject_id,'bold',runs{i},...
                         [subject_id '_bld' runs{i} pipe_stem1 '.nii.gz']);
@@ -350,7 +367,7 @@ classdef CBIG_preproc_single_subject_unit_test < matlab.unittest.TestCase
             end
             
             if(replace_unittest_flag)
-                disp('Replacing single spatial distortion correction preprocessing unit test results...')
+                disp('Replacing spatial distortion correction preprocessing unit test results...')
                 disp('Make sure that the reference directory and its parent directory have write permission!')
                 ref_dir = fullfile(getenv('CBIG_TESTDATA_DIR'), 'stable_projects', 'preprocessing', ...
                     'CBIG_fMRI_Preproc2016', 'single_subject', 'data');

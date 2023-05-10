@@ -20,12 +20,18 @@ This folder contains a resting-state fMRI preprocessing pipeline written by CBIG
 - projections to standard surface & volumetric spaces
 - functional connectivity (FC) matrix computation
 
+**[IMPORTANT]** For FC metrics, we changed our default parcellation to [Yan2023_homotopic](https://github.com/ThomasYeoLab/CBIG/tree/master/stable_projects/brain_parcellation/Yan2023_homotopic) with Kong2022 17 networks, 400 parcels resolution.
+
 We also provide multiple types of quality control (QC) figures for data inspection. For example:
 
 - grey-scale timeseries intensity plot for voxels within grey matter (e.g. left subfigure)
 - group-level dependency between QC-FC correlation and ROI-to-ROI Euclidean distance (e.g. right subfigure)
 
 <img src="readme_figures/README_figure.png" height="400" />
+
+**[IMPORTANT]** To run this preprocessing pipeline, you need to run recon-all to process T1 first. For recon-all details, please refer to [recon-all Freesurfer Wiki](https://surfer.nmr.mgh.harvard.edu/fswiki/recon-all). 
+
+We recommend you use our wrapper function `CBIG_preproc_recon-all.csh` to run recon-all, which adds additional deoblique and reorient step before running recon-all. If you are sure your T1 image is plumb and in RPI orientation, you can run recon-all directly. You can use `3dinfo <input_file>`, and check Data Axes Tilt and Data Axes Approximate Orientation. Note that mri_info will use opposite notation for orientation. RPI in `3dinfo` is equivalent to LAS in `mri_info`.This preprocessing pipeline will also deoblique the input data and reorient them into RPI. 
 
 ----
 
@@ -44,14 +50,14 @@ Except for this project, if you want to use the code for other stable projects f
 - To download the version of the code that was last tested, you can either
 
   - visit this link:
-  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.22.3-Add_multiecho](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.22.3-Add_multiecho)
+  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.29.1-Add_Yan2023_in_preproc](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.29.1-Add_Yan2023_in_preproc)
   
   or
   
   - run the following command, if you have Git installed
   
   ```
-  git checkout -b CBIG_fMRI_Preprocessing v0.22.3-Add_multiecho
+  git checkout -b CBIG_fMRI_Preprocessing v0.29.1-Add_Yan2023_in_preproc
   ```
 
 ### Usage 
@@ -67,6 +73,10 @@ Except for this project, if you want to use the code for other stable projects f
   
   By using different configuration file, the user can change the ordering of preprocessing steps and the parameters passed in each step. To get more details of each step, the user can type in `./CBIG_preproc_xxx.csh -help` in command line.
   
+- Slice aquisition direction
+
+  Please confirm the slice aquisition direction. Usually it is from bottom to top or from top to bottom. The first row of the slice timing file or the slice order file refers to the bottom slice. 
+
 - The utilities folder contains all matlab functions that are called by the c shell scripts. The user can type in `help function_name` in a Matlab command window to see how each function works.
 
 - Check errors
@@ -93,6 +103,15 @@ codes would work on ANTs version 2.2.0.
 
 ## Updates
 
+- Release v0.29.1 (10/05/2023): 
+   1. Support Yan2023 homotopic parcelltion. 
+
+   2. Default FC matrix is changed to Yan2023 with Kong2022 17 networks, 400 parcels resolution. 
+
+   3. Update example config file: add additional CBIG_preproc_FC_metrics step to include both Yan2023 and Schaefer2018 parcellations. 
+
+   4. Fix bugs in plotting mcflirt parameters.
+
 - Release v0.22.3 (25/03/2022): Add multiecho denoising step into preprocessing pipeline.
 
 - Release v0.18.1 (20/01/2021):
@@ -101,13 +120,13 @@ codes would work on ANTs version 2.2.0.
    2. Modify preprocessing scripts to make them compatible with the CSCHPC node structure.
   
 - Release v0.17.2 (07/07/2020):
-	 1. Bug fix: Fix 'out-of-bound' error of `CBIG_preproc_fslmcflirt_outlier.csh` due to incorrect extraction of number of frames from `$boldfile"_mc_tmp.nii.gz"`.
+     1. Bug fix: Fix 'out-of-bound' error of `CBIG_preproc_fslmcflirt_outlier.csh` due to incorrect extraction of number of frames from `$boldfile"_mc_tmp.nii.gz"`.
 
    2. Bug fix: Fix the threshold for ventricle mask erosion in functional space from `$num_vent` (number of voxels) to `$vent_vol` (volume).
 
-	 3. Add spatial distortion correction: CBIG_preproc_spatial_distortion_correction.csh.
+     3. Add spatial distortion correction: CBIG_preproc_spatial_distortion_correction.csh.
 
-	 4. Spatial distortion correction step requires a newer FSL version. Update the default FSL verision to 5.0.10.
+     4. Spatial distortion correction step requires a newer FSL version. Update the default FSL verision to 5.0.10.
  
 - Release v0.17.0 (19/02/2020): Avoid using absolute paths. Add new environment variables to avoid possible problems caused by hard-coded absolute paths.
 ​
@@ -177,11 +196,11 @@ codes would work on ANTs version 2.2.0.
     
 - Release v0.4.5 (01/12/2017):
 ​
-  	1. Change motion correction (mcflirt) interpolation method from default **trilinear** to **spline**.
-	
-  	2. Add an optional preprocessing step to perform despiking by **AFNI 3dDespike**.
-	
-  	3. Add a preprocessing step to generate ROIs2ROIs functional connectivity matrix for input subject. 
+    1. Change motion correction (mcflirt) interpolation method from default **trilinear** to **spline**.
+
+    2. Add an optional preprocessing step to perform despiking by **AFNI 3dDespike**.
+
+    3. Add a preprocessing step to generate ROIs2ROIs functional connectivity matrix for input subject. 
 ​
 - Release v0.4.4 (20/10/2017): Initial release of CBIG fMRI preprocessing pipeline.
                        

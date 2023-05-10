@@ -1,33 +1,33 @@
 classdef CBIG_preproc_100subjects_clustering_unit_test < matlab.unittest.TestCase
-%
-% Target project:
-%                 CBIG_fMRI_Preproc2016
-%
-% Case design:
-%                 CBIG_fMRI_Preproc2016 already have unit tests, here we
-%                 call its "100subjects_clustering" unit test and automatically
-%                 make judgement on whether the unit test is passed or
-%                 failed
-%
-%                 For now, the stable projects' unit tests in our repo
-%                 require manual check of the output txt files or images,
-%                 making it incovenient for wrapper function to call them
-%                 and automatically draw conclusions. As a result, we write
-%                 some simple matlab test functions for these stable
-%                 projects' unit tests.
-%
-% Written by Yang Qing, Shaoshi Zhang and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
-
+    %
+    % Target project:
+    %                 CBIG_fMRI_Preproc2016
+    %
+    % Case design:
+    %                 CBIG_fMRI_Preproc2016 already have unit tests, here we
+    %                 call its "100subjects_clustering" unit test and automatically
+    %                 make judgement on whether the unit test is passed or
+    %                 failed
+    %
+    %                 For now, the stable projects' unit tests in our repo
+    %                 require manual check of the output txt files or images,
+    %                 making it incovenient for wrapper function to call them
+    %                 and automatically draw conclusions. As a result, we write
+    %                 some simple matlab test functions for these stable
+    %                 projects' unit tests.
+    %
+    % Written by Yang Qing, Shaoshi Zhang and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+    
     methods (Test)
         function test_100_subjects_Case(testCase)
             %% path setting
             addpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', ...
-            'preprocessing', 'CBIG_fMRI_Preproc2016', 'utilities')); 
+                'preprocessing', 'CBIG_fMRI_Preproc2016', 'utilities'));
             addpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', ...
                 'preprocessing', 'CBIG_fMRI_Preproc2016', 'unit_tests', '100subjects_clustering'))
             UnitTestDir = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects',...
                 'preprocessing', 'CBIG_fMRI_Preproc2016', 'unit_tests');
-            OutputDir = fullfile(UnitTestDir, 'output', '100_subjects_Case'); 
+            OutputDir = fullfile(UnitTestDir, 'output', '100_subjects_Case');
             load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag'));
             
             %create output dir (IMPORTANT)
@@ -35,17 +35,17 @@ classdef CBIG_preproc_100subjects_clustering_unit_test < matlab.unittest.TestCas
                 rmdir(OutputDir, 's')
             end
             mkdir(OutputDir);
-			%% generate fmrinii list
-			cmd = [fullfile(UnitTestDir, '100subjects_clustering', ...
-				'CBIG_preproc_unit_tests_generate_fmrinii_list.sh'), ' ', OutputDir];
-			system(cmd);
+            %% generate fmrinii list
+            cmd = [fullfile(UnitTestDir, '100subjects_clustering', ...
+                'CBIG_preproc_unit_tests_generate_fmrinii_list.sh'), ' ', OutputDir];
+            system(cmd);
             
             %% call CBIG_fMRI_Preproc2016 100 subjects unit test script to preprocess subjects
             cmd = [fullfile(UnitTestDir, '100subjects_clustering', ...
                 'CBIG_preproc_unit_tests_preprocess_100subjects.csh'), ' ', OutputDir];
             system(cmd); % this will submit a bunch of jobs to HPC
             
-            %% periodically check whether the job has finished or not             
+            %% periodically check whether the job has finished or not
             cmdout = 1;
             while(cmdout ~= 0)
                 cmd = 'ssh headnode "qstat | grep prep_100sub_ut | grep `whoami` | wc -l"';
@@ -61,7 +61,7 @@ classdef CBIG_preproc_100subjects_clustering_unit_test < matlab.unittest.TestCas
                 ' ', OutputDir, ' ', OutputDir];
             system(cmd);
             
-            %% periodically check whether the job has finished or not             
+            %% periodically check whether the job has finished or not
             cmdout = 1;
             while(cmdout ~= 0)
                 cmd = 'ssh headnode "qstat | grep clust_100sub_ut | grep `whoami` | wc -l"';
@@ -80,8 +80,11 @@ classdef CBIG_preproc_100subjects_clustering_unit_test < matlab.unittest.TestCas
                 clustering_output_dir = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', ...
                     'CBIG_fMRI_Preproc2016/unit_tests', 'output', '100_subjects_Case', 'clustering');
                 % replace clustering results
+                if(exist(clustering_ref_dir, 'dir'))
+                    rmdir(clustering_ref_dir, 's')
+                end
                 movefile(clustering_output_dir, clustering_ref_dir);
-               
+                
                 % load subject list and replace preprocessing results
                 fid = fopen(fullfile(getenv('CBIG_TESTDATA_DIR'), 'stable_projects', 'preprocessing', ...
                     'CBIG_fMRI_Preproc2016', '100subjects_clustering', 'subject_list.txt'));
@@ -91,7 +94,10 @@ classdef CBIG_preproc_100subjects_clustering_unit_test < matlab.unittest.TestCas
                     subject_id = subject_list{i};
                     preproc_out_dir = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', ...
                         'CBIG_fMRI_Preproc2016/unit_tests', 'output', '100_subjects_Case', subject_id);
-                    movefile(preproc_out_dir, fullfile(preproc_ref_dir, subject_id))                    
+                    if(exist(fullfile(preproc_ref_dir, subject_id), 'dir'))
+                        rmdir(fullfile(preproc_ref_dir, subject_id), 's')
+                    end
+                    movefile(preproc_out_dir, fullfile(preproc_ref_dir, subject_id))
                 end
             else
                 %% check clustering results
@@ -102,7 +108,7 @@ classdef CBIG_preproc_100subjects_clustering_unit_test < matlab.unittest.TestCas
             % remove intermediate output data (IMPORTANT)
             rmdir(OutputDir, 's');
             rmpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', ...
-            'preprocessing', 'CBIG_fMRI_Preproc2016', 'utilities')); 
+                'preprocessing', 'CBIG_fMRI_Preproc2016', 'utilities'));
             rmpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', ...
                 'preprocessing', 'CBIG_fMRI_Preproc2016', 'unit_tests', '100subjects_clustering'))
             

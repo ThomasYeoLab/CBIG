@@ -26,11 +26,11 @@ The red curve (i.e. method (1)) exhibited huge spikes at the censored frames (6-
 There are several possible reasons that could lead to this issue:
 
 - (1) higher number of censored frames leaded to more severe spikes;
-	
+
 - (2) for the same number of censored frames, if the censored frames were consecutive, the resulted spikes were much higher than the cases where the censored frames were evenly distributed
-	
+
 - (3) more sine & cosine regressors leaded to higher spikes.
-	
+
 We noticed that AFNI has a command `3dTproject` that supposes to achieve similar functionality as our "bandpass regression with censoring" approach. We found our timeseries were different from the results of `3dTproject`. See the following figure as an example (a voxel from a real high-motion fMRI run), where green curve corresponds to the result of `3dTproject`, and blue curve corresponds to our bandpass regression with censoring. The censored frames are labeled by the red boxes (frames 17-27, 33-52, 67-87).
 
 <img src="readme_figures/compare_with_3dTproject.jpg" height="500" />
@@ -47,7 +47,7 @@ The aim of this experiment was to build up some ground truth results to determin
 - (2) integrating a passband into the censoring interpolation method proposed by Power et al. (2014)
     
 - (3) Power et al. (2014) pipeline (first interpolate censoring frames without any passband/stopband, then do bandpass filtering without any censoring). 
-	
+
 For both cases (across only uncensored frames, or across all frames), we found that (1) was least correlated with the ground truth. The differences between (2) and (3) were tiny, but (3) was slightly better than (2). See the following two figures (correlation between ground truth and (1) - blue; (2) - green; (3) - brown).
 
 <img src="readme_figures/fake_highmotion_corr_with_gt_uncensored_frames.png" height="500" />
