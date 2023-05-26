@@ -62,77 +62,77 @@ train_subject_list="$CBIG_CODE_DIR/stable_projects/brain_parcellation/Kong2022_A
 estimate_group_priors/subject_list/HCP_40subname_training_set_list.txt"
 
 cat $train_subject_list | while read sub; do
-	HCP_train_profile_list=$out_dir/estimate_group_priors/HCP_fs_LR_32k/profile_list/training_set;
-	
-	echo "$CBIG_ArealMSHBM_REP_HCP_DIR/S1200/individuals/$sub/MNINonLinear/Results/\
+    HCP_train_profile_list=$out_dir/estimate_group_priors/HCP_fs_LR_32k/profile_list/training_set;
+
+    echo "$CBIG_ArealMSHBM_REP_HCP_DIR/S1200/individuals/$sub/MNINonLinear/Results/\
 rfMRI_REST1_LR/postprocessing/MSM_reg_wbsgrayordinatecortex/rfMRI_REST1_LR_downsampleROI_profile.mat" \
 >> $HCP_train_profile_list/sess1.txt;
-	echo "$CBIG_ArealMSHBM_REP_HCP_DIR/S1200/individuals/$sub/MNINonLinear/Results/\
+    echo "$CBIG_ArealMSHBM_REP_HCP_DIR/S1200/individuals/$sub/MNINonLinear/Results/\
 rfMRI_REST1_RL/postprocessing/MSM_reg_wbsgrayordinatecortex/rfMRI_REST1_RL_downsampleROI_profile.mat" \
 >> $HCP_train_profile_list/sess2.txt;
-	echo "$CBIG_ArealMSHBM_REP_HCP_DIR/S1200/individuals/$sub/MNINonLinear/Results/\
+    echo "$CBIG_ArealMSHBM_REP_HCP_DIR/S1200/individuals/$sub/MNINonLinear/Results/\
 rfMRI_REST2_LR/postprocessing/MSM_reg_wbsgrayordinatecortex/rfMRI_REST2_LR_downsampleROI_profile.mat" \
 >> $HCP_train_profile_list/sess3.txt;
-	echo "$CBIG_ArealMSHBM_REP_HCP_DIR/S1200/individuals/$sub/MNINonLinear/Results/\
+    echo "$CBIG_ArealMSHBM_REP_HCP_DIR/S1200/individuals/$sub/MNINonLinear/Results/\
 rfMRI_REST2_RL/postprocessing/MSM_reg_wbsgrayordinatecortex/rfMRI_REST2_RL_downsampleROI_profile.mat" \
 >> $HCP_train_profile_list/sess4.txt;
-	
+
 done
 
 cat $train_subject_list | while read sub; do
-	HCP_train_profile_list=$out_dir/estimate_group_priors/HCP_fsaverage6/profile_list/training_set;
-	
-	echo "$CBIG_ArealMSHBM_REP_HCP_DIR/S1200/individuals/$sub/MNINonLinear/Results/\
+    HCP_train_profile_list=$out_dir/estimate_group_priors/HCP_fsaverage6/profile_list/training_set;
+
+    echo "$CBIG_ArealMSHBM_REP_HCP_DIR/S1200/individuals/$sub/MNINonLinear/Results/\
 rfMRI_REST1_LR/postprocessing/MSM_reg_wbsgrayordinatecortex/\
 lh.rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean_regress_fs6_fs3_profile.mat" \
 >> $HCP_train_profile_list/lh_sess1.txt;
-	echo "$CBIG_ArealMSHBM_REP_HCP_DIR/S1200/individuals/$sub/MNINonLinear/Results/\
+    echo "$CBIG_ArealMSHBM_REP_HCP_DIR/S1200/individuals/$sub/MNINonLinear/Results/\
 rfMRI_REST1_RL/postprocessing/MSM_reg_wbsgrayordinatecortex/\
 lh.rfMRI_REST1_RL_Atlas_MSMAll_hp2000_clean_regress_fs6_fs3_profile.mat" \
 >> $HCP_train_profile_list/lh_sess2.txt;
-	echo "$CBIG_ArealMSHBM_REP_HCP_DIR/S1200/individuals/$sub/MNINonLinear/Results/\
+    echo "$CBIG_ArealMSHBM_REP_HCP_DIR/S1200/individuals/$sub/MNINonLinear/Results/\
 rfMRI_REST2_LR/postprocessing/MSM_reg_wbsgrayordinatecortex/\
 lh.rfMRI_REST2_LR_Atlas_MSMAll_hp2000_clean_regress_fs6_fs3_profile.mat" \
 >> $HCP_train_profile_list/lh_sess3.txt;
-	echo "$CBIG_ArealMSHBM_REP_HCP_DIR/S1200/individuals/$sub/MNINonLinear/Results/\
+    echo "$CBIG_ArealMSHBM_REP_HCP_DIR/S1200/individuals/$sub/MNINonLinear/Results/\
 rfMRI_REST2_RL/postprocessing/MSM_reg_wbsgrayordinatecortex/\
 lh.rfMRI_REST2_RL_Atlas_MSMAll_hp2000_clean_regress_fs6_fs3_profile.mat" \
 >> $HCP_train_profile_list/lh_sess4.txt;
 
-	echo "$CBIG_ArealMSHBM_REP_HCP_DIR/S1200/individuals/$sub/MNINonLinear/Results/\
+    echo "$CBIG_ArealMSHBM_REP_HCP_DIR/S1200/individuals/$sub/MNINonLinear/Results/\
 rfMRI_REST1_LR/postprocessing/MSM_reg_wbsgrayordinatecortex/\
 rh.rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean_regress_fs6_fs3_profile.mat" \
 >> $HCP_train_profile_list/rh_sess1.txt;
-	echo "$CBIG_ArealMSHBM_REP_HCP_DIR/S1200/individuals/$sub/MNINonLinear/Results/\
+    echo "$CBIG_ArealMSHBM_REP_HCP_DIR/S1200/individuals/$sub/MNINonLinear/Results/\
 rfMRI_REST1_RL/postprocessing/MSM_reg_wbsgrayordinatecortex/\
 rh.rfMRI_REST1_RL_Atlas_MSMAll_hp2000_clean_regress_fs6_fs3_profile.mat" \
 >> $HCP_train_profile_list/rh_sess2.txt;
-	echo "$CBIG_ArealMSHBM_REP_HCP_DIR/S1200/individuals/$sub/MNINonLinear/Results/\
+    echo "$CBIG_ArealMSHBM_REP_HCP_DIR/S1200/individuals/$sub/MNINonLinear/Results/\
 rfMRI_REST2_LR/postprocessing/MSM_reg_wbsgrayordinatecortex/\
 rh.rfMRI_REST2_LR_Atlas_MSMAll_hp2000_clean_regress_fs6_fs3_profile.mat" \
 >> $HCP_train_profile_list/rh_sess3.txt;
-	echo "$CBIG_ArealMSHBM_REP_HCP_DIR/S1200/individuals/$sub/MNINonLinear/Results/\
+    echo "$CBIG_ArealMSHBM_REP_HCP_DIR/S1200/individuals/$sub/MNINonLinear/Results/\
 rfMRI_REST2_RL/postprocessing/MSM_reg_wbsgrayordinatecortex/\
 rh.rfMRI_REST2_RL_Atlas_MSMAll_hp2000_clean_regress_fs6_fs3_profile.mat" \
 >> $HCP_train_profile_list/rh_sess4.txt;
-	
+
 done
 
 ### Generqate gradient lists of HCP training set
 cat $train_subject_list | while read sub; do
-	HCP_train_gradient_list=$out_dir/estimate_group_priors/HCP_fs_LR_32k/gradient_list/training_set;
-	echo "$CBIG_ArealMSHBM_REP_HCP_DIR/HCP_derivatives/GradientMaps_Gordon/Speed_Up_Version/HCP_dataA_separate_runs/\
+    HCP_train_gradient_list=$out_dir/estimate_group_priors/HCP_fs_LR_32k/gradient_list/training_set;
+    echo "$CBIG_ArealMSHBM_REP_HCP_DIR/HCP_derivatives/GradientMaps_Gordon/Speed_Up_Version/HCP_dataA_separate_runs/\
 0_10_200_3.2_3_10/$sub/lh_emb_1000_distance_matrix.mat" >> $HCP_train_gradient_list/gradient_list_lh.txt;
-	echo "$CBIG_ArealMSHBM_REP_HCP_DIR/HCP_derivatives/GradientMaps_Gordon/Speed_Up_Version/HCP_dataA_separate_runs/\
+    echo "$CBIG_ArealMSHBM_REP_HCP_DIR/HCP_derivatives/GradientMaps_Gordon/Speed_Up_Version/HCP_dataA_separate_runs/\
 0_10_200_3.2_3_10/$sub/rh_emb_1000_distance_matrix.mat" >> $HCP_train_gradient_list/gradient_list_rh.txt;
 
 done
 
 cat $train_subject_list | while read sub; do
-	HCP_train_gradient_list=$out_dir/estimate_group_priors/HCP_fsaverage6/gradient_list/training_set;
-	echo "$CBIG_ArealMSHBM_REP_HCP_DIR/HCP_derivatives/GradientMaps_Gordon/CBIG_Speed_Up_Version_FS6/100_200_3.2/\
+    HCP_train_gradient_list=$out_dir/estimate_group_priors/HCP_fsaverage6/gradient_list/training_set;
+    echo "$CBIG_ArealMSHBM_REP_HCP_DIR/HCP_derivatives/GradientMaps_Gordon/CBIG_Speed_Up_Version_FS6/100_200_3.2/\
 HCP_dataA/$sub/lh_emb_100_distance_matrix.mat" >> $HCP_train_gradient_list/gradient_list_lh.txt;
-	echo "$CBIG_ArealMSHBM_REP_HCP_DIR/HCP_derivatives/GradientMaps_Gordon/CBIG_Speed_Up_Version_FS6/100_200_3.2/\
+    echo "$CBIG_ArealMSHBM_REP_HCP_DIR/HCP_derivatives/GradientMaps_Gordon/CBIG_Speed_Up_Version_FS6/100_200_3.2/\
 HCP_dataA/$sub/rh_emb_100_distance_matrix.mat" >> $HCP_train_gradient_list/gradient_list_rh.txt;
 
 done
@@ -176,19 +176,19 @@ Params_Final.mat
 test_subject_list="$CBIG_CODE_DIR/stable_projects/brain_parcellation/Kong2022_ArealMSHBM/replication/input/\
 estimate_group_priors/subject_list/HCP_755subname_test_set_list.txt"
 for sess in {1..12}; do
-	cat $test_subject_list | while read sub; do
-		HCP_test_profile_list=$out_dir/generate_individual_parcellations/HCP_fs_LR_32k/profile_list/test_set;
-		echo "$CBIG_ArealMSHBM_REP_HCP_DIR/HCP_derivatives/HCP_fake_multisession_profiles/\
+    cat $test_subject_list | while read sub; do
+        HCP_test_profile_list=$out_dir/generate_individual_parcellations/HCP_fs_LR_32k/profile_list/test_set;
+        echo "$CBIG_ArealMSHBM_REP_HCP_DIR/HCP_derivatives/HCP_fake_multisession_profiles/\
 3/${sub}/${sub}_profile_multisess${sess}.mat" >> $HCP_test_profile_list/sess${sess}.txt;
-	done	
+    done
 done
 
 ### Generqate gradient lists of HCP test set
 cat $test_subject_list | while read sub; do
-	HCP_test_gradient_list=$out_dir/generate_individual_parcellations/HCP_fs_LR_32k/gradient_list/test_set;
-	echo "$CBIG_ArealMSHBM_REP_HCP_DIR/HCP_derivatives/GradientMaps_Gordon/Speed_Up_Version/HCP_dataC_separate_runs/\
+    HCP_test_gradient_list=$out_dir/generate_individual_parcellations/HCP_fs_LR_32k/gradient_list/test_set;
+    echo "$CBIG_ArealMSHBM_REP_HCP_DIR/HCP_derivatives/GradientMaps_Gordon/Speed_Up_Version/HCP_dataC_separate_runs/\
 0_10_200_3.2_3_10/$sub/lh_emb_1000_distance_matrix.mat" >> $HCP_test_gradient_list/gradient_list_lh.txt;
-	echo "$CBIG_ArealMSHBM_REP_HCP_DIR/HCP_derivatives/GradientMaps_Gordon/Speed_Up_Version/HCP_dataC_separate_runs/\
+    echo "$CBIG_ArealMSHBM_REP_HCP_DIR/HCP_derivatives/GradientMaps_Gordon/Speed_Up_Version/HCP_dataC_separate_runs/\
 0_10_200_3.2_3_10/$sub/rh_emb_1000_distance_matrix.mat" >> $HCP_test_gradient_list/gradient_list_rh.txt;
 
 done
@@ -210,10 +210,10 @@ done
 
 ### Generqate gradient lists of ABCD test set
 cat $test_subject_list | while read sub; do
-	ABCD_test_gradient_list=$out_dir/generate_individual_parcellations/ABCD_fsaverage6/gradient_list/test_set;
-	echo "$CBIG_REPDATA_DIR/stable_projects/brain_parcellation/Kong2022_ArealMSHBM/CBIG_Speed_Up_Version_FS6/\
+    ABCD_test_gradient_list=$out_dir/generate_individual_parcellations/ABCD_fsaverage6/gradient_list/test_set;
+    echo "$CBIG_REPDATA_DIR/stable_projects/brain_parcellation/Kong2022_ArealMSHBM/CBIG_Speed_Up_Version_FS6/\
 100_200_3.2/ABCD/$sub/lh_emb_100_distance_matrix.mat" >> $ABCD_test_gradient_list/gradient_list_lh.txt;
-	echo "$CBIG_REPDATA_DIR/stable_projects/brain_parcellation/Kong2022_ArealMSHBM/CBIG_Speed_Up_Version_FS6/\
+    echo "$CBIG_REPDATA_DIR/stable_projects/brain_parcellation/Kong2022_ArealMSHBM/CBIG_Speed_Up_Version_FS6/\
 100_200_3.2/ABCD/$sub/rh_emb_100_distance_matrix.mat" >> $ABCD_test_gradient_list/gradient_list_rh.txt;
 
 done

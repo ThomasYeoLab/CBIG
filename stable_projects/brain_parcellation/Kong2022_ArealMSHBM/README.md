@@ -126,19 +126,19 @@ This step is only needed for gMSHBM. To generate the diffusion embedding matrice
 The fMRI lists for each subject and each session, each line is the full path to the nifti/cifti file which corresponds to each run.
 
 - **`<output_dir>/data_list/fMRI_list`**
-	+ `<output_dir>/data_list/fMRI_list/lh_sub?_sess?.txt`
-	+ `<output_dir>/data_list/fMRI_list/rh_sub?_sess?.txt`
-	
-	for data in `fsaverage6`  or
+    + `<output_dir>/data_list/fMRI_list/lh_sub?_sess?.txt`
+    + `<output_dir>/data_list/fMRI_list/rh_sub?_sess?.txt`
 
-	+ `<output_dir>/data_list/fMRI_list/sub?_sess?.txt`
-	
+    for data in `fsaverage6`  or
+
+    + `<output_dir>/data_list/fMRI_list/sub?_sess?.txt`
+
     for data in `fs_LR_32k`.
   
 The censor lists for each subject and each session, each line is the full path to the censor file which corresponds to each run. The censor file should be a text file contains a single binary number column with the length equals to the number of time points, the outliers are indicated by 0s. The outliers will be ignored in generating profiles. If the user doesn't want to ignore the outliers just leave the `censor_list` folder empty.
 
 - **`<output_dir>/data_list/censor_list`**
-	+ `<output_dir>/data_list/censor_list/sub?_sess?.txt`
+    + `<output_dir>/data_list/censor_list/sub?_sess?.txt`
 
 In the terminal:
 ```
@@ -171,19 +171,19 @@ To generate the functional connectivity profiles, we assume the input fMRI lists
 The fMRI lists for each subject and each session, each line is the full path to the nifti/cifti file which corresponds to each run.
 
 - **`<output_dir>/data_list/fMRI_list`**
-	+ `<output_dir>/data_list/fMRI_list/lh_sub?_sess?.txt`
-	+ `<output_dir>/data_list/fMRI_list/rh_sub?_sess?.txt`
-	
-	for data in `fsaverage6`  or
+    + `<output_dir>/data_list/fMRI_list/lh_sub?_sess?.txt`
+    + `<output_dir>/data_list/fMRI_list/rh_sub?_sess?.txt`
 
-	+ `<output_dir>/data_list/fMRI_list/sub?_sess?.txt`
-	
+    for data in `fsaverage6`  or
+
+    + `<output_dir>/data_list/fMRI_list/sub?_sess?.txt`
+
     for data in `fs_LR_32k`.
   
 The censor lists for each subject and each session, each line is the full path to the censor file which corresponds to each run. The censor file should be a text file contains a single binary number column with the length equals to the number of time points, the outliers are indicated by 0s. The outliers will be ignored in generating profiles. If the user doesn't want to ignore the outliers just leave the `censor_list` folder empty.
 
 - **`<output_dir>/data_list/censor_list`**
-	+ `<output_dir>/data_list/censor_list/sub?_sess?.txt`
+    + `<output_dir>/data_list/censor_list/sub?_sess?.txt`
 
 In the terminal:
 ```
@@ -370,7 +370,7 @@ contains the spatial radius mask for the group-level parcellation.
     
     + `<output_dir>/profile_list/training_set/sess?.txt`
 
-	for data in `fs_LR_32k`.
+    for data in `fs_LR_32k`.
     
 contain functional connectivity profiles.
 
@@ -454,18 +454,18 @@ Assuming each validation subject has `T` sessions, the individual parcellation w
     
     + `<output_dir>/profile_list/validation_set/sess?.txt`
 
-	for data in `fs_LR_32k`.
+    for data in `fs_LR_32k`.
     
 We will use the remaining `T-T1` sessions to compute the homogeneity metric, the fMRI files of the remaining sessions should be saved in:
 
 - **`<output_dir>/data_list/validation_set/fMRI_list`**
-	+ `<output_dir>/data_list/validation_set/fMRI_list/lh_sub?.txt`
-	+ `<output_dir>/data_list/validation_set/fMRI_list/rh_sub?.txt`
+    + `<output_dir>/data_list/validation_set/fMRI_list/lh_sub?.txt`
+    + `<output_dir>/data_list/validation_set/fMRI_list/rh_sub?.txt`
 
-	for data in `fsaverage6`  or
+    for data in `fsaverage6`  or
     
     + `<output_dir>/data_list/validation_set/fMRI_list/sub?.txt`
-	
+
     for data in `fs_LR_32k`.
 
 - **`<output_dir>/gradient_list/validation_set` [only needed for gMSHBM]**
