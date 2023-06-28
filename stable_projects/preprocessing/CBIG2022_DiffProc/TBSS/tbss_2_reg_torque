@@ -88,15 +88,15 @@ do_reg(){
     f=$1
 
     for g in `$FSLDIR/bin/imglob *_FA.*` ; do
-        	
-	o=${g}_to_$f
-	wd=$(pwd) # append working directory to command file
-	if [ ! -f ${o}_warp.msf ] ; then
-	    echo $o
-	    touch ${o}_warp.msf
-	    echo "$FSLDIR/bin/fsl_reg $wd/$g $wd/$f $wd/${g}_to_$f -e -FA" >> .commands
-	fi
-	
+        
+    o=${g}_to_$f
+    wd=$(pwd) # append working directory to command file
+    if [ ! -f ${o}_warp.msf ] ; then
+        echo $o
+        touch ${o}_warp.msf
+        echo "$FSLDIR/bin/fsl_reg $wd/$g $wd/$f $wd/${g}_to_$f -e -FA" >> .commands
+    fi
+
     done
 }
 
@@ -108,27 +108,27 @@ echo [`date`] [`hostname`] [`uname -a`] [`pwd`] [$0 $@] >> .tbsslog
 
 # exit if tbss directory not set up
 if [ ! -d "$tbssdir" ]; then
-	echo "ERROR: tbss directory not found..."
-	exit 1
+    echo "ERROR: tbss directory not found..."
+    exit 1
 fi
 
 if [ $1 = -n ] ; then
     cd FA
     for f in `$FSLDIR/bin/imglob *_FA.*` ; do
-	do_reg $f
+    do_reg $f
     done
 else
     if [ $1 = -T ] ; then
-	TARGET=$FSLDIR/data/standard/FMRIB58_FA_1mm
+        TARGET=$FSLDIR/data/standard/FMRIB58_FA_1mm
     elif [ $1 = -t ] ; then
-	TARGET=$2
+        TARGET=$2
     else
-	Usage
+        Usage
     fi
     if [ `${FSLDIR}/bin/imtest $TARGET` = 0 ] ; then
-	echo ""
-	echo "Error: target image $TARGET not valid"
-	Usage
+        echo ""
+        echo "Error: target image $TARGET not valid"
+        Usage
     fi
     $FSLDIR/bin/imcp $TARGET FA/target
     cd FA
@@ -140,16 +140,16 @@ jobname='tbss_2_reg'
 jobs2run=$(cat .commands | wc -l)
 
 while IFS= read -r cmd; do
-	# extract subject names for mat files
-	matfile="$(echo $cmd | grep -oP '/FA/\K.*?(?=_FA )')_FA_to_target.mat"
-	# check if registration mat file exists - if it does do not run
-	if [ -e $matfile ]; then
-		echo "$matfile exists: skipping processing"
-	else
-		#run command
-		ssh headnode "$CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd '$cmd' -walltime 01:00:00 \
-			-name $jobname -mem 3GB -joberr '$tbssdir' -jobout '$tbssdir'" < /dev/null
-	fi
+    # extract subject names for mat files
+    matfile="$(echo $cmd | grep -oP '/FA/\K.*?(?=_FA )')_FA_to_target.mat"
+    # check if registration mat file exists - if it does do not run
+    if [ -e $matfile ]; then
+        echo "$matfile exists: skipping processing"
+    else
+        #run command
+        ssh headnode "$CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd '$cmd' -walltime 01:00:00 \
+            -name $jobname -mem 3GB -joberr '$tbssdir' -jobout '$tbssdir'" < /dev/null
+    fi
 done < .commands
 
 # wait until all jobs run: counted by username and job name
@@ -158,10 +158,10 @@ user_id=$( whoami )
 running_jobs=$( ssh headnode "qselect -u $user_id -N $jobname | wc -l" )
 start=$SECONDS
 while [ $running_jobs -gt 0 ]; do
-	duration_min=$((( $SECONDS - $start ) / 60))
-	echo "	${duration_min}m: $running_jobs jobs  still running"
-	sleep 1m
-	running_jobs=$( ssh headnode "qselect -u $user_id -N $jobname | wc -l" )
+    duration_min=$((( $SECONDS - $start ) / 60))
+    echo "    ${duration_min}m: $running_jobs jobs  still running"
+    sleep 1m
+    running_jobs=$( ssh headnode "qselect -u $user_id -N $jobname | wc -l" )
 done
 
 mkdir -p scheduler_logs

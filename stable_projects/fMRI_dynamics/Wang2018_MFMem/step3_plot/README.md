@@ -9,13 +9,13 @@
     Example_Estimated_Parameter                            
     ThomasYeo_52_components_read_out.mat                 
     ```
-	
+    
 * Sub-folder `lib/` contains all functions.
 
    ```
    CBIG_MFMem_rfMRI_mfm_Num2Color.m
    CBIG_MEMem_rfMRI_FDR.m
-   ```	
+   ```
    
 *  `CBIG_MFMem_rfMRI_DrawBarchart_I_Desikan68_into_Yeo7_fsaverage5.m` 
    This function is to show mean value of model parameter I in Yeo's 7-network.

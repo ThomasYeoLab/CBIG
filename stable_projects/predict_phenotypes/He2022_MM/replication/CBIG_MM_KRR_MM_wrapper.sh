@@ -19,14 +19,14 @@ subj_list_train="${input_dir}/ukbb_train_subj_list.txt"
 subj_list_extra="${input_dir}/ukbb_${split}_subj_list.txt"
 
 for j in `seq 1 $rngs`; do
-	n_job="$(qstat -u the | wc -l)"
-	while [ $n_job -gt 100 ]; do
-		echo $n_job large than 100, sleep for 1 mins
-		sleep 1m
-		n_job="$(qstat -u the | wc -l)"
-	done
-	sh CBIG_MM_KRR_MM_submit_job.sh $output $phe_csv $code_dir $split $j \
-		$phe_list $subj_list $fc_mat $subj_list_train $subj_list_extra
+    n_job="$(qstat -u the | wc -l)"
+    while [ $n_job -gt 100 ]; do
+        echo $n_job large than 100, sleep for 1 mins
+        sleep 1m
+        n_job="$(qstat -u the | wc -l)"
+    done
+    sh CBIG_MM_KRR_MM_submit_job.sh $output $phe_csv $code_dir $split $j \
+        $phe_list $subj_list $fc_mat $subj_list_train $subj_list_extra
 done
 
 # Run KRR for sex
@@ -34,12 +34,12 @@ phe_list="31-0.0"
 output="${rep_dir}/output_KRR_mm_sex"
 
 for j in `seq 1 $rngs`; do
-	n_job="$(qstat -u the | wc -l)"
-	while [ $n_job -gt 100 ]; do
-		echo $n_job large than 100, sleep for 1 mins
-		sleep 1m
-		n_job="$(qstat -u the | wc -l)"
-	done
-	sh CBIG_MM_KRR_MM_submit_job.sh $output $phe_csv $code_dir $split $j \
-		$phe_list $subj_list $fc_mat $subj_list_train $subj_list_extra
+    n_job="$(qstat -u the | wc -l)"
+    while [ $n_job -gt 100 ]; do
+        echo $n_job large than 100, sleep for 1 mins
+        sleep 1m
+        n_job="$(qstat -u the | wc -l)"
+    done
+    sh CBIG_MM_KRR_MM_submit_job.sh $output $phe_csv $code_dir $split $j \
+        $phe_list $subj_list $fc_mat $subj_list_train $subj_list_extra
 done

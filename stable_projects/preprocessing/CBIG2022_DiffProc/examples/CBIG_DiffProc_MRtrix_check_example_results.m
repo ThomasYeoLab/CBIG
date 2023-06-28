@@ -1,4 +1,4 @@
-function [test_array] = CBIG_DiffProc_MRtrix_check_example_result(subj_output_dir, test_case)
+function [test_array] = CBIG_DiffProc_MRtrix_check_example_results(subj_output_dir, test_case)
 % This function checks whether the example TBSS results are consistent for the
 % unit test.
 % Written by Leon Ooi and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md

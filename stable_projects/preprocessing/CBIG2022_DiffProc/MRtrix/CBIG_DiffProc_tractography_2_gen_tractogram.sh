@@ -19,22 +19,22 @@ tract_streamlines=$6
 ###############
 # estimate FODs
 dwi2response msmt_5tt $sub_outdir/DWI.mif $sub_outdir/5TT.mif $sub_outdir/RF_WM.txt $sub_outdir/RF_GM.txt \
-	$sub_outdir/RF_CSF.txt -scratch $sub_outdir -voxels $sub_outdir/RF_voxels.mif 
+    $sub_outdir/RF_CSF.txt -scratch $sub_outdir -voxels $sub_outdir/RF_voxels.mif 
 dwi2fod msmt_csd $sub_outdir/DWI.mif $sub_outdir/RF_WM.txt $sub_outdir/WM_FODs.mif \
-	$sub_outdir/RF_GM.txt $sub_outdir/GM.mif $sub_outdir/RF_CSF.txt $sub_outdir/CSF.mif \
-	-mask $mask
+    $sub_outdir/RF_GM.txt $sub_outdir/GM.mif $sub_outdir/RF_CSF.txt $sub_outdir/CSF.mif \
+    -mask $mask
 
 # generate tractogram
 if [ $algo == 'iFOD2' ]; then
 tckgen -act $sub_outdir/5TT.mif -algorithm $algo -backtrack -crop_at_gmwmi -samples 4 -nthreads 8 \
-	-output_seeds $sub_outdir/out_seeds.nii.gz -power 0.330000 -seed_dynamic $sub_outdir/WM_FODs.mif \
-	-select ${tract_streamlines} $sub_outdir/WM_FODs.mif $sub_outdir/${tract_streamlines}.tck
+    -output_seeds $sub_outdir/out_seeds.nii.gz -power 0.330000 -seed_dynamic $sub_outdir/WM_FODs.mif \
+    -select ${tract_streamlines} $sub_outdir/WM_FODs.mif $sub_outdir/${tract_streamlines}.tck
 else 
 tckgen -act $sub_outdir/5TT.mif -algorithm $algo -crop_at_gmwmi -samples 4 -nthreads 8 \
-	-output_seeds $sub_outdir/out_seeds.nii.gz -power 0.330000 -seed_dynamic $sub_outdir/WM_FODs.mif \
-	-select ${tract_streamlines} $sub_outdir/WM_FODs.mif $sub_outdir/${tract_streamlines}.tck
+    -output_seeds $sub_outdir/out_seeds.nii.gz -power 0.330000 -seed_dynamic $sub_outdir/WM_FODs.mif \
+    -select ${tract_streamlines} $sub_outdir/WM_FODs.mif $sub_outdir/${tract_streamlines}.tck
 fi
 # run SIFT2
 tcksift2 -act $sub_outdir/5TT.mif -nthreads 8 \
-	-out_mu $sub_outdir/dwi_wm_mu.txt $sub_outdir/${tract_streamlines}.tck \
-	$sub_outdir/WM_FODs.mif $sub_outdir/dwi_wm_weights.csv
+    -out_mu $sub_outdir/dwi_wm_mu.txt $sub_outdir/${tract_streamlines}.tck \
+    $sub_outdir/WM_FODs.mif $sub_outdir/dwi_wm_weights.csv

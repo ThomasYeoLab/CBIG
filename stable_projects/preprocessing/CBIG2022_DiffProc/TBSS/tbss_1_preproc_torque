@@ -89,23 +89,23 @@ jobname='tbss_1_mask'
 
 # exit if no files
 if [ $jobs2run -eq 1 ] && [ $@ == '*.nii.gz' ]; then
-	echo "WARNING: No files for tbss step 1, SKIPPING..."
-	exit 1
+    echo "WARNING: No files for tbss step 1, SKIPPING..."
+    exit 1
 fi
 
 # exit if tbss directory and script directory not set up
 if [ ! -d "$tbssdir" ] || [ ! -d "$scriptdir" ]; then
-	echo "ERROR: tbss directory and/or script directory not found..."
-	exit 1
+    echo "ERROR: tbss directory and/or script directory not found..."
+    exit 1
 fi
 
 for f in `$FSLDIR/bin/imglob $subs` ; do
-	# check if FA file exists - if it does do not run
-	if [ -e $tbssdir/FA/${f}_FA.nii.gz ]; then
-		echo "$f exists: skipping processing"
-	else
-		$scriptdir/tbss_1_mask $f $tbssdir
-	fi
+    # check if FA file exists - if it does do not run
+    if [ -e $tbssdir/FA/${f}_FA.nii.gz ]; then
+        echo "$f exists: skipping processing"
+    else
+        $scriptdir/tbss_1_mask $f $tbssdir
+    fi
 done
 
 echo "Now running \"slicesdir\" to generate report of all input images"

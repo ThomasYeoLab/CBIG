@@ -5,7 +5,7 @@
 
 # DO NOT CHANGE: This clears old freesurfer variables if they previously exists
 if [ -n "$FREESURFER_HOME" ]; then
-	$FREESURFER_HOME/bin/clear_fs_env.csh
+    $FREESURFER_HOME/bin/clear_fs_env.csh
 fi
 
 # PLEASE CHANGE: Please specify location of CBIG repository

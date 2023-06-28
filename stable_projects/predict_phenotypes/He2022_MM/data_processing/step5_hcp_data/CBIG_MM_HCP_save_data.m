@@ -29,10 +29,10 @@ subject_header = 'Subject';
 measures_set = {'Cognitive','Personality_Task','Social_Emotion'};
 y_names = {};
 for i = measures_set
-	name = i{1};
-	measure_list = fullfile(measure_list_dir, [name '_unrestricted.txt']);
-	temp = read_sub_list(measure_list);
-	y_names = [y_names, temp];
+    name = i{1};
+    measure_list = fullfile(measure_list_dir, [name '_unrestricted.txt']);
+    temp = read_sub_list(measure_list);
+    y_names = [y_names, temp];
 end
 y_names(ismember(y_names,'ER40HAP')) = [];
 y_types = cell(1, size(y_names, 2));
@@ -40,7 +40,7 @@ y_types(:) = {'continuous'};
 outname = fullfile(out_dir, 'beh_measures.mat');
 delimiter = ',';
 y = CBIG_read_y_from_csv(csv_files, subject_header, y_names, y_types, ...
-	subject_list, outname, delimiter);
+    subject_list, outname, delimiter);
 % param.y = y;
 
 subj_list = read_sub_list(subject_list);
@@ -51,7 +51,7 @@ subj_list = subj_list(ind_nonan);
 subject_list_filtered = fullfile(out_dir, 'HCP_diff_roi_subj_list.txt');
 fileID = fopen(subject_list_filtered, 'w');
 for i = 1:size(subj_list, 2)
-	fprintf(fileID, '%s\n', subj_list{i});
+    fprintf(fileID, '%s\n', subj_list{i});
 end
 fclose(fileID);
 

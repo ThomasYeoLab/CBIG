@@ -98,8 +98,8 @@ cd FA
 
 # exit if tbss directory and FA directory not set up
 if [ ! -d "$tbssdir" ] || [ ! -d "$FAdir" ] ; then
-	echo "ERROR: tbss and/or FA directory not found..."
-	exit 1
+    echo "ERROR: tbss and/or FA directory not found..."
+    exit 1
 fi
 
 /bin/rm -f all.msf
@@ -114,23 +114,23 @@ else
 
     for f in `$FSLDIR/bin/imglob *_FA.nii* *_FA.img* *_FA.hdr*` ; do
 
-	meanscore=0
-	medianscore=0
+    meanscore=0
+    medianscore=0
 
-	for g in `$FSLDIR/bin/imglob *_FA.nii* *_FA.img* *_FA.hdr*` ; do
-	
-	    thismeanscore=`cat ${g}_to_${f}_warp.msf | awk '{print $1}'`
-	    thismedianscore=`cat ${g}_to_${f}_warp.msf | awk '{print $2}'`
+    for g in `$FSLDIR/bin/imglob *_FA.nii* *_FA.img* *_FA.hdr*` ; do
 
-	    meanscore=`echo "10 k $meanscore $thismeanscore + p" | dc -`
-	    medianscore=`echo "10 k $medianscore $thismedianscore + p" | dc -`
-	done
+        thismeanscore=`cat ${g}_to_${f}_warp.msf | awk '{print $1}'`
+        thismedianscore=`cat ${g}_to_${f}_warp.msf | awk '{print $2}'`
 
-	meanscore=`echo "10 k $meanscore $n / p" | dc -`
-	medianscore=`echo "10 k $medianscore $n / p" | dc -`
+        meanscore=`echo "10 k $meanscore $thismeanscore + p" | dc -`
+        medianscore=`echo "10 k $medianscore $thismedianscore + p" | dc -`
+    done
 
-	echo "$f $meanscore $medianscore"
-	echo "$f $meanscore $medianscore" >> all.msf
+    meanscore=`echo "10 k $meanscore $n / p" | dc -`
+    medianscore=`echo "10 k $medianscore $n / p" | dc -`
+
+    echo "$f $meanscore $medianscore"
+    echo "$f $meanscore $medianscore" >> all.msf
 
     done
 
@@ -144,67 +144,67 @@ echo $best > best.msf
 
 mkdir -p ../stats
 
-	# is target already in MNI152 space? (kludge)
-	if [ `${FSLDIR}/bin/imtest target` = 1 ] && [ `$FSLDIR/bin/fslval $best dim1` = 182 ] && [ `$FSLDIR/bin/fslval $best dim2` = 218 ] && [ `$FSLDIR/bin/fslval $best dim3` = 182 ] ; then
+    # is target already in MNI152 space? (kludge)
+    if [ `${FSLDIR}/bin/imtest target` = 1 ] && [ `$FSLDIR/bin/fslval $best dim1` = 182 ] && [ `$FSLDIR/bin/fslval $best dim2` = 218 ] && [ `$FSLDIR/bin/fslval $best dim3` = 182 ] ; then
 
-	    echo "transforming all FA images into MNI152 space"
-	    filelist=`$FSLDIR/bin/imglob *_FA.nii* *_FA.img* *_FA.hdr*`;
-	    # check that all the registration results are there!
-	    missingwarps="";
-	    for f in $filelist ; do
-		if [ `${FSLDIR}/bin/imtest ${f}_to_target_warp` = 0 ] ; then
-		    missingwarps="$missingwarps ${f}_to_target_warp"
-		fi
-	    done
-	    if [ `echo $missingwarps | wc -c` -gt 1 ] ; then
-		echo "ERROR:: cannot find the following warp results:"
-		echo "    $missingwarps"
-		echo "Please wait for registration (fnirt) to finish or re-run registrations";
-		exit 1;
-	    fi
+        echo "transforming all FA images into MNI152 space"
+        filelist=`$FSLDIR/bin/imglob *_FA.nii* *_FA.img* *_FA.hdr*`;
+        # check that all the registration results are there!
+        missingwarps="";
+        for f in $filelist ; do
+        if [ `${FSLDIR}/bin/imtest ${f}_to_target_warp` = 0 ] ; then
+            missingwarps="$missingwarps ${f}_to_target_warp"
+        fi
+        done
+        if [ `echo $missingwarps | wc -c` -gt 1 ] ; then
+            echo "ERROR:: cannot find the following warp results:"
+            echo "    $missingwarps"
+            echo "Please wait for registration (fnirt) to finish or re-run registrations";
+            exit 1;
+        fi
 
-	    jobname='tbss_3_warp'
+        jobname='tbss_3_warp'
 
-	    for f in $filelist ; do
-		if [ -e "$FAdir/${f}_to_target.nii.gz" ]; then
-			echo "${f}_to_target exists: skipping processing"
-		else		
-			# run in scheduler
-			cmd="$FSLDIR/bin/applywarp -i $FAdir/$f -o $FAdir/${f}_to_target -r $FAdir/target -w $FAdir/${f}_to_target_warp --rel"
-			ssh headnode "$CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd '$cmd' -walltime 01:00:00 \
-				-name $jobname -mem 3GB -joberr '$tbssdir' -jobout '$tbssdir' "			
-			sleep 2
-		fi
-	    done
+        for f in $filelist ; do
+        if [ -e "$FAdir/${f}_to_target.nii.gz" ]; then
+            echo "${f}_to_target exists: skipping processing"
+        else
+            # run in scheduler
+            cmd="$FSLDIR/bin/applywarp -i $FAdir/$f -o $FAdir/${f}_to_target -r $FAdir/target -w $FAdir/${f}_to_target_warp --rel"
+            ssh headnode "$CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd '$cmd' -walltime 01:00:00 \
+                -name $jobname -mem 3GB -joberr '$tbssdir' -jobout '$tbssdir' "
+            sleep 2
+        fi
+        done
 
-	    # wait until all jobs run: counted by username and job name
-	    echo "Waiting for all jobs to complete before moving on..."
-	    user_id=$( whoami )
-	    running_jobs=$( ssh headnode "qselect -u $user_id -N $jobname | wc -l" )
-	    start=$SECONDS
-	    while [ $running_jobs -gt 0 ]; do
-		duration_min=$((( $SECONDS - $start ) / 60))
-		echo "	${duration_min}m: $running_jobs jobs  still running"
-		sleep 1m
-		running_jobs=$( ssh headnode "qselect -u $user_id -N $jobname | wc -l" )
-	    done
+        # wait until all jobs run: counted by username and job name
+        echo "Waiting for all jobs to complete before moving on..."
+        user_id=$( whoami )
+        running_jobs=$( ssh headnode "qselect -u $user_id -N $jobname | wc -l" )
+        start=$SECONDS
+        while [ $running_jobs -gt 0 ]; do
+            duration_min=$((( $SECONDS - $start ) / 60))
+            echo "    ${duration_min}m: $running_jobs jobs  still running"
+            sleep 1m
+            running_jobs=$( ssh headnode "qselect -u $user_id -N $jobname | wc -l" )
+        done
 
-	    mkdir -p FA/scheduler_logs
-	    mv $tbssdir/*.headnode.* $tbssdir/FA/scheduler_logs
+        mkdir -p FA/scheduler_logs
+        mv $tbssdir/*.headnode.* $tbssdir/FA/scheduler_logs
 
-	else
+    else
 
-	    echo "affine-registering target to MNI152 space"
-	    $FSLDIR/bin/fslmaths target -bin target_mask
-	    $FSLDIR/bin/flirt -in target -inweight target_mask -ref $FSLDIR/data/standard/FMRIB58_FA_1mm -omat target_to_MNI152.mat -out target_to_MNI152
+        echo "affine-registering target to MNI152 space"
+        $FSLDIR/bin/fslmaths target -bin target_mask
+        $FSLDIR/bin/flirt -in target -inweight target_mask -ref $FSLDIR/data/standard/FMRIB58_FA_1mm -omat target_to_MNI152.mat -out target_to_MNI152
 
-	    echo "transforming (and upsampling) all FA images into MNI152 space"
-	    for f in `$FSLDIR/bin/imglob *_FA.nii* *_FA.img* *_FA.hdr*` ; do
-		echo $f
-		$FSLDIR/bin/applywarp -i $f -o ${f}_to_target -r $FSLDIR/data/standard/FMRIB58_FA_1mm -w ${f}_to_${best}_warp --postmat=target_to_MNI152.mat
-	    done
+        echo "transforming (and upsampling) all FA images into MNI152 space"
+        for f in `$FSLDIR/bin/imglob *_FA.nii* *_FA.img* *_FA.hdr*` ; do
+            echo $f
+            $FSLDIR/bin/applywarp -i $f -o ${f}_to_target -r $FSLDIR/data/standard/FMRIB58_FA_1mm -w ${f}_to_${best}_warp --postmat=target_to_MNI152.mat
+        done
 
-	fi
+    fi
 
 echo "merging all upsampled FA images into single 4D image" # needs to be run in compiler
 $FSLDIR/bin/fslmerge -t ../stats/all_FA `$FSLDIR/bin/imglob *_FA_to_target.*`

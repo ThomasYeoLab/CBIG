@@ -67,7 +67,7 @@ function [results,prams]=CBIG_gwMRF_build_data_and_perform_clustering(input_full
     'iterations',num_iterations,'smoothcost',smoothcost,'start_index',start_idx, 'runs', num_runs,...
     'output_folder' ,[output_path,'/clustering/'],'dim',dim,'exponential',exponential,...
     'start_gamma',start_gamma, 'iter_reduce_gamma', iter_reduce_gamma);
-	
+
     rmpath('./lib/');
 end
 

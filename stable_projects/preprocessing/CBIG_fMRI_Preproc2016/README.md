@@ -50,14 +50,14 @@ Except for this project, if you want to use the code for other stable projects f
 - To download the version of the code that was last tested, you can either
 
   - visit this link:
-  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.29.1-Add_Yan2023_in_preproc](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.29.1-Add_Yan2023_in_preproc)
+  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.29.3-Update_preproc](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.29.3-Update_preproc)
   
   or
   
   - run the following command, if you have Git installed
   
   ```
-  git checkout -b CBIG_fMRI_Preprocessing v0.29.1-Add_Yan2023_in_preproc
+  git checkout -b CBIG_fMRI_Preprocessing v0.29.3-Update_preproc
   ```
 
 ### Usage 
@@ -102,6 +102,15 @@ codes would work on ANTs version 2.2.0.
 ----
 
 ## Updates
+
+- Release v0.29.3 (28/06/2023): 
+   1. Simply usage for single run cases.
+
+   2. Initial bold stem can be customized.
+
+   3. Fix bugs in CBIG_preproc_FCmetrics.m.
+
+   4. Remove unused flag in CBIG_antsReg_vol2vol.sh.
 
 - Release v0.29.1 (10/05/2023): 
    1. Support Yan2023 homotopic parcelltion. 

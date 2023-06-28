@@ -79,10 +79,10 @@ sh $CBIG_CODE_DIR/utilities/scripts/CBIG_check_job_status -n gwMRF_ex -o ${ex_ou
 EXIT_STATUS=$?
 if [[ "$EXIT_STATUS" -eq "1" ]]
 then
-	echo "Failed to generate example parcellations."
-	exit 1
+    echo "Failed to generate example parcellations."
+    exit 1
 else
-	echo "Successfully generated example results. Will proceed with the rest of the unit test..."
+    echo "Successfully generated example results. Will proceed with the rest of the unit test..."
 fi
 
 ####################################
@@ -143,10 +143,10 @@ sh $CBIG_CODE_DIR/utilities/scripts/CBIG_check_job_status -n 'gwMRF_mult_mat' -o
 EXIT_STATUS=$?
 if [[ "$EXIT_STATUS" -eq "1" ]]
 then
-	echo "[FAILED] Failed to generate multiplied matrices."
-	exit 1
+    echo "[FAILED] Failed to generate multiplied matrices."
+    exit 1
 else
-	echo "Successfully generated multiplied matrices. Will proceed with the rest of the unit test..."
+    echo "Successfully generated multiplied matrices. Will proceed with the rest of the unit test..."
 fi
 
 ####################################################
@@ -193,10 +193,10 @@ sh $CBIG_CODE_DIR/utilities/scripts/CBIG_check_job_status -n 'gwMRF_seed2' -o ${
 EXIT_STATUS=$?
 if [[ "$EXIT_STATUS" -eq "1" ]]
 then
-	echo "[FAILED] Failed to generate results for seed 2."
-	exit 1
+    echo "[FAILED] Failed to generate results for seed 2."
+    exit 1
 else
-	echo "Successfully generated results for seed 2. Will proceed with the rest of the unit test..."
+    echo "Successfully generated results for seed 2. Will proceed with the rest of the unit test..."
 fi
 
 ######################################################
@@ -232,8 +232,8 @@ rm ${temp_script_file4}
 fail=`grep FAILED $LF | wc -l`
 done=`grep DONE $LF | wc -l`
 if [ $fail -gt 0 ] || [ $done -eq 0 ]; then
-	echo "[FAILED] Job is unsuccessful. Check log file: $LF."
-	exit 1
+    echo "[FAILED] Job is unsuccessful. Check log file: $LF."
+    exit 1
 fi
 
 ##################

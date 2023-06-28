@@ -6,7 +6,7 @@
 if [[ "$8" == *HCP_diff_roi_pfc.mat ]]; then
     prefix='HCP'
 else
-	prefix='ukbb'
+    prefix='ukbb'
 fi
 
 RESULT_DIR="$2/output_phe_$1/${prefix}_$1_k_$5_rng_num_100"

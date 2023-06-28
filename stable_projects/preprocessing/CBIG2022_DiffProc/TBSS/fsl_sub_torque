@@ -85,15 +85,15 @@ METHOD=TORQUE # method changed to TORQUE
 ## default SGE setup
 unset module
 if [ $METHOD = "SGE" ]; then
-	if [ "x$SGE_ROOT" = "x" ] ; then
-		METHOD=NONE
-	else
-		QCONF=`which qconf`
-		if [ "x$QCONF" = "x" ]; then
-			METHOD=NONE
-			echo "Warning: SGE_ROOT environment variable is set but Grid Engine software not found, will run locally" >&2
-		fi
-	fi
+    if [ "x$SGE_ROOT" = "x" ] ; then
+        METHOD=NONE
+    else
+        QCONF=`which qconf`
+        if [ "x$QCONF" = "x" ]; then
+            METHOD=NONE
+            echo "Warning: SGE_ROOT environment variable is set but Grid Engine software not found, will run locally" >&2
+        fi
+    fi
 fi
 
 # stop submitted scripts from submitting jobs themselves
@@ -103,7 +103,7 @@ if [ "X$FSLSUBALREADYRUN" = "Xtrue" ] ; then
 fi
 
 if [ "X$METHOD" = "XNONE" ]; then
-	QCONF=echo
+    QCONF=echo
 fi
 FSLSUBALREADYRUN=true
 export FSLSUBALREADYRUN
@@ -121,13 +121,13 @@ export FSLSUBALREADYRUN
 map_qname ()
 {
     if [ $1 -le 20 ] ; then
-	queue=veryshort.q
+        queue=veryshort.q
     elif [ $1 -le 120 ] ; then
-	queue=short.q
+        queue=short.q
     elif [ $1 -le 1440 ] ; then
-	queue=long.q
+        queue=long.q
     else
-	queue=verylong.q
+        queue=verylong.q
     fi
     queueCmd=" -q $queue " 
 
@@ -283,24 +283,24 @@ while [ $1 != -- ] ; do
       queueCmd=" -q $queue " 
       $QCONF -sq $queue >/dev/null 2>&1
       if [ $? -eq 1 ]; then
-	  echo "Invalid queue specified!"
-	  exit 127
+          echo "Invalid queue specified!"
+          exit 127
       fi
       shift;;
     -a)
       acceptable_arch=no
       available_archs=`qhost | tail -n +4 | awk '{print $2}' | sort | uniq`
       for a in $available_archs; do
-	if [ $2 = $a ] ; then
-	  acceptable_arch=yes
-	fi
+    if [ $2 = $a ] ; then
+      acceptable_arch=yes
+    fi
       done
       if [ $acceptable_arch = yes ]; then
-	  sge_arch="-l arch=$2"
+          sge_arch="-l arch=$2"
       else
-	  echo "Sorry arch of $2 is not supported on this SGE configuration!"
-	  echo "Should be one of:" $available_archs
-	  exit 127
+          echo "Sorry arch of $2 is not supported on this SGE configuration!"
+          echo "Should be one of:" $available_archs
+          exit 127
       fi
       shift;;
     -p)
@@ -316,14 +316,14 @@ while [ $1 != -- ] ; do
     -t)
       taskfile=$2
       if [ -f "$taskfile" ] ; then
-	      tasks=`wc -l $taskfile | awk '{print $1}'`
-	      if [ $tasks -ne 0 ]; then
-    	  	sge_tasks="-t 1-$tasks"
-    	  else
-    	    echo "Task file ${taskfile} is empty"
-    	    echo "Should be a text file listing all the commands to run!"
-    	    exit -1
-    	  fi
+          tasks=`wc -l $taskfile | awk '{print $1}'`
+          if [ $tasks -ne 0 ]; then
+              sge_tasks="-t 1-$tasks"
+          else
+            echo "Task file ${taskfile} is empty"
+            echo "Should be a text file listing all the commands to run!"
+            exit -1
+          fi
       else
           echo "Task file (${taskfile}) does not exist"
           exit -1
@@ -335,7 +335,7 @@ while [ $1 != -- ] ; do
     -R)
       RAM="-l mem_free=${2}M"
       if [[ $METHOD = "TORQUE" ]] ; then # modified mem options
-   	RAM="${2}GB"
+          RAM="${2}GB"
       fi 
       shift;;
     -m)
@@ -345,13 +345,13 @@ while [ $1 != -- ] ; do
       LogOpts="-o $2 -e $2";
       LogDir="${2}/";
       if [ ! -e ${2} ]; then 
-	  mkdir -p $2
+          mkdir -p $2
       else
-	  echo ${2} | grep '/dev/null' >/dev/null 2>&1
-	  if [ $? -eq 1 ] && [ -f ${2} ]; then
-	      echo "Log destination is a file (should be a folder)"
-	      exit -1
-	  fi
+      echo ${2} | grep '/dev/null' >/dev/null 2>&1
+      if [ $? -eq 1 ] && [ -f ${2} ]; then
+          echo "Log destination is a file (should be a folder)"
+          exit -1
+      fi
       fi
       shift;;
     -F)
@@ -375,23 +375,23 @@ shift
 ###########################################################################
 
 if [ -z "$taskfile" ] && [ -z "$1" ]; then
-	echo "Either supply a command to run or a parallel task file"
-	exit -1
+    echo "Either supply a command to run or a parallel task file"
+    exit -1
 fi
 
 if [ -z "$taskfile" ] && [ ! -x "$1" ]; then
-	which $1 >/dev/null 2>&1
-	if [ $? -ne 0 ]; then
-		echo "The command you have requested cannot be found or is not executable"
-		exit -1
-	fi
+    which $1 >/dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo "The command you have requested cannot be found or is not executable"
+        exit -1
+    fi
 fi
 
 if [ "x$JobName" = x ] ; then 
     if [ "x$taskfile" != x ] ; then
-	JobName=`basename $taskfile`
+        JobName=`basename $taskfile`
     else
-	JobName=`basename $1`
+        JobName=`basename $1`
     fi
 fi
 
@@ -406,7 +406,7 @@ if [ "x$peName" != "x" ]; then
     
     if [ "X$peName" = "X$omp_pe" ]; then
         OMP_NUM_THREADS=$peThreads
-	export OMP_NUM_THREADS
+        export OMP_NUM_THREADS
     fi
 
 fi
@@ -424,57 +424,57 @@ case $METHOD in
        ###########################################################################
        # Test Parallel environment options
        ###########################################################################
-	if [ "x$peName" != x ]; then
+    if [ "x$peName" != x ]; then
             # Is this a configured PE?
 
-	    $QCONF -sp $peName >/dev/null 2>&1
+        $QCONF -sp $peName >/dev/null 2>&1
 
-	    if [ $? -eq 1 ]; then
-		echo $@
-		echo "$peName is not a valid PE"
-		exit -1
-	    fi
+        if [ $? -eq 1 ]; then
+            echo $@
+            echo "$peName is not a valid PE"
+            exit -1
+        fi
 
             # Get a list of queues configured for this PE and confirm that the queue
             # we have submitted to has that PE set up.
-	    qstat -g c -pe $peName >/dev/null 2>&1
-	    if [ $? -eq 1 ]; then
-		echo "No parallel environments configured!"
-		exit -1
-	    fi
+        qstat -g c -pe $peName >/dev/null 2>&1
+        if [ $? -eq 1 ]; then
+            echo "No parallel environments configured!"
+            exit -1
+        fi
 
-	    qstat -g c -pe $peName | sed '1,2d' | awk '{ print $1 }' | grep ^$queue >/dev/null 2>&1
+        qstat -g c -pe $peName | sed '1,2d' | awk '{ print $1 }' | grep ^$queue >/dev/null 2>&1
 
-	    if [ $? -eq 1 ]; then
-		echo $@
-		echo "PE $peName is not configured on $queue"
-		exit -1
-	    fi
+        if [ $? -eq 1 ]; then
+            echo $@
+            echo "PE $peName is not configured on $queue"
+            exit -1
+        fi
 
-	    # The -w e option will result in the job failing if there are insufficient slots
+        # The -w e option will result in the job failing if there are insufficient slots
             # on any of the cluster nodes
-	    pe_options="-pe $peName $peThreads -w e"
+        pe_options="-pe $peName $peThreads -w e"
 
-	fi
+    fi
 
-	if [ "x$tasks" = "x" ] ; then
-	    if [ $scriptmode -ne 1 ] ; then
-		sge_command="qsub -V -cwd -shell n -b y -r y $queueCmd $pe_options -M $mailto -N $JobName -m $MailOpts $LogOpts $sge_arch $RAM $sge_hold"
-	    else
-		sge_command="qsub $LogOpts $sge_arch $sge_hold"
-	    fi
-	    if [ $verbose -eq 1 ] ; then 
-		echo sge_command: $sge_command >&2
-		echo executing: $@ >&2
-	    fi
-	    exec $sge_command $@ | awk '{print $3}'
-	else
-	    sge_command="qsub -V -cwd $queueCmd $pe_options -M $mailto -N $JobName -m $MailOpts $LogOpts $sge_arch $RAM $sge_hold $sge_tasks"
-	    if [ $verbose -eq 1 ] ; then 
-		echo sge_command: $sge_command >&2
-		echo control file: $taskfile >&2
-	    fi
-	    exec $sge_command <<EOF | awk '{print $3}' | awk -F. '{print $1}'
+    if [ "x$tasks" = "x" ] ; then
+        if [ $scriptmode -ne 1 ] ; then
+            sge_command="qsub -V -cwd -shell n -b y -r y $queueCmd $pe_options -M $mailto -N $JobName -m $MailOpts $LogOpts $sge_arch $RAM $sge_hold"
+        else
+            sge_command="qsub $LogOpts $sge_arch $sge_hold"
+        fi
+        if [ $verbose -eq 1 ] ; then 
+            echo sge_command: $sge_command >&2
+            echo executing: $@ >&2
+        fi
+        exec $sge_command $@ | awk '{print $3}'
+    else
+        sge_command="qsub -V -cwd $queueCmd $pe_options -M $mailto -N $JobName -m $MailOpts $LogOpts $sge_arch $RAM $sge_hold $sge_tasks"
+        if [ $verbose -eq 1 ] ; then 
+            echo sge_command: $sge_command >&2
+            echo control file: $taskfile >&2
+        fi
+        exec $sge_command <<EOF | awk '{print $3}' | awk -F. '{print $1}'
 #!/bin/sh
 
 #$ -S /bin/sh
@@ -483,39 +483,39 @@ command=\`sed -n -e "\${SGE_TASK_ID}p" $taskfile\`
 
 exec /bin/sh -c "\$command"
 EOF
-	fi
-	;;
+    fi
+    ;;
 
 
 ###########################################################################
 # Schedule on TORQUE cluster
 ###########################################################################
     TORQUE)
-	echo "TORQUE processing:"
-		if [ $verbose -eq 1 ] ; then 
-			echo "Running commands in: $taskfile" >&2
-	    	fi
+    echo "TORQUE processing:"
+        if [ $verbose -eq 1 ] ; then 
+                echo "Running commands in: $taskfile" >&2
+            fi
 
-	    	n=1
-		while [ $n -le $tasks ] ; do
-			# get command from taskfile
-			line=`sed -n -e ''${n}'p' $taskfile`
-			if [ $verbose -eq 1 ] ; then 
-			    echo executing: $line >&2
-			fi
+            n=1
+        while [ $n -le $tasks ] ; do
+            # get command from taskfile
+            line=`sed -n -e ''${n}'p' $taskfile`
+            if [ $verbose -eq 1 ] ; then 
+                echo executing: $line >&2
+            fi
 
-			#run command
-			logdir= $( pwd )
-			$CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "$cmd" -walltime "$walltime" -name "$JobName" \
-				-mem "$RAM" -joberr "$logdir" -jobout "$logdir"
+            #run command
+            logdir= $( pwd )
+            $CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "$cmd" -walltime "$walltime" -name "$JobName" \
+                -mem "$RAM" -joberr "$logdir" -jobout "$logdir"
 
-			# pause and go on to next job 
-			sleep 2
-			n=`expr $n + 1`
-		done
+            # pause and go on to next job 
+            sleep 2
+            n=`expr $n + 1`
+        done
 
-	exit 1
-	;;
+    exit 1
+    ;;
 
 
 ###########################################################################
@@ -524,38 +524,38 @@ EOF
 ###########################################################################
 
     NONE)
-	if [ "x$tasks" = "x" ] ; then
-	    if [ $verbose -eq 1 ] ; then 
-		echo executing: $@ >&2
-	    fi
+    if [ "x$tasks" = "x" ] ; then
+        if [ $verbose -eq 1 ] ; then 
+            echo executing: $@ >&2
+        fi
 
-	    /bin/sh <<EOF1 > ${LogDir}${JobName}.o$$ 2> ${LogDir}${JobName}.e$$
+        /bin/sh <<EOF1 > ${LogDir}${JobName}.o$$ 2> ${LogDir}${JobName}.e$$
 $@
 EOF1
-	    ERR=$?
-	    if [ $ERR -ne 0 ] ; then
-		cat ${LogDir}${JobName}.e$$ >&2
-		exit $ERR
-	    fi
-	else
-	    if [ $verbose -eq 1 ] ; then 
-		echo "Running commands in: $taskfile" >&2
-	    fi
+        ERR=$?
+        if [ $ERR -ne 0 ] ; then
+            cat ${LogDir}${JobName}.e$$ >&2
+            exit $ERR
+        fi
+    else
+        if [ $verbose -eq 1 ] ; then 
+            echo "Running commands in: $taskfile" >&2
+        fi
 
-	    n=1
-	    while [ $n -le $tasks ] ; do
-		line=`sed -n -e ''${n}'p' $taskfile`
-		if [ $verbose -eq 1 ] ; then 
-		    echo executing: $line >&2
-		fi
-		/bin/sh <<EOF2 > ${LogDir}${JobName}.o$$.$n 2> ${LogDir}${JobName}.e$$.$n
+        n=1
+        while [ $n -le $tasks ] ; do
+        line=`sed -n -e ''${n}'p' $taskfile`
+        if [ $verbose -eq 1 ] ; then 
+            echo executing: $line >&2
+        fi
+        /bin/sh <<EOF2 > ${LogDir}${JobName}.o$$.$n 2> ${LogDir}${JobName}.e$$.$n
 $line
 EOF2
-		n=`expr $n + 1`
-	    done
-	fi	
-	echo $$
-	;;
+        n=`expr $n + 1`
+        done
+    fi
+    echo $$
+    ;;
 
 esac
 

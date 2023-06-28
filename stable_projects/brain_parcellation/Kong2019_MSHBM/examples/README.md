@@ -70,7 +70,7 @@ Start Matlab, in Matlab command window, run the following commands to generate p
 project_dir = '<output_dir>/generate_profiles_and_ini_params';
 for sub = 1:2
  for sess = 1:2
-	CBIG_MSHBM_generate_profiles('fsaverage3','fsaverage5',project_dir,num2str(sub),num2str(sess),'0');
+    CBIG_MSHBM_generate_profiles('fsaverage3','fsaverage5',project_dir,num2str(sub),num2str(sess),'0');
  end
 end
 ```
@@ -222,7 +222,7 @@ c_set = [30 40 50 60];
 for i = 1:length(w_set)
     for j = 1:length(c_set)
         for sub = 1:2
-		    homo_with_weight(sub,:) = CBIG_MSHBM_parameters_validation(project_dir,'fsaverage5','2','17',num2str(sub), num2str(w_set(i)),num2str(c_set(j)));
+            homo_with_weight(sub,:) = CBIG_MSHBM_parameters_validation(project_dir,'fsaverage5','2','17',num2str(sub), num2str(w_set(i)),num2str(c_set(j)));
         end
         homo(i,j) = mean(mean(homo_with_weight));
     end

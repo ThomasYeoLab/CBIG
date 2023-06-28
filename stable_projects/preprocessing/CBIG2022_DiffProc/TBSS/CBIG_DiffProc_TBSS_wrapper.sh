@@ -2,8 +2,8 @@
 
 #####
 # Example: 
-#	$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG2022_DiffProc/ \
-#		TBSS/CBIG_DiffProc_TBSS_wrapper.sh path/to/tbss/dir
+#    $CBIG_CODE_DIR/stable_projects/preprocessing/CBIG2022_DiffProc/ \
+#        TBSS/CBIG_DiffProc_TBSS_wrapper.sh path/to/tbss/dir
 #
 # This function runs the TBSS workflow, assuming the file directory has already been set up. 
 # Refer to the readme in the TBSS folder for instructions.

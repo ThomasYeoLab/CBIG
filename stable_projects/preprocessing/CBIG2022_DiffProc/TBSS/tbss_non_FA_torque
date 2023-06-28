@@ -92,8 +92,8 @@ fi
 
 # exit if tbss directory and FA directory not set up
 if [ ! -d "$tbssdir" ] || [ ! -d "$FAdir" ] ; then
-	echo "ERROR: tbss and/or FA directory not found..."
-	exit 1
+    echo "ERROR: tbss and/or FA directory not found..."
+    exit 1
 fi
 
 jobname='tbss_non_FA'
@@ -102,16 +102,16 @@ echo "running registration for ${ALTIM}:"
 
 for f in `$FSLDIR/bin/imglob *_FA.*` ; do
     f=` echo $f | sed 's/_FA$//g'`
-	if [ -e "$FAdir/${f}_to_target_${ALTIM}.nii.gz" ]; then
-		echo "$FAdir/${f}_to_target_${ALTIM} exists: skipping processing"
-	else
-		# run in scheduler
-	    	cmd="$FSLDIR/bin/applywarp -i $FAdir/../${ALTIM}/$f -o $FAdir/${f}_to_target_${ALTIM} -r $FSLDIR/data/standard/FMRIB58_FA_1mm -w $FAdir/${f}_FA_to_${best}_warp $postaffine "
-		#run command
-		ssh headnode "$CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd '$cmd' -walltime 01:00:00 \
-			-name $jobname -mem 3GB -joberr '$tbssdir' -jobout '$tbssdir'"		
-		sleep 2
-	fi
+    if [ -e "$FAdir/${f}_to_target_${ALTIM}.nii.gz" ]; then
+        echo "$FAdir/${f}_to_target_${ALTIM} exists: skipping processing"
+    else
+        # run in scheduler
+            cmd="$FSLDIR/bin/applywarp -i $FAdir/../${ALTIM}/$f -o $FAdir/${f}_to_target_${ALTIM} -r $FSLDIR/data/standard/FMRIB58_FA_1mm -w $FAdir/${f}_FA_to_${best}_warp $postaffine "
+        #run command
+        ssh headnode "$CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd '$cmd' -walltime 01:00:00 \
+            -name $jobname -mem 3GB -joberr '$tbssdir' -jobout '$tbssdir'"
+        sleep 2
+    fi
 done
 
 # wait until all jobs run: counted by username and job name
@@ -120,10 +120,10 @@ echo "Waiting for all jobs to complete before moving on..."
 running_jobs=$( ssh headnode "qselect -u $user_id -N $jobname | wc -l" )
 start=$SECONDS
 while [ $running_jobs -gt 0 ]; do
-	duration_min=$((( $SECONDS - $start ) / 60))
-	echo "	${duration_min}m: $running_jobs jobs  still running"
-	sleep 1m
-	running_jobs=$( ssh headnode "qselect -u $user_id -N $jobname | wc -l" )
+    duration_min=$((( $SECONDS - $start ) / 60))
+    echo "    ${duration_min}m: $running_jobs jobs  still running"
+    sleep 1m
+    running_jobs=$( ssh headnode "qselect -u $user_id -N $jobname | wc -l" )
 done
 
 mkdir -p FA/scheduler_logs

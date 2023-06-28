@@ -40,9 +40,9 @@ mask directory (mask_output_dir)
   your installation:
 ```
 $CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_diffusion_processing2022/AMICO/CBIG_DiffProc_runAMICO.sh \
-		--subj_list /path/to/txtfile --dwi_dir /path/to/dwi_images \
-		--output_dir /path/to/output --py_env name_of_AMICO_environment \
-		--mask_output_dir /path/to/stored/b0_brainmask
+        --subj_list /path/to/txtfile --dwi_dir /path/to/dwi_images \
+        --output_dir /path/to/output --py_env name_of_AMICO_environment \
+        --mask_output_dir /path/to/stored/b0_brainmask
 ```
 
 - Step 2: Results

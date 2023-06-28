@@ -118,7 +118,7 @@ function CBIG_MM_KRR_MM_base(CBIG_CODE_DIR, subject_list, phe_csv, FC_file, ...
     param.num_inner_folds = 1;
 
     % do not save out kernel
-	param.save_kernel = 0;
+    param.save_kernel = 0;
 
     % range of lambda for kernel regression
     param.lambda_set = [0 0.00001 0.0001 0.001 0.004 0.007 0.01 0.04 0.07 0.1 ...
@@ -182,7 +182,7 @@ function ret = znorm(y, ind)
 %     array of index for y to calculate mean and std for z normalization. 
 %
 % Outputs:
-%	- ret = z normalized y
+%   - ret = z normalized y
 
     if isvector(y)
         y_tra = y(ind == 0);

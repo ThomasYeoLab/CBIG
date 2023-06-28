@@ -59,6 +59,7 @@ set nocleanup = 0   # default clean up intermediate files
 set is_motion_corrected = 0 # flag indicates whether motion correction is performed
 set is_distortion_corrected = 0 # flag indicates whether spatial distortion correction is performed 
 set echo_number = 1 # echo number default to be 1
+set nii_file_input = 0 # flag indicated whether input for -fmrinii is nifti file
 
 set root_dir = `python -c "import os; print(os.path.realpath('$0'))"`
 set root_dir = `dirname $root_dir`
@@ -68,7 +69,6 @@ parse_args_return:
 
 goto check_params;
 check_params_return:
-
 ##########################################
 # Set preprocess log file and cleanup file
 ##########################################
@@ -145,6 +145,7 @@ if ( $echo_number == 0 ) then
 else
     echo "Input data is multi-echo data, perform multi-echo denoising. Number of echoes is $echo_number." >> $LF
 endif
+
 ##########################################
 # Read from config file whether multiecho is included,
 # If so, print out user-specific python environment packages + version
@@ -166,13 +167,16 @@ endif
 ##########################################
 # Read in fMRI nifti file list
 ##########################################
-
-#check if there are repeating run numbers
-set numof_runs_uniq = (`awk -F " " '{printf ("%03d\n", $1)}' $fmrinii_file | sort | uniq | wc -l`)
-set zpdbold = (`awk -F " " '{printf ("%03d ", $1)}' $fmrinii_file`)
-if ( $numof_runs_uniq != $#zpdbold ) then
-    echo "[ERROR]: There are repeating bold run numbers!" >> $LF
-    exit 1
+if ( $nii_file_input == 1) then
+    set zpdbold = "001"
+else
+    #check if there are repeating run numbers
+    set numof_runs_uniq = (`awk -F " " '{printf ("%03d\n", $1)}' $fmrinii_file | sort | uniq | wc -l`)
+    set zpdbold = (`awk -F " " '{printf ("%03d ", $1)}' $fmrinii_file`)
+    if ( $numof_runs_uniq != $#zpdbold ) then
+        echo "[ERROR]: There are repeating bold run numbers!" >> $LF
+        exit 1
+    endif
 endif
 
 ##########################################
@@ -181,7 +185,11 @@ endif
 
 echo "[BOLD INFO]: Number of runs: $#zpdbold" >> $LF 
 echo "[BOLD INFO]: bold run $zpdbold" >> $LF
-set boldname = (`awk '{for (i=2; i<NF; i++) printf $i " "; print $NF}' $fmrinii_file`)
+if ( $nii_file_input == 1) then
+    set boldname = $fmrinii_file
+else
+    set boldname = (`awk '{for (i=2; i<NF; i++) printf $i " "; print $NF}' $fmrinii_file`)
+endif
 set a = $#boldname
 set b = $#zpdbold
 set echo_number_check = `echo " $a / $b" | bc`
@@ -194,15 +202,16 @@ endif
 set column_number = `echo "$echo_number +1"|bc`
 
 #check fmri nifti file list columns, should be equal to echo number plus one
-set lowest_numof_column = (`awk '{print NF}' $fmrinii_file | sort -nu | head -n 1`)
-set highest_numof_column = (`awk '{print NF}' $fmrinii_file | sort -nu | tail -n 1`)
-echo "lowest_numof_column = $lowest_numof_column" >> $LF
-echo "highest_numof_column = $highest_numof_column" >> $LF
-if ( $lowest_numof_column != $column_number || $highest_numof_column != $column_number) then
-    echo "[ERROR]: The input nifti file should only contain one column more than echo number!" >> $LF
-    exit 1
+if ( $nii_file_input == 0 ) then
+    set lowest_numof_column = (`awk '{print NF}' $fmrinii_file | sort -nu | head -n 1`)
+    set highest_numof_column = (`awk '{print NF}' $fmrinii_file | sort -nu | tail -n 1`)
+    echo "lowest_numof_column = $lowest_numof_column" >> $LF
+    echo "highest_numof_column = $highest_numof_column" >> $LF
+    if ( $lowest_numof_column != $column_number || $highest_numof_column != $column_number) then
+        echo "[ERROR]: The input nifti file should only contain one column more than echo number!" >> $LF
+        exit 1
+    endif
 endif
-
 
 #set output structure and deoblique the input file and check orientation
 if ( $echo_number == 1 ) then
@@ -1097,6 +1106,12 @@ while( $#argv != 0 )
             set config = $argv[1]; shift;
             breaksw
 
+        #BOLD stem
+        case "-stem":
+            if ( $#argv == 0 ) goto arg1err;
+            set BOLD_stem = "_$argv[1]"; shift;
+            breaksw
+
         case "-nocleanup":
             set nocleanup = 1;
             breaksw
@@ -1123,6 +1138,11 @@ endif
 if ( "$fmrinii_file" == "" ) then
     echo "ERROR: subject's fmri nifti file list not specified"
     exit 1;
+endif
+
+# check whether input for -fmrinii is nifti file or text file
+if (( `expr "$fmrinii_file" : '.*\.nii\.gz$'` ) || ( `expr "$fmrinii_file" : '.*\.nii$'` )) then 
+    set nii_file_input = 1
 endif
 
 if ( "$anat" == "" ) then
@@ -1287,7 +1307,8 @@ DESCRIPTION:
    
 REQUIRED ARGUMENTS:
     -s  <subject>              : subject ID
-    -fmrinii  <fmrinii>        : fmrinii text file including n+1 columns, the 1st column contains all run numbers, 
+    -fmrinii  <fmrinii>        : (1) fmrinii text file or (2) absolute nifti file path
+                                (1) fmrinii text file including n+1 columns, the 1st column contains all run numbers, 
                                 where n stands for echo number.
                                 For single echo case, fmrinii text file should include 2 columns
                                 the rest columns specify the absolute path to raw functional nifti files for each echo in
@@ -1301,6 +1322,8 @@ REQUIRED ARGUMENTS:
                                 /data/../Sub0015_bld001_e3_rest.nii.gz
                                 002 /data/../Sub0015_bld002_e1_rest.nii.gz /data/../Sub0015_bld002_e2_rest.nii.gz \
                                 /data/../Sub0015_bld002_e3_rest.nii.gz
+                                (2) absolute nifti file path only support for single run single echo subject. 
+                                Input is the absolute nifti file path, and run number set to 001.
 
     -anat_s  <anat>            : FreeSurfer recon-all folder name of this subject (relative path)
     -anat_d  <anat_dir>        : specify anat directory to recon-all folder (full path), i.e. <anat_dir> contains <anat>
@@ -1329,6 +1352,7 @@ ${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/example_sli
                                 you can use option (-help) for each function, such as (CBIG_preproc_skip -help).
 
 OPTIONAL ARGUMENTS:
+    -stem                      : set initial BOLD stem, default set to be "rest"
     -help                      : help
     -version                   : version
     -nocleanup                 : do not delete intermediate volumes

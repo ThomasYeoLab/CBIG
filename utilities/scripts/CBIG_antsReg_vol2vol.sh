@@ -17,12 +17,12 @@ main(){
         -t affine[ 0.1 ] \
         -c [ $iter_affine, 1.e-8, 20 ] \
         -s 4x2x1vox \
-        -f 3x2x1 -l 1 \
+        -f 3x2x1 \
       -m cc[ $fixed, $moving, 1, 4] \
         -t SyN[ .20, 3, 0] \
         -c [ $iter_SyN, 0, 5 ] \
         -s 1x0.5x0vox \
-        -f 4x2x1 -l 1 -u 1 -z 1\
+        -f 4x2x1 -u 1 -z 1\
       -o ${output}"
    echo $cmd
    eval $cmd

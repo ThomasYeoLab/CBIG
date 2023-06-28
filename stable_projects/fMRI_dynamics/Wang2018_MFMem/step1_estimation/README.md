@@ -16,7 +16,7 @@ This is the execution script for a fixed starting point, make sure that you are 
 * `CBIG_MFMem_rfMRI_estimation_multistart.m`
 This is the execution script for multiple random generated starting points, make sure that you are under `../Wang2018_MFMem/step1_estimation` to run the function.
 
-	
+    
 * All functions needed by the two scripts are listed as follow. The functions can be found in the folder `../Wang2018_MFMem/lib`
 
     ```

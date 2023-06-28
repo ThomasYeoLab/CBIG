@@ -51,10 +51,10 @@ Except for this project, if you want to use the code for other stable projects f
   This script generates the quality assessment metrics in a text file. The subject ID, location and names the diffusion files will have to be provided. An example of calling the script is provided below:
 ```
 $CBIG_CODE_DIR/stable_projects/preprocessing/CBIG2022_DiffProc/CBIG_diffusionQC.sh \
-	--subj $subject --subjDIR $projdir/$subject/T1w/Diffusion \
-	--subjImg data.nii.gz --outdir $base_outdir/S1200/individuals/$subject \
-	--bval_file bvals --bvec_file bvecs \
-	--brainmask $projdir/$subject/T1w/Diffusion/nodif_brain_mask.nii.gz 
+    --subj $subject --subjDIR $projdir/$subject/T1w/Diffusion \
+    --subjImg data.nii.gz --outdir $base_outdir/S1200/individuals/$subject \
+    --bval_file bvals --bvec_file bvecs \
+    --brainmask $projdir/$subject/T1w/Diffusion/nodif_brain_mask.nii.gz 
 ```
   In this function, the following metrics are calculated:
   1. Intervolume motion

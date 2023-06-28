@@ -49,11 +49,11 @@ Mask directory (mask_output_dir)
   Prepare a list of subjects to run. The script can then be run with the following command. Remember to specify the same python environment as 
   your installation:
 ```
-	$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG2022_DiffProc/ \
-		MRtrix/CBIG_DiffProc_batch_tractography.sh \
-		--subj_list /path/to/txtfile --dwi_dir /path/to/dwi_images \
-		--output_dir /path/to/output --py_env name_of_AMICO_environment \
-		--mask_output_dir /path/to/stored/b0_brainmask
+    $CBIG_CODE_DIR/stable_projects/preprocessing/CBIG2022_DiffProc/ \
+        MRtrix/CBIG_DiffProc_batch_tractography.sh \
+        --subj_list /path/to/txtfile --dwi_dir /path/to/dwi_images \
+        --output_dir /path/to/output --py_env name_of_AMICO_environment \
+        --mask_output_dir /path/to/stored/b0_brainmask
 ```
 
    In the first step, `CBIG_DiffProc_preprocess_tractography` converts each parcellation to the native volume space in nifti format, and then converts 

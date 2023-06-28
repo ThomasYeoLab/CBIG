@@ -36,10 +36,10 @@ If you want to use the code from our lab's other stable projects (other than He2
 ## Usage
 ### Environment setup
 - Our code uses MATLAB and Python, here are info about MATLAB and Python setup:
-	- MATLAB: we tested our code in MATLAB r2018b
-	- Python
-		1. Install [Miniconda](https://docs.conda.io/en/latest/miniconda.html) or [Anaconda](https://www.anaconda.com/distribution/#download-section) with Python 3.x if you don't have conda
-		2. Create conda environment from our `replication/config/CBIG_MM_python_env.yml` file by `conda env create -f replication/config/CBIG_MM_python_env.yml`
+    - MATLAB: we tested our code in MATLAB r2018b
+    - Python
+        1. Install [Miniconda](https://docs.conda.io/en/latest/miniconda.html) or [Anaconda](https://www.anaconda.com/distribution/#download-section) with Python 3.x if you don't have conda
+        2. Create conda environment from our `replication/config/CBIG_MM_python_env.yml` file by `conda env create -f replication/config/CBIG_MM_python_env.yml`
 
 ### Example
 - The example of our code is detailed in `examples/README.md`

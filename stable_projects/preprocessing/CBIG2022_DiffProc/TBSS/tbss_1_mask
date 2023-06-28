@@ -13,6 +13,6 @@ $FSLDIR/bin/fslmaths $tbssdir/$f -min 1 -ero -roi 1 $X 1 $Y 1 $Z 0 1 $tbssdir/FA
 $FSLDIR/bin/fslmaths $tbssdir/FA/${f}_FA -bin $tbssdir/FA/${f}_FA_mask
 
 $FSLDIR/bin/fslmaths $tbssdir/FA/${f}_FA_mask -dilD -dilD -sub 1 -abs \
-	-add $tbssdir/FA/${f}_FA_mask $tbssdir/FA/${f}_FA_mask -odt char
+    -add $tbssdir/FA/${f}_FA_mask $tbssdir/FA/${f}_FA_mask -odt char
 
 $FSLDIR/bin/immv $tbssdir/$f $tbssdir/origdata

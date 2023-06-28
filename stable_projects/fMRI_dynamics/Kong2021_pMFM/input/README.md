@@ -21,7 +21,7 @@
 * `fcd_test_low_window.mat` Averaged empirical FCD CDF using 43 TR sliding window of test set
 
 * `GS_sort.mat` Variance of global signal for all HCP subjects. 
-	* This data is copied from [Orban2020_tod](https://github.com/ThomasYeoLab/CBIG/tree/master/stable_projects/preprocessing/Orban2020_tod)
+    * This data is copied from [Orban2020_tod](https://github.com/ThomasYeoLab/CBIG/tree/master/stable_projects/preprocessing/Orban2020_tod)
 
 * `rsfc_gradient.csv` Group level first principal gradient of training set
 * `rsfc_gradient_pc2.csv` Group level second principal gradient of training set
@@ -39,15 +39,15 @@
 * `Desikan_68_region_description.mat` Region description of the Desikan 68
 
 * `gene_data.mat`,`gene_spin_data.mat`,`gene_expression_data.csv`,`gene_gradient1.mat` are gene related data
-	* The scripts to generate gene expression data are from [Anderson 2020](https://www.nature.com/articles/s41467-020-16710-x)
-	* `gene_data.mat` Parcellated PVALB, SST and gene expression first principal component 
-	* `gene_spin_data.mat` 1000 spinned data for parcellated PVALB, SST and gene expression first principal component
-	* `gene_expression_data.csv` Gene expression data
-	* `gene_gradient1.mat` First principal component of gene expression data
+    * The scripts to generate gene expression data are from [Anderson 2020](https://www.nature.com/articles/s41467-020-16710-x)
+    * `gene_data.mat` Parcellated PVALB, SST and gene expression first principal component 
+    * `gene_spin_data.mat` 1000 spinned data for parcellated PVALB, SST and gene expression first principal component
+    * `gene_expression_data.csv` Gene expression data
+    * `gene_gradient1.mat` First principal component of gene expression data
 
 * `individual_input` folder contains the 12 individual data for training, validation and test
-	
-	
+
+
 ## Data in `Schaefer100_input`
 * `sc_train.csv` Group level SC matrix of training set
 * `sc_vali.csv` Group level SC matrix of validation set
@@ -74,8 +74,8 @@
 * `Schaefer_100_region_description.mat` Region description of the Desikan 68
 
 * `gene_data.mat`,`gene_spin_data.mat`,`gene_expression_data.csv` are gene related data
-	* The scripts to generate gene expression data are from [Anderson 2020](https://www.nature.com/articles/s41467-020-16710-x)
-	* `gene_data.mat` Parcellated PVALB, SST and gene expression first principal component 
-	* `gene_spin_data.mat` 1000 spinned data for parcellated PVALB, SST and gene expression first principal component 
-	* `gene_expression_data.csv` Gene expression data
-	
+    * The scripts to generate gene expression data are from [Anderson 2020](https://www.nature.com/articles/s41467-020-16710-x)
+    * `gene_data.mat` Parcellated PVALB, SST and gene expression first principal component 
+    * `gene_spin_data.mat` 1000 spinned data for parcellated PVALB, SST and gene expression first principal component 
+    * `gene_expression_data.csv` Gene expression data
+

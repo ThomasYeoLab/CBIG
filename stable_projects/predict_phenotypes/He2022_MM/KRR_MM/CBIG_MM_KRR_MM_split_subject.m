@@ -58,7 +58,7 @@ subject_list_test = subj_meta_test;
 tmp = sort(cat(1, subject_list_valid, subject_list_train, subject_list_test));
 if ~isequal(tmp, subject_list)
     disp(tmp)
-	error('subject not match during split')
+    error('subject not match during split')
 end
 
 % generate index list

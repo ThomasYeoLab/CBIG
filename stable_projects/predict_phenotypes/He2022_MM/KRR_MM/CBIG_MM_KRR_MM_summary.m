@@ -86,7 +86,7 @@ function phe_list = load_phe_from_txt(txt)
 %     #phenotypes of line, while each line is name of one phenotype.
 %
 % Outputs:
-%	- phe_list = phenotypes list
+%   - phe_list = phenotypes list
 
     fileID = fopen(txt);
     temp = textscan(fileID, '%s');
@@ -109,7 +109,7 @@ function y_pred = load_krr_base_res(data_dir, phe_list, prefix)
 %     str of the prefix for the dataset.
 %
 % Outputs:
-%	- y_pred = predicted y from kernel ridge regression
+%   - y_pred = predicted y from kernel ridge regression
 
     mat = load(fullfile(data_dir, [prefix '_rng_num_1'], 'final_result.mat'));
     y_pred = mat.y_predict_concat;

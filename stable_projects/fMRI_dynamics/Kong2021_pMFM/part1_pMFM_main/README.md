@@ -19,14 +19,13 @@
 
 # Results
 * Top 10 model parameters and their corresponding costs are store in a CSV file called `test_all.csv` in the `output/step3_test_results` folder.
-	* There are 10 columns in `test_all.csv` file. The first column contains the parameters and costs for the top 1 result; second column contains the second top result and so on.
-	* The first row represents the random initializaiton index.
-	* The second row represents the index of generating in the training process
-	* 3-5 rows represents the training FC costs, training FCD KS statistics and training total costs
-	* 6-8 rows represents the validation FC costs, validation FCD KS statistics and validation total costs
-	* 9-11 rows represents the test FC costs, test FCD KS statistics and test total costs
-	* 12-79 rows represents recurrent connection w of 68 ROIs
-	* 80-147 rows represents external input I of 68 ROIs
-	* 148 row represents global amplitude G
-	* 149-216 rows represents noise amplitude sigma of 68 ROIs
-	
+    * There are 10 columns in `test_all.csv` file. The first column contains the parameters and costs for the top 1 result; second column contains the second top result and so on.
+    * The first row represents the random initializaiton index.
+    * The second row represents the index of generating in the training process
+    * 3-5 rows represents the training FC costs, training FCD KS statistics and training total costs
+    * 6-8 rows represents the validation FC costs, validation FCD KS statistics and validation total costs
+    * 9-11 rows represents the test FC costs, test FCD KS statistics and test total costs
+    * 12-79 rows represents recurrent connection w of 68 ROIs
+    * 80-147 rows represents external input I of 68 ROIs
+    * 148 row represents global amplitude G
+    * 149-216 rows represents noise amplitude sigma of 68 ROIs

@@ -32,7 +32,7 @@ fprintf('\n[CHECK 1]\t Concatenated time matrices \n');
 disp('-------------------------------------------------------------------');
 
 if(~exist(fullfile(output_dir, 'time_data', 'rh_time_matrix.mat'), 'file'))
-	fprintf('[FAILED]\t Time matrix missing! \n');
+    fprintf('[FAILED]\t Time matrix missing! \n');
 else
     % check if lh time matrices are the same
     ref_lh_time = load(fullfile(ref_dir, 'time_data', 'lh_time_matrix.mat'));
@@ -95,7 +95,7 @@ fprintf('\n[CHECK 2]\t Premultiplied product matrices \n');
 disp('-------------------------------------------------------------------');
 
 if(~exist(fullfile(output_dir, 'mult_mat', 'rh_mult_matrix.mat'), 'file'))
-	fprintf('[FAILED]\t Premultiplied product matrix missing! \n');
+    fprintf('[FAILED]\t Premultiplied product matrix missing! \n');
     
 else
     % check if lh mult matrices are the same
@@ -164,7 +164,7 @@ prefix = 'Graph_Cut_faster__grad_prior_gordon_cluster_20_datacost_1_smoothcost_1
 file_seed2 = [prefix, '_seed_2_rh_reduction_iteration_1.mat'];
 
 if(~exist(fullfile(output_dir, 'clustering', 'inbetween_results', file_seed2), 'file'))
-	fprintf('[FAILED]\t Parcellation result missing! \n');
+    fprintf('[FAILED]\t Parcellation result missing! \n');
 else
     % start comparing seed 2
     ref_seed_2 = load(fullfile(ref_dir, 'clustering', 'inbetween_results', file_seed2));

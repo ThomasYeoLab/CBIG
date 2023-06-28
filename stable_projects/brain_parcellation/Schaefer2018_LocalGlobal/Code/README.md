@@ -55,17 +55,17 @@ Parameters
 ==========
 1) Input arguments for the wrapper function `CBIG_gwMRF_build_data_and_perform_clustering.m`
 
-  * `input_fullpaths`=	a file containing full paths to all subjects' surf data, each line represents a subject with different runs;
-  * `output_path`=	path to where output files will be written;
-  * `start_idx`=	for selecting subsets in the subject list, this will be the start index;
-  * `end_idx`=		for selecting subsets in the subject list, this will be the end index;
+  * `input_fullpaths`=  a file containing full paths to all subjects' surf data, each line represents a subject with different runs;
+  * `output_path`=      path to where output files will be written;
+  * `start_idx`=        for selecting subsets in the subject list, this will be the start index;
+  * `end_idx`=          for selecting subsets in the subject list, this will be the end index;
   * `num_left_cluster`= number of cluster on the left hemisphere;
-  * `num_righ_cluster`=	number of cluster for the right hemisphere;
-  * `smoothcost`=	weight for the smoothness in the MRF, the higher this value the more the gradient prior will be weighted in the optimization, see the paper for more details;
-  * `num_iterations`=	number of iterations for each random initializations, it might stop earlier if the energy change is too small;
-  * `num_runs`=		number of random initializations;
-  * `start_gamma`=	this is the initial gamma, a roundness prior, the higher this value is the more round the parcells will be;
-  * `exponential`=	this controls the steepnes of the gradient prior function (exp(-k * gradient) - exp(-k)). The higher the value the less stringent the gradient prior map will be.
+  * `num_righ_cluster`= number of cluster for the right hemisphere;
+  * `smoothcost`=       weight for the smoothness in the MRF, the higher this value the more the gradient prior will be weighted in the optimization, see the paper for more details;
+  * `num_iterations`=   number of iterations for each random initializations, it might stop earlier if the energy change is too small;
+  * `num_runs`=         number of random initializations;
+  * `start_gamma`=      this is the initial gamma, a roundness prior, the higher this value is the more round the parcells will be;
+  * `exponential`=      this controls the steepnes of the gradient prior function (exp(-k * gradient) - exp(-k)). The higher the value the less stringent the gradient prior map will be.
 
 2) Parameters defined in `CBIG_gwMRF_set_prams.m`
 
@@ -73,13 +73,13 @@ You can set many parameters for the clustering process in `CBIG_gwMRF_set_prams.
 
 Here we will explain some of the most commonly changed parameters, the rest you should rather leave as default or read in `CBIG_gwMRF_set_prams.m`.
 
-  * `dim`=		the dimensionality of the original timeseries data, needed for premultiplicated input data;
-  * `lh_avg_file`=	input data for the left hemisphere;
-  * `rh_avg_file`=	input data for the right hemisphere;
-  * `pca`=		1 if you want to use premultiplied data; (the term pca is misleading, should be named premultiplied)
-  * `first_gamma`=	the first value gamma will be increased to; (to enforce a certain number of parcels, gamma might need to be increased)
-  * `reduce_gamma`=	1 if you want to iteratively decrease gamma;
-  * `reduce_speed`=	how fast the gamma will be reduced, in this case gamma'=gamma * 1/5.
+  * `dim`=              the dimensionality of the original timeseries data, needed for premultiplicated input data;
+  * `lh_avg_file`=      input data for the left hemisphere;
+  * `rh_avg_file`=      input data for the right hemisphere;
+  * `pca`=              1 if you want to use premultiplied data; (the term pca is misleading, should be named premultiplied)
+  * `first_gamma`=      the first value gamma will be increased to; (to enforce a certain number of parcels, gamma might need to be increased)
+  * `reduce_gamma`=     1 if you want to iteratively decrease gamma;
+  * `reduce_speed`=     how fast the gamma will be reduced, in this case gamma'=gamma * 1/5.
 
 ----
 

@@ -75,7 +75,7 @@ function CBIG_MM_KRR_classical(CBIG_CODE_DIR, subject_list, phe_csv, FC_file, ou
     % get output directory
     data_output_dir = fullfile(output_dir, ['output_phe_' phe]);
     if ~exist(data_output_dir, 'dir')
-       mkdir(data_output_dir)
+        mkdir(data_output_dir)
     end
 
     % get matrix of phenotype
@@ -120,7 +120,7 @@ function CBIG_MM_KRR_classical(CBIG_CODE_DIR, subject_list, phe_csv, FC_file, ou
 
         data_dir = fullfile(data_output_dir, [pre_fix '_' phe '_k_' k '_rng_num_' num2str(rng_num)]);
         if ~exist(data_dir, 'dir')
-           mkdir(data_dir)
+            mkdir(data_dir)
         end
 
         % check result file, if already have, pass this rng
@@ -209,7 +209,7 @@ function ret = znorm(y, ind)
 %     array of index for y to calculate mean and std for z normalization. 
 %
 % Outputs:
-%	- ret = z normalized y
+%   - ret = z normalized y
     if isvector(y)
         y_tra = y(ind==0);
     else

@@ -18,13 +18,13 @@ output="${rep_dir}/output_KRR_classical_ukbb"
 
 # Run KRR by submitting job
 for k in "${ks[@]}"; do
-	while read p; do
-		n_job="$(qstat -u the | wc -l)"
-		while [ $n_job -gt 50 ]; do
-			echo $n_job large than 50, sleep for 1 mins
-			sleep 1m
-			n_job="$(qstat -u the | wc -l)"
-		done
-		sh CBIG_MM_KRR_classical_submit_job.sh $p $output $phe_csv $code_dir $k $split $subj_list $fc_mat
-	done <$final_phe_list
+    while read p; do
+        n_job="$(qstat -u the | wc -l)"
+        while [ $n_job -gt 50 ]; do
+            echo $n_job large than 50, sleep for 1 mins
+            sleep 1m
+            n_job="$(qstat -u the | wc -l)"
+        done
+        sh CBIG_MM_KRR_classical_submit_job.sh $p $output $phe_csv $code_dir $k $split $subj_list $fc_mat
+    done <$final_phe_list
 done

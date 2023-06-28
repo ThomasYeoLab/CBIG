@@ -1,8 +1,8 @@
 #!/bin/bash
 #####
 # Example: 
-#	$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG2022_DiffProc/MRtrix/ \
-#		CBIG_DiffProc_tractography_4_del_tractograms.sh $subj_list $output_dir
+#    $CBIG_CODE_DIR/stable_projects/preprocessing/CBIG2022_DiffProc/MRtrix/ \
+#        CBIG_DiffProc_tractography_4_del_tractograms.sh $subj_list $output_dir
 #
 # This script removes tractograms produced by the CBIG MRtrix pipeline to save storage space. A list of 
 # subjects and the output directory is required 
@@ -27,16 +27,16 @@ cd tmp
 
 # remove all files except for connectomes folder
 cat $list | while read subject; do
-	sub=$( echo $subject | tr -d '\r' )
-	echo $sub
-	if [ -e $output_dir/$sub ]; then
-		cd $output_dir/$sub
-		echo "Deleting tractogram for subj ID: $sub"
-		ls | grep -v "connectomes" | xargs rm -r
-		cd $curr_dir
-	else
-		echo "WARNING: Could not find directory"
-	fi
+    sub=$( echo $subject | tr -d '\r' )
+    echo $sub
+    if [ -e $output_dir/$sub ]; then
+        cd $output_dir/$sub
+        echo "Deleting tractogram for subj ID: $sub"
+        ls | grep -v "connectomes" | xargs rm -r
+        cd $curr_dir
+    else
+        echo "WARNING: Could not find directory"
+    fi
 done
 
 # remove tmp directory

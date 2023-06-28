@@ -15,7 +15,7 @@ output_dir=${1}
 output_file="${output_dir}/unit_tests_input_fullpaths_short.csv"
 
 if [ -f ${output_file} ]; then
-	rm ${output_file}
+    rm ${output_file}
 fi
 touch ${output_file}
 
@@ -33,24 +33,24 @@ subject_list=$( ls | grep Sub )
 for subject in "Sub0734_Ses1" "Sub0207_Ses1"
 do
 
-	data_stem_002="lh.${subject}_bld002_rest_reorient_skip_faln_mc_g1000000000_bpss_resid_fsaverage6_sm6.nii.gz"
-	data_stem_003="lh.${subject}_bld003_rest_reorient_skip_faln_mc_g1000000000_bpss_resid_fsaverage6_sm6.nii.gz"
+    data_stem_002="lh.${subject}_bld002_rest_reorient_skip_faln_mc_g1000000000_bpss_resid_fsaverage6_sm6.nii.gz"
+    data_stem_003="lh.${subject}_bld003_rest_reorient_skip_faln_mc_g1000000000_bpss_resid_fsaverage6_sm6.nii.gz"
 
-	full_path_002="${data_dir}/${subject}/surf/${data_stem_002}"
-	full_path_003="${data_dir}/${subject}/surf/${data_stem_003}"
+    full_path_002="${data_dir}/${subject}/surf/${data_stem_002}"
+    full_path_003="${data_dir}/${subject}/surf/${data_stem_003}"
 
-	if [ -f "${full_path_002}" ] && [ -f "${full_path_003}" ]; then
-		echo -n "${full_path_002} " >> ${output_file}
-		echo -e "${full_path_003}" >> ${output_file}
-	fi
-	
-	if [ -f "${full_path_002}" ] && [ ! -f "${full_path_003}" ]; then
-		echo -e "${full_path_002}" >> ${output_file}
-	fi
+    if [ -f "${full_path_002}" ] && [ -f "${full_path_003}" ]; then
+        echo -n "${full_path_002} " >> ${output_file}
+        echo -e "${full_path_003}" >> ${output_file}
+    fi
 
-	if [ ! -f "${full_path_002}" ] && [ -f "${full_path_003}" ]; then
-		echo -e "${full_path_003}" >> ${output_file}
-	fi
+    if [ -f "${full_path_002}" ] && [ ! -f "${full_path_003}" ]; then
+        echo -e "${full_path_002}" >> ${output_file}
+    fi
+
+    if [ ! -f "${full_path_002}" ] && [ -f "${full_path_003}" ]; then
+        echo -e "${full_path_003}" >> ${output_file}
+    fi
 
 done
 
