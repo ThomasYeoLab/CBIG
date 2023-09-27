@@ -2,12 +2,12 @@ function ras = CBIG_ConvertVox2Ras(vox, vox2ras)
 
 % Convert Voxel coordinate to RAS coordinate.
 % 
-% 	ras = CBIG_ConvertVox2Ras(vox, vox2ras)
-% 	Input:
-% 		vox		: voxel coordinate. 3 x N matrix, where N is num of points.
-% 		vox2ras	: vox2ras matrix. 4 x 4 matrix, included in nifti file
-% 	Output:
-% 		ras		: RAS coordinate. 3 x N matrix, where N is num of points.
+%     ras = CBIG_ConvertVox2Ras(vox, vox2ras)
+%     Input:
+%         vox        : voxel coordinate. 3 x N matrix, where N is num of points.
+%         vox2ras    : vox2ras matrix. 4 x 4 matrix, included in nifti file
+%     Output:
+%         ras        : RAS coordinate. 3 x N matrix, where N is num of points.
 %
 % PS: vox is arranged in Freeview sequence, therefore mat(i, j, k) is
 % equivalent to vox (x,y,z) = (j-1, i-1, k-1)

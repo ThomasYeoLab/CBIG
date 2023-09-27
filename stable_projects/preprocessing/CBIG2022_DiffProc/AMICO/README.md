@@ -12,10 +12,10 @@ Please install the AMICO package in your python environment prior to running the
 
 - Preparation prior to AMICO
 
-  Prior to AMICO, please place the diffusion images, bval and bvec files in a single folder. Diffusion files should be named as ${subject_id}.nii.gz
-  Bval and bvec files should have the same root name as the diffusion files (i.e. ${subject_id).bval). Additionally, if you have a path of b=0 mask
-  files, you can specify it in order to skip the b=0 mask calculation step. Each subject should have it's own folder in the mask directory and be  
-  named as ${subject_id}_bet_b0_mask.nii.gz. The file structure for the diffusion image directory should be as follows: 
+  Prior to AMICO, please place the diffusion images, bval and bvec files in a single folder. Diffusion files should be named as `${subject_id}.nii.gz`
+  Bval and bvec files should have the same root name as the diffusion files (i.e. `${subject_id).bval`). Additionally, if you have a path of b=0 mask
+  files, you can specify it in order to skip the b=0 mask calculation step. Each subject should have it's own folder in the mask directory and be named 
+  as `${subject_id}_bet_b0_mask.nii.gz`. The file structure for the diffusion image directory should be as follows: 
 
 ```
 Diffusion input directory (dwi_dir)
@@ -30,7 +30,7 @@ mask directory (mask_output_dir)
 |-- sub-1
 |-- sub-2
 |-- sub-3
-    |-- sub-1_bet_b0_mask.nii.gz.nii.gz
+    |-- sub-1_bet_b0_mask.nii.gz
 
 ```
 

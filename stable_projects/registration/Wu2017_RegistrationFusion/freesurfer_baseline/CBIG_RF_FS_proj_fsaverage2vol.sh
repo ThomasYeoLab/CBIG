@@ -60,32 +60,32 @@ Usage: $0 -l <input_list> -f <fs_type> -s <template_sub_id> -d <template_sub_dir
 This script projecs input(s) from fsaverage surface to a volumetric atlas space using Affine or MNIsurf/Colinsurf approach.
 
 REQUIRED ARGUMENTS:
-	-l <input_list> 	absolute path to file containing input data file names. Each line in the file should contain one file name. Note that the inputs should be in .mat format, containing two variables 'lh_label' and 'rh_label', corresponding to the input data in left and right hemispheres respectively.
+  -l <input_list>   absolute path to file containing input data file names. Each line in the file should contain one file name. Note that the inputs should be in .mat format, containing two variables 'lh_label' and 'rh_label', corresponding to the input data in left and right hemispheres respectively.
 
 OPTIONAL ARGUMENTS:
-	-f <fs_type>            type of FS baseline approach to use (Affine or MNIsurf/Colinsurf). For Colinsurf, also call MNIsurf.
-				[ default: MNIsurf ]
-	-s <template_sub_id>	subject ID of the volumetric template used in recon-all
-				[ default: FSL_MNI152_FS4.5.0 ]
-	-d <template_sub_dir>	SUBJECTS_DIR of the volumetric template's recon-all results
-				[ default: $CBIG_CODE_DIR/data/templates/volume/ ]
-	-i <interp> 		interpolation (trilinear or nearest)
-				[ default: nearest ]
-	-c <cortical_mask> 	absolute path to liberal cortical mask. This should be a binary mask that loosely defines the cortex of the volumetric atlas space. The shape of the mask will determine the shape of the output.
-				[ default: $DEFAULT_MASK ]
-	-o <output_dir> 	absolute path to output directory
-				[ default: $(pwd)/results/projected_fsaverage2vol ]
-	-h			display help message
+  -f <fs_type>            type of FS baseline approach to use (Affine or MNIsurf/Colinsurf). For Colinsurf, also call MNIsurf.
+        [ default: MNIsurf ]
+  -s <template_sub_id>  subject ID of the volumetric template used in recon-all
+        [ default: FSL_MNI152_FS4.5.0 ]
+  -d <template_sub_dir>  SUBJECTS_DIR of the volumetric template's recon-all results
+        [ default: $CBIG_CODE_DIR/data/templates/volume/ ]
+  -i <interp>     interpolation (trilinear or nearest)
+        [ default: nearest ]
+  -c <cortical_mask>   absolute path to liberal cortical mask. This should be a binary mask that loosely defines the cortex of the volumetric atlas space. The shape of the mask will determine the shape of the output.
+        [ default: $DEFAULT_MASK ]
+  -o <output_dir>   absolute path to output directory
+        [ default: $(pwd)/results/projected_fsaverage2vol ]
+  -h      display help message
 
 OUTPUTS:
-	$0 will create 2 files for each input, corresponding to the projected data in the volumetric atlas sapce and the projected data in segmentation form (with left hemisphere values starting from 0 and right hemisphere values starting from 1000). 
-	For example: 
-		input_name.fsaverage_to_FSL_MNI152_FS4.5_Affine.nii.gz
-		seg.input_name.fsaverage_to_FSL_MNI152_FS4.5_Affine.nii.gz
+  $0 will create 2 files for each input, corresponding to the projected data in the volumetric atlas sapce and the projected data in segmentation form (with left hemisphere values starting from 0 and right hemisphere values starting from 1000). 
+  For example: 
+    input_name.fsaverage_to_FSL_MNI152_FS4.5_Affine.nii.gz
+    seg.input_name.fsaverage_to_FSL_MNI152_FS4.5_Affine.nii.gz
 
 EXAMPLE:
-	$0 -l my_data_list.csv
-	$0 -l my_data_list.csv -s SPM_Colin27_FS4.5.0 -n 50
+  $0 -l my_data_list.csv
+  $0 -l my_data_list.csv -s SPM_Colin27_FS4.5.0 -n 50
 
 " 1>&2; exit 1; }
 

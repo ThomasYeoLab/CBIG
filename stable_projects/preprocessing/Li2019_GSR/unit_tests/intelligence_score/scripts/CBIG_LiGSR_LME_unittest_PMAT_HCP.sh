@@ -14,7 +14,7 @@ echo $curr_dir
 echo $work_dir
 
 if [ ! -d $work_dir ]; then
-	mkdir -p $work_dir
+    mkdir -p $work_dir
 fi
 
 cd $work_dir
@@ -38,22 +38,22 @@ rmsub_prefix="subjects953_unrelated419"
 top_outdir=$1
 
 for pipeline in GSR Baseline; do
-	RSFC_file=$test_dir/RSFC_953_unrelated_419_Fisher_${pipeline}.mat
-	outdir=$top_outdir/$pipeline
-	
-	cog_list="$replication_dir/scripts/HCP_lists/PMAT24.txt"
-	covariate_list="$replication_dir/scripts/HCP_lists/covariates.txt"
-	ystem=PMAT24
-	
-	log_file="${top_outdir}/CBIG_LiGSR_LME_unittest_PMAT_HCP_${pipeline}.log"
-	cmd="$project_dir/VarianceComponentModel/scripts/CBIG_LiGSR_LME_workflowHCP.sh -RSFC_file $RSFC_file -trait_list "
-	cmd="$cmd $cog_list -covariate_list $covariate_list -FD_file $FD_file -DVARS_file $DVARS_file -subject_list "
-	cmd="$cmd $subject_list -outdir $outdir -ystem $ystem -d $d -num_samples $num_samples -rmsub_prefix $rmsub_prefix"
-	cmd="$cmd -restricted_csv $restricted_csv -unrestricted_csv $unrestricted_csv"
+    RSFC_file=$test_dir/RSFC_953_unrelated_419_Fisher_${pipeline}.mat
+    outdir=$top_outdir/$pipeline
+
+    cog_list="$replication_dir/scripts/HCP_lists/PMAT24.txt"
+    covariate_list="$replication_dir/scripts/HCP_lists/covariates.txt"
+    ystem=PMAT24
+
+    log_file="${top_outdir}/CBIG_LiGSR_LME_unittest_PMAT_HCP_${pipeline}.log"
+    cmd="$project_dir/VarianceComponentModel/scripts/CBIG_LiGSR_LME_workflowHCP.sh -RSFC_file $RSFC_file -trait_list "
+    cmd="$cmd $cog_list -covariate_list $covariate_list -FD_file $FD_file -DVARS_file $DVARS_file -subject_list "
+    cmd="$cmd $subject_list -outdir $outdir -ystem $ystem -d $d -num_samples $num_samples -rmsub_prefix $rmsub_prefix"
+    cmd="$cmd -restricted_csv $restricted_csv -unrestricted_csv $unrestricted_csv"
     cmd="$cmd | tee -a ${log_file}"
 
     $CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "$cmd" -walltime 1:00:00 -mem 4G \
     -name "LiGSRUT_ME"
 
-	sleep 3s
+    sleep 3s
 done

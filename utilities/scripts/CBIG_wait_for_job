@@ -16,15 +16,15 @@
 
 while getopts "n:" arg
 do
-        case $arg in
-             n)
-	        job=$OPTARG
-                ;;
-             ?)
-	        echo "Unknown argument"
-	        exit 1
-	        ;;
-        esac
+    case $arg in
+        n)
+            job=$OPTARG
+            ;;
+        ?)
+            echo "Unknown argument"
+            exit 1
+            ;;
+    esac
 done
 
 user=`whoami`
@@ -33,7 +33,7 @@ user=`whoami`
 echo "Waiting for job ${job}..."
 job_num=`qstat | grep -E ''${user}'' | grep -E ''${job}'' | wc -l`
 while [ ${job_num} -gt 0 ];do
-        sleep 60s
-        job_num=`qstat | grep -E ''${user}'' | grep -E ''${job}'' | wc -l`
+    sleep 60s
+    job_num=`qstat | grep -E ''${user}'' | grep -E ''${job}'' | wc -l`
 done
 echo "Job ${job} is finished."

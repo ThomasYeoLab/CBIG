@@ -2,15 +2,15 @@ function [adj, sz_links] = CBIG_components_subgraphs(adj)
 
 % Script to get components sub-graph. 
 % 
-% 	function [adj, sz_links] = CBIG_components_subgraphs(adj)
-% 	Input:
-%		adj:adjacency matrix with values going from 1 to number of components with
-% 			more than 1 node. The script assues that the adj matrix is a symmetric 
-%			matrix.
-%	Output:
-%		adj:adjacency matrix 
-% 		sz_links: the size of components edge-links, that is, the number of edges 
-%			it comprises.
+%     function [adj, sz_links] = CBIG_components_subgraphs(adj)
+%     Input:
+%        adj:adjacency matrix with values going from 1 to number of components with
+%            more than 1 node. The script assues that the adj matrix is a symmetric 
+%            matrix.
+%    Output:
+%        adj:adjacency matrix 
+%        sz_links: the size of components edge-links, that is, the number of edges 
+%            it comprises.
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 

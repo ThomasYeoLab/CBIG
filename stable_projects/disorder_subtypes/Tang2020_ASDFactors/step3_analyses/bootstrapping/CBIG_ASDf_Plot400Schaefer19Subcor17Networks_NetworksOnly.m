@@ -1,22 +1,22 @@
 function blks_mean = CBIG_ASDf_Plot400Schaefer19Subcor17Networks_NetworksOnly(corr_mat_row, ...
-scalelim, filename_prefix, is_sum)
-% blks_mean = CBIG_ASDf_Plot400Schaefer19Subcor17Networks_NetworksOnly(corr_mat_row, 
+    scalelim, filename_prefix, is_sum)
+% blks_mean = CBIG_ASDf_Plot400Schaefer19Subcor17Networks_NetworksOnly(corr_mat_row,
 % scalelim, filename_prefix, is_sum)
-% 
+%
 % Plots 18x18 matrix by averaging/summing within/between networks in
 % 419x419 matrix. For details about the 419x419 matrix, refer to
 % CBIG_ASDf_Plot400Schaefer19Subcor17Networks.
-% 
+%
 % Input:
 %     - corr_mat_row:
 %           1 x 87571 row vector, lower triangular entries in 419x419
-%           correlation matrix.           
+%           correlation matrix.
 %     - scalelim (optional):
-%           Min and max scale limit 
-%           If not specified, or specified as [], scale limit is 
+%           Min and max scale limit
+%           If not specified, or specified as [], scale limit is
 %           from -1*max(abs(corr_mat)) to max(abs(corr_mat)).
 %     - filename_prefix (optional):
-%           Prefix of the saved file name 
+%           Prefix of the saved file name
 %           If not specified, figure will not be saved.
 %     - is_sum (optional):
 %           Boolean. If True, values within/between networks will be summed,
@@ -27,8 +27,8 @@ scalelim, filename_prefix, is_sum)
 %           networks in input corr_mat_row 419x419 matrix.
 %
 % Example:
-%       CBIG_ASDf_Plot400Schaefer19Subcor17Networks_NetworksOnly(corr_mat_row, 
-%          [-1.6e-5 1.6e-5], 'factor1_byNetworks', false)
+%       CBIG_ASDf_Plot400Schaefer19Subcor17Networks_NetworksOnly(corr_mat_row,
+%           [-1.6e-5 1.6e-5], 'factor1_byNetworks', false)
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
@@ -68,7 +68,7 @@ for j = 1:num_blks
         x_end = blk_grid(i);
         
         block = corr_mat(x_start:x_end,y_start:y_end);
-     
+        
         if is_sum
             block_mean = sum(block(:));
         else
@@ -93,7 +93,7 @@ load corr_mat_colorscale.mat;
 
 % Plot corr_mat using imagesc
 figure; imagesc(corr_mat_net_thresh); set(gcf,'Colormap',rbmap2);
-    
+
 % Generate thin grid lines
 [xline, yline, ymaj] = generateline(size(corr_mat_net_thresh,1));
 
@@ -113,10 +113,10 @@ cpos(2)=cpos(2) - 0.12; % Move it down outside the plot
 set(hcol,'Position',cpos);
 
 
-% Set color limit 
+% Set color limit
 if ((nargin < 2) || (isempty(scalelim)))
-	collim = max(max(abs(corr_mat_net_thresh)));
-	scalelim = [-1*collim, 1*collim];
+    collim = max(max(abs(corr_mat_net_thresh)));
+    scalelim = [-1*collim, 1*collim];
 end
 
 set(gca, 'CLim', scalelim);
@@ -127,18 +127,18 @@ axis([-5 size(corr_mat_net_thresh, 1)+5.5 -5 size(corr_mat_net_thresh, 1)+5.5]);
 set(gca, 'Visible', 'off')
 set(gcf, 'color', 'white');
 
-% Generate major and minor gridlines 
+% Generate major and minor gridlines
 patch(xline(:,subcor_grid), yline(:,subcor_grid),'w', 'edgecolor', 'w', 'Linewidth', 0.005, 'EdgeAlpha', 0.2);
 patch(yline(:,subcor_grid), xline(:,subcor_grid),'w', 'edgecolor', 'w', 'Linewidth', 0.005, 'EdgeAlpha', 0.2);
 patch(xline(:,minor_grid), yline(:,minor_grid),'w', 'edgecolor', 'w', 'Linewidth', 0.3, 'EdgeAlpha', 0.9);
 patch(yline(:,minor_grid), xline(:,minor_grid),'w', 'edgecolor', 'w', 'Linewidth', 0.3, 'EdgeAlpha', 0.9);
 patch(xline(:,major_grid), ymaj(:,major_grid),'w', 'edgecolor', 'w', 'Linewidth', 1.1);
 patch(ymaj(:,major_grid), xline(:,major_grid),'w', 'edgecolor', 'w', 'Linewidth', 1.1);
-    
+
 % save figure
 if ((nargin > 2) && ~isempty(filename_prefix))
     filenamefin = [filename_prefix '_minsc' num2str(scalelim(1), '%.1e') '_maxsc' num2str(scalelim(2), '%.1e') '.jpg'];
-    set(gcf, 'PaperPositionMode', 'auto','Renderer', 'ZBuffer'); 
+    set(gcf, 'PaperPositionMode', 'auto','Renderer', 'ZBuffer');
     print(gcf, '-djpeg', '-r600', filenamefin);
     close all
 end
@@ -159,7 +159,7 @@ function [Index, major_grid, minor_grid, subcor_grid] = LabelsRearrangebyNetwork
 
 % load original cortical networks labels
 networks_path = fullfile(getenv('CBIG_CODE_DIR'), ...
-'stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Parcellations/FreeSurfer5.3/fsaverage5/label/');
+    'stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Parcellations/FreeSurfer5.3/fsaverage5/label/');
 lh_annot_file = [networks_path 'lh.Schaefer2018_400Parcels_17Networks_order.annot'];
 rh_annot_file = [networks_path 'rh.Schaefer2018_400Parcels_17Networks_order.annot'];
 [lh_vertex_labels, lh_colortable] = CBIG_read_annotation(lh_annot_file);
@@ -170,10 +170,10 @@ rh_label = rh_colortable.struct_names(2:end);
 
 % hard-coded, assuming the original input subcortical labels are in ascending order
 subcor_labelname = {'Cerebellum_Left';'Thalamus_Left';'Caudate_Left';'Putamen_Left';'Pallidum_Left'; ...
-'BrainStem';'Hippocampus_Left';'Amygdala_Left';'Accumbens_Left'; ...
-'DiencephalonVentral_Left';'Cerebellum_Right';'Thalamus_Right'; ...
-'Caudate_Right';'Putamen_Right';'Pallidum_Right';'Hippocampus_Right'; ...
-'Amygdala_Right';'Accumbens_Right';'DiencephalonVentral_Right'};
+    'BrainStem';'Hippocampus_Left';'Amygdala_Left';'Accumbens_Left'; ...
+    'DiencephalonVentral_Left';'Cerebellum_Right';'Thalamus_Right'; ...
+    'Caudate_Right';'Putamen_Right';'Pallidum_Right';'Hippocampus_Right'; ...
+    'Amygdala_Right';'Accumbens_Right';'DiencephalonVentral_Right'};
 
 major_grid = [];
 minor_grid = [];
@@ -198,19 +198,19 @@ for i = 1:numel(all_label)
             all_subnet(i,1) = subnet;
         end
         
-    % subcortical    
+    % subcortical
     else
         netw = textscan(char(all_label(i,1)),'%s %s', 'delimiter', '_');
-        all_netw(i,1) = netw{1,1};       
+        all_netw(i,1) = netw{1,1};
     end
 end
 
 % arrange new labels based on template order
 tmplate = {'TempPar'; 'DefaultC'; 'DefaultB';'DefaultA'; 'ContC'; 'ContB'; ...
-'ContA'; 'LimbicA'; 'LimbicB'; 'SalVentAttnB'; 'SalVentAttnA'; 'DorsAttnB'; 'DorsAttnA'; ...
-'SomMotB'; 'SomMotA'; 'VisPeri'; 'VisCent'; 'Accumbens'; 'Caudate'; ...
-'Pallidum'; 'Putamen'; 'Thalamus'; 'Amygdala'; 'Hippocampus'; 'BrainStem'; ...
-'DiencephalonVentral'; 'Cerebellum'};
+    'ContA'; 'LimbicA'; 'LimbicB'; 'SalVentAttnB'; 'SalVentAttnA'; 'DorsAttnB'; 'DorsAttnA'; ...
+    'SomMotB'; 'SomMotA'; 'VisPeri'; 'VisCent'; 'Accumbens'; 'Caudate'; ...
+    'Pallidum'; 'Putamen'; 'Thalamus'; 'Amygdala'; 'Hippocampus'; 'BrainStem'; ...
+    'DiencephalonVentral'; 'Cerebellum'};
 %tmplate2 = {'TempPole'; 'OFC'};
 
 newlabel = [];
@@ -227,14 +227,14 @@ for j = 1:numel(tmplate)
 %                ind2 = [ind2; ind(find(strcmp(tmplate2(s), all_subnet(ind))))];
 %                minor_grid = [minor_grid curInd+size(ind2,1)];
 %            end
-%            
+%
 %        end
 %        if numel(ind) ~= numel(ind2)
 %            disp('Wrong Index')
 %        end
 %        ind = ind2;
 %    end
-
+    
     curInd = curInd+size(ind,1);
     
     if (j~=numel(tmplate))

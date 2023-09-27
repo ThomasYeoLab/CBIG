@@ -17,8 +17,8 @@ Usage: $0 -i <input_dir> -f <feature_file> -s <sub_fold> -n <num_score> -o <outd
     - outdir        Output directory
     - model         regression model. Choose from singleKRR, multiKRR, and LRR
     - cluster       (Optional) if you do not have a cluster, put it as "none", then the computation will
-		    run serially (potentially very slow!) for each behavior. If you have a cluster, put
-		    your cluster name and the function submit parallel jobs to your cluster
+                    run serially (potentially very slow!) for each behavior. If you have a cluster, put
+                    your cluster name and the function submit parallel jobs to your cluster
 " 1>&2; exit 1; }
 
 # Reading in parameters
@@ -36,7 +36,7 @@ while getopts ":i:f:s:n:o:m:c:" opt; do
 done
 shift $((OPTIND-1))
 if [ -z "${input_dir}" ] || [ -z "${feature_file}" ] || [ -z "${sub_fold}" ] || \
-     [ -z "${num_score}" ] || [ -z "${model}" ] || [ -z "${outdir}" ] ; then
+    [ -z "${num_score}" ] || [ -z "${model}" ] || [ -z "${outdir}" ] ; then
     echo Missing Parameters!
     usage
 fi
@@ -66,9 +66,9 @@ do
 
         cmd="${scripts_dir}/CBIG_TRBPC_PFM_job.sh $input_dir $feature_file $sub_fold $score_ind $outdir $model"
         errfile=${outdir}/job_err_out/${model}_PFM_score${score_ind}.err
-	outfile=${outdir}/job_err_out/${model}_PFM_score${score_ind}.out
-	${CBIG_CODE_DIR}/setup/CBIG_pbsubmit -walltime 20:00:0 -mem 24gb -joberr ${errfile} -jobout ${outfile}\
-		 -cmd "${cmd}" -name TRBPC_PFM
+        outfile=${outdir}/job_err_out/${model}_PFM_score${score_ind}.out
+        ${CBIG_CODE_DIR}/setup/CBIG_pbsubmit -walltime 20:00:0 -mem 24gb -joberr ${errfile} -jobout ${outfile}\
+            -cmd "${cmd}" -name TRBPC_PFM
 
     fi
 done

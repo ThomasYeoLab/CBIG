@@ -9,25 +9,27 @@
 # Usage
 usage() { echo "
 Usage: $0 -b <brainList> -o <outDir> -t <brainList_tmp> [-q <queue>]
-	- brainList		Text file with each line being the path to a brain image; e.g., ~/outputs/VBM/brainList.txt
-	- brainList_tmp		(Optional) subset of brainList indicating which brains to include in constructing the study-specific template; if not provided, all will be included
-	- queue			(Optional) if you have a cluster, use it to specify the queue to which you want to qsub these jobs; if not provided, jobs will run serially (potentially very slow!)
+    - brainList         Text file with each line being the path to a brain image; e.g., ~/outputs/VBM/brainList.txt
+    - brainList_tmp     (Optional) subset of brainList indicating which brains to include in constructing 
+                        the study-specific template; if not provided, all will be included
+    - queue             (Optional) if you have a cluster, use it to specify the queue to which you want 
+                        to qsub these jobs; if not provided, jobs will run serially (potentially very slow!)
 " 1>&2; exit 1; }
 
 # Reading in parameters
 while getopts ":b:o:t:q:" opt; do
-	case "${opt}" in
-		b) brainList=${OPTARG};;
-        	o) outDir=${OPTARG};;
-        	t) brainList_tmp=${OPTARG};;
-        	q) queue=${OPTARG};;
-       		*) usage;;
-    	esac
+    case "${opt}" in
+        b) brainList=${OPTARG};;
+        o) outDir=${OPTARG};;
+        t) brainList_tmp=${OPTARG};;
+        q) queue=${OPTARG};;
+        *) usage;;
+    esac
 done
 shift $((OPTIND-1))
 if [ -z "${brainList}" ] || [ -z "${outDir}" ] || [ -z "${brainList_tmp}" ]; then
-	echo Missing Parameters!
-	usage
+    echo Missing Parameters!
+    usage
 fi
 
 ###########################################
@@ -45,16 +47,17 @@ outDir=$(readlink ${outDir} -f)/
 brainList_tmp=$(readlink ${brainList_tmp} -f)
 
 for brain in `cat ${brainList}`; do
-	tmpVar="${brain##*/}" # discard everything before /
-	filename="${tmpVar%.nii.gz}" # discard the extension
-	if [ -z "${queue}" ]; then
-		export outDir brainList_tmp brain filename
-		./CBIG_step1_segGM_job.sh
-	else
-		logDir=${outDir}logs/
-		mkdir -p ${logDir}
-		qsub -q ${queue} -v outDir=${outDir},brainList_tmp=${brainList_tmp},brain=${brain},filename=${filename} -o ${logDir}${filename}.out -e ${logDir}${filename}.err ./CBIG_step1_segGM_job.sh
-	fi
+    tmpVar="${brain##*/}" # discard everything before /
+    filename="${tmpVar%.nii.gz}" # discard the extension
+    if [ -z "${queue}" ]; then
+        export outDir brainList_tmp brain filename
+        ./CBIG_step1_segGM_job.sh
+    else
+        logDir=${outDir}logs/
+        mkdir -p ${logDir}
+        qsub -q ${queue} -v outDir=${outDir},brainList_tmp=${brainList_tmp},brain=${brain},filename=${filename} \
+            -o ${logDir}${filename}.out -e ${logDir}${filename}.err ./CBIG_step1_segGM_job.sh
+    fi
 done
 ./CBIG_waitUntilFinished.sh ${outDir}GMList.txt ${brainList}
 

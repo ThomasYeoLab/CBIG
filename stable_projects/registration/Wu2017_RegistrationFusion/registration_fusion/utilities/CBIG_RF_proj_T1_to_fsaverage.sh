@@ -30,12 +30,12 @@ Usage: $0 input output_dir output_prefix sub_dir sub_id
 
 This script projects an input volume to fsaverage surface using FreeSurfer's mri_vol2surf
 
-	<input>		absolute path to input volume
-	<output_dir>	absolute path to output directory
-	<output_prefix>	prefix for output warps. For example, the left hemisphere output is named lh.output_prefix_to_fsaverage.nii.gz
-	<sub_dir> 	SUBJECTS_DIR of the input's recon-all results
-	<sub_id> 	Subject ID of the input used in recon-all
-	
+  <input>    absolute path to input volume
+  <output_dir>  absolute path to output directory
+  <output_prefix>  prefix for output warps. For example, the left hemisphere output is named lh.output_prefix_to_fsaverage.nii.gz
+  <sub_dir>   SUBJECTS_DIR of the input's recon-all results
+  <sub_id>   Subject ID of the input used in recon-all
+  
 " 1>&2; exit 1; }
 
 #Display help message if no argument is supplied

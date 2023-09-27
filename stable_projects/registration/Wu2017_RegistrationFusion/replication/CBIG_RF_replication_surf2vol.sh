@@ -60,56 +60,56 @@ surface parcellation.
 The projected map should be compared to $DATA_DIR/data/projected_surface_parcel.nii.gz. 
 
 REQUIRED ARGUMENTS:
-	-o <output_dir> 	absolute path to output directory
+  -o <output_dir>   absolute path to output directory
 
 OPTIONAL ARGUMENTS:
-	-a <ANTs_dir>		directory where ANTs is installed 
-				[ default: $CBIG_ANTS_DIR ]
-	-h			display help message
+  -a <ANTs_dir>    directory where ANTs is installed 
+        [ default: $CBIG_ANTS_DIR ]
+  -h      display help message
 
 OUTPUTS:
-	$0 will create 5 folders.
-	1) index_fsaverage folder: 6 files will be generated for each subject, corresponding to the x/y/z index files in 
-	   the subject's surface space. 
-	For example:  
-		lh.xIndex_fsaverage_to_Sub0001_Ses1_FS.index
-		rh.xIndex_fsaverage_to_Sub0001_Ses1_FS.index
-		lh.yIndex_fsaverage_to_Sub0001_Ses1_FS.index
-		rh.yIndex_fsaverage_to_Sub0001_Ses1_FS.index
-		lh.zIndex_fsaverage_to_Sub0001_Ses1_FS.index
-		rh.zIndex_fsaverage_to_Sub0001_Ses1_FS.index
-	2) index_T1 folder: 6 files will be generated for each subject, corresponding to the x/y/z index files projected to 
-	   the subject's T1 space, from left and right hemispheres of the subject's surface respectively. 
-	For example: 
-		lh.xIndex_fsaverage_to_Sub0001_Ses1_FS_T1.nii.gz
-		rh.xIndex_fsaverage_to_Sub0001_Ses1_FS_T1.nii.gz
-		lh.yIndex_fsaverage_to_Sub0001_Ses1_FS_T1.nii.gz
-		rh.yIndex_fsaverage_to_Sub0001_Ses1_FS_T1.nii.gz
-		lh.zIndex_fsaverage_to_Sub0001_Ses1_FS_T1.nii.gz
-		rh.zIndex_fsaverage_to_Sub0001_Ses1_FS_T1.nii.gz
-	3) index_FSL_MNI152_FS4.5.0: 6 files will be generated for each subject, corresponding to the x/y/z index files 
-	   from left and right hemispheres, registered to the volumetric atlas space. 
-	For example: 
-		lh.xIndex_fsaverage_to_Sub0001_Ses1_FS_to_FSL_MNI152_FS4.5.0_RF_ANTs.nii.gz
-		rh.xIndex_fsaverage_to_Sub0001_Ses1_FS_to_FSL_MNI152_FS4.5.0_RF_ANTs.nii.gz
-		lh.yIndex_fsaverage_to_Sub0001_Ses1_FS_to_FSL_MNI152_FS4.5.0_RF_ANTs.nii.gz
-		rh.yIndex_fsaverage_to_Sub0001_Ses1_FS_to_FSL_MNI152_FS4.5.0_RF_ANTs.nii.gz
-		lh.zIndex_fsaverage_to_Sub0001_Ses1_FS_to_FSL_MNI152_FS4.5.0_RF_ANTs.nii.gz
-		rh.zIndex_fsaverage_to_Sub0001_Ses1_FS_to_FSL_MNI152_FS4.5.0_RF_ANTs.nii.gz
-	4) mapping folder: corresponding to the average mapping from the volumetric atlas space to left and right 
-	   hemispheres in fsaverage surface respectively. 
-	For example: 
-		lh.avgMapping_allSub_RF_ANTs_MNI152_orig_to_fsaverage.mat
-		rh.avgMapping_allSub_RF_ANTs_MNI152_orig_to_fsaverage.mat
-	5) projected_fsaverage2vol folder: 2 files will be generated, corresponding to the projected data in the volumetric 
-	   atlas sapce and the projected data in segmentation form (with left hemisphere values starting from 0 and right 
-	   hemisphere values starting from 1000). 
-	For example: 
-		input_name.allSub_fsaverage_to_FSL_MNI152_FS4.5_RF_ANTs.nii.gz
-		seg.input_name.allSub_fsaverage_to_FSL_MNI152_FS4.5_RF_ANTs.nii.gz
+  $0 will create 5 folders.
+  1) index_fsaverage folder: 6 files will be generated for each subject, corresponding to the x/y/z index files in 
+     the subject's surface space. 
+  For example:  
+    lh.xIndex_fsaverage_to_Sub0001_Ses1_FS.index
+    rh.xIndex_fsaverage_to_Sub0001_Ses1_FS.index
+    lh.yIndex_fsaverage_to_Sub0001_Ses1_FS.index
+    rh.yIndex_fsaverage_to_Sub0001_Ses1_FS.index
+    lh.zIndex_fsaverage_to_Sub0001_Ses1_FS.index
+    rh.zIndex_fsaverage_to_Sub0001_Ses1_FS.index
+  2) index_T1 folder: 6 files will be generated for each subject, corresponding to the x/y/z index files projected to 
+     the subject's T1 space, from left and right hemispheres of the subject's surface respectively. 
+  For example: 
+    lh.xIndex_fsaverage_to_Sub0001_Ses1_FS_T1.nii.gz
+    rh.xIndex_fsaverage_to_Sub0001_Ses1_FS_T1.nii.gz
+    lh.yIndex_fsaverage_to_Sub0001_Ses1_FS_T1.nii.gz
+    rh.yIndex_fsaverage_to_Sub0001_Ses1_FS_T1.nii.gz
+    lh.zIndex_fsaverage_to_Sub0001_Ses1_FS_T1.nii.gz
+    rh.zIndex_fsaverage_to_Sub0001_Ses1_FS_T1.nii.gz
+  3) index_FSL_MNI152_FS4.5.0: 6 files will be generated for each subject, corresponding to the x/y/z index files 
+     from left and right hemispheres, registered to the volumetric atlas space. 
+  For example: 
+    lh.xIndex_fsaverage_to_Sub0001_Ses1_FS_to_FSL_MNI152_FS4.5.0_RF_ANTs.nii.gz
+    rh.xIndex_fsaverage_to_Sub0001_Ses1_FS_to_FSL_MNI152_FS4.5.0_RF_ANTs.nii.gz
+    lh.yIndex_fsaverage_to_Sub0001_Ses1_FS_to_FSL_MNI152_FS4.5.0_RF_ANTs.nii.gz
+    rh.yIndex_fsaverage_to_Sub0001_Ses1_FS_to_FSL_MNI152_FS4.5.0_RF_ANTs.nii.gz
+    lh.zIndex_fsaverage_to_Sub0001_Ses1_FS_to_FSL_MNI152_FS4.5.0_RF_ANTs.nii.gz
+    rh.zIndex_fsaverage_to_Sub0001_Ses1_FS_to_FSL_MNI152_FS4.5.0_RF_ANTs.nii.gz
+  4) mapping folder: corresponding to the average mapping from the volumetric atlas space to left and right 
+     hemispheres in fsaverage surface respectively. 
+  For example: 
+    lh.avgMapping_allSub_RF_ANTs_MNI152_orig_to_fsaverage.mat
+    rh.avgMapping_allSub_RF_ANTs_MNI152_orig_to_fsaverage.mat
+  5) projected_fsaverage2vol folder: 2 files will be generated, corresponding to the projected data in the volumetric 
+     atlas sapce and the projected data in segmentation form (with left hemisphere values starting from 0 and right 
+     hemisphere values starting from 1000). 
+  For example: 
+    input_name.allSub_fsaverage_to_FSL_MNI152_FS4.5_RF_ANTs.nii.gz
+    seg.input_name.allSub_fsaverage_to_FSL_MNI152_FS4.5_RF_ANTs.nii.gz
 
 EXAMPLE:
-	$0 -o ~/unit_test_results
+  $0 -o ~/unit_test_results
 
 " 1>&2; exit 1; }
 

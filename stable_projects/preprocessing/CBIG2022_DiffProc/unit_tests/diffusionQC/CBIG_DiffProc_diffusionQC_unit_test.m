@@ -10,7 +10,7 @@ classdef CBIG_DiffProc_diffusionQC_unit_test < matlab.unittest.TestCase
             CBIG_TEST_DIR = getenv('CBIG_TESTDATA_DIR');
             DIFF_CODE_DIR = fullfile(CBIG_CODE_DIR, 'stable_projects', 'preprocessing', ...
                 'CBIG2022_DiffProc');
-            addpath(fullfile(DIFF_CODE_DIR,'examples'));
+            addpath(fullfile(DIFF_CODE_DIR,'unit_tests'));
             ref_dir = fullfile(CBIG_TEST_DIR,'stable_projects', 'preprocessing', ...
                 'CBIG2022_DiffProc', 'diffusionQC');
             replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag'));
@@ -56,7 +56,7 @@ classdef CBIG_DiffProc_diffusionQC_unit_test < matlab.unittest.TestCase
             
             test.FA_dir = fullfile(output_dir, 'fdt', 'dti_FA.nii.gz');
             test.SSE_dir = fullfile(output_dir, 'fdt', 'dti_sse.nii.gz')
-            test_array = CBIG_DiffProc_diffusionQC_check_example_results(test, "basic");
+            test_array = CBIG_DiffProc_diffusionQC_check_unit_test_results(test, "basic");
             
             % replace unit test if flag is 1
             if replace_unit_test     
@@ -69,7 +69,7 @@ classdef CBIG_DiffProc_diffusionQC_unit_test < matlab.unittest.TestCase
             assert(sum(test_array) == 5, 'Unit test failed: Examples do not match')
             rmdir(output_dir, 's');
             
-            rmpath(fullfile(DIFF_CODE_DIR,'examples'));
+            rmpath(fullfile(DIFF_CODE_DIR,'unit_tests'));
         end
     
         function test_diffusionQC_rounding(TestCase)
@@ -80,7 +80,7 @@ classdef CBIG_DiffProc_diffusionQC_unit_test < matlab.unittest.TestCase
             CBIG_TEST_DIR = getenv('CBIG_TESTDATA_DIR');
             DIFF_CODE_DIR = fullfile(CBIG_CODE_DIR, 'stable_projects', 'preprocessing', ...
                 'CBIG2022_DiffProc');
-            addpath(fullfile(DIFF_CODE_DIR,'examples'));
+            addpath(fullfile(DIFF_CODE_DIR,'unit_tests'));
             ref_dir = fullfile(CBIG_TEST_DIR,'stable_projects', 'preprocessing', ...
                 'CBIG2022_DiffProc', 'diffusionQC');
             output_dir = fullfile(DIFF_CODE_DIR, 'unit_tests', 'diffusionQC', 'output', 'rounding');
@@ -125,7 +125,7 @@ classdef CBIG_DiffProc_diffusionQC_unit_test < matlab.unittest.TestCase
             fclose(fid);
             
             
-            test_array = CBIG_DiffProc_diffusionQC_check_example_results(test, "rounding");
+            test_array = CBIG_DiffProc_diffusionQC_check_unit_test_results(test, "rounding");
             % replace unit test if flag is 1
             if replace_unit_test
                 fprintf('Replacing reference results \n')
@@ -134,7 +134,7 @@ classdef CBIG_DiffProc_diffusionQC_unit_test < matlab.unittest.TestCase
             end
             assert(sum(test_array) == 1, 'Unit test failed: Examples do not match')
             rmdir(output_dir, 's');
-            rmpath(fullfile(DIFF_CODE_DIR,'examples'));
+            rmpath(fullfile(DIFF_CODE_DIR,'unit_tests'));
         end
     
         function test_diffusionQC_single_shell(TestCase)
@@ -144,7 +144,7 @@ classdef CBIG_DiffProc_diffusionQC_unit_test < matlab.unittest.TestCase
             CBIG_TEST_DIR = getenv('CBIG_TESTDATA_DIR');
             DIFF_CODE_DIR = fullfile(CBIG_CODE_DIR, 'stable_projects', 'preprocessing', ...
                 'CBIG2022_DiffProc');
-            addpath(fullfile(DIFF_CODE_DIR,'examples'));
+            addpath(fullfile(DIFF_CODE_DIR,'unit_tests'));
             ref_dir = fullfile(CBIG_TEST_DIR,'stable_projects', 'preprocessing', ...
                 'CBIG2022_DiffProc', 'diffusionQC');
             output_dir = fullfile(DIFF_CODE_DIR, 'unit_tests', 'diffusionQC', 'output', 'single_shell');
@@ -193,7 +193,7 @@ classdef CBIG_DiffProc_diffusionQC_unit_test < matlab.unittest.TestCase
             test.single_shell_dir = fullfile(output_dir, 'fdt', 'sub-1_single_shell_1000.nii.gz');
             test.FA_dir = fullfile(output_dir, 'fdt', 'dti_FA.nii.gz');
             test.SSE_dir = fullfile(output_dir, 'fdt', 'dti_sse.nii.gz')
-            test_array = CBIG_DiffProc_diffusionQC_check_example_results(test, "single_shell");
+            test_array = CBIG_DiffProc_diffusionQC_check_unit_test_results(test, "single_shell");
             
             % replace unit test if flag is 1
             if replace_unit_test    
@@ -209,7 +209,7 @@ classdef CBIG_DiffProc_diffusionQC_unit_test < matlab.unittest.TestCase
             end
             assert(sum(test_array) == 9, 'Unit test failed: Examples do not match')
             rmdir(output_dir, 's');
-            rmpath(fullfile(DIFF_CODE_DIR,'examples'));
+            rmpath(fullfile(DIFF_CODE_DIR,'unit_tests'));
              
             % remove all directories if final unit test passes
             output_master_dir = fullfile(DIFF_CODE_DIR, 'unit_tests', 'diffusionQC', 'output');

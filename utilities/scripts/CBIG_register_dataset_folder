@@ -1,0 +1,186 @@
+#!/bin/bash
+
+# This script register existing folders to the user csv files. 
+# Written by XUE Aihuiping and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+
+record_dir="/mnt/isilon/CSC1/Yeolab/CodeMaintenance/Records"
+dataset_csv="${record_dir}/datasets_info/dataset_groups.csv"
+options_file="${record_dir}/datasets_info/user_choices.txt"
+user=`whoami`
+user_csv="${record_dir}/current_projects/$user.csv"
+
+while IFS=',' read -r col1 col2; do
+    datasets+=("$col1")
+    groupnames+=("$col2")
+done < "$dataset_csv"
+
+# Sort the options by the frequncy of a dataset been chosen. So popular datasets will be at the top.
+option_counts=$(sort "$options_file" | uniq -c | sort -nr)
+frequencies=()
+option_names=()
+
+while read -r line; do
+    frequency=$(echo "$line" | awk '{print $1}')
+    option_name=$(echo "$line" | awk '{$1=""; print $0}' | xargs)  # Remove leading spaces
+    frequencies+=("$frequency")
+    option_names+=("$option_name")
+done <<< "$option_counts"
+
+declare -A option_to_frequency
+for ((i = 0; i < ${#option_names[@]}; i++)); do
+    option_to_frequency["${option_names[$i]}"]="${frequencies[$i]}"
+done
+
+sorted_data=($(for ((i = 0; i < ${#datasets[@]}; i++)); do
+    dataset="${datasets[$i]}"
+    groupname="${groupnames[$i]}"
+    frequency="${option_to_frequency[$dataset]}"
+    echo "${frequency}:${dataset}:${groupname}"
+done | sort -t: -k1,1nr))
+
+sorted_datasets=()
+sorted_groupnames=()
+
+for element in "${sorted_data[@]}"; do
+    IFS=":" read -r frequency dataset groupname <<< "$element"
+    sorted_datasets+=("$dataset")
+    sorted_groupnames+=("$groupname")
+done
+
+datasets=("${sorted_datasets[@]}")
+groupnames=("${sorted_groupnames[@]}")
+
+# Calculate max_display based on terminal window size
+rows=$(tput lines)
+max_display=$((rows - 2))  # Adjust this value as needed
+
+selected=0
+scroll=0
+
+print_menu() {
+    clear
+    if [ "$scroll" -lt 0 ]; then
+        scroll=0
+    fi
+    echo "Choose the dataset you want to register:"
+    for i in $(seq $scroll $(($scroll + max_display - 1))); do
+        if [ $i -eq $selected ]; then
+            echo " > ${datasets[$i]}"
+        else
+            echo "   ${datasets[$i]}"
+        fi
+    done
+}
+
+print_menu
+
+while true; do
+    read -sn 1 key
+    case $key in
+        A) # Up arrow key
+            ((selected--))
+            if [ $selected -lt 0 ]; then
+                selected=$((${#datasets[@]} - 1))
+                scroll=$((${#datasets[@]} - max_display))
+            elif [ $selected -lt $scroll ]; then
+                scroll=$selected
+            fi
+            print_menu
+            ;;
+        B) # Down arrow key
+            ((selected++))
+            if [ $selected -ge ${#datasets[@]} ]; then
+                selected=0
+                scroll=0
+            elif [ $selected -ge $(($scroll + max_display)) ]; then
+                ((scroll++))
+            fi
+            print_menu
+            ;;
+        "") # Enter key
+            clear
+            sel_dataset=${datasets[$selected]}
+            break
+            ;;
+    esac
+done
+
+sel_group="${groupnames[$selected]}"
+
+yn_options=("Yes" "No, it contains other datasets")
+selected=0
+
+print_select_menu() {
+    clear
+    echo "Folder ${folder} contains ${sel_dataset} only:"
+    for i in "${!yn_options[@]}"; do
+        if [ $i -eq $selected ]; then
+            echo " > ${yn_options[$i]}"
+        else
+            echo "   ${yn_options[$i]}"
+        fi
+    done
+}
+
+folder=""
+while true; do
+    read -p "Enter the folder path you want to register for **${sel_dataset}** (press esc and enter to stop): " folder
+    if [[ $folder == *$'\x1b'* ]]; then
+        break
+    fi
+    cmd="readlink -f $folder"
+    cmd="${cmd//\'/}"
+    folder=`eval $cmd`
+    if [ ! -d "${folder}" ]; then
+        echo "Folder ${folder} does not exist. "
+        echo "Registration failed."
+        continue
+    fi
+
+    folder_owner=$(stat -c %U "$folder")
+    if [ "$folder_owner" != "$user" ]; then
+        echo "Folder $folder is owned by $folder_owner, not by you ($user). Please check with folder onwer."
+        echo "Registration failed."
+        continue
+    fi
+
+    print_select_menu
+    while true; do
+        read -sn 1 key
+        case $key in
+            A) # Up arrow key
+                ((selected--))
+                [ $selected -lt 0 ] && selected=$((${#yn_options[@]} - 1))
+                print_select_menu
+                ;;
+            B) # Down arrow key
+                ((selected++))
+                [ $selected -ge ${#yn_options[@]} ] && selected=0
+                print_select_menu
+                ;;
+            "") # Enter key
+                break
+                ;;
+        esac
+    done
+    echo "Folder ${folder}:"
+    if [ "$selected" == "0" ]; then
+        chmod 750 ${folder}
+        echo "Permission set to 750"
+        chgrp ${sel_group} ${folder}
+        echo "User group set to ${sel_group}"
+    else
+        chmod 700 ${folder}
+        echo "Permission set to 700"
+        chgrp yeo_group ${folder}
+        echo "User group set to yeo_group"
+    fi
+    echo "${sel_dataset},${folder}" >> "${user_csv}"
+    echo "${user_csv} updated."
+    echo ""
+    echo "${folder}" > "${folder}/.reg_path"
+    echo "Do NOT delete this file" >> "${folder}/.reg_path"
+    echo "${sel_dataset}" >> "${options_file}"
+done
+
+

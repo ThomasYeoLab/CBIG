@@ -18,7 +18,7 @@ proj_dir = [getenv('CBIG_TESTDATA_DIR') '/stable_projects/disorder_subtypes/Sun2
 CBIG_Sun2019_PET_preprocess = [CBIG_MMLDA_ADNI_DIR '/Sun2019_PET_preprocess/preprocessing'];
 
 %%%%
-% Get rid by considering subjects with ADNI2 preprocessed + ADNI3 original T1 
+% Get rid by considering subjects with ADNI2 preprocessed + ADNI3 original T1
 % and exclude subjects with ADNI2 original T1
 %%%%
 rid_257 = load([CBIG_CODE_DIR '/stable_projects/disorder_subtypes/Sun2019_ADJointFactors' ...
@@ -54,8 +54,8 @@ total_tau = sum(PETtau2d_mask)';
 percent = 95;
 for t = 1:3
     thr_t = prctile(beta1_order(t, :), percent);
-	ind_t = beta1_order(t, :) > thr_t;
-	mean_tau_prc(:, t) = sum(PETtau2d_mask(ind_t, :))' / sum(ind_t); 
+    ind_t = beta1_order(t, :) > thr_t;
+    mean_tau_prc(:, t) = sum(PETtau2d_mask(ind_t, :))' / sum(ind_t);
 end
 
 %%%%
@@ -83,7 +83,7 @@ rid_prob_PETtau_inf_int = rid_prob_PETtau_inf(ind_prob, :);
 % Get age, sex, dx from subinfo
 %%%
 subinfo_dir = [getenv('CBIG_TESTDATA_DIR') '/stable_projects/disorder_subtypes' ...
-'/Sun2019_ADJointFactors/step2_MMLDA/data'];
+    '/Sun2019_ADJointFactors/step2_MMLDA/data'];
 subinfo = csvread([subinfo_dir '/ADNI23_PETtau_subinfo.csv'], 1, 0);
 ind = CBIG_MMLDA_find_array_in_array(rid_int, subinfo(:, 1));
 age = subinfo(ind, 3);

@@ -11,12 +11,12 @@ set outlier_stem = "_FDRMS0.2_DVARS50_motion_outliers"
 
 ## Create folder structure within output_dir, and make soft links of input files to orig_data_dir
 foreach s ($subjects)
-	set s_id = `echo $s | cut -d '_' -f 1`
-	set sess_id = `echo $s | cut -d '_' -f 2`
-	mkdir -p $output_dir/subjects/$s
-	ln -s $orig_data_dir/$s_id/$s/qc $output_dir/subjects/$s/
-	ln -s $orig_data_dir/$s_id/$s/surf $output_dir/subjects/$s/
-	ln -s $orig_data_dir/$s_id/$s/logs $output_dir/subjects/$s/
+    set s_id = `echo $s | cut -d '_' -f 1`
+    set sess_id = `echo $s | cut -d '_' -f 2`
+    mkdir -p $output_dir/subjects/$s
+    ln -s $orig_data_dir/$s_id/$s/qc $output_dir/subjects/$s/
+    ln -s $orig_data_dir/$s_id/$s/surf $output_dir/subjects/$s/
+    ln -s $orig_data_dir/$s_id/$s/logs $output_dir/subjects/$s/
 end
 
 

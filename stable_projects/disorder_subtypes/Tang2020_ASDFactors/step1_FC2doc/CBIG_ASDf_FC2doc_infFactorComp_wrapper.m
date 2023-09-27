@@ -2,8 +2,8 @@ function CBIG_ASDf_FC2doc_infFactorComp_wrapper(corrMat_ASD_path, corrMat_con_pa
 % CBIG_ASDf_FC2doc_infFactorComp_wrapper(corrMat_ASD_path, corrMat_con_path, ref_path, sub_info_file, output_dir)
 %
 % Wrapper function to compute Z-normalized, discretized FC (Z-normalization
-% w.r.t controls in ABIDE-II+GENDAAR) and write into word documents 
-% that will be used by polarLDA model to infer factor compositions 
+% w.r.t controls in ABIDE-II+GENDAAR) and write into word documents
+% that will be used by polarLDA model to infer factor compositions
 % of ASD subjects in ABIDE-I.
 %
 % Input:
@@ -13,7 +13,7 @@ function CBIG_ASDf_FC2doc_infFactorComp_wrapper(corrMat_ASD_path, corrMat_con_pa
 %           of size MxMxN1, where M is the number of ROIs, N1 is the number
 %           of ASD participants.
 %     - corrMat_con_path:
-%           Absolute path to the functional connectivity matrices (.mat file) of 
+%           Absolute path to the functional connectivity matrices (.mat file) of
 %           control subjects. Assuming .mat file is named as "corrMat_Con", and it is
 %           of size MxMxN2, where M is the number of ROIs, N2 is the number
 %           of control participants.
@@ -26,18 +26,18 @@ function CBIG_ASDf_FC2doc_infFactorComp_wrapper(corrMat_ASD_path, corrMat_con_pa
 %           Absolute path to the .csv file of subjects' demographic information
 %     - output_dir:
 %           Absolute path to the output directory where output results will
-%           be saved. The outputs are: 
+%           be saved. The outputs are:
 %           1) step1_output_inf_mean_CN.mat: Mean of FC data of control participants
 %           2) step1_output_inf_beta_CN.mat: Regression coefficients estimated from control participants
 %           4) step1_output_inf_zScores.mat: Z-scores & discretized Z-scores of all participants
-%           5) step1_output_inf_dx1.dat & step1_output_inf_dx2.dat: "Documents" 
+%           5) step1_output_inf_dx1.dat & step1_output_inf_dx2.dat: "Documents"
 %              of ASD and control participants respectively
 %
 % Example:
-%	CBIG_ASDf_FC2doc_infFactorComp_wrapper('../examples/input/corrMat_ASD_inf.mat',
-%           '../examples/input/corrMat_Con_inf.mat',
-%           '~/Temporary/example_output/step1_output_reg_CN_mean_std.mat',
-%           '../examples/input/subInfo_inf.csv','~/Temporary/example_output')
+%     CBIG_ASDf_FC2doc_infFactorComp_wrapper('../examples/input/corrMat_ASD_inf.mat',
+%         '../examples/input/corrMat_Con_inf.mat',
+%         '~/Temporary/example_output/step1_output_reg_CN_mean_std.mat',
+%         '../examples/input/subInfo_inf.csv','~/Temporary/example_output')
 %
 % Written by Siyi Tang and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
@@ -66,7 +66,7 @@ load(ref_path);
 output_name = 'step1_output_inf';
 output_dir = [output_dir '/'];
 [z, discretized_z] = CBIG_ASDf_FC2doc_forInference(corrMat_all, ...
-reg_CN_mean, reg_CN_std, regressors, dx_info, cohort_label, output_dir, output_name);
+    reg_CN_mean, reg_CN_std, regressors, dx_info, cohort_label, output_dir, output_name);
 save(fullfile(output_dir, [output_name '_zScores.mat']), 'z', 'discretized_z');
 
 %% Remove path

@@ -61,48 +61,48 @@ The projected map should be compared to $DATA_DIR/data/lh.projected_central_sulc
 $DATA_DIR/data/rh.projected_central_sulc.nii.gz. 
 
 REQUIRED ARGUMENTS:
-	-o <output_dir> 	absolute path to output directory
+  -o <output_dir>   absolute path to output directory
 
 OPTIONAL ARGUMENTS:
-	-a <ANTs_dir>		directory where ANTs is installed 
-				[ default: $CBIG_ANTS_DIR ]
-	-h			display help message
+  -a <ANTs_dir>    directory where ANTs is installed 
+        [ default: $CBIG_ANTS_DIR ]
+  -h      display help message
 
 OUTPUTS:
-	$0 will create 5 folders.
-	1) index_MNI152 folder: 3 files will be generated, corresponding to the x/y/z index files in MNI152. 
-	The file names will be: 
-		MNI152_orig_x.INDEX.nii.gz
-		MNI152_orig_y.INDEX.nii.gz
-		MNI152_orig_z.INDEX.nii.gz
-	2) index_T1 folder: 3 files will be generated for each subject, corresponding to the x/y/z index files projected to 
-	   the subject's T1 space. 
-	For example: 
-		xIndex_RF_ANTs_FSL_MNI152_FS4.5_to_Sub0001_Ses1_FS.nii.gz
-		yIndex_RF_ANTs_FSL_MNI152_FS4.5_to_Sub0001_Ses1_FS.nii.gz
-		zIndex_RF_ANTs_FSL_MNI152_FS4.5_to_Sub0001_Ses1_FS.nii.gz
-	3) index_fsaverage folder: 3 files will be generated for each subject, corresponding to the x/y/z index files 
-	   projected to fsaverage through that subject. 
-	For example: 
-		lh.xIndex_RF_ANTs_FSL_MNI152_FS4.5_to_Sub0001_Ses1_FS_to_fsaverage.nii.gz
-		rh.xIndex_RF_ANTs_FSL_MNI152_FS4.5_to_Sub0001_Ses1_FS_to_fsaverage.nii.gz
-		lh.yIndex_RF_ANTs_FSL_MNI152_FS4.5_to_Sub0001_Ses1_FS_to_fsaverage.nii.gz
-		rh.yIndex_RF_ANTs_FSL_MNI152_FS4.5_to_Sub0001_Ses1_FS_to_fsaverage.nii.gz
-		lh.zIndex_RF_ANTs_FSL_MNI152_FS4.5_to_Sub0001_Ses1_FS_to_fsaverage.nii.gz
-		rh.zIndex_RF_ANTs_FSL_MNI152_FS4.5_to_Sub0001_Ses1_FS_to_fsaverage.nii.gz
-	4) mapping folder: 2 files will be generated, corresponding to the average mapping from the volumetric atlas space 
-	   to left and right hemispheres in fsaverage surface respectively. 
-	The file names will be: 
-		lh.avgMapping_5Sub_RF_ANTs_MNI152_orig_to_fsaverage.mat
-		rh.avgMapping_5Sub_RF_ANTs_MNI152_orig_to_fsaverage.mat
-	5) projected_vol2fsaverage folder: 2 files will be generated, corresponding to the projected data onto fsaverage 
-	   left and right hemispheres respectively. 
-	The file names will be: 
-		lh.prob_map_central_sulc.5Sub_RF_ANTs_MNI152_orig_to_fsaverage.nii.gz
-		rh.prob_map_central_sulc.5Sub_RF_ANTs_MNI152_orig_to_fsaverage.nii.gz
+  $0 will create 5 folders.
+  1) index_MNI152 folder: 3 files will be generated, corresponding to the x/y/z index files in MNI152. 
+  The file names will be: 
+    MNI152_orig_x.INDEX.nii.gz
+    MNI152_orig_y.INDEX.nii.gz
+    MNI152_orig_z.INDEX.nii.gz
+  2) index_T1 folder: 3 files will be generated for each subject, corresponding to the x/y/z index files projected to 
+     the subject's T1 space. 
+  For example: 
+    xIndex_RF_ANTs_FSL_MNI152_FS4.5_to_Sub0001_Ses1_FS.nii.gz
+    yIndex_RF_ANTs_FSL_MNI152_FS4.5_to_Sub0001_Ses1_FS.nii.gz
+    zIndex_RF_ANTs_FSL_MNI152_FS4.5_to_Sub0001_Ses1_FS.nii.gz
+  3) index_fsaverage folder: 3 files will be generated for each subject, corresponding to the x/y/z index files 
+     projected to fsaverage through that subject. 
+  For example: 
+    lh.xIndex_RF_ANTs_FSL_MNI152_FS4.5_to_Sub0001_Ses1_FS_to_fsaverage.nii.gz
+    rh.xIndex_RF_ANTs_FSL_MNI152_FS4.5_to_Sub0001_Ses1_FS_to_fsaverage.nii.gz
+    lh.yIndex_RF_ANTs_FSL_MNI152_FS4.5_to_Sub0001_Ses1_FS_to_fsaverage.nii.gz
+    rh.yIndex_RF_ANTs_FSL_MNI152_FS4.5_to_Sub0001_Ses1_FS_to_fsaverage.nii.gz
+    lh.zIndex_RF_ANTs_FSL_MNI152_FS4.5_to_Sub0001_Ses1_FS_to_fsaverage.nii.gz
+    rh.zIndex_RF_ANTs_FSL_MNI152_FS4.5_to_Sub0001_Ses1_FS_to_fsaverage.nii.gz
+  4) mapping folder: 2 files will be generated, corresponding to the average mapping from the volumetric atlas space 
+     to left and right hemispheres in fsaverage surface respectively. 
+  The file names will be: 
+    lh.avgMapping_5Sub_RF_ANTs_MNI152_orig_to_fsaverage.mat
+    rh.avgMapping_5Sub_RF_ANTs_MNI152_orig_to_fsaverage.mat
+  5) projected_vol2fsaverage folder: 2 files will be generated, corresponding to the projected data onto fsaverage 
+     left and right hemispheres respectively. 
+  The file names will be: 
+    lh.prob_map_central_sulc.5Sub_RF_ANTs_MNI152_orig_to_fsaverage.nii.gz
+    rh.prob_map_central_sulc.5Sub_RF_ANTs_MNI152_orig_to_fsaverage.nii.gz
 
 EXAMPLE:
-	$0 -o ~/unit_test_results
+  $0 -o ~/unit_test_results
 
 " 1>&2; exit 1; }
 

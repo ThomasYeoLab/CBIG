@@ -19,32 +19,32 @@ EXCLUDED_FILES=("Surf2SurfGui.m" "Vol2SurfGui.m" "CBIG_tested_config.sh" "CBIG_t
 echo -e "\n==> Checking occurences of old function names (without CBIG prefix)"
 for file_path in "${files_to_be_checked[@]}"
 do
-	file_name=( $(basename "$file_path") )
+    file_name=( $(basename "$file_path") )
 
-	# check whether file should be excluded
-	file_in_excluded=0
-	for excluded_file in "${EXCLUDED_FILES[@]}"
+    # check whether file should be excluded
+    file_in_excluded=0
+    for excluded_file in "${EXCLUDED_FILES[@]}"
     do
-	    if [[ $file_name == $excluded_file ]]; then
-	      file_in_excluded=1
-	    fi
-  	done
-  	if [[ $file_in_excluded == 1 ]]; then
-  		break
-  	fi
+        if [[ $file_name == $excluded_file ]]; then
+            file_in_excluded=1
+        fi
+    done
+    if [[ $file_in_excluded == 1 ]]; then
+        break
+    fi
 
-	for ext in "${EXTENSIONS_TO_CHECK[@]}"
-	do
-		for directory in "${DIRECTORIES_TO_CHECK[@]}"
-		do
-		    if [[ $file_path == $directory/* ]] && [[ $file_name == *.$ext ]]; then
-		    	echo -e "\n  ==> Checking $file_path"
-		    	$CBIG_CODE_DIR/setup/check_function_format/CBIG_prepend_prefix_to_function_name_wrapper.sh $file_path silent
-		    fi
-		done
-	done
+    for ext in "${EXTENSIONS_TO_CHECK[@]}"
+    do
+        for directory in "${DIRECTORIES_TO_CHECK[@]}"
+        do
+            if [[ $file_path == $directory/* ]] && [[ $file_name == *.$ext ]]; then
+                echo -e "\n  ==> Checking $file_path"
+                $CBIG_CODE_DIR/setup/check_function_format/CBIG_prepend_prefix_to_function_name_wrapper.sh $file_path silent
+            fi
+        done
+    done
 done
-echo "	[DONE]"
+echo "  [DONE]"
 
 ###
 # check whether added/modifed/deleted functions have been used in other functions
@@ -52,32 +52,32 @@ echo "	[DONE]"
 echo -e "\n==> Checking occurences of added/modifed/deleted function names"
 for file_path in "${files_to_be_checked[@]}"
 do
-	file_name=( $(basename "$file_path") )
+    file_name=( $(basename "$file_path") )
 
-	# check whether file should be excluded
-	file_in_excluded=0
-	for excluded_file in "${EXCLUDED_FILES[@]}"
+    # check whether file should be excluded
+    file_in_excluded=0
+    for excluded_file in "${EXCLUDED_FILES[@]}"
     do
-	    if [[ $file_name == $excluded_file ]]; then
-	      file_in_excluded=1
-	    fi
-  	done
-  	if [[ $file_in_excluded == 1 ]]; then
-  		break
-  	fi
+        if [[ $file_name == $excluded_file ]]; then
+            file_in_excluded=1
+        fi
+    done
+    if [[ $file_in_excluded == 1 ]]; then
+        break
+    fi
 
-	for ext in "${EXTENSIONS_TO_CHECK[@]}"
-	do
-		for directory in "${DIRECTORIES_TO_CHECK[@]}"
-		do
-		    if [[ $file_path == $directory/* ]] && [[ $file_name == *.$ext ]]; then
-		    	echo -e "\n  ==> Checking $file_path"
-		    	$CBIG_CODE_DIR/setup/check_function_format/CBIG_check_whether_function_used_in_other_functions_wrapper.sh $file_path silent
-		    fi
-		done
-	done
+    for ext in "${EXTENSIONS_TO_CHECK[@]}"
+    do
+        for directory in "${DIRECTORIES_TO_CHECK[@]}"
+        do
+            if [[ $file_path == $directory/* ]] && [[ $file_name == *.$ext ]]; then
+                echo -e "\n  ==> Checking $file_path"
+                $CBIG_CODE_DIR/setup/check_function_format/CBIG_check_whether_function_used_in_other_functions_wrapper.sh $file_path silent
+            fi
+        done
+    done
 done
-echo "	[DONE]"
+echo "  [DONE]"
 
 ###
 # comments before git push

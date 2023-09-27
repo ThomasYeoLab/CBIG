@@ -30,51 +30,51 @@ user=`whoami`
 
 while getopts "n:l:o:" arg
 do
-        case $arg in
-             n)
-	        job=$OPTARG
-                ;;
-             l)
-	        log_file=$OPTARG
-                ;;
-             o)
-	        out_file=$OPTARG
-                ;;
-             ?)
-	        echo "Unknown argument"
-	        exit 1
-	        ;;
-        esac
+    case $arg in
+        n)
+            job=$OPTARG
+            ;;
+        l)
+            log_file=$OPTARG
+            ;;
+        o)
+            out_file=$OPTARG
+            ;;
+        ?)
+            echo "Unknown argument"
+            exit 1
+            ;;
+    esac
 done
 
 # Wait till jobs with the same name are all done
 currnode=`hostname`
 if [ "${currnode}" != "headnode" ]; then
-	echo "WARNING: ssh from $currnode to headnode ..."
-	ssh headnode "$CBIG_CODE_DIR/utilities/scripts/CBIG_wait_for_job -n ${job}"
+    echo "WARNING: ssh from $currnode to headnode ..."
+    ssh headnode "$CBIG_CODE_DIR/utilities/scripts/CBIG_wait_for_job -n ${job}"
 else
-	$CBIG_CODE_DIR/utilities/scripts/CBIG_wait_for_job -n ${job}
+    $CBIG_CODE_DIR/utilities/scripts/CBIG_wait_for_job -n ${job}
 fi
 
 if [ ! $log_file ] && [ ! $out_file ]; then
-        echo "[Warning] Both log file and output file are NOT checked."
+    echo "[Warning] Both log file and output file are NOT checked."
 fi
 
 # Check log file
 if [ $log_file ]; then
-        fail=`grep FAILED $log_file | wc -l`
-        success=`grep SUCCESS $log_file | wc -l`
-        if [ ${fail} -gt 0 ] || [ ${success} -eq 0 ]; then
-                echo "[FAILED] Job is unsuccessful. Log file: $log_file"
-                exit 1
-        fi
+    fail=`grep FAILED $log_file | wc -l`
+    success=`grep SUCCESS $log_file | wc -l`
+    if [ ${fail} -gt 0 ] || [ ${success} -eq 0 ]; then
+        echo "[FAILED] Job is unsuccessful. Log file: $log_file"
+        exit 1
+    fi
 fi
 
 # Check output files
 if [ $out_file ]; then
-        if [ ! -f ${out_file} ]; then
-                echo "[FAILED] Job is unsuccessful. Out file: $out_file does not exist."
-                exit 1
-        fi
+    if [ ! -f ${out_file} ]; then
+        echo "[FAILED] Job is unsuccessful. Out file: $out_file does not exist."
+        exit 1
+    fi
 fi
 

@@ -76,50 +76,50 @@ registered to the FreeSurfer nonlinear volumetric space and to the volumetric at
 talairach.m3z transform.
 
 REQUIRED ARGUMENTS:
-	-s <template_sub_id> 	subject ID of the volumetric template used in recon-all
+  -s <template_sub_id>   subject ID of the volumetric template used in recon-all
 
 OPTIONAL ARGUMENTS:
-	-n <num_of_sub>		number of subjects to use. This means taking the first <num_of_sub> subjects from 
-	                    <ind_sub_list>. For example, setting '-n 50' means the first 50 lines of <ind_sub_list> will be 
-	                    read to get subject IDs. Setting this to 0 will make the script use all subjects from 
-	                    <ind_sub_list>.
-				[ default: 0 ]
-	-i <input_dir>          absolute path to input directory. The inputs are the index files created in step 1, i.e. 
-	                        the input directory should be the same as output directory in step 1.
-				[ default: $(pwd)/results/index_fsaverage ]
-	-d <template_sub_dir> 	SUBJECTS_DIR of the volumetric template's recon-all results
-				[ default: $CBIG_CODE_DIR/data/templates/volume/ ]
-	-l <ind_sub_list> 	absolute path to a file containing individual subject IDs. Each line in the file should contain 
-	                    one subject ID.
-				[ default: $DEFAULT_GSP_SUBLIST ]
-	-g <ind_sub_dir> 	SUBJECTS_DIR of individual subjects' recon-all results
-				[ default: $CBIG_RF_REP_GSP_DIR ]
+  -n <num_of_sub>    number of subjects to use. This means taking the first <num_of_sub> subjects from 
+                      <ind_sub_list>. For example, setting '-n 50' means the first 50 lines of <ind_sub_list> will be 
+                      read to get subject IDs. Setting this to 0 will make the script use all subjects from 
+                      <ind_sub_list>.
+        [ default: 0 ]
+  -i <input_dir>          absolute path to input directory. The inputs are the index files created in step 1, i.e. 
+                          the input directory should be the same as output directory in step 1.
+        [ default: $(pwd)/results/index_fsaverage ]
+  -d <template_sub_dir>   SUBJECTS_DIR of the volumetric template's recon-all results
+        [ default: $CBIG_CODE_DIR/data/templates/volume/ ]
+  -l <ind_sub_list>   absolute path to a file containing individual subject IDs. Each line in the file should contain 
+                      one subject ID.
+        [ default: $DEFAULT_GSP_SUBLIST ]
+  -g <ind_sub_dir>   SUBJECTS_DIR of individual subjects' recon-all results
+        [ default: $CBIG_RF_REP_GSP_DIR ]
         -o <output_dir>         absolute path to output directory
-				[ default: $(pwd)/results/ ]
-	-q <queue> 		for PBS scheduler users, this is equivalent to the -q option for qsub. For example, setting 
-	                "-q circ-spool" will make the script submit jobs to job scheduler using "qsub -q circ-spool"
-				[ default: unset ]
-	-t <interval> 		time interval between job submits. For example, the default setting means after each job is 
-	                    submitted, the script 'sleep' for 10 seconds before submitting the next one.
-				[ default: 10s ]
-	-h			display help message
+        [ default: $(pwd)/results/ ]
+  -q <queue>     for PBS scheduler users, this is equivalent to the -q option for qsub. For example, setting 
+                  "-q circ-spool" will make the script submit jobs to job scheduler using "qsub -q circ-spool"
+        [ default: unset ]
+  -t <interval>     time interval between job submits. For example, the default setting means after each job is 
+                      submitted, the script 'sleep' for 10 seconds before submitting the next one.
+        [ default: 10s ]
+  -h      display help message
 
 OUTPUTS:
-	$0 will create 3 folders.
-	1) index_T1 folder: 6 files will be generated for each subject, corresponding to the x/y/z index files projected to 
-	   the subject's T1 space, from left and right hemispheres of the subject's surface respectively. 
-	For example: 
-		lh.xIndex_fsaverage_to_Sub0001_Ses1_FS_T1.nii.gz
+  $0 will create 3 folders.
+  1) index_T1 folder: 6 files will be generated for each subject, corresponding to the x/y/z index files projected to 
+     the subject's T1 space, from left and right hemispheres of the subject's surface respectively. 
+  For example: 
+    lh.xIndex_fsaverage_to_Sub0001_Ses1_FS_T1.nii.gz
                 rh.xIndex_fsaverage_to_Sub0001_Ses1_FS_T1.nii.gz
                 lh.yIndex_fsaverage_to_Sub0001_Ses1_FS_T1.nii.gz
                 rh.yIndex_fsaverage_to_Sub0001_Ses1_FS_T1.nii.gz
                 lh.zIndex_fsaverage_to_Sub0001_Ses1_FS_T1.nii.gz
                 rh.zIndex_fsaverage_to_Sub0001_Ses1_FS_T1.nii.gz
-	2) index_\${template_sub_id}: 12 files will be generated for each subject, corresponding to the x/y/z index files 
-	   from left and right hemispheres, registered to FreeSurfer nonlinear volumetric space and to the volumetric atlas 
-	   space. 
-	For example: 
-		lh.xIndex_fsaverage_to_Sub0001_Ses1_FS_to_FSL_MNI152_FS4.5.0_RF_M3Z.fsNonlinear.nii.gz 
+  2) index_\${template_sub_id}: 12 files will be generated for each subject, corresponding to the x/y/z index files 
+     from left and right hemispheres, registered to FreeSurfer nonlinear volumetric space and to the volumetric atlas 
+     space. 
+  For example: 
+    lh.xIndex_fsaverage_to_Sub0001_Ses1_FS_to_FSL_MNI152_FS4.5.0_RF_M3Z.fsNonlinear.nii.gz 
                 lh.xIndex_fsaverage_to_Sub0001_Ses1_FS_to_FSL_MNI152_FS4.5.0_RF_M3Z.nii.gz
                 rh.xIndex_fsaverage_to_Sub0001_Ses1_FS_to_FSL_MNI152_FS4.5.0_RF_M3Z.fsNonlinear.nii.gz
                 rh.xIndex_fsaverage_to_Sub0001_Ses1_FS_to_FSL_MNI152_FS4.5.0_RF_M3Z.nii.gz
@@ -131,11 +131,11 @@ OUTPUTS:
                 lh.zIndex_fsaverage_to_Sub0001_Ses1_FS_to_FSL_MNI152_FS4.5.0_RF_M3Z.nii.gz
                 rh.zIndex_fsaverage_to_Sub0001_Ses1_FS_to_FSL_MNI152_FS4.5.0_RF_M3Z.fsNonlinear.nii.gz
                 rh.zIndex_fsaverage_to_Sub0001_Ses1_FS_to_FSL_MNI152_FS4.5.0_RF_M3Z.nii.gz
-	3) job_files folder: contains output and error log files for PBS scheduler (only created if -q has been set)
+  3) job_files folder: contains output and error log files for PBS scheduler (only created if -q has been set)
 
 EXAMPLE:
-	$0 -s 'FSL_MNI152_FS4.5.0' -q circ-spool
-	$0 -s 'SPM_Colin27_FS4.5.0' -n 50
+  $0 -s 'FSL_MNI152_FS4.5.0' -q circ-spool
+  $0 -s 'SPM_Colin27_FS4.5.0' -n 50
 
 " 1>&2; exit 1; }
 

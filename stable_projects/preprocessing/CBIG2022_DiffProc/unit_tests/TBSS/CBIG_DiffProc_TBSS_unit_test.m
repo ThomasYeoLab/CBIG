@@ -9,7 +9,7 @@ classdef CBIG_DiffProc_TBSS_unit_test < matlab.unittest.TestCase
             CBIG_TEST_DIR = getenv('CBIG_TESTDATA_DIR');
             DIFF_CODE_DIR = fullfile(CBIG_CODE_DIR, 'stable_projects', 'preprocessing', ...
                 'CBIG2022_DiffProc');
-            addpath(fullfile(DIFF_CODE_DIR,'examples'));
+            addpath(fullfile(DIFF_CODE_DIR,'unit_tests'));
             ref_dir = fullfile(CBIG_TEST_DIR,'stable_projects','preprocessing', ...
                 'CBIG2022_DiffProc','TBSS');
             base_output_dir = fullfile(DIFF_CODE_DIR, 'unit_tests', 'TBSS', 'output');
@@ -39,7 +39,7 @@ classdef CBIG_DiffProc_TBSS_unit_test < matlab.unittest.TestCase
             % compare results
             test.FA_dir = fullfile(output_dir, 'stats', 'all_FA_skeletonised.nii.gz');
             test.MD_dir = fullfile(output_dir, 'stats', 'all_MD_skeletonised.nii.gz');
-            test_array = CBIG_DiffProc_TBSS_check_example_results(test);
+            test_array = CBIG_DiffProc_TBSS_check_unit_test_results(test);
             
             % replace unit test if flag is 1
             if replace_unit_test     
@@ -50,7 +50,7 @@ classdef CBIG_DiffProc_TBSS_unit_test < matlab.unittest.TestCase
             
             assert(sum(test_array) == 8, 'Unit test failed: Examples do not match')
             rmdir(output_dir, 's');
-            rmpath(fullfile(DIFF_CODE_DIR,'examples'));           
+            rmpath(fullfile(DIFF_CODE_DIR,'unit_tests'));           
         end
         
         function testFSLparallel(TestCase)
@@ -59,7 +59,7 @@ classdef CBIG_DiffProc_TBSS_unit_test < matlab.unittest.TestCase
             CBIG_TEST_DIR = getenv('CBIG_TESTDATA_DIR');
             DIFF_CODE_DIR = fullfile(CBIG_CODE_DIR, 'stable_projects', 'preprocessing', ...
                 'CBIG2022_DiffProc');
-            addpath(fullfile(DIFF_CODE_DIR,'examples'));
+            addpath(fullfile(DIFF_CODE_DIR,'unit_tests'));
             script_dir = fullfile(DIFF_CODE_DIR, 'TBSS');
             ref_dir = fullfile(CBIG_TEST_DIR,'stable_projects','preprocessing', ...
                 'CBIG2022_DiffProc','TBSS');
@@ -80,7 +80,7 @@ classdef CBIG_DiffProc_TBSS_unit_test < matlab.unittest.TestCase
             % compare results
             test.FA_dir = fullfile(output_dir, 'stats', 'all_FA_skeletonised.nii.gz');
             test.MD_dir = fullfile(output_dir, 'stats', 'all_MD_skeletonised.nii.gz');
-            test_array = CBIG_DiffProc_TBSS_check_example_results(test);
+            test_array = CBIG_DiffProc_TBSS_check_unit_test_results(test);
             
             % No replacement for unit test coded since reference is same
             % as basic unit test
@@ -88,7 +88,7 @@ classdef CBIG_DiffProc_TBSS_unit_test < matlab.unittest.TestCase
             
             % remove all directories if final unit test passes
             rmdir(base_output_dir, 's');
-            rmpath(fullfile(DIFF_CODE_DIR,'examples'));
+            rmpath(fullfile(DIFF_CODE_DIR,'unit_tests'));
         end
         
     end

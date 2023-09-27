@@ -13,7 +13,7 @@ function CBIG_bandpass_vol(input_vol, output_vol, low_f, high_f, detrend, retren
 %    to '0'. 
 %
 % 3) use CBIG_bpss_by_regression.m to do bandpass filtering. It will use
-%	 GLM regression to do bandpass filtering. For more details,
+%    GLM regression to do bandpass filtering. For more details,
 %    <help CBIG_bpss_by_regression>
 %
 % 4) add back the linear trend of each time course by setting retrend to
@@ -49,13 +49,13 @@ function CBIG_bandpass_vol(input_vol, output_vol, low_f, high_f, detrend, retren
 %       trend of each time course after bandpass filtering. Retrend is not 
 %       allowed to set to '1' if detrend is set to '0'.
 %
-%	  - censor_file:
-%		censor file name (default ''). If censor_file is '', this function will
-%		not remove censored frames when it uses GLM to do bandpass filtering.
-%		If censor_file is not empty, a vector with 1 or 0 will be loaded from 
-%		 censor_file. In the censor vector, 1 means kept frame, 0 means censored
-%		frame. Then, we will only use kept frames to do GLM regression, and
-%		then apply the coefficent to all frames.
+%     - censor_file:
+%       censor file name (default ''). If censor_file is '', this function will
+%       not remove censored frames when it uses GLM to do bandpass filtering.
+%       If censor_file is not empty, a vector with 1 or 0 will be loaded from 
+%       censor_file. In the censor vector, 1 means kept frame, 0 means censored
+%       frame. Then, we will only use kept frames to do GLM regression, and
+%       then apply the coefficent to all frames.
 %  
 % Example:
 % CBIG_bandpass_vol('/path_input_data/input_data.nii', '/path_output_bp_data/output_bp_data.nii', '0.001', '0.08', '1', '1', '', '2')
@@ -115,13 +115,13 @@ end
 
 %% if censor_file is not set, censor is empty
 if (~exist('censor_file')) 
-	error('ERROR: censor_file does not exist.')
+    error('ERROR: censor_file does not exist.')
 else 
-	if (isempty(censor_file))
-		censor = [];
-	else
-		censor = load(censor_file);
-	end
+    if (isempty(censor_file))
+        censor = [];
+    else
+        censor = load(censor_file);
+    end
 end
 
 %% if sample period is not set, assume TR is sample period

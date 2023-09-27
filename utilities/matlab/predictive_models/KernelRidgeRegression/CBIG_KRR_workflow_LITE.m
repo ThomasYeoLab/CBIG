@@ -48,11 +48,11 @@ function CBIG_KRR_workflow_LITE( setup_param, save_setup, sub_fold_file, y_file,
 %     4. feature_mat
 %        A matrix of the features used as the independent variable in the
 %        prediction. See the description of See the description of `feature_file` 
-%	 in the Compulsory and Optional Variables section.
+%        in the Compulsory and Optional Variables section.
 %     5. num_inner_folds
 %        A scalar, the number of inner-loop cross-validation folds. See the
 %        description of `num_inner_folds` in the Compulsory and Optional
-%	 Variables section.
+%        Variables section.
 %     6. outdir
 %        A string of the output directory. See the description of
 %        `outdir` in the Compulsory and Optional Variables section.
@@ -62,19 +62,19 @@ function CBIG_KRR_workflow_LITE( setup_param, save_setup, sub_fold_file, y_file,
 %     8. with_bias
 %        A string (choose from '0' or '1') or a scalar (choose from 0 or 1).
 %        See the description of `with_bias` in the Compulsory and Optional 
-%	 Variables section
+%        Variables section
 %     9. ker_param 
 %        A structure of all possible kernel parameters. See the description
 %        of `ker_param_file` in the Compulsory and Optional Variables section
 %     10.lambda_set
 %        A vector of all possible regularization parameters used for grid
 %        search. See the description of `lambda_set_file` in the Compulsory
-%	 and Optional Variables section.
+%        and Optional Variables section.
 %     11.threshold_set
 %        A vector of all possible thresholds to determine the separation
 %        point for binary target variables in the prediction. See the
 %        description of `threshold_set_file` in the Compulsory and 
-%	 Optional Variables section.
+%        Optional Variables section.
 %     12.metric
 %        A string indicating the metric used to define prediction loss. See the
 %        description of `metric` in the Compulsory and Optional Variables section.

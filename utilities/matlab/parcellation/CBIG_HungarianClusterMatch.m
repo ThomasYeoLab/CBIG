@@ -16,21 +16,21 @@ function [output, assign, cost, dice_overlap] = CBIG_HungarianClusterMatch(ref_l
 % cost is equal to minus the number of overlapped voxels
 
 if(nargin < 3)
-   disp_flag = 1; 
+    disp_flag = 1; 
 end
 
 num_ref_labels = max(ref_labels(:));
 num_input_labels = max(input_labels(:));
 %if(num_labels ~= max(input_labels))
-%	error(['ref labels (' num2str(num_labels) ') not equal to input labels (' num2str(max(input_labels)) ')']);
+%    error(['ref labels (' num2str(num_labels) ') not equal to input labels (' num2str(max(input_labels)) ')']);
 %end
 
 % Build matching matrix
 mat = zeros(num_input_labels, num_ref_labels);
 for i = 1:num_ref_labels
-   for j = 1:num_input_labels
-	mat(j, i) = -sum(double(ref_labels(:) == i) .* double(input_labels(:) == j));
-   end
+    for j = 1:num_input_labels
+        mat(j, i) = -sum(double(ref_labels(:) == i) .* double(input_labels(:) == j));
+    end
 end
 
 [assign, cost] = munkres(mat);
@@ -45,7 +45,7 @@ additional_assign = 1:length(index);
 assign(index) = num_ref_labels + additional_assign;
 
 for i = 1:length(assign)
-   output(input_labels == i) = assign(i); 
+    output(input_labels == i) = assign(i); 
 end
 
 if(nargout == 4)

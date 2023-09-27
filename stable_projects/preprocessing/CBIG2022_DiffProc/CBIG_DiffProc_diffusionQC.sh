@@ -56,6 +56,10 @@ case $key in
     round_bvals_1000="y"
         shift;;
 
+    -h|--round_bvals_100)
+    round_bvals_100="y"
+        shift;;
+
     -u|--use_single_shell)
     use_single_shell="$2"
         shift; shift;;
@@ -85,6 +89,10 @@ if [ -z "$round_bvals_1000" ]; then
     round_bvals_1000="n"
 fi
 
+if [ -z "$round_bvals_100" ]; then
+    round_bvals_100="n"
+fi
+
 if [ -z "$use_single_shell" ]; then
     use_single_shell="NIL"
 fi
@@ -102,6 +110,7 @@ echo "[bvec_file] = $bvec_file"
 echo "[outdir] = $outdir"
 echo "[brainmask] = $brainmask"
 echo "[round_bvals_1000] = $round_bvals_1000"
+echo "[round_bvals_100] = $round_bvals_100"
 echo "[use_single_shell] = $use_single_shell"
 echo "[del_files] = $del_files"
 
@@ -132,6 +141,14 @@ if [[ $round_bvals_1000 == 'y' ]]; then
     for idx in ${!bval_arr[@]}; do
         # rounded value = ((bval + 500) / 1000) * 1000
         bval_arr[$idx]=$(( $(( $(( ${bval_arr[$idx]} + 500 )) / 1000 )) * 1000 ))
+    done
+fi
+
+# round off bvals to nearest 100 if needed
+if [[ $round_bvals_100 == 'y' ]]; then
+    for idx in ${!bval_arr[@]}; do
+        # rounded value = ((bval + 50) / 100) * 100
+        bval_arr[$idx]=$(( $(( $(( ${bval_arr[$idx]} + 50 )) / 100 )) * 100 ))
     done
 fi
 
@@ -194,7 +211,8 @@ if [[ ! $use_single_shell == 'NIL' ]]; then
             else
                 fslroi $subjDIR/${subjImg}.nii $outdir/fdt/${subj}_single_shell_slice_${idx} ${idx} 1
                 fslmerge \
-                -t $outdir/fdt/${subj}_single_shell_${use_single_shell} $outdir/fdt/${subj}_single_shell_${use_single_shell} \
+                -t $outdir/fdt/${subj}_single_shell_${use_single_shell} \
+                $outdir/fdt/${subj}_single_shell_${use_single_shell} \
                 $outdir/fdt/${subj}_single_shell_slice_${idx}
                 ((count_frames++))
             fi

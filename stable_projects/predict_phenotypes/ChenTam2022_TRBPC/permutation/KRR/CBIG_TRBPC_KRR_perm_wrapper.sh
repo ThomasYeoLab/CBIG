@@ -19,10 +19,10 @@ Usage: $0 -i <input_dir> -b <num_behav> -s <outstem> -n <N_per_job> -t <total_nu
     - outdir        Output directory
     - model         regression model. Choose from singleKRR and multiKRR
     - group         A text file containing the group ID (e.g. site) of all subjects. Permutation will 
-    		    only be done within a group
+                    only be done within a group
     - cluster       (Optional) if you do not have a cluster, put it as "none", then the computation will
-		    run serially (potentially very slow!) for each behavior. If you have a cluster, put
-		    your cluster name and the function submit parallel jobs to your cluster
+                    run serially (potentially very slow!) for each behavior. If you have a cluster, put
+                    your cluster name and the function submit parallel jobs to your cluster
 " 1>&2; exit 1; }
 
 # Reading in parameters
@@ -42,7 +42,7 @@ while getopts ":i:b:s:n:t:o:m:g:c:" opt; do
 done
 shift $((OPTIND-1))
 if [ -z "${input_dir}" ] || [ -z "${num_behav}" ] || [ -z "${outstem}" ] || [ -z "${model}" ] || \
-     [ -z "${N_per_job}" ] || [ -z "${total_num}" ] || [ -z "${outdir}" ] ; then
+    [ -z "${N_per_job}" ] || [ -z "${total_num}" ] || [ -z "${outdir}" ] ; then
     echo Missing Parameters!
     usage
 fi
@@ -67,14 +67,14 @@ do
     do
         if [ "$cluster" == "none" ];then
             $scripts_dir/CBIG_TRBPC_KRR_perm_job.sh ${model} ${input_dir} ${outstem} ${score} ${perm_start} \
-            ${N_per_job} ${group} ${outdir}
+                ${N_per_job} ${group} ${outdir}
         else
             errfile=${outdir}/job_err_out/${model}_perm_score${score}_perm_start${perm_start}.err
             outfile=${outdir}/job_err_out/${model}_perm_score${score}_perm_start${perm_start}.out
             cmd="$scripts_dir/CBIG_TRBPC_KRR_perm_job.sh"
             cmd="${cmd} ${model} ${input_dir} ${outstem} ${score} ${perm_start} ${N_per_job} ${group} ${outdir}"
             ${CBIG_CODE_DIR}/setup/CBIG_pbsubmit -walltime 12:00:0 -mem 16gb -joberr ${errfile} -jobout ${outfile} \
-            -cmd "${cmd}" -name ${model}_PFM
+                -cmd "${cmd}" -name ${model}_PFM
         fi
     done
 done

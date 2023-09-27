@@ -41,15 +41,15 @@ This script converts an example set of RAS coordinates ([60, 0, 10]) in MNI152 s
 fsaverage vertex, and back to coordinates in MNI152 space. 
 
 OPTIONAL ARGUMENTS:
-	-f <freesurfer_dir>	absolute path to FreeSurfer directory (this will overwrite the default \$FREESUFER_HOME).
-				[ default: $FREESURFER_HOME ]
-	-m <matlab_bin>		absolute path to the Matlab bin directory. Default is set to \$CBIG_MATLAB_DIR/bin or empty. 
+  -f <freesurfer_dir>  absolute path to FreeSurfer directory (this will overwrite the default \$FREESUFER_HOME).
+        [ default: $FREESURFER_HOME ]
+  -m <matlab_bin>    absolute path to the Matlab bin directory. Default is set to \$CBIG_MATLAB_DIR/bin or empty. 
                     This setting may affect the version of Matlab builtin .m scripts called.
-				[ default: $CBIG_MATLAB_DIR/bin ]
-	-h			display help message
+        [ default: $CBIG_MATLAB_DIR/bin ]
+  -h      display help message
 
 OUTPUTS:
-	$0 does not create any output file. The results will be printed on screen.
+  $0 does not create any output file. The results will be printed on screen.
 
 " 1>&2; exit 1; }
 

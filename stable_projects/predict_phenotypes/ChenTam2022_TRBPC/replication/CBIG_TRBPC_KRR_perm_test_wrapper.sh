@@ -24,10 +24,10 @@ total_num=2000
 model=singleKRR
 for curr_task in rs mid nback sst
 do
-	input_dir=$pred_results_dir/$curr_task
-	outdir=$perm_out_dir/$curr_task
-	$scripts_dir/permutation/KRR/CBIG_TRBPC_KRR_perm_wrapper.sh -i ${input_dir} -b ${num_behav} -s ${outstem} \
-	-n ${N_per_job} -t ${total_num} -o ${outdir} -m ${model} -g ${site_list} -c ${cluster}
+    input_dir=$pred_results_dir/$curr_task
+    outdir=$perm_out_dir/$curr_task
+    $scripts_dir/permutation/KRR/CBIG_TRBPC_KRR_perm_wrapper.sh -i ${input_dir} -b ${num_behav} -s ${outstem} \
+        -n ${N_per_job} -t ${total_num} -o ${outdir} -m ${model} -g ${site_list} -c ${cluster}
 done
 
 ###################################################################################################
@@ -36,8 +36,8 @@ done
 model=multiKRR
 for curr_task in allFC
 do
-	input_dir=$pred_results_dir/$curr_task
-	outdir=$perm_out_dir/$curr_task
-	$scripts_dir/permutation/KRR/CBIG_TRBPC_KRR_perm_wrapper.sh -i ${input_dir} -b ${num_behav} -s ${outstem} \
-	-n ${N_per_job} -t ${total_num} -o ${outdir} -m ${model} -g ${site_list} -c ${cluster}
+    input_dir=$pred_results_dir/$curr_task
+    outdir=$perm_out_dir/$curr_task
+    $scripts_dir/permutation/KRR/CBIG_TRBPC_KRR_perm_wrapper.sh -i ${input_dir} -b ${num_behav} -s ${outstem} \
+        -n ${N_per_job} -t ${total_num} -o ${outdir} -m ${model} -g ${site_list} -c ${cluster}
 done

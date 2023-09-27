@@ -64,19 +64,19 @@ REQUIRED ARGUMENTS:
                                 subjects from <ind_sub_list>.
 
 OPTIONAL ARGUMENTS:
-	-l <ind_sub_list> 	absolute path to a file containing individual subject IDs. Each line in the file should contain 
-	                    one subject ID.
-				[ default: $DEFAULT_GSP_SUBLIST ]
-	-g <ind_sub_dir> 	SUBJECTS_DIR of individual subjects' recon-all results
-				[ default: $CBIG_RF_REP_GSP_DIR ]
-	-o <output_dir>		absolute path to output directory
-				[ default: $(pwd)/results/index_fsaverage ]
-	-h			display help message
+  -l <ind_sub_list>   absolute path to a file containing individual subject IDs. Each line in the file should contain 
+                      one subject ID.
+        [ default: $DEFAULT_GSP_SUBLIST ]
+  -g <ind_sub_dir>   SUBJECTS_DIR of individual subjects' recon-all results
+        [ default: $CBIG_RF_REP_GSP_DIR ]
+  -o <output_dir>    absolute path to output directory
+        [ default: $(pwd)/results/index_fsaverage ]
+  -h      display help message
 
 OUTPUTS:
-	$0 will create 6 files for each subject, corresponding to the x/y/z index files in the subject's surface space. 
-	For example: 
-		lh.xIndex_fsaverage_to_Sub0001_Ses1_FS.index
+  $0 will create 6 files for each subject, corresponding to the x/y/z index files in the subject's surface space. 
+  For example: 
+    lh.xIndex_fsaverage_to_Sub0001_Ses1_FS.index
                 rh.xIndex_fsaverage_to_Sub0001_Ses1_FS.index
                 lh.yIndex_fsaverage_to_Sub0001_Ses1_FS.index
                 rh.yIndex_fsaverage_to_Sub0001_Ses1_FS.index
@@ -84,8 +84,8 @@ OUTPUTS:
                 rh.zIndex_fsaverage_to_Sub0001_Ses1_FS.index
 
 EXAMPLE:
-	$0 -n 0
-	$0 -n 50 -g my_sub_dir
+  $0 -n 0
+  $0 -n 50 -g my_sub_dir
 
 " 1>&2; exit 1; }
 

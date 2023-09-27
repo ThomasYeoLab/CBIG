@@ -80,72 +80,72 @@ registered to the the volumetric atlas space using ANTs registration results (se
 ANTs registration).
 
 REQUIRED ARGUMENTS:
-	-p <template_type> 	type of volumetric template to use.
-				Possible options are:
-				'MNI152_orig': use FSL_MNI152 1mm template
-				'Colin27_orig': use SPM_Colin27 1mm template
-				others: use user-defined volumetric template file. In this case, input to this option an be any string; 
-				        the user is expected to provide a template using "-t" option.
-	-s <template_sub_id> 	subject ID of the volumetric template used in recon-all. Input to this option is used as 
-	                        prefix of output files.
+  -p <template_type>   type of volumetric template to use.
+        Possible options are:
+        'MNI152_orig': use FSL_MNI152 1mm template
+        'Colin27_orig': use SPM_Colin27 1mm template
+        others: use user-defined volumetric template file. In this case, input to this option an be any string; 
+                the user is expected to provide a template using "-t" option.
+  -s <template_sub_id>   subject ID of the volumetric template used in recon-all. Input to this option is used as 
+                          prefix of output files.
 
 OPTIONAL ARGUMENTS:
-	-n <num_of_sub>		number of subjects to use. This means taking the first <num_of_sub> subjects from 
-	                    <ind_sub_list>. For example, setting '-n 50' means the first 50 lines of <ind_sub_list> will be 
-	                    read to get subject IDs. Setting this to 0 will make the script use all subjects from 
-	                    <ind_sub_list>.
-				[ default: 0 ]
-	-a <ants_dir> 		absolute path to directory where ANTs is installed
-				[ default: $ANTSPATH ]
-	-i <input_dir> 		absolute path to input directory. The inputs are the index files created in step 1, i.e. the 
-	                    input directory should be the same as output directory in step 1.
-				[ default: $(pwd)/results/index_fsaverage ]
-	-w <warp_dir> 		absolute path to ANTs registration results directory. If the resutls were generated using 
-	                    $ANTSREG_PREP_SCRIPT, this directory should be the same as output directory used in the 
-	                    preparation step.
-				[ default: $(pwd)/results/antsReg ]
-	-t <template> 		absolute path to user-defined volumetric template file
-				[ default: unset ]
-	-l <ind_sub_list> 	absolute path to a file containing individual subject IDs. Each line in the file should contain 
-	                    one subject ID.
-				[ default: $DEFAULT_GSP_SUBLIST ]
-	-g <ind_sub_dir> 	SUBJECTS_DIR of individual subjects' recon-all results
-				[ default: $CBIG_RF_REP_GSP_DIR ]
+  -n <num_of_sub>    number of subjects to use. This means taking the first <num_of_sub> subjects from 
+                      <ind_sub_list>. For example, setting '-n 50' means the first 50 lines of <ind_sub_list> will be 
+                      read to get subject IDs. Setting this to 0 will make the script use all subjects from 
+                      <ind_sub_list>.
+        [ default: 0 ]
+  -a <ants_dir>     absolute path to directory where ANTs is installed
+        [ default: $ANTSPATH ]
+  -i <input_dir>     absolute path to input directory. The inputs are the index files created in step 1, i.e. the 
+                      input directory should be the same as output directory in step 1.
+        [ default: $(pwd)/results/index_fsaverage ]
+  -w <warp_dir>     absolute path to ANTs registration results directory. If the resutls were generated using 
+                      $ANTSREG_PREP_SCRIPT, this directory should be the same as output directory used in the 
+                      preparation step.
+        [ default: $(pwd)/results/antsReg ]
+  -t <template>     absolute path to user-defined volumetric template file
+        [ default: unset ]
+  -l <ind_sub_list>   absolute path to a file containing individual subject IDs. Each line in the file should contain 
+                      one subject ID.
+        [ default: $DEFAULT_GSP_SUBLIST ]
+  -g <ind_sub_dir>   SUBJECTS_DIR of individual subjects' recon-all results
+        [ default: $CBIG_RF_REP_GSP_DIR ]
         -o <output_dir>         absolute path to output directory
-				[ default: $(pwd)/results/ ]
-	-q <queue> 		for PBS scheduler users, this is equivalent to the -q option for qsub. For example, setting 
-	                "-q circ-spool" will make the script submit jobs to job scheduler using "qsub -q circ-spool"
-				[ default: unset ]
-	-t <interval> 		time interval between job submits. For example, the default setting means after each job is 
-	                    submitted, the script 'sleep' for 10 seconds before submitting the next one.
-				[ default: 10s ]
-	-h			display help message
+        [ default: $(pwd)/results/ ]
+  -q <queue>     for PBS scheduler users, this is equivalent to the -q option for qsub. For example, setting 
+                  "-q circ-spool" will make the script submit jobs to job scheduler using "qsub -q circ-spool"
+        [ default: unset ]
+  -t <interval>     time interval between job submits. For example, the default setting means after each job is 
+                      submitted, the script 'sleep' for 10 seconds before submitting the next one.
+        [ default: 10s ]
+  -h      display help message
 
 OUTPUTS:
-	$0 will create 3 folders:
-	1) index_T1 folder: 6 files will be generated for each subject, corresponding to the x/y/z index files projected to 
-	   the subject's T1 space, from left and right hemispheres of the subject's surface respectively. 
-	For example: 
-		lh.xIndex_fsaverage_to_Sub0001_Ses1_FS_T1.nii.gz
+  $0 will create 3 folders:
+  1) index_T1 folder: 6 files will be generated for each subject, corresponding to the x/y/z index files projected to 
+     the subject's T1 space, from left and right hemispheres of the subject's surface respectively. 
+  For example: 
+    lh.xIndex_fsaverage_to_Sub0001_Ses1_FS_T1.nii.gz
                 rh.xIndex_fsaverage_to_Sub0001_Ses1_FS_T1.nii.gz
                 lh.yIndex_fsaverage_to_Sub0001_Ses1_FS_T1.nii.gz
                 rh.yIndex_fsaverage_to_Sub0001_Ses1_FS_T1.nii.gz
                 lh.zIndex_fsaverage_to_Sub0001_Ses1_FS_T1.nii.gz
                 rh.zIndex_fsaverage_to_Sub0001_Ses1_FS_T1.nii.gz
-	2) index_\${template_sub_id}: 6 files will be generated for each subject, corresponding to the x/y/z index files 
-	   from left and right hemispheres, registered to the volumetric atlas space. 
-	For example: 
-		lh.xIndex_fsaverage_to_Sub0001_Ses1_FS_to_FSL_MNI152_FS4.5.0_RF_ANTs.nii.gz
+  2) index_\${template_sub_id}: 6 files will be generated for each subject, corresponding to the x/y/z index files 
+     from left and right hemispheres, registered to the volumetric atlas space. 
+  For example: 
+    lh.xIndex_fsaverage_to_Sub0001_Ses1_FS_to_FSL_MNI152_FS4.5.0_RF_ANTs.nii.gz
                 rh.xIndex_fsaverage_to_Sub0001_Ses1_FS_to_FSL_MNI152_FS4.5.0_RF_ANTs.nii.gz
                 lh.yIndex_fsaverage_to_Sub0001_Ses1_FS_to_FSL_MNI152_FS4.5.0_RF_ANTs.nii.gz
                 rh.yIndex_fsaverage_to_Sub0001_Ses1_FS_to_FSL_MNI152_FS4.5.0_RF_ANTs.nii.gz
                 lh.zIndex_fsaverage_to_Sub0001_Ses1_FS_to_FSL_MNI152_FS4.5.0_RF_ANTs.nii.gz
                 rh.zIndex_fsaverage_to_Sub0001_Ses1_FS_to_FSL_MNI152_FS4.5.0_RF_ANTs.nii.gz
-	3) job_files folder: contains output and error log files for PBS scheduler (only created if -q has been set)
+  3) job_files folder: contains output and error log files for PBS scheduler (only created if -q has been set)
 
 EXAMPLE:
-	$0 -p 'MNI152_orig' -s 'FSL_MNI152_FS4.5.0' -q circ-spool
-	$0 -t 'my_template' -s 'my_template_FS' -t path/to/my/template.nii.gz -n 50
+  $0 -p 'MNI152_orig' -s 'FSL_MNI152_FS4.5.0' -q circ-spool
+  $0 -t 'my_template' -s 'my_template_FS' -t path/to/my/template.nii.gz -n 50
 
 " 1>&2; exit 1; }
 

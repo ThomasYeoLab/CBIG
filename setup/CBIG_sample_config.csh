@@ -9,7 +9,7 @@ if( $?FREESURFER_HOME ) then
     set LD_LIBRARY_PATH_CURRENT=$LD_LIBRARY_PATH
 
     # Clear old freesurfer variables
-	source $FREESURFER_HOME/bin/clear_fs_env.csh 
+    source $FREESURFER_HOME/bin/clear_fs_env.csh 
 
     # Restore old LD_LIBRARY_PATH
     setenv LD_LIBRARY_PATH $LD_LIBRARY_PATH_CURRENT

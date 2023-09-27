@@ -8,7 +8,7 @@ function CBIG_selectBETResults(BETOutFolderPattern)
 %
 % Input:
 %     - BETOutFolderPattern:
-%	Path to your BET output folders, for example, '~/outputs/VBM/brains*'
+%       Path to your BET output folders, for example, '~/outputs/VBM/brains*'
 %
 % Output:
 %     - A text file listing out the selected BET result for each scan

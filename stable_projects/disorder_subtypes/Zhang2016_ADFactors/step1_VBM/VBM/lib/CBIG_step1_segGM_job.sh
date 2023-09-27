@@ -10,7 +10,7 @@ fast -R 0.3 -H 0.1 -o ${outDir}${filename} ${brain}
 
 # Generate the partial GM list for template construction
 if grep -Fxq "${brain}" ${brainList_tmp}; then
-	echo ${outDir}${filename}_pve_1.nii.gz >> ${outDir}GMList_tmp.txt
+    echo ${outDir}${filename}_pve_1.nii.gz >> ${outDir}GMList_tmp.txt
 fi
 
 # Generate the full GM list for the next step (and indicate this job is done)

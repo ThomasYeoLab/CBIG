@@ -9,22 +9,23 @@
 # Usage
 usage() { echo "
 Usage: $0 -g <GMToStdTmpList> -o <outDir>
-	- GMToStdTmpList	Text file with each line being the path to a GMToStdTmp image; e.g., ~/outputs/VBM/affineRegToStdTmp/GMToStdTmpList.txt
-	- outDir		Output directory; e.g., ~/outputs/VBM/affineTmp/
+    - GMToStdTmpList    Text file with each line being the path to a GMToStdTmp image; 
+                        e.g., ~/outputs/VBM/affineRegToStdTmp/GMToStdTmpList.txt
+    - outDir            Output directory; e.g., ~/outputs/VBM/affineTmp/
 " 1>&2; exit 1; }
 
 # Reading in parameters
 while getopts ":g:o:" opt; do
-	case "${opt}" in
-		g) GMToStdTmpList=${OPTARG};;
-		o) outDir=${OPTARG};;
-       		*) usage;;
-    	esac
+    case "${opt}" in
+        g) GMToStdTmpList=${OPTARG};;
+        o) outDir=${OPTARG};;
+        *) usage;;
+    esac
 done
 shift $((OPTIND-1))
 if [ -z "${GMToStdTmpList}" ] || [ -z "${outDir}" ]; then
-	echo Missing Parameters!
-	usage
+    echo Missing Parameters!
+    usage
 fi
 
 ###########################################
@@ -37,7 +38,7 @@ mkdir -p ${outDir}
 # Prepare list
 tmpList=""
 for img in `cat ${GMToStdTmpList}`; do
-	tmpList="${tmpList} ${img}"
+    tmpList="${tmpList} ${img}"
 done
 
 fslmerge -t ${outDir}GMToStdTmp_4d ${tmpList} # concatenate

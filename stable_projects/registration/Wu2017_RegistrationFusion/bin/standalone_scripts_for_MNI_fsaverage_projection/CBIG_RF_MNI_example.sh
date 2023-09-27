@@ -41,16 +41,16 @@ Usage: $0 -f <freesurfer_dir> -m <matlab_bin>
 This script projects an example input in MNI152 space to fsaverage space and visualise the results in freeview. 
 
 OPTIONAL ARGUMENTS:
-	-f <freesurfer_dir>	absolute path to FreeSurfer directory (this will overwrite the default \$FREESUFER_HOME). This setting may affect the version of FreeSurfer .m scripts called, but not the version of the warps/mappings used.
-				[ default: $FREESURFER_HOME ]
-	-m <matlab_bin>		absolute path to the Matlab bin directory. Default is set to \$CBIG_MATLAB_DIR/bin or empty. This setting may affect the version of Matlab builtin .m scripts called.
-				[ default: $CBIG_MATLAB_DIR/bin ]
-	-h			display help message
+  -f <freesurfer_dir>  absolute path to FreeSurfer directory (this will overwrite the default \$FREESUFER_HOME). This setting may affect the version of FreeSurfer .m scripts called, but not the version of the warps/mappings used.
+        [ default: $FREESURFER_HOME ]
+  -m <matlab_bin>    absolute path to the Matlab bin directory. Default is set to \$CBIG_MATLAB_DIR/bin or empty. This setting may affect the version of Matlab builtin .m scripts called.
+        [ default: $CBIG_MATLAB_DIR/bin ]
+  -h      display help message
 
 OUTPUTS:
-	$0 will create 2 files, corresponding to the projected data onto fsaverage left and right hemispheres respectively, i.e.:
-		lh.MNI_probMap_ants.central_sulc.allSub_RF_ANTs_MNI152_orig_to_fsaverage.nii.gz
-		rh.MNI_probMap_ants.central_sulc.allSub_RF_ANTs_MNI152_orig_to_fsaverage.nii.gz
+  $0 will create 2 files, corresponding to the projected data onto fsaverage left and right hemispheres respectively, i.e.:
+    lh.MNI_probMap_ants.central_sulc.allSub_RF_ANTs_MNI152_orig_to_fsaverage.nii.gz
+    rh.MNI_probMap_ants.central_sulc.allSub_RF_ANTs_MNI152_orig_to_fsaverage.nii.gz
 
 " 1>&2; exit 1; }
 

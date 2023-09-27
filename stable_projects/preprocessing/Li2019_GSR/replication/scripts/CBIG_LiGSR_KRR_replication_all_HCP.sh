@@ -13,7 +13,7 @@ echo $curr_dir
 echo $work_dir
 
 if [ ! -d $work_dir ]; then
-	mkdir -p $work_dir
+    mkdir -p $work_dir
 fi
 
 cd $work_dir
@@ -35,124 +35,124 @@ top_outdir=$1
 #top_outdir=$test_dir/ref_output
 
 for pipeline in GSR Baseline ; do
-	RSFC_file=$test_dir/cort+subcort_new_S1200_953_Fisher_${pipeline}.mat
-	outdir=$top_outdir/$pipeline
-	
-	##########################
-	# 13 cognitive measures
-	##########################
-	cog_list="$replication_dir/scripts/HCP_lists/Cognitive_unrestricted.txt"
-	covariate_list="$replication_dir/scripts/HCP_lists/covariates_58behaviors.txt"
-	outstem=13cognitive
-	
-	for seed in $(seq 1 1 20); do
-		cmd="$project_dir/KernelRidgeRegression/HCP/scripts/CBIG_LiGSR_KRR_workflowHCP.sh -subject_list $subject_list "
-		cmd="$cmd -RSFC_file $RSFC_file -y_list $cog_list -covariate_list $covariate_list -FD_file $FD_file -DVARS_file"
-		cmd="$cmd $DVARS_file -outdir $outdir -outstem $outstem -seed $seed -with_bias $with_bias"
-		
-		echo $cmd | $CBIG_SCHEDULER_DIR/qsub -V -q circ-spool -l walltime=06:00:00,mem=6GB -m ae \
-		  -N CBIG_LiGSR_KRR_replication_all_HCP
-		
-		if [ ! -f $outdir/covariates_${outstem}.mat ] || [ ! -f $outdir/y_${outstem}.mat ]; then
-			# wait for the files shared across random splits to be saved
-			sleep 3m   
-		else
-			sleep 3s
-		fi
-	done
-	
-	
-	##########################
-	# 22 personality and task fMRI measures
-	##########################
-	person_list="$replication_dir/scripts/HCP_lists/Personality_Task_unrestricted.txt"
-	covariate_list="$replication_dir/scripts/HCP_lists/covariates_58behaviors.txt"
-	outstem=22personality
-	
-	for seed in $(seq 1 1 20); do
-		cmd="$project_dir/KernelRidgeRegression/HCP/scripts/CBIG_LiGSR_KRR_workflowHCP.sh -subject_list $subject_list "
-		cmd="$cmd -RSFC_file $RSFC_file -y_list $person_list -covariate_list $covariate_list -FD_file $FD_file "
-		cmd="$cmd -DVARS_file $DVARS_file -outdir $outdir -outstem $outstem -seed $seed -with_bias $with_bias"
-		
-		echo $cmd | $CBIG_SCHEDULER_DIR/qsub -V -q circ-spool -l walltime=06:00:00,mem=6GB -m ae \
-		  -N CBIG_LiGSR_KRR_replication_all_HCP
-		
-		if [ ! -f $outdir/covariates_${outstem}.mat ] || [ ! -f $outdir/y_${outstem}.mat ]; then
-			sleep 3m
-		else
-			sleep 3s
-		fi
-	done
-	
-	
-	##########################
-	# 23 Social emotional measures
-	##########################
-	emot_list="$replication_dir/scripts/HCP_lists/Social_Emotion_unrestricted.txt"
-	covariate_list="$replication_dir/scripts/HCP_lists/covariates_58behaviors.txt"
-	outstem=23emotion
-	
-	for seed in $(seq 1 1 20); do
-		cmd="$project_dir/KernelRidgeRegression/HCP/scripts/CBIG_LiGSR_KRR_workflowHCP.sh -subject_list $subject_list "
-		cmd="$cmd -RSFC_file $RSFC_file -y_list $emot_list -covariate_list $covariate_list -FD_file $FD_file "
-		cmd="$cmd -DVARS_file $DVARS_file -outdir $outdir -outstem $outstem -seed $seed -with_bias $with_bias"
-		
-		echo $cmd | $CBIG_SCHEDULER_DIR/qsub -V -q circ-spool -l walltime=06:00:00,mem=6GB -m ae \
-		  -N CBIG_LiGSR_KRR_replication_all_HCP
-		
-		if [ ! -f $outdir/covariates_${outstem}.mat ] || [ ! -f $outdir/y_${outstem}.mat ]; then
-			sleep 3m
-		else
-			sleep 3s
-		fi
-	done
-	
-	
-	##########################
-	# predict age
-	##########################
-	age_list="$replication_dir/scripts/HCP_lists/Age_header.txt"
-	covariate_list="$replication_dir/scripts/HCP_lists/covariates_age.txt"
-	outstem=Age
-	
-	for seed in $(seq 1 1 20); do
-		cmd="$project_dir/KernelRidgeRegression/HCP/scripts/CBIG_LiGSR_KRR_workflowHCP.sh -subject_list $subject_list "
-		cmd="$cmd -RSFC_file $RSFC_file -y_list $age_list -covariate_list $covariate_list -FD_file $FD_file "
-		cmd="$cmd -DVARS_file $DVARS_file -outdir $outdir -outstem $outstem -seed $seed -with_bias $with_bias"
-		
-		echo $cmd | $CBIG_SCHEDULER_DIR/qsub -V -q circ-spool -l walltime=01:00:00,mem=3GB -m ae \
-		  -N CBIG_LiGSR_KRR_replication_all_HCP
-		
-		if [ ! -f $outdir/covariates_${outstem}.mat ] || [ ! -f $outdir/y_${outstem}.mat ]; then
-			sleep 3m
-		else
-			sleep 3s
-		fi
-	done
-	
-	
-	##########################
-	# predict sex
-	##########################
-	sex_list="$replication_dir/scripts/HCP_lists/Sex_header.txt"
-	covariate_list="$replication_dir/scripts/HCP_lists/covariates_sex.txt"
-	outstem=Sex
-	
-	for seed in $(seq 1 1 20); do
-		cmd="$project_dir/KernelRidgeRegression/HCP/scripts/CBIG_LiGSR_KRR_workflowHCP.sh -subject_list $subject_list "
-		cmd="$cmd -RSFC_file $RSFC_file -y_list $sex_list -covariate_list $covariate_list -FD_file $FD_file -DVARS_file"
-		cmd="$cmd $DVARS_file -outdir $outdir -outstem $outstem -seed $seed -with_bias $with_bias"
-		
-		echo $cmd | $CBIG_SCHEDULER_DIR/qsub -V -q circ-spool -l walltime=20:00:00,mem=6GB -m ae \
-		  -N CBIG_LiGSR_KRR_replication_all_HCP
-		
-		if [ ! -f $outdir/covariates_${outstem}.mat ] || [ ! -f $outdir/y_${outstem}.mat ]; then
-			sleep 3m
-		else
-			sleep 3s
-		fi
-	done
-	
+    RSFC_file=$test_dir/cort+subcort_new_S1200_953_Fisher_${pipeline}.mat
+    outdir=$top_outdir/$pipeline
+
+    ##########################
+    # 13 cognitive measures
+    ##########################
+    cog_list="$replication_dir/scripts/HCP_lists/Cognitive_unrestricted.txt"
+    covariate_list="$replication_dir/scripts/HCP_lists/covariates_58behaviors.txt"
+    outstem=13cognitive
+
+    for seed in $(seq 1 1 20); do
+        cmd="$project_dir/KernelRidgeRegression/HCP/scripts/CBIG_LiGSR_KRR_workflowHCP.sh -subject_list $subject_list "
+        cmd="$cmd -RSFC_file $RSFC_file -y_list $cog_list -covariate_list $covariate_list -FD_file $FD_file -DVARS_file"
+        cmd="$cmd $DVARS_file -outdir $outdir -outstem $outstem -seed $seed -with_bias $with_bias"
+    
+        echo $cmd | $CBIG_SCHEDULER_DIR/qsub -V -q circ-spool -l walltime=06:00:00,mem=6GB -m ae \
+          -N CBIG_LiGSR_KRR_replication_all_HCP
+    
+        if [ ! -f $outdir/covariates_${outstem}.mat ] || [ ! -f $outdir/y_${outstem}.mat ]; then
+            # wait for the files shared across random splits to be saved
+            sleep 3m   
+        else
+            sleep 3s
+        fi
+    done
+
+
+    ##########################
+    # 22 personality and task fMRI measures
+    ##########################
+    person_list="$replication_dir/scripts/HCP_lists/Personality_Task_unrestricted.txt"
+    covariate_list="$replication_dir/scripts/HCP_lists/covariates_58behaviors.txt"
+    outstem=22personality
+
+    for seed in $(seq 1 1 20); do
+        cmd="$project_dir/KernelRidgeRegression/HCP/scripts/CBIG_LiGSR_KRR_workflowHCP.sh -subject_list $subject_list "
+        cmd="$cmd -RSFC_file $RSFC_file -y_list $person_list -covariate_list $covariate_list -FD_file $FD_file "
+        cmd="$cmd -DVARS_file $DVARS_file -outdir $outdir -outstem $outstem -seed $seed -with_bias $with_bias"
+    
+        echo $cmd | $CBIG_SCHEDULER_DIR/qsub -V -q circ-spool -l walltime=06:00:00,mem=6GB -m ae \
+          -N CBIG_LiGSR_KRR_replication_all_HCP
+    
+        if [ ! -f $outdir/covariates_${outstem}.mat ] || [ ! -f $outdir/y_${outstem}.mat ]; then
+            sleep 3m
+        else
+            sleep 3s
+        fi
+    done
+
+
+    ##########################
+    # 23 Social emotional measures
+    ##########################
+    emot_list="$replication_dir/scripts/HCP_lists/Social_Emotion_unrestricted.txt"
+    covariate_list="$replication_dir/scripts/HCP_lists/covariates_58behaviors.txt"
+    outstem=23emotion
+
+    for seed in $(seq 1 1 20); do
+        cmd="$project_dir/KernelRidgeRegression/HCP/scripts/CBIG_LiGSR_KRR_workflowHCP.sh -subject_list $subject_list "
+        cmd="$cmd -RSFC_file $RSFC_file -y_list $emot_list -covariate_list $covariate_list -FD_file $FD_file "
+        cmd="$cmd -DVARS_file $DVARS_file -outdir $outdir -outstem $outstem -seed $seed -with_bias $with_bias"
+    
+        echo $cmd | $CBIG_SCHEDULER_DIR/qsub -V -q circ-spool -l walltime=06:00:00,mem=6GB -m ae \
+          -N CBIG_LiGSR_KRR_replication_all_HCP
+    
+        if [ ! -f $outdir/covariates_${outstem}.mat ] || [ ! -f $outdir/y_${outstem}.mat ]; then
+            sleep 3m
+        else
+            sleep 3s
+        fi
+    done
+
+
+    ##########################
+    # predict age
+    ##########################
+    age_list="$replication_dir/scripts/HCP_lists/Age_header.txt"
+    covariate_list="$replication_dir/scripts/HCP_lists/covariates_age.txt"
+    outstem=Age
+
+    for seed in $(seq 1 1 20); do
+        cmd="$project_dir/KernelRidgeRegression/HCP/scripts/CBIG_LiGSR_KRR_workflowHCP.sh -subject_list $subject_list "
+        cmd="$cmd -RSFC_file $RSFC_file -y_list $age_list -covariate_list $covariate_list -FD_file $FD_file "
+        cmd="$cmd -DVARS_file $DVARS_file -outdir $outdir -outstem $outstem -seed $seed -with_bias $with_bias"
+    
+        echo $cmd | $CBIG_SCHEDULER_DIR/qsub -V -q circ-spool -l walltime=01:00:00,mem=3GB -m ae \
+          -N CBIG_LiGSR_KRR_replication_all_HCP
+    
+        if [ ! -f $outdir/covariates_${outstem}.mat ] || [ ! -f $outdir/y_${outstem}.mat ]; then
+            sleep 3m
+        else
+            sleep 3s
+        fi
+    done
+
+
+    ##########################
+    # predict sex
+    ##########################
+    sex_list="$replication_dir/scripts/HCP_lists/Sex_header.txt"
+    covariate_list="$replication_dir/scripts/HCP_lists/covariates_sex.txt"
+    outstem=Sex
+
+    for seed in $(seq 1 1 20); do
+        cmd="$project_dir/KernelRidgeRegression/HCP/scripts/CBIG_LiGSR_KRR_workflowHCP.sh -subject_list $subject_list "
+        cmd="$cmd -RSFC_file $RSFC_file -y_list $sex_list -covariate_list $covariate_list -FD_file $FD_file -DVARS_file"
+        cmd="$cmd $DVARS_file -outdir $outdir -outstem $outstem -seed $seed -with_bias $with_bias"
+    
+        echo $cmd | $CBIG_SCHEDULER_DIR/qsub -V -q circ-spool -l walltime=20:00:00,mem=6GB -m ae \
+          -N CBIG_LiGSR_KRR_replication_all_HCP
+    
+        if [ ! -f $outdir/covariates_${outstem}.mat ] || [ ! -f $outdir/y_${outstem}.mat ]; then
+            sleep 3m
+        else
+            sleep 3s
+        fi
+    done
+
 done
 
 

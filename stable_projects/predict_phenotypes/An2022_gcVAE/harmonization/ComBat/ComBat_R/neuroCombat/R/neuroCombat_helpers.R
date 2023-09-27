@@ -16,21 +16,21 @@
 }
 
 .checkNARows <- function(dat){
-	nas <- rowSums(is.na(dat))
-	ns <- sum(nas==ncol(dat))
-	if (ns>0){
-	  message <- paste0(ns, " rows (features) were found to have missing values for all samples. Please remove these rows before running ComBat.")
-	  stop(message)
-	}
+    nas <- rowSums(is.na(dat))
+    ns <- sum(nas==ncol(dat))
+    if (ns>0){
+      message <- paste0(ns, " rows (features) were found to have missing values for all samples. Please remove these rows before running ComBat.")
+      stop(message)
+    }
 }
 
 .checkConstantRows <- function(dat){
-	sds <- rowSds(dat, na.rm=TRUE)
-	ns <- sum(sds==0)
-	if (ns>0){
-	  message <- paste0(ns, " rows (features) were found to be constant across samples. Please remove these rows before running ComBat.")
-	  stop(message)
-	}
+    sds <- rowSds(dat, na.rm=TRUE)
+    ns <- sum(sds==0)
+    if (ns>0){
+      message <- paste0(ns, " rows (features) were found to be constant across samples. Please remove these rows before running ComBat.")
+      stop(message)
+    }
 }
 
 
@@ -176,14 +176,14 @@ getStandardizedData <- function(dat, dataDict, design, hasNAs){
 
 # Following four find empirical hyper-prior values
 aprior <- function(delta.hat){
-	m=mean(delta.hat)
-	s2=var(delta.hat)
-	(2*s2+m^2)/s2
+    m=mean(delta.hat)
+    s2=var(delta.hat)
+    (2*s2+m^2)/s2
 }
 bprior <- function(delta.hat){
-	m=mean(delta.hat)
-	s2=var(delta.hat)
-	(m*s2+m^3)/s2
+    m=mean(delta.hat)
+    s2=var(delta.hat)
+    (m*s2+m^3)/s2
 }
 apriorMat <- function(delta.hat) {
   m  <- rowMeans2(delta.hat)
@@ -208,26 +208,26 @@ postvar <- function(sum2, n, a, b){
 
 # Helper function for parametric adjustements:
 it.sol  <- function(sdat, g.hat, d.hat, g.bar, t2, a, b, conv=.0001){
-	#n <- apply(!is.na(sdat),1,sum)
-	n <- rowSums(!is.na(sdat))
-	g.old  <- g.hat
-	d.old  <- d.hat
-	change <- 1
-	count  <- 0
-	ones <- rep(1,ncol(sdat))
+    #n <- apply(!is.na(sdat),1,sum)
+    n <- rowSums(!is.na(sdat))
+    g.old  <- g.hat
+    d.old  <- d.hat
+    change <- 1
+    count  <- 0
+    ones <- rep(1,ncol(sdat))
 
-	while(change>conv){
-		g.new  <- postmean(g.hat,g.bar,n,d.old,t2)
-		sum2   <- rowSums2((sdat-tcrossprod(g.new, ones))^2, na.rm=TRUE)
-		d.new  <- postvar(sum2,n,a,b)
-		change <- max(abs(g.new-g.old)/g.old,abs(d.new-d.old)/d.old)
-		g.old <- g.new
-		d.old <- d.new
-		count <- count+1
-		}
-	adjust <- rbind(g.new, d.new)
-	rownames(adjust) <- c("g.star","d.star")
-	adjust
+    while(change>conv){
+        g.new  <- postmean(g.hat,g.bar,n,d.old,t2)
+        sum2   <- rowSums2((sdat-tcrossprod(g.new, ones))^2, na.rm=TRUE)
+        d.new  <- postvar(sum2,n,a,b)
+        change <- max(abs(g.new-g.old)/g.old,abs(d.new-d.old)/d.old)
+        g.old <- g.new
+        d.old <- d.new
+        count <- count+1
+        }
+    adjust <- rbind(g.new, d.new)
+    rownames(adjust) <- c("g.star","d.star")
+    adjust
 }
 
 
@@ -238,7 +238,7 @@ int.eprior <- function(sdat, g.hat, d.hat){
     r <- nrow(sdat)
     for(i in 1:r){
         g <- g.hat[-i]
-        d <- d.hat[-i]		
+        d <- d.hat[-i]
         x <- sdat[i,!is.na(sdat[i,])]
         n <- length(x)
         j <- numeric(n)+1
@@ -253,7 +253,7 @@ int.eprior <- function(sdat, g.hat, d.hat){
     }
     adjust <- rbind(g.star,d.star)
     rownames(adjust) <- c("g.star","d.star")
-    adjust	
+    adjust
 } 
 
 

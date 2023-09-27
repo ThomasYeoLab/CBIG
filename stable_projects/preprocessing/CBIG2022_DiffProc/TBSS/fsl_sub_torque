@@ -145,7 +145,7 @@ command=`basename $0`
 
 usage ()
 {
-  cat <<EOF
+cat <<EOF
 
 $command V1.1 - wrapper for job control system such as SGE
 
@@ -155,58 +155,58 @@ $command gzip *.img *.hdr
 $command -q short.q gzip *.img *.hdr
 $command -a darwin regscript rawdata outputdir ...
 
-  -T <minutes>          Estimated job length in minutes, used to auto-set queue name
-  -q <queuename>        Possible values for <queuename> are "verylong.q", "long.q" 
-                        and "short.q". See below for details
-                        Default is "long.q".
-  -a <arch-name>        Architecture [e.g., darwin or lx24-amd64]
-  -p <job-priority>     Lower priority [0:-1024] default = 0                 
-  -M <email-address>    Who to email, default = `whoami`@fmrib.ox.ac.uk 
-  -j <jid>              Place a hold on this task until job jid has completed
-  -t <filename>         Specify a task file of commands to execute in parallel
-  -N <jobname>          Specify jobname as it will appear on queue
-  -R <RAM>              Max total RAM to use for job (integer in MB)
-  -l <logdirname>       Where to output logfiles
-  -m <mailoptions>      Change the SGE mail options, see qsub for details
-  -z <output>           If <output> image or file already exists, do nothing and exit
-  -F                    Use flags embedded in scripts to set SGE queuing options
-  -s <pename>,<threads> Submit a multi-threaded task - requires a PE (<pename>) to be
-                        configured for the requested queues.
-                        <threads> specifies the number of threads to run
-  -v                    Verbose mode.
+    -T <minutes>          Estimated job length in minutes, used to auto-set queue name
+    -q <queuename>        Possible values for <queuename> are "verylong.q", "long.q" 
+                          and "short.q". See below for details
+                          Default is "long.q".
+    -a <arch-name>        Architecture [e.g., darwin or lx24-amd64]
+    -p <job-priority>     Lower priority [0:-1024] default = 0                 
+    -M <email-address>    Who to email, default = `whoami`@fmrib.ox.ac.uk 
+    -j <jid>              Place a hold on this task until job jid has completed
+    -t <filename>         Specify a task file of commands to execute in parallel
+    -N <jobname>          Specify jobname as it will appear on queue
+    -R <RAM>              Max total RAM to use for job (integer in MB)
+    -l <logdirname>       Where to output logfiles
+    -m <mailoptions>      Change the SGE mail options, see qsub for details
+    -z <output>           If <output> image or file already exists, do nothing and exit
+    -F                    Use flags embedded in scripts to set SGE queuing options
+    -s <pename>,<threads> Submit a multi-threaded task - requires a PE (<pename>) to be
+                          configured for the requested queues.
+                          <threads> specifies the number of threads to run
+    -v                    Verbose mode.
 
 Queues:
 
 There are several batch queues configured on the cluster, each with defined CPU
 time limits. All queues, except bigmem.q, have a 8GB memory limit.
 
-veryshort.q:This queue is for jobs which last under 30mins.
-short.q:    This queue is for jobs which last up to 4h. 
-long.q:     This queue is for jobs which last less than 24h. Jobs run with a
-            nice value of 10.
-verylong.q: This queue is for jobs which will take longer than 24h CPU time.
-            There is one slot per node, and jobs on this queue have a nice value
-            of 15.
-bigmem.q:   This queue is like the verylong.q but has no memory limits.
+veryshort.q: This queue is for jobs which last under 30mins.
+short.q:     This queue is for jobs which last up to 4h. 
+long.q:      This queue is for jobs which last less than 24h. Jobs run with a
+             nice value of 10.
+verylong.q:  This queue is for jobs which will take longer than 24h CPU time.
+             There is one slot per node, and jobs on this queue have a nice value
+             of 15.
+bigmem.q:    This queue is like the verylong.q but has no memory limits.
 
 EOF
 
-  exit 1
+    exit 1
 }
 
 nargs=$#
 if [ $nargs -eq 0 ] ; then
-  usage
+    usage
 fi
 
 set -- `getopt T:q:a:p:M:j:t:z:N:R:Fvm:l:s: $*`
 result=$?
 if [ $result != 0 ] ; then
-  echo "What? Your arguments make no sense!"
+    echo "What? Your arguments make no sense!"
 fi
 
 if [ $nargs -eq 0 ] || [ $result != 0 ] ; then
-  usage
+    usage
 fi
 
 POSIXLY_CORRECT=${OLD_POSIXLY_CORRECT}
@@ -268,105 +268,105 @@ fi
 scriptmode=0
 
 while [ $1 != -- ] ; do
-  case $1 in
-    -z)
-      if [ -e $2 -o `${FSLDIR}/bin/imtest $2` = 1 ] ; then
-        exit 0
-      fi
-      shift;;
-    -T)
-      map_qname $2
-      walltime=$(($2*60)) # add walltime for torque
-      shift;;
-    -q)
-      queue=$2
-      queueCmd=" -q $queue " 
-      $QCONF -sq $queue >/dev/null 2>&1
-      if [ $? -eq 1 ]; then
-          echo "Invalid queue specified!"
-          exit 127
-      fi
-      shift;;
-    -a)
-      acceptable_arch=no
-      available_archs=`qhost | tail -n +4 | awk '{print $2}' | sort | uniq`
-      for a in $available_archs; do
-    if [ $2 = $a ] ; then
-      acceptable_arch=yes
-    fi
-      done
-      if [ $acceptable_arch = yes ]; then
-          sge_arch="-l arch=$2"
-      else
-          echo "Sorry arch of $2 is not supported on this SGE configuration!"
-          echo "Should be one of:" $available_archs
-          exit 127
-      fi
-      shift;;
-    -p)
-      sge_priority="-p $2"
-      shift;;
-    -M)
-      mailto=$2
-      shift;;
-    -j)
-      jid=$2
-      sge_hold="-hold_jid $jid"
-      shift;;
-    -t)
-      taskfile=$2
-      if [ -f "$taskfile" ] ; then
-          tasks=`wc -l $taskfile | awk '{print $1}'`
-          if [ $tasks -ne 0 ]; then
-              sge_tasks="-t 1-$tasks"
-          else
-            echo "Task file ${taskfile} is empty"
-            echo "Should be a text file listing all the commands to run!"
-            exit -1
+    case $1 in
+        -z)
+          if [ -e $2 -o `${FSLDIR}/bin/imtest $2` = 1 ] ; then
+              exit 0
           fi
-      else
-          echo "Task file (${taskfile}) does not exist"
-          exit -1
-      fi
-      shift;;
-    -N)
-      JobName=$2;
-      shift;;
-    -R)
-      RAM="-l mem_free=${2}M"
-      if [[ $METHOD = "TORQUE" ]] ; then # modified mem options
-          RAM="${2}GB"
-      fi 
-      shift;;
-    -m)
-      MailOpts=$2;
-      shift;;
-    -l)
-      LogOpts="-o $2 -e $2";
-      LogDir="${2}/";
-      if [ ! -e ${2} ]; then 
-          mkdir -p $2
-      else
-      echo ${2} | grep '/dev/null' >/dev/null 2>&1
-      if [ $? -eq 1 ] && [ -f ${2} ]; then
-          echo "Log destination is a file (should be a folder)"
-          exit -1
-      fi
-      fi
-      shift;;
-    -F)
-      scriptmode=1;
-      ;;
-    -v)
-      verbose=1
-      ;;
-    -s)
-      pe_string=$2;
-      peName=`echo $pe_string | cut -d',' -f 1`
-      peThreads=`echo $pe_string | cut -d',' -f 2`
-      shift;;
-  esac
-  shift  # next flag
+          shift;;
+        -T)
+          map_qname $2
+          walltime=$(($2*60)) # add walltime for torque
+          shift;;
+        -q)
+          queue=$2
+          queueCmd=" -q $queue " 
+          $QCONF -sq $queue >/dev/null 2>&1
+          if [ $? -eq 1 ]; then
+              echo "Invalid queue specified!"
+              exit 127
+          fi
+          shift;;
+        -a)
+          acceptable_arch=no
+          available_archs=`qhost | tail -n +4 | awk '{print $2}' | sort | uniq`
+          for a in $available_archs; do
+              if [ $2 = $a ] ; then
+                  acceptable_arch=yes
+              fi
+          done
+          if [ $acceptable_arch = yes ]; then
+              sge_arch="-l arch=$2"
+          else
+              echo "Sorry arch of $2 is not supported on this SGE configuration!"
+              echo "Should be one of:" $available_archs
+              exit 127
+          fi
+          shift;;
+        -p)
+          sge_priority="-p $2"
+          shift;;
+        -M)
+          mailto=$2
+          shift;;
+        -j)
+          jid=$2
+          sge_hold="-hold_jid $jid"
+          shift;;
+        -t)
+          taskfile=$2
+          if [ -f "$taskfile" ] ; then
+               tasks=`wc -l $taskfile | awk '{print $1}'`
+               if [ $tasks -ne 0 ]; then
+                   sge_tasks="-t 1-$tasks"
+               else
+                   echo "Task file ${taskfile} is empty"
+                   echo "Should be a text file listing all the commands to run!"
+                   exit -1
+               fi
+          else
+               echo "Task file (${taskfile}) does not exist"
+               exit -1
+          fi
+          shift;;
+        -N)
+          JobName=$2;
+          shift;;
+        -R)
+          RAM="-l mem_free=${2}M"
+          if [[ $METHOD = "TORQUE" ]] ; then # modified mem options
+              RAM="${2}GB"
+          fi 
+          shift;;
+        -m)
+          MailOpts=$2;
+          shift;;
+        -l)
+          LogOpts="-o $2 -e $2";
+          LogDir="${2}/";
+          if [ ! -e ${2} ]; then 
+              mkdir -p $2
+          else
+              echo ${2} | grep '/dev/null' >/dev/null 2>&1
+              if [ $? -eq 1 ] && [ -f ${2} ]; then
+                  echo "Log destination is a file (should be a folder)"
+                  exit -1
+              fi
+          fi
+          shift;;
+        -F)
+          scriptmode=1;
+          ;;
+        -v)
+          verbose=1
+          ;;
+        -s)
+          pe_string=$2;
+          peName=`echo $pe_string | cut -d',' -f 1`
+          peThreads=`echo $pe_string | cut -d',' -f 2`
+          shift;;
+    esac
+    shift  # next flag
 done
 shift
 
@@ -424,57 +424,57 @@ case $METHOD in
        ###########################################################################
        # Test Parallel environment options
        ###########################################################################
-    if [ "x$peName" != x ]; then
-            # Is this a configured PE?
+       if [ "x$peName" != x ]; then
+           # Is this a configured PE?
 
-        $QCONF -sp $peName >/dev/null 2>&1
+           $QCONF -sp $peName >/dev/null 2>&1
 
-        if [ $? -eq 1 ]; then
-            echo $@
-            echo "$peName is not a valid PE"
-            exit -1
+           if [ $? -eq 1 ]; then
+               echo $@
+               echo "$peName is not a valid PE"
+               exit -1
+           fi
+
+           # Get a list of queues configured for this PE and confirm that the queue
+           # we have submitted to has that PE set up.
+           qstat -g c -pe $peName >/dev/null 2>&1
+           if [ $? -eq 1 ]; then
+               echo "No parallel environments configured!"
+               exit -1
+           fi
+
+           qstat -g c -pe $peName | sed '1,2d' | awk '{ print $1 }' | grep ^$queue >/dev/null 2>&1
+
+           if [ $? -eq 1 ]; then
+               echo $@
+               echo "PE $peName is not configured on $queue"
+               exit -1
+           fi
+
+           # The -w e option will result in the job failing if there are insufficient slots
+           # on any of the cluster nodes
+           pe_options="-pe $peName $peThreads -w e"
+
         fi
 
-            # Get a list of queues configured for this PE and confirm that the queue
-            # we have submitted to has that PE set up.
-        qstat -g c -pe $peName >/dev/null 2>&1
-        if [ $? -eq 1 ]; then
-            echo "No parallel environments configured!"
-            exit -1
-        fi
-
-        qstat -g c -pe $peName | sed '1,2d' | awk '{ print $1 }' | grep ^$queue >/dev/null 2>&1
-
-        if [ $? -eq 1 ]; then
-            echo $@
-            echo "PE $peName is not configured on $queue"
-            exit -1
-        fi
-
-        # The -w e option will result in the job failing if there are insufficient slots
-            # on any of the cluster nodes
-        pe_options="-pe $peName $peThreads -w e"
-
-    fi
-
-    if [ "x$tasks" = "x" ] ; then
-        if [ $scriptmode -ne 1 ] ; then
-            sge_command="qsub -V -cwd -shell n -b y -r y $queueCmd $pe_options -M $mailto -N $JobName -m $MailOpts $LogOpts $sge_arch $RAM $sge_hold"
+        if [ "x$tasks" = "x" ] ; then
+            if [ $scriptmode -ne 1 ] ; then
+                sge_command="qsub -V -cwd -shell n -b y -r y $queueCmd $pe_options -M $mailto -N $JobName -m $MailOpts $LogOpts $sge_arch $RAM $sge_hold"
+            else
+                sge_command="qsub $LogOpts $sge_arch $sge_hold"
+            fi
+            if [ $verbose -eq 1 ] ; then 
+                echo sge_command: $sge_command >&2
+                echo executing: $@ >&2
+            fi
+            exec $sge_command $@ | awk '{print $3}'
         else
-            sge_command="qsub $LogOpts $sge_arch $sge_hold"
-        fi
-        if [ $verbose -eq 1 ] ; then 
-            echo sge_command: $sge_command >&2
-            echo executing: $@ >&2
-        fi
-        exec $sge_command $@ | awk '{print $3}'
-    else
-        sge_command="qsub -V -cwd $queueCmd $pe_options -M $mailto -N $JobName -m $MailOpts $LogOpts $sge_arch $RAM $sge_hold $sge_tasks"
-        if [ $verbose -eq 1 ] ; then 
-            echo sge_command: $sge_command >&2
-            echo control file: $taskfile >&2
-        fi
-        exec $sge_command <<EOF | awk '{print $3}' | awk -F. '{print $1}'
+            sge_command="qsub -V -cwd $queueCmd $pe_options -M $mailto -N $JobName -m $MailOpts $LogOpts $sge_arch $RAM $sge_hold $sge_tasks"
+            if [ $verbose -eq 1 ] ; then 
+                echo sge_command: $sge_command >&2
+                echo control file: $taskfile >&2
+            fi
+            exec $sge_command <<EOF | awk '{print $3}' | awk -F. '{print $1}'
 #!/bin/sh
 
 #$ -S /bin/sh
@@ -491,31 +491,31 @@ EOF
 # Schedule on TORQUE cluster
 ###########################################################################
     TORQUE)
-    echo "TORQUE processing:"
-        if [ $verbose -eq 1 ] ; then 
-                echo "Running commands in: $taskfile" >&2
-            fi
+          echo "TORQUE processing:"
+          if [ $verbose -eq 1 ] ; then 
+              echo "Running commands in: $taskfile" >&2
+          fi
 
-            n=1
-        while [ $n -le $tasks ] ; do
-            # get command from taskfile
-            line=`sed -n -e ''${n}'p' $taskfile`
-            if [ $verbose -eq 1 ] ; then 
-                echo executing: $line >&2
-            fi
+          n=1
+          while [ $n -le $tasks ] ; do
+              # get command from taskfile
+              line=`sed -n -e ''${n}'p' $taskfile`
+              if [ $verbose -eq 1 ] ; then 
+                  echo executing: $line >&2
+              fi
 
-            #run command
-            logdir= $( pwd )
-            $CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "$cmd" -walltime "$walltime" -name "$JobName" \
-                -mem "$RAM" -joberr "$logdir" -jobout "$logdir"
+              #run command
+              logdir= $( pwd )
+              $CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "$cmd" -walltime "$walltime" -name "$JobName" \
+                  -mem "$RAM" -joberr "$logdir" -jobout "$logdir"
 
-            # pause and go on to next job 
-            sleep 2
-            n=`expr $n + 1`
-        done
+              # pause and go on to next job 
+              sleep 2
+              n=`expr $n + 1`
+          done
 
-    exit 1
-    ;;
+          exit 1
+          ;;
 
 
 ###########################################################################
@@ -524,38 +524,38 @@ EOF
 ###########################################################################
 
     NONE)
-    if [ "x$tasks" = "x" ] ; then
-        if [ $verbose -eq 1 ] ; then 
-            echo executing: $@ >&2
-        fi
+        if [ "x$tasks" = "x" ] ; then
+            if [ $verbose -eq 1 ] ; then 
+                echo executing: $@ >&2
+            fi
 
-        /bin/sh <<EOF1 > ${LogDir}${JobName}.o$$ 2> ${LogDir}${JobName}.e$$
-$@
-EOF1
-        ERR=$?
-        if [ $ERR -ne 0 ] ; then
-            cat ${LogDir}${JobName}.e$$ >&2
-            exit $ERR
-        fi
-    else
-        if [ $verbose -eq 1 ] ; then 
-            echo "Running commands in: $taskfile" >&2
-        fi
+            /bin/sh <<EOF1 > ${LogDir}${JobName}.o$$ 2> ${LogDir}${JobName}.e$$
+            $@
+            EOF1
+            ERR=$?
+            if [ $ERR -ne 0 ] ; then
+                cat ${LogDir}${JobName}.e$$ >&2
+                exit $ERR
+            fi
+        else
+            if [ $verbose -eq 1 ] ; then 
+                echo "Running commands in: $taskfile" >&2
+            fi
 
-        n=1
-        while [ $n -le $tasks ] ; do
-        line=`sed -n -e ''${n}'p' $taskfile`
-        if [ $verbose -eq 1 ] ; then 
-            echo executing: $line >&2
-        fi
-        /bin/sh <<EOF2 > ${LogDir}${JobName}.o$$.$n 2> ${LogDir}${JobName}.e$$.$n
-$line
-EOF2
-        n=`expr $n + 1`
-        done
-    fi
-    echo $$
-    ;;
+            n=1
+            while [ $n -le $tasks ] ; do
+                line=`sed -n -e ''${n}'p' $taskfile`
+                if [ $verbose -eq 1 ] ; then 
+                    echo executing: $line >&2
+                fi
+                /bin/sh <<EOF2 > ${LogDir}${JobName}.o$$.$n 2> ${LogDir}${JobName}.e$$.$n
+                $line
+                EOF2
+                n=`expr $n + 1`
+            done
+            fi
+            echo $$
+            ;;
 
 esac
 

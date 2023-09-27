@@ -1,6 +1,6 @@
 function CBIG_ASDf_checkJobStatus(progress_file, num_jobs, lag_time)
 % CBIG_ASDf_checkJobStatus(progress_file, num_jobs, lag_time)
-% 
+%
 % This is a helper function that holds off the next jobs until submitted jobs
 % are finished. Useful when the next job is dependent on the submitted
 % jobs.
@@ -14,11 +14,12 @@ function CBIG_ASDf_checkJobStatus(progress_file, num_jobs, lag_time)
 %     - num_jobs:
 %           Integer or string. Number of jobs.
 %     - lag_time:
-%           Integer or string. Time lag between each check of finished job, in seconds. 
-% 
+%           Integer or string. Time lag between each check of finished job, in seconds.
+%
 % Example:
-%	CBIG_ASDf_checkJobStatus('~/example_output/estimate/progressFile.txt',100,600)
-%	This function will check whether the 100 jobs have finished by checking the output in progressFile.txt every 10min.
+%     CBIG_ASDf_checkJobStatus('~/example_output/estimate/progressFile.txt',100,600)
+%     This function will check whether the 100 jobs have finished by checking the output in
+%     progressFile.txt every 10min.
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 

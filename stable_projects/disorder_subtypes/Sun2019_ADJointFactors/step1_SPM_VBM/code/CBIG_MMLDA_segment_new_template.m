@@ -9,8 +9,8 @@ jobs = repmat(jobfile, 1, nrun);
 inputs = cell(3, nrun);
 for crun = 1:nrun
     inputs{1, crun} = {image_path}; % CAT12: Segmentation: Volumes - cfg_files
-	inputs{2, crun} = {[spm_dir '/tpm/TPM.nii']};
-	inputs{3, crun} = {new_template};
+    inputs{2, crun} = {[spm_dir '/tpm/TPM.nii']};
+    inputs{3, crun} = {new_template};
 end
 spm('defaults', 'FMRI');
 spm_jobman('run', jobs, inputs{:});

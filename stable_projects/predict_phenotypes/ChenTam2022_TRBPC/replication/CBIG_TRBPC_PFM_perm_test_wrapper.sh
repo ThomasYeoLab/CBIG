@@ -24,4 +24,4 @@ total_num=100000
 # run permutation test for PFM of multi-kernel regression
 ###################################################################################################
 $scripts_dir/permutation/PFM/CBIG_TRBPC_PFM_perm_wrapper.sh -i ${pred_results_dir} -f ${feature_file} -s ${outstem} \
--n ${perm_num} -t ${total_num} -o ${perm_out_dir} -g ${site_list} -c ${cluster}
+    -n ${perm_num} -t ${total_num} -o ${perm_out_dir} -g ${site_list} -c ${cluster}

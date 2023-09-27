@@ -11,18 +11,18 @@ max_thre = as.numeric(Args[4])
 outname = Args[5]
 
 if (!require(circlize)){
-  install.packages('circlize')
+    install.packages('circlize')
 }
 if (!require(igraph)){
-  install.packages('igraph')
+    install.packages('igraph')
 }
 if (!require(ComplexHeatmap)){
-  if (!requireNamespace("BiocManager", quietly=TRUE))
-    install.packages("BiocManager")
-  BiocManager::install("ComplexHeatmap")
+    if (!requireNamespace("BiocManager", quietly=TRUE))
+        install.packages("BiocManager")
+    BiocManager::install("ComplexHeatmap")
 }
 if (!require(gridExtra)){
-  install.packages('gridExtra')
+    install.packages('gridExtra')
 }
 
 library(circlize)
@@ -75,30 +75,30 @@ f = factor(networks, levels = networks)
 circos.initialize(factors = f, xlim = c(0, 1))
 # 1st track
 circos.track(factors = f, ylim = c(0, 1), "track.height"= 0.02, 
-	track.margin = c(0.01, 0), bg.border='white', cell.padding=c(0,1,0,1))
+    track.margin = c(0.01, 0), bg.border='white', cell.padding=c(0,1,0,1))
 highlight.sector(c('1'), track.index = 1, col = outer_color[1], text = outer_labels[1], 
-	text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
+    text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
 highlight.sector(c('2', '3', '4'), track.index = 1, col = outer_color[2], text = outer_labels[2], 
-	text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
+    text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
 highlight.sector(c('5', '6', '7'), track.index = 1, col = outer_color[3], text = outer_labels[3], 
-	text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
+    text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
 highlight.sector(c('8', '9'), track.index = 1, col = outer_color[4], text = outer_labels[4], 
-	text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
+    text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
 highlight.sector(c('10', '11'), track.index = 1, col = outer_color[5], text = outer_labels[5], 
-	text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
+    text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
 highlight.sector(c('12', '13'), track.index = 1, col = outer_color[6], text = outer_labels[6], 
-	text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
+    text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
 highlight.sector(c('14', '15'), track.index = 1, col = outer_color[7], text = outer_labels[7], 
-	text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
+    text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
 highlight.sector(c('16', '17'), track.index = 1, col = outer_color[8], text = outer_labels[8], 
-	text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
+    text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
 highlight.sector(c('18'), track.index = 1, col = outer_color[9], text = outer_labels[9], 
-	text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
+    text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
 
 # 2nd track
 circos.track(factors = f, ylim = c(0, 1), "track.height"= 0.1, bg.col = inner_color, bg.lwd = rep(2, 18))
 circos.trackText(f, rep(0.5, 18), rep(0.5, 18), inner_labels, track.index = 2, facing="bending", 
-	niceFacing = TRUE, font=2, cex=inner_fontsize, col=inner_textcol)
+    niceFacing = TRUE, font=2, cex=inner_fontsize, col=inner_textcol)
 
 # links
 ind = !(df$weight < min_thre & df$weight > -min_thre)
@@ -107,24 +107,24 @@ df$weight[df$weight > max_thre] = max_thre
 df$weight[df$weight < -max_thre] = -max_thre+1e-10
 resolution <- 80
 if (min_thre == 0){
-  breaks = c(seq(-max_thre, max_thre, length.out = resolution))
+    breaks = c(seq(-max_thre, max_thre, length.out = resolution))
 } else {
-  breaks = c(seq(-max_thre,-min_thre,length.out = resolution/2), 
-	seq(min_thre, max_thre, length.out = resolution/2))
+    breaks = c(seq(-max_thre,-min_thre,length.out = resolution/2), 
+        seq(min_thre, max_thre, length.out = resolution/2))
 }
 df$color_level <- cut(df$weight, breaks, labels=FALSE)
 # generate bwr color
 # bwr <- colorRampPalette(c("blue","white","red"))
 # bwr_colors = bwr(resolution)
 if (link_colorscale == 'bwr'){
-  bwr <- colorRamp2(c(-1, 0, 1), c("blue","white","red"), space='RGB')
-  link_colors = bwr(seq(-1, 1, length.out=resolution))
+    bwr <- colorRamp2(c(-1, 0, 1), c("blue","white","red"), space='RGB')
+    link_colors = bwr(seq(-1, 1, length.out=resolution))
 }
-if  (link_colorscale == 'bkr'){
-  link_colors = scan("bkr_colorscale.txt", what="character", sep="\n")
-  bkr = function(vector){
-    return(link_colors[vector])
-  }
+if (link_colorscale == 'bkr'){
+    link_colors = scan("bkr_colorscale.txt", what="character", sep="\n")
+    bkr = function(vector){
+        return(link_colors[vector])
+    }
 }
 
 
@@ -132,33 +132,33 @@ len = max(table(c(df$from,df$to))) + 1.1
 link_breaks <- seq(0, 1, length.out=len)
 count = rep(1, 18)
 for (row in 1:nrow(df)) {
-  from <- df[row, "from"]
-  to <- df[row, "to"]
-  color_level <- df[row, "color_level"]
-  if (from == to) {
-    from_num = as.numeric(from)
-    circos.link(from, link_breaks[1:2], to, link_breaks[(len-1):len], col=link_colors[color_level])
-  } else {
-    from_num = as.numeric(from)
-    to_num = as.numeric(to)
-    count[from_num] <- count[from_num] + 1
-    count[to_num] <- count[to_num] + 1
-    #print(link_breaks[count[from_num]:(count[from_num]+1)])
-    circos.link(from, link_breaks[count[from_num]:(count[from_num]+1)], to, 
-	link_breaks[count[to_num]:(count[to_num]+1)], col=link_colors[color_level])
-  }
+    from <- df[row, "from"]
+    to <- df[row, "to"]
+    color_level <- df[row, "color_level"]
+    if (from == to) {
+        from_num = as.numeric(from)
+        circos.link(from, link_breaks[1:2], to, link_breaks[(len-1):len], col=link_colors[color_level])
+    } else {
+        from_num = as.numeric(from)
+        to_num = as.numeric(to)
+        count[from_num] <- count[from_num] + 1
+        count[to_num] <- count[to_num] + 1
+        #print(link_breaks[count[from_num]:(count[from_num]+1)])
+        circos.link(from, link_breaks[count[from_num]:(count[from_num]+1)], to, 
+            link_breaks[count[to_num]:(count[to_num]+1)], col=link_colors[color_level])
+    }
 }
 
 # add color bar
 if (link_colorscale == 'bwr'){
-  color_bar = Legend(at=c(-1,-0.2,0.2,1), labels=c(-max_thre,-min_thre,min_thre,max_thre), 
-	col_fun=bwr, grid_height = unit(4, "mm"), grid_width = unit(6, "mm"), 
-	labels_gp = gpar(fontsize = 20), direction = "horizontal")
+    color_bar = Legend(at=c(-1,-0.2,0.2,1), labels=c(-max_thre,-min_thre,min_thre,max_thre), 
+        col_fun=bwr, grid_height = unit(4, "mm"), grid_width = unit(6, "mm"), 
+        labels_gp = gpar(fontsize = 20), direction = "horizontal")
 }
 if (link_colorscale == 'bkr'){
-  color_bar = Legend(at=c(1,30,51,80), labels=c(-max_thre,-min_thre,min_thre,max_thre), 
-	col_fun=bkr, grid_height = unit(4, "mm"), grid_width = unit(6, "mm"), 
-	labels_gp = gpar(fontsize = 20), direction = "horizontal")
+    color_bar = Legend(at=c(1,30,51,80), labels=c(-max_thre,-min_thre,min_thre,max_thre), 
+        col_fun=bkr, grid_height = unit(4, "mm"), grid_width = unit(6, "mm"), 
+        labels_gp = gpar(fontsize = 20), direction = "horizontal")
 }
 
 grid.arrange(nullGrob(), bottom=color_bar, newpage = FALSE)
@@ -179,30 +179,30 @@ f = factor(networks, levels = networks)
 circos.initialize(factors = f, xlim = c(0, 1))
 # 1st track
 circos.track(factors = f, ylim = c(0, 1), "track.height"= 0.02, track.margin = c(0.01, 0), 
-	bg.border='white', cell.padding=c(0,1,0,1))
+    bg.border='white', cell.padding=c(0,1,0,1))
 highlight.sector(c('1'), track.index = 1, col = outer_color[1], text = outer_labels[1], 
-	text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
+    text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
 highlight.sector(c('2', '3', '4'), track.index = 1, col = outer_color[2], text = outer_labels[2], 
-	text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
+    text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
 highlight.sector(c('5', '6', '7'), track.index = 1, col = outer_color[3], text = outer_labels[3], 
-	text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
+    text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
 highlight.sector(c('8', '9'), track.index = 1, col = outer_color[4], text = outer_labels[4], 
-	text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
+    text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
 highlight.sector(c('10', '11'), track.index = 1, col = outer_color[5], text = outer_labels[5], 
-	text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
+    text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
 highlight.sector(c('12', '13'), track.index = 1, col = outer_color[6], text = outer_labels[6], 
-	text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
+    text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
 highlight.sector(c('14', '15'), track.index = 1, col = outer_color[7], text = outer_labels[7], 
-	text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
+    text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
 highlight.sector(c('16', '17'), track.index = 1, col = outer_color[8], text = outer_labels[8], 
-	text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
+    text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
 highlight.sector(c('18'), track.index = 1, col = outer_color[9], text = outer_labels[9], 
-	text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
+    text.col = outer_textcol, text.vjust = "7mm", font = 2, cex=outer_fontsize, niceFacing=TRUE)
 
 # 2nd track
 circos.track(factors = f, ylim = c(0, 1), "track.height"= 0.1, bg.col = inner_color, bg.lwd = rep(2, 18))
 circos.trackText(f, rep(0.5, 18), rep(0.5, 18), inner_labels, track.index = 2, facing="bending", 
-	niceFacing = TRUE, font=2, cex=inner_fontsize, col=inner_textcol)
+    niceFacing = TRUE, font=2, cex=inner_fontsize, col=inner_textcol)
 
 # links
 ind = !(df$weight < min_thre & df$weight > -min_thre)
@@ -211,24 +211,24 @@ df$weight[df$weight > max_thre] = max_thre
 df$weight[df$weight < -max_thre] = -max_thre+1e-10
 resolution <- 80
 if (min_thre == 0){
-  breaks = c(seq(-max_thre, max_thre, length.out = resolution))
+    breaks = c(seq(-max_thre, max_thre, length.out = resolution))
 } else {
-  breaks = c(seq(-max_thre,-min_thre,length.out = resolution/2), 
-	seq(min_thre, max_thre, length.out = resolution/2))
+    breaks = c(seq(-max_thre,-min_thre,length.out = resolution/2), 
+        seq(min_thre, max_thre, length.out = resolution/2))
 }
 df$color_level <- cut(df$weight, breaks, labels=FALSE)
 # generate bwr color
 # bwr <- colorRampPalette(c("blue","white","red"))
 # bwr_colors = bwr(resolution)
 if (link_colorscale == 'bwr'){
-  bwr <- colorRamp2(c(-1, 0, 1), c("blue","white","red"), space='RGB')
-  link_colors = bwr(seq(-1, 1, length.out=resolution))
+    bwr <- colorRamp2(c(-1, 0, 1), c("blue","white","red"), space='RGB')
+    link_colors = bwr(seq(-1, 1, length.out=resolution))
 }
 if  (link_colorscale == 'bkr'){
-  link_colors = scan("bkr_colorscale.txt", what="character", sep="\n")
-  bkr = function(vector){
-    return(link_colors[vector])
-  }
+    link_colors = scan("bkr_colorscale.txt", what="character", sep="\n")
+    bkr = function(vector){
+        return(link_colors[vector])
+    }
 }
 
 
@@ -236,35 +236,35 @@ len = max(table(c(df$from,df$to))) + 1.1
 link_breaks <- seq(0, 1, length.out=len)
 count = rep(1, 18)
 for (row in 1:nrow(df)) {
-  from <- df[row, "from"]
-  to <- df[row, "to"]
-  color_level <- df[row, "color_level"]
-  if (from == to) {
-    from_num = as.numeric(from)
-    circos.link(from, link_breaks[1:2], to, link_breaks[(len-1):len], col=link_colors[color_level])
-  } else {
-    from_num = as.numeric(from)
-    to_num = as.numeric(to)
-    count[from_num] <- count[from_num] + 1
-    count[to_num] <- count[to_num] + 1
-    #print(link_breaks[count[from_num]:(count[from_num]+1)])
-    circos.link(from, link_breaks[count[from_num]:(count[from_num]+1)], to, 
-	link_breaks[count[to_num]:(count[to_num]+1)], col=link_colors[color_level])
-  }
+    from <- df[row, "from"]
+    to <- df[row, "to"]
+    color_level <- df[row, "color_level"]
+    if (from == to) {
+        from_num = as.numeric(from)
+        circos.link(from, link_breaks[1:2], to, link_breaks[(len-1):len], col=link_colors[color_level])
+    } else {
+        from_num = as.numeric(from)
+        to_num = as.numeric(to)
+        count[from_num] <- count[from_num] + 1
+        count[to_num] <- count[to_num] + 1
+        #print(link_breaks[count[from_num]:(count[from_num]+1)])
+        circos.link(from, link_breaks[count[from_num]:(count[from_num]+1)], to, 
+            link_breaks[count[to_num]:(count[to_num]+1)], col=link_colors[color_level])
+    }
 }
 
 # add color bar
 if (link_colorscale == 'bwr'){
-  color_bar = Legend(at=c(-1,-0.2,0.2,1), 
-	labels=c(-max_thre,-min_thre,min_thre,max_thre), 
-	col_fun=bwr, grid_height = unit(4, "mm"), grid_width = unit(6, "mm"), 
-	labels_gp = gpar(fontsize = 20), direction = "horizontal")
+    color_bar = Legend(at=c(-1,-0.2,0.2,1), 
+        labels=c(-max_thre,-min_thre,min_thre,max_thre), 
+        col_fun=bwr, grid_height = unit(4, "mm"), grid_width = unit(6, "mm"), 
+        labels_gp = gpar(fontsize = 20), direction = "horizontal")
 }
 if (link_colorscale == 'bkr'){
-  color_bar = Legend(at=c(1,30,51,80), 
-	labels=c(-max_thre,-min_thre,min_thre,max_thre), 
-	col_fun=bkr, grid_height = unit(4, "mm"), grid_width = unit(6, "mm"), 
-	labels_gp = gpar(fontsize = 20), direction = "horizontal")
+    color_bar = Legend(at=c(1,30,51,80), 
+        labels=c(-max_thre,-min_thre,min_thre,max_thre), 
+        col_fun=bkr, grid_height = unit(4, "mm"), grid_width = unit(6, "mm"), 
+        labels_gp = gpar(fontsize = 20), direction = "horizontal")
 }
 
 grid.arrange(nullGrob(), bottom=color_bar, newpage = FALSE)

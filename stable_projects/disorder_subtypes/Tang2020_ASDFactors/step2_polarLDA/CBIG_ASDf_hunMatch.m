@@ -1,6 +1,6 @@
 function order = CBIG_ASDf_hunMatch(K, Mean_ref, Mean)
 % order = CBIG_ASDf_hunMatch(K, Mean_ref, Mean)
-% 
+%
 % This function performs Hungarian matching between the factor-specific RSFC
 % patterns (i.e., E(RSFC patterns|Factor)) of two random initializations.
 %
@@ -16,9 +16,9 @@ function order = CBIG_ASDf_hunMatch(K, Mean_ref, Mean)
 %     - order:
 %           Order of the latent factors that are matched with the reference
 %           solution
-% 
+%
 % Example:
-%	order = CBIG_ASDf_hunMatch(3, mean_run1, mean_run10)
+%     order = CBIG_ASDf_hunMatch(3, mean_run1, mean_run10)
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 

@@ -109,10 +109,10 @@ git checkout -b Yeo2011_fcMRI_clustering v0.19.2-Yeo2011_Schaefer2018
     
 - Release v0.4.5 (01/12/2017):
 
-	**Yeo2011_fcMRI_clustering**
-	
-	1. Add Yeo2011 parcellations with split labels.
-	
+    **Yeo2011_fcMRI_clustering**
+    
+    1. Add Yeo2011 parcellations with split labels.
+    
 - Release v0.4.3 (09/10/2017): Release Yeo2011 brain parcellation.
 
 ----

@@ -37,11 +37,11 @@ Usage: $0 input template_orig template_norm output_dir output_prefix
 
 This script linearly registers a volume file from its original template's space to its norm.mgz space
 
-	<input>		absolute path to input volume
-	<template_orig>	absolute path to the original template
-	<template_norm> absolute path to the template's norm.mgz file
-	<output_dir>	absolute path to output directory
-	<output_prefix>	prefix for output warps. 
+  <input>    absolute path to input volume
+  <template_orig>  absolute path to the original template
+  <template_norm> absolute path to the template's norm.mgz file
+  <output_dir>  absolute path to output directory
+  <output_prefix>  prefix for output warps. 
 
 " 1>&2; exit 1; }
 

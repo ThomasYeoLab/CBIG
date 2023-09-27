@@ -14,10 +14,10 @@ fi
 noJobsDone=0
 noJobsDonePrev=-1
 while [ ${noJobsDone} -lt ${noJobs} ]; do
-	if [ ! ${noJobsDone} -eq ${noJobsDonePrev} ]; then
-		echo ${noJobsDone}/${noJobs} Finished
-	fi
-	sleep 5
-	noJobsDonePrev=${noJobsDone}
-	noJobsDone=`grep -c "^" ${progressFile}`
+    if [ ! ${noJobsDone} -eq ${noJobsDonePrev} ]; then
+        echo ${noJobsDone}/${noJobs} Finished
+    fi
+    sleep 5
+    noJobsDonePrev=${noJobsDone}
+    noJobsDone=`grep -c "^" ${progressFile}`
 done

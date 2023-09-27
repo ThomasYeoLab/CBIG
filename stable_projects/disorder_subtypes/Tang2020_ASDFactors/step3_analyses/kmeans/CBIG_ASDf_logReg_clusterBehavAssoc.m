@@ -1,6 +1,6 @@
 function [model, p_lr] = CBIG_ASDf_logReg_clusterBehavAssoc(cluster_idx, id_scoreGrp, ...
-sub_info_file, behav_score_file, idx_score)
-% [model, p_lr] = CBIG_ASDf_logReg_clusterBehavAssoc(cluster_idx, id_scoreGrp, 
+    sub_info_file, behav_score_file, idx_score)
+% [model, p_lr] = CBIG_ASDf_logReg_clusterBehavAssoc(cluster_idx, id_scoreGrp,
 % sub_info_file, behav_score_file, idx_score)
 %
 % Performs logistic regression to compare ASD participants' behavioral
@@ -8,7 +8,7 @@ sub_info_file, behav_score_file, idx_score)
 % specified, the plot will be saved.
 %
 % Input:
-% 	  - cluster_idx:
+%     - cluster_idx:
 %           Integer, index of cluster, e.g. 1, 2 or 3
 %     - id_scoreGrp:
 %           IDs of subjects of interests. Nx1 cell array, where N is the
@@ -28,8 +28,8 @@ sub_info_file, behav_score_file, idx_score)
 %           p-values of model statistical significance for all logistic regression models
 %
 % Example:
-%       [model, p_lr] = CBIG_ASDf_logReg_clusterBehavAssoc(1, id_scoreGrp, '~/input/subInfo.csv', 
-%                       '~/input/behav_scores.csv', [1 2 3])
+%       [model, p_lr] = CBIG_ASDf_logReg_clusterBehavAssoc(1, id_scoreGrp, '~/input/subInfo.csv',
+%       '~/input/behav_scores.csv', [1 2 3])
 %
 % Written by Siyi Tang and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
@@ -55,7 +55,7 @@ id_cluster = id_asd(cluster_idx);
 
 %% Get participants' scores
 [~, ~, ~, ~, ~, ~, id_scores] = CBIG_ASDf_getSubData(sub_info_file, ...
-id_scoreGrp, behav_score_file, idx_score);
+    id_scoreGrp, behav_score_file, idx_score);
 scores = cell2mat(id_scores(:,2:end));
 
 %% Get regressors

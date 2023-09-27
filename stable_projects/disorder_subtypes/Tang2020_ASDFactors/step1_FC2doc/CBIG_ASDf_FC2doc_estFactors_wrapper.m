@@ -3,7 +3,7 @@ function CBIG_ASDf_FC2doc_estFactors_wrapper(corrMat_ASD_path, corrMat_con_path,
 %
 % Wrapper function to compute z-normalized, discretized FC and write into
 % word documents that will be used by polarLDA model to estimate
-% ASD factors. 
+% ASD factors.
 %
 % Input:
 %     - corrMat_ASD_path:
@@ -12,7 +12,7 @@ function CBIG_ASDf_FC2doc_estFactors_wrapper(corrMat_ASD_path, corrMat_con_path,
 %           of size MxMxN1, where M is the number of ROIs, N1 is the number
 %           of ASD participants.
 %     - corrMat_con_path:
-%           Absolute path to the functional connectivity matrices (.mat file) of 
+%           Absolute path to the functional connectivity matrices (.mat file) of
 %           control subjects. Assuming .mat file is named as "corrMat_Con", and it is
 %           of size MxMxN2, where M is the number of ROIs, N2 is the number
 %           of control participants.
@@ -20,7 +20,7 @@ function CBIG_ASDf_FC2doc_estFactors_wrapper(corrMat_ASD_path, corrMat_con_path,
 %           Absolute path to the .csv file of subjects' demographic information
 %     - output_dir:
 %           Absolute path to the output directory where output results will
-%           be saved. The outputs are: 
+%           be saved. The outputs are:
 %           1) step1_output_mean_CN.mat: Mean of FC data of control participants
 %           2) step1_output_beta_CN.mat: Regression coefficients estimated from control participants
 %           3) step1_output_reg_CN_mean_std.mat: Post-regression mean & std of control participants' FC data
@@ -29,10 +29,10 @@ function CBIG_ASDf_FC2doc_estFactors_wrapper(corrMat_ASD_path, corrMat_con_path,
 %              ASD and control participants respectively
 %
 % Example:
-%	CBIG_ASDf_FC2doc_estFactors_wrapper('../examples/input/corrMat_ASD_est.mat',
-%           '../examples/input/corrMat_Con_est.mat','../examples/input/subInfo_est.csv',
-%           '~/Temporary/example_output');
-% 
+%     CBIG_ASDf_FC2doc_estFactors_wrapper('../examples/input/corrMat_ASD_est.mat',
+%         '../examples/input/corrMat_Con_est.mat','../examples/input/subInfo_est.csv',
+%         '~/Temporary/example_output');
+%
 % Written by Siyi Tang and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 %% Add paths

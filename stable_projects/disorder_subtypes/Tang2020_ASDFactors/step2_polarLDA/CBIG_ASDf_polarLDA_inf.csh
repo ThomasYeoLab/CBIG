@@ -24,13 +24,13 @@ set PrintHelp = 0;
 if($#argv == 0) goto usage_exit;
 set n = `echo $argv | grep -e -help | wc -l`
 if($n != 0) then
-	set PrintHelp = 1;
-	goto usage_exit;
+    set PrintHelp = 1;
+    goto usage_exit;
 endif
 set n = `echo $argv | grep -e -version | wc -l`
 if($n != 0) then
-	echo $VERSION
-	exit 0;
+    echo $VERSION
+    exit 0;
 endif
 
 set corpus = ""
@@ -52,7 +52,7 @@ check_params_return:
 
 ##########################################
 # Run polarLDA inference 
-##########################################	
+##########################################
 mkdir -p ${output_dir}
 
 set LF = "${output_dir}/k${factor_num}r${run_num}_${output_name}.log"
@@ -67,76 +67,76 @@ echo Inference settings are: >> $LF
 cat ${infSettings} >> $LF
 
 set cmd = "${code_dir}/polarLDA inf \
-${infSettings} ${model_dir}/k${factor_num}/r${run_num}/final \
-${corpus} ${output_dir}/k${factor_num}r${run_num}_${output_name}"
+    ${infSettings} ${model_dir}/k${factor_num}/r${run_num}/final \
+    ${corpus} ${output_dir}/k${factor_num}r${run_num}_${output_name}"
 echo $cmd >> $LF
 eval $cmd
 
 exit 1
 ##########################################
 # Parse Arguments 
-##########################################	
+##########################################
 
 parse_args:
 set cmdline = "$argv";
 while( $#argv != 0 )
-	set flag = $argv[1]; shift;
-	
-	switch($flag)
-		#corpus name
-		case "-corpus":
-			if ( $#argv == 0 ) goto arg1err;
-			set corpus = $argv[1]; shift;
-			breaksw	
-			
-		#model direcdtory
-		case "-model_dir":
-			if ( $#argv == 0 ) goto arg1err;
-			set model_dir = $argv[1]; shift;
-			breaksw
-			
-		#factor number
-		case "-factor_num":
-			if ( $#argv == 0 ) goto arg1err;
-			set factor_num = $argv[1]; shift;
-			breaksw
-			
-		#initialization number
-		case "-run_num"
-			if ( $#argv == 0 ) goto arg1err;
-			set run_num = $argv[1]; shift;
-			breaksw
+    set flag = $argv[1]; shift;
 
-		#output directory
-		case "-output_dir":
-			if ( $#argv == 0 ) goto arg1err;
-			set output_dir = $argv[1]; shift;
-			breaksw
-			
-		#output name
-		case "-output_name":
-			if ( $#argv == 0 ) goto arg1err;
-			set output_name = $argv[1]; shift;
-			breaksw
+    switch($flag)
+        #corpus name
+        case "-corpus":
+            if ( $#argv == 0 ) goto arg1err;
+            set corpus = $argv[1]; shift;
+            breaksw
 
-		#inference settings
-		case "-infSettings":
-			if ( $#argv == 0 ) goto arg1err;
-			set infSettings = $argv[1]; shift;
-			breaksw
+        #model direcdtory
+        case "-model_dir":
+            if ( $#argv == 0 ) goto arg1err;
+            set model_dir = $argv[1]; shift;
+            breaksw
 
-		#code directory
-		case "-code_dir":
-			if ( $#argv == 0 ) goto arg1err;
-			set code_dir = $argv[1]; shift;
-			breaksw
-			
-		default:
-			echo ERROR: Flag $flag unrecognized.
-			echo $cmdline
-			exit 1
-			breaksw
-	endsw
+        #factor number
+        case "-factor_num":
+            if ( $#argv == 0 ) goto arg1err;
+            set factor_num = $argv[1]; shift;
+            breaksw
+
+        #initialization number
+        case "-run_num"
+            if ( $#argv == 0 ) goto arg1err;
+            set run_num = $argv[1]; shift;
+            breaksw
+
+        #output directory
+        case "-output_dir":
+            if ( $#argv == 0 ) goto arg1err;
+            set output_dir = $argv[1]; shift;
+            breaksw
+
+        #output name
+        case "-output_name":
+            if ( $#argv == 0 ) goto arg1err;
+            set output_name = $argv[1]; shift;
+            breaksw
+
+        #inference settings
+        case "-infSettings":
+            if ( $#argv == 0 ) goto arg1err;
+            set infSettings = $argv[1]; shift;
+            breaksw
+
+        #code directory
+        case "-code_dir":
+            if ( $#argv == 0 ) goto arg1err;
+            set code_dir = $argv[1]; shift;
+            breaksw
+
+        default:
+            echo ERROR: Flag $flag unrecognized.
+            echo $cmdline
+            exit 1
+            breaksw
+    endsw
 end
 goto parse_args_return;
 
@@ -147,36 +147,36 @@ goto parse_args_return;
 
 check_params:
 if ( "$corpus" == "" ) then
-	echo "ERROR: corpus not specified"
-	exit 1;
+    echo "ERROR: corpus not specified"
+    exit 1;
 endif
 if ( "$model_dir" == "" ) then
-	echo "ERROR: model directory not specified"
-	exit 1;
+    echo "ERROR: model directory not specified"
+    exit 1;
 endif
 if ( "$factor_num" == "" ) then
-	echo "ERROR: factor number not specified"
-	exit 1;
+    echo "ERROR: factor number not specified"
+    exit 1;
 endif
 if ( "$run_num" == "" ) then
-	echo "ERROR: run number not specified"
-	exit 1;
+    echo "ERROR: run number not specified"
+    exit 1;
 endif
 if ( "$output_dir" == "" ) then
-	echo "ERROR: output directory not specified"
-	exit 1;
+    echo "ERROR: output directory not specified"
+    exit 1;
 endif
 if ( "$output_name" == "" ) then
-	echo "ERROR: output name not specified"
-	exit 1;
+    echo "ERROR: output name not specified"
+    exit 1;
 endif
 if ( "$infSettings" == "" ) then
-        echo "ERROR: inference settings file not specified"
-        exit 1;
+    echo "ERROR: inference settings file not specified"
+    exit 1;
 endif
 if ( "$code_dir" == "" ) then
-        echo "ERROR: code directory not specified"
-        exit 1;
+    echo "ERROR: code directory not specified"
+    exit 1;
 endif
 
 goto check_params_return;
@@ -184,7 +184,7 @@ goto check_params_return;
 ##########################################
 # ERROR message
 ##########################################
-		
+
 arg1err:
   echo "ERROR: flag $flag requires one argument"
   exit 1
@@ -196,28 +196,28 @@ arg2err:
 # Help
 #####################################
 usage_exit:
-	echo ""
-	echo "USAGE: CBIG_polarLDA_inf.csh"
-	echo ""
-	echo "  -corpus  <corpus>         : corpus name"
-	echo "  -model_dir <model_dir>    : model directory (output_dir in CBIG_polarLDA_est.csh)"
-	echo "  -factor_num <factor_num>  : number of factors"
-	echo "  -run_num  <run_num>       : the run that you want to use to do inference"
-	echo "  -output_dir  <output_dir> : output directory"
-	echo "  -output_name <output_name>: output file name"
-	echo "  -infSettings <infSettings>: inference settings text file"
-	echo "  -code_dir <code_dir>      : code directory"
-	echo ""
-	echo "  -help                     : help"
-	echo "  -version                  : version"
-	echo ""
-	
-	if(! $PrintHelp) exit 1;
-	
-	echo $VERSION
-	
-	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
-	
+    echo ""
+    echo "USAGE: CBIG_polarLDA_inf.csh"
+    echo ""
+    echo "  -corpus  <corpus>         : corpus name"
+    echo "  -model_dir <model_dir>    : model directory (output_dir in CBIG_polarLDA_est.csh)"
+    echo "  -factor_num <factor_num>  : number of factors"
+    echo "  -run_num  <run_num>       : the run that you want to use to do inference"
+    echo "  -output_dir  <output_dir> : output directory"
+    echo "  -output_name <output_name>: output file name"
+    echo "  -infSettings <infSettings>: inference settings text file"
+    echo "  -code_dir <code_dir>      : code directory"
+    echo ""
+    echo "  -help                     : help"
+    echo "  -version                  : version"
+    echo ""
+
+    if(! $PrintHelp) exit 1;
+
+    echo $VERSION
+
+    cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+
 exit 1;
 #-------- Everything below is printed as part of help --------#
 BEGINHELP

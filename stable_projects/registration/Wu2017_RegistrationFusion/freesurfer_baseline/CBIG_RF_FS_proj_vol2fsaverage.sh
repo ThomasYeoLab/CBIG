@@ -37,30 +37,30 @@ Usage: $0 -l <input_list> -f <fs_type> -s <template_sub_id> -d <template_sub_dir
 This script projects input(s) from a volumetric atlas space to fsaverage surface using Affine or MNIsurf/Colinsurf approach.
 
 REQUIRED ARGUMENTS:
-	-l <input_list> 	absolute path to file containing input data file names. Each line in the file should contain one file name. Note that inputs should be in the format of .nii or .nii.gz
+  -l <input_list>   absolute path to file containing input data file names. Each line in the file should contain one file name. Note that inputs should be in the format of .nii or .nii.gz
 
 OPTIONAL ARGUMENTS:
         -f <fs_type>            type of FS baseline approach to use (Affine or MNIsurf). For Colinsurf, also call MNIsurf.
-				[ default: MNIsurf ]
-	-s <template_sub_id>	subject ID of the volumetric template used in recon-all
-				[ default: FSL_MNI152_FS4.5.0 ]
-	-d <template_sub_dir>	SUBJECTS_DIR of the volumetric template's recon-all results
-				[ default: $CBIG_CODE_DIR/data/templates/volume/ ]
-	-i <interp> 		interpolation (trilinear or nearest)
-				[ default: trilinear ]
-	-o <output_dir> 	absolute path to output directory
-				[ default: $(pwd)/results/projected_vol2fsaverage ]
-	-h			display help message
+        [ default: MNIsurf ]
+  -s <template_sub_id>  subject ID of the volumetric template used in recon-all
+        [ default: FSL_MNI152_FS4.5.0 ]
+  -d <template_sub_dir>  SUBJECTS_DIR of the volumetric template's recon-all results
+        [ default: $CBIG_CODE_DIR/data/templates/volume/ ]
+  -i <interp>     interpolation (trilinear or nearest)
+        [ default: trilinear ]
+  -o <output_dir>   absolute path to output directory
+        [ default: $(pwd)/results/projected_vol2fsaverage ]
+  -h      display help message
 
 OUTPUTS:
-	$0 will create 2 files for each input, corresponding to the projected data onto fsaverage left and right hemispheres respectively. 
-	For example: 
-		lh.input_name.Affine_FSL_MNI152_FS4.5.0_to_fsaverage.nii.gz
+  $0 will create 2 files for each input, corresponding to the projected data onto fsaverage left and right hemispheres respectively. 
+  For example: 
+    lh.input_name.Affine_FSL_MNI152_FS4.5.0_to_fsaverage.nii.gz
                 rh.input_name.Affine_FSL_MNI152_FS4.5.0_to_fsaverage.nii.gz
 
 EXAMPLE:
-	$0 -l my_data_list.csv
-	$0 -l my_data_list.csv -f Affine -s 'SPM_Colin27_FS4.5.0'
+  $0 -l my_data_list.csv
+  $0 -l my_data_list.csv -f Affine -s 'SPM_Colin27_FS4.5.0'
 
 " 1>&2; exit 1; }
 

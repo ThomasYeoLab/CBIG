@@ -9,22 +9,23 @@
 # Usage
 usage() { echo "
 Usage: $0 -g <GMToNonlinTmpList> -o <outDir>
-	- GMToNonlinTmpList	Text file with each line being the path to a GMToNonlinTmp image; e.g., ~/outputs/VBM/nonlinRegToNonlinTmp/GMToNonlinTmpList.txt
-	- outDir		Output directory; e.g., ~/outputs/VBM/concatAndGenMask/
+    - GMToNonlinTmpList     Text file with each line being the path to a GMToNonlinTmp image; 
+                            e.g., ~/outputs/VBM/nonlinRegToNonlinTmp/GMToNonlinTmpList.txt
+    - outDir                Output directory; e.g., ~/outputs/VBM/concatAndGenMask/
 " 1>&2; exit 1; }
 
 # Reading in parameters
 while getopts ":g:o:" opt; do
-	case "${opt}" in
-		g) GMToNonlinTmpList=${OPTARG};;
-		o) outDir=${OPTARG};;
-       		*) usage;;
-    	esac
+    case "${opt}" in
+        g) GMToNonlinTmpList=${OPTARG};;
+        o) outDir=${OPTARG};;
+        *) usage;;
+    esac
 done
 shift $((OPTIND-1))
 if [ -z "${GMToNonlinTmpList}" ] || [ -z "${outDir}" ]; then
-	echo Missing Parameters!
-	usage
+    echo Missing Parameters!
+    usage
 fi
 
 ###########################################
@@ -39,10 +40,10 @@ mkdir -p ${outDir}
 # Prepare list
 list=""
 for GM in `cat ${GMToNonlinTmpList}`; do
-	tmpVar="${GM##*/}" # discard everything before /
-	filename="${tmpVar%_GMToNonlinTmp_mod.nii.gz}" # discard the suffix
-	echo ${filename} >> ${outDir}GMToNonlinTmp_mod_4d_concatOrder.txt
-	list="${list} ${GM}"
+    tmpVar="${GM##*/}" # discard everything before /
+    filename="${tmpVar%_GMToNonlinTmp_mod.nii.gz}" # discard the suffix
+    echo ${filename} >> ${outDir}GMToNonlinTmp_mod_4d_concatOrder.txt
+    list="${list} ${GM}"
 done
 
 # Merge

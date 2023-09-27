@@ -1,18 +1,18 @@
 function CBIG_TRBPC_plot_fc_matrix(corr_mat, scalelim, cmap, filename_prefix)
 
 % CBIG_TRBPC_plot_fc_matrix(corr_mat, scalelim, cmap, filename_prefix)
-% 
+%
 % This function simply plots a 419x419 matrix (that is already arranged into
 % the major networks and subcortical regions).
-% 
+%
 % Input:
 %     - corr_mat: a 419x419 matrix
-%     - scalelim: a vector of length 2, containing integers or floats for the 
-%         minimum and maximum values for the desired color scale, e.g. [-1 1]
+%     - scalelim: a vector of length 2, containing integers or floats for the
+%       minimum and maximum values for the desired color scale, e.g. [-1 1]
 %     - cmap: a string for the name of the diesired color map;
-%         acceptable strings are: 'parula', 'hot_cold', 'hot'
+%       acceptable strings are: 'parula', 'hot_cold', 'hot'
 %     - filename_prefix: a string to name your output (optional, if
-%         provided, a .png will be saved
+%       provided, a .png will be saved
 %
 % Written by Siyi Tang, Angela Tam & CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
@@ -37,7 +37,7 @@ if strcmp(cmap, 'hot_cold')
 elseif strcmp(cmap, 'hot')
     colormap('hot')
 end
-    
+
 % Generate thin grid lines
 [xline, yline, ymaj] = generateline(size(corr_mat,1));
 
@@ -57,10 +57,10 @@ cpos(2)=cpos(2) - 0.06; % Move it down outside the plot
 set(hcol,'Position',cpos);
 
 
-% Set color limit 
+% Set color limit
 if ((nargin < 2) || (isempty(scalelim)))
-	collim = max(max(abs(corr_mat)));
-	scalelim = [-1*collim, 1*collim];
+    collim = max(max(abs(corr_mat)));
+    scalelim = [-1*collim, 1*collim];
 end
 
 set(gca, 'CLim', scalelim);
@@ -71,24 +71,24 @@ axis([-5 size(corr_mat, 1)+5.5 -5 size(corr_mat, 1)+5.5]);
 set(gca, 'Visible', 'off')
 set(gcf, 'color', 'white');
 
-% Generate major and minor gridlines 
+% Generate major and minor gridlines
 patch(xline(:,subcor_grid), yline(:,subcor_grid),'w', 'edgecolor', 'w', 'Linewidth', 0.005, 'EdgeAlpha', 0.2);
 patch(yline(:,subcor_grid), xline(:,subcor_grid),'w', 'edgecolor', 'w', 'Linewidth', 0.005, 'EdgeAlpha', 0.2);
 patch(xline(:,minor_grid), yline(:,minor_grid),'w', 'edgecolor', 'w', 'Linewidth', 0.3, 'EdgeAlpha', 0.9);
 patch(yline(:,minor_grid), xline(:,minor_grid),'w', 'edgecolor', 'w', 'Linewidth', 0.3, 'EdgeAlpha', 0.9);
 patch(xline(:,major_grid), ymaj(:,major_grid),'w', 'edgecolor', 'w', 'Linewidth', 1.1);
 patch(ymaj(:,major_grid), xline(:,major_grid),'w', 'edgecolor', 'w', 'Linewidth', 1.1);
-    
+
 % save figure
 if ((nargin == 4) && ~isempty(filename_prefix))
     filenamefin = [filename_prefix '_minsc' num2str(scalelim(1), '%.1e') '_maxsc' num2str(scalelim(2), '%.1e') '.png'];
     set(gca,'FontSize',15);
     saveas(gcf,filenamefin);
     %remove_white_board(filenamefin,filenamefin);
-    % save as .eps first, and then .png
-%     hgexport(gcf, filenamefin);
-%     eps2xxx([filenamefin '.eps'], {'png'});
-
+    %save as .eps first, and then .png
+    %hgexport(gcf, filenamefin);
+    %eps2xxx([filenamefin '.eps'], {'png'});
+    
     close all
 end
 
@@ -146,10 +146,10 @@ for i = 1:numel(all_label)
             all_subnet(i,1) = subnet;
         end
         
-    % subcortical    
+    % subcortical
     else
         netw = textscan(char(all_label(i,1)),'%s %s', 'delimiter', '_');
-        all_netw(i,1) = netw{1,1};       
+        all_netw(i,1) = netw{1,1};
     end
 end
 
@@ -174,14 +174,14 @@ for j = 1:numel(tmplate)
 %                ind2 = [ind2; ind(find(strcmp(tmplate2(s), all_subnet(ind))))];
 %                minor_grid = [minor_grid curInd+size(ind2,1)];
 %            end
-%            
+%
 %        end
 %        if numel(ind) ~= numel(ind2)
 %            disp('Wrong Index')
 %        end
 %        ind = ind2;
 %    end
-
+    
     curInd = curInd+size(ind,1);
     if (j~=numel(tmplate))
         if (any(j==subcor_acc_index))

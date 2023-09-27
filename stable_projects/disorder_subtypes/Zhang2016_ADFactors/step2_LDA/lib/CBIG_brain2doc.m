@@ -44,8 +44,8 @@ function CBIG_brain2doc(vol4D, concatOrder, mask, refListOrParams, nuisanceVars,
 %     - .dat file(s) summarizing word counts of the images 
 %       The number output files generated is determined by how many
 %       filenameList arguments you provided. If at least one filenameList is
-%	provided, the image order follows filenameList(s). Otherwise, it
-%	follows concatOrder
+%       provided, the image order follows filenameList(s). Otherwise, it
+%       follows concatOrder
 %   
 % Example:
 % See ../replicatePNAS/CBIG_LDA_wrapper.m

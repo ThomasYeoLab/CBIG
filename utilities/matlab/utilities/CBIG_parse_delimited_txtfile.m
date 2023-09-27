@@ -171,14 +171,14 @@ if (filter_col > 0)
     for ii = 1:length(tmp_alldata_str)
        
         for jj = 1:length(include_line_ind)
-		if (include_line_ind(jj) <= length(tmp_alldata_str{ii}))
-			alldata_str{ii}{jj} = tmp_alldata_str{ii}{include_line_ind(jj)};        
-        	else
-			display(['There may be a mismatch for the column corresponding to ' headers{1}{ii}]);
-			display(['No worries if you have not explicitly asked for this field']);
-			alldata_str{ii}{jj} = '';
-		end
-	end
+            if (include_line_ind(jj) <= length(tmp_alldata_str{ii}))
+                alldata_str{ii}{jj} = tmp_alldata_str{ii}{include_line_ind(jj)};        
+            else
+                display(['There may be a mismatch for the column corresponding to ' headers{1}{ii}]);
+                display(['No worries if you have not explicitly asked for this field']);
+                alldata_str{ii}{jj} = '';
+            end
+        end
     end
     
    

@@ -13,7 +13,7 @@ echo $curr_dir
 echo $work_dir
 
 if [ ! -d $work_dir ]; then
-	mkdir -p $work_dir
+    mkdir -p $work_dir
 fi
 
 cd $work_dir
@@ -37,34 +37,34 @@ evaluations=5
 tree=2
 
 for pipeline in GSR Baseline; do
-	RSFC_file="$test_dir/cort+subcort_new_S1200_953_Fisher_${pipeline}.mat"
-	outdir=$top_outdir/$pipeline
-	
-	##########################
-	# call the GSP wrapper
-	##########################
-	cog_list="$replication_dir/scripts/HCP_lists/PMAT24.txt"
-	covariate_list="$replication_dir/scripts/HCP_lists/covariates.txt"
-	y_name=$(cat $cog_list)
-	
-	for seed in $(seq 1 1 3); do
-		log_file="${top_outdir}/CBIG_LiGSR_LRR_unittest_PMAT_HCP_${seed}.log"
-		cmd="$project_dir/LinearRidgeRegression/HCP/scripts/CBIG_LiGSR_LRR_workflowHCP.sh -subject_list $subject_list "
-		cmd="$cmd -RSFC_file $RSFC_file -y_name $y_name -covariate_list $covariate_list -FD_file $FD_file -DVARS_file "
-		cmd="$cmd $DVARS_file -outdir $outdir -gpso_dir $gpso_dir -seed $seed -num_test_folds 3 -num_inner_folds 3 "
-		cmd="$cmd -restricted_csv $restricted_csv -unrestricted_csv $unrestricted_csv -eval $evaluations -tree $tree"
+    RSFC_file="$test_dir/cort+subcort_new_S1200_953_Fisher_${pipeline}.mat"
+    outdir=$top_outdir/$pipeline
+
+    ##########################
+    # call the GSP wrapper
+    ##########################
+    cog_list="$replication_dir/scripts/HCP_lists/PMAT24.txt"
+    covariate_list="$replication_dir/scripts/HCP_lists/covariates.txt"
+    y_name=$(cat $cog_list)
+
+    for seed in $(seq 1 1 3); do
+        log_file="${top_outdir}/CBIG_LiGSR_LRR_unittest_PMAT_HCP_${seed}.log"
+        cmd="$project_dir/LinearRidgeRegression/HCP/scripts/CBIG_LiGSR_LRR_workflowHCP.sh -subject_list $subject_list "
+        cmd="$cmd -RSFC_file $RSFC_file -y_name $y_name -covariate_list $covariate_list -FD_file $FD_file -DVARS_file "
+        cmd="$cmd $DVARS_file -outdir $outdir -gpso_dir $gpso_dir -seed $seed -num_test_folds 3 -num_inner_folds 3 "
+        cmd="$cmd -restricted_csv $restricted_csv -unrestricted_csv $unrestricted_csv -eval $evaluations -tree $tree"
         cmd="$cmd | tee -a ${log_file}"
 
         $CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "$cmd" -walltime 2:00:00 -mem 6G \
         -name "LiGSRUT_LR"
-		
-		if [ ! -f $outdir/covariates/covariates.mat ] || [ ! -f $outdir/y/y_${y_name}.mat ]; then
-			# wait for the files shared across random splits to be saved
-			sleep 2m   
-		else
-			sleep 3s
-		fi
-	done
+    
+        if [ ! -f $outdir/covariates/covariates.mat ] || [ ! -f $outdir/y/y_${y_name}.mat ]; then
+            # wait for the files shared across random splits to be saved
+            sleep 2m   
+        else
+            sleep 3s
+        fi
+    done
 done
 
 

@@ -58,19 +58,19 @@ To generate the RSFC gradient map, we assume the input fMRI lists and censor lis
 The fMRI lists for each subject, each line is the full path to the nifti/cifti file which corresponds to each run.
 
 - **`<output_dir>/data_list/fMRI_list`**
-	+ `<output_dir>/data_list/fMRI_list/lh_sub?.txt`
-	+ `<output_dir>/data_list/fMRI_list/rh_sub?.txt`
-	
-	for data in `fsaverage6`  or
+    + `<output_dir>/data_list/fMRI_list/lh_sub?.txt`
+    + `<output_dir>/data_list/fMRI_list/rh_sub?.txt`
 
-	+ `<output_dir>/data_list/fMRI_list/sub?.txt`
-	
+    for data in `fsaverage6`  or
+
+    + `<output_dir>/data_list/fMRI_list/sub?.txt`
+
     for data in `fs_LR_32k`.
   
 The censor lists for each subject, each line is the full path to the censor file which corresponds to each run. The censor file should be a text file contains a single binary number column with the length equals to the number of time points, the outliers are indicated by 0s.
 
 - **`<output_dir>/data_list/censor_list`**
-	+ `<output_dir>/data_list/censor_list/sub?.txt`
+    + `<output_dir>/data_list/censor_list/sub?.txt`
 
 Start Matlab, in Matlab command window, the user needs to specify the following inputs:
 

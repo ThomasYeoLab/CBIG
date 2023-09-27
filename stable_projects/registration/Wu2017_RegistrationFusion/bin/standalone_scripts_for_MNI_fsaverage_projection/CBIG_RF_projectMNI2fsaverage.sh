@@ -58,37 +58,37 @@ Usage: $0 -s <input> -o <output_dir> -p <template_type> -n <num_of_sub> -r <RF_t
 This script projects data in a volumetric atlas space to fsaverage space, using the mapping generated using Registration Fusion approach. 
 
 REQUIRED ARGUMENTS:
-	-s <input>              absolute path to input volume. Input should be in nifti format.
-	-o <output_dir>         absolute path to output directory.
+  -s <input>              absolute path to input volume. Input should be in nifti format.
+  -o <output_dir>         absolute path to output directory.
 
 OPTIONAL ARGUMENTS:
-	-p <template_type>      type of volumetric template used in index files creation. Use 'MNI152_norm' or 'Colin27_norm' for RF-M3Z MNI152-to-fsaverage or Colin27-to-fsaverage mappings, 'MNI152_orig' or 'Colin27_orig' for the respective RF-ANTs mappings.
-	                        [ default: MNI152_orig ]
-	-n <num_of_sub>         number of subjects used in creating the average mapping. For example, setting '-n 50' means the mapping used was averaged across 50 subjects. Setting this to 0 will make the script use the mapping averaged across all subjects.
-	                        [ default: 0 ]
-	-r <RF_type>            type of Registration Fusion approaches used to generate the mappings (RF_M3Z or RF_ANTs). RF-M3Z is recommended if data was registered from subject's space to the volumetric atlas space using FreeSurfer. RF-ANTs is recommended if such registrations were carried out using other tools, especially ANTs.
-	                        [ default: RF_ANTs ]
-	-d <map_dir>            absolute path to mapping directory. The mappings are the average mappings generated in Registration Fusion approaches. The average mapping using all GSP subjects are used by default. 
-	                        [ default: $WARP_DIR ]
-	-i <interp>             interpolation (linear or nearest)
-	                        [ default: linear ]
-	-f <freesurfer_dir>     absolute path to FreeSurfer directory (this will overwrite the default \$FREESUFER_HOME). This setting may affect the version of FreeSurfer .m scripts called, but not the version of the warps/mappings used.
-	                        [ default: $FREESURFER_HOME ]
-	-m <matlab_bin>         absolute path to the Matlab bin directory. Default is set to \$CBIG_MATLAB_DIR/bin or empty. This setting may affect the version of Matlab builtin .m scripts called.
-	                        [ default: $CBIG_MATLAB_DIR/bin ]
-	-h                      display help message
+  -p <template_type>      type of volumetric template used in index files creation. Use 'MNI152_norm' or 'Colin27_norm' for RF-M3Z MNI152-to-fsaverage or Colin27-to-fsaverage mappings, 'MNI152_orig' or 'Colin27_orig' for the respective RF-ANTs mappings.
+                          [ default: MNI152_orig ]
+  -n <num_of_sub>         number of subjects used in creating the average mapping. For example, setting '-n 50' means the mapping used was averaged across 50 subjects. Setting this to 0 will make the script use the mapping averaged across all subjects.
+                          [ default: 0 ]
+  -r <RF_type>            type of Registration Fusion approaches used to generate the mappings (RF_M3Z or RF_ANTs). RF-M3Z is recommended if data was registered from subject's space to the volumetric atlas space using FreeSurfer. RF-ANTs is recommended if such registrations were carried out using other tools, especially ANTs.
+                          [ default: RF_ANTs ]
+  -d <map_dir>            absolute path to mapping directory. The mappings are the average mappings generated in Registration Fusion approaches. The average mapping using all GSP subjects are used by default. 
+                          [ default: $WARP_DIR ]
+  -i <interp>             interpolation (linear or nearest)
+                          [ default: linear ]
+  -f <freesurfer_dir>     absolute path to FreeSurfer directory (this will overwrite the default \$FREESUFER_HOME). This setting may affect the version of FreeSurfer .m scripts called, but not the version of the warps/mappings used.
+                          [ default: $FREESURFER_HOME ]
+  -m <matlab_bin>         absolute path to the Matlab bin directory. Default is set to \$CBIG_MATLAB_DIR/bin or empty. This setting may affect the version of Matlab builtin .m scripts called.
+                          [ default: $CBIG_MATLAB_DIR/bin ]
+  -h                      display help message
 
 OUTPUTS:
-	$0 will create 2 files, corresponding to the projected data onto fsaverage left and right hemispheres respectively. 
-	For example: 
-		lh.input_name.allSub_RF_ANTs_MNI152_orig_to_fsaverage.nii.gz
-		rh.input_name.allSub_RF_ANTs_MNI152_orig_to_fsaverage.nii.gz
+  $0 will create 2 files, corresponding to the projected data onto fsaverage left and right hemispheres respectively. 
+  For example: 
+    lh.input_name.allSub_RF_ANTs_MNI152_orig_to_fsaverage.nii.gz
+    rh.input_name.allSub_RF_ANTs_MNI152_orig_to_fsaverage.nii.gz
 
 EXAMPLE:
-	$0 -s $SCRIPT_DIR/MNI_probMap_ants.central_sulc.nii.gz -o \$(pwd)
-	freeview -f \$FREESURFER_HOME/subjects/fsaverage/surf/lh.inflated:overlay=lh.MNI_probMap_ants.central_sulc.allSub_RF_ANTs_MNI152_orig_to_fsaverage.nii.gz:overlay=${SCRIPT_DIR}/lh.MNI_probMap_ants.central_sulc.demo.nii.gz:overlay_threshold=0.001,1 -viewport '3d'
+  $0 -s $SCRIPT_DIR/MNI_probMap_ants.central_sulc.nii.gz -o \$(pwd)
+  freeview -f \$FREESURFER_HOME/subjects/fsaverage/surf/lh.inflated:overlay=lh.MNI_probMap_ants.central_sulc.allSub_RF_ANTs_MNI152_orig_to_fsaverage.nii.gz:overlay=${SCRIPT_DIR}/lh.MNI_probMap_ants.central_sulc.demo.nii.gz:overlay_threshold=0.001,1 -viewport '3d'
 
-	This projects the MNI probabilistic map of central sulcus to fsaverage surface and visualise the left hemisphere results in freeview.
+  This projects the MNI probabilistic map of central sulcus to fsaverage surface and visualise the left hemisphere results in freeview.
 
 " 1>&2; exit 1; }
 

@@ -27,7 +27,7 @@ end
 % Recompute the avergae correlation with sorted topics
 corr = zeros(K, 1);
 for idx = 1:K  
-	corrMat = corrcoef(beta_best(idx, :)', beta(order(idx), :)');
+    corrMat = corrcoef(beta_best(idx, :)', beta(order(idx), :)');
     corr(idx) = corrMat(1, 2); 
 end
 corr

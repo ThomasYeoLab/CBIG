@@ -8,9 +8,9 @@ set n = `echo $argv | grep -e -help | wc -l`
 
 # if there is no arguments or there is -help option 
 if( $#argv == 0 || $n != 0 ) then
-	# print help	
-	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
-	exit 0;
+    # print help
+    cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+    exit 0;
 endif
 
 ######################################################
@@ -21,7 +21,7 @@ set username = `whoami`
 set work_dir = /home/$username/cluster/ 
 
 if (! -e $work_dir) then
-        mkdir -p $work_dir
+    mkdir -p $work_dir
 endif
 
 ################################
@@ -76,17 +76,17 @@ endif
 # check current node. Job can only be submitted from the headnode
 set currnode = `hostname`
 if ( "$currnode" != "headnode" ) then
-	if ( "$ngpus" != "" ) then
-		echo "ERROR: You are requesting GPUs but not submitting jobs from the headnode. Please submit jobs from the headnode."
-		exit 1
-	endif
-	echo "WARNING: ssh from $currnode to headnode ..."
-	# submit job
-	ssh headnode "cd $work_dir; qsub ${cmd} -- ${cmd_script}"
+    if ( "$ngpus" != "" ) then
+        echo "ERROR: You are requesting GPUs but not submitting jobs from the headnode. Please submit jobs from the headnode."
+        exit 1
+    endif
+    echo "WARNING: ssh from $currnode to headnode ..."
+    # submit job
+    ssh headnode "cd $work_dir; qsub ${cmd} -- ${cmd_script}"
 else
-	# submit job
-	cd ${work_dir}
-	echo "${cmd_script}" | qsub $cmd
+    # submit job
+    cd ${work_dir}
+    echo "${cmd_script}" | qsub $cmd
 endif
 
 sleep ${sleeptime}
@@ -95,65 +95,65 @@ exit 0
 
 ##########################################
 # Parse Arguments 
-##########################################	
+##########################################
 
 parse_args:
 set cmdline = "$argv";
 while( $#argv != 0 )
-	set flag = $argv[1]; shift;
-	
-	switch($flag)
-		case "-cmd":
-			if ( $#argv == 0 ) goto arg1err;
-			set cmd_script = ($argv[1]); shift;
-			breaksw	
+    set flag = $argv[1]; shift;
 
-		case "-walltime":
-			if ( $#argv == 0 ) goto arg1err;
-			set walltime = $argv[1]; shift;
-			breaksw	
-		
-		case "-ncpus":
-			if ( $#argv == 0 ) goto arg1err;
-			set ncpus = $argv[1]; shift;
-			breaksw	
+    switch($flag)
+        case "-cmd":
+            if ( $#argv == 0 ) goto arg1err;
+            set cmd_script = ($argv[1]); shift;
+            breaksw
 
-		case "-ngpus":
-			if ( $#argv == 0 ) goto arg1err;
-			set ngpus = $argv[1]; shift;
-			breaksw	
-		
-		case "-mem":
-			if ( $#argv == 0 ) goto arg1err;
-			set memory = $argv[1]; shift;
-			breaksw	
-			
-		case "-name":
-			if ( $#argv == 0 ) goto arg1err;
-			set jobname = $argv[1]; shift;
-			breaksw	
+        case "-walltime":
+            if ( $#argv == 0 ) goto arg1err;
+            set walltime = $argv[1]; shift;
+            breaksw
+    
+        case "-ncpus":
+            if ( $#argv == 0 ) goto arg1err;
+            set ncpus = $argv[1]; shift;
+            breaksw
 
-		case "-joberr":
-			if ( $#argv == 0 ) goto arg1err;
-			set stderr_file = $argv[1]; shift;
-			breaksw	
+        case "-ngpus":
+            if ( $#argv == 0 ) goto arg1err;
+            set ngpus = $argv[1]; shift;
+            breaksw
+    
+        case "-mem":
+            if ( $#argv == 0 ) goto arg1err;
+            set memory = $argv[1]; shift;
+            breaksw
+        
+        case "-name":
+            if ( $#argv == 0 ) goto arg1err;
+            set jobname = $argv[1]; shift;
+            breaksw
 
-		case "-jobout":
-			if ( $#argv == 0 ) goto arg1err;
-			set stdout_file = $argv[1]; shift;
-			breaksw	
+        case "-joberr":
+            if ( $#argv == 0 ) goto arg1err;
+            set stderr_file = $argv[1]; shift;
+            breaksw
 
-		case "-script":
-			if ( $#argv == 0 ) goto arg1err;
-			set script_file = $argv[1]; shift;
-			breaksw	
-			
-		default:
-			echo ERROR: Flag $flag unrecognized.
-			echo $cmdline
-			exit 1
-			breaksw
-	endsw
+        case "-jobout":
+            if ( $#argv == 0 ) goto arg1err;
+            set stdout_file = $argv[1]; shift;
+            breaksw
+
+        case "-script":
+            if ( $#argv == 0 ) goto arg1err;
+            set script_file = $argv[1]; shift;
+            breaksw
+        
+        default:
+            echo ERROR: Flag $flag unrecognized.
+            echo $cmdline
+            exit 1
+            breaksw
+    endsw
 end
 goto parse_args_return;
 
@@ -164,8 +164,8 @@ goto parse_args_return;
 
 check_params:
 if ( "$cmd_script" == "" ) then
-	echo "ERROR: submitted command or script not specified"
-	exit 1;
+    echo "ERROR: submitted command or script not specified"
+    exit 1;
 endif
 
 goto check_params_return;
@@ -173,15 +173,15 @@ goto check_params_return;
 
 ##########################################
 # ERROR message
-##########################################	
+##########################################
 
 arg1err:
-  echo "ERROR: flag $flag requires one argument"
-  exit 1
+    echo "ERROR: flag $flag requires one argument"
+    exit 1
 
 arg2err:
-  echo "ERROR: flag $flag requires two arguments"
-  exit 1
+    echo "ERROR: flag $flag requires two arguments"
+    exit 1
 
 ##############################################
 # Everything below is printed as part of help
@@ -213,16 +213,16 @@ DESCRIPTION:
     Number of CPUs = 1
     Memory = 8G
     Job output log = $HOME/cluster/STDIN.o????
-    Job error log = $HOME/cluster/STDIN.e????	 
-	
+    Job error log = $HOME/cluster/STDIN.e????
+
 REQUIRED ARGUMENTS:
     -cmd    <cmd>:  The script to be submitted.
                     IMPORTANT NOTE: If <cmd> contains string, please use double quote to quote it. e.g.,
                     -cmd "/path/my_job_script.sh input1 input2 input3"
                     or
                     my_cmd="/path/my_job_script.sh input1 input2 input3"
-                    -cmd "${my_cmd}"	
-	                             
+                    -cmd "${my_cmd}"
+                                 
 OPTIONAL ARGUMENTS:
     -walltime   <walltime>:         Specify the maximum run time (hours, minutes and seconds): HH:MM:SS. Default is 01:00:00.
     -ncpus      <ncpus>:            Specify the number of CPUs for a job. Default is 1.
@@ -233,14 +233,14 @@ OPTIONAL ARGUMENTS:
     -mem        <memory>:           Specify the amount of maximum memory required (e.g. 3G). Default is 8G.
     -name       <jobname>:          The job name.         
     -joberr     <joberr_file>:      The path to the job error log file. e.g., "/path/myjoberr.log". Default is $HOME/cluster/STDIN.e????. 
-    -jobout     <jobout_file>:      The path to the job output log file. e.g., "/path/myjobout.log". Default is $HOME/cluster/STDIN.o????.	
+    -jobout     <jobout_file>:      The path to the job output log file. e.g., "/path/myjobout.log". Default is $HOME/cluster/STDIN.o????.
     -help       : help
 
 
 EXAMPLE:
     ssh headnode
     cmd="/path/my_job_script.sh input1 input2 input3"
-	
+
     $CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "$cmd" 
     $CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "$cmd" -walltime 00:30:00 -mem 4G -ncpus 2
     $CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "$cmd" -walltime 00:30:00 -mem 4G -ncpus 4 -ngpus 1

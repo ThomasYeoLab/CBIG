@@ -2,12 +2,12 @@ function CBIG_DilateMask(input_file, output_file, dist, exit_flag)
 
 % Dilate a binary mask.
 %
-% 	CBIG_DilateMask(input_file, output_file, dist, exit_flag)
-%	Input:
-%		input_file	: input binary mask
-%		output_file	: output file name
-% 		dist		: threshold for Euclidean distance after bwdist
-% 		exit_flag	: 1-exit; 0-not exit
+%     CBIG_DilateMask(input_file, output_file, dist, exit_flag)
+%     Input:
+%         input_file    : input binary mask
+%         output_file   : output file name
+%         dist          : threshold for Euclidean distance after bwdist
+%         exit_flag     : 1-exit; 0-not exit
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 

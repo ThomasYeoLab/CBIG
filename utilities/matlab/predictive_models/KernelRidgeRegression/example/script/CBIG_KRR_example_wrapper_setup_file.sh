@@ -13,10 +13,10 @@ outdir=$1
 # prepare output directory
 if [[ -d $outdir ]]
 then
-	rm -r $outdir
-	mkdir $outdir
+    rm -r $outdir
+    mkdir $outdir
 else
-	mkdir $outdir
+    mkdir $outdir
 fi
 
 for split in 1 2 3

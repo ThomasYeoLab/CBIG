@@ -9,7 +9,7 @@ classdef CBIG_DiffProc_AMICO_unit_test < matlab.unittest.TestCase
             CBIG_TEST_DIR = getenv('CBIG_TESTDATA_DIR');
             DIFF_CODE_DIR = fullfile(CBIG_CODE_DIR, 'stable_projects', 'preprocessing', ...
                 'CBIG2022_DiffProc');
-            addpath(fullfile(DIFF_CODE_DIR,'examples'));
+            addpath(fullfile(DIFF_CODE_DIR,'unit_tests'));
             ref_dir = fullfile(CBIG_TEST_DIR,'stable_projects','preprocessing', ...
                 'CBIG2022_DiffProc','AMICO');
             base_output_dir = fullfile(DIFF_CODE_DIR, 'unit_tests', 'AMICO', 'output');
@@ -41,7 +41,7 @@ classdef CBIG_DiffProc_AMICO_unit_test < matlab.unittest.TestCase
             test.OD_dir = fullfile(subj_output_dir, 'FIT_OD.nii.gz');
             test.ICVF_dir = fullfile(subj_output_dir, 'FIT_ICVF.nii.gz');
             % check example script prints if there are any differences
-            test_array = CBIG_DiffProc_AMICO_check_example_results(test);
+            test_array = CBIG_DiffProc_AMICO_check_unit_test_results(test);
             
             % replace unit test if flag is 1
             if replace_unit_test     
@@ -54,7 +54,7 @@ classdef CBIG_DiffProc_AMICO_unit_test < matlab.unittest.TestCase
             assert(sum(test_array) == 4, 'Unit test failed: Examples do not match')
             % remove output directory if unit test passes
             rmdir(base_output_dir, 's');
-            rmpath(fullfile(DIFF_CODE_DIR,'examples'));   
+            rmpath(fullfile(DIFF_CODE_DIR,'unit_tests'));   
         end
         
     end

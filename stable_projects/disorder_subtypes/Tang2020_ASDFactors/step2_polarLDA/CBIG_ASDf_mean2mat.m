@@ -1,7 +1,7 @@
 function CBIG_ASDf_mean2mat(inputDir, outputDir, k, r, scalelim)
 % CBIG_ASDf_mean2mat(inputDir, outputDir, k, r, scalelim)
 %
-% This function computes factor-specific RSFC patterns (i.e., E(RSFC patterns|Factor)), 
+% This function computes factor-specific RSFC patterns (i.e., E(RSFC patterns|Factor)),
 % plot it and save it as a 419x419 matrix.
 %
 % Input:
@@ -21,8 +21,8 @@ function CBIG_ASDf_mean2mat(inputDir, outputDir, k, r, scalelim)
 %           max. absolute value in the matrix.
 %
 % Example:
-%	CBIG_ASDf_mean2mat('~/example_output/estimate','~/example_output/visualizeFactors'
-%   ,'3','20',[-1.6e-5 1.6e-5]) 
+%     CBIG_ASDf_mean2mat('~/example_output/estimate','~/example_output/visualizeFactors'
+%     ,'3','20',[-1.6e-5 1.6e-5])
 %
 % Written by Siyi Tang and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 

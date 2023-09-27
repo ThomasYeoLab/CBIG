@@ -10,7 +10,7 @@ do
 nfinished=`cat $file | wc -l`
 njob=`qstat | grep $(whoami) | wc -l`
 if [ "$njob" -eq 0 ];then
-	break
+    break
 fi
 sleep 1m
 done

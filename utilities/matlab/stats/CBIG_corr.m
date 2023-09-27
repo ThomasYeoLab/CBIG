@@ -2,12 +2,12 @@ function corr_mat = CBIG_corr(s_series, t_series)
 
 % Calculate correlation matrix between each column of two matrix.
 % 
-% 	corr_mat = CBIG_corr(s_series, t_series)
-% 	Input:
-% 		s_series: T x N1 matrix, T is number of frames, N1 number of voxels
-% 		t_series: T x N2 matrix, T is number of frames, N2 number of voxels
-% 	Output:
-% 		corr_mat: N1 x N2 matrix
+%     corr_mat = CBIG_corr(s_series, t_series)
+%     Input:
+%         s_series: T x N1 matrix, T is number of frames, N1 number of voxels
+%         t_series: T x N2 matrix, T is number of frames, N2 number of voxels
+%     Output:
+%         corr_mat: N1 x N2 matrix
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 

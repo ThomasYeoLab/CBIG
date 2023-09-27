@@ -30,12 +30,12 @@ Usage: $0 sub_dir sub_id input output_dir output_prefix interp
 
 This script projects an input volume to fsaverage using MNIsurf/Colin27 approach.
 
-	<sub_dir>	SUBJECTS_DIR of the input subject's recon-all results
-	<sub_id> 	Subject ID of the input subject used in recon-all
-	<input> 	absolute path to input volume
-	<output_dir> 	absolute path to output directory
-	<output_prefix> prefix for output warps. For example, the output in left hemispehre will be named lh.output_prefix.nii.gz
-	<interp>	interpolation (nearest or trilinear)
+    <sub_dir>    SUBJECTS_DIR of the input subject's recon-all results
+    <sub_id>     Subject ID of the input subject used in recon-all
+    <input>     absolute path to input volume
+    <output_dir>     absolute path to output directory
+    <output_prefix> prefix for output warps. For example, the output in left hemispehre will be named lh.output_prefix.nii.gz
+    <interp>    interpolation (nearest or trilinear)
 
 " 1>&2; exit 1; }
 

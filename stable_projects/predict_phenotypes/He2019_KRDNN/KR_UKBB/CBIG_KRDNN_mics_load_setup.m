@@ -1,7 +1,7 @@
 function [data_dir, subject_list_file, behavior_csv, HM_file, corr_mat_file, measure_dir, measure_set] ...
-	= CBIG_KRDNN_mics_load_setup(setup_file)
+    = CBIG_KRDNN_mics_load_setup(setup_file)
 % [data_dir, subject_list_file, behavior_csv, FD_txt_file, corr_mat_file, measure_dir, measure_set] ...
-%	= CBIG_KRDNN_mics_load_setup(setup_file)
+%   = CBIG_KRDNN_mics_load_setup(setup_file)
 % 
 % This function splits subjects into training, validation and testing set.
 %

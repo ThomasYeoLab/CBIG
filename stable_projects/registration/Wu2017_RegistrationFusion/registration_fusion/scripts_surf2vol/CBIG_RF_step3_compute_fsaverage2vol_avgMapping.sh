@@ -78,45 +78,45 @@ Note that both the average mapping and the cortex mask will be copied to the res
 Use -c option to specify otherwise.
 
 REQUIRED ARGUMENTS:
-	-s <template_sub_id> 	subject ID of the volumetric template used in recon-all
+  -s <template_sub_id>   subject ID of the volumetric template used in recon-all
 
 OPTIONAL ARGUMENTS:
-	-n <num_of_sub>		number of subjects to use. \
+  -n <num_of_sub>    number of subjects to use. \
 This means taking the first <num_of_sub> subjects from <ind_sub_list>. \
 For example, setting '-n 50' means the first 50 lines of <ind_sub_list> will be read to get subject IDs. \
 Setting this to 0 will make the script use all subjects from <ind_sub_list>.
-				[ default: 0 ]
-	-r <RF_type>            type of RF approaches used in step 2, i.e. RF_M3Z or RF_ANTs
+        [ default: 0 ]
+  -r <RF_type>            type of RF approaches used in step 2, i.e. RF_M3Z or RF_ANTs
                                 [ default: RF_ANTs ]
-	-i <input_dir> 		absolute path to input directory. \
+  -i <input_dir>     absolute path to input directory. \
 The inputs are the index files projected to the volumetric atlas space through individual subjects in step 2, \
 i.e. the input directory should be the same as output directory in step 2.
-				[ default: $(pwd)/results/index_\$template_sub_id ]
-	-l <ind_sub_list> 	absolute path to a file containing individual subject IDs. \
+        [ default: $(pwd)/results/index_\$template_sub_id ]
+  -l <ind_sub_list>   absolute path to a file containing individual subject IDs. \
 Each line in the file should contain one subject ID.
-				[ default: $DEFAULT_GSP_SUBLIST ]
-	-o <output_dir> 	absolute path to output directory
-				[ default: $(pwd)/results ]
-	-c <copy_results>	set this to 0 to prevent the results generated from being copied to the bin folders. \
+        [ default: $DEFAULT_GSP_SUBLIST ]
+  -o <output_dir>   absolute path to output directory
+        [ default: $(pwd)/results ]
+  -c <copy_results>  set this to 0 to prevent the results generated from being copied to the bin folders. \
 By default, both the average mapping and cortex mask generated will be copied to the respective bin folders.
-				[ default: 1 ]
-	-h			display help message
+        [ default: 1 ]
+  -h      display help message
 
 OUTPUTS:
-	$0 will create 2 folders:
-	1) mapping folder: 2 files will be generated, \
+  $0 will create 2 folders:
+  1) mapping folder: 2 files will be generated, \
 corresponding to the average mapping and count map in the volumetric atlas space. \
 The count map shows at each votex how many subjects were projected to it.
-	For example:
-		allSub_fsaverage_to_FSL_MNI152_FS4.5.0_RF_ANTs_avgMapping.prop.mat
-		allSub_fsaverage_to_FSL_MNI152_FS4.5.0_RF_ANTs_count.mat
-	2) mask folder: 1 file will be generated, which is the liberal cortex mask generated using the count map
-	For example:
-		FSL_MNI152_FS4.5.0_cortex_estimate.nii.gz
+  For example:
+    allSub_fsaverage_to_FSL_MNI152_FS4.5.0_RF_ANTs_avgMapping.prop.mat
+    allSub_fsaverage_to_FSL_MNI152_FS4.5.0_RF_ANTs_count.mat
+  2) mask folder: 1 file will be generated, which is the liberal cortex mask generated using the count map
+  For example:
+    FSL_MNI152_FS4.5.0_cortex_estimate.nii.gz
 
 EXAMPLE:
-	$0 -s 'FSL_MNI152_FS4.5.0'
-	$0 -s 'SPM_Colin27_FS4.5.0' -n 50
+  $0 -s 'FSL_MNI152_FS4.5.0'
+  $0 -s 'SPM_Colin27_FS4.5.0' -n 50
 
 " 1>&2; exit 1; }
 

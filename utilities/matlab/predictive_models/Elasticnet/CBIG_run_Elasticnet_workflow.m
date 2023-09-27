@@ -202,32 +202,32 @@ for currfold = 1:length(params.sub_fold)
 
     param_file = fullfile(curr_param_dir, ['selected_parameters_' params.outstem '.mat']);
     if(~exist(param_file, 'file'))
-	% step 2. select hyperparameters: gridsearch over alpha and lambda over full set of features
-	fprintf('>>> Performing gridsearch over alpha and lambda \n') 
-	if isempty(lambda_sorted)
-		fprintf('>>> Letting Glmnet choose lambda \n') 
-	end 
-	for alpha_idx = 1:length(alpha_set)
-	     	alpha_train = alpha_set(alpha_idx);
-	     	[acc_metric_tmp{alpha_idx}, neg_loss_tmp{alpha_idx}, new_lambda{alpha_idx},...
-		y_pred_tmp{alpha_idx}] = CBIG_Elasticnet_innerloop_cv_glmnet(...
-		feat_train', y_train, alpha_train, lambda_sorted, params.num_inner_folds, params.metric);
-	end
-	best_alpha_idx = find(max(cellfun(@(x)max(x),neg_loss_tmp)),1);
-	curr_alpha = alpha_set(best_alpha_idx);
-	best_lambda_idx = find(neg_loss_tmp{best_alpha_idx} == max(neg_loss_tmp{best_alpha_idx}),1);
-	curr_lambda = new_lambda{best_alpha_idx}(best_lambda_idx);
-	save(param_file, 'curr_alpha', 'curr_lambda')
-	curr_acc_train = acc_metric_tmp{best_alpha_idx}(best_lambda_idx); 
-	curr_y_pred_alpha = y_pred_tmp{best_alpha_idx};
-	curr_y_pred = cellfun(@(x)x(:,best_lambda_idx),curr_y_pred_alpha, 'UniformOutput', false);
-	save([curr_param_dir '/acc_train_' params.outstem '.mat'], 'curr_acc_train', 'curr_y_pred');
+    % step 2. select hyperparameters: gridsearch over alpha and lambda over full set of features
+        fprintf('>>> Performing gridsearch over alpha and lambda \n') 
+        if isempty(lambda_sorted)
+            fprintf('>>> Letting Glmnet choose lambda \n') 
+        end 
+        for alpha_idx = 1:length(alpha_set)
+            alpha_train = alpha_set(alpha_idx);
+            [acc_metric_tmp{alpha_idx}, neg_loss_tmp{alpha_idx}, new_lambda{alpha_idx},...
+        y_pred_tmp{alpha_idx}] = CBIG_Elasticnet_innerloop_cv_glmnet(...
+        feat_train', y_train, alpha_train, lambda_sorted, params.num_inner_folds, params.metric);
+    end
+    best_alpha_idx = find(max(cellfun(@(x)max(x),neg_loss_tmp)),1);
+    curr_alpha = alpha_set(best_alpha_idx);
+    best_lambda_idx = find(neg_loss_tmp{best_alpha_idx} == max(neg_loss_tmp{best_alpha_idx}),1);
+    curr_lambda = new_lambda{best_alpha_idx}(best_lambda_idx);
+    save(param_file, 'curr_alpha', 'curr_lambda')
+    curr_acc_train = acc_metric_tmp{best_alpha_idx}(best_lambda_idx); 
+    curr_y_pred_alpha = y_pred_tmp{best_alpha_idx};
+    curr_y_pred = cellfun(@(x)x(:,best_lambda_idx),curr_y_pred_alpha, 'UniformOutput', false);
+    save([curr_param_dir '/acc_train_' params.outstem '.mat'], 'curr_acc_train', 'curr_y_pred');
     else
         load(param_file)
         if(~exist([curr_param_dir '/acc_train_' params.outstem '.mat'], 'file'))
             [curr_acc_train,~,~,curr_y_pred] = CBIG_Elasticnet_innerloop_cv_glmnet(...
-		feat_train', y_train, curr_alpha, curr_lambda, params.num_inner_folds, params.metric);
-	    save([curr_param_dir '/acc_train_' params.outstem '.mat'], 'curr_acc_train', 'curr_y_pred');
+        feat_train', y_train, curr_alpha, curr_lambda, params.num_inner_folds, params.metric);
+        save([curr_param_dir '/acc_train_' params.outstem '.mat'], 'curr_acc_train', 'curr_y_pred');
         else
             load([curr_param_dir '/acc_train_' params.outstem '.mat'])
         end
@@ -252,7 +252,7 @@ end
 
 %% save optimal accuracies per variable
 opt_out = fullfile(params.outdir, params.split_name, ...
-     'optimal_acc', [params.outstem '_final_acc.mat']);
+    'optimal_acc', [params.outstem '_final_acc.mat']);
 mkdir(fullfile(params.outdir, params.split_name, 'optimal_acc'))
 save(opt_out, 'acc_metric_train', 'acc_corr_test', 'optimal_statistics','y_predict','y_pred_train')
 fprintf('Finished!\n')

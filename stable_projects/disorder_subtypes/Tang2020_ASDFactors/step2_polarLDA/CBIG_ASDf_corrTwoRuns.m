@@ -27,18 +27,18 @@ function [corr, avgCorr] = CBIG_ASDf_corrTwoRuns(inputDir_best, inputDir, K, r_b
 %           Average of corr
 %
 % Example:
-%	[corr, avgCorr] = CBIG_ASDf_corrTwoRuns('~/output','~/output','3','94','10')
-%	This function will perform Hungarian matching to match the estimated factors 
-%       in run #10 with run #94 for three-factor estimate, and compute the correlation 
-%       between the matched factors as well as the averaged correlation.
-% 
+%     [corr, avgCorr] = CBIG_ASDf_corrTwoRuns('~/output','~/output','3','94','10')
+%     This function will perform Hungarian matching to match the estimated factors
+%     in run #10 with run #94 for three-factor estimate, and compute the correlation
+%     between the matched factors as well as the averaged correlation.
+%
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 %% Load inputs and compute E(FC patterns | Factor)
 beta_best = exp(load(fullfile(inputDir_best,sprintf('k%s/r%s', K, num2str(r_best)),'final.beta')));
 rho_best = exp(load(fullfile(inputDir_best,sprintf('k%s/r%s', K, num2str(r_best)),'final.rho')));
 Mean_best = beta_best.*(2*rho_best-1);
- 
+
 beta = exp(load(fullfile(inputDir,sprintf('k%s/r%s', K, num2str(r)),'final.beta')));
 rho = exp(load(fullfile(inputDir,sprintf('k%s/r%s', K, num2str(r)),'final.rho')));
 Mean = beta.*(2*rho-1);
@@ -49,9 +49,9 @@ order = CBIG_ASDf_hunMatch(K, Mean_best, Mean);
 
 % Recompute the average correlation with sorted factors
 corr = zeros(K, 1);
-for idx = 1:K  
-	corrMat = corrcoef(Mean_best(idx, :)', Mean(order(idx), :)');
-    corr(idx) = corrMat(1, 2); 
+for idx = 1:K
+    corrMat = corrcoef(Mean_best(idx, :)', Mean(order(idx), :)');
+    corr(idx) = corrMat(1, 2);
 end
 
 avgCorr = mean(corr);

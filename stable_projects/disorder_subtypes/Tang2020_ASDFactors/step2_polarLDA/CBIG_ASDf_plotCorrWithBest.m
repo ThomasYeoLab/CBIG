@@ -3,7 +3,7 @@ function CBIG_ASDf_plotCorrWithBest(inputDir, k, r_final, corr, outputDir)
 %
 % This function plots the correlation between final estimate and other
 % solutions, sorted from highest to lowest likelihood.
-% 
+%
 % Input:
 %     - inputDir:
 %           Absolute path to the input directory where the model estimation
@@ -22,9 +22,9 @@ function CBIG_ASDf_plotCorrWithBest(inputDir, k, r_final, corr, outputDir)
 %           the function CBIG_ASDf_computCorrBetweenRuns.m
 %     - outputDir (optional):
 %           Absolute path to the output directory to save the plot
-% 
+%
 % Example:
-%	CBIG_ASDf_plotCorrWithBest('~/example_output/estimate','3','94',corr_k3,'~/example_output/visualizeFactors')
+%     CBIG_ASDf_plotCorrWithBest('~/example_output/estimate','3','94',corr_k3,'~/example_output/visualizeFactors')
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 

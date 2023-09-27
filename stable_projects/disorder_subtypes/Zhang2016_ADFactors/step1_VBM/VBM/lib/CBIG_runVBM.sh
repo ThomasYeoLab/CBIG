@@ -9,31 +9,33 @@
 # Usage
 usage() { echo "
 Usage: $0 -b <brainList> [-t <brainList_tmp>] -s <sigma> -o <outDir> [-q <queue>]
-	- brainList		Text file with each line being the path to a brain image; e.g., ~/outputs/VBM/brainList.txt
-	- brainList_tmp		(Optional) subset of brainList indicating which brains to include in constructing the study-specific template; if not provided, all will be included
-	- sigma			Sigma (in mm) of the gaussian kernel for smoothing
-	- outDir		Output directory; e.g., ~/outputs/VBM/
-	- queue			(Optional) if you have a cluster, use it to specify the queue to which you want to qsub these jobs; if not provided, jobs will run serially (potentially very slow!)
+    - brainList         Text file with each line being the path to a brain image; e.g., ~/outputs/VBM/brainList.txt
+    - brainList_tmp     (Optional) subset of brainList indicating which brains to include in constructing the 
+                        study-specific template; if not provided, all will be included
+    - sigma             Sigma (in mm) of the gaussian kernel for smoothing
+    - outDir            Output directory; e.g., ~/outputs/VBM/
+    - queue             (Optional) if you have a cluster, use it to specify the queue to which you want to qsub 
+                        these jobs; if not provided, jobs will run serially (potentially very slow!)
 " 1>&2; exit 1; }
 
 # Reading in parameters
 while getopts ":b:t:s:o:q:" opt; do
-	case "${opt}" in
-		b) brainList=${OPTARG};;
-        	t) brainList_tmp=${OPTARG};;
-        	s) sigma=${OPTARG};;
-        	o) outDir=${OPTARG};;
-        	q) queue=${OPTARG};;
-       		*) usage;;
-    	esac
+    case "${opt}" in
+        b) brainList=${OPTARG};;
+        t) brainList_tmp=${OPTARG};;
+        s) sigma=${OPTARG};;
+        o) outDir=${OPTARG};;
+        q) queue=${OPTARG};;
+        *) usage;;
+    esac
 done
 shift $((OPTIND-1))
 if [ -z "${brainList}" ] || [ -z "${sigma}" ] || [ -z "${outDir}" ]; then
-	echo Missing Parameters!
-	usage
+    echo Missing Parameters!
+    usage
 fi
 if [ -z "${brainList_tmp}" ]; then
-	brainList_tmp=${brainList} # use all brains for constructing the template 
+    brainList_tmp=${brainList} # use all brains for constructing the template 
 fi
 
 ###########################################
@@ -43,18 +45,18 @@ fi
 ###### Step 1: GM Segmentation
 outDir_step1=${outDir}GM/
 if [ -z "${queue}" ]; then
-	./CBIG_step1_segGM.sh -b ${brainList} -o ${outDir_step1} -t ${brainList_tmp}
+    ./CBIG_step1_segGM.sh -b ${brainList} -o ${outDir_step1} -t ${brainList_tmp}
 else
-	./CBIG_step1_segGM.sh -b ${brainList} -o ${outDir_step1} -t ${brainList_tmp} -q ${queue}
+    ./CBIG_step1_segGM.sh -b ${brainList} -o ${outDir_step1} -t ${brainList_tmp} -q ${queue}
 fi
 
 
 ###### Step 2: Affine Registration to FSL Standard Template
 outDir_step2=${outDir}affineRegToStdTmp/
 if [ -z "${queue}" ]; then
-	./CBIG_step2_affineRegToStdTmp.sh -g ${outDir_step1}GMList_tmp.txt -o ${outDir_step2}
+    ./CBIG_step2_affineRegToStdTmp.sh -g ${outDir_step1}GMList_tmp.txt -o ${outDir_step2}
 else
-	./CBIG_step2_affineRegToStdTmp.sh -g ${outDir_step1}GMList_tmp.txt -o ${outDir_step2} -q ${queue}
+    ./CBIG_step2_affineRegToStdTmp.sh -g ${outDir_step1}GMList_tmp.txt -o ${outDir_step2} -q ${queue}
 fi
 
 
@@ -66,9 +68,11 @@ outDir_step3=${outDir}affineTmp/
 ###### Step 4: Nonlinear Registration to Affine Template
 outDir_step4=${outDir}nonlinRegToAffineTmp/
 if [ -z "${queue}" ]; then
-	./CBIG_step4_nonlinRegToAffineTmp.sh -g ${outDir_step1}GMList_tmp.txt -t ${outDir_step3}affineTmp.nii.gz -o ${outDir_step4}
+    ./CBIG_step4_nonlinRegToAffineTmp.sh -g ${outDir_step1}GMList_tmp.txt \
+        -t ${outDir_step3}affineTmp.nii.gz -o ${outDir_step4}
 else
-	./CBIG_step4_nonlinRegToAffineTmp.sh -g ${outDir_step1}GMList_tmp.txt -t ${outDir_step3}affineTmp.nii.gz -o ${outDir_step4} -q ${queue}
+    ./CBIG_step4_nonlinRegToAffineTmp.sh -g ${outDir_step1}GMList_tmp.txt \
+        -t ${outDir_step3}affineTmp.nii.gz -o ${outDir_step4} -q ${queue}
 fi
 
 
@@ -81,9 +85,11 @@ outDir_step5=${outDir}nonlinTmp/
 outDir_step6=${outDir}nonlinRegToNonlinTmp/
 # For ALL GM images (not just those for template construction)
 if [ -z "${queue}" ]; then
-	./CBIG_step6_nonlinRegToNonlinTmp.sh -g ${outDir_step1}GMList.txt -t ${outDir_step5}nonlinTmp.nii.gz -o ${outDir_step6}
+    ./CBIG_step6_nonlinRegToNonlinTmp.sh -g ${outDir_step1}GMList.txt \
+        -t ${outDir_step5}nonlinTmp.nii.gz -o ${outDir_step6}
 else
-	./CBIG_step6_nonlinRegToNonlinTmp.sh -g ${outDir_step1}GMList.txt -t ${outDir_step5}nonlinTmp.nii.gz -o ${outDir_step6} -q ${queue}
+    ./CBIG_step6_nonlinRegToNonlinTmp.sh -g ${outDir_step1}GMList.txt \
+        -t ${outDir_step5}nonlinTmp.nii.gz -o ${outDir_step6} -q ${queue}
 fi
 
 

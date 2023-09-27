@@ -34,14 +34,14 @@ Usage: $0 input_sub_dir input_id input target_sub_dir target_id output_dir outpu
 
 This script maps an input volume to a target's normalised T1 image, using talairach.m3z transform and using the FreeSurfer nonlinear volumetric space as an intermediate space. 
 
-	<input_sub_dir> 	SUBJECTS_DIR of the input's recon-all results
-	<input_id> 		Subject ID of the input used in recon-all
-	<input>			absolute path to input volume
-	<target_sub_dir>	SUBJECTS_DIR of the target's recon-all results
-	<target_id> 		Subject ID of the target used in recon-all
-	<output_dir>		absolute path to output directory
-	<output_prefix>		prefix for output warps. The output is named output_prefix.nii.gz
-	<interp>		interpolation (trilin, nearest, cubic)
+  <input_sub_dir>   SUBJECTS_DIR of the input's recon-all results
+  <input_id>     Subject ID of the input used in recon-all
+  <input>      absolute path to input volume
+  <target_sub_dir>  SUBJECTS_DIR of the target's recon-all results
+  <target_id>     Subject ID of the target used in recon-all
+  <output_dir>    absolute path to output directory
+  <output_prefix>    prefix for output warps. The output is named output_prefix.nii.gz
+  <interp>    interpolation (trilin, nearest, cubic)
 
 " 1>&2; exit 1; }
 

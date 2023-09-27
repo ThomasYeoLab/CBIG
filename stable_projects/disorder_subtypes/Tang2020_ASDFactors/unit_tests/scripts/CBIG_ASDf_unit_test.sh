@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Example:
-#	sh ./CBIG_ASDf_unit_test.sh ~/storage/Temporaray/CBIG_ASDf_unit_test
+#     sh ./CBIG_ASDf_unit_test.sh ~/storage/Temporaray/CBIG_ASDf_unit_test
 #
 # Written by Siyi Tang and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 

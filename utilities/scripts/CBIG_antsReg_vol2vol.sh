@@ -40,32 +40,32 @@ This script runs ANTs registration from an input volume to a reference volume, g
 an affine transform files.
 
 REQUIRED ARGUMENTS:
-	-r <reference>		absolute path to volume to be mapped to
-	-i <input>		absolute path to volume to map from
-	-p <output_prefix> 	prefix for output warps
+    -r <reference>        absolute path to volume to be mapped to
+    -i <input>            absolute path to volume to map from
+    -p <output_prefix>    prefix for output warps
 
 OPTIONAL ARGUMENTS:
-	-d <output_dir> 	absolute path to output directory
-				[ default: $(pwd)/results ]
-	-a <ANTs_dir> 		directory where ANTs is installed 
-				[ default: $CBIG_ANTS_DIR ]
-	-j <iterations_of_affine_transform>
-				[ default: 100x100x200 ]
-	-k <iterations_of_SyN_transform>
-				[ default: 100x100x50 ]
-	-h			display help message
+    -d <output_dir>       absolute path to output directory
+                          [ default: $(pwd)/results ]
+    -a <ANTs_dir>         directory where ANTs is installed 
+                          [ default: $CBIG_ANTS_DIR ]
+    -j <iterations_of_affine_transform>
+                          [ default: 100x100x200 ]
+    -k <iterations_of_SyN_transform>
+                          [ default: 100x100x50 ]
+    -h                    display help message
 
 OUTPUTS:
-	$0 will create 3 warp files in the output directory, corresponding to the affine, forward and inverse warps.
-	These outputs can be supplied to $CBIG_CODE_DIR/utilities/scripts/CBIG_antsApplyReg_vol2vol.sh to warp data in the 
+    $0 will create 3 warp files in the output directory, corresponding to the affine, forward and inverse warps.
+    These outputs can be supplied to $CBIG_CODE_DIR/utilities/scripts/CBIG_antsApplyReg_vol2vol.sh to warp data in the 
 input space to the reference space.
-	For example:
-		output_prefix0GenericAffine.mat
-		output_prefix1Warp.nii.gz
-		output_prefix1InverseWarp.nii.gz
+    For example:
+        output_prefix0GenericAffine.mat
+        output_prefix1Warp.nii.gz
+        output_prefix1InverseWarp.nii.gz
 
 EXAMPLE:
-	$0 -r /path/to/my/template.nii.gz -i /path/to/my/subject.nii.gz -p subject_moving_template_fixed
+    $0 -r /path/to/my/template.nii.gz -i /path/to/my/subject.nii.gz -p subject_moving_template_fixed
 
 " 1>&2; exit 1; }
 

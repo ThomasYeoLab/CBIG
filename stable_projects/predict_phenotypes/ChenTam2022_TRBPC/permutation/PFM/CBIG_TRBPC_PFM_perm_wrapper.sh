@@ -20,10 +20,10 @@ Usage: $0 -i <input_dir> -f <feature_file> -s <outstem> -n <perm_num> -t <total_
     - total_num     Total number of permutations
     - outdir        Output directory
     - group         A text file containing the group ID (e.g. site) of all subjects. Permutation will 
-    		    only be done within a group
+                    only be done within a group
     - cluster       (Optional) if you do not have a cluster, put it as "none", then the computation will
-		    run serially (potentially very slow!) for each behavior. If you have a cluster, put
-		    your cluster name and the function submit parallel jobs to your cluster
+                    run serially (potentially very slow!) for each behavior. If you have a cluster, put
+                    your cluster name and the function submit parallel jobs to your cluster
 " 1>&2; exit 1; }
 
 # Reading in parameters
@@ -42,7 +42,7 @@ while getopts ":i:f:s:n:t:o:g:c:" opt; do
 done
 shift $((OPTIND-1))
 if [ -z "${input_dir}" ] || [ -z "${feature_file}" ] || [ -z "${outstem}" ] || \
-     [ -z "${perm_num}" ] || [ -z "${total_num}" ] || [ -z "${outdir}" ] ; then
+    [ -z "${perm_num}" ] || [ -z "${total_num}" ] || [ -z "${outdir}" ] ; then
     echo Missing Parameters!
     usage
 fi
@@ -60,7 +60,7 @@ date >> $LF
 scripts_dir=`dirname "$(readlink -f "$0")"`
 
 matlab -nodesktop -nosplash -nodisplay -r " addpath $scripts_dir; CBIG_TRBPC_prepare_PFM_perm_inputs( \
-   '$feature_file', '$input_dir', '$outdir'); exit; " >> $LF 2>&1
+    '$feature_file', '$input_dir', '$outdir'); exit; " >> $LF 2>&1
    
 ########## run permutation jobs
 y_file=$outdir/y_regress.mat
@@ -73,13 +73,13 @@ do
     if [ "$cluster" == "none" ];then
     
         $scripts_dir/CBIG_TRBPC_PFM_perm_job.sh $FC_mean_file $y_file $krr_folds $perm_seed_start \
-        $perm_num $outdir $group
+            $perm_num $outdir $group
     else
         errfile=${outdir}/job_err_out/PFM_perm_start_${perm_seed_start}.err
-	outfile=${outdir}/job_err_out/PFM_perm_start_${perm_seed_start}.out
-	cmd="$scripts_dir/CBIG_TRBPC_PFM_perm_job.sh"
-	cmd="$cmd  $FC_mean_file $y_file $krr_folds $perm_seed_start $perm_num $outdir $group"
-	${CBIG_CODE_DIR}/setup/CBIG_pbsubmit -walltime 12:00:0 -mem 16gb -joberr ${errfile} -jobout ${outfile} \
+        outfile=${outdir}/job_err_out/PFM_perm_start_${perm_seed_start}.out
+        cmd="$scripts_dir/CBIG_TRBPC_PFM_perm_job.sh"
+        cmd="$cmd  $FC_mean_file $y_file $krr_folds $perm_seed_start $perm_num $outdir $group"
+        ${CBIG_CODE_DIR}/setup/CBIG_pbsubmit -walltime 12:00:0 -mem 16gb -joberr ${errfile} -jobout ${outfile} \
             -cmd "${cmd}" -name PFM_perm
     fi
 done

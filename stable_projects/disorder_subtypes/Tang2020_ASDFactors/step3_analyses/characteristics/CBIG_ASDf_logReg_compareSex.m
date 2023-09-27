@@ -1,16 +1,16 @@
 function [logReg_wMeanStd, num_pVal] = CBIG_ASDf_logReg_compareSex(k, sub_id, ...
-sub_info_file, factorLoading_file, factor_order, output_name)
-% [logReg_wMeanStd, num_pVal] = CBIG_ASDf_logReg_compareSex(k, sub_id, 
+    sub_info_file, factorLoading_file, factor_order, output_name)
+% [logReg_wMeanStd, num_pVal] = CBIG_ASDf_logReg_compareSex(k, sub_id,
 % sub_info_file, factorLoading_file, factor_order, output_name)
-% 
+%
 % This function performs logistic regression to compare ASD participants' sex
 % across latent factors, and plot the errorbar plot. If output_name is
 % specified, the plot will be saved.
-% NOTE: This function uses some functions in 
+% NOTE: This function uses some functions in
 % $CBIG_CODE_DIR/stable_projects/disorder_subtypes/Zhang2016_ADFactors.
 %
 % Input:
-% 	  - k:
+%     - k:
 %           Integer. Number of factors
 %     - sub_id:
 %           Nx1 cell array, where N is the number of subjects
@@ -34,11 +34,11 @@ sub_info_file, factorLoading_file, factor_order, output_name)
 %           E.g., if k=3, V is 3; if k=4, V is 6. 1st row stores the number
 %           of subjects in this logistic regression analysis, 2nd to last
 %           rows store the pairwise p-values.
-% 
+%
 % Example:
-%       [logReg_wMeanStd, num_pVal] = CBIG_ASDf_logReg_compareSex(3, sub_id, 
+%       [logReg_wMeanStd, num_pVal] = CBIG_ASDf_logReg_compareSex(3, sub_id,
 %       '~/example_input/subInfo.csv', '~/example_output/visualizeFactors/factorComp.txt', [3 2 1], 'k3_sex')
-% 
+%
 % Written by Siyi Tang and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 %% Check input variable
@@ -58,8 +58,8 @@ addpath(fullfile(ZHANG_DIR,'step3_analyses_internalUse','characteristics'));
 addpath(fullfile(ZHANG_DIR,'step3_analyses_internalUse','MCI2ADProgression'));
 
 %% Get sex & factor loadings
-[~, ~, ~, id_sex, ~, ~, ~, id_factorLoading] = CBIG_ASDf_getSubData(sub_info_file, sub_id, ... 
-[], [], factorLoading_file);
+[~, ~, ~, id_sex, ~, ~, ~, id_factorLoading] = CBIG_ASDf_getSubData(sub_info_file, sub_id, ...
+    [], [], factorLoading_file);
 
 sex = cell2mat(id_sex(:,2));
 factorComp = cell2mat(id_factorLoading(:,2:end));
@@ -127,11 +127,11 @@ elseif k == 3
     % F1 - F3
     H = [0 1 0];
     idx1 = find(H==1);
-    A(1,:) = [-stats.beta(idx1), sqrt(stats.covb(idx1, idx1))];  
+    A(1,:) = [-stats.beta(idx1), sqrt(stats.covb(idx1, idx1))];
     % F2 - F3
     H = [0 0 1];
     idx1 = find(H==1);
-    A(2,:) = [-stats.beta(idx1), sqrt(stats.covb(idx1, idx1))]; 
+    A(2,:) = [-stats.beta(idx1), sqrt(stats.covb(idx1, idx1))];
     % F2 - F1
     H = [0 -1 1];
     idx1 = find(H==1);
@@ -167,7 +167,7 @@ elseif k == 3
     p = CBIG_lr_test(X_r, y, n, ll_u, dof);
     fprintf('p = %e\n', p);
     num_pVal(4) = p;
-
+    
     fprintf('Factor1 mean(std): %.3f (%.3f)\n', wMean(1), wStdDev(1));
     fprintf('Factor2 mean(std): %.3f (%.3f)\n', wMean(2), wStdDev(2));
     fprintf('Factor3 mean(std): %.3f (%.3f)\n', wMean(3), wStdDev(3));
@@ -175,7 +175,7 @@ elseif k == 3
     logReg_wMeanStd{2} = sprintf('Factor2 mean(std): %.3f (%.3f)\n', wMean(2), wStdDev(2));
     logReg_wMeanStd{3} = sprintf('Factor3 mean(std): %.3f (%.3f)\n', wMean(3), wStdDev(3));
 else
-    fprintf('NOT CONFIGURED! Choose from K = 2 or K = 3.');  
+    fprintf('NOT CONFIGURED! Choose from K = 2 or K = 3.');
 end
 
 if nargin > 5 && ~isempty(output_name)

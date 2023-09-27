@@ -83,16 +83,16 @@ if(num_clusters > 1)
     % Normalize to zero mean across subjects
     series = series - repmat(mean(series, 2), 1, size(series, 2));
     for i = 1:num_tries
-	tic, clustered = direcClus_fix_bessel_bsxfun(series, num_clusters, size(series, 2) - 1, 1, 0, 0, 0, 1e-4, 1, max_iter, 1); toc
+    tic, clustered = direcClus_fix_bessel_bsxfun(series, num_clusters, size(series, 2) - 1, 1, 0, 0, 0, 1e-4, 1, max_iter, 1); toc
 
-	cidx = clustered.clusters;
-	if(sum(non_zero_corr_index) < length(non_zero_corr_index)) %there are vertices with no correlation
-	    new_cidx = zeros(length(non_zero_corr_index), 1);
-	    new_cidx(non_zero_corr_index) = cidx;
-	    cidx = new_cidx; 
-	end
+    cidx = clustered.clusters;
+    if(sum(non_zero_corr_index) < length(non_zero_corr_index)) %there are vertices with no correlation
+        new_cidx = zeros(length(non_zero_corr_index), 1);
+        new_cidx(non_zero_corr_index) = cidx;
+        cidx = new_cidx; 
+    end
 
-	lh_labels(l1, i) = cidx(1:length(l1));
+    lh_labels(l1, i) = cidx(1:length(l1));
         rh_labels(l2, i) = cidx(length(l1)+1:end);
         likelihood(i) = clustered.likelihood(end);
     end

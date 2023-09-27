@@ -171,22 +171,22 @@ save(['rawdata/' fileout '.mat'], 'map', 'seed_used');
 % DrawGraph
 %%%%%%%%%%%%%%%%%%%
 function DrawGraph(data, loc, lineth, networks, colscale, lhrh_tag, netw_used, fileout)
-% data - NxN matrix, N refers to number of nodes/observations. Each value
-%           representa strength of correlation between nodes. E.g. data(4,5)
-%           represents correlation between node 4 and 5
-% loc - Nx2 matrix, location of nodes on xy plane (from dimensionality reduction)
-% lineth - threshold of correlation values. Edges with correlation strength
-%           below this will not be plotted
-% networks - Nx1 matrix that represent labels of nodes (in sequence with
-%               data). Nodes with same number belong to the same network
-% colscale - Mx3 matrix, each row represents color for a network, whereby 
-%               M = total number of networks (max(networks))
-% lhrh_tag - Nx1 matrix, optional. Only nodes with value = 1 will be plotted
-%               For example, if we only want left hemisphere nodes to be plotted
-% netw_used - 1xP, values correspond to network label
-%				Example, if only network 4,5,8 need to be plotted, netw_used = [4 5 8];
-%				The number refer to 'networks' variable
-% fileout - name of output file
+% data      -  NxN matrix, N refers to number of nodes/observations. Each value
+%              representa strength of correlation between nodes. E.g. data(4,5)
+%              represents correlation between node 4 and 5
+% loc       -  Nx2 matrix, location of nodes on xy plane (from dimensionality reduction)
+% lineth    -  threshold of correlation values. Edges with correlation strength
+%              below this will not be plotted
+% networks  -  Nx1 matrix that represent labels of nodes (in sequence with
+%              data). Nodes with same number belong to the same network
+% colscale  -  Mx3 matrix, each row represents color for a network, whereby 
+%              M = total number of networks (max(networks))
+% lhrh_tag  -  Nx1 matrix, optional. Only nodes with value = 1 will be plotted
+%              For example, if we only want left hemisphere nodes to be plotted
+% netw_used -  1xP, values correspond to network label
+%              Example, if only network 4,5,8 need to be plotted, netw_used = [4 5 8];
+%              The number refer to 'networks' variable
+% fileout   -  name of output file
 
 if size(data,1)~=size(data,2)
     error('Data is not symmetric')

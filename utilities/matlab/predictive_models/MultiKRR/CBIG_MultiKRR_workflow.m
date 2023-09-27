@@ -1,6 +1,6 @@
-    function CBIG_MultiKRR_workflow( setup_file, save_setup, sub_fold_file, ...
-        y_file, covariate_file, feature_mat_file, num_inner_folds, outdir,...
-        outstem, varargin)
+function CBIG_MultiKRR_workflow( setup_file, save_setup, sub_fold_file, ...
+    y_file, covariate_file, feature_mat_file, num_inner_folds, outdir,...
+    outstem, varargin)
 
 % CBIG_MultiKRR_workflow( setup_file, save_setup, sub_fold_file, ...
 %       y_file, covariate_file, feature_file, num_inner_folds, outdir,...
@@ -46,7 +46,7 @@
 %     4. feature_mat
 %        A cell array of feature matrices used as the independent variable
 %        in the  prediction. See the description of `feature_mat_file` in
-%	 `Compulsory and Optional Variables section`.
+%        `Compulsory and Optional Variables section`.
 %     5. num_inner_folds
 %        A scalar, the number of inner-loop cross-validation folds. See the
 %        description of `num_inner_folds` in `Compulsory and Optional Variables section`.
@@ -69,16 +69,16 @@
 %     11.group_kernel
 %        A cell array of how the user would like to group the various
 %        kernels for multi KRR. See the description of `group_kernel_file`
-%	 in `Compulsory and Optional Variables section`
+%        in `Compulsory and Optional Variables section`
 %     12.domain
 %        A 1 x 2 vector specifying the search domain for the
 %        hyperparameters of the multi KRR model.The first element of the  
 %        vector stores the lower bound and the second element stores the
 %        upper bound of the search domain. See the description in `domain_file`
-%   	 in `Compulsory and Optional Variables section`.
+%        in `Compulsory and Optional Variables section`.
 %     13. acc_metric
 %        A string stating which accuracy metric to be used. See the description in
-%	 `acc_metric` in the `Compulsory and Optional Variables section`.
+%        `acc_metric` in the `Compulsory and Optional Variables section`.
 % 
 %   - save_setup
 %     A string or a scalar of 0 or 1. If the user passed in 1, then a

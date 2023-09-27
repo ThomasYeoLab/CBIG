@@ -46,11 +46,12 @@ currentdir = pwd;
 
 %% add kernel regression code to path
 addpath(genpath(fullfile(CBIG_CODE_DIR, ...
-	'/utilities/matlab/predictive_models/KernelRidgeRegression/')));
+    'utilities', 'matlab', 'predictive_models', 'KernelRidgeRegression')));
 
 %% generate setup file
 param = load(fullfile(CBIG_CODE_DIR, ...
-	'stable_projects/preprocessing/Li2019_GSR/examples/output/KernelRidgeRegression/setup_file.mat'));
+    'stable_projects', 'preprocessing', 'Li2019_GSR', 'examples', ...
+    'output', 'KernelRidgeRegression', 'setup_file.mat'));
 % load 20 folds split
 temp = load(fullfile(currentdir, 'input', 'kr_hcp', 'He2019_hcp_953_split.mat'));
 param.sub_fold = temp.sub_fold;
@@ -63,17 +64,17 @@ subject_header = 'Subject';
 measures_set = {'Cognitive','Personality_Task','Social_Emotion'};
 y_names = {};
 for i = measures_set
-	name = i{1};
-	measure_list = fullfile(currentdir, 'input', 'kr_hcp', 'measures_lists', [name '_unrestricted.txt']);
-	temp = read_sub_list(measure_list);
-	y_names = [y_names, temp];
+    name = i{1};
+    measure_list = fullfile(currentdir, 'input', 'kr_hcp', 'measures_lists', [name '_unrestricted.txt']);
+    temp = read_sub_list(measure_list);
+    y_names = [y_names, temp];
 end
 y_types = cell(1, size(y_names, 2));
 y_types(:) = {'continuous'};
 outname = fullfile(output_dir, 'beh_measures.mat');
 delimiter = ',';
 y = CBIG_read_y_from_csv(csv_files, subject_header, y_names, y_types, ...
-	subject_list, outname, delimiter);
+    subject_list, outname, delimiter);
 param.y = y;
 % get matrix of the covariates
 csv_files = {unrestricted_csv, restricted_csv};
@@ -84,8 +85,8 @@ DVARS_file = 'none';
 outname = fullfile(output_dir, 'covariates.mat');
 delimiter = ',';
 covariates = CBIG_generate_covariates_from_csv(...
-	csv_files, subject_header, covariate_names, covariate_types, ...
-	subject_list, FD_file, DVARS_file, outname, delimiter);
+    csv_files, subject_header, covariate_names, covariate_types, ...
+    subject_list, FD_file, DVARS_file, outname, delimiter);
 param.covariates = covariates;
 % load FC matrix
 temp = load(FC_file);
@@ -96,8 +97,8 @@ param.num_inner_folds = 20;
 param.metric = 'corr';
 % range of lambda for kernel regression
 param.lambda_set = [0 0.00001 0.0001 0.001 0.004 0.007 0.01 0.04 0.07 0.1 ...
-	0.4 0.7 1 1.5 2 2.5 3 3.5 4 5 10 15 20 30 40 50 60 70 80 100 150 200 ...
-	300 500 700 1000 10000 100000 1000000];
+    0.4 0.7 1 1.5 2 2.5 3 3.5 4 5 10 15 20 30 40 50 60 70 80 100 150 200 ...
+    300 500 700 1000 10000 100000 1000000];
 save(fullfile(output_dir, 'setup_file.mat'), '-struct', 'param');
 
 %% run kernel regression
@@ -105,7 +106,7 @@ CBIG_KRR_workflow(fullfile(output_dir, 'setup_file.mat'), 0);
 
 %% remove kernel regression code to path
 rmpath(genpath(fullfile(CBIG_CODE_DIR, ...
-	'/utilities/matlab/predictive_models/KernelRidgeRegression/')));
+    'utilities', 'matlab', 'predictive_models', 'KernelRidgeRegression')));
 
 end
 
@@ -117,16 +118,16 @@ function subj_list = read_sub_list(subject_text_list)
 % line
 % Each cell will contain the location of the subject, for e.g.
 % '<full_path>/subject1_run1_bold.nii.gz <full_path>/subject1_run2_bold.nii.gz'
-    fid = fopen(subject_text_list, 'r');
-    i = 0;
-    while(1);
-        tmp = fgetl(fid);
-        if(tmp == -1)
-            break
-        else
-            i = i + 1;
-            subj_list{i} = tmp;
-        end
+fid = fopen(subject_text_list, 'r');
+i = 0;
+while(1);
+    tmp = fgetl(fid);
+    if(tmp == -1)
+        break
+    else
+        i = i + 1;
+        subj_list{i} = tmp;
     end
-    fclose(fid);
+end
+fclose(fid);
 end

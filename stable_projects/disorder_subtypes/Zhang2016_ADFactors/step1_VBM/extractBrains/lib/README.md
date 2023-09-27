@@ -53,14 +53,14 @@ To see detailed usage, do `help CBIG_selectBETResults` in MATLAB.
 Here is an example workflow:
 
 1. First round of BET on all images
-	* Call `CBIG_runBET.sh` with `CBIG_BETParam1.sh` as one of the arguments
+    * Call `CBIG_runBET.sh` with `CBIG_BETParam1.sh` as one of the arguments
 2. Quality check of the first round
-	1. Run `CBIG_QC_slices.sh` to screenshot brains overlaid on top of the original images
-	2. Copy and paste filenames of unsatisfactory brains (e.g., 0002_sc_brain) into a text file
-	3. Run `CBIG_QC_getOrigPaths.sh` over the text file to translate brain filenames into paths to the original images
+    1. Run `CBIG_QC_slices.sh` to screenshot brains overlaid on top of the original images
+    2. Copy and paste filenames of unsatisfactory brains (e.g., 0002_sc_brain) into a text file
+    3. Run `CBIG_QC_getOrigPaths.sh` over the text file to translate brain filenames into paths to the original images
 3. Second round of BET on subset from the previous round
-	1. Edit `CBIG_BETParam2.sh` based on the manifested deficiency or errors of `CBIG_BETParam1.sh`
-	2. Call `CBIG_runBET.sh` with `CBIG_BETParam2.sh` as one of the arguments
+    1. Edit `CBIG_BETParam2.sh` based on the manifested deficiency or errors of `CBIG_BETParam1.sh`
+    2. Call `CBIG_runBET.sh` with `CBIG_BETParam2.sh` as one of the arguments
 4. Quality check of the second round
 5. Repeat Steps 3 and 4 until all BET results are satisfactory
 6. Call `CBIG_selectBETResults.m` in MATLAB to get a list of final BET results for the subsequent VBM steps

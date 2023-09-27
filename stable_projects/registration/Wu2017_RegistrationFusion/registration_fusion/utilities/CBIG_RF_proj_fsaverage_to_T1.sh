@@ -36,11 +36,11 @@ Usage: $0s input_dir input_prefix output_dir sub_dir sub_id
 
 This script projects an input surface to a subject's T1 space, using FreeSurfer's mri_surf2vol
 
-	<input_dir> 	absolute path to input directory
-	<input_prefix>	prefix of input surface. For example, the input in left hemisphere should be lh.input_prefix.index
-	<output_dir> 	absolute path to output directory
-	<sub_dir>	SUBJECTS_DIR of the input's recon-all results
-	<sub_id> 	Subject ID of the input used in recon-all
+  <input_dir>   absolute path to input directory
+  <input_prefix>  prefix of input surface. For example, the input in left hemisphere should be lh.input_prefix.index
+  <output_dir>   absolute path to output directory
+  <sub_dir>  SUBJECTS_DIR of the input's recon-all results
+  <sub_id>   Subject ID of the input used in recon-all
 
 " 1>&2; exit 1; }
 

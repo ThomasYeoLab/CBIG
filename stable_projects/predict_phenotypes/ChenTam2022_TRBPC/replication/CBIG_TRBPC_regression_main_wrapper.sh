@@ -22,12 +22,12 @@ csv_file=${repdata_dir}/KRR/score_motion_all_subjects.csv
 ###################################################################################################
 for curr_task in rs mid nback sst meanFC
 do
-	feature_file=${repdata_dir}/FC/FC_subjects_all_task_all_score_${curr_task}_bp_sm6.mat
-	covariate_list=${repdata_dir}/KRR/covariates_${curr_task}.txt
-	outdir=${top_outdir}/${curr_task}
-	${scripts_dir}/KRR_LpOCV/SingleKernel/CBIG_TRBPC_KRR_LpOCV_workflow.sh -subject_list ${subject_list} \
-	-feature_file ${feature_file} -outstem ${outstem} -y_list ${y_list} -covariate_list ${covariate_list} \
-	-FD_file ${FD_file} -DVARS_file ${DVARS_file} -outdir ${outdir} -csv_file ${csv_file}
+    feature_file=${repdata_dir}/FC/FC_subjects_all_task_all_score_${curr_task}_bp_sm6.mat
+    covariate_list=${repdata_dir}/KRR/covariates_${curr_task}.txt
+    outdir=${top_outdir}/${curr_task}
+    ${scripts_dir}/KRR_LpOCV/SingleKernel/CBIG_TRBPC_KRR_LpOCV_workflow.sh -subject_list ${subject_list} \
+        -feature_file ${feature_file} -outstem ${outstem} -y_list ${y_list} -covariate_list ${covariate_list} \
+        -FD_file ${FD_file} -DVARS_file ${DVARS_file} -outdir ${outdir} -csv_file ${csv_file}
 done
 
 ###################################################################################################
@@ -38,5 +38,5 @@ covariate_list=${repdata_dir}/KRR/covariates_all.txt
 outdir=${top_outdir}/allFC
 
 ${scripts_dir}/KRR_LpOCV/MultiKernel/CBIG_TRBPC_multiKRR_LpOCV_workflow.sh -subject_list ${subject_list} \
--feature_files ${feature_files} -outstem ${outstem} -y_list ${y_list} -covariate_list ${covariate_list} -FD_file \
-${FD_file} -DVARS_file ${DVARS_file} -outdir ${outdir} -csv_file ${csv_file}
+    -feature_files ${feature_files} -outstem ${outstem} -y_list ${y_list} -covariate_list ${covariate_list} -FD_file \
+    ${FD_file} -DVARS_file ${DVARS_file} -outdir ${outdir} -csv_file ${csv_file}

@@ -85,7 +85,7 @@ function CBIG_ComputeROIs2ROIsCorrelationMatrix(output_file, subj_text_list1, su
 %   -all_sub_bool:
 %   avg_sub_bool = 1 if we want our output matrix will be average across
 %   all subjects
-%	
+%
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 if(ischar(all_comb_bool))

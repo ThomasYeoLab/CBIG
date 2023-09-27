@@ -3,7 +3,7 @@ function CBIG_ASDf_plotLoglike(inputDir, k, r)
 %
 % This function plots the "climbing" of the log-likelihood. If the model
 % has converged, the plot should go flat.
-% 
+%
 % Input:
 %     - inputDir:
 %           Absolute path to the input directory where the model estimation
@@ -14,7 +14,7 @@ function CBIG_ASDf_plotLoglike(inputDir, k, r)
 %           A string indicating the run (random initialization) number
 %
 % Example:
-%	CBIG_ASDf_plotLoglike('~/example_output/estimate','2','1')
+%     CBIG_ASDf_plotLoglike('~/example_output/estimate','2','1')
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 

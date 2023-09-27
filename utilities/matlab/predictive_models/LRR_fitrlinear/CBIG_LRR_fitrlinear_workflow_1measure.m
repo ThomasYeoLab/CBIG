@@ -216,14 +216,14 @@ for currfold = 1:length(params.sub_fold)
         end
         save(param_file, 'curr_threshold', 'curr_lambda')
 
-	% save accuracy and innerloop y predictions
-	if curr_threshold < 1
-	    [feat_train, ~] = CBIG_FC_FeatSel( feature_train, feature_test, y_train, curr_threshold );
-	else
-        feat_train = feature_train;
-	end
+        % save accuracy and innerloop y predictions
+        if curr_threshold < 1
+            [feat_train, ~] = CBIG_FC_FeatSel( feature_train, feature_test, y_train, curr_threshold );
+        else
+            feat_train = feature_train;
+        end
         [curr_acc_train, curr_y_pred] = CBIG_LRR_fitrlinear_innerloop_cv( feat_train', y_train, ...
-	    curr_lambda, params.num_inner_folds, params.metric );
+            curr_lambda, params.num_inner_folds, params.metric );
         save([curr_param_dir '/acc_train_' params.outstem '.mat'], 'curr_acc_train', 'curr_y_pred');
     else
         load(param_file)
@@ -238,7 +238,7 @@ for currfold = 1:length(params.sub_fold)
                 end
             end
             [curr_acc_train, curr_y_pred] = CBIG_LRR_fitrlinear_innerloop_cv( feat_train', y_train, ...
-	        curr_lambda, params.num_inner_folds, params.metric );
+                curr_lambda, params.num_inner_folds, params.metric );
             save([curr_param_dir '/acc_train_' params.outstem '.mat'], 'curr_acc_train', 'curr_y_pred');
         else
             load([curr_param_dir '/acc_train_' params.outstem '.mat'])

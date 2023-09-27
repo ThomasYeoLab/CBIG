@@ -1,6 +1,6 @@
 function [corr, avg_corr_sorted, I] = CBIG_ASDf_computeCorrBetweenRuns(inputDir, k)
 % [corr, avg_corr_sorted, I] = CBIG_ASDf_computeCorrBetweenRuns(inputDir, k)
-% 
+%
 % This function computes pair-wise correlation between each run (random
 % initialization). In addition, for reach run, it computes the average correlation
 % with all other runs, and sort the runs according to the average
@@ -26,7 +26,7 @@ function [corr, avg_corr_sorted, I] = CBIG_ASDf_computeCorrBetweenRuns(inputDir,
 %           avg_corr_sorted).
 %
 % Example:
-%	[corr, avg_corr_sorted, I] = CBIG_ASDf_computeCorrBetweenRuns('~/example_output/estimate','3');
+%     [corr, avg_corr_sorted, I] = CBIG_ASDf_computeCorrBetweenRuns('~/example_output/estimate','3');
 %
 % Written by Siyi Tang and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
@@ -37,7 +37,7 @@ corr = cell(nRuns,1);
 
 for i = 1:nRuns
     for j = (i+1):nRuns
-%         fprintf('Correlation between run%d and run%d:\n', i, j);
+        % fprintf('Correlation between run%d and run%d:\n', i, j);
         corr{i}(:,j) = CBIG_ASDf_corrTwoRuns(inputDir, inputDir, k, num2str(i), num2str(j));
     end
 end

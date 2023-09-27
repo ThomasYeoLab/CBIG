@@ -32,13 +32,13 @@ for i = 1:size(input.vol, 4)
         if(isempty(mask))
             input.vol(:, :, :, i) = smooth3(squeeze(input.vol(:, :, :, i)), method, filter_size);
         else
-	    input.vol(:, :, :, i) = CBIG_Smooth3DVolumeWithMasks(squeeze(input.vol(:, :, :, i)), mask.vol, outside_mask_type, method, filter_size);
+            input.vol(:, :, :, i) = CBIG_Smooth3DVolumeWithMasks(squeeze(input.vol(:, :, :, i)), mask.vol, outside_mask_type, method, filter_size);
         end
     else
         if(isempty(mask))
             input.vol(:, :, :, i) = smooth3(squeeze(input.vol(:, :, :, i)), method, filter_size, arg);
         else
-	    input.vol(:, :, :, i) = CBIG_Smooth3DVolumeWithMasks(squeeze(input.vol(:, :, :, i)), mask.vol, outside_mask_type, method, filter_size, arg);
+            input.vol(:, :, :, i) = CBIG_Smooth3DVolumeWithMasks(squeeze(input.vol(:, :, :, i)), mask.vol, outside_mask_type, method, filter_size, arg);
         end
     end
 end

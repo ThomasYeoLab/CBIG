@@ -24,13 +24,13 @@ set PrintHelp = 0;
 if($#argv == 0) goto usage_exit;
 set n = `echo $argv | grep -e -help | wc -l`
 if($n != 0) then
-	set PrintHelp = 1;
-	goto usage_exit;
+    set PrintHelp = 1;
+    goto usage_exit;
 endif
 set n = `echo $argv | grep -e -version | wc -l`
 if($n != 0) then
-	echo $VERSION
-	exit 0;
+    echo $VERSION
+    exit 0;
 endif
 
 goto parse_args;
@@ -43,8 +43,8 @@ check_params_return:
 ### check if input file exists
 ##########################################
 if(! -e $input) then
-	echo "ERROR: $input not exists."
-	exit 1;
+    echo "ERROR: $input not exists."
+    exit 1;
 endif
 
 ##################################################
@@ -52,11 +52,11 @@ endif
 ##################################################
 set usereg = 0;
 if($?regfile) then
-	set usereg = 1;
-	if(! -e $regfile) then
-		echo "ERROR: $regfile not exists."
-		exit 1;
-	endif
+    set usereg = 1;
+    if(! -e $regfile) then
+        echo "ERROR: $regfile not exists."
+        exit 1;
+    endif
 endif
 echo "=======>>>[Debug]: usereg = ${usereg}"
 
@@ -70,9 +70,9 @@ set tmp_output = `basename $output`
 set output_dir = `dirname $output`
 set tmp_output = ${output_dir}/FStmp.${tmp_output}
 if($usereg) then
-	set cmd = (mri_vol2vol --mov $input --s $src_id --targ $FREESURFER_HOME/average/mni305.cor.mgz --m3z talairach.m3z --reg $regfile --o $tmp_output --no-save-reg --interp $interp)
+    set cmd = (mri_vol2vol --mov $input --s $src_id --targ $FREESURFER_HOME/average/mni305.cor.mgz --m3z talairach.m3z --reg $regfile --o $tmp_output --no-save-reg --interp $interp)
 else
-	set cmd = (mri_vol2vol --mov $input --s $src_id --targ $FREESURFER_HOME/average/mni305.cor.mgz --m3z talairach.m3z --o $tmp_output --no-save-reg --interp $interp)
+    set cmd = (mri_vol2vol --mov $input --s $src_id --targ $FREESURFER_HOME/average/mni305.cor.mgz --m3z talairach.m3z --o $tmp_output --no-save-reg --interp $interp)
 endif
 echo $cmd
 eval $cmd
@@ -92,7 +92,7 @@ echo ">>> Transformation from Freesurfer nonlinear space to targ finished."
 echo
 
 if($cleanup) then
-	rm $tmp_output
+    rm $tmp_output
 endif
 
 
@@ -105,67 +105,67 @@ exit 0;
 parse_args:
 set cmdline = "$argv";
 while( $#argv != 0 )
-	set flag = $argv[1]; shift;
-	
-	switch($flag)
-		#source subject name (required)
-		case "-src-id":
-			if ( $#argv == 0 ) goto arg1err;
-			set src_id = $argv[1]; shift;
-			breaksw	
-		
-		#source subject directory (requied)
-		case "-src-dir":
-			if ( $#argv == 0 ) goto arg1err;
-			set src_dir = $argv[1]; shift;
-			breaksw	
-		
-		#target subject name (required)
-		case "-targ-id":
-			if ( $#argv == 0 ) goto arg1err;
-			set targ_id = $argv[1]; shift;
-			breaksw	
-		
-		#target subject directory (required)
-		case "-targ-dir":
-			if ( $#argv == 0 ) goto arg1err;
-			set targ_dir = $argv[1]; shift;
-			breaksw	
-		
-		#input data (required)
-		case "-in":
-			if ( $#argv == 0 ) goto arg1err;
-			set input = $argv[1]; shift;
-			breaksw	
-		
-		#output data (required)
-		case "-out":
-			if ( $#argv == 0 ) goto arg1err;
-			set output = $argv[1]; shift;
-			breaksw	
-		
-		#interpolation type (optional, default is cubic)
-		case "-interp":
-			if ( $#argv == 0 ) goto arg1err;
-			set interp = $argv[1]; shift;
-			breaksw	
-		
-		#registration matrix (optional, required for fMRI data)
-		case "-reg":
-			if ( $#argv == 0 ) goto arg1err;
-			set regfile = $argv[1]; shift;
-			breaksw	
-		
-		case "-no-cleanup":
-			set cleanup = 0;
-			breaksw
-		
-		default:
-			echo ERROR: Flag $flag unrecognized.
-			echo $cmdline
-			exit 1
-			breaksw
-	endsw
+    set flag = $argv[1]; shift;
+
+    switch($flag)
+        #source subject name (required)
+        case "-src-id":
+            if ( $#argv == 0 ) goto arg1err;
+            set src_id = $argv[1]; shift;
+            breaksw
+
+        #source subject directory (requied)
+        case "-src-dir":
+            if ( $#argv == 0 ) goto arg1err;
+            set src_dir = $argv[1]; shift;
+            breaksw
+
+        #target subject name (required)
+        case "-targ-id":
+            if ( $#argv == 0 ) goto arg1err;
+            set targ_id = $argv[1]; shift;
+            breaksw
+
+        #target subject directory (required)
+        case "-targ-dir":
+            if ( $#argv == 0 ) goto arg1err;
+            set targ_dir = $argv[1]; shift;
+            breaksw
+
+        #input data (required)
+        case "-in":
+            if ( $#argv == 0 ) goto arg1err;
+            set input = $argv[1]; shift;
+            breaksw
+
+        #output data (required)
+        case "-out":
+            if ( $#argv == 0 ) goto arg1err;
+            set output = $argv[1]; shift;
+            breaksw
+
+        #interpolation type (optional, default is cubic)
+        case "-interp":
+            if ( $#argv == 0 ) goto arg1err;
+            set interp = $argv[1]; shift;
+            breaksw
+
+        #registration matrix (optional, required for fMRI data)
+        case "-reg":
+            if ( $#argv == 0 ) goto arg1err;
+            set regfile = $argv[1]; shift;
+            breaksw
+
+        case "-no-cleanup":
+            set cleanup = 0;
+            breaksw
+
+        default:
+            echo ERROR: Flag $flag unrecognized.
+            echo $cmdline
+            exit 1
+            breaksw
+    endsw
 end
 goto parse_args_return;
 
@@ -175,73 +175,73 @@ goto parse_args_return;
 ########################################
 check_params:
 if(! $?src_id ) then
-	echo "ERROR: no source id specified."
-	exit 1;
+    echo "ERROR: no source id specified."
+    exit 1;
 endif
 if(! $?src_dir ) then
-	echo "ERROR: no source directory specified."
-	exit 1;
+    echo "ERROR: no source directory specified."
+    exit 1;
 endif
 if(! $?targ_id ) then
-	echo "ERROR: no target id specified."
-	exit 1;
+    echo "ERROR: no target id specified."
+    exit 1;
 endif
 if(! $?targ_dir ) then
-	echo "ERROR: no target directory specified."
-	exit 1;
+    echo "ERROR: no target directory specified."
+    exit 1;
 endif
 if(! $?input ) then
-	echo "ERROR: no input data name specified."
-	exit 1;
+    echo "ERROR: no input data name specified."
+    exit 1;
 endif
 if(! $?output ) then
-	echo "ERROR: no output data name specified."
-	exit 1;
+    echo "ERROR: no output data name specified."
+    exit 1;
 endif
 
 goto check_params_return;
 
 
-#####################################			
-##======Error message		
+#####################################
+##======Error message
 #####################################
 arg1err:
-  echo "ERROR: flag $flag requires one argument"
-  exit 1
+    echo "ERROR: flag $flag requires one argument"
+    exit 1
 
 arg2err:
-  echo "ERROR: flag $flag requires two arguments"
-  exit 1
+    echo "ERROR: flag $flag requires two arguments"
+    exit 1
 
 
 #####################################
 ##====== Help
 #####################################
 usage_exit:
-	echo ""
-	echo "USAGE: CBIG_vol2vol_m3z.csh"
-	echo ""
-	echo "  -src-id   src_id   : name of subject1 template"
-	echo "  -src-dir  src_dir  : path to subject1 template"
-	echo "  -targ-id  targ_id  : name of subject2 template"
-	echo "  -targ-dir targ_dir : path to subject2 template"
-	echo ""
-	echo "  -in       input    : input volume of subject1"
-	echo "  -out      output   : projection result of input to subject2"
-	echo ""
-	echo "  -interp   interp   : interpolation option, choose from cubic, trilin, and nearest, default is cubic"
-	echo "  -no-cleanup        : keep intermediate result"
-	echo ""
-	echo "  -help              : help"
-	echo "  -version           : version"
-	echo ""
-	
-	if(! $PrintHelp) exit 1;
-	
-	echo $VERSION
-	
-	cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
-	
+    echo ""
+    echo "USAGE: CBIG_vol2vol_m3z.csh"
+    echo ""
+    echo "  -src-id   src_id   : name of subject1 template"
+    echo "  -src-dir  src_dir  : path to subject1 template"
+    echo "  -targ-id  targ_id  : name of subject2 template"
+    echo "  -targ-dir targ_dir : path to subject2 template"
+    echo ""
+    echo "  -in       input    : input volume of subject1"
+    echo "  -out      output   : projection result of input to subject2"
+    echo ""
+    echo "  -interp   interp   : interpolation option, choose from cubic, trilin, and nearest, default is cubic"
+    echo "  -no-cleanup        : keep intermediate result"
+    echo ""
+    echo "  -help              : help"
+    echo "  -version           : version"
+    echo ""
+
+    if(! $PrintHelp) exit 1;
+
+    echo $VERSION
+
+    cat $0 | awk 'BEGIN{prt=0}{if(prt) print $0; if($1 == "BEGINHELP") prt = 1 }'
+
 exit 1;
 
 #-------- Everything below is printed as part of help --------#

@@ -39,11 +39,11 @@ Usage: $0 sub_dir sub_id input_prefix output_dir output_prefix
 
 This script projects an input surface to a target subject's T1 space, using MNIsurf/Colinsurf approach.
 
-	<sub_dir>	SUBJECTS_DIR of the target subject's recon-all results
-	<sub_id> 	Subject ID of the target subject used in recon-all
-	<input_prefix> 	prefix of input surface. For example, input in left hemisphere would be lh.input_prefix.curv
-	<output_dir> 	absolute path to output directory
-	<output_prefix> prefix for output warps. For example, the output from left hemispehre will be named lh.output_prefix.nii.gz
+  <sub_dir>  SUBJECTS_DIR of the target subject's recon-all results
+  <sub_id>   Subject ID of the target subject used in recon-all
+  <input_prefix>   prefix of input surface. For example, input in left hemisphere would be lh.input_prefix.curv
+  <output_dir>   absolute path to output directory
+  <output_prefix> prefix for output warps. For example, the output from left hemispehre will be named lh.output_prefix.nii.gz
 
 " 1>&2; exit 1; }
 

@@ -14,6 +14,6 @@ The code calls `HCP_variables_to_predict_real_names.txt` and `ABCD_variables_to_
 
 2. `feature_importance_figures`
 Run the code `feature_importance_figures/CBIG_MMP_HCP_plot_importance_wrapper.m` and `feature_importance_figures/CBIG_MMP_ABCD_plot_importance_wrapper.m`. For each single-type-feature model, this will: 
-	- plot T1 models on the cortical surface
-	- project the TBSS models to the JHU atlas and plot the results in MNI space
-	- convert network edges from tractography and FC models to the a 400x400 matrix and plot them in the Schaefer_Kong2022 network ordering.
+   * plot T1 models on the cortical surface
+   * project the TBSS models to the JHU atlas and plot the results in MNI space
+   * convert network edges from tractography and FC models to the a 400x400 matrix and plot them in the Schaefer_Kong2022 network ordering.

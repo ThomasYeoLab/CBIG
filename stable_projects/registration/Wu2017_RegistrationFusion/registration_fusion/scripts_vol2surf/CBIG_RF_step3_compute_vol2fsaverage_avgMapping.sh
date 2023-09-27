@@ -66,40 +66,40 @@ Note that the average mapping will be copied to final warps folder in the bin by
 Use -c option to specify otherwise.
 
 REQUIRED ARGUMENTS:
-	-p <template_type>	type of volumetric template used in index files creation. \
+  -p <template_type>  type of volumetric template used in index files creation. \
 See $SCRIPT_DIR/CBIG_RF_step1_make_xyzIndex_volTemplate.sh for more details.
 
 OPTIONAL ARGUMENTS:
         -i <input_dir>          absolute path to input directory. The inputs are the index files projected \
 to fsaverage surface through individual subjects in step 2, i.e. the input directory should be the same as \
 output directory in step 2.
-				[ default: $(pwd)/results/index_fsaverage ]
+        [ default: $(pwd)/results/index_fsaverage ]
         -r <RF_type>            type of RF approaches used in step 2, i.e. RF_M3Z or RF_ANTs
                                 [ default: RF_ANTs ]
-	-n <num_of_sub>		number of subjects to use. This means taking the first <num_of_sub> subjects from <ind_sub_list>. \
+  -n <num_of_sub>    number of subjects to use. This means taking the first <num_of_sub> subjects from <ind_sub_list>. \
 For example, setting '-n 50' means the first 50 lines of <ind_sub_list> will be read to get subject IDs. \
 Setting this to 0 will make the script use all subjects from <ind_sub_list>.
-				[ default: 0 ]
-	-l <ind_sub_list> 	absolute path to a file containing individual subject IDs. \
+        [ default: 0 ]
+  -l <ind_sub_list>   absolute path to a file containing individual subject IDs. \
 Each line in the file should contain one subject ID.
-				[ default: $DEFAULT_GSP_SUBLIST ]
-	-o <output_dir> 	absolute path to output directory
-				[ default: $(pwd)/results/mapping ]
-	-c <copy_results>	set this to 0 to prevent the results generated from being copied to the bin folders. \
+        [ default: $DEFAULT_GSP_SUBLIST ]
+  -o <output_dir>   absolute path to output directory
+        [ default: $(pwd)/results/mapping ]
+  -c <copy_results>  set this to 0 to prevent the results generated from being copied to the bin folders. \
 By default, the average mapping will be copied to final warps folder in the bin.
-				[ default: 1 ]
-	-h			display help message
+        [ default: 1 ]
+  -h      display help message
 
 OUTPUTS:
-	$0 will create 2 files, corresponding to the average mapping from the volumetric atlas space to \
+  $0 will create 2 files, corresponding to the average mapping from the volumetric atlas space to \
 left and right hemispheres in fsaverage surface respectively. 
-	For example: 
-		lh.avgMapping_allSub_RF_ANTs_MNI152_orig_to_fsaverage.mat
+  For example: 
+    lh.avgMapping_allSub_RF_ANTs_MNI152_orig_to_fsaverage.mat
                 rh.avgMapping_allSub_RF_ANTs_MNI152_orig_to_fsaverage.mat
 
 EXAMPLE:
-	$0 -p 'MNI152_norm'
-	$0 -p 'my_template' -i $(pwd)/results/my_index/ -n 50
+  $0 -p 'MNI152_norm'
+  $0 -p 'my_template' -i $(pwd)/results/my_index/ -n 50
 
 " 1>&2; exit 1; }
 

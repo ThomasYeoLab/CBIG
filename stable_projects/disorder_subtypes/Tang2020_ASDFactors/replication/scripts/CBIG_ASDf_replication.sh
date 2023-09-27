@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Example:
-#	sh ./CBIG_ASDf_replication.sh ~/storage/Temporaray/CBIG_ASDf_replication
+#    sh ./CBIG_ASDf_replication.sh ~/storage/Temporaray/CBIG_ASDf_replication
 #
 # Written by Siyi Tang and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 

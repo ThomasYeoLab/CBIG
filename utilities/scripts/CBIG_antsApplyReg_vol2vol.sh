@@ -58,43 +58,43 @@ This script applies existing warps prepared using ANTs registration to map an in
 
 REQUIRED ARGUMENTS:
 
-	-i <input> 		absolute path to input volume to map from
-	-r <target> 		absolute path to target volume to be mapped to
-	-w <warp_prefix> 	prefix of the warp files. Specifically, the affine, forward and inverse warps should have the 
-				following names:
-					warp_prefix0GenericAffine.mat
-					warp_prefix1Warp.nii.gz
-					warp_prefix1InverseWarp.nii.gz
-	-p <output_prefix> 	prefix for output volume
+    -i <input>           absolute path to input volume to map from
+    -r <target>          absolute path to target volume to be mapped to
+    -w <warp_prefix>     prefix of the warp files. Specifically, the affine, forward and inverse warps should have the 
+                         following names:
+                             warp_prefix0GenericAffine.mat
+                             warp_prefix1Warp.nii.gz
+                             warp_prefix1InverseWarp.nii.gz
+    -p <output_prefix>   prefix for output volume
 
 OPTIONAL ARGUMENTS:
-	-f <fmri_reg>		absolute path to native-to-T1 registration file for fMRI input. The file must have been 
-				converted to format used by ANTs (e.g. .txt or .mat) if it was generated using other tools.
-				[ default: unset ]
-	-e <time_series>	set this to 1 if the input volume is 4D (time-series)
-				[ default: 0 ]
-	-d <warp_dir> 		absolute path to the warps
-				[ default: $(pwd)/results ]
-	-o <output_dir> 	absolute path to output directory
-				[ default: $(pwd)/results ]
-	-s <warp setting> 	warping direction ('forward' for forward warp, 'inverse' for inverse warp). For example, if 
-				the target space was registered to the input space during ANTs registration, then inverse 
-				warp should be used to now map the input to the target.
-				[ default: forward ]
-	-t <interp> 		interpolation (Linear, NearestNeighbor, etc.)
-				[ default: Linear ]
-	-a <ANTs_dir> 		directory where ANTs is installed
-				[ default: $CBIG_ANTS_DIR ]
-	-h			display help message
+    -f <fmri_reg>        absolute path to native-to-T1 registration file for fMRI input. The file must have been 
+                         converted to format used by ANTs (e.g. .txt or .mat) if it was generated using other tools.
+                         [ default: unset ]
+    -e <time_series>     set this to 1 if the input volume is 4D (time-series)
+                         [ default: 0 ]
+    -d <warp_dir>        absolute path to the warps
+                         [ default: $(pwd)/results ]
+    -o <output_dir>      absolute path to output directory
+                         [ default: $(pwd)/results ]
+    -s <warp setting>    warping direction ('forward' for forward warp, 'inverse' for inverse warp). For example, if 
+                         the target space was registered to the input space during ANTs registration, then inverse 
+                         warp should be used to now map the input to the target.
+                         [ default: forward ]
+    -t <interp>          interpolation (Linear, NearestNeighbor, etc.)
+                         [ default: Linear ]
+    -a <ANTs_dir>        directory where ANTs is installed
+                         [ default: $CBIG_ANTS_DIR ]
+    -h                   display help message
 
 OUTPUTS:
-	$0 will create 1 output file in the output directory, corresponding to the input warped into target's space.
-	For example:
-		output_prefix.nii.gz
+    $0 will create 1 output file in the output directory, corresponding to the input warped into target's space.
+    For example:
+        output_prefix.nii.gz
 
 EXAMPLE:
-	$0 -i /path/to/my/data.nii.gz -r /path/to/my/template.nii.gz -w subject_moving_template_fixed -p data_to_template 
-	-f data_to_T1.txt -s forward
+    $0 -i /path/to/my/data.nii.gz -r /path/to/my/template.nii.gz -w subject_moving_template_fixed -p data_to_template 
+    -f data_to_T1.txt -s forward
 
 " 1>&2; exit 1; }
 

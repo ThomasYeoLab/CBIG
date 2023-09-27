@@ -9,11 +9,11 @@ if [ -n "$FREESURFER_HOME" ]; then
     LD_LIBRARY_PATH_CURRENT=$LD_LIBRARY_PATH
 
     # Clear old freesurfer variables
-	while read cmd var; do
-		if [[ $cmd == "unsetenv" ]]; then
-			eval "unset $var"
-		fi
-	done < $FREESURFER_HOME/bin/clear_fs_env.csh
+    while read cmd var; do
+        if [[ $cmd == "unsetenv" ]]; then
+            eval "unset $var"
+        fi
+    done < $FREESURFER_HOME/bin/clear_fs_env.csh
 
     # Restore old LD_LIBRARY_PATH
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH_CURRENT

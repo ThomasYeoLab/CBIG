@@ -57,50 +57,50 @@ This script generates an RF-ANTs fsaverage-to-Colin27 mapping using a single sub
 The projected map should be compared to example_results/projected_surface_parcel.nii.gz. 
 
 REQUIRED ARGUMENTS:
-	-o <output_dir> 	absolute path to output directory
+  -o <output_dir>   absolute path to output directory
 
 OPTIONAL ARGUMENTS:
-	-a <ANTs_dir>		directory where ANTs is installed 
-				[ default: $CBIG_ANTS_DIR ]
-	-h			display help message
+  -a <ANTs_dir>    directory where ANTs is installed 
+        [ default: $CBIG_ANTS_DIR ]
+  -h      display help message
 
 OUTPUTS:
-	$0 will create 5 folders.
-	1) index_fsaverage folder: 6 files will be generated, corresponding to the x/y/z index files in the subject's surface space. 
-	The file names will be:  
-		lh.xIndex_fsaverage_to_subj01_sess1.index
-		rh.xIndex_fsaverage_to_subj01_sess1.index
-		lh.yIndex_fsaverage_to_subj01_sess1.index
-		rh.yIndex_fsaverage_to_subj01_sess1.index
-		lh.zIndex_fsaverage_to_subj01_sess1.index
-		rh.zIndex_fsaverage_to_subj01_sess1.index
-	2) index_T1 folder: 6 files will be generated, corresponding to the x/y/z index files projected to the subject's T1 space, from left and right hemispheres of the subject's surface respectively. 
-	The file names will be: 
-		lh.xIndex_fsaverage_to_subj01_sess1_T1.nii.gz
-		rh.xIndex_fsaverage_to_subj01_sess1_T1.nii.gz
-		lh.yIndex_fsaverage_to_subj01_sess1_T1.nii.gz
-		rh.yIndex_fsaverage_to_subj01_sess1_T1.nii.gz
-		lh.zIndex_fsaverage_to_subj01_sess1_T1.nii.gz
-		rh.zIndex_fsaverage_to_subj01_sess1_T1.nii.gz
-	3) index_SPM_Colin27_FS4.5.0: 6 files will be generated, corresponding to the x/y/z index files from left and right hemispheres, registered to the volumetric atlas space. 
-	The file names will be: 
-		lh.xIndex_fsaverage_to_subj01_sess1_to_SPM_Colin27_FS4.5.0_RF_ANTs.nii.gz
-		rh.xIndex_fsaverage_to_subj01_sess1_to_SPM_Colin27_FS4.5.0_RF_ANTs.nii.gz
-		lh.yIndex_fsaverage_to_subj01_sess1_to_SPM_Colin27_FS4.5.0_RF_ANTs.nii.gz
-		rh.yIndex_fsaverage_to_subj01_sess1_to_SPM_Colin27_FS4.5.0_RF_ANTs.nii.gz
-		lh.zIndex_fsaverage_to_subj01_sess1_to_SPM_Colin27_FS4.5.0_RF_ANTs.nii.gz
-		rh.zIndex_fsaverage_to_subj01_sess1_to_SPM_Colin27_FS4.5.0_RF_ANTs.nii.gz
-	4) mapping folder: corresponding to the average mapping from the fsaverage surface to Colin27 space and the count map in Colin27 space. 
-	The file names will be:
-		1Sub_fsaverage_to_SPM_Colin27_FS4.5.0_RF_ANTs_avgMapping.prop.mat
-		1Sub_fsaverage_to_SPM_Colin27_FS4.5.0_RF_ANTs.count.mat
-	5) projected_fsaverage2vol folder: 2 files will be generated, corresponding to the projected data in the volumetric atlas sapce and the projected data in segmentation form (with left hemisphere values starting from 0 and right hemisphere values starting from 1000). 
-	The file names will be:
-		prob_map_central_sulc.1Sub_fsaverage_to_SPM_Colin27_FS4.5_RF_ANTs.nii.gz
-		seg.prob_map_central_sulc.1Sub_fsaverage_to_SPM_Colin27_FS4.5_RF_ANTs.nii.gz
+  $0 will create 5 folders.
+  1) index_fsaverage folder: 6 files will be generated, corresponding to the x/y/z index files in the subject's surface space. 
+  The file names will be:  
+    lh.xIndex_fsaverage_to_subj01_sess1.index
+    rh.xIndex_fsaverage_to_subj01_sess1.index
+    lh.yIndex_fsaverage_to_subj01_sess1.index
+    rh.yIndex_fsaverage_to_subj01_sess1.index
+    lh.zIndex_fsaverage_to_subj01_sess1.index
+    rh.zIndex_fsaverage_to_subj01_sess1.index
+  2) index_T1 folder: 6 files will be generated, corresponding to the x/y/z index files projected to the subject's T1 space, from left and right hemispheres of the subject's surface respectively. 
+  The file names will be: 
+    lh.xIndex_fsaverage_to_subj01_sess1_T1.nii.gz
+    rh.xIndex_fsaverage_to_subj01_sess1_T1.nii.gz
+    lh.yIndex_fsaverage_to_subj01_sess1_T1.nii.gz
+    rh.yIndex_fsaverage_to_subj01_sess1_T1.nii.gz
+    lh.zIndex_fsaverage_to_subj01_sess1_T1.nii.gz
+    rh.zIndex_fsaverage_to_subj01_sess1_T1.nii.gz
+  3) index_SPM_Colin27_FS4.5.0: 6 files will be generated, corresponding to the x/y/z index files from left and right hemispheres, registered to the volumetric atlas space. 
+  The file names will be: 
+    lh.xIndex_fsaverage_to_subj01_sess1_to_SPM_Colin27_FS4.5.0_RF_ANTs.nii.gz
+    rh.xIndex_fsaverage_to_subj01_sess1_to_SPM_Colin27_FS4.5.0_RF_ANTs.nii.gz
+    lh.yIndex_fsaverage_to_subj01_sess1_to_SPM_Colin27_FS4.5.0_RF_ANTs.nii.gz
+    rh.yIndex_fsaverage_to_subj01_sess1_to_SPM_Colin27_FS4.5.0_RF_ANTs.nii.gz
+    lh.zIndex_fsaverage_to_subj01_sess1_to_SPM_Colin27_FS4.5.0_RF_ANTs.nii.gz
+    rh.zIndex_fsaverage_to_subj01_sess1_to_SPM_Colin27_FS4.5.0_RF_ANTs.nii.gz
+  4) mapping folder: corresponding to the average mapping from the fsaverage surface to Colin27 space and the count map in Colin27 space. 
+  The file names will be:
+    1Sub_fsaverage_to_SPM_Colin27_FS4.5.0_RF_ANTs_avgMapping.prop.mat
+    1Sub_fsaverage_to_SPM_Colin27_FS4.5.0_RF_ANTs.count.mat
+  5) projected_fsaverage2vol folder: 2 files will be generated, corresponding to the projected data in the volumetric atlas sapce and the projected data in segmentation form (with left hemisphere values starting from 0 and right hemisphere values starting from 1000). 
+  The file names will be:
+    prob_map_central_sulc.1Sub_fsaverage_to_SPM_Colin27_FS4.5_RF_ANTs.nii.gz
+    seg.prob_map_central_sulc.1Sub_fsaverage_to_SPM_Colin27_FS4.5_RF_ANTs.nii.gz
 
 EXAMPLE:
-	$0 -o ~/unit_test_results
+  $0 -o ~/unit_test_results
 
 " 1>&2; exit 1; }
 
