@@ -25,6 +25,8 @@ We matched each parcel to a specific network based on maximal spatial overlap, i
 
 Note that the vertices enclosed in each ROI are identical across these three different versions, and the ROIs only differ in their assignment to different networks.
 
+To use the parcellations without the trouble of downloading our entire repository, you can just click on this link: [download Yan2023 Parcellations](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/ThomasYeoLab/CBIG/tree/master/stable_projects/brain_parcellation/Yan2023_homotopic/parcellations)
+
 Homotopic Correspondence
 =====================
 As mentioned in the paper, the parcellation boundary for the left and right hemispheres do not overlap perfectly. However, each homotopic parcel pair typically occupy roughly symmetric locations across the hemispheres.
@@ -34,6 +36,14 @@ Let's take the 400-region parcellation as an example. On the left hemisphere, th
 Also note that, for each homotopic parcel pair, they might have been assigned to different networks due to the asymmetry of large-scale brain networks. For example, in `./HCP/fsLR32k/kong17/100Parcels_Kong2022_17Networks_info.txt`:
 
 > Line 27~28, parcel 14 `17networks_LH_DefaultA_RSC` corresponds to Line 127-128, parcel 64 `17networks_RH_DefaultC_RSC`. This pair of homotopic parcels belong to different sub default mode networks.
+
+Alternative Parcellation Version
+========================
+An alternative version of our parcellation is available, where the parcels on each hemisphere are ordered simply by network assignment. Therefore, there is no homotopic correspondence between the left and right hemispheres. You should only consider this version if your analysis does not require homotopic correspondence.
+
+Note that in this alternative version, only the parcels on the right hemispheres are re-ordered, as compared the standard version that we provide in this folder.
+
+Download this alternative version here (part of what we have previously released): [download Yan2023 Parcellations (ordered by network within each hemisphere)](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/ThomasYeoLab/CBIG/tree/c874d05cf760999427d7d2be5390b4fea21dd439/stable_projects/brain_parcellation/Yan2023_homotopic/parcellations)
 
 Parcel Naming Convention
 ========================
@@ -53,6 +63,10 @@ The last row in `./MNI/yeo7/freeview_lut/200Parcels_Yeo2011_7Networks_LUT.txt`:
 indicates that the current 200-level parcellation was matched to Yeo7 networks, parcel 200 is on the right hemisphere, assigned to the Visual network and resides roughly on the stiate cortex. `120 18 134` is just the RGB color code for this parcel, and the last trailing `0` doesn't make any difference.
 
 For abbreviations used in the parcel names (anatomic locations), refer to the table in the following section `Parcel Name Abbreviations`.
+
+RAS centroid coordinates
+=====================
+We also provide RAS centroid coordinates of the Yeo 7/17 and Kong 17 parcellations in MNI 1mm and 2mm space under: `MNI/centroid_coordinates`
 
 
 Parcel Name Abbreviations

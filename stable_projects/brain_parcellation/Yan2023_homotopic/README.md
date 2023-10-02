@@ -34,8 +34,15 @@ We have released three multiple folders in relation to the code:
     + `./replication`: This is the folder containing the replication code, but can only run within the CBIG environment. Refer to the enclosed `README.md` for details regarding how to run the code.
     + `./unit_test`: This is the folder containing the unit test.
 
+Download stand-alone repository
+=====================
+
+Since the whole Github repository is too big, we provide a stand-alone version of only this project and its dependencies. To download this stand-alone repository, visit this link: [https://github.com/ThomasYeoLab/Standalone_Yan2023_homotopic](https://github.com/ThomasYeoLab/Standalone_Yan2023_homotopic)
+
 Updates
 =======
+- Release v0.29.5 (02/10/2023): Updated README. Included centroid coordinates for Yan2023 parcellations.
+
 - Release v0.28.3 (27/04/2023): Fix the ordering of right-hemisphere parcels such that the left are right hemispheres parcels are homotopic (i.e., parcel 1 and 201 should be a homotopic pair in a 400-level parcellation). Previously, we ordered both the left and right hemisphere parcels by their respective network orders, which disrupted the homotopy across-hemisphere. Now, we first order the left hemisphere parcels by networks, and apply the same ordering to the right-hemisphere parcels. This ensures that the left and right hemispheres are homotopic, although the right-hemisphere parcels may not be ordered neatly by networks.
 
 - Release v0.28.2 (20/04/2023): Included Yan2023 parcellation in the `CBIG_PlotCorrMatNetOrder` function (`/utilities/matlab/figure_utilities/PlotCorrMat/CBIG_PlotCorrMatNetOrder`).

@@ -92,9 +92,6 @@ The code utilized in this study is under `Code` folder. Specifically, the `Code`
 ### Examples
 We provide example code for you run as well as example results for you to compare under `examples` folder. Please refer to `examples/README.md` for more information.
 
-### Download stand-alone repository
-Since the whole Github repository is too big, we provide a stand-alone version of only this project and its dependencies. To download this stand-alone repository, visit this link: [https://github.com/ThomasYeoLab/Standalone_Schaefer2018_LocalGlobal](https://github.com/ThomasYeoLab/Standalone_Schaefer2018_LocalGlobal)
-
 ### Download whole repository
 Except for this project, if you want to use the code for other stable projects from out lab as well, you need to download the whole repository.
 
@@ -176,7 +173,6 @@ Updates
 
     2. Update publication details in README files.
 
-    3. Fix a bug related to creating `Standalone_Schaefer2018_LocalGlobal`.
 
 - Release v0.6.3 (17/07/2018):
 
@@ -184,7 +180,7 @@ Updates
 
     2. Add unit test scripts to `unit_tests` folder.
 
-    3. Update README.md, add links for people to directly download the Parcellations and this project's standalone repository: `Standalone_Schaefer2018_LocalGlobal`.
+    3. Update README.md, add links for people to directly download the Parcellations.
 
 - Release v0.4.12 (09/04/2018): 
 

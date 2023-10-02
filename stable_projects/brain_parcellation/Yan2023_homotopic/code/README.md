@@ -36,6 +36,14 @@ CBIG_hMRF_generate_premultiplied_matrix(output_dir, lh_fmri_fullpath_txt, rh_fmr
 
 It may take a few hours to generate the premultiplied matrix, depending on the number of subjects being processed as well as your hardware. On our server, to generate the matrix based on the resting-state data of 1479 GSP subjects takes about 8 hours to run on 1 core. You can always check the output log files from the Matlab command to track the progress of computation.
 
+**Input**
+
+Our code currently only supports nifti format (.nii.gz) as the input data. Typically, NIFTI is used as a volume file format. Here, we used them to store surface data. The nifti was generated was using the following freesurfer command:
+
+`mri_vol2surf --mov ${BOLD}.nii.gz --reg $regfile --hemi  $hemi --projfrac 0.5 --trgsubject $proj_mesh --o $output --reshape --interp trilinear` (see https://github.com/ThomasYeoLab/CBIG/blob/master/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_native2fsaverage.csh#L158C24-L159C80)
+
+Basically mri_vol2surf will project the fMRI data onto the surface and will reshape to "trick" the nifti format (https://surfer.nmr.mgh.harvard.edu/fswiki/mri_vol2surf).
+
 **Output**
 
 + `<output_dir>/premultiplied_matrix_single.mat`
