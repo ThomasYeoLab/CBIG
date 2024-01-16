@@ -22,14 +22,14 @@ If you want to use the code from our lab's other stable projects (other than He2
 - To download the version of the code that was last tested, you can either
 
     - visit this link:
-    [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.22.2-Update_He2022_MM](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.22.2-Update_He2022_MM)
+    [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.29.6-He2022_Ooi2022-updates](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.29.6-He2022_Ooi2022-updates)
 
     or
 
     - run the following command, if you have Git installed
  
     ```
-    git checkout -b He2022_MM v0.22.2-Update_He2022_MM
+    git checkout -b He2022_Ooi2022-updates v0.29.6-He2022_Ooi2022-updates
     ```
 ----
 
@@ -50,9 +50,9 @@ If you want to use the code from our lab's other stable projects (other than He2
 ----
 
 ## Updates
-- Release v0.22.0 (24/02/2022): Initial release of He2022_MM project
+- Release v0.29.6 (16/1/2024): Update subcortical ordering to be consistent with CBIG pipeline.
 - Release v0.22.2 (16/03/2022): Update examples and unit test
-
+- Release v0.22.0 (24/02/2022): Initial release of He2022_MM project
 
 ----
 

@@ -1,0 +1,47 @@
+name: Ooi2022_MMP_figures
+channels:
+  - anaconda
+  - defaults
+dependencies:
+  - blas=1.0=mkl
+  - ca-certificates=2020.10.14=0
+  - certifi=2020.6.20=py37_0
+  - intel-openmp=2020.2=254
+  - ld_impl_linux-64=2.33.1=h53a641e_7
+  - libedit=3.1.20191231=h14c3975_1
+  - libffi=3.3=he6710b0_2
+  - libgcc-ng=9.1.0=hdf63c60_0
+  - libgfortran-ng=7.3.0=hdf63c60_0
+  - libstdcxx-ng=9.1.0=hdf63c60_0
+  - mkl=2019.4=243
+  - mkl-service=2.3.0=py37he904b0f_0
+  - mkl_fft=1.2.0=py37h23d657b_0
+  - mkl_random=1.0.4=py37hd81dba3_0
+  - ncurses=6.2=he6710b0_1
+  - numpy=1.19.1=py37hbc911f0_0
+  - numpy-base=1.19.1=py37hfa32c7d_0
+  - openssl=1.1.1h=h7b6447c_0
+  - pip=20.2.4=py37_0
+  - python=3.7.9=h7579374_0
+  - readline=8.0=h7b6447c_0
+  - scipy=1.5.2=py37h0b6359f_0
+  - setuptools=50.3.0=py37hb0f4dca_1
+  - six=1.15.0=py_0
+  - sqlite=3.33.0=h62c20be_0
+  - tk=8.6.10=hbc83047_0
+  - wheel=0.35.1=py_0
+  - xz=5.2.5=h7b6447c_0
+  - zlib=1.2.11=h7b6447c_3
+  - pip:
+    - cycler==0.11.0
+    - fonttools==4.29.1
+    - kiwisolver==1.3.2
+    - matplotlib==3.5.1
+    - packaging==21.3
+    - pandas==1.3.5
+    - pillow==9.0.1
+    - pyparsing==3.0.7
+    - python-dateutil==2.8.2
+    - pytz==2021.3
+    - seaborn==0.11.2
+prefix: /home/leon_ooi/storage/miniconda/envs/Ooi2022_MMP_figures

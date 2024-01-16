@@ -14,19 +14,19 @@ Except for this project, if you want to use the code for other stable projects f
 
 To download the version of the code that was last tested, you can either visit this link: 
 
-[https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.24.0-Ooi2022_MMP](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.24.0-Ooi2022_MMP)
+[https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.29.6-He2022_Ooi2022-updates](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.29.6-He2022_Ooi2022-updates)
 
 run the following command, if you have Git installed
 
 ```
-git checkout -b CBIG2022_Ooi2022_MMP v0.24.0-Ooi2022_MMP
+git checkout -b He2022_Ooi2022-updates v0.29.6-He2022_Ooi2022-updates
 ```
 
 # USAGE
 ## Setup
 1. Make sure you have installed: Matlab 2018b
-2. Follow $CBIG_CODE_DIR/setup/README.md to setup the config file. Instead of using CBIG/setup/CBIG_sample_config.sh, you need to use $CBIG_CODE_DIR/stable_projects/predict_phenotypes/Ooi2022_MMP/replication/config/CBIG_MMP_tested_config.sh.
-3. Ensure you have access to [HCP](https://github.com/ThomasYeoLab/Ooi2022_MMP_HCP) and [ABCD](https://dx.doi.org/10.15154/1523482) repositories. The HCP repository is publicly available. However, please apply for restricted access to the HCP to gain access to information such as age and the Family ID. The ABCD data is available on the NDA website through in study [1368](https://dx.doi.org/10.15154/1523482).
+2. Follow `$CBIG_CODE_DIR/setup/README.md` to setup the config file. Instead of using `CBIG/setup/CBIG_sample_config.sh`, you need to use `$CBIG_CODE_DIR/stable_projects/predict_phenotypes/Ooi2022_MMP/replication/config/CBIG_MMP_tested_config.sh`.
+3. The data is stored in the following hyperlinks for the [HCP](https://github.com/ThomasYeoLab/Ooi2022_MMP_HCP) and [ABCD](https://dx.doi.org/10.15154/1523482). The HCP repository is publicly available. However, please apply for restricted access to the HCP to gain access to information such as age and the Family ID. The ABCD data is available on the NDA website through in study [1368](https://dx.doi.org/10.15154/1523482).
 
 ## Replication
 * `replication` this folder contains scripts to replicate all the analysis in this paper. This requires the user to have access to the ABCD and HCP repositories.
@@ -42,7 +42,8 @@ git checkout -b CBIG2022_Ooi2022_MMP v0.24.0-Ooi2022_MMP
 
 
 # UPDATES
-Release v0.24.0 (23/9/2022): Initial release of Ooi2022_MMP project
+- Release v0.29.6 (16/1/2024): Addition of code for feature importance plotting
+- Release v0.24.0 (23/9/2022): Initial release of Ooi2022_MMP project
 
 # BUGS and QUESTIONS
 Please contact Leon Ooi at leonooiqr@gmail.com and Thomas Yeo at yeoyeo02@gmail.com.

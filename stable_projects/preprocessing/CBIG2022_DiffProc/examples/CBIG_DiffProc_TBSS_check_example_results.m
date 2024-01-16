@@ -9,7 +9,7 @@ function [test_array] = CBIG_DiffProc_TBSS_check_example_results(test_struct)
 %                    s.MD_dir = fullfile('stats', 'all_MD_skeletonised.nii.gz');
 %
 % Output:
-% test_array - A array with 5 entries. 1 indicates a pass and 0 is a fail.
+% test_array - A array with 6 entries. 1 indicates a pass and 0 is a fail.
 %              test_array(1): size of FA skeleton are equal
 %              test_array(2): FA values for subject 1 are similar
 %              test_array(3): FA values for subject 2 are similar

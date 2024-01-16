@@ -70,8 +70,9 @@ output_dir = fullfile(base_dir, 'output');
 % SUBJ_LIST_HCP_TC in config.py
 SUBJ_LIST_HCP_TC = fullfile(output_dir, 'surf_file_list_S1200_1094_210110.txt');
 HCP_TC_DIR = fullfile(output_dir, 'TC_419');
-ROI_400_NII = fullfile(base_dir, 'extra', 'Schaefer2016_400Parcels_17Networks_colors_19_09_16_subcortical.dlabel.nii');
-CBIG_MM_HCP_extract_TC_419(SUBJ_LIST_HCP_TC, HCP_TC_DIR, ROI_400_NII);
+ROI_400_NII = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Parcellations/HCP/fslr32k/cifti/Schaefer2018_400Parcels_17Networks_order.dlabel.nii')
+ROI_19_NII = fullfile(base_dir, 'extra', 'subcortical_HCP_cbig_order.dlabel.nii');
+CBIG_MM_HCP_extract_TC_419(SUBJ_LIST_HCP_TC, HCP_TC_DIR, ROI_400_NII, ROI_19_NII);
 ```
 
 #### Step 5.3

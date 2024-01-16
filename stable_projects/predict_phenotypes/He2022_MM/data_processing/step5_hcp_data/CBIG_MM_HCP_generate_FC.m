@@ -1,6 +1,6 @@
 function CBIG_MM_HCP_generate_FC(in_dir, out_dir)
 
-% CBIG_MM_HCP_generate_FC(List, out_dir, roi_400_nii)
+% CBIG_MM_HCP_generate_FC(in_dir, out_dir)
 % 
 % This function generate functional connectivity data for HCP S1200
 %

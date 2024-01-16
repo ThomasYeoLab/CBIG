@@ -1,0 +1,3 @@
+varimax_satisf
+varimax_cog
+varimax_er

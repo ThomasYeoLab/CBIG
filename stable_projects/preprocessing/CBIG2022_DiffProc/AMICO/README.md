@@ -23,8 +23,8 @@ Diffusion input directory (dwi_dir)
 |-- sub-2
 |-- sub-3
     |-- sub-1.nii.gz
-    |-- sub-2.bval 
-    |-- sub-3.bvec
+    |-- sub-1.bval 
+    |-- sub-1.bvec
 
 mask directory (mask_output_dir)
 |-- sub-1
