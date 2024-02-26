@@ -62,6 +62,7 @@ set nocleanup = 0; # Default clean up intermediate file
 set parcellation_type = ""
 set network = ""
 set res = ""
+set matlab_runtime = 0 # Default not running on MATLAB Runtime
 
 goto parse_args;
 parse_args_return:
@@ -72,13 +73,30 @@ check_params_return:
 set root_dir = `python -c "import os; print(os.path.realpath('$0'))"`
 set root_dir = `dirname $root_dir`
 
+
 ###############################
 # check if matlab exists
 ###############################
-set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
-if ($status) then
-    echo "ERROR: could not find matlab"
-    exit 1;
+if ( $matlab_runtime == 0 ) then
+    set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
+    if ($status) then
+        echo "ERROR: could not find MATLAB"
+        exit 1;
+    endif
+else
+    set MATLAB=$MATLAB_RUNTIME_DIR
+    if ($status) then
+        echo "ERROR: could not find MATLAB Runtime"
+        exit 1;
+    endif
+    echo "Setting up environment variables for MATLAB Runtime"
+    setenv LD_LIBRARY_PATH ${MATLAB}/runtime/glnxa64:${MATLAB}/bin/glnxa64:${MATLAB}/sys/os/glnxa64:${MATLAB}/sys/opengl/lib/glnxa64:${LD_LIBRARY_PATH}
+    # check if MATLAB Runtime utilities folder exists
+    set matlab_runtime_util = "${root_dir}/matlab_runtime/utilities"
+    if ( ! -d $matlab_runtime_util ) then
+        echo "ERROR: MATLAB Runtime utilities folder does not exist!"
+        exit 1;
+    endif
 endif
 
 cd $sub_dir/$subject
@@ -300,10 +318,15 @@ if ( $Pearson_r == 1 ) then
     if ( -e $output_dir/${output_prefix}_all2all_${parcellation_name}_with_19Subcortical.mat ) then
         echo "[FC metrics]: The output file $output_dir/${output_prefix}_all2all.mat already exists. Skip ..." |& tee -a $LF
     else
-        set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; )
-        set cmd = ($cmd CBIG_preproc_FCmetrics "'"$lh_cortical_ROIs_file"'" "'"$rh_cortical_ROIs_file"'" )
-        set cmd = ($cmd "'"$subcortex_func_vol"'" "'"$lh_surf_data_list"'" "'"$rh_surf_data_list"'" "'"$vol_data_list"'")
-        set cmd = ($cmd  "'"$discard_frames_list"'" "'"Pearson_r"'" "'"$output_dir"'" "'"$output_prefix"'"; exit; '"' );
+        set matlab_args = "'$lh_cortical_ROIs_file' '$rh_cortical_ROIs_file' '$subcortex_func_vol'"
+        set matlab_args = "${matlab_args} '$lh_surf_data_list' '$rh_surf_data_list' '$vol_data_list'"
+        set matlab_args = "${matlab_args} '$discard_frames_list' 'Pearson_r' '$output_dir' '$output_prefix'"
+        if ( $matlab_runtime == 0 ) then
+            set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; )
+            set cmd = ( $cmd CBIG_preproc_FCmetrics $matlab_args; exit; '"' );
+        else
+            set cmd = ( ${matlab_runtime_util}/CBIG_preproc_FCmetrics $matlab_args )
+        endif
         echo $cmd |& tee -a $LF
         eval $cmd |& tee -a $LF
 
@@ -433,6 +456,11 @@ while( $#argv != 0 )
 
         case "-nocleanup":
             set nocleanup = 1;
+            breaksw
+
+        #running code on MATLAB Runtime (optional)
+        case "-matlab_runtime":
+            set matlab_runtime = 1;
             breaksw
 
         default:
@@ -665,6 +693,9 @@ OPTIONAL ARGUMENTS:
     -nocleanup :
      do not remove intermediate result. For example, if -Pearson_r is used, intermediate files are lh2lh, lh2rh, rh2rh, 
      lh2subcortical, rh2subcortical, and subcortical2subcortical correlation files.
+
+    -matlab_runtime :
+     running MATLAB code using MATLAB Runtime instead of MATLAB.
 
 EXAMPLE with default setting:
     $CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_FCmetrics_wrapper.csh -s Sub0001_Ses1 

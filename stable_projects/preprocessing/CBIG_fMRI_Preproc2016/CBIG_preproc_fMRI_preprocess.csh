@@ -60,6 +60,8 @@ set is_motion_corrected = 0 # flag indicates whether motion correction is perfor
 set is_distortion_corrected = 0 # flag indicates whether spatial distortion correction is performed 
 set echo_number = 1 # echo number default to be 1
 set nii_file_input = 0 # flag indicated whether input for -fmrinii is nifti file
+set is_BIDS_input = 0 # flag indicated whether input for -fmrinii is BIDS dataset
+set matlab_runtime = 0 # Default not running on MATLAB Runtime
 
 set root_dir = `python -c "import os; print(os.path.realpath('$0'))"`
 set root_dir = `dirname $root_dir`
@@ -69,6 +71,47 @@ parse_args_return:
 
 goto check_params;
 check_params_return:
+
+##########################################
+# Check if dataset is BIDS, if yes, make sure subject ID starts with "sub-"
+# if "-ses" is given in convert_input_BIDS, add session name to subject ID
+##########################################
+
+if ( $is_BIDS_input == 1 ) then
+
+    # check if convert_BIDS is the first step in config file
+    set bids_line=`(grep -v '^#' $config | grep -n -F 'CBIG_preproc_convert_input_BIDS' | cut -d : -f1)`
+    if ( $bids_line == "" ) then
+        echo "[ERROR]: Input argument <fmrinii> is a folder, but CBIG_preproc_convert_input_BIDS is not detected in \
+the config file. Please include this step as the first step in the config file." 
+        exit 1
+    endif
+    if ($bids_line > 1 ) then
+        echo "[ERROR]: Input argument <fmrinii> is a folder, but CBIG_preproc_convert_input_BIDS is not the first step\
+in the preprocessing config file. Please make sure it is the first step in the config file."
+        exit 1
+    endif
+
+    # modify subject ID 
+    if ( "`echo $subject | grep -c '^sub-'`" == "0" ) then
+        set subject = "sub-$subject"
+    endif
+    set subject_BIDS = $subject
+
+    set bids_line = `(grep -v '^#' $config | grep -F 'CBIG_preproc_convert_input_BIDS')`
+    set session = ""
+    if (`echo $bids_line | grep -c '\-ses'` > 0) then
+        set session = `echo $bids_line | sed -n 's/.*\-ses \([^ ]*\).*/\1/p'`
+    endif
+    if ( $session != "" ) then
+        if ( "`echo $session | grep -c '^ses-'`" == "0" ) then
+            set session = "ses-$session"
+        endif
+        set subject = $subject"_"$session
+    endif
+endif
+
+
 ##########################################
 # Set preprocess log file and cleanup file
 ##########################################
@@ -165,9 +208,57 @@ if ( $echo_number > 1 ) then
 endif
 
 ##########################################
+# Check if dataset is in BIDS format
+# If yes, generate fmrinii file by running convert_BIDS step
+##########################################
+
+if ( $is_BIDS_input == 1 ) then
+    
+    # get the line convert_input_BIDS from config
+    set bids_line = `(grep -v '^#' $config | grep -F 'CBIG_preproc_convert_input_BIDS')`
+    set step_flag = ""
+    set curr_step = (`echo $bids_line | awk '{printf $1}'`)
+    echo "[$curr_step]: Start..." >> $LF
+
+    # get all arguments of bids_line (if there is any)
+    set inputflag = (`echo $bids_line | awk -F " " '{printf NF}'`)
+    if ( $inputflag != 1) then
+        set step_flag = ( `echo $bids_line | cut -f 1 -d " " --complement` )
+        echo "[$curr_step]: curr_flag = $step_flag" >> $LF
+    endif
+
+    # run convert_input_BIDS
+    set cmd = "$root_dir/CBIG_preproc_convert_input_BIDS.csh -d $fmrinii_file -s $subject_BIDS" 
+    set cmd = "$cmd -output_dir $output_dir $step_flag"
+    echo "[$curr_step]: $cmd" >> $LF
+    eval $cmd >& /dev/null
+    
+    # check existence of output
+    set fmrinii_file = "$output_dir/fmrinii/$subject.fmrinii"
+    if ( ! -e $fmrinii_file ) then
+        echo "[ERROR]: File $fmrinii_file can not be found." >> $LF
+        echo "[ERROR]: CBIG_preproc_convert_input_BIDS fail!" >> $LF
+        exit 1
+    endif
+    echo "[$curr_step]: fmrinii file saved at: $fmrinii_file" >> $LF
+    # set input type to 'text'
+    set nii_file_input = 0
+
+    # remove convert_input_BIDS from config
+    set config_new = $output_dir/$subject/logs/CBIG_preproc_fMRI_preprocess.config.temp
+    sed '1d' $config > $config_new
+    rm -r -f $config
+    mv $config_new $config
+    rm -r -f $config_new
+    echo "[$curr_step]: finished convert_input_BIDS, removed this step from config" >> $LF
+
+endif
+
+
+##########################################
 # Read in fMRI nifti file list
 ##########################################
-if ( $nii_file_input == 1) then
+if ( $nii_file_input == 1 ) then
     set zpdbold = "001"
 else
     #check if there are repeating run numbers
@@ -197,6 +288,9 @@ set echo_number_check = `echo " $a / $b" | bc`
 # check fmrinii file colunm consistent with echo number
 if ( $echo_number != $echo_number_check ) then
     echo "ERROR: input echo number $echo_number is not equal to the number of images $echo_number_check " >> $LF
+    echo "ERROR: for multi-echo images, please include multiecho_denoise step in config file \
+       and make sure the number of echoes in multiecho_denoise step is the same as \
+       the number of images." >> $LF
     exit 1;
 endif
 set column_number = `echo "$echo_number +1"|bc`
@@ -212,20 +306,13 @@ if ( $nii_file_input == 0 ) then
         exit 1
     endif
 endif
-
-#set output structure and deoblique the input file and check orientation
+#running rsync process
 if ( $echo_number == 1 ) then
     @ k = 1
     foreach curr_bold ($zpdbold)
         if ( ! -e $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold$BOLD_stem.nii.gz" ) then
             mkdir -p $output_dir/$subject/bold/$curr_bold
-            set cmd = "$root_dir/utilities/CBIG_preproc_deoblique.sh"
-            set cmd = "$cmd -i $boldname[$k]"
-            set cmd = "$cmd -o $output_dir/$subject/bold/$curr_bold/${subject}_bld$curr_bold$BOLD_stem.nii.gz"
-            echo "[Deoblique]: $cmd" >> $LF
-            eval $cmd >>& $LF
-        else
-            echo "[BOLD INFO]: Input bold nifti file (${subject}_bld${curr_bold}${BOLD_stem}.nii.gz) already exists !" >> $LF
+            rsync -az $boldname[$k] $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold$BOLD_stem.nii.gz"
         endif
         @ k++
     end
@@ -236,25 +323,31 @@ else
         while ($j <= $echo_number)
             if ( ! -e $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold"_e$j"$BOLD_stem.nii.gz" ) then
                 mkdir -p $output_dir/$subject/bold/$curr_bold
-                set cmd = "$root_dir/utilities/CBIG_preproc_deoblique.sh"
-                set cmd = "$cmd -i $boldname[$k]"
-                set cmd = "$cmd -o $output_dir/$subject/bold/$curr_bold/${subject}_bld${curr_bold}_e$j$BOLD_stem.nii.gz"
-                echo "[Deoblique]: $cmd" >> $LF
-                eval $cmd >>& $LF
-            else
-                echo "[BOLD INFO]: Input bold nifti ($subject"_bld$curr_bold"_e$j"$BOLD_stem.nii.gz") file already exists !" >> $LF
+                rsync -az $boldname[$k] $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold"_e$j"$BOLD_stem.nii.gz"
             endif
             @ j++
             @ k++
         end
     end
 endif
+
 set Bold_file = $output_dir/$subject/logs/$subject.bold
 if( -e $Bold_file ) then
     rm $Bold_file
 endif
 echo $zpdbold >> $Bold_file
 echo "" >> $LF
+
+#to check if deoblique is the first step of the config if present
+set deoblique_line=`(grep -n -v '^#' $config | grep -n -F 'deoblique' | cut -d : -f1)`
+
+#if the deoblique step exists in the config file, check if the step sequence of preprocessing pipeline is valid.
+#only convert_input_BIDS is allowed to appear before deoblique
+if( $deoblique_line != "" && `expr $deoblique_line - $is_BIDS_input` > 1 ) then 
+    echo "[ERROR]: The position of deoblique step is invalid. Only CBIG_preproc_convert_input_BIDS is allowed \
+before deoblique. Please make sure the sequence in config file is valid." >> $LF
+    exit 1
+endif
 
 ##########################################
 # Loop through each preprocess step
@@ -279,10 +372,42 @@ foreach step ( "`cat $config`" )
     echo "[$curr_step]: zpdbold = $zpdbold"    >> $LF
 
     ##########################################
+    # Preprocess step: Deoblique and check orientation
+    ##########################################
+
+    if ( "$curr_step" == "CBIG_preproc_deoblique" ) then
+        if ( $echo_number == 1 ) then
+            @ k = 1
+            foreach curr_bold ($zpdbold)
+                set cmd = "$root_dir/utilities/CBIG_preproc_deoblique.sh"
+                set cmd = "$cmd -i $boldname[$k]"
+                set cmd = "$cmd -o $output_dir/$subject/bold/$curr_bold/${subject}_bld$curr_bold$BOLD_stem.nii.gz"
+                echo "[Deoblique]: $cmd" >> $LF
+                eval $cmd >>& $LF
+                @ k++
+            end
+        else
+            @ k = 1
+            foreach curr_bold ($zpdbold)
+                @ j = 1
+                while ($j <= $echo_number)
+                    set cmd = "$root_dir/utilities/CBIG_preproc_deoblique.sh"
+                    set cmd = "$cmd -i $boldname[$k]"
+                    set cmd = "$cmd -o $output_dir/$subject/bold/$curr_bold/${subject}_bld${curr_bold}_e$j$BOLD_stem.nii.gz"
+                    echo "[Deoblique]: $cmd" >> $LF
+                    eval $cmd >>& $LF
+                    @ j++
+                    @ k++
+                end
+            end
+        endif
+        echo "Deoblique complete. " >> $LF
+
+    ##########################################
     # Preprocess step: Skip first n frames 
     ##########################################
 
-    if ( "$curr_step" == "CBIG_preproc_skip" ) then
+    else if ( "$curr_step" == "CBIG_preproc_skip" ) then
 
         set cmd = "$root_dir/CBIG_preproc_skip.csh -s $subject -d $output_dir -bld '$zpdbold' -BOLD_stem $BOLD_stem "
         set cmd = "$cmd -echo_number $echo_number"
@@ -390,6 +515,9 @@ The intermediate files from motion correction step will not be removed." >> $LF
         set cmd = "$root_dir/CBIG_preproc_fslmcflirt_outliers.csh -s $subject -d $output_dir -bld '$zpdbold' "
         set cmd = "$cmd -echo_number $echo_number"
         set cmd = "$cmd -BOLD_stem $BOLD_stem $curr_flag"
+        if ( $matlab_runtime == 1 ) then
+            set cmd = "$cmd -matlab_runtime"
+        endif
         echo "[$curr_step]: $cmd" >> $LF
         eval $cmd >&  /dev/null
 
@@ -704,6 +832,9 @@ The intermediate censoring interpolation volume will not be removed." >> $LF
         set cmd = "$root_dir/CBIG_preproc_censor.csh -s $subject -d $output_dir -anat_s $anat -anat_d $SUBJECTS_DIR "
         set cmd = "$cmd -bld '$zpdbold' -BOLD_stem $BOLD_stem -REG_stem $REG_stem -OUTLIER_stem $OUTLIER_stem "
         set cmd = "$cmd $curr_flag"
+        if ( $matlab_runtime == 1 ) then
+            set cmd = "$cmd -matlab_runtime"
+        endif
         echo "[$curr_step]: $cmd" >> $LF
         eval $cmd >&  /dev/null 
 
@@ -739,6 +870,9 @@ can not be found" >> $LF
 
         set cmd = "$root_dir/CBIG_preproc_bandpass_fft.csh -s $subject -d $output_dir -bld '$zpdbold' -BOLD_stem " 
         set cmd = "$cmd $BOLD_stem -OUTLIER_stem $OUTLIER_stem $curr_flag"
+        if ( $matlab_runtime == 1 ) then
+            set cmd = "$cmd -matlab_runtime"
+        endif
         echo "[$curr_step]: $cmd" >> $LF
         eval $cmd >&  /dev/null 
 
@@ -779,6 +913,9 @@ can not be found" >> $LF
         set cmd = "$root_dir/CBIG_preproc_regression.csh -s $subject -d $output_dir -anat_s $anat -anat_d "
         set cmd = "$cmd $SUBJECTS_DIR -bld '$zpdbold' -BOLD_stem $BOLD_stem -REG_stem $REG_stem -MASK_stem $BOLD_stem "
         set cmd = "$cmd -OUTLIER_stem $OUTLIER_stem $curr_flag"
+        if ( $matlab_runtime == 1 ) then
+            set cmd = "$cmd -matlab_runtime"
+        endif
         echo "[$curr_step]: $cmd" >> $LF
         eval $cmd >&  /dev/null 
 
@@ -823,6 +960,9 @@ The intermediate files from plotting QC greyplot will not be removed." >> $LF
         set cmd = "$root_dir/CBIG_preproc_QC_greyplot.csh -s $subject -d $output_dir -anat_s $anat -anat_d "
         set cmd = "$cmd $SUBJECTS_DIR -bld '$zpdbold' -BOLD_stem $BOLD_stem -REG_stem $REG_stem -MC_stem $mc_stem "
         set cmd = "$cmd -echo_number $echo_number $curr_flag"
+        if ( $matlab_runtime == 1 ) then
+            set cmd = "$cmd -matlab_runtime"
+        endif
         echo "[$curr_step]: $cmd" >> $LF
         eval $cmd >&  /dev/null
 
@@ -836,7 +976,7 @@ can not be found" >> $LF
         end
 
     ##########################################
-    # Preprocess step: Porjection to fsaverage surface 
+    # Preprocess step: Projection to fsaverage surface 
     # (project to high resolution => smooth => downsample to low resolution)
     ##########################################
 
@@ -844,6 +984,9 @@ can not be found" >> $LF
 
         set cmd = "$root_dir/CBIG_preproc_native2fsaverage.csh -s $subject -d $output_dir -anat_s $anat -anat_d "
         set cmd = "$cmd $SUBJECTS_DIR -bld '$zpdbold' -BOLD_stem $BOLD_stem -REG_stem $REG_stem $curr_flag"
+        if ( $matlab_runtime == 1 ) then
+            set cmd = "$cmd -matlab_runtime"
+        endif
         echo "[$curr_step]: $cmd" >> $LF
         eval $cmd >&  /dev/null
 
@@ -899,6 +1042,9 @@ The intermediate files from FC computation step will not be removed." >> $LF
 
         set cmd = "$root_dir/CBIG_preproc_FCmetrics_wrapper.csh -s $subject -d $output_dir -bld '$zpdbold' "
         set cmd = "$cmd -BOLD_stem $BOLD_stem -SURF_stem $FC_SURF_stem -OUTLIER_stem $OUTLIER_stem $curr_flag"
+        if ( $matlab_runtime == 1 ) then
+            set cmd = "$cmd -matlab_runtime"
+        endif
         echo "[$curr_step]: $cmd" >> $LF
         eval $cmd >& /dev/null
 
@@ -936,7 +1082,7 @@ The intermediate files from FC computation step will not be removed." >> $LF
         endif
 
     ##########################################
-    # Preprocess step: Porjection to MNI volume space (Project to FS1mm => MNI1mm => MNI2mm => Smooth)
+    # Preprocess step: Projection to MNI volume space (Project to FS1mm => MNI1mm => MNI2mm => Smooth)
     ##########################################
 
     else if ( $curr_step == "CBIG_preproc_native2mni" ) then
@@ -984,7 +1130,7 @@ can not be found" >> $LF
 
 
     ##########################################
-    # Preprocess step: Porjection to MNI volume space using ANTs (Project to FS1mm => MNI2mm => Smooth)
+    # Preprocess step: Projection to MNI volume space using ANTs (Project to FS1mm => MNI2mm => Smooth)
     ##########################################
 
     else if ( $curr_step == "CBIG_preproc_native2mni_ants" ) then
@@ -1116,6 +1262,11 @@ while( $#argv != 0 )
             set nocleanup = 1;
             breaksw
 
+        #running code on MATLAB Runtime (optional)
+        case "-matlab_runtime":
+            set matlab_runtime = 1;
+            breaksw
+
         default:
             echo ERROR: Flag $flag unrecognized.
             echo $cmdline
@@ -1140,9 +1291,11 @@ if ( "$fmrinii_file" == "" ) then
     exit 1;
 endif
 
-# check whether input for -fmrinii is nifti file or text file
+# check input format. It can be a nifti file, text file or a folder
 if (( `expr "$fmrinii_file" : '.*\.nii\.gz$'` ) || ( `expr "$fmrinii_file" : '.*\.nii$'` )) then 
     set nii_file_input = 1
+else if ( -d $fmrinii_file ) then
+    set is_BIDS_input = 1
 endif
 
 if ( "$anat" == "" ) then
@@ -1193,9 +1346,16 @@ DESCRIPTION:
         
     The pipeline proceeds sequentially as follows (default order), you can change the order and parameters 
     by changing the config file:
-    (1) [CBIG_preproc_skip -skip 4] 
+    (1) [CBIG_preproc_convert_input_BIDS]
+        If the input dataset is in BIDS format, this step generates the fmrinii file which will be used for subsequent
+        steps. By default, all functional images in the subject folder are included for analysis. Use optional argument 
+        -stem to filter for specific iamges. (Remove this step if input dataset is not in BIDS format.)
+    (2) [CBIG_preproc_deoblique]
+        This function check whether the input file is plumb and RPI orientation. If not, this function will deoblique
+        the input file and change orientation to RPI.
+    (3) [CBIG_preproc_skip -skip 4] 
         skips first 4 frames of resting data. 
-    (2) [CBIG_preproc_fslslicetimer -slice_timing <st_file>] or [CBIG_preproc_fslslicetimer -slice_order <so_file>]
+    (4) [CBIG_preproc_fslslicetimer -slice_timing <st_file>] or [CBIG_preproc_fslslicetimer -slice_order <so_file>]
         does slice time correction using FSL slicetimer. If the user does not pass in the slice acquisition direction 
         -direction <direction>, this step will use "Siemens" acquisition direction Superior-Inferior as default. 
         If the direction is Right-Left, <direction> should be 1 representing x axis.
@@ -1208,11 +1368,11 @@ DESCRIPTION:
         this step will use "Siemens" ordering as default:
         if the number of slices is odd, the ordering is 1, 3, 5, ..., 2, 4, 6, ...; 
         if the number of slices is even, the ordering is 2, 4, 6, ..., 1, 3, 5, ....
-    (3) [CBIG_preproc_fslmcflirt_outliers -FD_th 0.2 -DV_th 50 -discard-run 50 -rm-seg 5 -spline_final] 
+    (5) [CBIG_preproc_fslmcflirt_outliers -FD_th 0.2 -DV_th 50 -discard-run 50 -rm-seg 5 -spline_final] 
         does motion correction with spline interpolation and calculates Framewise Displacement and DVARS, 
         then generates a vector indicating censored frames (1:keep 0:censored). This step throws away the
         runs where the number of outliers are more than the threshold set by -discard-run option.
-    (4) [CBIG_spatial_distortion_correction -fpm "oppo_PED" -j_minus <j_minus_image> -j_plus <j_plus_image>\
+    (6) [CBIG_spatial_distortion_correction -fpm "oppo_PED" -j_minus <j_minus_image> -j_plus <j_plus_image>\
         -j_minus_trt <j_minus_total_readout_time> -j_plus_trt <j_plus_total_readoutime>\
         -ees <effective_echo_spacing> -te <TE>]
         or
@@ -1226,11 +1386,11 @@ DESCRIPTION:
         currently only supports phase encoding directions along AP (j-) and PA (j) directions. For more details, please 
         refer to our spatial distortion correction READEME here: $CBIG_CODE_DIR/stable_projects/preprocessing/ 
         CBIG_fMRI_Preproc2016/spatial_distortion_correction_readme.md
-    (5) [CBIG_preproc_multiecho_denoise -echo_time 12,30.11,48.22]
+    (7) [CBIG_preproc_multiecho_denoise -echo_time 12,30.11,48.22]
         Apply optimal combination of different echos and denoising by ME-ICA method using TEDANA. This step needs 
         echo times for each echo in order. For more details, please refer to our readme for multi-echo preprcessing: 
         $CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/multi_echo_tedana_readme.md
-    (6) [CBIG_preproc_bbregister] 
+    (8) [CBIG_preproc_bbregister] 
         a) Do bbregister with fsl initialization for each run. 
         b) Choose the best run with lowest bbr cost. Apply the registration matrix of the best run to 
         other runs and recompute the bbr cost. If the cost computed using best run registration is 
@@ -1238,25 +1398,25 @@ DESCRIPTION:
         run registration as the final registration of this run. Otherwise, use the original registration.
         c) To save disk space, it also generates a loose whole brain mask and applies it to input fMRI 
         volumes. If you follow the default config file, then the input fMRI volumes are motion corrected volumes.
-    (7) [CBIG_preproc_regress -whole_brain -wm -csf -motion12_itamar -detrend_method detrend -per_run -censor \
+    (9) [CBIG_preproc_regress -whole_brain -wm -csf -motion12_itamar -detrend_method detrend -per_run -censor \
          -polynomial_fit 1] 
         regresses out motion, whole brain, white matter, ventricle, linear regressors for each run seperately. 
         If the data have censored frames, this function will first estimate the beta coefficients ignoring the 
         censored frames and then apply the beta coefficients to all frames to regress out those regressors.  
-    (8) [CBIG_preproc_censor -nocleanup -max_mem NONE] 
+    (10)[CBIG_preproc_censor -nocleanup -max_mem NONE] 
         removes (ax+b) trend of censored frames, then does censoring with interpolation. For interpolation method, 
         please refer to (Power et al. 2014). In our example_config.txt, "-max_mem NONE" means the maximal memory usage 
         is not specified, the actual memory usage will vary according to the size of input fMRI file (linearly 
         proportional). If you want to ensure the memory usage does not exceed 10G, for example, you can pass in 
         "-max_mem 9".
-    (9) [CBIG_preproc_despiking]
+    (11)[CBIG_preproc_despiking]
         uses AFNI 3dDespike to conduct despiking. This function can be used to replace censoring interpolation step (6),  
         depending on the requirement of users.
-    (10) [CBIG_preproc_bandpass -low_f 0.009 -high_f 0.08 -detrend] 
+    (12)[CBIG_preproc_bandpass -low_f 0.009 -high_f 0.08 -detrend] 
         does bandpass filtering with passband = [0.009, 0.08] (boundaries are included). This step applies FFT 
         on timeseries and cuts off the frequencies in stopbands (rectanguluar filter), then performs inverse FFT 
         to get the result.
-    (11) [CBIG_preproc_QC_greyplot -FD_th 0.2 -DV_th 50]
+    (13)[CBIG_preproc_QC_greyplot -FD_th 0.2 -DV_th 50]
         creates greyplots for quality control purpose. Greyplots contain 4 subplots: framewise displacement trace (with 
         censoring threshold), DVARS trace (with censoring threshold), global signal, and grey matter timeseries.
         In our default config file, we only create the grey plots just before projecting the data to surface/volumetric 
@@ -1264,16 +1424,16 @@ DESCRIPTION:
         to compare the greyplots after different steps, they can insert this step multiple times in the config file 
         (but must be after CBIG_preproc_bbregister step because it needs intra-subject registration information to 
         create masks).
-    (12) [CBIG_preproc_native2fsaverage -proj fsaverage6 -down fsaverage5 -sm 6] 
+    (14)[CBIG_preproc_native2fsaverage -proj fsaverage6 -down fsaverage5 -sm 6] 
         projects fMRI to fsaverage6, smooths it with fwhm = 6mm and downsamples it to fsaverage5.
-    (13) [CBIG_preproc_FC_metrics -Pearson_r -censor -lh_cortical_ROIs_file <lh_cortical_ROIs_file> \
+    (15)[CBIG_preproc_FC_metrics -Pearson_r -censor -lh_cortical_ROIs_file <lh_cortical_ROIs_file> \
           -rh_cortical_ROIS_file <rh_cortical_ROIs_file>]
         computes FC (functional connectivity) metrics based on both cortical and subcortical ROIs. The cortical ROIs 
         can be passed in by -lh_cortical_ROIs and -rh_cortical_ROIs. The subcortical ROIs are 19 labels extracted 
         from aseg in subject-specific functional space. This function will support for multiple types of FC metrics
         in the future, but currently we only support static Pearson's correlation by using "-Pearson_r" flag. 
         If "-censor" flag is used, the censored frames are ignored when computing FC metrics.
-    (14) [CBIG_preproc_native2mni_ants -sm_mask \
+    (16)[CBIG_preproc_native2mni_ants -sm_mask \
           ${CBIG_CODE_DIR}/data/templates/volume/FSL_MNI152_masks/SubcorticalLooseMask_MNI1mm_sm6_MNI2mm_bin0.2.nii.gz \
           -final_mask ${FSL_DIR}/data/standard/MNI152_T1_2mm_brain_mask_dil.nii.gz]
         first, projects fMRI to FSL MNI 2mm space using ANTs registration; second, smooth it by fwhm = 6mm within 
@@ -1281,7 +1441,7 @@ DESCRIPTION:
         Caution: if you want to use this step, please check your ANTs software version. There is a bug in early builds 
         of ANTs (before Aug 2014) that causes resampling for timeseries to be wrong. We have tested that our codes 
         would work on ANTs version 2.2.0. 
-    (15) [CBIG_preproc_native2mni -down FSL_MNI_2mm -sm 6 -sm_mask <sm_mask> -final_mask <final_mask>] 
+    (17)[CBIG_preproc_native2mni -down FSL_MNI_2mm -sm 6 -sm_mask <sm_mask> -final_mask <final_mask>] 
         it has the similar functionality as (13) but using FreeSurfer with talairach.m3z, not ANTs. We suggest the 
         users use (13) instead of (14).
         First, this step projects fMRI to FreeSurfer nonlinear space; second, projects the image from FreeSurfer 
@@ -1307,7 +1467,7 @@ DESCRIPTION:
    
 REQUIRED ARGUMENTS:
     -s  <subject>              : subject ID
-    -fmrinii  <fmrinii>        : (1) fmrinii text file or (2) absolute nifti file path
+    -fmrinii  <fmrinii>        : (1) fmrinii text file or (2) absolute nifti file path or (3) a BIDS dataset
                                 (1) fmrinii text file including n+1 columns, the 1st column contains all run numbers, 
                                 where n stands for echo number.
                                 For single echo case, fmrinii text file should include 2 columns
@@ -1324,6 +1484,10 @@ REQUIRED ARGUMENTS:
                                 /data/../Sub0015_bld002_e3_rest.nii.gz
                                 (2) absolute nifti file path only support for single run single echo subject. 
                                 Input is the absolute nifti file path, and run number set to 001.
+                                (3) absolute path for a BIDS dataset. The subject folder is assumed to be 
+                                <fmrinii>/(sub-)<subject>. For this case, CBIG_preproc_convert_input_BIDS must be inlcuded
+                                as the first preprocessing step in the <config> file. An fmrinii text file will be
+                                generated at <output_dir>/<subject>.
 
     -anat_s  <anat>            : FreeSurfer recon-all folder name of this subject (relative path)
     -anat_d  <anat_dir>        : specify anat directory to recon-all folder (full path), i.e. <anat_dir> contains <anat>
@@ -1356,6 +1520,7 @@ OPTIONAL ARGUMENTS:
     -help                      : help
     -version                   : version
     -nocleanup                 : do not delete intermediate volumes
+    -matlab_runtime            : running MATLAB code on MATLAB Runtime instead of MATLAB.
 
 OUTPUTS: 
     CBIG_fMRI_preprocess.csh will create the directory <output_dir>/<subject> as specified in the options. Within the 
@@ -1377,6 +1542,12 @@ OUTPUTS:
         "fsaverage6" = data projected to fsaverage6 surface
         "sm6" = data smoothed with a FWHM = 6mm kernel on the surface
         "fsaverage5" = data downsampled to fsaverage5 surface
+
+        Note: our function uses mri_vol2surf to project fMRI data onto the surface, and uses mri_surf2surf to perform
+        mapping between surfaces. The output file for both functions are in NFITI(.nii.gz) format. NIFTI is typically
+        used as a volume file format. When using it to store surface data, reshaping the surface data is necessary to
+        avoid exceeding the maximum number of elements allowed in the NIFTI format. For more information, see:
+        https://surfer.nmr.mgh.harvard.edu/fswiki/mri_vol2surf
 
     2. vol folder contains the intermediate and final preprocessed fMRI data in the MNI152 and freesurfer nonlinear 
        volumetric spaces.

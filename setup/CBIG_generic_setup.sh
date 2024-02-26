@@ -221,9 +221,4 @@ then
   mkdir -p $CBIG_CODE_DIR/.git/hooks
   ln -s "$CBIG_CODE_DIR/hooks/pre-commit" "$CBIG_CODE_DIR/.git/hooks/pre-commit"
 fi
-if [ ! -f "$CBIG_CODE_DIR/.git/hooks/pre-push" ];
-then
-  mkdir -p $CBIG_CODE_DIR/.git/hooks
-  ln -s "$CBIG_CODE_DIR/hooks/pre-push" "$CBIG_CODE_DIR/.git/hooks/pre-push"
-fi
 

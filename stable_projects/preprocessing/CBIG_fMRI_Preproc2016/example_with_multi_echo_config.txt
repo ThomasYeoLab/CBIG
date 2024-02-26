@@ -1,5 +1,6 @@
 ###CBIG fMRI preprocessing configuration file
 ###The order of preprocess steps is listed below
+CBIG_preproc_deoblique
 CBIG_preproc_skip -skip 4
 ### Caution: Change your slice timing file based on your data. The example slice timing file is a fake one.
 CBIG_preproc_fslslicetimer -slice_timing ${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/example_slice_timing_e1.txt,${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/example_slice_timing_e2.txt,${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/example_slice_timing_e3.txt

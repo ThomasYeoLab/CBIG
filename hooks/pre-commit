@@ -542,12 +542,53 @@ else
     echo "   [PASSED]" | tee -a $logfile
 fi
 
+######
+# 5. (committed files)
+######
+###
+# Find the committed files that we want to check
+###
+files_to_be_committed=($(git diff --cached --name-status | awk '(($1 != "D") && ($1 != "U")) {if ($1 ~ /^R/) print $3; else print $2}'))
+
+###
+# check whether committed files are less than 1MB
+###
+max_file_size=1048576
+max_file_size_mb=$(echo "scale=2; $max_file_size / (1024 * 1024)" | bc)
+all_less_than_1MB=1
+echo -e "\n==> [Check] Checking that committed files are all less than 1MB.." | tee -a $logfile
+for file_path in "${files_to_be_committed[@]}"; do
+    filesize=$(stat -c%s "$file_path")
+    file_size_mb=$(echo "scale=2; $filesize / (1024 * 1024)" | bc)
+    if ((filesize > max_file_size)); then
+        echo "   [WARNING] The size of "$file_path" is $file_size_mb MB, which is more than $max_file_size_mb MB." | tee -a $logfile
+        all_less_than_1MB=0
+    fi
+done
+
+# Prompt the user for confirmation
+if [ $all_less_than_1MB == 0 ]; then
+    echo -e "\nThere are staged files larger than $max_file_size_mb MB, you **MUST** have PI/admin's approval to add large files."
+    read -p "Are you sure you want to commit?[y/N]" choice < /dev/tty
+    case "$choice" in
+    [yY][eE][sS]|[yY])
+        all_less_than_1MB=1
+        echo "   [PASSED] Although there are staged files larger than $max_file_size_mb MB, the user decided to continue committing." | tee -a $logfile
+        ;;
+    *)
+        echo "   [FAILED] There are staged files larger than $max_file_size_mb MB, and the user decided to abort committing." | tee -a $logfile
+        ;;
+    esac
+else
+    echo "   [PASSED]" | tee -a $logfile
+fi
+
 ###
 # if any checks failed,exit the program
 ###
 if [ $all_with_valid_prefixes == 0 -o $all_with_license == 0 -o $all_without_abs_path == 0 -o $all_without_banword == 0 \
     -o $all_within_120 == 0 -o $all_with_valid_rmpath == 0 -o $all_with_valid_prefixes == 0 -o $all_python_mit == 0 \
-    -o $all_yapf_format == 0 -o $all_flake8_format == 0 ]; then
+    -o $all_yapf_format == 0 -o $all_flake8_format == 0 -o $all_less_than_1MB == 0 ]; then
     echo "[FAILED] Some checks failed." | tee -a $logfile
     echo "Check pre-commit hook log file: $logfile" | tee -a $logfile
     exit 1
@@ -557,6 +598,5 @@ else
 fi
 
 
-git add .
-
 exit 0
+

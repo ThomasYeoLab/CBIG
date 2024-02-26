@@ -71,6 +71,7 @@ set topup_config = ""       #config file for topup (use default if not specified
 set sig_threshold = 0.9     #signal loss threshold. Default is 0.9
 set fmri_bet = 0.2          #BET fractional intensity threshold for fMRI image. Default is 0.2
 set mag_bet = 0.3           #BET fractional intensity threshold for magnitude image. Default is 0.3
+set nocleanup = 0           #default cleanup intermediate files
 set echo_number = 1         #number of echos default to be 1
 set echo_stem = ""
 
@@ -512,16 +513,17 @@ foreach curr_bold ($zpdbold)
     echo "====================== apply warp on other echos finished ======================" |& tee -a $LF
 
     #tidy up the space
-    if ( ! -e unwarping ) then
-        mkdir warping
+    if ( $nocleanup == 0 ) then
+        rm fmap*
+        rm "$boldfile"_"$ref"*
+    else
+        if ( ! -e warping ) then
+            mkdir warping
+        endif
+        mv fmap* warping/
+        mv "$boldfile"_"$ref"* warping/
     endif
-    mv fmap* warping/
-    mv "$boldfile"_"$ref"* warping/
 
-    #clean up intermediate files
-    if ( $nocleanup != 1 ) then
-        rm -r warping
-    endif
 end
 
 #########################

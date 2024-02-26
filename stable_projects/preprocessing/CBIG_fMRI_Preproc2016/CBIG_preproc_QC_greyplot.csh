@@ -46,6 +46,7 @@ set FD_th = 0.2            # the threshold of FD in censoring
 set DV_th = 50             # the threshold of DV in censoring
 set echo_number = 1        # number of echos
 set nocleanup = 0          # default clean up intermediate files
+set matlab_runtime = 0     # Default not running on MATLAB Runtime
 
 goto parse_args;
 parse_args_return:
@@ -59,10 +60,26 @@ set root_dir = `dirname $root_dir`
 ###############################
 # check if matlab exists
 ###############################
-set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
-if ($status) then
-    echo "ERROR: could not find matlab"
-    exit 1;
+if ( $matlab_runtime == 0 ) then
+    set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
+    if ($status) then
+        echo "ERROR: could not find MATLAB"
+        exit 1;
+    endif
+else
+    set MATLAB=$MATLAB_RUNTIME_DIR
+    if ($status) then
+        echo "ERROR: could not find MATLAB Runtime"
+        exit 1;
+    endif
+    echo "Setting up environment variables for MATLAB Runtime"
+    setenv LD_LIBRARY_PATH ${MATLAB}/runtime/glnxa64:${MATLAB}/bin/glnxa64:${MATLAB}/sys/os/glnxa64:${MATLAB}/sys/opengl/lib/glnxa64:${LD_LIBRARY_PATH}
+    # check if MATLAB Runtime utilities folder exists
+    set matlab_runtime_util = "${root_dir}/matlab_runtime/utilities"
+    if ( ! -d $matlab_runtime_util ) then
+        echo "ERROR: MATLAB Runtime utilities folder does not exist!"
+        exit 1;
+    endif
 endif
 
 cd $sub_dir/$subject
@@ -176,10 +193,14 @@ if( -e $ROI_regressors_list ) then
         end
 
         set fMRI_list = "$regress_folder/fMRI_list.txt"
-        set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r )
-        set cmd = ($cmd '"' 'addpath(fullfile('"'"$root_dir"'"','"'"utilities"'"'))'; )
-        set cmd = ($cmd CBIG_preproc_create_ROI_regressors "'"$fMRI_list"'" "'"$GS_list"'" )
-        set cmd = ($cmd "'"$wb_mask"'" "'""'" "'""'" "'"0"'"; exit '"' );
+        set matlab_args = "'$fMRI_list' '$GS_list' '$wb_mask' '' '' '0'"
+        if ( $matlab_runtime == 0 ) then
+            set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r )
+            set cmd = ( $cmd '"' 'addpath(fullfile('"'"$root_dir"'"','"'"utilities"'"'))'; )
+            set cmd = ( $cmd CBIG_preproc_create_ROI_regressors $matlab_args; exit '"' )
+        else
+            set cmd = ( ${matlab_runtime_util}/CBIG_preproc_create_ROI_regressors $matlab_args )
+        endif
         echo $cmd |& tee -a $LF
         eval $cmd |& tee -a $LF
         rm $GS_list
@@ -210,17 +231,22 @@ foreach runfolder ($bold)
     endif
     set output = $qc/${subject}_bld${runfolder}${BOLD_stem}_greyplot.png
     if ( "$regression_done" == 0 ) then
-        set cmd = ( $MATLAB -nodesktop  -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; )
-        set cmd = ($cmd CBIG_preproc_QC_greyplot "'"$fmri_file"'"  "'"$FD_file"'"  "'"$DV_file"'"  "'"$output"'" )  
-        set cmd = ($cmd "'"GM_mask"'" "'"$gm_mask"'"  "'"WB_mask"'" "'"$wb_mask"'" "'"grey_vox_factor"'" "'"$grey_vox_fac"'")
-        set cmd = ($cmd "'"tp_factor"'" "'"$tp_fac"'" "'"FD_thres"'" "'"$FD_th"'" "'"DV_thres"'" "'"$DV_th"'"; exit; '"')
+        set matlab_args = "'$fmri_file'  '$FD_file'  '$DV_file'  '$output'"
+        set matlab_args = "${matlab_args} 'GM_mask' '$gm_mask'  'WB_mask' '$wb_mask'"
+        set matlab_args = "${matlab_args} 'grey_vox_factor' '$grey_vox_fac' 'tp_factor'"
+        set matlab_args = "${matlab_args} '$tp_fac' 'FD_thres' '$FD_th' 'DV_thres' '$DV_th'"
     else
         set GS_txt = $qc/$subject"_bld"${runfolder}_WB.txt
-
+        set matlab_args = "'$fmri_file' '$FD_file' '$DV_file' '$output'"
+        set matlab_args = "${matlab_args} 'GM_mask' '$gm_mask' 'WBS_text' '$GS_txt'"
+        set matlab_args = "${matlab_args} 'grey_vox_factor' '$grey_vox_fac' 'tp_factor'"
+        set matlab_args = "${matlab_args} '$tp_fac' 'FD_thres' '$FD_th' 'DV_thres' '$DV_th'"
+    endif
+    if ( $matlab_runtime == 0 ) then
         set cmd = ( $MATLAB -nodesktop  -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; )
-        set cmd = ($cmd CBIG_preproc_QC_greyplot "'"$fmri_file"'"  "'"$FD_file"'"  "'"$DV_file"'"  "'"$output"'" )  
-        set cmd = ($cmd "'"GM_mask"'" "'"$gm_mask"'"  "'"WBS_text"'" "'"$GS_txt"'" "'"grey_vox_factor"'" "'"$grey_vox_fac"'")
-        set cmd = ($cmd "'"tp_factor"'" "'"$tp_fac"'" "'"FD_thres"'" "'"$FD_th"'" "'"DV_thres"'" "'"$DV_th"'"; exit; '"')
+        set cmd = ( $cmd CBIG_preproc_QC_greyplot $matlab_args; exit; '"' )
+    else
+        set cmd = ( ${matlab_runtime_util}/CBIG_preproc_QC_greyplot $matlab_args )
     endif
     echo $cmd |& tee -a $LF
     eval $cmd |& tee -a $LF
@@ -249,10 +275,14 @@ foreach runfolder ($bold)
             set FDpath = `ls -d *motion_outliers_FDRMS`
             popd
             set FDpath = "$boldfolder/mc/$FDpath"
-            set cmd = ( $MATLAB -nodesktop  -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; )
-            set cmd = ( $cmd CBIG_preproc_multiecho_QC_greyplot "'"$before_MEICA"'" "'"$after_MEICA"'" )
-            set cmd = ( $cmd "'"$FDpath"'" \
-"'"$sub_dir/$subject/qc/${subject}_bold${runfolder}_multi_echo_QC_greyplot.png"'"; exit; '"')
+            set matlab_args = "'$before_MEICA' '$after_MEICA' '$FDpath'"
+            set matlab_args = "${matlab_args} '$sub_dir/$subject/qc/${subject}_bold${runfolder}_multi_echo_QC_greyplot.png'"
+            if ( $matlab_runtime == 0 ) then
+                set cmd = ( $MATLAB -nodesktop  -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; )
+                set cmd = ( $cmd CBIG_preproc_multiecho_QC_greyplot $matlab_args; exit; '"' )
+            else
+                set cmd = ( ${matlab_runtime_util}/CBIG_preproc_multiecho_QC_greyplot $matlab_args )
+            endif
             echo $cmd |& tee -a $LF
             eval $cmd |& tee -a $LF
             if ( ! -e $sub_dir/$subject/qc/${subject}_bold${runfolder}_multi_echo_QC_greyplot.png ) then
@@ -360,6 +390,11 @@ while( $#argv != 0 )
 
         case "-nocleanup":
             set nocleanup = 1;
+            breaksw
+
+        #running code on MATLAB Runtime (optional)
+        case "-matlab_runtime":
+            set matlab_runtime = 1;
             breaksw
 
         default:
@@ -494,6 +529,7 @@ OPTIONAL ARGUMENTS:
     -echo_number   echo_number  : number of echoes of the subject. If it is a multi-echo subject, 
                                   a greyplot for multi-echo QC will be generate. Default echo_number 
                                   is set to be 1.
+    -matlab_runtime             : running MATLAB code on MATLAB Runtime instead of MATLAB.
     -help                       : help
     -version                    : version
     -nocleanup                  : do not delete intermediate volumes

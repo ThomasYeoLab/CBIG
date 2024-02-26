@@ -82,19 +82,19 @@ $CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/unit_tests/si
 * Test case 3 (aCompCor):
 
 ```
-$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/unit_tests/single_subject/CBIG_preproc_unit_tests_call_fMRI_preproc_aCompCor.csh
+$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/unit_tests/single_subject/CBIG_preproc_unit_tests_call_fMRI_preproc_aCompCor_deoblique.csh <preproc_out_dir>
 ```
 
 The pipeline will be run with this configuration file
 
 ```
-$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/unit_tests/single_subject/prepro_aCompCor.config
+$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/unit_tests/single_subject/prepro_aCompCor_deoblique.config
 ```
 
 * Test case 4 (spatial distortion correction opposite phase encoding direction):
 
 ```
-$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/unit_tests/single_subject/CBIG_preproc_unit_tests_call_fMRI_preproc_sdc_oppo_PED.csh
+$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/unit_tests/single_subject/CBIG_preproc_unit_tests_call_fMRI_preproc_sdc_oppo_PED.csh <preproc_out_dir>
 ```
 
 The pipeline will be run with this configuration file

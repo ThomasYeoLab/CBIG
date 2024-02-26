@@ -50,14 +50,14 @@ Except for this project, if you want to use the code for other stable projects f
 - To download the version of the code that was last tested, you can either
 
   - visit this link:
-  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.29.3-Update_preproc](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.29.3-Update_preproc)
+  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.29.7-Update_preproc](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.29.7-Update_preproc)
   
   or
   
   - run the following command, if you have Git installed
   
   ```
-  git checkout -b CBIG_fMRI_Preprocessing v0.29.3-Update_preproc
+  git checkout -b CBIG_fMRI_Preprocessing v0.29.7-Update_preproc
   ```
 
 ### Usage 
@@ -99,12 +99,27 @@ Except for this project, if you want to use the code for other stable projects f
   NOTE: There is a bug in early builds of ANTs (before Aug 2014) that causes resampling for timeseries to be wrong. We have tested that our
 codes would work on ANTs version 2.2.0. 
 
+- MATLAB Runtime
+
+  User may run preprocessing in computing environment without licensed MATLAB version, but has MATLAB Runtime R2018b. Refer to `$CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/matlab_runtime/README.md` for instructions.
 ----
 
 ## Updates
 
-- Release v0.29.3 (28/06/2023): 
-   1. Simply usage for single run cases.
+- Release v0.29.7 (26/02/2024):
+   1. Add support for MATLAB Runtime. User can run the preprocessing pipeline with MATLAB Runtime instead of licensed MATLAB version.
+
+   2. Add support for BIDS formatted input: `CBIG_preproc_convert_input_BIDS.csh`.
+
+   3. Make deoblique step optional. If user wants to run this step, user needs to include `CBIG_preproc_deoblique` in the config file.
+
+   4. Fix bugs in `CBIG_preproc_spatial_distortion_correction.csh`.
+
+   5. Move the output file (from `CBIG_preproc_fslmcflirt_outliers` step) `mc_template.nii.gz` to `<subject_id>/bold/mc/` folder.
+
+
+- Release v0.29.3 (28/06/2023):
+   1. Simple usage for single run cases.
 
    2. Initial bold stem can be customized.
 
@@ -112,8 +127,8 @@ codes would work on ANTs version 2.2.0.
 
    4. Remove unused flag in CBIG_antsReg_vol2vol.sh.
 
-- Release v0.29.1 (10/05/2023): 
-   1. Support Yan2023 homotopic parcelltion. 
+- Release v0.29.1 (10/05/2023):
+   1. Support Yan2023 homotopic parcellation. 
 
    2. Default FC matrix is changed to Yan2023 with Kong2022 17 networks, 400 parcels resolution. 
 
@@ -217,4 +232,4 @@ codes would work on ANTs version 2.2.0.
 
 ## Bugs and Questions
 
-Please contact Ru(by) Kong at roo.cone@gmail.com, Jingwei Li at jingweili.sjtu.nus@gmail.com, Lyu Xingyu at lvxingyuyuyu@gmail.com, Shaoshi Zhang at 0zhangshaoshi0@gmail.com and Thomas Yeo at yeoyeo02@gmail.com.
+Please contact Xue Aihuiping at xueaihuiping@gmail.com, Yan Hongwei at yanhongwei_a@yahoo.com.sg, Shaoshi Zhang at 0zhangshaoshi0@gmail.com, Ru(by) Kong at roo.cone@gmail.com and Thomas Yeo at yeoyeo02@gmail.com.

@@ -55,6 +55,7 @@ set low_f = ""      # Default not set the low_f cutoff frequency
 set high_f = ""     # Default not set the high_f cutoff frequency
 set censor = 0      # Default use all frames to do GLM regression
 set force = 0       # Default if file exist, skip the step
+set matlab_runtime = 0  # Default not running on MATLAB Runtime
 
 goto parse_args;
 parse_args_return:
@@ -92,11 +93,28 @@ echo "[Bandpass]: zpdbold = $zpdbold" |& tee -a $LF
 cd $boldfolder
 
 # check if matlab exists
-set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
-if ($status) then
-    echo "ERROR: could not find matlab"
-    exit 1;
+if ( $matlab_runtime == 0 ) then
+    set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
+    if ($status) then
+        echo "ERROR: could not find MATLAB"
+        exit 1;
+    endif
+else
+    set MATLAB=$MATLAB_RUNTIME_DIR
+    if ($status) then
+        echo "ERROR: could not find MATLAB Runtime"
+        exit 1;
+    endif
+    echo "Setting up environment variables for MATLAB Runtime"
+    setenv LD_LIBRARY_PATH ${MATLAB}/runtime/glnxa64:${MATLAB}/bin/glnxa64:${MATLAB}/sys/os/glnxa64:${MATLAB}/sys/opengl/lib/glnxa64:${LD_LIBRARY_PATH}
+    # check if MATLAB Runtime utilities folder exists
+    set matlab_runtime_util = "${root_dir}/matlab_runtime/utilities"
+    if ( ! -d $matlab_runtime_util ) then
+        echo "ERROR: MATLAB Runtime utilities folder does not exist!"
+        exit 1;
+    endif
 endif
+
 
 #############################################
 # Print an error if the user use -censor flag
@@ -133,10 +151,15 @@ foreach curr_bold ($zpdbold)
         if ( (! -e  $boldfile"_bp_"$low_f"_"$high_f".nii.gz") || ($force == 1) ) then
             set fMRI_file = $boldfile".nii.gz"
             set output_file = $boldfile"_bp_"$low_f"_"$high_f".nii.gz"
-            set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r '"' \
-             'addpath(fullfile('"'"'$root_dir'"'"','"'"'utilities'"'"'))'; \
-             CBIG_bandpass_vol "'"$fMRI_file"'" "'"$output_file"'" "'"$low_f"'" "'"$high_f"'" "'"$detrend"'" \
-             "'"$retrend"'" "'"$censor_file"'"; exit '"' );
+            set matlab_args = "'$fMRI_file' '$output_file' '$low_f' '$high_f' '$detrend' '$retrend' '$censor_file'"
+            if ( $matlab_runtime == 0 ) then
+                set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r '"' \
+                    'addpath(fullfile('"'"'$root_dir'"'"','"'"'utilities'"'"'))'; \
+                    CBIG_bandpass_vol $matlab_args; exit '"' );
+            else
+                set cmd = ( ${matlab_runtime_util}/CBIG_bandpass_vol $matlab_args )
+            endif
+            echo $cmd |& tee -a $LF
             eval $cmd |& tee -a $LF
         else
             echo "=======================Bandpass has been done!=======================" |& tee -a $LF
@@ -233,6 +256,11 @@ while( $#argv != 0 )
         #update results, if exist then overwrite
         case "-force":
             set force = 1;
+            breaksw
+
+        #running code on MATLAB Runtime (optional)
+        case "-matlab_runtime":
+            set matlab_runtime = 1;
             breaksw
 
         default:
@@ -343,6 +371,7 @@ OPTIONAL ARGUMENTS:
     -retrend                     : add back the linear trend after bandpass filtering (optional), retrend 
                                    is ignored if detrend is off
     -force                       : update results, if exist then overwrite
+    -matlab_runtime              : running MATLAB code on MATLAB Runtime instead of MATLAB.
     -help                        : help
     -version                     : version
 

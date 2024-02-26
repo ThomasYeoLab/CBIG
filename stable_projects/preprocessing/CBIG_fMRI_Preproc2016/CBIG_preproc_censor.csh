@@ -36,6 +36,7 @@ set outlier_stem = ""      # outlier vector file name
 set max_mem = "NONE"       # Do not specify maximal memory usage
 set low_f = ""             # low cut-off frequency
 set high_f = ""            # high cut-off frequency
+set matlab_runtime = 0     # Default not running on MATLAB Runtime
 
 set VERSION = '$Id: CBIG_preproc_censor.csh v 1.0 2016/05/26'
 
@@ -79,20 +80,38 @@ check_params_return:
 set currdir = `pwd`
 cd $sub_dir/$subject
 
+
 ###############################
 # check if matlab exists
 ###############################
-set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
-if ($status) then
-    echo "ERROR: could not find matlab"
-    exit 1;
+if ( $matlab_runtime == 0 ) then
+    set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
+    if ($status) then
+        echo "ERROR: could not find MATLAB"
+        exit 1;
+    endif
+else
+    set MATLAB=$MATLAB_RUNTIME_DIR
+    if ($status) then
+        echo "ERROR: could not find MATLAB Runtime"
+        exit 1;
+    endif
+    echo "Setting up environment variables for MATLAB Runtime"
+    setenv LD_LIBRARY_PATH ${MATLAB}/runtime/glnxa64:${MATLAB}/bin/glnxa64:${MATLAB}/sys/os/glnxa64:${MATLAB}/sys/opengl/lib/glnxa64:${LD_LIBRARY_PATH}
+    # check if MATLAB Runtime utilities folder exists
+    set matlab_runtime_util = "${root_dir}/matlab_runtime/utilities"
+    if ( ! -d $matlab_runtime_util ) then
+        echo "ERROR: MATLAB Runtime utilities folder does not exist!"
+        exit 1;
+    endif
 endif
+
 
 ###############################
 # create log file
 ###############################
 if (! -e logs) then
-     mkdir -p logs
+    mkdir -p logs
 endif
 set LF = $sub_dir/$subject/logs/CBIG_preproc_censor.log
 if( -e $LF ) then
@@ -102,6 +121,7 @@ touch $LF
 echo "[CENSOR]: logfile = $LF"
 echo "Censoring / Motion Scrubbing" >> $LF
 echo "[CMD]: CBIG_preproc_censor.csh $cmdline"   >>$LF
+
 
 ###############################
 # echo bold folder
@@ -118,6 +138,7 @@ set DVARS = (`echo $outlier_stem | awk -F "DVARS" '{print $2}' | awk -F "_" '{pr
 
 echo "FD = $FD"
 echo "DVARS = $DVARS"
+
 
 ###############################
 # print an error if the user used -low_f and -high_f flags
@@ -157,6 +178,7 @@ endif
 echo "===================== Making whole brain & Grey Matter Mask finished ===================" |& tee -a $LF
 echo "" |& tee -a $LF
 
+
 ###############################################
 # Censoring
 ###############################################
@@ -189,24 +211,34 @@ foreach runfolder ($bold)
         echo "$output and $output_inter already exists." |& tee -a $LF
     else
         # if one or both of the two outputs does not exist, call interpolation function
-        if ( "$bandpass_flag" == 0 ) then
-            # if do not perform bandpass filtering, do not pass in low_f and high_f
-            set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r)
-            set cmd = ($cmd '"''addpath(fullfile('"'"${root_dir}"'"',' "'"utilities"'"'))';)
-            set cmd = ($cmd 'CBIG_preproc_censor_wrapper('"'"${BOLD}.nii.gz"'"',' "'"${outlier_file}"'"',' "'"$TR"'"',' )
-            set cmd = ($cmd "'"${output_inter}"'"',' "'"${output}"'"',' "'"${loose_mask}"'"',' "'"${max_mem}"'"')'; exit '"')
-            echo $cmd |& tee -a $LF
-            eval $cmd |& tee -a $LF
+        set matlab_args = "'${BOLD}.nii.gz' '${outlier_file}' '$TR'"
+        set matlab_args = "${matlab_args} '${output_inter}' '${output}'"
+        set matlab_args = "${matlab_args} '${loose_mask}' '${max_mem}'"
+        if ( $matlab_runtime == 0 ) then
+            if ( "$bandpass_flag" == 0 ) then
+                # if do not perform bandpass filtering, do not pass in low_f and high_f
+                set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r )
+                set cmd = ( $cmd '"''addpath(fullfile('"'"${root_dir}"'"',' "'"utilities"'"'))'; )
+                set cmd = ( $cmd CBIG_preproc_censor_wrapper $matlab_args; exit '"' )
+            else
+                # if perform bandpass filtering, pass in low_f and high_f
+                set matlab_args = "${matlab_args} '${low_f}' '${high_f}'"
+                set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r )
+                set cmd = ( $cmd '"''addpath(fullfile('"'"${root_dir}"'"',' "'"utilities"'"'))'; )
+                set cmd = ( $cmd CBIG_preproc_censor_wrapper $matlab_args; exit '"' )
+            endif
         else
-            # if perform bandpass filtering, pass in low_f and high_f
-            set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r)
-            set cmd = ($cmd '"''addpath(fullfile('"'"${root_dir}"'"',' "'"utilities"'"'))';)
-            set cmd = ($cmd 'CBIG_preproc_censor_wrapper('"'"${BOLD}.nii.gz"'"',' "'"${outlier_file}"'"',' "'"$TR"'"',' )
-            set cmd = ($cmd "'"${output_inter}"'"',' "'"${output}"'"',' "'"${loose_mask}"'"',' "'"${max_mem}"'"',')
-            set cmd = ($cmd "'"${low_f}"'"',' "'"${high_f}"'"')'; exit '"' )
-            echo $cmd |& tee -a $LF
-            eval $cmd |& tee -a $LF
+            if ( "$bandpass_flag" == 0 ) then
+                # if do not perform bandpass filtering, do not pass in low_f and high_f
+                set cmd = ( ${matlab_runtime_util}/CBIG_preproc_censor_wrapper $matlab_args )
+            else
+                # if perform bandpass filtering, pass in low_f and high_f
+                set matlab_args = "${matlab_args} '${low_f}' '${high_f}'"
+                set cmd = ( ${matlab_runtime_util}/CBIG_preproc_censor_wrapper $matlab_args )
+            endif
         endif
+        echo $cmd |& tee -a $LF
+        eval $cmd |& tee -a $LF
 
         # check whether censoring interpolation successfully exited.
         if(-e $output) then
@@ -249,13 +281,18 @@ foreach runfolder ($bold)
     set qc_out_dir = "${sub_dir}/${subject}/qc/censor_interp"
     mkdir -p $qc_out_dir
     if ( -e ${censor_inter} && -e ${censor_final} ) then
-        set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r)
-        set cmd = ($cmd '"''addpath(fullfile('"'"${root_dir}"'"',' "'"utilities"'"'))';)
-        set cmd = ($cmd 'CBIG_preproc_CensorQC('"'"${qc_out_dir}"'"',' "'"${subject}"'"',' "'"${runfolder}"'"',' )
-        set cmd = ($cmd "'"${BOLD}.nii.gz"'"',' "'"${censor_inter}"'"',' "'"${censor_final}"'"',' )
-        set cmd = ($cmd "'"${sub_dir}/${subject}/bold/mask/${subject}.brainmask.bin.nii.gz"'"',' )
-        set cmd = ($cmd "'"${sub_dir}/${subject}/bold/mask/${subject}.func.gm.nii.gz"'"',' )
-        set cmd = ($cmd "'"${outlier_file}"'"')'; exit '"' )
+        set matlab_args = "'${qc_out_dir}' '${subject}' '${runfolder}'"
+        set matlab_args = "${matlab_args} '${BOLD}.nii.gz' '${censor_inter}' '${censor_final}'"
+        set matlab_args = "${matlab_args} '${sub_dir}/${subject}/bold/mask/${subject}.brainmask.bin.nii.gz'"
+        set matlab_args = "${matlab_args} '${sub_dir}/${subject}/bold/mask/${subject}.func.gm.nii.gz'"
+        set matlab_args = "${matlab_args} '${outlier_file}'"
+        if ( $matlab_runtime == 0 ) then
+            set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r )
+            set cmd = ( $cmd '"''addpath(fullfile('"'"${root_dir}"'"',' "'"utilities"'"'))'; )
+            set cmd = ( $cmd CBIG_preproc_CensorQC $matlab_args; exit '"' )
+        else
+            set cmd = ( ${matlab_runtime_util}/CBIG_preproc_CensorQC $matlab_args )
+        endif
         echo $cmd |& tee -a $LF
         eval $cmd |& tee -a $LF
     else
@@ -357,6 +394,11 @@ while( $#argv != 0 )
 
         case "-nocleanup":
             set nocleanup = 1;
+            breaksw
+
+        #running code on MATLAB Runtime (optional)
+        case "-matlab_runtime":
+            set matlab_runtime = 1;
             breaksw
 
         default:
@@ -511,6 +553,7 @@ OPTIONAL ARGUMENTS:
                                   non-brain part).
     -nocleanup                  : do not remove intermediate result (interpolated volume without 
                                   bandpass filtering and without replacement.
+    -matlab_runtime             : running MATLAB code on MATLAB Runtime instead of MATLAB.
 
 OUTPUTS:
     1. If -nocleanup flag is passed in, this function will output two BOLD volumes:

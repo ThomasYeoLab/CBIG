@@ -37,6 +37,8 @@ set sm = 6;
 set all_out_stem = ""
 set all_out_mesh = ""
 
+set matlab_runtime = 0 # Default not running on MATLAB Runtime
+
 ########################
 # Print help and version
 ########################
@@ -79,10 +81,26 @@ check_params_return:
 ###############################
 # check if matlab exists
 ###############################
-set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
-if ($status) then
-    echo "ERROR: could not find matlab"
-    exit 1;
+if ( $matlab_runtime == 0 ) then
+    set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
+    if ($status) then
+        echo "ERROR: could not find MATLAB"
+        exit 1;
+    endif
+else
+    set MATLAB=$MATLAB_RUNTIME_DIR
+    if ($status) then
+        echo "ERROR: could not find MATLAB Runtime"
+        exit 1;
+    endif
+    echo "Setting up environment variables for MATLAB Runtime"
+    setenv LD_LIBRARY_PATH ${MATLAB}/runtime/glnxa64:${MATLAB}/bin/glnxa64:${MATLAB}/sys/os/glnxa64:${MATLAB}/sys/opengl/lib/glnxa64:${LD_LIBRARY_PATH}
+    # check if MATLAB Runtime utilities folder exists
+    set matlab_runtime_util = "${root_dir}/matlab_runtime/utilities"
+    if ( ! -d $matlab_runtime_util ) then
+        echo "ERROR: MATLAB Runtime utilities folder does not exist!"
+        exit 1;
+    endif
 endif
 
 setenv SUBJECTS_DIR $anat_dir
@@ -206,9 +224,15 @@ foreach runfolder ($bold)
                 echo "Input2: $input2"
                 exit 1;
             endif
-            set matlab_cmd = ("addpath(fullfile('$root_dir', 'utilities'));" \
-"CBIG_preproc_fsaverage_medialwall_fillin '$hemi' 'fsaverage6' '$input1' '$input2' '$tmp_output'; exit;")
-            $MATLAB -nodesktop -nodisplay -nosplash -r "$matlab_cmd" |& tee -a $LF
+            set matlab_args = "'$hemi' 'fsaverage6' '$input1' '$input2' '$tmp_output'"
+            if ( $matlab_runtime == 0 ) then
+                set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(fullfile('"'"$root_dir"'"\
+                    ','"'"utilities"'"'))'; CBIG_preproc_fsaverage_medialwall_fillin $matlab_args; exit '"' );
+            else
+                set cmd = ( ${matlab_runtime_util}/CBIG_preproc_fsaverage_medialwall_fillin $matlab_args )
+            endif
+            echo $cmd |& tee -a $LF
+            eval $cmd |& tee -a $LF
 
             if ( ! -e $tmp_output ) then
                 echo "ERROR: Fill in medial wall failed. ${tmp_output} is not produced." |& tee -a $LF
@@ -306,9 +330,15 @@ foreach runfolder ($bold)
         foreach hemi (lh rh)
             set before_NaN_name = $surffolder/$hemi.${subject}_bld${runfolder}${out_stem}.nii.gz
             set after_NaN_name = $surffolder/$hemi.${subject}_bld${runfolder}${out_stem}_medialwallNaN.nii.gz
-            set matlab_cmd = ("addpath(fullfile('$root_dir', 'utilities'));" \
-"CBIG_preproc_set_medialwall_NaN '$hemi' '$out_mesh' '$before_NaN_name' '$after_NaN_name'; exit;")
-            $MATLAB -nodesktop -nodisplay -nosplash -r "$matlab_cmd" |& tee -a $LF
+            set matlab_args = "'$hemi' '$out_mesh' '$before_NaN_name' '$after_NaN_name'"
+            if ( $matlab_runtime == 0 ) then
+                set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(fullfile('"'"$root_dir"'"\
+                    ','"'"utilities"'"'))'; CBIG_preproc_set_medialwall_NaN $matlab_args; exit '"' );
+            else
+                set cmd = ( ${matlab_runtime_util}/CBIG_preproc_set_medialwall_NaN $matlab_args )
+            endif
+            echo $cmd |& tee -a $LF
+            eval $cmd |& tee -a $LF
 
             if ( -e $after_NaN_name ) then
                 echo "[SURF]: $after_NaN_name is successfully generated. Move it to $before_NaN_name." |& tee -a $LF
@@ -413,6 +443,11 @@ while( $#argv != 0 )
         case "-REG_stem"
             if ( $#argv == 0 ) goto arg2err;
             set reg_stem = "$argv[1]"; shift;
+            breaksw
+
+        #running code on MATLAB Runtime (optional)
+        case "-matlab_runtime":
+            set matlab_runtime = 1;
             breaksw
 
         default:
@@ -556,6 +591,7 @@ OPTIONAL ARGUMENTS:
     -proj       proj_mesh : projection resolution, e.g. fsaverage6 (default)
     -down       down_mesh : downsample resolution, e.g. fsaverage5 (default)
     -sm         sm        : smooth fwhm (mm), e.g. 6 (default)
+    -matlab_runtime       : running MATLAB code on MATLAB Runtime instead of MATLAB, e.g. 0 (default)
 
 OUTPUTS:
     Three NIFTI volumes will be output.
@@ -565,6 +601,13 @@ OUTPUTS:
         <sub_dir>/<subject>/bold/<run_number>/<subject>_bld<run_number><BOLD_stem>_fs6_sm6.nii.gz
     (3) The volume after downsample (e.g. proj_mesh = fsaverage6, sm = 6, down_mesh = fsaverage5):
         <sub_dir>/<subject>/bold/<run_number>/<subject>_bld<run_number><BOLD_stem>_fs6_sm6_fs5.nii.gz
+
+    Note: our function uses mri_vol2surf to project fMRI data onto the surface, and uses mri_surf2surf to perform
+    mapping between surfaces. The output file for both functions are in NFITI(.nii.gz) format. NIFTI is typically
+    used as a volume file format. When using it to store surface data, reshaping the surface data is necessary to
+    avoid exceeding the maximum number of elements allowed in the NIFTI format. For more information, see:
+    https://surfer.nmr.mgh.harvard.edu/fswiki/mri_vol2surf 
+
 
 Example:
     $CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_native2fsaverage.csh 

@@ -65,6 +65,7 @@ set low_f = ""; # default no filtering of respiratory pseudomotion
 set high_f = ""; # default no filtering of respiratory pseudomotion
 set echo_number = 1 # number of echos default to be 1
 set echo_stem = ""
+set matlab_runtime = 0 # Default not running on MATLAB Runtime
 
 goto parse_args;
 parse_args_return:
@@ -78,13 +79,30 @@ set root_dir = `dirname $root_dir`
 ###############################
 # check if matlab exists
 ###############################
-set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
-if ($status) then
-    echo "ERROR: could not find matlab"
-    exit 1;
+if ( $matlab_runtime == 0 ) then
+    set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
+    if ($status) then
+        echo "ERROR: could not find MATLAB"
+        exit 1;
+    endif
+else
+    set MATLAB=$MATLAB_RUNTIME_DIR
+    if ($status) then
+        echo "ERROR: could not find MATLAB Runtime"
+        exit 1;
+    endif
+    echo "Setting up environment variables for MATLAB Runtime"
+    setenv LD_LIBRARY_PATH ${MATLAB}/runtime/glnxa64:${MATLAB}/bin/glnxa64:${MATLAB}/sys/os/glnxa64:${MATLAB}/sys/opengl/lib/glnxa64:${LD_LIBRARY_PATH}
+    # check if MATLAB Runtime utilities folder exists
+    set matlab_runtime_util = "${root_dir}/matlab_runtime/utilities"
+    if ( ! -d $matlab_runtime_util ) then
+        echo "ERROR: MATLAB Runtime utilities folder does not exist!"
+        exit 1;
+    endif
 endif
 
 cd $sub_dir/$subject
+
 
 #############################################
 # BOLD Information
@@ -134,15 +152,15 @@ echo "=========Generate template.nii.gz..(n-th frame of the base_bold, default i
 pushd $base_bold
 set base_boldfile = $subject"_bld"$zpdbold[1]$echo_stem$BOLD_stem
 echo "[MC]: use $nframe +1 as the template" |& tee -a $LF
-if ( (! -e  $boldfolder/mc_template.nii.gz) || ($force == 1)) then
+if ( (! -e  $mc/mc_template.nii.gz) || ($force == 1)) then
     #Motion correction template is the nframe = $nframe, default is the first frame
-    fslroi $base_boldfile $boldfolder/mc_template $nframe 1 |& tee -a $LF 
+    fslroi $base_boldfile $mc/mc_template $nframe 1 |& tee -a $LF 
 else
     echo "[MC]: Template already exists!" |& tee -a $LF
 endif
 
 popd
-set template = $boldfolder/mc_template.nii.gz
+set template = $mc/mc_template.nii.gz
 echo "[MC]: template = $template" |& tee -a $LF
 echo "=======================Template generation done!=======================" |& tee -a $LF
 echo "" |& tee -a $LF
@@ -213,9 +231,14 @@ foreach curr_bold ($zpdbold)
     set mc_abs_rms_file = ${boldfile}_mc_abs.rms
     set mc_rel_rms_file = ${boldfile}_mc_rel.rms
     set outname_prefix = ${boldfile}_mc
-
-    set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; \
-CBIG_preproc_plot_mcflirt_par $mc_par_file $mc_abs_rms_file $mc_rel_rms_file $qc $outname_prefix; exit; '"' );
+    set matlab_args = "'$mc_par_file' '$mc_abs_rms_file' '$mc_rel_rms_file'"
+    set matlab_args = "${matlab_args} '$qc' '$outname_prefix'"
+    if ( $matlab_runtime == 0 ) then
+        set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; )
+        set cmd = ( $cmd CBIG_preproc_plot_mcflirt_par $matlab_args; exit '"' )
+    else
+        set cmd = ( ${matlab_runtime_util}/CBIG_preproc_plot_mcflirt_par $matlab_args )
+    endif
     echo $cmd |& tee -a $LF
     eval $cmd |& tee -a $LF
 
@@ -273,10 +296,22 @@ foreach curr_bold ($zpdbold)
         set output = "$qc/${subject}_bld${curr_bold}"
         set dvars_file = "$mc/${boldfile}_motion_outliers_DVARS"
         set fd_file = "$mc/${boldfile}_motion_outliers_FDRMS"
-        set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; \
-            CBIG_preproc_DVARS_FDRMS_Correlation $dvars_file $fd_file $output; \
-            CBIG_preproc_motion_outliers $dvars_file $fd_file $fd_th $dv_th $discard_seg $output; exit; '"' );
-        eval $cmd |& tee -a $LF
+        set matlab_args_DVARS_FDRMS_Correlation = "'$dvars_file' '$fd_file' '$output'"
+        set matlab_args_motion_outliers = "'$dvars_file' '$fd_file' '$fd_th' '$dv_th' '$discard_seg' '$output'"
+        if ( $matlab_runtime == 0 ) then
+            set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; \
+                CBIG_preproc_DVARS_FDRMS_Correlation $matlab_args_DVARS_FDRMS_Correlation; \
+                CBIG_preproc_motion_outliers $matlab_args_motion_outliers; exit; '"' );
+            eval $cmd |& tee -a $LF
+            echo $cmd |& tee -a $LF
+        else
+            set cmd = ( ${matlab_runtime_util}/CBIG_preproc_DVARS_FDRMS_Correlation $matlab_args_DVARS_FDRMS_Correlation )
+            eval $cmd |& tee -a $LF
+            echo $cmd |& tee -a $LF
+            set cmd = ( ${matlab_runtime_util}/CBIG_preproc_motion_outliers $matlab_args_motion_outliers )
+            eval $cmd |& tee -a $LF
+            echo $cmd |& tee -a $LF
+        endif
     else
         echo "[MC]: Motion outliers detection already created!" |& tee -a $LF
     endif
@@ -474,6 +509,11 @@ while( $#argv != 0 )
             set echo_number = "$argv[1]"; shift;
             breaksw
 
+        #running code on MATLAB Runtime (optional)
+        case "-matlab_runtime":
+            set matlab_runtime = 1;
+            breaksw
+
         default:
             echo ERROR: Flag $flag unrecognized.
             echo $cmdline
@@ -573,6 +613,7 @@ OPTIONAL ARGUMENTS:
     -high_f                    : stop frequency of respiration. It can only be used together with low_f
     -echo_number <echo_number> : number of echoes. For single echo data, default set to be 1.
     -nocleanup                 : use this flag to keep all intermediate files
+    -matlab_runtime            : running MATLAB code on MATLAB Runtime instead of MATLAB.
     -help                      : help
     -version                   : version
 
