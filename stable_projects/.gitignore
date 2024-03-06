@@ -39,6 +39,7 @@
 !/preprocessing/CBIG_fMRI_Preproc2016/**
 !/preprocessing/Li2019_GSR/**
 !/preprocessing/Orban2020_tod/**
+!/preprocessing/CBIG2022_DiffProc/**
 
 !/registration/*
 !/registration/Wu2017_RegistrationFusion/**

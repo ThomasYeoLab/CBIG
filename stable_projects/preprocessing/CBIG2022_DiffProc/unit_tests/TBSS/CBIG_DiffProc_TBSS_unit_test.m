@@ -25,6 +25,8 @@ classdef CBIG_DiffProc_TBSS_unit_test < matlab.unittest.TestCase
             
             % generate TBSS
             copyfile(input_dir, output_dir);
+            % change files to be writeable
+            system(["chmod -R 777 " + output_dir]);
             
             cd(output_dir)
             command = 'tbss_1_preproc *.nii.gz';
@@ -79,6 +81,8 @@ classdef CBIG_DiffProc_TBSS_unit_test < matlab.unittest.TestCase
             
             % generate TBSS
             copyfile(input_dir, output_dir);
+            % change files to be writeable
+            system(["chmod -R 777 " + output_dir]);
             % run wrapper           
             command = [fullfile(script_dir,'CBIG_DiffProc_TBSS_wrapper.sh '), ' ', output_dir];
             [status, cmdout] = system(command);

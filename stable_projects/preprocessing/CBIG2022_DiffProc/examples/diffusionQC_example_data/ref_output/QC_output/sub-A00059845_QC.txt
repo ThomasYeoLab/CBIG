@@ -1,0 +1,7 @@
+--- sub-A00059845 QC summary ---
+mean relative motion: 0.405424 
+mean absolute motion: 1.7641 
+b0 data SNR: 14.892508 
+b0 mean SSD: 6143.718992 
+b1500 mean SSD: 615.135415 
+DTI tensor SSE: 5.935211 

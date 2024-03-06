@@ -29,14 +29,14 @@ Except for this project, if you want to use the code for other stable projects f
 - To download the version of the code that was last tested, you can either
 
   - visit this link:
-  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.29.6-He2022_Ooi2022-updates](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.29.6-He2022_Ooi2022-updates)
+  [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.29.8-CBIG2022_DiffProc-updates](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.29.8-CBIG2022_DiffProc-updates)
   
   or
   
   - run the following command, if you have Git installed
   
   ```
-  git checkout -b He2022_Ooi2022-updates v0.29.6-He2022_Ooi2022-updates
+  git checkout -b CBIG2022_DiffProc-updates v0.29.8-CBIG2022_DiffProc-updates
   ```
 
 ### Usage 
@@ -82,6 +82,7 @@ $CBIG_CODE_DIR/stable_projects/preprocessing/CBIG2022_DiffProc/CBIG_diffusionQC.
 
 ## Updates
 
+- Release v0.29.8 (6/3/2024): Update to unit tests and examples.
 - Release v0.29.6 (16/1/2024): Update to include examples from publicly available data.
 - Release v0.25.0 (23/9/2022): Initial release of CBIG diffusion processing pipeline.
   
