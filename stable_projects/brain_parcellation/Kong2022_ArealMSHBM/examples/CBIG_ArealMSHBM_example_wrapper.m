@@ -17,6 +17,9 @@ function CBIG_ArealMSHBM_example_wrapper(out_dir)
 
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
 
+%% Example 101: A simplified way to generate individual parcellation for a single subject
+CBIG_ArealMSHBM_example_single_subject(fullfile(out_dir, 'single_subject_parcellation'));
+
 %% Generating input example data
 cmd = '${CBIG_CODE_DIR}/stable_projects/brain_parcellation/Kong2022_ArealMSHBM';
 cmd = [cmd '/examples/CBIG_ArealMSHBM_create_example_input_data.sh ' out_dir];

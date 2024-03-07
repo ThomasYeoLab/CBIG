@@ -101,14 +101,14 @@ We provide pre-computed group priors of dMSHBM/cMSHBM/gMSHBM initializated by 10
 
 To download the version of the code that is last tested, you can either
 
-- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.21.3-Reorganize_Schaefer2018_Parcellation](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.21.3-Reorganize_Schaefer2018_Parcellation)
+- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.29.9-MSHBM_NetworkAreal_Updates](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.29.9-MSHBM_NetworkAreal_Updates)
 
 or
 
 - run the following command, if you have Git installed
 
 ```
-git checkout -b Reorganize_Schaefer2018_Parcellation v0.21.3-Reorganize_Schaefer2018_Parcellation
+git checkout -b MSHBM_NetworkAreal_Updates v0.29.9-MSHBM_NetworkAreal_Updates
 ```
 
 ----
@@ -117,6 +117,46 @@ Usage
 ====
 
 Our code will work for fMRI surface data on `fsaverage6` surface space (nifti format), or on `fs_LR_32k` surface space (cifti format, .dtseries.nii file with 64k vertices). The code should also be applicable for data in `fsaverage4/5/7`, contact us if there is any bug.
+
+### IMPORTANT NEW FEATURE: A simplified version of the code is now available for the users who only want to generate individual parcellations (i.e. no need to train group prios). The user can skip previous steps and directly use our pre-trained group priors.
+
+To do that, the user can just specify the required paths and call `$CBIG_CODE_DIR/stable_projects/brain_parcellation/Kong2022_ArealMSHBM/CBIG_ArealMSHBM_parcellation_single_subject.m`.
+
+```
+% Example for a subject with 1 run of fsaverage6 fMRI data:
+params.project_dir = '/myproject/sub1';
+params.censor_list = '/mydata/sub1/censor.txt';
+params.lh_fMRI_list = '/mydata/sub1/lh.fsaverage6_surf.nii.gz';
+params.rh_fMRI_list = '/mydata/sub1/rh.fsaverage6_surf.nii.gz';
+params.target_mesh = 'fsaverage6';
+CBIG_ArealMSHBM_parcellation_single_subject(params);
+```
+```
+% Example for a subject with 2 runs of fs_LR_32k fMRI data:
+params.project_dir = '/myproject/sub1';
+params.censor_list = {'/mydata/sub1/censor1.txt', '/mydata/sub1/censor2.txt'};
+params.lh_fMRI_list = {'/mydata/sub1/fs_LR_32k_sess1_surf.dtseries.nii',...
+  '/mydata/sub1/fs_LR_32k_sess2_surf.dtseries.nii'};
+params.target_mesh = 'fs_LR_32k';
+CBIG_ArealMSHBM_parcellation_single_subject(params);
+```
+```
+% Example for a subject with 2 runs of fsaverage6 fMRI data and specify all parameters:
+params.project_dir = '/myproject/sub1';
+params.censor_list = {'/mydata/sub1/censor1.txt', '/mydata/sub1/censor2.txt'};
+params.lh_fMRI_list = {'/mydata/sub1/lh.fsaverage6_sess1_surf.nii.gz',...
+  '/mydata/sub1/lh.fsaverage6_sess2_surf.nii.gz'};
+params.rh_fMRI_list = {'/mydata/sub1/rh.fsaverage6_sess1_surf.nii.gz',...
+  '/mydata/sub1/rh.fsaverage6_sess2_surf.nii.gz'};
+params.target_mesh = 'fsaverage6';
+params.model = 'dMSHBM';
+params.num_ROIs = '300';
+params.w = '50';
+params.c = '30';
+params.group_prior = '/myproject/training_step/priors/dMSHBM/Params_Final.mat';
+params.overwrite_flag = 1;
+CBIG_ArealMSHBM_parcellation_single_subject(params);
+```
 
 ### Step 0: generate diffusion embedding matrices for gradients [Optional, for gMSHBM only]
 ----
@@ -576,6 +616,9 @@ The generated individual parcellations will be saved under:
 
 Updates
 =======
+
+- Release v0.29.9 (07/03/2024): Add wrapper script to generate individual parcellations for single subject
+
 - Release v0.21.3 (17/1/2022)
  
     1. Reorganize folder structure for Schaefer parcellation with Kong2022 17-network order.

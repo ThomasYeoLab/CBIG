@@ -53,20 +53,20 @@ We provide detailed examples on how to generate functional connectivity profiles
 
 **Group priors**
 
-We provide group priors estimated by 37 GSP subjects (`fsaverage5` surface space) and 40 HCP subjects (`fs_LR_32k` surface space). The priors can be found in `lib/group_priors` folder. The ordering of the 17 networks can also be found in this folder. If the user used our group priors, the step2 can be skipped.
+We provide group priors estimated by 37 GSP subjects (`fsaverage5` surface space) and 40 HCP subjects (`fs_LR_32k` and `fsaverage6` surface space). The priors can be found in `lib/group_priors` folder. The ordering of the 17 networks can also be found in this folder. If the user used our group priors, the step2 can be skipped.
 
 **Download**
 
 To download the version of the code that is last tested, you can either
 
-- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.18.0-Xue2021_IndCerebellum](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.18.0-Xue2021_IndCerebellum)
+- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.29.9-MSHBM_NetworkAreal_Updates](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.29.9-MSHBM_NetworkAreal_Updates)
 
 or
 
 - run the following command, if you have Git installed
 
 ```
-git checkout -b Kong2019_MSHBM v0.18.0-Xue2021_IndCerebellum
+git checkout -b MSHBM_NetworkAreal_Updates v0.29.9-MSHBM_NetworkAreal_Updates
 ```
 
 ----
@@ -74,7 +74,47 @@ git checkout -b Kong2019_MSHBM v0.18.0-Xue2021_IndCerebellum
 Usage
 ====
 
-Our code will work for fMRI surface data on `fsaverage5` surface space (nifti format), or on `fs_LR_32k` surface space (cifti format, .dtseries.nii file with 64k vertices). The code should also be applicable for data in `fsaverage4/6/7`, contact us if there is any bug.
+Our code will work for fMRI surface data on `fsaverage5/6` surface space (nifti format), or on `fs_LR_32k` surface space (cifti format, .dtseries.nii file with 64k vertices). Contact us if there is any bug.
+
+### IMPORTANT NEW FEATURE: A simplified version of the code is now available for the users who only want to generate individual parcellations (i.e. no need to train group prios). The user can skip the group priors estimation step and directly use our pre-trained group priors.
+
+To do that, the user can just specify the required paths and call `$CBIG_CODE_DIR/stable_projects/brain_parcellation/Kong2019_MSHBM/CBIG_MSHBM_parcellation_single_subject.m`.
+
+```
+% Example for a subject with 1 run of fsaverage6 fMRI data:
+params.project_dir = '/myproject/sub1';
+params.censor_list = '/mydata/sub1/censor.txt';
+params.lh_fMRI_list = '/mydata/sub1/lh.fsaverage6_surf.nii.gz';
+params.rh_fMRI_list = '/mydata/sub1/rh.fsaverage6_surf.nii.gz';
+params.target_mesh = 'fsaverage6';
+CBIG_MSHBM_parcellation_single_subject(params);
+```
+```
+% Example for a subject with 2 runs of fs_LR_32k fMRI data:
+params.project_dir = '/myproject/sub1';
+params.censor_list = {'/mydata/sub1/censor1.txt', '/mydata/sub1/censor2.txt'};
+params.lh_fMRI_list = {'/mydata/sub1/fs_LR_32k_sess1_surf.dtseries.nii',...
+  '/mydata/sub1/fs_LR_32k_sess2_surf.dtseries.nii'};
+params.target_mesh = 'fs_LR_32k';
+CBIG_MSHBM_parcellation_single_subject(params);
+```
+```
+% Example for a subject with 2 runs of fsaverage5 fMRI data and specify all parameters:
+params.project_dir = '/myproject/sub1';
+params.censor_list = {'/mydata/sub1/censor1.txt', '/mydata/sub1/censor2.txt'};
+params.lh_fMRI_list = {'/mydata/sub1/lh.fsaverage5_sess1_surf.nii.gz',...
+  '/mydata/sub1/lh.fsaverage5_sess2_surf.nii.gz'};
+params.rh_fMRI_list = {'/mydata/sub1/rh.fsaverage5_sess1_surf.nii.gz',...
+  '/mydata/sub1/rh.fsaverage5_sess2_surf.nii.gz'};
+params.target_mesh = 'fsaverage5';
+params.w = '100';
+params.c = '30';
+params.group_prior = '/myproject/training_step/priors/Params_Final.mat';
+params.overwrite_flag = 1;
+CBIG_MSHBM_parcellation_single_subject(params);
+```
+
+
 
 ### Step 1: Generating profiles and initialization parameters
 ----
@@ -392,6 +432,8 @@ The generated individual parcellations will be saved under:
 
 Updates
 =======
+
+- Release v0.29.9 (07/03/2024): Add wrapper script to generate individual parcellations for single subject
 
 - Release v0.18.0 (13/01/2021): Add optional arguments to support Xue2021_IndCerebellum
 

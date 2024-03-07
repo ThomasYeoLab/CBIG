@@ -28,6 +28,32 @@ In this example, we will perform the algorithms on fsaverage6 surface data of Co
 Run
 ====
 
+### [IMPORTANT NEW FEATURE] A simplified way to generate individual parcellation for a single subject
+----
+
+We now provide a simple way to generate individual parcellation for a single subject. The user only needs to specify paths to the fMRI data and censor files, the algorithm will automatically generate the profiles and use group priors to generate individual parcellation for a single subject.
+
+In the terminal, specify the paths:
+```
+params.project_dir = out_dir;
+
+% user can set their own group prior
+%params.group_prior = '<your_own>/priors/Params_Final.mat';
+
+params.censor_list = {fullfile(CBIG_CODE_DIR,'/data/example_data/CoRR_HNU/subj01/subj01_sess1/qc/subj01_sess1_bld002_FDRMS0.2_DVARS50_motion_outliers.txt')};
+params.lh_fMRI_list = {fullfile(CBIG_CODE_DIR,'/data/example_data/CoRR_HNU/subj01/subj01_sess1/surf/lh.subj01_sess1_bld002_rest_skip4_stc_mc_residc_interp_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6.nii.gz')};
+params.rh_fMRI_list = {fullfile(CBIG_CODE_DIR,'/data/example_data/CoRR_HNU/subj01/subj01_sess1/surf/rh.subj01_sess1_bld002_rest_skip4_stc_mc_residc_interp_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6.nii.gz')};
+params.target_mesh = 'fsaverage6';
+params.model = 'gMSHBM';
+params.w = '50';
+params.c = '50';
+[lh_labels, rh_labels] = CBIG_ArealMSHBM_parcellation_single_subject(params);
+```
+We have also provided a wrapper script the user can check:
++ $CBIG_CODE_DIR/stable_projects/brain_parcellation/Kong2022_ArealMSHBM/examples/CBIG_ArealMSHBM_example_single_subject.m
+
+The following section is the original example tutorial with more detailed steps. Please note the new feature only can generate parcellation for a single subject. It does not contain the training and validation steps.
+
 ### **Generating input data**
 ----
 
