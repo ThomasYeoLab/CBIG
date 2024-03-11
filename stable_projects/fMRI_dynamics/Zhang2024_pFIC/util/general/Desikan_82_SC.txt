@@ -1,0 +1,104 @@
+# Copyright (c) 2008-2020 the MRtrix3 contributors.
+#
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Covered Software is provided under this License on an "as is"
+# basis, without warranty of any kind, either expressed, implied, or
+# statutory, including, without limitation, warranties that the
+# Covered Software is free of defects, merchantable, fit for a
+# particular purpose or non-infringing.
+# See the Mozilla Public License v. 2.0 for more details.
+#
+# For more details, see http://www.mrtrix.org/.
+
+# Lookup table for extracting the relevant grey matter parcellations from the default FreeSurfer segmentation (desikan_killiany)
+
+0     ???     Unknown                         0   0   0   0
+
+1     L.BSTS  ctx-lh-bankssts                 25  100 40  255
+2     L.CACG  ctx-lh-caudalanteriorcingulate  125 100 160 255
+3     L.CMFG  ctx-lh-caudalmiddlefrontal      100 25  0   255
+4     L.CU    ctx-lh-cuneus                   220 20  100 255
+5     L.EC    ctx-lh-entorhinal               220 20  10  255
+6     L.FG    ctx-lh-fusiform                 180 220 140 255
+7     L.IPG   ctx-lh-inferiorparietal         220 60  220 255
+8     L.ITG   ctx-lh-inferiortemporal         180 40  120 255
+9     L.ICG   ctx-lh-isthmuscingulate         140 20  140 255
+10    L.LOG   ctx-lh-lateraloccipital         20  30  140 255
+11    L.LOFG  ctx-lh-lateralorbitofrontal     35  75  50  255
+12    L.LG    ctx-lh-lingual                  225 140 140 255
+13    L.MOFG  ctx-lh-medialorbitofrontal      200 35  75  255
+14    L.MTG   ctx-lh-middletemporal           160 100 50  255
+15    L.PHIG  ctx-lh-parahippocampal          20  220 60  255
+16    L.PaCG  ctx-lh-paracentral              60  220 60  255
+17    L.POP   ctx-lh-parsopercularis          220 180 140 255
+18    L.POR   ctx-lh-parsorbitalis            20  100 50  255
+19    L.PTR   ctx-lh-parstriangularis         220 60  20  255
+20    L.PCAL  ctx-lh-pericalcarine            120 100 60  255
+21    L.PoCG  ctx-lh-postcentral              220 20  20  255
+22    L.PCG   ctx-lh-posteriorcingulate       220 180 220 255
+23    L.PrCG  ctx-lh-precentral               60  20  220 255
+24    L.PCU   ctx-lh-precuneus                160 140 180 255
+25    L.RACG  ctx-lh-rostralanteriorcingulate 80  20  140 255
+26    L.RMFG  ctx-lh-rostralmiddlefrontal     75  50  125 255
+27    L.SFG   ctx-lh-superiorfrontal          20  220 160 255
+28    L.SPG   ctx-lh-superiorparietal         20  180 140 255
+29    L.STG   ctx-lh-superiortemporal         140 220 220 255
+30    L.SMG   ctx-lh-supramarginal            80  160 20  255
+31    L.FP    ctx-lh-frontalpole              100 0   100 255
+32    L.TP    ctx-lh-temporalpole             70  70  70  255
+33    L.TTG   ctx-lh-transversetemporal       150 150 200 255
+34    L.IN    ctx-lh-insula                   255 192 32  255
+
+35    L.TH    Left-Thalamus-Proper            0   118 14  255
+36    L.CA    Left-Caudate                    122 186 220 255
+37    L.PU    Left-Putamen                    236 13  176 255
+38    L.PA    Left-Pallidum                   12  48  255 255
+39    L.HI    Left-Hippocampus                220 216 20  255
+40    L.AM    Left-Amygdala                   103 255 255 255
+41    L.AC    Left-Accumbens-area             255 165 0   255
+
+42    R.TH    Right-Thalamus                  0   118 14  255
+43    R.CA    Right-Caudate                   122 186 220 255
+44    R.PU    Right-Putamen                   236 13  176 255
+45    R.PA    Right-Pallidum                  13  48  255 255
+46    R.HI    Right-Hippocampus               220 216 20  255
+47    R.AM    Right-Amygdala                  103 255 255 255
+48    R.AC    Right-Accumbens-area            255 165 0   255
+
+49    R.BSTS  ctx-rh-bankssts                 25  100 40  255
+50    R.CACG  ctx-rh-caudalanteriorcingulate  125 100 160 255
+51    R.CMFG  ctx-rh-caudalmiddlefrontal      100 25  0   255
+52    R.CU    ctx-rh-cuneus                   220 20  100 255
+53    R.EC    ctx-rh-entorhinal               220 20  10  255
+54    R.FG    ctx-rh-fusiform                 180 220 140 255
+55    R.IPG   ctx-rh-inferiorparietal         220 60  220 255
+56    R.ITG   ctx-rh-inferiortemporal         180 40  120 255
+57    R.ICG   ctx-rh-isthmuscingulate         140 20  140 255
+58    R.LOG   ctx-rh-lateraloccipital         20  30  140 255
+59    R.LOFG  ctx-rh-lateralorbitofrontal     35  75  50  255
+60    R.LG    ctx-rh-lingual                  225 140 140 255
+61    R.MOFG  ctx-rh-medialorbitofrontal      200 35  75  255
+62    R.MTG   ctx-rh-middletemporal           160 100 50  255
+63    R.PHIG  ctx-rh-parahippocampal          20  220 60  255
+64    R.PaCG  ctx-rh-paracentral              60  220 60  255
+65    R.POP   ctx-rh-parsopercularis          220 180 140 255
+66    R.POR   ctx-rh-parsorbitalis            20  100 50  255
+67    R.PTR   ctx-rh-parstriangularis         220 60  20  255
+68    R.PCAL  ctx-rh-pericalcarine            120 100 60  255
+69    R.PoCG  ctx-rh-postcentral              220 20  20  255
+70    R.PCG   ctx-rh-posteriorcingulate       220 180 220 255
+71    R.PrCG  ctx-rh-precentral               60  20  220 255
+72    R.PCU   ctx-rh-precuneus                160 140 180 255
+73    R.RACG  ctx-rh-rostralanteriorcingulate 80  20  140 255
+74    R.RMFG  ctx-rh-rostralmiddlefrontal     75  50  125 255
+75    R.SFG   ctx-rh-superiorfrontal          20  220 160 255
+76    R.SPG   ctx-rh-superiorparietal         20  180 140 255
+77    R.STG   ctx-rh-superiortemporal         140 220 220 255
+78    R.SMG   ctx-rh-supramarginal            80  160 20  255
+79    R.FP    ctx-rh-frontalpole              100 0   100 255
+80    R.TP    ctx-rh-temporalpole             70  70  70  255
+81    R.TTG   ctx-rh-transversetemporal       150 150 200 255
+82    R.IN    ctx-rh-insula                   255 192 32  255

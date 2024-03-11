@@ -1,0 +1,11 @@
+******** Generation: 5 ********
+Cov: 0.22752857104543836
+Best parameter set: 74
+Best total cost: 0.8058308314588422
+FC correlation cost: 0.275569816693492
+FC L1 cost: 0.24465220122665798
+FCD KS statistics cost: 0.28560881353869216
+rE min max: 2.7 ,3.3
+Cost function weights: 1 ,1 ,1
+Time taken: 252.71828269958496
+******************************************

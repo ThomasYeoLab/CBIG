@@ -1,0 +1,53 @@
+name: pFIC
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - _libgcc_mutex=0.1=conda_forge
+  - _openmp_mutex=4.5=1_gnu
+  - ca-certificates=2020.12.5=ha878542_0
+  - certifi=2020.12.5=py38h578d9bd_1
+  - joblib=1.0.1=pyhd8ed1ab_0
+  - ld_impl_linux-64=2.35.1=hea4e1c9_2
+  - libblas=3.9.0=8_openblas
+  - libcblas=3.9.0=8_openblas
+  - libffi=3.2.1=he1b5a44_1007
+  - libgcc-ng=9.3.0=h2828fa1_18
+  - libgfortran-ng=9.3.0=hff62375_18
+  - libgfortran5=9.3.0=hff62375_18
+  - libgomp=9.3.0=h2828fa1_18
+  - liblapack=3.9.0=8_openblas
+  - libopenblas=0.3.12=pthreads_h4812303_1
+  - libstdcxx-ng=9.3.0=h6de172a_18
+  - ncurses=6.2=h58526e2_4
+  - numpy=1.20.1=py38h18fd61f_0
+  - openssl=1.1.1k=h7f98852_0
+  - pip=21.0.1=pyhd8ed1ab_0
+  - python=3.8.5=h1103e12_9_cpython
+  - python_abi=3.8=1_cp38
+  - readline=8.0=he28a2e2_2
+  - scikit-learn=0.24.1=py38h658cfdd_0
+  - scipy=1.6.0=py38hb2138dd_0
+  - setuptools=49.6.0=py38h578d9bd_3
+  - sqlite=3.34.0=h74cdb3f_0
+  - threadpoolctl=2.1.0=pyh5ca1d4c_0
+  - tk=8.6.10=hed695b0_1
+  - wheel=0.36.2=pyhd3deb0d_0
+  - xz=5.2.5=h516909a_1
+  - zlib=1.2.11=h516909a_1010
+  - pip:
+    - cycler==0.11.0
+    - fonttools==4.28.5
+    - kiwisolver==1.3.2
+    - matplotlib==3.5.1
+    - packaging==21.3
+    - pillow==8.1.0
+    - pyparsing==3.0.6
+    - python-dateutil==2.8.2
+    - six==1.16.0
+    - typing-extensions==3.7.4.3
+    - torch==1.7.1+cu110
+    - torchaudio==0.7.2
+    - torchvision==0.8.2+cu110
+    - "-f https://download.pytorch.org/whl/torch_stable.html"
