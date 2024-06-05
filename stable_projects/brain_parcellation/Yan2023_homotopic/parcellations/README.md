@@ -25,8 +25,6 @@ We matched each parcel to a specific network based on maximal spatial overlap, i
 
 Note that the vertices enclosed in each ROI are identical across these three different versions, and the ROIs only differ in their assignment to different networks.
 
-To use the parcellations without the trouble of downloading our entire repository, you can just click on this link: [download Yan2023 Parcellations](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/ThomasYeoLab/CBIG/tree/master/stable_projects/brain_parcellation/Yan2023_homotopic/parcellations)
-
 Homotopic Correspondence
 =====================
 As mentioned in the paper, the parcellation boundary for the left and right hemispheres do not overlap perfectly. However, each homotopic parcel pair typically occupy roughly symmetric locations across the hemispheres.
@@ -43,7 +41,7 @@ An alternative version of our parcellation is available, where the parcels on ea
 
 Note that in this alternative version, only the parcels on the right hemispheres are re-ordered, as compared the standard version that we provide in this folder.
 
-Download this alternative version here (part of what we have previously released): [download Yan2023 Parcellations (ordered by network within each hemisphere)](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/ThomasYeoLab/CBIG/tree/c874d05cf760999427d7d2be5390b4fea21dd439/stable_projects/brain_parcellation/Yan2023_homotopic/parcellations)
+Alternative version (part of what we have previously released): [Yan2023 Parcellations (ordered by network within each hemisphere)](https://github.com/ThomasYeoLab/CBIG/tree/v0.26.0-Yan2023_homotopic/stable_projects/brain_parcellation/Yan2023_homotopic/parcellations)
 
 Parcel Naming Convention
 ========================

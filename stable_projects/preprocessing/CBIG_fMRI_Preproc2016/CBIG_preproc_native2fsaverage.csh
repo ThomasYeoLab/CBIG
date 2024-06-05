@@ -606,7 +606,9 @@ OUTPUTS:
     mapping between surfaces. The output file for both functions are in NFITI(.nii.gz) format. NIFTI is typically
     used as a volume file format. When using it to store surface data, reshaping the surface data is necessary to
     avoid exceeding the maximum number of elements allowed in the NIFTI format. For more information, see:
-    https://surfer.nmr.mgh.harvard.edu/fswiki/mri_vol2surf 
+    https://surfer.nmr.mgh.harvard.edu/fswiki/mri_vol2surf.
+    You can use our MATLAB utility functions CBIG_private/utilities/matlab/surf/CBIG_ReadSurfaceData.m and
+    CBIG_private/utilities/matlab/surf/CBIG_WriteSurfaceData.m to read and write surface data in NIFTI format.
 
 
 Example:

@@ -312,7 +312,7 @@ if ( $echo_number == 1 ) then
     foreach curr_bold ($zpdbold)
         if ( ! -e $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold$BOLD_stem.nii.gz" ) then
             mkdir -p $output_dir/$subject/bold/$curr_bold
-            rsync -az $boldname[$k] $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold$BOLD_stem.nii.gz"
+            rsync -az --chmod=755 $boldname[$k] $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold$BOLD_stem.nii.gz"
         endif
         @ k++
     end
@@ -323,7 +323,7 @@ else
         while ($j <= $echo_number)
             if ( ! -e $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold"_e$j"$BOLD_stem.nii.gz" ) then
                 mkdir -p $output_dir/$subject/bold/$curr_bold
-                rsync -az $boldname[$k] $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold"_e$j"$BOLD_stem.nii.gz"
+                rsync -az --chmod=755 $boldname[$k] $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold"_e$j"$BOLD_stem.nii.gz"
             endif
             @ j++
             @ k++
@@ -1548,6 +1548,8 @@ OUTPUTS:
         used as a volume file format. When using it to store surface data, reshaping the surface data is necessary to
         avoid exceeding the maximum number of elements allowed in the NIFTI format. For more information, see:
         https://surfer.nmr.mgh.harvard.edu/fswiki/mri_vol2surf
+        You can use our MATLAB utility functions CBIG_private/utilities/matlab/surf/CBIG_ReadSurfaceData.m and
+        CBIG_private/utilities/matlab/surf/CBIG_WriteSurfaceData.m to read and write surface data in NIFTI format.
 
     2. vol folder contains the intermediate and final preprocessed fMRI data in the MNI152 and freesurfer nonlinear 
        volumetric spaces.

@@ -7,11 +7,13 @@ dependencies:
   - _libgcc_mutex=0.1=main
   - _openmp_mutex=4.5=1_gnu
   - blas=1.1=openblas
-  - ca-certificates=2018.10.15=ha4d7672_0
-  - certifi=2018.8.24=py36_1001
+  - ca-certificates=2024.3.11=h06a4308_0
+  - certifi=2021.5.30=py36h06a4308_0
   - dbus=1.13.18=hb2f20db_0
+  - entrypoints=0.3=py36_0
   - expat=2.4.1=h2531618_2
   - fftw=3.3.9=h27cfd23_1
+  - flake8=3.7.7=py36_0
   - fontconfig=2.13.1=h6c09931_0
   - freetype=2.11.0=h70c0345_0
   - glib=2.69.1=h5202010_0
@@ -33,12 +35,15 @@ dependencies:
   - libxcb=1.14=h7b6447c_0
   - libxml2=2.9.12=h03d6c58_0
   - lz4-c=1.9.3=h295c915_1
+  - mccabe=0.6.1=py36_1
   - mrtrix3=3.0.3=h2bc3f7f_0
   - ncurses=6.3=h7f8727e_2
   - openblas=0.3.3=h9ac9557_1001
-  - openssl=1.1.1l=h7f8727e_0
+  - openssl=1.1.1w=h7f8727e_0
   - pcre=8.45=h295c915_0
   - pip=21.2.2=py36h06a4308_0
+  - pycodestyle=2.5.0=py36_0
+  - pyflakes=2.1.1=py36_0
   - python=3.6.13=h12debd9_1
   - qt=5.9.7=h5867ecd_1
   - readline=8.1=h27cfd23_0
@@ -48,6 +53,7 @@ dependencies:
   - tk=8.6.11=h1ccaba5_0
   - wheel=0.37.0=pyhd3eb1b0_1
   - xz=5.2.5=h7b6447c_0
+  - yapf=0.31.0=pyhd3eb1b0_0
   - zlib=1.2.11=h7b6447c_3
   - zstd=1.4.9=haebb681_0
   - pip:

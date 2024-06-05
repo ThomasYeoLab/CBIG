@@ -20,9 +20,6 @@ The parcellations are available at multiple resolution (100 parcels to 1000 parc
 
 Check `./parcellations/README.md` for detailed information regarding the parcellation files.
 
-To use the parcellations without the trouble of downloading our entire repository, you can just click on this link: [download Yan2023 Parcellations](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/ThomasYeoLab/CBIG/tree/master/stable_projects/brain_parcellation/Yan2023_homotopic/parcellations)
-
-
 Code Release
 =====================
 

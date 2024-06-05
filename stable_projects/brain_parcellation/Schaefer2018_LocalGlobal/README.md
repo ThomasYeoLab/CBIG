@@ -14,7 +14,7 @@ More details can be found in Schaefer et al. 2018.
 Parcellations Release
 =====================
 
-The parcellations are available at multiple resolution (100 parcels to 1000 parcels), and can be found under the ```Parcellations``` folder. To use the parcellations without the trouble of downloading our entire repository, you can just click on this link: [download Schaefer2018_Parcellations](https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/ThomasYeoLab/CBIG/tree/master/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Parcellations)
+The parcellations are available at multiple resolution (100 parcels to 1000 parcels), and can be found under the ```Parcellations``` folder. 
 
 Specifically, there are three subfolders corresponding to three different spaces ```Freesurfer5.3```, ```MNI``` and ```HCP```. 
 
