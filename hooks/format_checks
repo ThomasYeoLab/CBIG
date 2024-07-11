@@ -1,0 +1,430 @@
+#!/usr/bin/env bash
+
+DIR_TO_CHECK=""
+running_commit_hook_flag=0
+
+# Use either -f or -d, -d will overwrite -f
+while getopts "f:d:c" arg
+do
+    case $arg in
+        f) ALL_FILES_TO_CHECK=($OPTARG);;
+        d) DIR_TO_CHECK=$OPTARG;;
+        c) running_commit_hook_flag=1;;
+        ?)
+        echo "Unknown argument"
+        exit 1;;
+    esac
+done
+
+EXCLUDED_FILES=("Surf2SurfGui.m" "Vol2SurfGui.m" "CBIG_tested_config.sh" "CBIG_tested_config.csh" "tested_startup.m")
+EXTENSIONS_TO_CHECK="m c cpp sh csh pl r py"
+
+if [[ ! "$DIR_TO_CHECK" == "" ]]; then
+    cmd="find $DIR_TO_CHECK -type f ( "
+    for ext in $EXTENSIONS_TO_CHECK
+    do
+        cmd="${cmd} -name "*.$ext" -o"
+    done
+    cmd="${cmd::-2})"
+    ALL_FILES_TO_CHECK=`$cmd`
+    ALL_FILES_TO_CHECK=($ALL_FILES_TO_CHECK)
+fi
+
+FILES_TO_CHECK=()
+MAT_FILES_TO_CHECK=()
+PY_FILES_TO_CHECK=()
+for file_path in "${ALL_FILES_TO_CHECK[@]}"
+do
+    file_in_exclude=0
+    file_name=$(basename $file_path)
+    file_ext="${file_name##*.}"
+    for excluded_file in "${EXCLUDED_FILES[@]}"
+    do
+        if [[ $file_name == *$excluded_file ]]; then
+            file_in_exclude=1
+            break
+        fi
+    done
+    if [ $file_in_exclude == 1 ]; then
+        continue
+    fi
+    if [[ " $EXTENSIONS_TO_CHECK " =~ \ $file_ext\  ]]; then
+        FILES_TO_CHECK+=("${file_path}")
+        if [ "$file_ext" = "m" ]; then
+            MAT_FILES_TO_CHECK+=("${file_path}")
+        fi
+        if [ "$file_ext" = "py" ]; then
+            PY_FILES_TO_CHECK+=("${file_path}")
+        fi
+    fi
+done
+
+repo_dir=$(git rev-parse --show-toplevel)
+
+# Default flake8 version, should be consistent with CBIG_py3
+flake8_ref_ver="3.7.7"
+flake8_config=${repo_dir}/setup/python_env_setup/.flake8
+
+###
+# General: Check 'CBIG_' prefix (exclude python)
+###
+
+EXTENSIONS_TO_CHECK="m c cpp sh csh pl r"
+PREFIX="CBIG_"
+echo -e "\n==> [Check] Checking $PREFIX prefix in file name..."
+
+all_with_valid_prefixes=1
+for file_path in "${FILES_TO_CHECK[@]}"
+do
+    file_name=$(basename $file_path)
+    file_ext="${file_name##*.}"
+    if [[ $file_name != $PREFIX* ]] && [[ " $EXTENSIONS_TO_CHECK " =~ \ $file_ext\  ]]; then
+        all_with_valid_prefixes=0
+        echo "$file_path does not have a $PREFIX prefix, please fix it manually."
+    fi
+done
+
+if [ $all_with_valid_prefixes == 0 ]; then
+    echo "   [FAILED] There are functions without $PREFIX prefix. "
+else
+    echo "   [PASSED]"
+fi
+
+###
+# General: Check MIT license (exclude python)
+###
+EXTENSIONS_TO_CHECK="m c cpp sh csh pl r"
+
+mit_license="Written by [your name] and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md"
+all_with_license=1
+echo -e "\n==> [Check] Checking MIT license..."
+for file_path in "${FILES_TO_CHECK[@]}"
+do
+    file_name=$(basename $file_path)
+    file_ext="${file_name##*.}"
+    if [[ " $EXTENSIONS_TO_CHECK " =~ \ $file_ext\  ]]; then
+        license_line=`grep "MIT license" $file_path`
+        if [[ "$license_line" == "" ]]; then
+            all_with_license=0
+            echo "$file_path does not have a MIT license"
+        elif [[ "$license_line" == *"CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md" && "$license_line" == *"Written by"* ]]; then
+            # do nothing
+            :
+        else
+            all_with_license=0
+            echo "$file_path does not follow our MIT license format: "
+            echo "$mit_license"
+        fi
+    fi
+done
+
+if [ $all_with_license == 0 ]; then
+    echo "   [FAILED] There are functions without or not following our MIT license."
+    echo "For matlab functions, you can use setup/check_license/CBIG_check_license_matlab_file.sh to add MIT license"
+    echo "For other languages, please add MIT license manually:"
+    echo "$mit_license"
+else
+    echo "   [PASSED]"
+fi
+
+###
+# General: Check absolute paths (mnt, apps, data/users, share)
+###
+EXTENSIONS_TO_CHECK="m c cpp sh csh pl r py"
+
+abs_path_list=`cat ${repo_dir}/hooks/list/absolute_path_list`
+all_without_abs_path=1
+echo -e "\n==> [Check] Checking absolute paths..."
+for file_path in "${FILES_TO_CHECK[@]}"
+do
+    file_name=$(basename $file_path)
+    file_ext="${file_name##*.}"
+    if [[ " $EXTENSIONS_TO_CHECK " =~ \ $file_ext\  ]] && [[ ! $file_name =~ "config" ]]; then
+        for path_keyword in $abs_path_list; do
+            mapfile -t abs_lines < <(grep "$path_keyword" "$file_path")
+            for abs_line in "${abs_lines[@]}"; do
+                if [[ ! "$abs_line" == "" ]] && [[ ! "$abs_line" == *"#"*$path_keyword* ]] && [[ ! "$abs_line" == *"%"*$path_keyword* ]] && [[ ! "$abs_line" == *"//"*$path_keyword* ]] && [[ ! "$abs_line" == *" "$path_keyword* ]] && [[ ! "$abs_line" == *$path_keyword" "* ]]; then
+                    all_without_abs_path=0
+                    echo "$file_path includes absolute path: $abs_line"
+                fi
+            done
+        done
+    fi
+done
+
+if [ $all_without_abs_path == 0 ]; then
+    echo "   [FAILED] There are files including absolute paths without environment variables."
+    echo "Please use environment variables."
+else
+    echo "   [PASSED]"
+fi
+
+###
+# General: Check banned keywords (exclude python for now because only 'cp' is checked)
+###
+EXTENSIONS_TO_CHECK="m c cpp sh csh pl r"
+
+banword_list=`cat ${repo_dir}/hooks/list/banned_keyword_list`
+all_without_banword=1
+echo -e "\n==> [Check] Checking banned keywords..."
+for file_path in "${FILES_TO_CHECK[@]}"
+do
+    file_name=$(basename $file_path)
+    file_ext="${file_name##*.}"
+    if [[ " $EXTENSIONS_TO_CHECK " =~ \ $file_ext\  ]] && [[ ! $file_name =~ "config" ]]; then
+        for banword in $banword_list; do
+            mapfile -t banword_lines < <(grep "$banword " "$file_path")
+            for banword_line in "${banword_lines[@]}"; do
+                if [[ ! "$banword_line" == "" ]] && [[ ! "$banword_line" == *"#"*$banword* ]] && [[ ! "$banword_line" == *"%"*$banword* ]] && [[ ! "$banword_line" == *"//"*$banword* ]]; then
+                    all_without_banword=0
+                    echo "$file_path includes banned keyword: $banword"
+                fi
+            done
+        done
+    fi
+done
+
+if [ $all_without_banword == 0 ]; then
+    echo "   [FAILED] There are files including banned keyworks."
+else
+    echo "   [PASSED]"
+fi
+
+###
+# General: Check lines length (no more than 120 characters)
+###
+EXTENSIONS_TO_CHECK="m c cpp sh csh pl r py"
+
+all_within_120=1
+echo -e "\n==> [Check] Checking all lines are within 120 characters..."
+for file_path in "${FILES_TO_CHECK[@]}"
+do
+    file_in_exclude=0
+    file_name=$(basename $file_path)
+    file_ext="${file_name##*.}"
+    if [[ " $EXTENSIONS_TO_CHECK " =~ \ $file_ext\  ]]; then
+        line_lengths=`awk '{print length}' $file_path`
+        i=1
+        for line_length in ${line_lengths}; do
+            if [ $line_length -gt 120 ]; then
+                echo "$file_name: Line $i: has $line_length characters > 120 characters. Shorten it."
+                all_within_120=0
+            fi
+            i=$(($i+1))
+        done
+    fi
+done
+
+if [ $all_within_120 == 0 ]; then
+    echo "   [FAILED] There are scripts which does not follow 120 characters limit of each line."
+else
+    echo "   [PASSED]"
+fi
+
+###
+# General: Check tabs 
+###
+EXTENSIONS_TO_CHECK="m c cpp sh csh pl r py"
+
+all_without_tabs=1
+echo -e "\n==> [Check] Checking tabs..."
+for file_path in "${FILES_TO_CHECK[@]}"
+do
+    file_name=$(basename $file_path)
+    if grep -q $'\t' $file_path; then
+        echo "Tabs found in $file_path."
+        all_without_tabs=0
+    fi
+done
+
+if [ $all_without_tabs == 0 ]; then
+    echo "   [FAILED] There are files including tabs."
+    if [ $running_commit_hook_flag == 1 ]; then
+        read -p "Do you want to replace all tabs with 4 spaces?[y/N]" choice < /dev/tty
+        case "$choice" in
+        [yY][eE][sS]|[yY])
+            for file_path in "${FILES_TO_CHECK[@]}"
+            do
+                file_name=$(basename $file_path)
+                if grep -q $'\t' $file_path; then
+                    sed -i 's/\t*$//' ${repo_dir}/${file_path}
+                    sed -i 's/\t/    /g' ${repo_dir}/${file_path}
+                    git add ${repo_dir}/${file_path}
+                    echo "Tab in ${file_path} are replaced with 4 spaces."
+                fi
+            done
+            all_without_tabs=1
+            echo "   [PASSED] All tabs are automatically replaced."
+            ;;
+        *)
+            echo "   [FAILED] Please manually replace tab with spaces. "
+            ;;
+        esac
+    fi
+else
+    echo "   [PASSED]"
+fi
+
+###
+# General: Check whether committed files are less than 1MB
+###
+all_less_than_1MB=1
+
+# Only check this when commit
+if [ $running_commit_hook_flag == 1 ]; then
+    max_file_size=1048576
+    max_file_size_mb=$(echo "scale=2; $max_file_size / (1024 * 1024)" | bc)
+    echo -e "\n==> [Check] Checking file size..."
+    COMMITED_FILES=($(git diff --cached --name-status | awk '(($1 != "D") && ($1 != "U")) {if ($1 ~ /^R/) print $3; else print $2}'))
+    for file_path in "${COMMITED_FILES[@]}"; do
+        file_size=$(stat -c%s "$file_path")
+        file_size_mb=$(echo "scale=2; $file_size / (1024 * 1024)" | bc)
+        if ((file_size > max_file_size)); then
+            echo "   [WARNING] The size of "$file_path" is $file_size_mb MB, which is more than $max_file_size_mb MB."
+            all_less_than_1MB=0
+        fi
+    done
+
+    # Prompt the user for confirmation
+    if [ $all_less_than_1MB == 0 ]; then
+        echo -e "\nThere are staged files larger than $max_file_size_mb MB, you **MUST** have PI/admin's approval to add large files."
+        read -p "Are you sure you want to commit?[y/N]" choice < /dev/tty
+        case "$choice" in
+        [yY][eE][sS]|[yY])
+            all_less_than_1MB=1
+            echo "   [PASSED] Although there are staged files larger than $max_file_size_mb MB, the user decided to continue committing."
+            ;;
+        *)
+            echo "   [FAILED] There are staged files larger than $max_file_size_mb MB, and the user decided to abort committing."
+            ;;
+        esac
+    else
+        echo "   [PASSED]"
+    fi
+fi
+
+###
+# Matlab: If a matlab function has addpath(xxx) at the begining, check whether it has rmpath(xxx) in the end
+###
+
+all_with_valid_rmpath=1
+if [ ! ${#MAT_FILES_TO_CHECK[@]} -eq 0 ]; then
+    echo -e "\n==> [Check] If you 'addpath' at the begining of a matlab function, check 'rmpath' at the end.."
+    for file_path in "${MAT_FILES_TO_CHECK[@]}"
+    do
+        tmpfile=$(mktemp)
+        grep addpath $file_path > $tmpfile
+        while read addpath_match
+        do
+            rmpath_line=${addpath_match//addpath/rmpath}
+            rmpath_line_left_backslash=`echo $rmpath_line | sed -e 's/[[]/\\\[/g'`
+            rmpath_line_backslash=`echo $rmpath_line_left_backslash | sed -e 's/[]]/\\\]/g'`
+            rmpath_match=(`grep "$rmpath_line_backslash" $file_path`)
+            if [[ "$rmpath_match" == "" ]]; then
+                all_with_valid_rmpath=0
+                echo "$file_path does not have a '$rmpath_line' at the end, please fix it manually."
+            fi
+        done < $tmpfile
+        rm $tmpfile
+    done
+    if [ $all_with_valid_rmpath == 0 ]; then
+        echo "   [FAILED] There are functions without 'rmpath' at the end."
+    else
+        echo "   [PASSED]"
+    fi
+fi
+
+###
+# Python: Check whether committed files have the MIT license
+###
+
+all_python_mit=1
+if [ ! ${#PY_FILES_TO_CHECK[@]} -eq 0 ]; then
+    echo -e "\n==> [Check] Checking MIT license in python files..."
+    for file_path in "${PY_FILES_TO_CHECK[@]}"
+    do
+        license_line_num=`grep -n "MIT license" $file_path | cut -d : -f 1`
+        link_line_num=$((${license_line_num}+1))
+        license_line=$(sed -n ${license_line_num}p $file_path)
+        link_line=$(sed -n ${link_line_num}p $file_path)
+        if [[ "$license_line" == "" ]]; then
+            all_python_mit=0
+            echo "$file_path does not have a MIT license"
+        elif [[ "$license_line" == *"CBIG under MIT license:" && "$license_line" == *"Written by"* \
+            && "$link_line" == *"https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md" ]]; then
+            # do nothing
+            :
+        else
+            all_python_mit=0
+            echo "$file_path does not follow our MIT license format."
+        fi
+    done
+    if [ $all_python_mit == 0 ]; then
+        echo "   [FAILED] There are python scripts which does not have MIT license. Please add: "
+        echo "Written by XXX and CBIG under MIT license:"
+        echo "https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md"
+    else
+        echo "   [PASSED]"
+    fi
+fi
+
+# Check whether python env is activated or not. If not, activate the default CBIG_py3 for checks
+if [ ! ${#PY_FILES_TO_CHECK[@]} -eq 0 ] && [ $running_commit_hook_flag == 1 ]; then
+    env_check=`which python`
+    if [[ ! "$env_check" == *"/envs/"* ]]; then
+        source activate CBIG_py3
+    fi
+fi
+
+###
+# Python: Use flake8 to check code syntax, style and complexity
+###
+
+all_flake8_format=1
+if [ ! ${#PY_FILES_TO_CHECK[@]} -eq 0 ]; then
+    echo -e "\n==> [Check] Checking python files follow flake8 format..."
+    if [[ $(flake8 --version 2>&1) == *"command not found"* ]]; then
+        echo "[FAILDED] You do not have flake8 installed. "
+        echo "Please install flake8. Default version is ${flake8_ref_ver}:"
+        echo "\`conda install flake8=${flake8_ref_ver}\` OR \`pip install flake8==${flake8_ref_ver}\`"
+        exit 1
+    fi
+    flake8_version=$(flake8 --version | cut -d " " -f 1)
+    if [ "$flake8_version" != "${flake8_ref_ver}" ]; then
+        echo "[WARNING] Your flake8 version is $flake8_version, default is ${flake8_ref_ver}"
+    fi
+    for file_path in "${PY_FILES_TO_CHECK[@]}"
+    do
+        flake8_output=$(flake8 --config=${flake8_config} ${file_path})
+        if [ -n "$flake8_output" ]; then
+            echo ${flake8_output}
+            all_flake8_format=0
+        fi
+    done
+    if [ $all_flake8_format == 0 ]; then
+        echo "   [FAILED] There are python scripts which does not follow flake8."
+    else
+        echo "   [PASSED]"
+    fi
+fi
+
+# Deactivate if the CBIG_py3 is activated in this check
+if [ ! ${#PY_FILES_TO_CHECK[@]} -eq 0 ] && [ $running_commit_hook_flag == 1 ]; then
+    if [[ ! "$env_check" == *"/envs/"* ]]; then
+        conda deactivate
+    fi
+fi
+
+###
+# if any checks failed, exit 1
+###
+if [ $all_with_valid_prefixes == 0 -o $all_with_license == 0 -o $all_without_abs_path == 0 -o $all_without_banword == 0 \
+    -o $all_within_120 == 0 -o $all_with_valid_rmpath == 0 -o $all_with_valid_prefixes == 0 -o $all_python_mit == 0 \
+    -o $all_flake8_format == 0 -o $all_less_than_1MB == 0 -o $all_without_tabs == 0 ]; then
+    echo "[FAILED] Some checks failed. Please fix the mentioned issues above. "
+    exit 1
+else
+    echo "[PASSED] All checks passed"
+    exit 0
+fi
+

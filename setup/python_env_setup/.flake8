@@ -1,0 +1,9 @@
+[flake8]
+max-line-length = 120
+ignore =
+    # At least two spaces before inline comment
+    E261,
+    # Comparison to true should be 'if cond is true:' or 'if cond:'
+    E712,
+    # Module level import not at top of file
+    E402

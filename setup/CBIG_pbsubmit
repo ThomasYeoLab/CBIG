@@ -18,7 +18,7 @@ endif
 ######################################################
 set curr_dir = `pwd`
 set username = `whoami`
-set work_dir = /home/$username/cluster/ 
+set work_dir = /home/$username/cluster
 
 if (! -e $work_dir) then
     mkdir -p $work_dir
@@ -72,17 +72,37 @@ if ( "$stdout_file" != "" ) then
     set cmd = "$cmd -o ${stdout_file}"
 endif
 
-
-# check current node. Job can only be submitted from the headnode
+# Check current node. Job should be submitted from the headnode. 
+# Only submit jobs from compiler in unit tests
 set currnode = `hostname`
 if ( "$currnode" != "headnode" ) then
-    if ( "$ngpus" != "" ) then
-        echo "ERROR: You are requesting GPUs but not submitting jobs from the headnode. Please submit jobs from the headnode."
-        exit 1
-    endif
     echo "WARNING: ssh from $currnode to headnode ..."
-    # submit job
-    ssh headnode "cd $work_dir; qsub ${cmd} -- ${cmd_script}"
+    if ( "$ngpus" != "" ) then
+        echo "Submitting jobs from ${currnode} will generate extra script files. "
+        echo "Please only use it in unit tests."
+        # Remove spaces at the beginning and end
+        set cmd_script = `echo "$cmd_script" | sed 's/^ *//;s/ *$//'`
+        # Generate random file name
+        set suffix = `mktemp -u XXXXXX`
+        set submit_script = "${work_dir}/submit_script_${suffix}.sh"
+        echo '#\!/bin/bash' > ${submit_script}
+        # Extra script if $cmd_script includes input arguments
+        if ("$cmd_script" =~ *\ * ) then
+            set temp_script = "${work_dir}/temp_script_${suffix}.sh"
+            echo '#\!/bin/bash' > ${temp_script}
+            echo ${cmd_script} >> ${temp_script}
+            chmod 755 ${temp_script}
+            echo "qsub ${cmd} -- ${temp_script}" >> ${submit_script}
+        else
+            echo "qsub ${cmd} -- ${cmd_script}" >> ${submit_script}
+        endif
+        chmod 755 ${submit_script}
+        # submit job
+        ssh headnode "cd $work_dir && bash -s" < ${submit_script}
+    else
+        # submit job
+        ssh headnode "cd $work_dir; qsub ${cmd} -- ${cmd_script}"
+    endif
 else
     # submit job
     cd ${work_dir}
