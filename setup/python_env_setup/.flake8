@@ -6,4 +6,8 @@ ignore =
     # Comparison to true should be 'if cond is true:' or 'if cond:'
     E712,
     # Module level import not at top of file
-    E402
+    E402,
+    # Line break occurred before a binary operator
+    W503,
+    # Line break occurred after a binary operator
+    W504

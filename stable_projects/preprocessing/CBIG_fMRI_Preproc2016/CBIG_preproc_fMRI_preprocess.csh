@@ -61,7 +61,7 @@ set is_distortion_corrected = 0 # flag indicates whether spatial distortion corr
 set echo_number = 1 # echo number default to be 1
 set nii_file_input = 0 # flag indicated whether input for -fmrinii is nifti file
 set is_BIDS_input = 0 # flag indicated whether input for -fmrinii is BIDS dataset
-set matlab_runtime = 0 # Default not running on MATLAB Runtime
+set matlab_runtime_util = "" # MATLAB Runtime utilities folder
 
 set root_dir = `python -c "import os; print(os.path.realpath('$0'))"`
 set root_dir = `dirname $root_dir`
@@ -119,12 +119,12 @@ endif
 mkdir -p $output_dir/$subject/logs
 set LF = $output_dir/$subject/logs/CBIG_preproc_fMRI_preprocess.log
 if ( -e $LF ) then
-    rm $LF
+    rm -f $LF
 endif
 touch $LF
 set cleanup_file = $output_dir/$subject/logs/cleanup.txt
 if ( -e $cleanup_file ) then
-    rm $cleanup_file
+    rm -f $cleanup_file
 endif
 touch $cleanup_file
 echo "**************************************************************************" >> $LF
@@ -196,7 +196,7 @@ endif
 set package_list = $output_dir/$subject/logs/python_env_list.txt
 if ( $echo_number > 1 ) then
     if ( -e $package_list ) then
-        rm $package_list
+        rm -f $package_list
     endif
     touch $package_list
     conda list >> $package_list
@@ -312,7 +312,7 @@ if ( $echo_number == 1 ) then
     foreach curr_bold ($zpdbold)
         if ( ! -e $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold$BOLD_stem.nii.gz" ) then
             mkdir -p $output_dir/$subject/bold/$curr_bold
-            rsync -az --chmod=755 $boldname[$k] $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold$BOLD_stem.nii.gz"
+            rsync -a --chmod=755 $boldname[$k] $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold$BOLD_stem.nii.gz"
         endif
         @ k++
     end
@@ -323,7 +323,7 @@ else
         while ($j <= $echo_number)
             if ( ! -e $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold"_e$j"$BOLD_stem.nii.gz" ) then
                 mkdir -p $output_dir/$subject/bold/$curr_bold
-                rsync -az --chmod=755 $boldname[$k] $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold"_e$j"$BOLD_stem.nii.gz"
+                rsync -a --chmod=755 $boldname[$k] $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold"_e$j"$BOLD_stem.nii.gz"
             endif
             @ j++
             @ k++
@@ -333,7 +333,7 @@ endif
 
 set Bold_file = $output_dir/$subject/logs/$subject.bold
 if( -e $Bold_file ) then
-    rm $Bold_file
+    rm -f $Bold_file
 endif
 echo $zpdbold >> $Bold_file
 echo "" >> $LF
@@ -515,8 +515,8 @@ The intermediate files from motion correction step will not be removed." >> $LF
         set cmd = "$root_dir/CBIG_preproc_fslmcflirt_outliers.csh -s $subject -d $output_dir -bld '$zpdbold' "
         set cmd = "$cmd -echo_number $echo_number"
         set cmd = "$cmd -BOLD_stem $BOLD_stem $curr_flag"
-        if ( $matlab_runtime == 1 ) then
-            set cmd = "$cmd -matlab_runtime"
+        if ( "$matlab_runtime_util" != "" ) then
+            set cmd = "$cmd -matlab_runtime_util $matlab_runtime_util"
         endif
         echo "[$curr_step]: $cmd" >> $LF
         eval $cmd >&  /dev/null
@@ -622,9 +622,9 @@ The intermediate files from spatial distortion correction step will not be remov
             # As a QC step, the BBR costs can be compared between images with/without distortion correction. By right, the image
             # with distortion correction should have a lower BBR cost than the image without distortion correction.
             # Note that this BBR step here is for QC only, but not the REAL preprocessing step.
-            rsync -az $output_dir/$subject/bold/ $output_dir/$subject/bold_backup
-            rsync -az $output_dir/$subject/logs/ $output_dir/$subject/logs_backup
-            rsync -az $output_dir/$subject/qc/ $output_dir/$subject/qc_backup
+            rsync -a $output_dir/$subject/bold/ $output_dir/$subject/bold_backup
+            rsync -a $output_dir/$subject/logs/ $output_dir/$subject/logs_backup
+            rsync -a $output_dir/$subject/qc/ $output_dir/$subject/qc_backup
 
             if ( $echo_number > 1 ) then
                 set MEICA_flag = `grep "CBIG_preproc_multiecho_denoise" $config`
@@ -651,7 +651,7 @@ The intermediate files from spatial distortion correction step will not be remov
             # clean up temporary directories
             rm -r -f $output_dir/$subject/bold
             rm -r -f $output_dir/$subject/logs
-            rm -r $output_dir/$subject/qc
+            rm -r -f $output_dir/$subject/qc
             mv $output_dir/$subject/bold_backup $output_dir/$subject/bold
             mv $output_dir/$subject/logs_backup $output_dir/$subject/logs
             mv $output_dir/$subject/qc_backup $output_dir/$subject/qc
@@ -767,8 +767,8 @@ than without distortion correction ($bbr_cost_without_sdc)." >> $LF
             set cmd = "$cmd $output_dir/$subject/qc/CBIG_preproc_bbregister_intra_sub_reg_sdc.cost"
             eval $cmd >& /dev/null
 
-            rm $output_dir/$subject/qc/CBIG_preproc_bbregister_intra_sub_reg_no_sdc.cost
-            rm $output_dir/$subject/qc/CBIG_preproc_bbregister_intra_sub_reg.cost
+            rm -f $output_dir/$subject/qc/CBIG_preproc_bbregister_intra_sub_reg_no_sdc.cost
+            rm -f $output_dir/$subject/qc/CBIG_preproc_bbregister_intra_sub_reg.cost
             set cmd = "mv $output_dir/$subject/qc/CBIG_preproc_bbregister_intra_sub_reg_sdc.cost"
             set cmd = "$cmd $output_dir/$subject/qc/CBIG_preproc_bbregister_intra_sub_reg.cost"
             eval $cmd >& /dev/null
@@ -832,8 +832,8 @@ The intermediate censoring interpolation volume will not be removed." >> $LF
         set cmd = "$root_dir/CBIG_preproc_censor.csh -s $subject -d $output_dir -anat_s $anat -anat_d $SUBJECTS_DIR "
         set cmd = "$cmd -bld '$zpdbold' -BOLD_stem $BOLD_stem -REG_stem $REG_stem -OUTLIER_stem $OUTLIER_stem "
         set cmd = "$cmd $curr_flag"
-        if ( $matlab_runtime == 1 ) then
-            set cmd = "$cmd -matlab_runtime"
+        if ( "$matlab_runtime_util" != "" ) then
+            set cmd = "$cmd -matlab_runtime_util $matlab_runtime_util"
         endif
         echo "[$curr_step]: $cmd" >> $LF
         eval $cmd >&  /dev/null 
@@ -870,8 +870,8 @@ can not be found" >> $LF
 
         set cmd = "$root_dir/CBIG_preproc_bandpass_fft.csh -s $subject -d $output_dir -bld '$zpdbold' -BOLD_stem " 
         set cmd = "$cmd $BOLD_stem -OUTLIER_stem $OUTLIER_stem $curr_flag"
-        if ( $matlab_runtime == 1 ) then
-            set cmd = "$cmd -matlab_runtime"
+        if ( "$matlab_runtime_util" != "" ) then
+            set cmd = "$cmd -matlab_runtime_util $matlab_runtime_util"
         endif
         echo "[$curr_step]: $cmd" >> $LF
         eval $cmd >&  /dev/null 
@@ -913,8 +913,8 @@ can not be found" >> $LF
         set cmd = "$root_dir/CBIG_preproc_regression.csh -s $subject -d $output_dir -anat_s $anat -anat_d "
         set cmd = "$cmd $SUBJECTS_DIR -bld '$zpdbold' -BOLD_stem $BOLD_stem -REG_stem $REG_stem -MASK_stem $BOLD_stem "
         set cmd = "$cmd -OUTLIER_stem $OUTLIER_stem $curr_flag"
-        if ( $matlab_runtime == 1 ) then
-            set cmd = "$cmd -matlab_runtime"
+        if ( "$matlab_runtime_util" != "" ) then
+            set cmd = "$cmd -matlab_runtime_util $matlab_runtime_util"
         endif
         echo "[$curr_step]: $cmd" >> $LF
         eval $cmd >&  /dev/null 
@@ -960,8 +960,8 @@ The intermediate files from plotting QC greyplot will not be removed." >> $LF
         set cmd = "$root_dir/CBIG_preproc_QC_greyplot.csh -s $subject -d $output_dir -anat_s $anat -anat_d "
         set cmd = "$cmd $SUBJECTS_DIR -bld '$zpdbold' -BOLD_stem $BOLD_stem -REG_stem $REG_stem -MC_stem $mc_stem "
         set cmd = "$cmd -echo_number $echo_number $curr_flag"
-        if ( $matlab_runtime == 1 ) then
-            set cmd = "$cmd -matlab_runtime"
+        if ( "$matlab_runtime_util" != "" ) then
+            set cmd = "$cmd -matlab_runtime_util $matlab_runtime_util"
         endif
         echo "[$curr_step]: $cmd" >> $LF
         eval $cmd >&  /dev/null
@@ -984,8 +984,8 @@ can not be found" >> $LF
 
         set cmd = "$root_dir/CBIG_preproc_native2fsaverage.csh -s $subject -d $output_dir -anat_s $anat -anat_d "
         set cmd = "$cmd $SUBJECTS_DIR -bld '$zpdbold' -BOLD_stem $BOLD_stem -REG_stem $REG_stem $curr_flag"
-        if ( $matlab_runtime == 1 ) then
-            set cmd = "$cmd -matlab_runtime"
+        if ( "$matlab_runtime_util" != "" ) then
+            set cmd = "$cmd -matlab_runtime_util $matlab_runtime_util"
         endif
         echo "[$curr_step]: $cmd" >> $LF
         eval $cmd >&  /dev/null
@@ -1042,8 +1042,8 @@ The intermediate files from FC computation step will not be removed." >> $LF
 
         set cmd = "$root_dir/CBIG_preproc_FCmetrics_wrapper.csh -s $subject -d $output_dir -bld '$zpdbold' "
         set cmd = "$cmd -BOLD_stem $BOLD_stem -SURF_stem $FC_SURF_stem -OUTLIER_stem $OUTLIER_stem $curr_flag"
-        if ( $matlab_runtime == 1 ) then
-            set cmd = "$cmd -matlab_runtime"
+        if ( "$matlab_runtime_util" != "" ) then
+            set cmd = "$cmd -matlab_runtime_util $matlab_runtime_util"
         endif
         echo "[$curr_step]: $cmd" >> $LF
         eval $cmd >& /dev/null
@@ -1200,7 +1200,7 @@ echo "Preprocessing Completed!" >> $LF
 ##########################################
 if ( $nocleanup != 1) then
 foreach file (`cat $cleanup_file`)
-    rm $file
+    rm -f $file
 end
 endif
 exit 0
@@ -1262,9 +1262,10 @@ while( $#argv != 0 )
             set nocleanup = 1;
             breaksw
 
-        #running code on MATLAB Runtime (optional)
-        case "-matlab_runtime":
-            set matlab_runtime = 1;
+        #path to MATLAB Runtime utilities folder (optional)
+        case "-matlab_runtime_util":
+            if ( $#argv == 0 ) goto arg1err;
+            set matlab_runtime_util = $argv[1]; shift;
             breaksw
 
         default:
@@ -1520,7 +1521,8 @@ OPTIONAL ARGUMENTS:
     -help                      : help
     -version                   : version
     -nocleanup                 : do not delete intermediate volumes
-    -matlab_runtime            : running MATLAB code on MATLAB Runtime instead of MATLAB.
+    -matlab_runtime_util       : Full path of MATLAB Runtime utilities folder containing executable files.
+                                 If not empty, MATLAB Runtime will be used.
 
 OUTPUTS: 
     CBIG_fMRI_preprocess.csh will create the directory <output_dir>/<subject> as specified in the options. Within the 
@@ -1625,7 +1627,7 @@ EXAMPLE:
     $CBIG_TESTDATA_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/100subjects_clustering/recon_all -fmrinii \
     $CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/unit_tests/100subjects_clustering/fmrinii/\
     Sub0033_Ses1.fmrinii -config $CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/unit_tests/\
-    100subjects_clustering/prepro.config/prepro.config
+    100subjects_clustering/prepro.config
 
 Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 

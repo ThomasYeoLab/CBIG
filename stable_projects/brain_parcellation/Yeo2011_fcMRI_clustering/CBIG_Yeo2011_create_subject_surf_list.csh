@@ -40,12 +40,16 @@ check_params_return:
 set scripts_dir = "${out_dir}/lists"
 mkdir -p $scripts_dir
 
-set cmd = "CBIG_fMRI_create_data_list.csh -sd ${sub_dir} -sub_ls ${sub_list} -folder surf -data_stem ${surf_stem}.nii.gz -out_dir ${scripts_dir} -out_stem surf${surf_stem} -preproc_opt ${preproc_opt}"
+set cmd = "CBIG_fMRI_create_data_list.csh -sd ${sub_dir} -sub_ls ${sub_list} -folder surf"
+set cmd = "${cmd} -data_stem ${surf_stem}.nii.gz -out_dir ${scripts_dir} -out_stem surf${surf_stem}"
+set cmd = "${cmd} -preproc_opt ${preproc_opt}"
 echo $cmd
 eval $cmd
 
 if( $scrub_flag == 1 ) then
-    set cmd = "CBIG_fMRI_create_data_list.csh -sd ${sub_dir} -sub_ls ${sub_list} -folder qc -data_stem ${outlier_stem}.txt -out_dir ${scripts_dir} -out_stem outlier${outlier_stem} -preproc_opt ${preproc_opt}"
+    set cmd = "CBIG_fMRI_create_data_list.csh -sd ${sub_dir} -sub_ls ${sub_list} -folder qc"
+    set cmd = "${cmd} -data_stem ${outlier_stem}.txt -out_dir ${scripts_dir} -out_stem outlier${outlier_stem}"
+    set cmd = "${cmd} -preproc_opt ${preproc_opt}"
     echo $cmd
     eval $cmd
 endif
@@ -175,8 +179,9 @@ REQUIRED ARGUMENTS:
                                   file lists, and the motion outlier list. 
     -surf_stem     surf_stem    : a stem that can identify the surface data that you want to use.
                                   For example, if the surface file name is 
-                                  "Sub0001_Ses1_bld002_rest_skip4_stc_mc_resid_cen_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6_fs5.nii.gz",
-                                  <surf_stem> = "_rest_skip4_stc_mc_resid_cen_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6_sm6_fs5".
+                                  "Sub0001_Ses1_bld002_rest_skip4_stc_mc_resid_cen_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6
+                                  .nii.gz",
+                                  <surf_stem> = "_rest_skip4_stc_mc_resid_cen_FDRMS0.2_DVARS50_bp_0.009_0.08_fs6".
     
 OPTIONAL ARGUMENTS:
     -outlier_stem  outlier_stem : a stem that can identify the motion outliers file (without extension), 

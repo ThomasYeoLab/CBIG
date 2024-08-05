@@ -48,11 +48,15 @@ rm $rh_profile_input
 set subjects = `cat ${sub_list}`
 foreach s ($subjects)
     if( $scrub_flag == 0 ) then
-        echo "${sub_dir}/$s/surf2surf_profiles/lh.$s.roi${roi}.thres${threshold}.surf2surf_profile.nii.gz" >> $lh_profile_input
-        echo "${sub_dir}/$s/surf2surf_profiles/rh.$s.roi${roi}.thres${threshold}.surf2surf_profile.nii.gz" >> $rh_profile_input
+        echo "${sub_dir}/$s/surf2surf_profiles/lh.$s.roi${roi}.thres${threshold}.surf2surf_profile.nii.gz" \
+            >> $lh_profile_input
+        echo "${sub_dir}/$s/surf2surf_profiles/rh.$s.roi${roi}.thres${threshold}.surf2surf_profile.nii.gz" \
+            >> $rh_profile_input
     else
-        echo "${sub_dir}/$s/surf2surf_profiles/lh.$s.roi${roi}.thres${threshold}.surf2surf_profile_scrub.nii.gz" >> $lh_profile_input
-        echo "${sub_dir}/$s/surf2surf_profiles/rh.$s.roi${roi}.thres${threshold}.surf2surf_profile_scrub.nii.gz" >> $rh_profile_input
+        echo "${sub_dir}/$s/surf2surf_profiles/lh.$s.roi${roi}.thres${threshold}.surf2surf_profile_scrub.nii.gz" \
+            >> $lh_profile_input
+        echo "${sub_dir}/$s/surf2surf_profiles/rh.$s.roi${roi}.thres${threshold}.surf2surf_profile_scrub.nii.gz" \
+            >> $rh_profile_input
     endif
 end
 

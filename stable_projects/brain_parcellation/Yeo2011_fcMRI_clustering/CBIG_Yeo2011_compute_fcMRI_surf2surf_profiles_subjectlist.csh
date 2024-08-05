@@ -1,7 +1,7 @@
 #!/bin/csh -f
 
-
-# Assume the order of subjects list and surface data list are the same, since the surface data list is created from subjects list by CBIG_Yeo2011_create_subject_surf_list.csh
+# Assume the order of subjects list and surface data list are the same, since the surface data list is created from 
+# subjects list by CBIG_Yeo2011_create_subject_surf_list.csh
 # Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 set VERSION = '$Id: CBIG_Yeo2011_compute_fcMRI_surf2surf_profiles_subjectlist.csh, v 1.0 2016/06/18 $'
@@ -48,7 +48,8 @@ foreach surf ("`cat ${surf_list}`")
     if( ! -d $output_dir ) then
         mkdir $output_dir
     endif
-    set cmd = "${root_dir}/CBIG_Yeo2011_compute_fcMRI_surf2surf_profiles.csh -sd ${sub_dir} -s ${s} -surf_data '${surf}' -target ${target} -roi ${roi} -output_dir ${output_dir}"
+    set cmd = "${root_dir}/CBIG_Yeo2011_compute_fcMRI_surf2surf_profiles.csh -sd ${sub_dir} -s ${s}"
+    set cmd = "${cmd} -surf_data '${surf}' -target ${target} -roi ${roi} -output_dir ${output_dir}"
     if( $scrub_flag == 1 ) then
         set outlier = "$outlier_files[$i]"
         set cmd = "$cmd -outlier_files '$outlier'"
@@ -180,7 +181,8 @@ REQUIRED ARGUMENTS:
     -sd          sub_dir      : fMRI subjects directory. This directory contains all the folders
                                 named by the subject IDs.
     -sub_ls      sub_list     : subjects list (full path). Each line in this file is one subject ID.
-    -surf_ls     surf_list    : surface fMRI data list (full path), created by 'CBIG_Yeo2011_create_subject_surf_list.csh'
+    -surf_ls     surf_list    : surface fMRI data list (full path), created by 
+                                'CBIG_Yeo2011_create_subject_surf_list.csh'
                                 The user only needs to pass in one of the lh and rh surface fMRI lists.
                                 In the list, each line is all the surface fMRI filenames (lh or rh) 
                                 of all runs of one subject.

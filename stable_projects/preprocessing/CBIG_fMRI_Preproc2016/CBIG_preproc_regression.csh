@@ -75,7 +75,7 @@ set censor = 0                 # Default use all frames to do regression
 set save_beta = 0              # Default not save beta coefficients
 set detrend_method = "detrend" # Default use detrend method when creating motion regressor
 set force = 0
-set matlab_runtime = 0         # Default not running on MATLAB Runtime
+set matlab_runtime_util = "" # MATLAB Runtime utilities folder
 
 set root_dir = `python -c "import os; print(os.path.realpath('$0'))"`
 set root_dir = `dirname $root_dir`
@@ -175,7 +175,7 @@ echo "=======================Creating masks done!=======================" |& tee
 #############################################
 
 # check if matlab exists
-if ( $matlab_runtime == 0 ) then
+if ( "$matlab_runtime_util" == "" ) then
     set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
     if ($status) then
         echo "ERROR: could not find MATLAB"
@@ -190,7 +190,6 @@ else
     echo "Setting up environment variables for MATLAB Runtime"
     setenv LD_LIBRARY_PATH ${MATLAB}/runtime/glnxa64:${MATLAB}/bin/glnxa64:${MATLAB}/sys/os/glnxa64:${MATLAB}/sys/opengl/lib/glnxa64:${LD_LIBRARY_PATH}
     # check if MATLAB Runtime utilities folder exists
-    set matlab_runtime_util = "${root_dir}/matlab_runtime/utilities"
     if ( ! -d $matlab_runtime_util ) then
         echo "ERROR: MATLAB Runtime utilities folder does not exist!"
         exit 1;
@@ -374,7 +373,7 @@ echo "=======================Create mc regressor=======================" |& tee 
 if ($motion12_itamar == 1) then
     if ($mc_regressor_exist_flag == 0) then
         set matlab_args = "'$mc_par_list' '$mc_regressor_list' '$detrend_method' '$mt_diff_flag'"
-        if ( $matlab_runtime == 0 ) then
+        if ( "$matlab_runtime_util" == "" ) then
             set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r '"' 'addpath(fullfile('"'"$root_dir"'"\
                 ','"'"utilities"'"'))'; CBIG_preproc_create_mc_regressors $matlab_args; exit '"' );
         else
@@ -400,7 +399,7 @@ if ($whole_brain || $wm || $csf) then
     if ($ROI_regressor_exist_flag == 0) then
         set matlab_args = "'$fMRI_list' '$ROI_regressors_list' '$wb_mask'"
         set matlab_args = "${matlab_args} '$wm_mask' '$csf_mask' '$other_diff_flag'"
-        if ( $matlab_runtime == 0 ) then
+        if ( "$matlab_runtime_util" == "" ) then
             set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r '"' 'addpath(fullfile('"'"$root_dir"'"\
                 ','"'"utilities"'"'))'; CBIG_preproc_create_ROI_regressors $matlab_args; exit '"' );
         else
@@ -435,7 +434,7 @@ if ( $aCompCor ) then
         # The path needs to be changed after moved the matlab function in git repo
         set matlab_args = "'$fMRI_list' '$wm_csf_mask_comb' '$CompCor_regressors_list'"
         set matlab_args = "${matlab_args} '$nPCs' '$per_run' '$aCompCor_diff_flag'"
-        if ( $matlab_runtime == 0 ) then
+        if ( "$matlab_runtime_util" == "" ) then
             set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r '"' 'addpath(fullfile('"'"$root_dir"'"','\
                 "'"utilities"'"'))'; CBIG_preproc_aCompCor_multipleruns $matlab_args; exit '"' );
         else
@@ -538,7 +537,7 @@ if ($motion12_itamar || $whole_brain || $wm || $csf || $aCompCor) then
     if (($resid_exist_flag == 0) || ($force == 1)) then
         set matlab_args = "'$fMRI_list' '$resid_list' '$all_regressors_list' '$polynomial_fit'"
         set matlab_args = "${matlab_args} '$censor_list' '$per_run' '$save_beta'"
-        if ( $matlab_runtime == 0 ) then
+        if ( "$matlab_runtime_util" == "" ) then
             set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r '"' 'addpath(fullfile('"'"$root_dir"'"','\
                 "'"utilities"'"'))'; CBIG_glm_regress_vol $matlab_args; exit '"' )
         else
@@ -738,9 +737,10 @@ while( $#argv != 0 )
             set force = 1;
             breaksw
 
-        #running code on matlab_runtime (optional)
-        case "-matlab_runtime":
-            set matlab_runtime = 1;
+        #path to MATLAB Runtime utilities folder (optional)
+        case "-matlab_runtime_util":
+            if ( $#argv == 0 ) goto arg1err;
+            set matlab_runtime_util = $argv[1]; shift;
             breaksw
 
         default:
@@ -916,7 +916,8 @@ OPTIONAL ARGUMENTS:
     -save_beta                        : If this option is used, the beta coefficients in the regression will be saved.
                                         Default is not to save beta
     -force                            : update results, if output file exists then overwrite
-    -matlab_runtime                   : running MATLAB code on MATLAB Runtime instead of MATLAB.
+    -matlab_runtime_util              : Full path of MATLAB Runtime utilities folder containing executable files.
+                                        If not empty, MATLAB Runtime will be used.
     -help                             : help
     -version                          : version
 

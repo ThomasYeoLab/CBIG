@@ -3,8 +3,11 @@ function CBIG_Yeo2011_ProjectSplitLabels2MNI1mm
 % CBIG_Yeo2011_ProjectSplitLabels2MNI1mm
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
-cortex_mask  = MRIread(fullfile(getenv('CBIG_CODE_DIR'), 'data', 'extras', 'surf2surf_gui_data', 'CorrespondenceFreeSurferVolSurfSpace', 'coord_vol2surf', 'MNI_cortex_estimate.150.nii.gz'));
-vol2surf_map = MRIread(fullfile(getenv('CBIG_CODE_DIR'), 'data', 'extras', 'surf2surf_gui_data', 'CorrespondenceFreeSurferVolSurfSpace', 'coord_vol2surf', '1000sub.FSL_MNI152.1mm.full_vertex_map.500.fsaverage5.nii.gz'));
+cortex_mask  = MRIread(fullfile(getenv('CBIG_CODE_DIR'), 'data', 'extras', 'surf2surf_gui_data',  ...
+    'CorrespondenceFreeSurferVolSurfSpace', 'coord_vol2surf', 'MNI_cortex_estimate.150.nii.gz'));
+vol2surf_map = MRIread(fullfile(getenv('CBIG_CODE_DIR'), 'data', 'extras', 'surf2surf_gui_data',  ...
+    'CorrespondenceFreeSurferVolSurfSpace', 'coord_vol2surf', ...
+    '1000sub.FSL_MNI152.1mm.full_vertex_map.500.fsaverage5.nii.gz'));
 
 lh_parms.SUBJECTS_DIR = fullfile(pwd, '..');
 lh_parms.hemi = 'lh';
@@ -51,7 +54,8 @@ for cluster = [7 17]
         end
     end
     
-    MRIwrite(output, ['../MNI152/' 'Yeo2011_' num2str(cluster) 'Networks_N1000.split_components.FSL_MNI152_FreeSurferConformed_1mm.nii.gz']);
+    MRIwrite(output, ['../MNI152/' 'Yeo2011_' num2str(cluster)  ...
+        'Networks_N1000.split_components.FSL_MNI152_FreeSurferConformed_1mm.nii.gz']);
     
     for i = 2:length(lh_avg_mesh.MARS_ct.struct_names)
        disp([num2str(i) ': ' num2str(sum(output.vol(:) == (i-1)))]); 
@@ -61,7 +65,8 @@ for cluster = [7 17]
     fid = fopen(['../MNI152/' num2str(cluster) 'Networks_ColorLUT_freeview.txt'], 'w');
     fprintf(fid, '%3d %40s %3d %3d %3d   0\n', 0, 'NONE', 0, 0, 0);
     for i = 2:length(lh_avg_mesh.MARS_ct.struct_names)
-        fprintf(fid, '%3d %40s %3d %3d %3d   0\n', i - 1, lh_avg_mesh.MARS_ct.struct_names{i}, lh_avg_mesh.MARS_ct.table(i, 1), lh_avg_mesh.MARS_ct.table(i, 2), lh_avg_mesh.MARS_ct.table(i, 3));
+        fprintf(fid, '%3d %40s %3d %3d %3d   0\n', i - 1, lh_avg_mesh.MARS_ct.struct_names{i},  ...
+            lh_avg_mesh.MARS_ct.table(i, 1), lh_avg_mesh.MARS_ct.table(i, 2), lh_avg_mesh.MARS_ct.table(i, 3));
     end
     fclose(fid);
     
@@ -79,7 +84,8 @@ for cluster = [7 17]
     fprintf(fid, '/PseudoColormap [\n');
     
     for i = 1:length(lh_avg_mesh.MARS_ct.struct_names)
-        fprintf(fid, '<-color{%.6f,%.6f,%.6f}->\n', double(lh_avg_mesh.MARS_ct.table(i, 1))/255, double(lh_avg_mesh.MARS_ct.table(i, 2))/255, double(lh_avg_mesh.MARS_ct.table(i, 3))/255);
+        fprintf(fid, '<-color{%.6f,%.6f,%.6f}->\n', double(lh_avg_mesh.MARS_ct.table(i, 1))/255,  ...
+            double(lh_avg_mesh.MARS_ct.table(i, 2))/255, double(lh_avg_mesh.MARS_ct.table(i, 3))/255);
     end
     
     fprintf(fid, ']\n');

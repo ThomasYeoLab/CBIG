@@ -17,7 +17,8 @@ function CBIG_MM_HCP_extract_TC_419(List, out_dir, roi_400_nii, roi_19_nii)
 %   
 %   - roi_19_nii
 %     Path of the 19 subcortical Parcels ROI file in CBIG order: 
-%     (https://github.com/ThomasYeoLab/CBIG/blob/master/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_FCmetrics_wrapper.csh#L559C1-L577C28)
+%     (https://github.com/ThomasYeoLab/CBIG/blob/master/stable_projects/
+%      preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_FCmetrics_wrapper.csh#L559C1-L577C28)
 %
 % Written by Tong He and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 

@@ -65,7 +65,7 @@ set low_f = ""; # default no filtering of respiratory pseudomotion
 set high_f = ""; # default no filtering of respiratory pseudomotion
 set echo_number = 1 # number of echos default to be 1
 set echo_stem = ""
-set matlab_runtime = 0 # Default not running on MATLAB Runtime
+set matlab_runtime_util = "" # MATLAB Runtime utilities folder
 
 goto parse_args;
 parse_args_return:
@@ -79,7 +79,7 @@ set root_dir = `dirname $root_dir`
 ###############################
 # check if matlab exists
 ###############################
-if ( $matlab_runtime == 0 ) then
+if ( "$matlab_runtime_util" == "" ) then
     set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
     if ($status) then
         echo "ERROR: could not find MATLAB"
@@ -94,7 +94,6 @@ else
     echo "Setting up environment variables for MATLAB Runtime"
     setenv LD_LIBRARY_PATH ${MATLAB}/runtime/glnxa64:${MATLAB}/bin/glnxa64:${MATLAB}/sys/os/glnxa64:${MATLAB}/sys/opengl/lib/glnxa64:${LD_LIBRARY_PATH}
     # check if MATLAB Runtime utilities folder exists
-    set matlab_runtime_util = "${root_dir}/matlab_runtime/utilities"
     if ( ! -d $matlab_runtime_util ) then
         echo "ERROR: MATLAB Runtime utilities folder does not exist!"
         exit 1;
@@ -233,7 +232,7 @@ foreach curr_bold ($zpdbold)
     set outname_prefix = ${boldfile}_mc
     set matlab_args = "'$mc_par_file' '$mc_abs_rms_file' '$mc_rel_rms_file'"
     set matlab_args = "${matlab_args} '$qc' '$outname_prefix'"
-    if ( $matlab_runtime == 0 ) then
+    if ( "$matlab_runtime_util" == "" ) then
         set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; )
         set cmd = ( $cmd CBIG_preproc_plot_mcflirt_par $matlab_args; exit '"' )
     else
@@ -298,7 +297,7 @@ foreach curr_bold ($zpdbold)
         set fd_file = "$mc/${boldfile}_motion_outliers_FDRMS"
         set matlab_args_DVARS_FDRMS_Correlation = "'$dvars_file' '$fd_file' '$output'"
         set matlab_args_motion_outliers = "'$dvars_file' '$fd_file' '$fd_th' '$dv_th' '$discard_seg' '$output'"
-        if ( $matlab_runtime == 0 ) then
+        if ( "$matlab_runtime_util" == "" ) then
             set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; \
                 CBIG_preproc_DVARS_FDRMS_Correlation $matlab_args_DVARS_FDRMS_Correlation; \
                 CBIG_preproc_motion_outliers $matlab_args_motion_outliers; exit; '"' );
@@ -509,9 +508,10 @@ while( $#argv != 0 )
             set echo_number = "$argv[1]"; shift;
             breaksw
 
-        #running code on MATLAB Runtime (optional)
-        case "-matlab_runtime":
-            set matlab_runtime = 1;
+        #path to MATLAB Runtime utilities folder (optional)
+        case "-matlab_runtime_util":
+            if ( $#argv == 0 ) goto arg1err;
+            set matlab_runtime_util = $argv[1]; shift;
             breaksw
 
         default:
@@ -613,7 +613,8 @@ OPTIONAL ARGUMENTS:
     -high_f                    : stop frequency of respiration. It can only be used together with low_f
     -echo_number <echo_number> : number of echoes. For single echo data, default set to be 1.
     -nocleanup                 : use this flag to keep all intermediate files
-    -matlab_runtime            : running MATLAB code on MATLAB Runtime instead of MATLAB.
+    -matlab_runtime_util       : Full path of MATLAB Runtime utilities folder containing executable files.
+                                 If not empty, MATLAB Runtime will be used.
     -help                      : help
     -version                   : version
 

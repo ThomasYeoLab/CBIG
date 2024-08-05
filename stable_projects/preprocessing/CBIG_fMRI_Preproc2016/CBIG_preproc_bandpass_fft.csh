@@ -55,7 +55,7 @@ set low_f = ""      # Default not set the low_f cutoff frequency
 set high_f = ""     # Default not set the high_f cutoff frequency
 set censor = 0      # Default use all frames to do GLM regression
 set force = 0       # Default if file exist, skip the step
-set matlab_runtime = 0  # Default not running on MATLAB Runtime
+set matlab_runtime_util = "" # MATLAB Runtime utilities folder
 
 goto parse_args;
 parse_args_return:
@@ -93,7 +93,7 @@ echo "[Bandpass]: zpdbold = $zpdbold" |& tee -a $LF
 cd $boldfolder
 
 # check if matlab exists
-if ( $matlab_runtime == 0 ) then
+if ( "$matlab_runtime_util" == "" ) then
     set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
     if ($status) then
         echo "ERROR: could not find MATLAB"
@@ -108,7 +108,6 @@ else
     echo "Setting up environment variables for MATLAB Runtime"
     setenv LD_LIBRARY_PATH ${MATLAB}/runtime/glnxa64:${MATLAB}/bin/glnxa64:${MATLAB}/sys/os/glnxa64:${MATLAB}/sys/opengl/lib/glnxa64:${LD_LIBRARY_PATH}
     # check if MATLAB Runtime utilities folder exists
-    set matlab_runtime_util = "${root_dir}/matlab_runtime/utilities"
     if ( ! -d $matlab_runtime_util ) then
         echo "ERROR: MATLAB Runtime utilities folder does not exist!"
         exit 1;
@@ -152,7 +151,7 @@ foreach curr_bold ($zpdbold)
             set fMRI_file = $boldfile".nii.gz"
             set output_file = $boldfile"_bp_"$low_f"_"$high_f".nii.gz"
             set matlab_args = "'$fMRI_file' '$output_file' '$low_f' '$high_f' '$detrend' '$retrend' '$censor_file'"
-            if ( $matlab_runtime == 0 ) then
+            if ( "$matlab_runtime_util" == "" ) then
                 set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r '"' \
                     'addpath(fullfile('"'"'$root_dir'"'"','"'"'utilities'"'"'))'; \
                     CBIG_bandpass_vol $matlab_args; exit '"' );
@@ -258,9 +257,10 @@ while( $#argv != 0 )
             set force = 1;
             breaksw
 
-        #running code on MATLAB Runtime (optional)
-        case "-matlab_runtime":
-            set matlab_runtime = 1;
+        #path to MATLAB Runtime utilities folder (optional)
+        case "-matlab_runtime_util":
+            if ( $#argv == 0 ) goto arg1err;
+            set matlab_runtime_util = $argv[1]; shift;
             breaksw
 
         default:
@@ -371,7 +371,8 @@ OPTIONAL ARGUMENTS:
     -retrend                     : add back the linear trend after bandpass filtering (optional), retrend 
                                    is ignored if detrend is off
     -force                       : update results, if exist then overwrite
-    -matlab_runtime              : running MATLAB code on MATLAB Runtime instead of MATLAB.
+    -matlab_runtime_util         : Full path of MATLAB Runtime utilities folder containing executable files.
+                                   If not empty, MATLAB Runtime will be used.
     -help                        : help
     -version                     : version
 

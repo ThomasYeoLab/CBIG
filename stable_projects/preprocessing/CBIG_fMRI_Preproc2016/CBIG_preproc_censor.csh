@@ -36,7 +36,7 @@ set outlier_stem = ""      # outlier vector file name
 set max_mem = "NONE"       # Do not specify maximal memory usage
 set low_f = ""             # low cut-off frequency
 set high_f = ""            # high cut-off frequency
-set matlab_runtime = 0     # Default not running on MATLAB Runtime
+set matlab_runtime_util = "" # MATLAB Runtime utilities folder
 
 set VERSION = '$Id: CBIG_preproc_censor.csh v 1.0 2016/05/26'
 
@@ -84,7 +84,7 @@ cd $sub_dir/$subject
 ###############################
 # check if matlab exists
 ###############################
-if ( $matlab_runtime == 0 ) then
+if ( "$matlab_runtime_util" == "" ) then
     set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
     if ($status) then
         echo "ERROR: could not find MATLAB"
@@ -99,7 +99,6 @@ else
     echo "Setting up environment variables for MATLAB Runtime"
     setenv LD_LIBRARY_PATH ${MATLAB}/runtime/glnxa64:${MATLAB}/bin/glnxa64:${MATLAB}/sys/os/glnxa64:${MATLAB}/sys/opengl/lib/glnxa64:${LD_LIBRARY_PATH}
     # check if MATLAB Runtime utilities folder exists
-    set matlab_runtime_util = "${root_dir}/matlab_runtime/utilities"
     if ( ! -d $matlab_runtime_util ) then
         echo "ERROR: MATLAB Runtime utilities folder does not exist!"
         exit 1;
@@ -214,7 +213,7 @@ foreach runfolder ($bold)
         set matlab_args = "'${BOLD}.nii.gz' '${outlier_file}' '$TR'"
         set matlab_args = "${matlab_args} '${output_inter}' '${output}'"
         set matlab_args = "${matlab_args} '${loose_mask}' '${max_mem}'"
-        if ( $matlab_runtime == 0 ) then
+        if ( "$matlab_runtime_util" == "" ) then
             if ( "$bandpass_flag" == 0 ) then
                 # if do not perform bandpass filtering, do not pass in low_f and high_f
                 set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r )
@@ -286,7 +285,7 @@ foreach runfolder ($bold)
         set matlab_args = "${matlab_args} '${sub_dir}/${subject}/bold/mask/${subject}.brainmask.bin.nii.gz'"
         set matlab_args = "${matlab_args} '${sub_dir}/${subject}/bold/mask/${subject}.func.gm.nii.gz'"
         set matlab_args = "${matlab_args} '${outlier_file}'"
-        if ( $matlab_runtime == 0 ) then
+        if ( "$matlab_runtime_util" == "" ) then
             set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r )
             set cmd = ( $cmd '"''addpath(fullfile('"'"${root_dir}"'"',' "'"utilities"'"'))'; )
             set cmd = ( $cmd CBIG_preproc_CensorQC $matlab_args; exit '"' )
@@ -396,9 +395,10 @@ while( $#argv != 0 )
             set nocleanup = 1;
             breaksw
 
-        #running code on MATLAB Runtime (optional)
-        case "-matlab_runtime":
-            set matlab_runtime = 1;
+        #path to MATLAB Runtime utilities folder (optional)
+        case "-matlab_runtime_util":
+            if ( $#argv == 0 ) goto arg1err;
+            set matlab_runtime_util = $argv[1]; shift;
             breaksw
 
         default:
@@ -553,7 +553,8 @@ OPTIONAL ARGUMENTS:
                                   non-brain part).
     -nocleanup                  : do not remove intermediate result (interpolated volume without 
                                   bandpass filtering and without replacement.
-    -matlab_runtime             : running MATLAB code on MATLAB Runtime instead of MATLAB.
+    -matlab_runtime_util        : Full path of MATLAB Runtime utilities folder containing executable files.
+                                  If not empty, MATLAB Runtime will be used.
 
 OUTPUTS:
     1. If -nocleanup flag is passed in, this function will output two BOLD volumes:

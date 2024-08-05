@@ -46,7 +46,7 @@ set FD_th = 0.2            # the threshold of FD in censoring
 set DV_th = 50             # the threshold of DV in censoring
 set echo_number = 1        # number of echos
 set nocleanup = 0          # default clean up intermediate files
-set matlab_runtime = 0     # Default not running on MATLAB Runtime
+set matlab_runtime_util = "" # MATLAB Runtime utilities folder
 
 goto parse_args;
 parse_args_return:
@@ -60,7 +60,7 @@ set root_dir = `dirname $root_dir`
 ###############################
 # check if matlab exists
 ###############################
-if ( $matlab_runtime == 0 ) then
+if ( "$matlab_runtime_util" == "" ) then
     set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
     if ($status) then
         echo "ERROR: could not find MATLAB"
@@ -75,7 +75,6 @@ else
     echo "Setting up environment variables for MATLAB Runtime"
     setenv LD_LIBRARY_PATH ${MATLAB}/runtime/glnxa64:${MATLAB}/bin/glnxa64:${MATLAB}/sys/os/glnxa64:${MATLAB}/sys/opengl/lib/glnxa64:${LD_LIBRARY_PATH}
     # check if MATLAB Runtime utilities folder exists
-    set matlab_runtime_util = "${root_dir}/matlab_runtime/utilities"
     if ( ! -d $matlab_runtime_util ) then
         echo "ERROR: MATLAB Runtime utilities folder does not exist!"
         exit 1;
@@ -194,7 +193,7 @@ if( -e $ROI_regressors_list ) then
 
         set fMRI_list = "$regress_folder/fMRI_list.txt"
         set matlab_args = "'$fMRI_list' '$GS_list' '$wb_mask' '' '' '0'"
-        if ( $matlab_runtime == 0 ) then
+        if ( "$matlab_runtime_util" == "" ) then
             set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r )
             set cmd = ( $cmd '"' 'addpath(fullfile('"'"$root_dir"'"','"'"utilities"'"'))'; )
             set cmd = ( $cmd CBIG_preproc_create_ROI_regressors $matlab_args; exit '"' )
@@ -242,7 +241,7 @@ foreach runfolder ($bold)
         set matlab_args = "${matlab_args} 'grey_vox_factor' '$grey_vox_fac' 'tp_factor'"
         set matlab_args = "${matlab_args} '$tp_fac' 'FD_thres' '$FD_th' 'DV_thres' '$DV_th'"
     endif
-    if ( $matlab_runtime == 0 ) then
+    if ( "$matlab_runtime_util" == "" ) then
         set cmd = ( $MATLAB -nodesktop  -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; )
         set cmd = ( $cmd CBIG_preproc_QC_greyplot $matlab_args; exit; '"' )
     else
@@ -277,7 +276,7 @@ foreach runfolder ($bold)
             set FDpath = "$boldfolder/mc/$FDpath"
             set matlab_args = "'$before_MEICA' '$after_MEICA' '$FDpath'"
             set matlab_args = "${matlab_args} '$sub_dir/$subject/qc/${subject}_bold${runfolder}_multi_echo_QC_greyplot.png'"
-            if ( $matlab_runtime == 0 ) then
+            if ( "$matlab_runtime_util" == "" ) then
                 set cmd = ( $MATLAB -nodesktop  -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; )
                 set cmd = ( $cmd CBIG_preproc_multiecho_QC_greyplot $matlab_args; exit; '"' )
             else
@@ -392,9 +391,10 @@ while( $#argv != 0 )
             set nocleanup = 1;
             breaksw
 
-        #running code on MATLAB Runtime (optional)
-        case "-matlab_runtime":
-            set matlab_runtime = 1;
+        #path to MATLAB Runtime utilities folder (optional)
+        case "-matlab_runtime_util":
+            if ( $#argv == 0 ) goto arg1err;
+            set matlab_runtime_util = $argv[1]; shift;
             breaksw
 
         default:
@@ -529,7 +529,8 @@ OPTIONAL ARGUMENTS:
     -echo_number   echo_number  : number of echoes of the subject. If it is a multi-echo subject, 
                                   a greyplot for multi-echo QC will be generate. Default echo_number 
                                   is set to be 1.
-    -matlab_runtime             : running MATLAB code on MATLAB Runtime instead of MATLAB.
+    -matlab_runtime_util        : Full path of MATLAB Runtime utilities folder containing executable files.
+                                  If not empty, MATLAB Runtime will be used.
     -help                       : help
     -version                    : version
     -nocleanup                  : do not delete intermediate volumes

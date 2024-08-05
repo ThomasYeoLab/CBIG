@@ -62,7 +62,7 @@ set nocleanup = 0; # Default clean up intermediate file
 set parcellation_type = ""
 set network = ""
 set res = ""
-set matlab_runtime = 0 # Default not running on MATLAB Runtime
+set matlab_runtime_util = "" # MATLAB Runtime utilities folder
 
 goto parse_args;
 parse_args_return:
@@ -77,7 +77,7 @@ set root_dir = `dirname $root_dir`
 ###############################
 # check if matlab exists
 ###############################
-if ( $matlab_runtime == 0 ) then
+if ( "$matlab_runtime_util" == "" ) then
     set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
     if ($status) then
         echo "ERROR: could not find MATLAB"
@@ -92,7 +92,6 @@ else
     echo "Setting up environment variables for MATLAB Runtime"
     setenv LD_LIBRARY_PATH ${MATLAB}/runtime/glnxa64:${MATLAB}/bin/glnxa64:${MATLAB}/sys/os/glnxa64:${MATLAB}/sys/opengl/lib/glnxa64:${LD_LIBRARY_PATH}
     # check if MATLAB Runtime utilities folder exists
-    set matlab_runtime_util = "${root_dir}/matlab_runtime/utilities"
     if ( ! -d $matlab_runtime_util ) then
         echo "ERROR: MATLAB Runtime utilities folder does not exist!"
         exit 1;
@@ -321,7 +320,7 @@ if ( $Pearson_r == 1 ) then
         set matlab_args = "'$lh_cortical_ROIs_file' '$rh_cortical_ROIs_file' '$subcortex_func_vol'"
         set matlab_args = "${matlab_args} '$lh_surf_data_list' '$rh_surf_data_list' '$vol_data_list'"
         set matlab_args = "${matlab_args} '$discard_frames_list' 'Pearson_r' '$output_dir' '$output_prefix'"
-        if ( $matlab_runtime == 0 ) then
+        if ( "$matlab_runtime_util" == "" ) then
             set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; )
             set cmd = ( $cmd CBIG_preproc_FCmetrics $matlab_args; exit; '"' );
         else
@@ -458,9 +457,10 @@ while( $#argv != 0 )
             set nocleanup = 1;
             breaksw
 
-        #running code on MATLAB Runtime (optional)
-        case "-matlab_runtime":
-            set matlab_runtime = 1;
+        #path to MATLAB Runtime utilities folder (optional)
+        case "-matlab_runtime_util":
+            if ( $#argv == 0 ) goto arg1err;
+            set matlab_runtime_util = $argv[1]; shift;
             breaksw
 
         default:
@@ -694,8 +694,9 @@ OPTIONAL ARGUMENTS:
      do not remove intermediate result. For example, if -Pearson_r is used, intermediate files are lh2lh, lh2rh, rh2rh, 
      lh2subcortical, rh2subcortical, and subcortical2subcortical correlation files.
 
-    -matlab_runtime :
-     running MATLAB code using MATLAB Runtime instead of MATLAB.
+    -matlab_runtime_util :
+     Full path of MATLAB Runtime utilities folder containing executable files.
+     If not empty, MATLAB Runtime will be used.
 
 EXAMPLE with default setting:
     $CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_FCmetrics_wrapper.csh -s Sub0001_Ses1 

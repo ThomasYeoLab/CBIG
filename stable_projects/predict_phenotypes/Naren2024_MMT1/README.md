@@ -23,11 +23,6 @@ approaches can greatly boost behavioral prediction performance for different sma
 
 ## Code Release
 
-### Download stand-alone repository
-Since the whole Github repository is too big, we provide a stand-alone version of only this project 
-and its dependencies. To download this stand-alone repository, 
-visit this link: [https://github.com/ThomasYeoLab/Standalone_Naren2024_MMT1](https://github.com/ThomasYeoLab/Standalone_Naren2024_MMT1)
-
 ### Download whole repository
 If you want to use the code from our lab's other stable projects (other than Naren2024_MMT1), 
 you would need to download the whole CBIG repository.

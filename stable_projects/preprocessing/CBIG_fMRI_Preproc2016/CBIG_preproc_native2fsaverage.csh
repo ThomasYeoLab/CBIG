@@ -37,7 +37,7 @@ set sm = 6;
 set all_out_stem = ""
 set all_out_mesh = ""
 
-set matlab_runtime = 0 # Default not running on MATLAB Runtime
+set matlab_runtime_util = "" # MATLAB Runtime utilities folder
 
 ########################
 # Print help and version
@@ -81,7 +81,7 @@ check_params_return:
 ###############################
 # check if matlab exists
 ###############################
-if ( $matlab_runtime == 0 ) then
+if ( "$matlab_runtime_util" == "" ) then
     set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
     if ($status) then
         echo "ERROR: could not find MATLAB"
@@ -96,7 +96,6 @@ else
     echo "Setting up environment variables for MATLAB Runtime"
     setenv LD_LIBRARY_PATH ${MATLAB}/runtime/glnxa64:${MATLAB}/bin/glnxa64:${MATLAB}/sys/os/glnxa64:${MATLAB}/sys/opengl/lib/glnxa64:${LD_LIBRARY_PATH}
     # check if MATLAB Runtime utilities folder exists
-    set matlab_runtime_util = "${root_dir}/matlab_runtime/utilities"
     if ( ! -d $matlab_runtime_util ) then
         echo "ERROR: MATLAB Runtime utilities folder does not exist!"
         exit 1;
@@ -225,7 +224,7 @@ foreach runfolder ($bold)
                 exit 1;
             endif
             set matlab_args = "'$hemi' 'fsaverage6' '$input1' '$input2' '$tmp_output'"
-            if ( $matlab_runtime == 0 ) then
+            if ( "$matlab_runtime_util" == "" ) then
                 set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(fullfile('"'"$root_dir"'"\
                     ','"'"utilities"'"'))'; CBIG_preproc_fsaverage_medialwall_fillin $matlab_args; exit '"' );
             else
@@ -331,7 +330,7 @@ foreach runfolder ($bold)
             set before_NaN_name = $surffolder/$hemi.${subject}_bld${runfolder}${out_stem}.nii.gz
             set after_NaN_name = $surffolder/$hemi.${subject}_bld${runfolder}${out_stem}_medialwallNaN.nii.gz
             set matlab_args = "'$hemi' '$out_mesh' '$before_NaN_name' '$after_NaN_name'"
-            if ( $matlab_runtime == 0 ) then
+            if ( "$matlab_runtime_util" == "" ) then
                 set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(fullfile('"'"$root_dir"'"\
                     ','"'"utilities"'"'))'; CBIG_preproc_set_medialwall_NaN $matlab_args; exit '"' );
             else
@@ -445,9 +444,10 @@ while( $#argv != 0 )
             set reg_stem = "$argv[1]"; shift;
             breaksw
 
-        #running code on MATLAB Runtime (optional)
-        case "-matlab_runtime":
-            set matlab_runtime = 1;
+        #path to MATLAB Runtime utilities folder (optional)
+        case "-matlab_runtime_util":
+            if ( $#argv == 0 ) goto arg1err;
+            set matlab_runtime_util = $argv[1]; shift;
             breaksw
 
         default:
@@ -591,7 +591,8 @@ OPTIONAL ARGUMENTS:
     -proj       proj_mesh : projection resolution, e.g. fsaverage6 (default)
     -down       down_mesh : downsample resolution, e.g. fsaverage5 (default)
     -sm         sm        : smooth fwhm (mm), e.g. 6 (default)
-    -matlab_runtime       : running MATLAB code on MATLAB Runtime instead of MATLAB, e.g. 0 (default)
+    -matlab_runtime_util  : Full path of MATLAB Runtime utilities folder containing executable files.
+                            If not empty, MATLAB Runtime will be used.
 
 OUTPUTS:
     Three NIFTI volumes will be output.
