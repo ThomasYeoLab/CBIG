@@ -84,10 +84,13 @@ function CBIG_MSHBM_generate_profiles(seed_mesh,targ_mesh,out_dir,sub,sess,split
 %
 %   The generated profiles will saved into the following files:
 %   For data in fsaverage space:
-%   <out_dir>/profiles/sub<sub_id>/sess<sess_id>/lh.sub<sess_id>_sess<sess_id>_<targ_mesh>_roi<seed_mesh>.surf2surf_profile.nii.gz
-%   <out_dir>/profiles/sub<sub_id>/sess<sess_id>/lh.sub<sess_id>_sess<sess_id>_<targ_mesh>_roi<seed_mesh>.surf2surf_profile.nii.gz
+%   <out_dir>/profiles/sub<sub_id>/sess<sess_id>/lh.sub<sess_id>_sess...
+%       <sess_id>_<targ_mesh>_roi<seed_mesh>.surf2surf_profile.nii.gz
+%   <out_dir>/profiles/sub<sub_id>/sess<sess_id>/lh.sub<sess_id>_sess...
+%       <sess_id>_<targ_mesh>_roi<seed_mesh>.surf2surf_profile.nii.gz
 %   For data in fs_LR_32k space:
-%   <out_dir>/profiles/sub<sub_id>/sess<sess_id>/sub<sess_id>_sess<sess_id>_<targ_mesh>_roi<seed_mesh>.surf2surf_profile.mat
+%   <out_dir>/profiles/sub<sub_id>/sess<sess_id>/sub<sess_id>_sess...
+%       <sess_id>_<targ_mesh>_roi<seed_mesh>.surf2surf_profile.mat
 %   Please note that the profile will be saved as 64984x1483 'profile_mat' 
 %   variable for fs_LR_32k.
 %
@@ -106,7 +109,8 @@ if(~exist(out_profile_dir))
 end
 
 if(strcmp(targ_mesh,'fs_LR_32k'))
-    profile_file = fullfile(out_profile_dir,['sub' sub '_sess' sess '_' targ_mesh '_roi' seed_mesh '.surf2surf_profile.mat']);
+    profile_file = fullfile(out_profile_dir,['sub' sub '_sess' sess '_'...
+        targ_mesh '_roi' seed_mesh '.surf2surf_profile.mat']);
 
     fMRI_list = fullfile(out_dir,'data_list','fMRI_list',['sub' sub '_sess' sess '.txt']);
 
@@ -116,11 +120,14 @@ if(strcmp(targ_mesh,'fs_LR_32k'))
         censor_list = 'NONE';
     end
 
-    CBIG_ComputeCorrelationProfile(seed_mesh,targ_mesh, profile_file, 'NONE', '0.1', fMRI_list, 'NONE', censor_list, split_flag);
+    CBIG_ComputeCorrelationProfile(seed_mesh,targ_mesh, profile_file, 'NONE', '0.1', ...
+        fMRI_list, 'NONE', censor_list, split_flag);
 
 elseif(~isempty(strfind(targ_mesh,'fsaverage'))) 
-    lh_profile_file = fullfile(out_profile_dir,['lh.sub' sub '_sess' sess '_' targ_mesh '_roi' seed_mesh '.surf2surf_profile.nii.gz']);
-    rh_profile_file = fullfile(out_profile_dir,['rh.sub' sub '_sess' sess '_' targ_mesh '_roi' seed_mesh '.surf2surf_profile.nii.gz']);
+    lh_profile_file = fullfile(out_profile_dir,['lh.sub' sub '_sess' sess '_'...
+        targ_mesh '_roi' seed_mesh '.surf2surf_profile.nii.gz']);
+    rh_profile_file = fullfile(out_profile_dir,['rh.sub' sub '_sess' sess '_'...
+        targ_mesh '_roi' seed_mesh '.surf2surf_profile.nii.gz']);
 
     lh_fMRI_list = fullfile(out_dir,'data_list','fMRI_list',['lh_sub' sub '_sess' sess '.txt']);
     rh_fMRI_list = fullfile(out_dir,'data_list','fMRI_list',['rh_sub' sub '_sess' sess '.txt']);
@@ -132,8 +139,10 @@ elseif(~isempty(strfind(targ_mesh,'fsaverage')))
         censor_list = 'NONE';
     end
 
-    CBIG_ComputeCorrelationProfile(seed_mesh,targ_mesh, lh_profile_file, rh_profile_file, '0.1', lh_fMRI_list, rh_fMRI_list, censor_list, split_flag);
+    CBIG_ComputeCorrelationProfile(seed_mesh,targ_mesh, lh_profile_file, rh_profile_file, '0.1', ...
+        lh_fMRI_list, rh_fMRI_list, censor_list, split_flag);
 else
-    error('Unknown mesh type. Only fsaverage surface types, for example, fsaverage5/6 and fs_LR_32k will be allowed.')
+    error(['Unknown mesh type. Only fsaverage surface types, for example,'...
+        'fsaverage5/6 and fs_LR_32k will be allowed.'])
 end
 

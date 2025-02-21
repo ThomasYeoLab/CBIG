@@ -123,19 +123,20 @@ setting_params.num_sub = '1';
 setting_params.num_clusters = str2double(num_clusters);
 setting_params.epsilon = 1e-4;
 setting_params.mesh = mesh;
-setting_params.subid=str2double(subid);
-setting_params.w=str2double(w); % weight of spatial prior theta
-setting_params.c=str2double(c); % weight of MRF smoothness prior
+setting_params.subid = str2double(subid);
+setting_params.w = str2double(w); % weight of spatial prior theta
+setting_params.c = str2double(c); % weight of MRF smoothness prior
 % When generating individual parcellation, each time we will only generate the parcellation for one subject.
-setting_params.num_sub=1; 
-setting_params.num_session=str2double(num_sess);
+setting_params.num_sub = 1; 
+setting_params.num_session = str2double(num_sess);
    
 %% read group priors
 group_prior_file = fullfile(project_dir, 'priors', 'Params_Final.mat');   
-Ini=load(group_prior_file);
+Ini = load(group_prior_file);
 
 %% read data
-data = fetch_data(project_dir, setting_params.num_session, setting_params.subid, setting_params.mesh,subject_set);
+data = fetch_data(project_dir, setting_params.num_session, setting_params.subid, ...
+    setting_params.mesh,subject_set);
 fprintf('read data...DONE!\n');
 setting_params.dim = size(data.series,2) - 1;
 setting_params.num_verts = size(data.series,1);
@@ -153,147 +154,147 @@ end
 %% setting estimated group priors
 % mu: DxL. The group-level functional connectivity profiles of networks.
 % The group prior mu will be 
-Params.mu=Ini.Params.mu;
+Params.mu = Ini.Params.mu;
 
 % epsil: 1xL. The inter-subject concentration parameter, which represents
 % inter-subject functional connectivity variability. A large epsil_l 
 % indicats low inter-subject functional connectivity variability for 
 % network l.
-Params.epsil=Ini.Params.epsil;
+Params.epsil = Ini.Params.epsil;
 
 % sigma: 1xL. The intra-subject concentration parameter, which represents
 % intra-subject functional connectivity variability. A large sigma_l
 % indicates low intra-subject functional connectivity variability for
 % network l.
-Params.sigma=Ini.Params.sigma;
+Params.sigma = Ini.Params.sigma;
 
 %theta: NxL. The spatial prior denotes the probability of networks
 %occurring at each spatial location.
-Params.theta=Ini.Params.theta;
+Params.theta = Ini.Params.theta;
 
 %% paramter initialization
 
 % s_psi: DxLxS. The functional connectivity profiles of L networks for S
 % subjects.
-Params.s_psi=repmat(Ini.Params.mu,1,1,setting_params.num_sub);
+Params.s_psi = repmat(Ini.Params.mu,1,1,setting_params.num_sub);
 
 % s_t_nu: DxLxTxS. The functional connectivity profiles of L networks for S
 % subjects and each subject has T sessions.
-Params.s_t_nu=repmat(Ini.Params.mu,1,1,setting_params.num_session,setting_params.num_sub);
+Params.s_t_nu = repmat(Ini.Params.mu,1,1,setting_params.num_session,setting_params.num_sub);
 
 % kappa: 1xL. The inter-region concentration parameter, which represents
 % inter-region functional connectivity variability. A large kappa_l 
 % indicates low inter-region functional variability for network l. However,
 % please note in this script, we assume kappa to be the same across 
 % networks.
-Params.kappa=setting_params.ini_concentration*ones(1,setting_params.num_clusters);
+Params.kappa = setting_params.ini_concentration*ones(1,setting_params.num_clusters);
 
 % s_lambda: NxLxS. The posterior probability of the individual-specific
 % parcellation of each subject. 
-log_vmf=permute(Params.s_t_nu,[1,2,4,3]);
-log_vmf=mtimesx(data.series,log_vmf);%NxLxSxT
-log_vmf=bsxfun(@times,permute(log_vmf,[2,1,3,4]),transpose(Params.kappa));%LxNxSxT
-log_vmf=bsxfun(@plus,Cdln(transpose(Params.kappa),setting_params.dim),log_vmf);%LxNxSxT
-log_vmf=sum(log_vmf,4);
-log_vmf=permute(log_vmf,[2,1,3]);
-s_lambda=bsxfun(@minus,log_vmf,max(log_vmf,[],2));
-mask=repmat((sum(s_lambda,2)==0),1,setting_params.num_clusters,1);
-s_lambda=exp(s_lambda);
-Params.s_lambda=bsxfun(@times,s_lambda,1./sum(s_lambda,2));
-Params.s_lambda(mask)=0;
+log_vmf = permute(Params.s_t_nu,[1,2,4,3]);
+log_vmf = mtimesx(data.series,log_vmf);%NxLxSxT
+log_vmf = bsxfun(@times,permute(log_vmf,[2,1,3,4]),transpose(Params.kappa));%LxNxSxT
+log_vmf = bsxfun(@plus,Cdln(transpose(Params.kappa),setting_params.dim),log_vmf);%LxNxSxT
+log_vmf = sum(log_vmf,4);
+log_vmf = permute(log_vmf,[2,1,3]);
+s_lambda = bsxfun(@minus,log_vmf,max(log_vmf,[],2));
+mask = repmat((sum(s_lambda,2)==0),1,setting_params.num_clusters,1);
+s_lambda = exp(s_lambda);
+Params.s_lambda = bsxfun(@times,s_lambda,1./sum(s_lambda,2));
+Params.s_lambda(mask) = 0;
 
 %% introduce MRF smoothness prior
 if(~isempty(strfind(mesh,'fsaverage')))
     lh_avg_mesh = CBIG_ReadNCAvgMesh('lh', mesh, 'inflated','cortex');
     rh_avg_mesh = CBIG_ReadNCAvgMesh('rh', mesh, 'inflated', 'cortex');
 
-    lmw=transpose(find(sum(Params.s_lambda(1:setting_params.num_verts/2,:),2)==0));
-    rmw=transpose(find(sum(Params.s_lambda((setting_params.num_verts/2 + 1):end,:),2)==0));
-    l1=transpose(find(sum(Params.s_lambda(1:setting_params.num_verts/2,:),2)~=0));
-    l2=transpose(find(sum(Params.s_lambda((setting_params.num_verts/2 + 1):end,:),2)~=0));
+    lmw = transpose(find(sum(Params.s_lambda(1:setting_params.num_verts/2,:),2)==0));
+    rmw = transpose(find(sum(Params.s_lambda((setting_params.num_verts/2 + 1):end,:),2)==0));
+    l1 = transpose(find(sum(Params.s_lambda(1:setting_params.num_verts/2,:),2)~=0));
+    l2 = transpose(find(sum(Params.s_lambda((setting_params.num_verts/2 + 1):end,:),2)~=0));
 elseif(~isempty(strfind(mesh,'fs_LR_32k')))
     lh_avg_mesh = CBIG_read_fslr_surface('lh','fs_LR_32k','inflated');
     rh_avg_mesh = CBIG_read_fslr_surface('rh','fs_LR_32k','inflated');
     
-    lmw=transpose(find(sum(Params.s_lambda(1:setting_params.num_verts/2,:),2)==0));
-    rmw=transpose(find(sum(Params.s_lambda(setting_params.num_verts/2+1:end,:),2)==0));
-    l1=transpose(find(sum(Params.s_lambda(1:setting_params.num_verts/2,:),2)~=0));
-    l2=transpose(find(sum(Params.s_lambda(setting_params.num_verts/2+1:end,:),2)~=0));
+    lmw = transpose(find(sum(Params.s_lambda(1:setting_params.num_verts/2,:),2)==0));
+    rmw = transpose(find(sum(Params.s_lambda(setting_params.num_verts/2+1:end,:),2)==0));
+    l1 = transpose(find(sum(Params.s_lambda(1:setting_params.num_verts/2,:),2)~=0));
+    l2 = transpose(find(sum(Params.s_lambda(setting_params.num_verts/2+1:end,:),2)~=0));
 end
     
-lh_neigh=lh_avg_mesh.vertexNbors;
-rh_neigh=rh_avg_mesh.vertexNbors;
-lh_neigh=lh_neigh(:,l1);
-rh_neigh=rh_neigh(:,l2);
+lh_neigh = lh_avg_mesh.vertexNbors;
+rh_neigh = rh_avg_mesh.vertexNbors;
+lh_neigh = lh_neigh(:,l1);
+rh_neigh = rh_neigh(:,l2);
 
 
-for t=lmw
-    lh_neigh(lh_neigh==t)=0;
+for t = lmw
+    lh_neigh(lh_neigh == t) = 0;
 end
 unique(lh_neigh);
-for l=1:length(l1)
-    lh_neigh(lh_neigh==l1(l))=l;
+for l = 1:length(l1)
+    lh_neigh(lh_neigh == l1(l)) = l;
 end
 unique(lh_neigh);
-for t=rmw
-    rh_neigh(rh_neigh==t)=0;
+for t = rmw
+    rh_neigh(rh_neigh == t) = 0;
 end
 unique(rh_neigh);
-for l=1:length(l2)
-    rh_neigh(rh_neigh==l2(l))=l;
+for l = 1:length(l2)
+    rh_neigh(rh_neigh == l2(l)) = l;
 end
 
-rh_neigh=rh_neigh+size(lh_neigh,2);
-rh_neigh(rh_neigh==size(lh_neigh,2))=0;
-neighborhood=[lh_neigh rh_neigh];
-setting_params.neighborhood=double(neighborhood);
+rh_neigh = rh_neigh + size(lh_neigh,2);
+rh_neigh(rh_neigh == size(lh_neigh,2)) = 0;
+neighborhood = [lh_neigh rh_neigh];
+setting_params.neighborhood = double(neighborhood);
 
-setting_params.V_diff=ones(size(neighborhood));
-setting_params.V_same=zeros(size(neighborhood));
+setting_params.V_diff = ones(size(neighborhood));
+setting_params.V_same = zeros(size(neighborhood));
 
 
 %% EM
-Params.iter_inter=1;
+Params.iter_inter = 1;
 %% Intra subject variability
-cost=0;
-iter_intra_em=0;
-stop_intra_em=0;
-while(stop_intra_em==0)
-    iter_intra_em=iter_intra_em+1;
+cost = 0;
+iter_intra_em = 0;
+stop_intra_em = 0;
+while(stop_intra_em == 0)
+    iter_intra_em = iter_intra_em + 1;
     
     fprintf('Inter-region iteration %d ...\n', iter_intra_em);
-    Params.kappa=setting_params.ini_concentration*ones(1,setting_params.num_clusters);
-    Params.s_t_nu=repmat(Ini.Params.mu,1,1,setting_params.num_session,setting_params.num_sub);
-    Params=vmf_clustering_subject_session(Params,setting_params,data);
+    Params.kappa = setting_params.ini_concentration*ones(1, setting_params.num_clusters);
+    Params.s_t_nu = repmat(Ini.Params.mu, 1, 1, setting_params.num_session, setting_params.num_sub);
+    Params = vmf_clustering_subject_session(Params, setting_params, data);
     
     fprintf('Intra-subject variability level...\n');
-    Params=intra_subject_var(Params,setting_params);
+    Params = intra_subject_var(Params, setting_params);
 
-    update_cost=bsxfun(@times,Params.s_psi,permute(Params.s_t_nu,[1,2,4,3]));
-    update_cost=sum(bsxfun(@times,Params.sigma,update_cost),1);
-    update_cost=bsxfun(@plus,Cdln(Params.sigma,setting_params.dim),update_cost);
-    update_cost=sum(sum(sum(update_cost,2),3),4) ...
-               + sum(sum(bsxfun(@plus,sum(bsxfun(@times,bsxfun(@times,Params.mu,Params.s_psi),Params.epsil),1), ...
-                 Cdln(Params.epsil,setting_params.dim)),2),3);
-    update_cost=update_cost+sum(Params.cost_em);
-    Params.Record(iter_intra_em)=update_cost;
-    if(abs(abs(update_cost-cost)./cost)<=setting_params.epsilon)
-        stop_intra_em=1;
-        Params.cost_intra=update_cost;
+    update_cost = bsxfun(@times, Params.s_psi, permute(Params.s_t_nu, [1,2,4,3]));
+    update_cost = sum(bsxfun(@times, Params.sigma, update_cost), 1);
+    update_cost = bsxfun(@plus, Cdln(Params.sigma, setting_params.dim), update_cost);
+    update_cost = sum(sum(sum(update_cost, 2), 3), 4) ...
+        + sum(sum(bsxfun(@plus, sum(bsxfun(@times, bsxfun(@times, Params.mu, Params.s_psi), ...
+        Params.epsil), 1), Cdln(Params.epsil,setting_params.dim)),2),3);
+    update_cost = update_cost + sum(Params.cost_em);
+    Params.Record(iter_intra_em) = update_cost;
+    if(abs(abs(update_cost-cost)./cost) <= setting_params.epsilon)
+        stop_intra_em = 1;
+        Params.cost_intra = update_cost;
     end
-    if(iter_intra_em>=50)
-        stop_intra_em=1;
-        Params.cost_intra=update_cost;
+    if(iter_intra_em >= 50)
+        stop_intra_em = 1;
+        Params.cost_intra = update_cost;
     end
-    cost=update_cost;
+    cost = update_cost;
 end
 
 %% generate parcellation
-labels=zeros(setting_params.num_verts,1);
-[~,labels(sum(Params.s_lambda,2)~=0)]=max(Params.s_lambda(sum(Params.s_lambda,2)~=0,:),[],2);
-lh_labels=labels(1:setting_params.num_verts/2);
-rh_labels=labels((setting_params.num_verts/2 + 1):end);
-out_dir=fullfile(project_dir,'ind_parcellation', subject_set);
+labels = zeros(setting_params.num_verts, 1);
+[~,labels(sum(Params.s_lambda,2)~=0)] = max(Params.s_lambda(sum(Params.s_lambda,2)~=0, :), [], 2);
+lh_labels = labels(1:setting_params.num_verts/2);
+rh_labels = labels((setting_params.num_verts/2 + 1):end);
+out_dir = fullfile(project_dir, 'ind_parcellation', subject_set);
 
 if(~exist(out_dir))
     mkdir(out_dir);
@@ -317,123 +318,126 @@ iter_intra=iter_intra+1;
 fprintf('It is inter interation %d intra iteration %d..update s_psi and sigma..\n',Params.iter_inter,iter_intra);
 
 % update s_psi
-s_psi_update=sum(bsxfun(@times,Params.s_t_nu,repmat(Params.sigma,size(Params.s_t_nu,1), ...
-             1,size(Params.s_t_nu,3),size(Params.s_t_nu,4))),3);
-s_psi_update=reshape(s_psi_update,size(s_psi_update,1),size(s_psi_update,2),size(s_psi_update,3)*size(s_psi_update,4));
-s_psi_update=bsxfun(@plus,s_psi_update,bsxfun(@times,Params.epsil,Params.mu));
-s_psi_update=bsxfun(@times,s_psi_update,1./sqrt(sum((s_psi_update).^2)));
+s_psi_update = sum(bsxfun(@times, Params.s_t_nu, repmat(Params.sigma, size(Params.s_t_nu, 1), ...
+    1, size(Params.s_t_nu, 3), size(Params.s_t_nu, 4))), 3);
+s_psi_update = reshape(s_psi_update, size(s_psi_update, 1), size(s_psi_update, 2), ...
+    size(s_psi_update, 3)*size(s_psi_update, 4));
+s_psi_update = bsxfun(@plus, s_psi_update, bsxfun(@times, Params.epsil, Params.mu));
+s_psi_update = bsxfun(@times, s_psi_update, 1./sqrt(sum((s_psi_update).^2)));
 
-Params.s_psi=s_psi_update;
+Params.s_psi = s_psi_update;
 
 end
 
 function Params=vmf_clustering_subject_session(Params,setting_params,data)
 
-stop_em=0;
-iter_em=0;
-cost=zeros(1,setting_params.num_sub);
-while(stop_em==0)
-    iter_em=iter_em+1;
-    fprintf('It is EM iteration.. %d..\n',iter_em);
+stop_em = 0;
+iter_em = 0;
+cost = zeros(1, setting_params.num_sub);
+while(stop_em == 0)
+    iter_em = iter_em + 1;
+    fprintf('It is EM iteration.. %d..\n', iter_em);
     %% Mstep
-    flag_nu=zeros(setting_params.num_sub,setting_params.num_session);
+    flag_nu = zeros(setting_params.num_sub,setting_params.num_session);
 
-    stop_m=0;
-    iter_m=0;
+    stop_m = 0;
+    iter_m = 0;
     fprintf('M-step..\n');
-    while(stop_m==0)
-        iter_m=iter_m+1;
+    while(stop_m == 0)
+        iter_m = iter_m + 1;
 
-        s_lambda=Params.s_lambda;%NxLxS
-        kappa_update=mtimesx(data.series,permute(Params.s_t_nu,[1,2,4,3]));
-        kappa_update=bsxfun(@times,s_lambda,kappa_update);
-        kappa_update=sum(sum(sum(sum(kappa_update,1),4),3));
-        kappa_update=kappa_update./sum((setting_params.num_session.*sum(sum(s_lambda,1),3)));
-        kappa_update=invAd(setting_params.dim,kappa_update);
-        kappa_update=repmat(kappa_update,1,setting_params.num_clusters);
+        s_lambda = Params.s_lambda; %NxLxS
+        kappa_update = mtimesx(data.series, permute(Params.s_t_nu, [1,2,4,3]));
+        kappa_update = bsxfun(@times,s_lambda,kappa_update);
+        kappa_update = sum(sum(sum(sum(kappa_update, 1), 4), 3));
+        kappa_update = kappa_update./sum((setting_params.num_session.*sum(sum(s_lambda,1),3)));
+        kappa_update = invAd(setting_params.dim, kappa_update);
+        kappa_update = repmat(kappa_update, 1, setting_params.num_clusters);
        
-        for s=1:setting_params.num_sub
-            for t=1:setting_params.num_session
+        for s = 1:setting_params.num_sub
+            for t = 1:setting_params.num_session
 
                 checknu=[];
-                X=data.series(:,:,s,t);
-                s_lambda=Params.s_lambda(:,:,s);
-                lambda_X=bsxfun(@times,kappa_update,X'*s_lambda)+bsxfun(@times,Params.sigma,Params.s_psi(:,:,s));
-                s_t_nu_update=bsxfun(@times,lambda_X,1./sqrt(sum((lambda_X).^2)));
-                checknu= diag(s_t_nu_update'*Params.s_t_nu(:,:,t,s));
-                checknu_flag= (sum(1-checknu < setting_params.epsilon) < setting_params.num_clusters);
-                Params.s_t_nu(:,:,t,s)=s_t_nu_update;
+                X = data.series(:,:,s,t);
+                s_lambda = Params.s_lambda(:,:,s);
+                lambda_X = bsxfun(@times,kappa_update,X'*s_lambda) ...
+                    + bsxfun(@times,Params.sigma,Params.s_psi(:,:,s));
+                s_t_nu_update = bsxfun(@times, lambda_X, 1./sqrt(sum((lambda_X).^2)));
+                checknu = diag(s_t_nu_update'*Params.s_t_nu(:,:,t,s));
+                checknu_flag = (sum(1-checknu < setting_params.epsilon) < setting_params.num_clusters);
+                Params.s_t_nu(:,:,t,s) = s_t_nu_update;
 
-                if(checknu_flag <1)
-                    flag_nu(s,t)=1;
+                if(checknu_flag < 1)
+                    flag_nu(s,t) = 1;
                 end
                 
             end
         end
         if((sum(sum(flag_nu))==setting_params.num_sub*setting_params.num_session) ...
           && (mean(abs(Params.kappa-kappa_update)./Params.kappa) < setting_params.epsilon))
-            stop_m=1;
+            stop_m = 1;
         end
-        Params.kappa=kappa_update;
+        Params.kappa = kappa_update;
     end
     %% Estep
     fprintf('Estep..\n');
-    stop_lambda=0;
-    checklam=0;
-    lambda_iter=0;
-    while stop_lambda==0
-        lambda_iter=lambda_iter+1;
+    stop_lambda = 0;
+    checklam = 0;
+    lambda_iter = 0;
+    while stop_lambda == 0
+        lambda_iter = lambda_iter + 1;
 
-        log_vmf=permute(Params.s_t_nu,[1,2,4,3]);
-        log_vmf=mtimesx(data.series,log_vmf);%NxLxSxT
-        log_vmf=bsxfun(@times,permute(log_vmf,[2,1,3,4]),transpose(Params.kappa));%LxNxSxT
+        log_vmf = permute(Params.s_t_nu,[1,2,4,3]);
+        log_vmf = mtimesx(data.series,log_vmf);%NxLxSxT
+        log_vmf = bsxfun(@times,permute(log_vmf,[2,1,3,4]), transpose(Params.kappa)); %LxNxSxT
         log_vmf(:,sum(log_vmf==0,1)==0)=bsxfun(@plus, ...
                                         Cdln(transpose(Params.kappa),setting_params.dim), ...
                                         log_vmf(:,sum(log_vmf==0,1)==0));%LxNxSxT
-        log_vmf=sum(log_vmf,4);%NxLxS
-        idx=sum(log_vmf==0,1)~=0;
+        log_vmf = sum(log_vmf,4);%NxLxS
+        idx = sum(log_vmf==0,1)~=0;
 
-        tmp_lambda=Params.s_lambda(sum(Params.s_lambda,2)~=0,:);
-        V_lambda=CBIG_MSHBM_V_lambda_Product(setting_params.neighborhood, ...
-                 setting_params.V_same, setting_params.V_diff, double(tmp_lambda));
-        V_temp=zeros(size(Params.s_lambda));
-        V_temp(sum(Params.s_lambda,2)~=0,:)=single(V_lambda);
-        log_vmf=bsxfun(@plus,permute(log_vmf,[2,1,3]),setting_params.w*log(Params.theta)-2*setting_params.c*V_temp);
+        tmp_lambda = Params.s_lambda(sum(Params.s_lambda,2)~=0,:);
+        V_lambda = CBIG_MSHBM_V_lambda_Product(setting_params.neighborhood, ...
+            setting_params.V_same, setting_params.V_diff, double(tmp_lambda));
+        V_temp = zeros(size(Params.s_lambda));
+        V_temp(sum(Params.s_lambda,2)~=0,:) = single(V_lambda);
+        log_vmf = bsxfun(@plus, permute(log_vmf, [2,1,3]), ...
+            setting_params.w * log(Params.theta) - 2 * setting_params.c * V_temp);
       
-        s_lambda=bsxfun(@minus,log_vmf,max(log_vmf,[],2));
-        s_lambda=exp(s_lambda);
-        update_s_lambda=bsxfun(@times,s_lambda,1./sum(s_lambda,2));
+        s_lambda = bsxfun(@minus, log_vmf, max(log_vmf, [], 2));
+        s_lambda = exp(s_lambda);
+        update_s_lambda = bsxfun(@times, s_lambda, 1./sum(s_lambda, 2));
         
-        update_s_lambda=permute(update_s_lambda,[2,1,3]);
-        update_s_lambda(:,idx)=0;
-        update_s_lambda=permute(update_s_lambda,[2,1,3]);
+        update_s_lambda = permute(update_s_lambda, [2,1,3]);
+        update_s_lambda(:,idx) = 0;
+        update_s_lambda = permute(update_s_lambda, [2,1,3]);
         
-        checklam_update=mean(mean(abs(update_s_lambda-Params.s_lambda)));
-        if(abs(checklam_update-checklam)<=setting_params.epsilon)
-            stop_lambda=1;
+        checklam_update = mean(mean(abs(update_s_lambda - Params.s_lambda)));
+        if(abs(checklam_update - checklam) <= setting_params.epsilon)
+            stop_lambda = 1;
         end
-        checklam=checklam_update;
-        if(lambda_iter>100)
-            stop_lambda=1;
+        checklam = checklam_update;
+        if(lambda_iter > 100)
+            stop_lambda = 1;
             warning('lambda can not converge');
         end
-        Params.s_lambda=update_s_lambda;
+        Params.s_lambda = update_s_lambda;
     end
         
     %% em stop criteria
-    for s=1:setting_params.num_sub    
-        for t=1:setting_params.num_session
-            X=data.series(:,:,s,t);
-            setting_params.num_verts=size(X,1);
-            log_vmf=vmf_probability(X,Params.s_t_nu(:,:,t,s), Params.kappa);
-            if(t==1)
-                log_lambda_prop=log_vmf;
+    for s = 1:setting_params.num_sub    
+        for t = 1:setting_params.num_session
+            X = data.series(:,:,s,t);
+            setting_params.num_verts = size(X,1);
+            log_vmf = vmf_probability(X, Params.s_t_nu(:,:,t,s), Params.kappa);
+            if(t == 1)
+                log_lambda_prop = log_vmf;
             else
-                log_lambda_prop=log_lambda_prop+log_vmf;
+                log_lambda_prop = log_lambda_prop + log_vmf;
             end
         end
         
-        theta_cost=Params.theta;
+        theta_cost = Params.theta;
         log_theta_cost = log(theta_cost);
         log_theta_cost(isinf(log_theta_cost)) = log(eps.^20);
 
@@ -447,17 +451,17 @@ while(stop_em==0)
                          - sum(sum(s_lambda_cost.*setting_params.c.*V_temp));    
     
     end
-    sub_set=find((abs(abs(update_cost-cost)./cost)>1e-4)==0);
+    sub_set = find((abs(abs(update_cost-cost)./cost)>1e-4)==0);
     if(length(sub_set)==setting_params.num_sub)
-        stop_em=1;
-        Params.cost_em=cost;
+        stop_em = 1;
+        Params.cost_em = cost;
     end
     if(iter_em>100)
-        stop_em=1;
-        Params.cost_em=update_cost;
+        stop_em = 1;
+        Params.cost_em = update_cost;
         warning('vem can not converge');
     end
-    cost=update_cost;
+    cost = update_cost;
 end
 fprintf('EM..Done\n');
 end
@@ -548,8 +552,8 @@ function data = fetch_data(project_dir,num_session,subid,mesh,subject_set)
 
 % read in input functional connectivity profiles
 if(~isempty(strfind(mesh,'fs_LR_32k')))
-    load(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'brain_parcellation', 'Kong2019_MSHBM', 'lib', ...
-        'fs_LR_32k_medial_mask.mat'));
+    load(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'brain_parcellation', 'Kong2019_MSHBM', ...
+        'lib', 'fs_LR_32k_medial_mask.mat'));
     for t = 1:num_session
         data_profile = fullfile(project_dir,'profile_list',subject_set,['sess' num2str(t) '.txt']);
         profile_name = table2cell(readtable(data_profile,'Delimiter',' ','ReadVariableNames',false));
@@ -571,10 +575,14 @@ elseif(~isempty(strfind(mesh,'fsaverage')))
     lh_avg_mesh = CBIG_ReadNCAvgMesh('lh', mesh, 'inflated','cortex');
     rh_avg_mesh = CBIG_ReadNCAvgMesh('rh', mesh, 'inflated', 'cortex'); 
     for t = 1:num_session
-        lh_data_profile = fullfile(project_dir,'profile_list',subject_set,['lh_sess' num2str(t) '.txt']);
-        rh_data_profile = fullfile(project_dir,'profile_list',subject_set,['rh_sess' num2str(t) '.txt']);
-        lh_profile_name = table2cell(readtable(lh_data_profile,'Delimiter',' ','ReadVariableNames',false));
-        rh_profile_name = table2cell(readtable(rh_data_profile,'Delimiter',' ','ReadVariableNames',false));
+        lh_data_profile = fullfile(project_dir,'profile_list',subject_set,...
+            ['lh_sess' num2str(t) '.txt']);
+        rh_data_profile = fullfile(project_dir,'profile_list',subject_set,...
+            ['rh_sess' num2str(t) '.txt']);
+        lh_profile_name = table2cell(readtable(lh_data_profile,'Delimiter',...
+            ' ','ReadVariableNames',false));
+        rh_profile_name = table2cell(readtable(rh_data_profile,'Delimiter',...
+            ' ','ReadVariableNames',false));
         for i = 1
             fprintf('Session %d...It is subj %d...\n',t,subid);
             lh_avg_file = lh_profile_name{subid,1};

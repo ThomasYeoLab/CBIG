@@ -19,7 +19,7 @@ After cloning/downloading this repository, please see README inside `setup` dire
 
 We strongly encourage you to join the CBIG users group (https://groups.google.com/forum/#!forum/cbig_users/join), so that you can be informed about **major** updates & bugs.
 
-If you have issues, please email Ruby (roo.cone@gmail.com) and Thomas (yeoyeo02@gmail.com), but we may or may not be able to help you because we are a small lab with limited resources.
+If you have issues, please email the CBIG users group. Do not post on the public repo issues page because we do not check it frequently (since we have a private github repo that keeps track of issues). We will try our best to answer your questions, but we have limited resources to provide support. 
 
 ## License ##
 See our [LICENSE](https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md) file for license rights and limitations (MIT).

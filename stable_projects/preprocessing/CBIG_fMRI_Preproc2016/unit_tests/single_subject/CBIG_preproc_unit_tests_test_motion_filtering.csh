@@ -1,4 +1,4 @@
-#!/bin/csh
+#!/bin/csh -f
 # Written by Jianzhong Chen and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 set outdir = $1   # Your output directory

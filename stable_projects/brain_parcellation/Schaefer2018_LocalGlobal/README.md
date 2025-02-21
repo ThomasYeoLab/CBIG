@@ -97,20 +97,22 @@ Except for this project, if you want to use the code for other stable projects f
 
 To download the version of the code that is last tested, you can either
 
-- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.27.2-update_reorder_func](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.27.2-update_reorder_func)
+- visit this link: [https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.33.1-Schaefer2018_add_centroids](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.33.1-Schaefer2018_add_centroids)
 
 or
 
 - run the following command, if you have Git installed
 
 ```
-git checkout -b update_reorder_func v0.27.2-update_reorder_func
+git checkout -b Schaefer2018_add_centroids v0.33.1-Schaefer2018_add_centroids
 ```
 
 ---
 
 Updates
 =======
+- Release v0.33.1 (21/2/2025): Add centroid coordinates for Kong2022 network order.
+
 - Release v0.27.2 (21/3/2023): Rename `CBIG_gwMRF_index_trans_btwn2versions.m` to `CBIG_ReorderParcelIndex.m` and move to `$CBIG_CODE_DIR/utilities/matlab/FC` folder.
 
 - Release v0.21.3 (17/1/2022)

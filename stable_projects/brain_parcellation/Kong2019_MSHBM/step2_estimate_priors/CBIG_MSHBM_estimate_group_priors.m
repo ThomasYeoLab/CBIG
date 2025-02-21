@@ -303,7 +303,8 @@ while(stop_inter == 0)
     if(~exist(fullfile(project_dir, 'priors')))
         mkdir(fullfile(project_dir, 'priors'));
     end
-    save(fullfile(project_dir, 'priors', ['Params_iteration',num2str(Params.iter_inter),'.mat']), 'Params');
+    save(fullfile(project_dir, 'priors', ...
+        ['Params_iteration',num2str(Params.iter_inter),'.mat']), 'Params');
 end
 
 rmpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'brain_parcellation', 'Kong2019_MSHBM', 'lib'));
@@ -329,7 +330,8 @@ for i = 1:setting_params.num_clusters
     epsil_update(i) = invAd(setting_params.dim, epsil_update(i));
     if(epsil_update(i) < setting_params.ini_concentration)
         epsil_update(i) = setting_params.ini_concentration;
-        fprintf('[WARNING] epsil of %d is less than the minimal value %d \n',i, setting_params.ini_concentration);
+        fprintf('[WARNING] epsil of %d is less than the minimal value %d \n',...
+            i, setting_params.ini_concentration);
     end
     if(isinf(epsil_update(i)))
         epsil_update(i) = Params.epsil(i);
@@ -349,12 +351,14 @@ stop_intra = 0;
 iter_intra = 0;
 while(stop_intra == 0)
     iter_intra = iter_intra + 1;
-    fprintf('It is inter interation %d intra iteration %d..update s_psi and sigma..\n',Params.iter_inter,iter_intra);
+    fprintf('It is inter interation %d intra iteration %d..update s_psi and sigma..\n',...
+        Params.iter_inter,iter_intra);
     % update s_psi
     s_psi_update = CBIG_nansum(bsxfun(@times,Params.s_t_nu,repmat(Params.sigma,size(Params.s_t_nu,1), ...
                    1,size(Params.s_t_nu,3),size(Params.s_t_nu,4))),3);
     s_psi_update = reshape(s_psi_update,...
-                   size(s_psi_update,1),size(s_psi_update,2),size(s_psi_update,3)*size(s_psi_update,4));
+                   size(s_psi_update,1),size(s_psi_update,2),...
+                   size(s_psi_update,3)*size(s_psi_update,4));
     s_psi_update = bsxfun(@plus,s_psi_update,bsxfun(@times,Params.epsil,Params.mu));
     s_psi_update = bsxfun(@times,s_psi_update,1./sqrt(sum((s_psi_update).^2)));
    
@@ -426,7 +430,8 @@ while(stop_em == 0)
                 checknu = [];
                 X = data.series(:,:,s,t);
                 s_lambda = Params.s_lambda(:,:,s);
-                lambda_X = bsxfun(@times,kappa_update,X'*s_lambda) + bsxfun(@times,Params.sigma,Params.s_psi(:,:,s));
+                lambda_X = bsxfun(@times,kappa_update,X'*s_lambda) ...
+                    + bsxfun(@times,Params.sigma,Params.s_psi(:,:,s));
                 s_t_nu_update = bsxfun(@times,lambda_X,1./sqrt(sum((lambda_X).^2)));
                 checknu = diag(s_t_nu_update'*Params.s_t_nu(:,:,t,s));
                 checknu(isnan(checknu)) = 1;
@@ -454,7 +459,7 @@ while(stop_em == 0)
     log_vmf = bsxfun(@times,permute(log_vmf,[2,1,3,4]),transpose(Params.kappa));%LxNxSxT
     log_vmf(:,sum(log_vmf==0,1)==0) = bsxfun(@plus,Cdln(transpose(Params.kappa),setting_params.dim), ...
                                       log_vmf(:,sum(log_vmf==0,1)==0));%LxNxSxT
-    log_vmf =   CBIG_nansum(log_vmf,4);%NxLxS
+    log_vmf = CBIG_nansum(log_vmf,4);%NxLxS
     idx = sum(log_vmf == 0,1) ~= 0;
     
     log_vmf = bsxfun(@plus,permute(log_vmf,[2,1,3]),log(Params.theta));

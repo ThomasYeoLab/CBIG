@@ -21,7 +21,8 @@ start_value = 50;
 ini_loop = 0;
 while (ini_flag == 0)
     ini_loop = ini_loop + 1;
-    [inilambda,~,exitflag] = fzero(@(inputx) sign(inputx)*abs(besseli(D/2 - 1,inputx))-1e+10, start_value,optimset('Display','off'));
+    [inilambda,~,exitflag] = fzero(@(inputx) sign(inputx)*abs(besseli(D/2 - 1,inputx))-1e+10, ...
+        start_value,optimset('Display','off'));
     if (exitflag == 1)
         lambda = inilambda;
         ini_flag = 1;

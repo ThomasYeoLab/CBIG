@@ -1,4 +1,4 @@
-#!/bin/csh
+#!/bin/csh -f
 # Written by Jingwei Li and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 set pipe_dir1 = "$CBIG_TESTDATA_DIR/stable_projects/preprocessing"

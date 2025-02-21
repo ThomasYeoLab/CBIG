@@ -1,0 +1,36 @@
+# Dockerfile and .dockerignore
+stable_projects/preprocessing/CBIG_fMRI_Preproc2016/container/Dockerfile
+stable_projects/preprocessing/CBIG_fMRI_Preproc2016/container/Dockerfile.dockerignore
+
+# Unit test intermediate output folder
+unit_tests/**/output/**
+stable_projects/**/unit_tests/**/output
+stable_projects/**/examples/**/output
+
+# Top-level folders to ignore
+.git/
+.github/
+bin/
+developers/
+hooks/
+legacy/
+unstable_projects/
+
+# Other ignored folders/files
+external_packages/matlab/non_default_packages/
+external_packages/lda-c-dist/
+external_packages/mmlda-c-dist/
+external_packages/polarlda-c-dist/
+external_packages/python/
+
+stable_projects/brain_parcellation/Yan2023_homotopic/parcellations/FreeSurfer/*/surf/
+stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Parcellations/FreeSurfer5.3/*/surf/
+
+stable_projects/preprocessing/CBIG_fMRI_Preproc2016/**/*.log
+stable_projects/preprocessing/CBIG_fMRI_Preproc2016/container/tmp/
+stable_projects/preprocessing/CBIG_fMRI_Preproc2016/container/CBIG_preproc_run_container.sh
+stable_projects/preprocessing/CBIG_fMRI_Preproc2016/container/*.md
+stable_projects/preprocessing/CBIG_fMRI_Preproc2016/container/.gitignore
+stable_projects/preprocessing/CBIG_fMRI_Preproc2016/unit_tests/out*
+
+utilities/matlab/fslr_matlab/data/

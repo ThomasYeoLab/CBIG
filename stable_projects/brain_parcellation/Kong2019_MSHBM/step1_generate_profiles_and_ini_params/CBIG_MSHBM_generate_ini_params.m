@@ -54,10 +54,12 @@ end
 output_file = fullfile(out_dir,'group','group.mat');
 
 if(strcmp(targ_mesh,'fs_LR_32k'))
-    avg_profile_file = fullfile(out_dir,'profiles','avg_profile',[targ_mesh '_roi' seed_mesh '_avg_profile.mat']);
+    avg_profile_file = fullfile(out_dir,'profiles','avg_profile',...
+        [targ_mesh '_roi' seed_mesh '_avg_profile.mat']);
     
-    CBIG_VonmisesSeriesClustering_fix_bessel_randnum_bsxfun(targ_mesh, '', num_clusters, output_file, ...
-avg_profile_file, 'NONE', 0, num_initialization, 0, 100, 1);
+    CBIG_VonmisesSeriesClustering_fix_bessel_randnum_bsxfun(targ_mesh, '', ...
+        num_clusters, output_file, avg_profile_file, 'NONE', 0, ...
+        num_initialization, 0, 100, 1);
     
     % Reorganize output variables
     if(exist(output_file))
@@ -74,12 +76,13 @@ avg_profile_file, 'NONE', 0, num_initialization, 0, 100, 1);
     
 elseif(~isempty(strfind(targ_mesh,'fsaverage'))) 
     lh_avg_profile_file = fullfile(out_dir,'profiles','avg_profile',...
-['lh_' targ_mesh '_roi' seed_mesh '_avg_profile.nii.gz']);
+        ['lh_' targ_mesh '_roi' seed_mesh '_avg_profile.nii.gz']);
     rh_avg_profile_file = fullfile(out_dir,'profiles','avg_profile',...
-['rh_' targ_mesh '_roi' seed_mesh '_avg_profile.nii.gz']);
+        ['rh_' targ_mesh '_roi' seed_mesh '_avg_profile.nii.gz']);
     
-    CBIG_VonmisesSeriesClustering_fix_bessel_randnum_bsxfun(targ_mesh, 'cortex', num_clusters, output_file, ...
-lh_avg_profile_file, rh_avg_profile_file, 0, num_initialization, 0, 100, 1);
+    CBIG_VonmisesSeriesClustering_fix_bessel_randnum_bsxfun(targ_mesh, ...
+        'cortex', num_clusters, output_file, lh_avg_profile_file, ...
+        rh_avg_profile_file, 0, num_initialization, 0, 100, 1);
 
     % Reorganize output variables
     if(exist(output_file))

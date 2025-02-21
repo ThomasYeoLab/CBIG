@@ -161,7 +161,8 @@ while ( $i <= $number_of_image )
     if ( $found_json == 1 ) then
         echo "Identified $json_file as relevant JSON file for $image_list[$i], checking consistency.." >> $LF
         # check TR consistency
-        set TR_json = `cat $json_file | tr -d '\n' | awk -F '[:,}]' '/"RepetitionTime"/{print $2}' | tr -d '"'`
+        set TR_json = `cat $json_file | tr -d '\n' | awk -F'"RepetitionTime"[ \t]*:[ \t]*' '{print $2}'`
+        set TR_json = `echo "$TR_json" | awk -F'[,}]' '{print $1}' | tr -d '"'`
         set TR_json_convert = `echo " $TR_json * 1000 / 1 " | bc`
         set TR_header = `mri_info --tr $image_list[$i]`
         if ( ( $TR_json != $TR_header ) && ( $TR_json_convert != $TR_header ) ) then

@@ -26,10 +26,13 @@ function CBIG_MSHBM_avg_profiles(seed_mesh,targ_mesh,out_dir,num_sub,num_sess)
 %     The generated profiles are assumed to exist in the following files
 %     for each subject and each session.
 %     For data in fsaverage space:
-%     <out_dir>/profiles/sub<sub_id>/sess<sess_id>/lh.sub<sess_id>_sess<sess_id>_<targ_mesh>_roi<seed_mesh>.surf2surf_profile.nii.gz
-%     <out_dir>/profiles/sub<sub_id>/sess<sess_id>/lh.sub<sess_id>_sess<sess_id>_<targ_mesh>_roi<seed_mesh>.surf2surf_profile.nii.gz
+%     <out_dir>/profiles/sub<sub_id>/sess<sess_id>/lh.sub<sess_id>_sess...
+%         <sess_id>_<targ_mesh>_roi<seed_mesh>.surf2surf_profile.nii.gz
+%     <out_dir>/profiles/sub<sub_id>/sess<sess_id>/lh.sub<sess_id>_sess...
+%         <sess_id>_<targ_mesh>_roi<seed_mesh>.surf2surf_profile.nii.gz
 %     For data in fs_LR_32k space:
-%     <out_dir>/profiles/sub<sub_id>/sess<sess_id>/sub<sess_id>_sess<sess_id>_<targ_mesh>_roi<seed_mesh>.surf2surf_profile.mat
+%     <out_dir>/profiles/sub<sub_id>/sess<sess_id>/sub<sess_id>_sess...
+%         <sess_id>_<targ_mesh>_roi<seed_mesh>.surf2surf_profile.mat
 %
 %   - num_sub: (string)
 %
@@ -73,9 +76,11 @@ for sub = 1:str2num(num_sub)
         out_profile_dir = fullfile(out_dir,'profiles',['sub' sub],['sess' sess]);       
         
         if(strcmp(targ_mesh,'fs_LR_32k'))
-            avg_profile_file = fullfile(out_dir,'profiles','avg_profile',[targ_mesh '_roi' seed_mesh '_avg_profile.mat']);
+            avg_profile_file = fullfile(out_dir,'profiles','avg_profile',...
+                [targ_mesh '_roi' seed_mesh '_avg_profile.mat']);
             
-            profile_file = fullfile(out_profile_dir,['sub' sub '_sess' sess '_' targ_mesh '_roi' seed_mesh '.surf2surf_profile.mat']);
+            profile_file = fullfile(out_profile_dir,['sub' sub '_sess' sess '_'...
+                targ_mesh '_roi' seed_mesh '.surf2surf_profile.mat']);
            
             if(exist(profile_file))
                 num_data = num_data + 1;
@@ -92,11 +97,15 @@ for sub = 1:str2num(num_sub)
             end
         
         elseif(~isempty(strfind(targ_mesh,'fsaverage'))) 
-            lh_avg_profile_file = fullfile(out_dir,'profiles','avg_profile',['lh_' targ_mesh '_roi' seed_mesh '_avg_profile.nii.gz']);
-            rh_avg_profile_file = fullfile(out_dir,'profiles','avg_profile',['rh_' targ_mesh '_roi' seed_mesh '_avg_profile.nii.gz']);
+            lh_avg_profile_file = fullfile(out_dir,'profiles','avg_profile',...
+                ['lh_' targ_mesh '_roi' seed_mesh '_avg_profile.nii.gz']);
+            rh_avg_profile_file = fullfile(out_dir,'profiles','avg_profile',...
+                ['rh_' targ_mesh '_roi' seed_mesh '_avg_profile.nii.gz']);
             
-            lh_profile_file = fullfile(out_profile_dir,['lh.sub' sub '_sess' sess '_' targ_mesh '_roi' seed_mesh '.surf2surf_profile.nii.gz']);
-            rh_profile_file = fullfile(out_profile_dir,['rh.sub' sub '_sess' sess '_' targ_mesh '_roi' seed_mesh '.surf2surf_profile.nii.gz']);
+            lh_profile_file = fullfile(out_profile_dir,['lh.sub' sub '_sess' sess '_'...
+                targ_mesh '_roi' seed_mesh '.surf2surf_profile.nii.gz']);
+            rh_profile_file = fullfile(out_profile_dir,['rh.sub' sub '_sess' sess '_'...
+                targ_mesh '_roi' seed_mesh '.surf2surf_profile.nii.gz']);
             
             if(exist(lh_profile_file) && exist(rh_profile_file))
                 num_data = num_data + 1;
@@ -119,7 +128,8 @@ for sub = 1:str2num(num_sub)
                 
         
         else
-            error('Unknown mesh type. Only fsaverage surface types, for example, fsaverage5/6 and fs_LR_32k will be allowed.')
+            error(['Unknown mesh type. Only fsaverage surface types,' ...
+                'for example, fsaverage 5/6 and fs_LR_32k will be allowed.'])
         end
     end
 end
@@ -136,5 +146,3 @@ elseif(~isempty(strfind(targ_mesh,'fsaverage')))
     MRIwrite(rh_avg_profile,rh_avg_profile_file);
 
 end
-
-

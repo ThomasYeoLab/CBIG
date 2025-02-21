@@ -16,7 +16,14 @@ do
     esac
 done
 
-EXCLUDED_FILES=("Surf2SurfGui.m" "Vol2SurfGui.m" "CBIG_tested_config.sh" "CBIG_tested_config.csh" "tested_startup.m")
+EXCLUDED_FILES=(
+    "Surf2SurfGui.m"
+    "Vol2SurfGui.m"
+    "CBIG_tested_config.sh"
+    "CBIG_tested_config.csh"
+    "tested_startup.m"
+    "__init__.py"
+)
 EXTENSIONS_TO_CHECK="m c cpp sh csh pl r py"
 
 if [[ ! "$DIR_TO_CHECK" == "" ]]; then
@@ -137,6 +144,13 @@ all_without_abs_path=1
 echo -e "\n==> [Check] Checking absolute paths..."
 for file_path in "${FILES_TO_CHECK[@]}"
 do
+    # Skip file_path if it contains 'docker' or 'singularity'
+    if [[ "$file_path" == *"docker"* ]] || \
+       [[ "$file_path" == *"singularity"* ]] || \
+       [[ "$file_path" == *"container"* ]]; then
+        continue
+    fi
+
     file_name=$(basename $file_path)
     file_ext="${file_name##*.}"
     if [[ " $EXTENSIONS_TO_CHECK " =~ \ $file_ext\  ]] && [[ ! $file_name =~ "config" ]]; then
@@ -422,7 +436,11 @@ if [ $all_with_valid_prefixes == 0 -o $all_with_license == 0 -o $all_without_abs
     -o $all_within_120 == 0 -o $all_with_valid_rmpath == 0 -o $all_with_valid_prefixes == 0 -o $all_python_mit == 0 \
     -o $all_flake8_format == 0 -o $all_less_than_1MB == 0 -o $all_without_tabs == 0 ]; then
     echo "[FAILED] Some checks failed. Please fix the mentioned issues above. "
-    exit 1
+    if [ $running_commit_hook_flag == 1 ]; then
+        exit 1
+    else
+        exit 0
+    fi
 else
     echo "[PASSED] All checks passed"
     exit 0

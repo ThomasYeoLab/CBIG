@@ -8,7 +8,8 @@ Written by Ru(by) Kong and CBIG under MIT license: https://github.com/ThomasYeoL
 /* The computational routine */
 /*function V_lam=Compute_V_lambda(params,V_same,V_diff,lambda)
 neighborsys=double(params.neighborhood);%revise*/
-void CBIG_MSHBM_V_lambda_Product(double *neighborsys, double *V_same, double *V_diff, double *lambda, double *V_lam,int N,int K,int M1, int N1)
+void CBIG_MSHBM_V_lambda_Product(double *neighborsys, double *V_same, double *V_diff, 
+    double *lambda, double *V_lam,int N,int K,int M1, int N1)
 {
     int m;
     int k;

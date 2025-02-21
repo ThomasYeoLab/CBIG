@@ -7,7 +7,7 @@ record_dir="/mnt/isilon/CSC1/Yeolab/CodeMaintenance/Records"
 dataset_csv="${record_dir}/datasets_info/dataset_groups.csv"
 options_file="${record_dir}/datasets_info/user_choices.txt"
 user=`whoami`
-user_csv="${record_dir}/current_projects/$user.csv"
+user_csv="${record_dir}/user_datasets/$user.csv"
 
 while IFS=',' read -r col1 col2; do
     datasets+=("$col1")
@@ -47,22 +47,23 @@ for element in "${sorted_data[@]}"; do
     sorted_groupnames+=("$groupname")
 done
 
-datasets=("${sorted_datasets[@]}")
-groupnames=("${sorted_groupnames[@]}")
+datasets=("Stop")
+datasets+=("${sorted_datasets[@]}")
+groupnames=("NA")
+groupnames+=("${sorted_groupnames[@]}")
 
 # Calculate max_display based on terminal window size
 rows=$(tput lines)
-max_display=$((rows - 2))  # Adjust this value as needed
+max_display=$((rows - 3))  # Adjust this value as needed
 
 selected=0
 scroll=0
+selections=""
 
 print_menu() {
     clear
-    if [ "$scroll" -lt 0 ]; then
-        scroll=0
-    fi
-    echo "Choose the dataset you want to register:"
+    echo "Choose the dataset/datasets you want to register (select Stop to finish):"
+    echo "Current choice:${selections}"
     for i in $(seq $scroll $(($scroll + max_display - 1))); do
         if [ $i -eq $selected ]; then
             echo " > ${datasets[$i]}"
@@ -99,88 +100,97 @@ while true; do
             ;;
         "") # Enter key
             clear
-            sel_dataset=${datasets[$selected]}
-            break
+            choice="${datasets[$selected]}"
+            if [ "$choice" == "Stop" ]; then
+                break
+            fi
+            if ! echo "$selections" | grep -w -q "$choice"; then
+                selections="${selections} ${choice}"
+            fi
+            # This is used for single dataset selection
+            sel_group="${groupnames[$selected]}"
+            print_menu
             ;;
     esac
 done
 
-sel_group="${groupnames[$selected]}"
+# Exit if no dataset is selected
+if [ "$selections" == "" ]; then
+    echo "No dataset selected."
+    exit 0
+fi
 
-yn_options=("Yes" "No, it contains other datasets")
-selected=0
+# Remove starting space
+selections="${selections# }"
 
-print_select_menu() {
-    clear
-    echo "Folder ${folder} contains ${sel_dataset} only:"
-    for i in "${!yn_options[@]}"; do
-        if [ $i -eq $selected ]; then
-            echo " > ${yn_options[$i]}"
-        else
-            echo "   ${yn_options[$i]}"
-        fi
-    done
-}
+# Count selections, one selection means the folder contains only one dataset
+count=$(echo "$selections" | awk '{print NF}')
 
+# Register folders
 folder=""
+first_folder_flag=1
 while true; do
-    read -p "Enter the folder path you want to register for **${sel_dataset}** (press esc and enter to stop): " folder
-    if [[ $folder == *$'\x1b'* ]]; then
-        break
+    if [ $first_folder_flag -eq 1 ]; then
+        read -p "Enter the folder path you want to register/create for **${selections}**: " folder
+    else
+        read -p "Enter the next folder path you want to register/create for **${selections}** \
+(press esc and enter to stop): " folder
+        # Quit if input is esc
+        if [[ $folder == *$'\x1b'* ]]; then
+            break
+        fi
+    fi
+    if [[ -z $folder ]]; then
+        echo "Empty input. "
+        continue
     fi
     cmd="readlink -f $folder"
     cmd="${cmd//\'/}"
     folder=`eval $cmd`
     if [ ! -d "${folder}" ]; then
-        echo "Folder ${folder} does not exist. "
-        echo "Registration failed."
-        continue
+        mkdir -p ${folder}
+        if [[ $? -eq 0 ]]; then
+            echo "Folder ${folder} is created."
+        else
+            echo "Failed to create folder: ${folder}."
+            continue
+        fi
     fi
 
     folder_owner=$(stat -c %U "$folder")
     if [ "$folder_owner" != "$user" ]; then
-        echo "Folder $folder is owned by $folder_owner, not by you ($user). Please check with folder onwer."
+        echo "Folder $folder is owned by $folder_owner, not by you ($user). Please check with folder owner."
         echo "Registration failed."
         continue
     fi
 
-    print_select_menu
-    while true; do
-        read -sn 1 key
-        case $key in
-            A) # Up arrow key
-                ((selected--))
-                [ $selected -lt 0 ] && selected=$((${#yn_options[@]} - 1))
-                print_select_menu
-                ;;
-            B) # Down arrow key
-                ((selected++))
-                [ $selected -ge ${#yn_options[@]} ] && selected=0
-                print_select_menu
-                ;;
-            "") # Enter key
-                break
-                ;;
-        esac
-    done
     echo "Folder ${folder}:"
-    if [ "$selected" == "0" ]; then
+    if [ "$count" -eq 1 ]; then
+        # Single dataset, group set to corresponding group and permission set to 750
         chmod 750 ${folder}
         echo "Permission set to 750"
         chgrp ${sel_group} ${folder}
         echo "User group set to ${sel_group}"
     else
+        # Multiple datasets, group set to yeo_group and permission set to 700
         chmod 700 ${folder}
         echo "Permission set to 700"
         chgrp yeo_group ${folder}
         echo "User group set to yeo_group"
     fi
-    echo "${sel_dataset},${folder}" >> "${user_csv}"
+
+    if [ -f "${folder}/.reg_path" ]; then
+        rm "${folder}/.reg_path"
+    fi
+    for sel_dataset in ${selections}; do
+        echo "${sel_dataset},${folder}" >> "${user_csv}"
+        echo "${sel_dataset},${folder}" >> "${folder}/.reg_path"
+        echo "${sel_dataset}" >> "${options_file}"
+    done
+    echo "Do NOT delete this file" >> "${folder}/.reg_path"
     echo "${user_csv} updated."
     echo ""
-    echo "${folder}" > "${folder}/.reg_path"
-    echo "Do NOT delete this file" >> "${folder}/.reg_path"
-    echo "${sel_dataset}" >> "${options_file}"
+    first_folder_flag=0
 done
 
 

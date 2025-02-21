@@ -1,4 +1,4 @@
-#!/bin/tcsh 
+#!/bin/tcsh -f
 
 # Example: 
 #    $CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_native2mni.csh 

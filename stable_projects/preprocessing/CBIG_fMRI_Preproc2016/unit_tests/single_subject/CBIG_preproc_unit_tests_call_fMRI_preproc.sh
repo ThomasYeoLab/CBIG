@@ -26,7 +26,7 @@ cd $work_dir
 
 log_file="${outdir}/CBIG_preproc_unit_tests_call_fMRI_preproc.log"
 
-cmd="source ~/.bashrc;source activate CBIG_py3;"
+cmd="source ~/.bashrc; conda activate CBIG_py3;"
 cmd="$cmd csh ${CBIG_CODE_DIR}/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_fMRI_preprocess.csh"
 cmd="$cmd -s $curr_sub -output_d $outdir -anat_s ${curr_sub}_FS -anat_d"
 cmd="$cmd ${anat_dir} -fmrinii ${fmrinii_dir}/${curr_sub}.fmrinii -config ${config_file}"
