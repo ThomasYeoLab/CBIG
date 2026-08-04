@@ -1,0 +1,5 @@
+subject_id,age_in_years,sex,site,scanner,TR,scan_length
+sub-000,34.04177878556892,female,WashU,Siemens,0.72,864.0
+sub-001,31.506264508457335,male,WashU,Siemens,0.72,864.0
+sub-002,24.651879235545284,male,WashU,Siemens,0.72,864.0
+sub-003,32.876750863073084,female,WashU,Siemens,0.72,864.0

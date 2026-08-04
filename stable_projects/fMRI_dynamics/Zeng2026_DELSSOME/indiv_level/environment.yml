@@ -1,0 +1,41 @@
+# Conda environment for the individual-level DELSSOME pipeline.
+# Mirrors configs/conda/manual_requirements.txt from the parent repo.
+#
+# Create with:
+#     conda env create -f environment.yml
+#     conda activate CBIG_DELSSOME_indiv
+#
+# If you need a CUDA build of PyTorch:
+#     pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
+# (do this AFTER the conda env is created, replacing the CPU build).
+
+name: CBIG_DELSSOME_indiv
+channels:
+  - conda-forge
+dependencies:
+  - python=3.13
+  - pip
+  # Core scientific stack
+  - numpy
+  - pandas
+  - scipy
+  - scikit-learn
+  - matplotlib
+  - seaborn
+  - tqdm
+  - jupyter
+  # Deep-learning stack
+  - pytorch
+  - lightning=2.5
+  - torchmetrics
+  - optuna
+  - optuna-integration
+  - tensorboard
+  - plotly
+  - python-kaleido
+  # GAMLSS in R
+  - r-base
+  - r-gamlss
+  - r-gamlss.dist
+  - r-gamlss.data
+  - r-jsonlite

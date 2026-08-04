@@ -35,6 +35,7 @@
 !/fMRI_dynamics/Wang2018_MFMem/**
 !/fMRI_dynamics/Kong2021_pMFM/**
 !/fMRI_dynamics/Zhang2024_pFIC/**
+!/fMRI_dynamics/Zeng2026_DELSSOME/**
 
 !/preprocessing/*
 !/preprocessing/CBIG_fMRI_Preproc2016/**

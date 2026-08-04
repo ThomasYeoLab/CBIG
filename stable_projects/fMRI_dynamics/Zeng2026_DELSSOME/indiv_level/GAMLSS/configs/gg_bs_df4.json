@@ -1,0 +1,18 @@
+{
+  "target_variable": "ei_ratio_mean",
+  "distribution": "GG",
+  "age_formula_mu": "bs(age_in_years, df=4, degree=3)",
+  "age_formula_sigma": "bs(age_in_years, df=3, degree=3)",
+  "age_formula_nu": "1",
+  "output_dir": "outputs/gg_bs_df4",
+  "sample_per_year": 9,
+  "centiles": [
+    2.5,
+    5,
+    25,
+    50,
+    75,
+    95,
+    97.5
+  ]
+}

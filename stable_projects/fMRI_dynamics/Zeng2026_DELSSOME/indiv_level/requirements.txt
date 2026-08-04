@@ -1,0 +1,21 @@
+# Python dependencies for the individual-level DELSSOME pipeline.
+# Tested with Python 3.13 on Linux (Anaconda / pip).
+#
+# Install PyTorch separately first if you need a specific CUDA build, e.g.:
+#   pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
+
+torch>=2.1
+lightning>=2.5,<3
+torchmetrics>=1.0
+optuna>=3.5
+optuna-integration>=3.5
+tensorboard
+plotly
+kaleido          # for Optuna's static plot export
+numpy
+pandas
+scipy
+scikit-learn
+matplotlib
+seaborn
+tqdm
