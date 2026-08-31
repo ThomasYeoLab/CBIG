@@ -53,7 +53,7 @@
 
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
 proj_dir = fullfile(CBIG_CODE_DIR, ...
-    'stable_projects/brain_parcellation/Lim2026_MSHBM_Epilepsy');
+    'stable_projects/brain_parcellation/Lim2026_MSHBM_epilepsy');
 data_dir = getenv('CBIG_EPILEPSY_DATA_DIR');
 
 nih_input_dir  = fullfile(data_dir, 'NIH/input');

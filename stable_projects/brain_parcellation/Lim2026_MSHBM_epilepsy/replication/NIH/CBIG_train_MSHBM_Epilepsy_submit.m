@@ -25,7 +25,7 @@
 % ====================================
 
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-proj_dir  = fullfile(CBIG_CODE_DIR, 'stable_projects/brain_parcellation/Lim2026_MSHBM_Epilepsy');
+proj_dir  = fullfile(CBIG_CODE_DIR, 'stable_projects/brain_parcellation/Lim2026_MSHBM_epilepsy');
 log_dir   = fullfile(proj_dir, 'replication/NIH/logs');
 if ~exist(log_dir, 'dir'); mkdir(log_dir); end
 

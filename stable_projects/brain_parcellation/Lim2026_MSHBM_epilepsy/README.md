@@ -90,9 +90,9 @@ params.lh_fMRI_list = {'/mydata/lh.sess1.nii.gz', '/mydata/lh.sess2.nii.gz'};
 params.rh_fMRI_list = {'/mydata/rh.sess1.nii.gz', '/mydata/rh.sess2.nii.gz'};
 params.censor_list  = {'/mydata/censor1.txt', '/mydata/censor2.txt'};
 
-addpath('/path/to/Lim2026_MSHBM_Epilepsy');
+addpath('/path/to/Lim2026_MSHBM_epilepsy');
 [lh_labels, rh_labels, LI_lang] = CBIG_MSHBM_Epilepsy_LI(params);
-rmpath('/path/to/Lim2026_MSHBM_Epilepsy');
+rmpath('/path/to/Lim2026_MSHBM_epilepsy');
 ```
 
 `CBIG_MSHBM_Epilepsy_LI` saves the following outputs to `params.project_dir`:
@@ -105,9 +105,9 @@ rmpath('/path/to/Lim2026_MSHBM_Epilepsy');
 **Run on the provided example data:**
 
 ```matlab
-addpath('/path/to/Lim2026_MSHBM_Epilepsy/examples');
+addpath('/path/to/Lim2026_MSHBM_epilepsy/examples');
 CBIG_MSHBM_Epilepsy_wrapper();
-rmpath('/path/to/Lim2026_MSHBM_Epilepsy/examples');
+rmpath('/path/to/Lim2026_MSHBM_epilepsy/examples');
 ```
 
 The wrapper additionally saves a surface visualisation (`epilepsy_w80c10.png`) to
@@ -132,21 +132,21 @@ See [`replication/README.md`](replication/README.md) for the run order, folder s
 To download the version of the code that was last tested, you can either
 
 - visit this link:
-[https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.40.0-Lim2026_MSHBM_Epilepsy](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.40.0-Lim2026_MSHBM_Epilepsy)
+[https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.40.0-Lim2026_MSHBM_epilepsy](https://github.com/ThomasYeoLab/CBIG/releases/tag/v0.40.0-Lim2026_MSHBM_epilepsy)
 
 or
 
 - run the following command, if you have Git installed
 
 ```
-git checkout -b Lim2026_MSHBM_Epilepsy v0.40.0-Lim2026_MSHBM_Epilepsy
+git checkout -b Lim2026_MSHBM_epilepsy v0.40.0-Lim2026_MSHBM_epilepsy
 ```
 
 ---
 
 ## Updates
 
-- Release v0.40.0 (31/08/2026): Initial release of Lim2026 MSHBM_Epilepsy
+- Release v0.40.0 (31/08/2026): Initial release of Lim2026 MSHBM_epilepsy
 
 ---
 

@@ -11,7 +11,7 @@ classdef CBIG_MSHBM_Epilepsy_unit_test < matlab.unittest.TestCase
             CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
             load(fullfile(CBIG_CODE_DIR, 'unit_tests', 'replace_unittest_flag'));
             proj_dir = fullfile(CBIG_CODE_DIR, 'stable_projects', ...
-                'brain_parcellation', 'Lim2026_MSHBM_Epilepsy');
+                'brain_parcellation', 'Lim2026_MSHBM_epilepsy');
             out_dir  = fullfile(proj_dir, 'unit_tests', 'output');
             mkdir(out_dir);
 

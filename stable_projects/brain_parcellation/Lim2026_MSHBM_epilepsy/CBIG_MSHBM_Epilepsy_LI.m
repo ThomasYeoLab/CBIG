@@ -44,7 +44,7 @@ function [lh_labels, rh_labels, LI_lang] = CBIG_MSHBM_Epilepsy_LI(params)
 %     - group_prior (optional):
 %       String. Full path to the group prior Params_Final.mat. Defaults to
 %       the NIH 34-subject drug-resistant epilepsy MS-HBM model:
-%         Lim2026_MSHBM_Epilepsy/MSHBM_Epilepsy/Params_Final.mat
+%         Lim2026_MSHBM_epilepsy/MSHBM_Epilepsy/Params_Final.mat
 %
 %     - w (optional):
 %       String. Weight for the group spatial prior. Default: '80'.

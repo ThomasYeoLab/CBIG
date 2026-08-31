@@ -17,7 +17,7 @@
 % OUTPUTS:
 %   None. Results are saved to:
 %   $CBIG_CODE_DIR/stable_projects/brain_parcellation/
-%       Lim2026_MSHBM_Epilepsy/replication/NIH/results/mshbm_epilepsy/
+%       Lim2026_MSHBM_epilepsy/replication/NIH/results/mshbm_epilepsy/
 %
 % Written by Mervyn Lim Jun Rui and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
@@ -26,7 +26,7 @@
 % ====================================
 
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-proj_dir = fullfile(CBIG_CODE_DIR, 'stable_projects/brain_parcellation/Lim2026_MSHBM_Epilepsy');
+proj_dir = fullfile(CBIG_CODE_DIR, 'stable_projects/brain_parcellation/Lim2026_MSHBM_epilepsy');
 data_dir = getenv('CBIG_EPILEPSY_DATA_DIR');
 analysis_dir = fullfile(data_dir, 'NIH/input');
 mshbm_dir = fullfile(proj_dir, 'replication/NIH/results');

@@ -18,7 +18,7 @@ function CBIG_MSHBM_Epilepsy_wrapper(out_dir)
 %   Must be unique per subject. Intermediate files (FC profiles, data
 %   lists), the final parcellation, and the LI are saved here. Defaults to
 %   out_dir/ in the same folder as this wrapper script (i.e.
-%   Lim2026_MSHBM_Epilepsy/examples/out_dir/).
+%   Lim2026_MSHBM_epilepsy/examples/out_dir/).
 %   To check outputs against the reference, use
 %   CBIG_MSHBM_Epilepsy_check_example_results(out_dir).
 %

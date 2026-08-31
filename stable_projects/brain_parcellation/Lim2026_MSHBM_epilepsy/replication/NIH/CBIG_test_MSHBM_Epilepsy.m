@@ -40,7 +40,7 @@
 % ====================================
 
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-proj_dir = fullfile(CBIG_CODE_DIR, 'stable_projects/brain_parcellation/Lim2026_MSHBM_Epilepsy');
+proj_dir = fullfile(CBIG_CODE_DIR, 'stable_projects/brain_parcellation/Lim2026_MSHBM_epilepsy');
 data_dir = getenv('CBIG_EPILEPSY_DATA_DIR');
 if isempty(data_dir)
     config_path = fullfile(proj_dir, 'replication/config/CBIG_epilepsy_config.sh');

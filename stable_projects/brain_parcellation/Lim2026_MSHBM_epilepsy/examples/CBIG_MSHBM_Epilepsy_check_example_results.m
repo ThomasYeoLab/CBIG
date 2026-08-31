@@ -26,7 +26,7 @@ function CBIG_MSHBM_Epilepsy_check_example_results(out_dir)
 
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
 ref_dir = fullfile(CBIG_CODE_DIR, 'stable_projects', ...
-    'brain_parcellation', 'Lim2026_MSHBM_Epilepsy', 'examples', 'results');
+    'brain_parcellation', 'Lim2026_MSHBM_epilepsy', 'examples', 'results');
 
 parcel_subpath = fullfile('ind_parcellation', 'test_set', ...
     'Ind_parcellation_MSHBM_sub1_w80_MRF10.mat');
