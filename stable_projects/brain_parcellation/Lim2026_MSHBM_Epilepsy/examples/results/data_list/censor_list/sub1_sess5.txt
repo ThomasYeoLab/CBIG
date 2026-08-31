@@ -1,0 +1,1 @@
+/mnt/nas/CSC21/Yeolab/Users/mervyn/CBIG_private/stable_projects/brain_parcellation/Lim2026_mshbm_epilepsy/examples/input/example_bld005_motion_outliers.txt

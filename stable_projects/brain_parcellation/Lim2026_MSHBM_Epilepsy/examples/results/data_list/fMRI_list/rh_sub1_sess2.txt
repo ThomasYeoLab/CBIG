@@ -1,0 +1,1 @@
+/mnt/nas/CSC21/Yeolab/Users/mervyn/CBIG_private/stable_projects/brain_parcellation/Lim2026_mshbm_epilepsy/examples/input/rh.example_bld002_fs6_sm6.nii.gz

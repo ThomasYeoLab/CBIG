@@ -19,6 +19,7 @@
 !/brain_parcellation/Xue2021_IndCerebellum/**
 !/brain_parcellation/Kong2022_ArealMSHBM/**
 !/brain_parcellation/Yan2023_homotopic/**
+!/brain_parcellation/Lim2026_MSHBM_Epilepsy/**
 
 #Similarly
 !/disorder_subtypes/*
