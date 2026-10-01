@@ -25,19 +25,19 @@ do
     input_path="${CBIG_CODE_DIR}/utilities/matlab/predictive_models/KernelRidgeRegression/example/input"
     
     # generate setup file for KRR
-    cmd="matlab -nosplash -nodesktop -nodisplay -r \"CBIG_KRR_example_prepare_setup_file $input_path \
-    $outdir $split; exit;\" "
+    cmd="matlab -batch \"CBIG_KRR_example_prepare_setup_file $input_path \
+    $outdir $split\" "
     eval $cmd   
     setup_file_path="${outdir}/${split}/setup_${split}.mat"
 
     # pass the setup file to KRR workflow LITE
-    cmd="matlab -nosplash -nodesktop -nodisplay -r \"CBIG_KRR_workflow_LITE $setup_file_path; exit;\" "
+    cmd="matlab -batch \"CBIG_KRR_workflow_LITE $setup_file_path\" "
     eval $cmd 
 
 done
 
 # compare optimal accuracies
-cmd="matlab -nosplash -nodesktop -nodisplay -r \"CBIG_KRR_example_check_result $outdir; exit;\" "
+cmd="matlab -batch \"CBIG_KRR_example_check_result $outdir\" "
 eval $cmd
 
 

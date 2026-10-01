@@ -23,8 +23,8 @@ feature_file=${outdir}/FC_all.mat
 covariate_list=${input_dir}/covariates.txt
 
 # run single kernel KRR
-matlab -nodesktop -nosplash -nodisplay -r " addpath(genpath('$scripts_dir')); CBIG_TRBPC_example_multiKRR_get_inputs(\
-    '${outdir}');exit; " >> $LF 2>&1
+matlab -batch " addpath(genpath('$scripts_dir')); CBIG_TRBPC_example_multiKRR_get_inputs(\
+    '${outdir}'); " >> $LF 2>&1
 
 ${scripts_dir}/KRR_LpOCV/MultiKernel/CBIG_TRBPC_multiKRR_LpOCV_workflow.sh -subject_list ${subject_list} \
 -feature_files ${feature_file} -outstem ${outstem} -y_list ${y_list} -covariate_list ${covariate_list} \

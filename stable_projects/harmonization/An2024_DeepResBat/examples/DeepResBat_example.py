@@ -267,7 +267,8 @@ def example_wrapper(args):
     Wrapper function for examples/unittests
     """
     if args.unittest:
-        args.working_dir = os.path.join(global_config.root_path, 'unit_tests')
+        args.working_dir = os.path.join(global_config.root_path, 'unit_tests',
+                                        'output')
 
     data_folder = os.path.join(args.working_dir, 'data')
     splits_path = os.path.join(data_folder, 'splits')

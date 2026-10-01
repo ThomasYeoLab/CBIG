@@ -14,7 +14,7 @@ classdef CBIG_LBC_unit_test < matlab.unittest.TestCase
         
             example_dir = fullfile(project_dir, 'examples');
             outdir = fullfile(project_dir, 'unit_tests', 'output');
-            replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag'));
+            replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag.txt'));
             
             addpath(example_dir)
 

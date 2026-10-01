@@ -349,7 +349,7 @@ for i = 1:size(behavior_factors, 2)
     ylabel('Probability')
 
     box off
-    hgexport(gcf, [out_dir '/k' num2str(k) '/r' num2str(r) '/beta2_F' num2str(i)])
+    print(gcf, [out_dir '/k' num2str(k) '/r' num2str(r) '/beta2_F' num2str(i)], '-depsc')
     eps2xxx([out_dir '/k' num2str(k) '/r' num2str(r) '/beta2_F' num2str(i) '.eps'], {'png'})
     hold off
 end
@@ -403,7 +403,7 @@ for i = 1:size(behavior_factors, 2)
     legend('boxoff')
 
     box off
-    hgexport(gcf, [out_dir '/k' num2str(k) '/r' num2str(r) '/beta2_F' num2str(i) '_Top' num2str(N)])
+    print(gcf, [out_dir '/k' num2str(k) '/r' num2str(r) '/beta2_F' num2str(i) '_Top' num2str(N)], '-depsc')
     eps2xxx([out_dir '/k' num2str(k) '/r' num2str(r) '/beta2_F' num2str(i) '_Top' num2str(N) '.eps'], {'png'})
     hold off
 end

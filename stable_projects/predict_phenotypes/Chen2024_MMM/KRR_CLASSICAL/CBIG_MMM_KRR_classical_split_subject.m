@@ -22,7 +22,7 @@ function CBIG_MMM_KRR_classical_split_subject(data_dir, subject_list_file, rng_n
 % 
 % Written by Pansheng Chen and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
-rng(rng_num);
+rng(rng_num, 'twister');
 
 % read out subject file
 fileID = fopen(subject_list_file);

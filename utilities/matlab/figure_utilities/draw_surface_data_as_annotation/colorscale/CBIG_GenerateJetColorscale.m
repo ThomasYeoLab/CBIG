@@ -19,29 +19,32 @@ function colorscale = CBIG_GenerateJetColorscale(res, min_val, max_val, output_d
 %
 % Written by Nanbo Sun and CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
-    colorscale = colormap(jet(res));
-    
-    Y_OFFSET = 30;
-    X_OFFSET = 200;
-    WIDTH = 3;
-    HEIGHT = 10;
-    for i = 1:res
-        c = colorscale(i, :);
-        rectangle('Position', [X_OFFSET + i * WIDTH, Y_OFFSET, WIDTH, HEIGHT], 'FaceColor', c, 'EdgeColor', c);
-    end
-    axis([0, size(colorscale, 1) * WIDTH + X_OFFSET * 2, 0, Y_OFFSET * 2 + HEIGHT]);
-    set(gca, 'Visible', 'off');
-    
-    min_label = num2str(min_val);
-    max_label = num2str(max_val);
-    label_y = round(Y_OFFSET + 0.4 * HEIGHT);
-    label_font_size = 100;
-    text(40, label_y, min_label, 'FontSize', label_font_size);
-    text(X_OFFSET + size(colorscale, 1) * WIDTH + 30, label_y, max_label, 'FontSize', label_font_size);
-    
-    if nargin == 4
-        set(gcf, 'PaperPositionMode', 'auto');
-        print(fullfile(output_dir, 'colorscale'), '-dpng', '-r0');
-    end
-    
-    close all;
+fig = figure('Units', 'pixels', 'Position', [100 100 560 420], 'Color', 'w');
+
+colorscale = colormap(jet(res));
+
+Y_OFFSET = 30;
+X_OFFSET = 200;
+WIDTH = 3;
+HEIGHT = 10;
+
+for i = 1:res
+    c = colorscale(i, :);
+    rectangle('Position', [X_OFFSET + i * WIDTH, Y_OFFSET, WIDTH, HEIGHT], 'FaceColor', c, 'EdgeColor', c);
+end
+axis([0, size(colorscale, 1) * WIDTH + X_OFFSET * 2, 0, Y_OFFSET * 2 + HEIGHT]);
+set(gca, 'Visible', 'off');
+
+min_label = num2str(min_val);
+max_label = num2str(max_val);
+label_y = round(Y_OFFSET + 0.4 * HEIGHT);
+label_font_size = 25;
+text(40, label_y, min_label, 'FontSize', label_font_size);
+text(X_OFFSET + size(colorscale, 1) * WIDTH + 30, label_y, max_label, 'FontSize', label_font_size);
+
+if nargin == 4
+    set(gcf, 'PaperPositionMode', 'auto');
+    print(fullfile(output_dir, 'colorscale'), '-dpng', '-r0');
+end
+
+close(fig);

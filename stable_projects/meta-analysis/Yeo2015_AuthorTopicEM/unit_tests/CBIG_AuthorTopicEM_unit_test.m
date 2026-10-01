@@ -11,9 +11,12 @@ classdef CBIG_AuthorTopicEM_unit_test < matlab.unittest.TestCase
   %    unit_test_sample_coordinates.tx
   %
   %  Output:
-  %  - Formatted input data is saved at ./data/
-  %  - Estimates of the author-topic model's parameters are saved at EM_outputs_GIBBS_init
-  %  - Visualization of the 2-component solution is saved under ./figures directory
+  %  - Formatted input data is saved at ./output/data/
+  %  - Estimates of the author-topic model's parameters are saved at
+  %    ./output/EM_outputs_GIBBS_init
+  %  - Visualization of the 2-component solution is saved under ./output/figures directory
+  %  - Note that if the unit test pass, the ./output folder will be
+  %  removed, otherwise it will be kept for people to check the results.
   %
   % Example:
   %   CBIG_AuthorTopicEM_UnitTest
@@ -23,6 +26,14 @@ classdef CBIG_AuthorTopicEM_unit_test < matlab.unittest.TestCase
 
   methods (Test)
     function test_authorTopic_EM(testCase)
+      % This is temp cmds for freeview 7.4.1
+      [status, ~] = system('timeout 2s freeview');
+      if (status ~= 124)
+        origPath = getenv('LD_LIBRARY_PATH');
+        testCase.addTeardown(@setenv, 'LD_LIBRARY_PATH', origPath);
+        setenv('LD_LIBRARY_PATH', '');
+      end
+
       % add paths to functions specific to author-topic model
       CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
       addpath(fullfile(CBIG_CODE_DIR, 'external_packages', 'matlab', ...
@@ -42,8 +53,16 @@ classdef CBIG_AuthorTopicEM_unit_test < matlab.unittest.TestCase
       % prepare dataset
       work_dir = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'meta-analysis', ...
         'Yeo2015_AuthorTopicEM', 'unit_tests');
+
+      % create output dir
+      OutputDir = fullfile(work_dir, 'output');
+      if(exist(OutputDir, 'dir'))
+        rmdir(OutputDir, 's')
+      end
+      mkdir(OutputDir);
+
       text_data_path = fullfile(work_dir, 'unit_test_sample_coordinates.txt');
-      data_dir_path = fullfile(work_dir, 'data');
+      data_dir_path = fullfile(OutputDir, 'data');
       gibbs_data_file_name = 'sample_gibbs_data.mat';
       em_data_file_name = 'sample_em_ata.mat';
       system(['mkdir -p ' data_dir_path]);
@@ -70,16 +89,20 @@ classdef CBIG_AuthorTopicEM_unit_test < matlab.unittest.TestCase
       for K = all_Ks
         disp(['  K: ' num2str(K)]);
         CBIG_AuthorTopicEM_RunGibbsSampler(seeds, K, gibbs_burn_in, gibbs_inverval, num_gibbs_samples, ...
-            gibbs_input_path, work_dir, brain_mask2mm, alpha, eta);
+            gibbs_input_path, OutputDir, brain_mask2mm, alpha, eta);
       end
       disp('Finished Gibbs sampling');
-    
+
       em_init_type = 'GIBBS';
       em_input_path = fullfile(data_dir_path, em_data_file_name);
       disp('Start EM inference');
+      % CBIG_AuthorTopicEM_RunEM saves its output relative to the current
+      % directory, so cd into OutputDir for the duration of the EM inference
+      curr_dir = pwd;
+      cd(OutputDir);
       for K = all_Ks
         for seed = seeds
-          gibbs_init_dir = fullfile(work_dir, 'GIBBS_outputs', ['K' num2str(K)], ...
+          gibbs_init_dir = fullfile(OutputDir, 'GIBBS_outputs', ['K' num2str(K)], ...
             ['alpha' num2str(alpha) '_eta' num2str(eta)]);
           gibbs_init_file = fullfile(gibbs_init_dir, ['seed' num2str(seed)], ...
             ['seed' num2str(seed) '.burn' num2str(gibbs_burn_in) '.int' ...
@@ -87,10 +110,11 @@ classdef CBIG_AuthorTopicEM_unit_test < matlab.unittest.TestCase
           CBIG_AuthorTopicEM_RunEM(seed, K, em_input_path, brain_mask2mm, alpha, eta, em_init_type, gibbs_init_file);
         end
       end
+      cd(curr_dir);
       disp('Finished EM inference');
-    
+
       % find the best solutions from all reinitializations
-      output_dir = fullfile(work_dir, ['EM_outputs_' em_init_type '_init']);
+      output_dir = fullfile(OutputDir, ['EM_outputs_' em_init_type '_init']);
       best_solution_dir = fullfile(output_dir, 'best_solution', ['alpha' num2str(alpha) '_eta' num2str(eta)]);
       for K = all_Ks
         CBIG_AuthorTopicEM_ComputeBestSolution(output_dir, K, seeds, alpha, eta);
@@ -119,7 +143,7 @@ classdef CBIG_AuthorTopicEM_unit_test < matlab.unittest.TestCase
       end
     
       % visualize components, e.g. 2-component best solution
-      figures_dir = fullfile(work_dir, 'figures');
+      figures_dir = fullfile(OutputDir, 'figures');
       input_path = fullfile(best_solution_dir, 'best_solution_K002.mat');
       CBIG_AuthorTopicEM_VisualizeComponentsOnBrainSurface(input_path, figures_dir);
       assert(exist(fullfile(figures_dir, 'clear_brain_min1e-5_max5e-5', ...
@@ -134,10 +158,8 @@ classdef CBIG_AuthorTopicEM_unit_test < matlab.unittest.TestCase
       rmpath(fullfile(utilities_dir, 'inference'));
       rmpath(fullfile(utilities_dir, 'visualization'));
       
-      system(['rm -r ', data_dir_path]);
-      system(['rm -r ', fullfile(work_dir, 'GIBBS_outputs')]);
-      system(['rm -r ', output_dir]);
-      system(['rm -r ', figures_dir]);
+      % remove output data
+      rmdir(OutputDir, 's');
     end
   end
 end

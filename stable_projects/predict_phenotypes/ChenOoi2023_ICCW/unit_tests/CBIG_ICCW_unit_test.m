@@ -9,7 +9,7 @@ classdef CBIG_ICCW_unit_test < matlab.unittest.TestCase
             project_dir = fullfile(CBIG_CODE_DIR, 'stable_projects', 'predict_phenotypes', 'ChenOoi2023_ICCW');
             example_dir = fullfile(project_dir, 'examples');
             outdir = fullfile(project_dir, 'unit_tests', 'output');
-            replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag'));
+            replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag.txt'));
             addpath(genpath(example_dir))
 
             % create output folder

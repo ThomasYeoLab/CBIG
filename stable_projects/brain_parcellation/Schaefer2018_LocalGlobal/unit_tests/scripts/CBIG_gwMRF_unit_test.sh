@@ -53,10 +53,10 @@ start_gamma='50000000'
 exponential='15'
 
 my_cmd="cd ${code_dir};"
-my_cmd="${my_cmd} matlab -nosplash -nodisplay -nodesktop -r " 
+my_cmd="${my_cmd} matlab -batch " 
 my_cmd="${my_cmd} \"CBIG_gwMRF_build_data_and_perform_clustering ${ex_input_fullpath} ${ex_output_dir} \
  ${start_idx} ${end_idx} ${num_left_cluster} ${num_right_cluster} ${smoothcost} ${num_iterations} \
- ${num_runs} ${start_gamma} ${exponential}; exit;\" "
+ ${num_runs} ${start_gamma} ${exponential};\" "
 
 # submit job for generating example results
 ERR_FILE_PATH="${ex_output_dir}/CBIG_gwMRF_example.err"
@@ -74,7 +74,7 @@ $CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "${temp_script_file1}" -walltime 3:00:00
 # will not proceed to next step until the current job is successfully done
 ex_out_name='Graph_Cut_faster__grad_prior_gordon_cluster_20_datacost_1_smoothcost_5000_iterations_2_seed_1.mat'
 ex_out_file=${ex_output_dir}/clustering/${ex_out_name}
-sh $CBIG_CODE_DIR/utilities/scripts/CBIG_check_job_status -n gwMRF_ex -o ${ex_out_file}
+sh $CBIG_CODE_DIR/utilities/scripts/CBIG_check_job_status -n gwMRF_ex
 
 EXIT_STATUS=$?
 if [[ "$EXIT_STATUS" -eq "1" ]]
@@ -116,11 +116,11 @@ rh_output_filename='rh_mult_matrix.mat'
 # create one matlab command that sequencially calls the 2 functions
 # that build time matrix and mult matrix separately
 my_cmd2="cd ${code_dir}/lib ;"
-my_cmd2="${my_cmd2} matlab -nosplash -nodisplay -nodesktop -r "
+my_cmd2="${my_cmd2} matlab -batch "
 my_cmd2="${my_cmd2} \"CBIG_gwMRF_build_time_matrix ${input_fullpaths} ${TIME_DATA_OUT} ${start_idx} \
  ${end_idx} ${fsaverage} ${lh_output_file} ${rh_output_file}; "
 my_cmd2="${my_cmd2} CBIG_gwMRF_build_prod_matrix ${lh_input_filename} ${rh_input_filename} \
-${MULT_DATA_OUT} ${lh_output_filename} ${rh_output_filename}; exit; \" "
+${MULT_DATA_OUT} ${lh_output_filename} ${rh_output_filename}; \" "
 
 # submit job for generating the time matrix
 ERR_FILE_PATH="${output_dir}/job_err_out/CBIG_gwMRF_mult.err"
@@ -167,9 +167,9 @@ vargin=" 'lh_avg_file' '${output_dir}/mult_mat/lh_mult_matrix.mat' \
 PROJ_CODE_DIR="${CBIG_CODE_DIR}/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/Code"
 
 my_cmd3="cd ${code_dir}; "
-my_cmd3="${my_cmd3} matlab -nosplash -nodisplay -nodesktop -r "
+my_cmd3="${my_cmd3} matlab -batch "
 my_cmd3="${my_cmd3} \" addpath(genpath('${PROJ_CODE_DIR}'));"
-my_cmd3="${my_cmd3} CBIG_gwMRF_graph_cut_clustering ${vargin}; exit; \" ";
+my_cmd3="${my_cmd3} CBIG_gwMRF_graph_cut_clustering ${vargin}; \" ";
 
 # submit job for generating the time matrix
 ERR_FILE_PATH="${output_dir}/job_err_out/CBIG_gwMRF_seed2.err"
@@ -207,8 +207,8 @@ ERR_FILE_PATH=${output_dir}/job_err_out/CBIG_gwMRF_compare.err
 OUT_FILE_PATH=${output_dir}/job_err_out/CBIG_gwMRF_compare.out
 
 my_cmd4="cd `dirname $0`;"
-my_cmd4="${my_cmd4} matlab -nosplash -nodisplay -nodesktop -r "
-my_cmd4="${my_cmd4} \" clear;clc;close all;CBIG_gwMRF_check_unit_test_result '${output_dir}';exit; \" >> $LF "
+my_cmd4="${my_cmd4} matlab -batch "
+my_cmd4="${my_cmd4} \" clear;clc;close all;CBIG_gwMRF_check_unit_test_result '${output_dir}'; \" >> $LF "
 
 # this is to accomodate for new HPC
 temp_script_file4="${output_dir}/temp_script4.sh"

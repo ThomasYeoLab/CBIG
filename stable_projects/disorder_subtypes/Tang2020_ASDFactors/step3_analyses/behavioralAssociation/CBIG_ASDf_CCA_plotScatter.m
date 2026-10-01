@@ -55,8 +55,7 @@ text(0.8, y_min+0.5, txt_p, 'fontsize', 15);
 
 %% Save the plot
 if nargin > 5 && ~isempty(output_name)
-    hgexport(gcf, output_name);
-    eps2xxx([output_name '.eps'], {'png'});
+    exportgraphics(gcf, [output_name '.png']);
 end
 
 hold off;

@@ -7,7 +7,7 @@ classdef CBIG_KRDNN_unit_test < matlab.unittest.TestCase
             cur_dir = fullfile(CBIG_CODE_DIR, 'stable_projects', ...
                 'predict_phenotypes', 'He2019_KRDNN', 'unit_tests');
             % load replace_unittest_flag
-            load(fullfile(CBIG_CODE_DIR, 'unit_tests', 'replace_unittest_flag'));
+            load(fullfile(CBIG_CODE_DIR, 'unit_tests', 'replace_unittest_flag.txt'));
 
             % run the example
             addpath(fullfile(CBIG_CODE_DIR, 'stable_projects', ...
@@ -51,7 +51,7 @@ classdef CBIG_KRDNN_unit_test < matlab.unittest.TestCase
             cur_dir = fullfile(CBIG_CODE_DIR, 'stable_projects', ...
                 'predict_phenotypes', 'He2019_KRDNN', 'unit_tests');
             % load replace_unittest_flag
-            load(fullfile(CBIG_CODE_DIR, 'unit_tests', 'replace_unittest_flag'));
+            load(fullfile(CBIG_CODE_DIR, 'unit_tests', 'replace_unittest_flag.txt'));
             % run the example
             addpath(fullfile(CBIG_CODE_DIR, 'stable_projects', ...
                 'predict_phenotypes', 'He2019_KRDNN', 'examples'));

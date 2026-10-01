@@ -14,6 +14,6 @@ scripts_dir=`dirname "$(readlink -f "$0")"`
 
 LF=${outdir}/logs/PFM_perm_start_${perm_seed_start}.txt
 date >> $LF
-matlab -nodesktop -nosplash -nodisplay -r " addpath $scripts_dir; CBIG_TRBPC_compute_PFM_permutation_stats( \
+matlab -batch " addpath $scripts_dir; CBIG_TRBPC_compute_PFM_permutation_stats( \
 '$FC_mean_file','$y_file','$krr_folds','$perm_seed_start','$perm_num','$group','$outdir'); \
-exit; " >> $LF
+ " >> $LF

@@ -55,7 +55,7 @@ for pipeline in GSR Baseline; do
         cmd="$cmd -restricted_csv $restricted_csv -unrestricted_csv $unrestricted_csv -eval $evaluations -tree $tree"
         cmd="$cmd | tee -a ${log_file}"
 
-        $CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "$cmd" -walltime 2:00:00 -mem 6G \
+        $CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "$cmd" -walltime 2:00:00 -mem 10G \
         -name "LiGSRUT_LR"
     
         if [ ! -f $outdir/covariates/covariates.mat ] || [ ! -f $outdir/y/y_${y_name}.mat ]; then

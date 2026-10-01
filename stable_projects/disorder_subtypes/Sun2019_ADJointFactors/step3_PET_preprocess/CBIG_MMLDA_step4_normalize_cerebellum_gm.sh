@@ -68,9 +68,9 @@ for id in `cat ${id_list}`; do
         mri_binarize --i ${sub_dir}_FS/mri/aparc+aseg.mgz --match 8 47 \
         --o ${sub_dir}/mask_T1_cerebellum_gm.nii.gz >> ${log_file}
         # apply the mask to PET_in_T1 image and normalize the image by average cerebellum GM value
-        matlab -nosplash -nodisplay -nodesktop -r \
+        matlab -batch \
         "clear;MRI_file='${PET_file}';Mask_file='${mask_file}'; \
-        Output_file='${output_file}';CBIG_MMLDA_normalize_cerebellum_gm;exit;" \
+        Output_file='${output_file}';CBIG_MMLDA_normalize_cerebellum_gm;" \
         >> ${log_file}
 
         echo "${id}" >> ${progress_file}
@@ -90,9 +90,9 @@ for id in `cat ${id_list}`; do
     mri_binarize --i ${sub_dir}_FS/mri/aparc+aseg.mgz --match 8 47 \
     --o ${sub_dir}/mask_T1_cerebellum_gm.nii.gz >> ${log_file}
     # apply the mask to PET_in_T1 image and normalize the image by average cerebellum GM value
-    matlab -nosplash -nodisplay -nodesktop -r \
+    matlab -batch \
     "clear;MRI_file='${PET_file}';Mask_file='${mask_file}'; \
-    Output_file='${output_file}';CBIG_MMLDA_normalize_cerebellum_gm;exit;" \
+    Output_file='${output_file}';CBIG_MMLDA_normalize_cerebellum_gm;" \
     >> ${log_file}
 
     echo "${id}" >> ${progress_file}
@@ -103,7 +103,8 @@ done
 # wait unit all jobs finished
 total_num_job=`grep -c "^" ${id_list}`
 
-${CBIG_CODE_DIR}/stable_projects/disorder_subtypes/Sun2019_ADJointFactors/step2_MMLDA/CBIG_MMLDA_wait_until_finished.sh \
+${CBIG_CODE_DIR}/stable_projects/disorder_subtypes/Sun2019_ADJointFactors/step2_MMLDA/\
+CBIG_MMLDA_wait_until_finished.sh \
 ${progress_file} ${total_num_job}
 
 echo 'Step 4: Normalize PET image wrt cerebellum gm. -- Finished.'

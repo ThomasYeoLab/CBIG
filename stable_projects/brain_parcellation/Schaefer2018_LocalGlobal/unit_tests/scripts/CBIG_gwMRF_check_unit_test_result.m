@@ -19,7 +19,7 @@ function [] = CBIG_gwMRF_check_unit_test_result(output_dir)
 
 % check if replacing example results
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-load(fullfile(CBIG_CODE_DIR, 'unit_tests', 'replace_unittest_flag'));
+load(fullfile(CBIG_CODE_DIR, 'unit_tests', 'replace_unittest_flag.txt'));
 
 ref_dir = fullfile(getenv('CBIG_TESTDATA_DIR'), 'stable_projects', ...
     'brain_parcellation', 'Schaefer2018_LocalGlobal', 'results');

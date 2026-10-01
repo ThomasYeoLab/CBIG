@@ -77,10 +77,10 @@ for id in `cat ${id_list}`; do
         mri_convert ${sub_dir}/PET_in_T1_NormCere_reorientT1.nii.gz \
         ${sub_dir}/PET_in_T1_NormCere_reorientT1.nii >> ${log_file}
         # transform PET image to MNI space by applying deformation field
-        matlab -nosplash -nodisplay -nodesktop -r \
+        matlab -batch \
         "spm_dir='${spm_dir}';script_dir='${script_dir}';\
         image_path='${PET_reorient_file}';deformation_field='${deformation_field}';\
-        CBIG_MMLDA_apply_deformation;exit;" >> ${log_file}
+        CBIG_MMLDA_apply_deformation;" >> ${log_file}
         # downsample from MNI1mm to MNI2mm
         mri_vol2vol --mov ${sub_dir}/wPET_in_T1_NormCere_reorientT1.nii \
         --s FSL_MNI152_FS4.5.0 \
@@ -111,10 +111,10 @@ for id in `cat ${id_list}`; do
     mri_convert ${sub_dir}/PET_in_T1_NormCere_reorientT1.nii.gz \
     ${sub_dir}/PET_in_T1_NormCere_reorientT1.nii >> ${log_file}
     # transform PET image to MNI space by applying deformation field
-    matlab -nosplash -nodisplay -nodesktop -r \
+    matlab -batch \
     "spm_dir='${spm_dir}';script_dir='${script_dir}';\
     image_path='${PET_reorient_file}';deformation_field='${deformation_field}';\
-    CBIG_MMLDA_apply_deformation;exit;" >> ${log_file}
+    CBIG_MMLDA_apply_deformation;" >> ${log_file}
     # downsample from MNI1mm to MNI2mm
     mri_vol2vol --mov ${sub_dir}/wPET_in_T1_NormCere_reorientT1.nii \
     --s FSL_MNI152_FS4.5.0 \
@@ -130,7 +130,8 @@ done
 # wait unit all jobs finished
 total_num_job=`grep -c "^" ${id_list}`
 
-${CBIG_CODE_DIR}/stable_projects/disorder_subtypes/Sun2019_ADJointFactors/step2_MMLDA/CBIG_MMLDA_wait_until_finished.sh \
+${CBIG_CODE_DIR}/stable_projects/disorder_subtypes/Sun2019_ADJointFactors/step2_MMLDA/\
+CBIG_MMLDA_wait_until_finished.sh \
 ${progress_file} ${total_num_job}
 
 echo 'Step 5: Transform PET image in T1 space to MNI space. -- Finished.'

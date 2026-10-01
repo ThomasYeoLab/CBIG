@@ -12,9 +12,14 @@ module load cuda/11.0
 cd $ROOTDIR
 
 # run unit test
-python -m unit_tests.CBIG_DeepResBat_unit_test
+python -m unit_tests.test_CBIG_DeepResBat_unit_test
+test_status=$?
 
-# clean up
-rm -rf $ROOTDIR"/unit_tests/checkpoints"
-rm -rf $ROOTDIR"/unit_tests/data"
-rm -rf $ROOTDIR"/unit_tests/results"
+# clean up generated output only if the test passed; the test's own tearDown
+# already does this, this is just a safety net (e.g. in case of a hard crash
+# that skips tearDown). Output is kept on failure for debugging.
+if [ $test_status -eq 0 ]; then
+    rm -rf $ROOTDIR"/unit_tests/output"
+fi
+
+exit $test_status

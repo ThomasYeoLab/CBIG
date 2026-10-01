@@ -37,6 +37,7 @@ set max_mem = "NONE"       # Do not specify maximal memory usage
 set low_f = ""             # low cut-off frequency
 set high_f = ""            # high cut-off frequency
 set matlab_runtime_util = "" # MATLAB Runtime utilities folder
+set FD_metric = ""         # string indicating FD/FDRMS, default is empty
 
 set VERSION = '$Id: CBIG_preproc_censor.csh v 1.0 2016/05/26'
 
@@ -73,6 +74,55 @@ set root_dir = `dirname $root_dir`
 goto parse_args;
 parse_args_return:
 
+
+###############################
+# create log file
+###############################
+if (! -e logs) then
+    mkdir -p logs
+endif
+set LF = $sub_dir/$subject/logs/CBIG_preproc_censor.log
+if( -e $LF ) then
+    rm $LF
+endif
+touch $LF
+echo "[CENSOR]: logfile = $LF"
+echo "Censoring / Motion Scrubbing" >> $LF
+echo "[CMD]: CBIG_preproc_censor.csh $cmdline"   >>$LF
+
+
+###############################
+# echo bold folder
+###############################
+set boldfolder = "$sub_dir/$subject/bold"
+echo "[CENSOR]: boldfolder = $boldfolder" |& tee -a $LF
+
+
+###############################
+# Check FD metric type (if user did not specify)
+###############################
+set mc = $boldfolder"/mc"
+
+if ( "$FD_metric" == "" ) then
+    set FD_files = ( `find ${mc} -name "${subject}_bld*motion_outliers_FD"` )
+    set FDRMS_files = ( `find ${mc} -name "${subject}_bld*motion_outliers_FDRMS"` )
+
+    if ( $#FD_files > 0 && $#FDRMS_files == 0 ) then
+        set FD_metric = "FD"
+    else if ( $#FDRMS_files > 0 && $#FD_files == 0 ) then
+        set FD_metric = "FDRMS"
+    else if ( $#FD_files > 0 && $#FDRMS_files > 0 ) then
+        echo "ERROR: FD_metric not specified. \
+        ${mc} contains both FD and FDRMS motion outlier files. Please keep only one." |& tee -a $LF
+        exit 1
+    else
+        echo "ERROR: FD_metric not specified. No FD/FDRMS motion outlier files found in ${mc}." |& tee -a $LF
+        exit 1
+    endif
+
+    echo "FD_metric is $FD_metric" |& tee -a $LF
+endif
+
 goto check_params;
 check_params_return:
 
@@ -107,32 +157,9 @@ endif
 
 
 ###############################
-# create log file
-###############################
-if (! -e logs) then
-    mkdir -p logs
-endif
-set LF = $sub_dir/$subject/logs/CBIG_preproc_censor.log
-if( -e $LF ) then
-    rm $LF
-endif
-touch $LF
-echo "[CENSOR]: logfile = $LF"
-echo "Censoring / Motion Scrubbing" >> $LF
-echo "[CMD]: CBIG_preproc_censor.csh $cmdline"   >>$LF
-
-
-###############################
-# echo bold folder
-###############################
-set boldfolder = "$sub_dir/$subject/bold"
-echo "[CENSOR]: boldfolder = $boldfolder" |& tee -a $LF
-
-
-###############################
 # echo FD and DVARS threshold
 ###############################
-set FD = (`echo $outlier_stem | awk -F "FDRMS" '{print $2}' | awk -F "_" '{print $1}'`)
+set FD = (`echo $outlier_stem | awk -F "${FD_metric}" '{print $2}' | awk -F "_" '{print $1}'`)
 set DVARS = (`echo $outlier_stem | awk -F "DVARS" '{print $2}' | awk -F "_" '{print $1}'`)
 
 echo "FD = $FD"
@@ -193,12 +220,12 @@ foreach runfolder ($bold)
 
     if ( "$bandpass_flag" == "0" ) then
         # if do not perform bandpass filtering, the output stems do not contain information of passband
-        set output_inter = "${BOLD}_interp_inter_FDRMS${FD}_DVARS${DVARS}.nii.gz"
-        set output = ${BOLD}_interp_FDRMS${FD}_DVARS${DVARS}.nii.gz
+        set output_inter = "${BOLD}_interp_inter_${FD_metric}${FD}_DVARS${DVARS}.nii.gz"
+        set output = ${BOLD}_interp_${FD_metric}${FD}_DVARS${DVARS}.nii.gz
     else
         # if perform bandpass filtering, the output stems contain information of passband
-        set output_inter = "${BOLD}_interp_inter_FDRMS${FD}_DVARS${DVARS}_bp_${low_f}_${high_f}.nii.gz"
-        set output = ${BOLD}_interp_FDRMS${FD}_DVARS${DVARS}_bp_${low_f}_${high_f}.nii.gz
+        set output_inter = "${BOLD}_interp_inter_${FD_metric}${FD}_DVARS${DVARS}_bp_${low_f}_${high_f}.nii.gz"
+        set output = ${BOLD}_interp_${FD_metric}${FD}_DVARS${DVARS}_bp_${low_f}_${high_f}.nii.gz
     endif
 
     # obtain TR information
@@ -216,15 +243,15 @@ foreach runfolder ($bold)
         if ( "$matlab_runtime_util" == "" ) then
             if ( "$bandpass_flag" == 0 ) then
                 # if do not perform bandpass filtering, do not pass in low_f and high_f
-                set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r )
+                set cmd = ( $MATLAB -batch )
                 set cmd = ( $cmd '"''addpath(fullfile('"'"${root_dir}"'"',' "'"utilities"'"'))'; )
-                set cmd = ( $cmd CBIG_preproc_censor_wrapper $matlab_args; exit '"' )
+                set cmd = ( $cmd CBIG_preproc_censor_wrapper $matlab_args '"' )
             else
                 # if perform bandpass filtering, pass in low_f and high_f
                 set matlab_args = "${matlab_args} '${low_f}' '${high_f}'"
-                set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r )
+                set cmd = ( $MATLAB -batch )
                 set cmd = ( $cmd '"''addpath(fullfile('"'"${root_dir}"'"',' "'"utilities"'"'))'; )
-                set cmd = ( $cmd CBIG_preproc_censor_wrapper $matlab_args; exit '"' )
+                set cmd = ( $cmd CBIG_preproc_censor_wrapper $matlab_args '"' )
             endif
         else
             if ( "$bandpass_flag" == 0 ) then
@@ -268,12 +295,12 @@ foreach runfolder ($bold)
 
     if ( "$bandpass_flag" == "0" ) then
         # if do not perform bandpass filtering, the output stems do not contain passband information
-        set censor_inter = "${BOLD}_interp_inter_FDRMS${FD}_DVARS${DVARS}.nii.gz"
-        set censor_final = ${BOLD}_interp_FDRMS${FD}_DVARS${DVARS}.nii.gz
+        set censor_inter = "${BOLD}_interp_inter_${FD_metric}${FD}_DVARS${DVARS}.nii.gz"
+        set censor_final = ${BOLD}_interp_${FD_metric}${FD}_DVARS${DVARS}.nii.gz
     else
         # if perform bandpass filtering, the output stems contain passband information
-        set censor_inter = "${BOLD}_interp_inter_FDRMS${FD}_DVARS${DVARS}_bp_${low_f}_${high_f}.nii.gz"
-        set censor_final = ${BOLD}_interp_FDRMS${FD}_DVARS${DVARS}_bp_${low_f}_${high_f}.nii.gz
+        set censor_inter = "${BOLD}_interp_inter_${FD_metric}${FD}_DVARS${DVARS}_bp_${low_f}_${high_f}.nii.gz"
+        set censor_final = ${BOLD}_interp_${FD_metric}${FD}_DVARS${DVARS}_bp_${low_f}_${high_f}.nii.gz
     endif
 
     # perform censoring QC
@@ -286,9 +313,9 @@ foreach runfolder ($bold)
         set matlab_args = "${matlab_args} '${sub_dir}/${subject}/bold/mask/${subject}.func.gm.nii.gz'"
         set matlab_args = "${matlab_args} '${outlier_file}'"
         if ( "$matlab_runtime_util" == "" ) then
-            set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r )
+            set cmd = ( $MATLAB -batch )
             set cmd = ( $cmd '"''addpath(fullfile('"'"${root_dir}"'"',' "'"utilities"'"'))'; )
-            set cmd = ( $cmd CBIG_preproc_CensorQC $matlab_args; exit '"' )
+            set cmd = ( $cmd CBIG_preproc_CensorQC $matlab_args '"' )
         else
             set cmd = ( ${matlab_runtime_util}/CBIG_preproc_CensorQC $matlab_args )
         endif
@@ -401,6 +428,12 @@ while( $#argv != 0 )
             set matlab_runtime_util = $argv[1]; shift;
             breaksw
 
+        #select FD or FDRMS (optional)
+        case "-FD_metric":
+            if ( $#argv == 0 ) goto arg1err;
+                set FD_metric = "$argv[1]"; shift;
+            breaksw
+
         default:
             echo ERROR: Flag $flag unrecognized.
             echo $cmdline
@@ -465,6 +498,10 @@ else
     exit 1;
 endif
 
+if ( "$FD_metric" != "FD" && "$FD_metric" != "FDRMS" ) then
+    echo "ERROR: FD_metric can only be FDRMS or FD."
+    exit 1
+endif
 
 goto check_params_return;
 
@@ -555,6 +592,8 @@ OPTIONAL ARGUMENTS:
                                   bandpass filtering and without replacement.
     -matlab_runtime_util        : Full path of MATLAB Runtime utilities folder containing executable files.
                                   If not empty, MATLAB Runtime will be used.
+    -FD_metric                  : String indicating FD metric used for motion outlier detection.
+                                  Only 'FD' or 'FDRMS' values are allowed.
 
 OUTPUTS:
     1. If -nocleanup flag is passed in, this function will output two BOLD volumes:

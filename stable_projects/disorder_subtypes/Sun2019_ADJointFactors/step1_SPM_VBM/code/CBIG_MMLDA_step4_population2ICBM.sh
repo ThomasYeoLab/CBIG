@@ -49,9 +49,9 @@ id=population2ICBM
 logFile=${logDir}/${id}.log
 imgPath=${inDir}/${id}.nii
 if [ -z "${queue}" ]; then
-    matlab -nodisplay -nosplash -r \
+    matlab -batch \
     "spm_dir='${spmDir}';script_dir='${scriptDir}';\
-    output_dir='${inDir}';CBIG_MMLDA_population_to_ICBM;exit;" > ${logFile}
+    output_dir='${inDir}';CBIG_MMLDA_population_to_ICBM;" > ${logFile}
     echo "Done" >> ${progressFile}
 else
     qsub -V -q ${queue} << EOJ
@@ -65,9 +65,9 @@ else
     
     cd ${scriptDir}
     
-    matlab -nodisplay -nosplash -r \
+    matlab -batch \
     "spm_dir='${spmDir}';script_dir='${scriptDir}';\
-    output_dir='${inDir}';CBIG_MMLDA_population_to_ICBM;exit;" > ${logFile}
+    output_dir='${inDir}';CBIG_MMLDA_population_to_ICBM;" > ${logFile}
     echo "Done" >> ${progressFile}
 EOJ
 fi

@@ -1,0 +1,1 @@
+../replication/config/CBIG_TMSmotion_tested_config.sh

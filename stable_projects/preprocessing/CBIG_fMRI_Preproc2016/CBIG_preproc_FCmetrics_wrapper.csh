@@ -321,8 +321,8 @@ if ( $Pearson_r == 1 ) then
         set matlab_args = "${matlab_args} '$lh_surf_data_list' '$rh_surf_data_list' '$vol_data_list'"
         set matlab_args = "${matlab_args} '$discard_frames_list' 'Pearson_r' '$output_dir' '$output_prefix'"
         if ( "$matlab_runtime_util" == "" ) then
-            set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; )
-            set cmd = ( $cmd CBIG_preproc_FCmetrics $matlab_args; exit; '"' );
+            set cmd = ( $MATLAB -batch '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; )
+            set cmd = ( $cmd CBIG_preproc_FCmetrics $matlab_args '"' );
         else
             set cmd = ( ${matlab_runtime_util}/CBIG_preproc_FCmetrics $matlab_args )
         endif

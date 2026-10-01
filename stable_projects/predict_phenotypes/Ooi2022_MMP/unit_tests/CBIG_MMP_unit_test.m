@@ -12,7 +12,7 @@ classdef CBIG_MMP_unit_test < matlab.unittest.TestCase
             project_dir = fullfile(CBIG_CODE_DIR, 'stable_projects', 'predict_phenotypes', 'Ooi2022_MMP');
             example_dir = fullfile(project_dir, 'examples');
             outdir = fullfile(project_dir, 'unit_tests', 'output');
-            replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag'));
+            replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag.txt'));
             if exist(outdir,'dir')
                 rmdir(outdir, 's')
             end
@@ -68,7 +68,7 @@ classdef CBIG_MMP_unit_test < matlab.unittest.TestCase
             project_dir = fullfile(CBIG_CODE_DIR, 'stable_projects', 'predict_phenotypes', 'Ooi2022_MMP');
             example_dir = fullfile(project_dir, 'examples');
             outdir = fullfile(project_dir, 'unit_tests', 'output');
-            replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag'));
+            replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag.txt'));
             
             % run the example
             command = [example_dir, ...

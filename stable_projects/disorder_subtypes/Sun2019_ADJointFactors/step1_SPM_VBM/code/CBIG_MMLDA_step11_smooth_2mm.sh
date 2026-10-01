@@ -52,10 +52,10 @@ for id in `cat ${idList}`; do
     logFile=${logDir}/${id}.log
     imgPath=${inDir}/mri/mwp1${id}_MNI2mm.nii
     if [ -z "${queue}" ]; then
-        matlab -nodisplay -nosplash -r \
+        matlab -batch \
         "spm_dir='${spmDir}';script_dir='${scriptDir}';\
         modulated_image='${imgPath}';\
-        CBIG_MMLDA_smooth;exit;" > ${logFile}
+        CBIG_MMLDA_smooth;" > ${logFile}
         echo "${id}" >> ${progressFile}
     else
         qsub -V -q ${queue} << EOJ
@@ -69,10 +69,10 @@ for id in `cat ${idList}`; do
     
     cd ${scriptDir}
     
-    matlab -nodisplay -nosplash -r \
+    matlab -batch \
     "spm_dir='${spmDir}';script_dir='${scriptDir}';\
     modulated_image='${imgPath}';\
-    CBIG_MMLDA_smooth;exit;" > ${logFile}
+    CBIG_MMLDA_smooth;" > ${logFile}
     echo "${id}" >> ${progressFile}
 EOJ
     fi

@@ -1,21 +1,21 @@
-function CBIG_preproc_motion_outliers(DVARS_file,FDRMS_file,FD_th,DV_th,discard_seg,output_dir_name)
+function CBIG_preproc_motion_outliers(DVARS_file,FD_metric_file,FD_th,DV_th,discard_seg,FD_metric,output_dir_name)
 
-% CBIG_preproc_motion_outliers(DVARS_file,FDRMS_file,FD_th,DV_th,discard_seg,output_dir_name)
+% CBIG_preproc_motion_outliers(DVARS_file,FD_metric_file,FD_th,DV_th,discard_seg,FD_metric,output_dir_name)
 %
 % This function is used to find the outliers with DVARS threshold DV_th and
-% FDRMS threshold FD_th. After threholding, one frame before two frame after
+% FDRMS/FD threshold FD_th. After thresholding, one frame before two frame after
 % will also be removed. The default DV_th is 50, default FD_th is 0.2
 % INPUT:
 %   - DVARS_file:
 %       a file contains DVARS values as a TX1 column, T is the number of
 %       frames (include the first frame, whose value supposed to be 0)
 %
-%   - FDRMS_file:
-%       a file contains FDRMS values as a TX1 column, T is the number of
+%   - FD_metric_file:
+%       a file contains FDRMS/FD values as a TX1 column, T is the number of
 %       frames (include the first frame, whose value supposed to be 0)
 %
 %   - FD_th:
-%       the threshold of FDRMS, default is 0.2
+%       the threshold of FDRMS/FD, default is 0.2
 %
 %   - DV_th:
 %       the threshold of DVARS, default is 50
@@ -24,37 +24,45 @@ function CBIG_preproc_motion_outliers(DVARS_file,FDRMS_file,FD_th,DV_th,discard_
 %       uncensored segments of data lasting fewer than discard_seg
 %       contiguous frames will be removed, default is 5.
 %
+%   -FD_metric:
+%       A string to determine the FD metric used.
+%       Can contain only either 'FD' or 'FDRMS'.
+%
 %   - output_dir_name:
 %       the directory to store all output figures (full path).
 %
 % OUTPUT:
-%   txt file: SUBJECT_bldXXX_FDRMSxxx_DVARSxxx_motion_outliers.txt, this file contains a Tx1
+%   txt file: SUBJECT_bldXXX_<FD_metric>xxx_DVARSxxx_motion_outliers.txt, this file contains a Tx1
 %             vector where 1 means kept, 0 means removed.
-%   Figure: SUBJECT_bldXXX_FDRMSxxx_DVARSxxx.png
+%   Figure: SUBJECT_bldXXX_<FD_metric>xxx_DVARSxxx.png
 %
 % Written by CBIG under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
 
 
 
-%% Read in file and construct DVARS. FDRMS vectors
-fd = dlmread(FDRMS_file);
+%% Read in file and construct DVARS. FDRMS/FD vectors
+fd = dlmread(FD_metric_file);
 dvars = dlmread(DVARS_file);
 
 %% Check input variables
 if size(fd,2) > 1
-    error('Input argument ''FDRMS_file'' should list values in columns');
+    error('Input argument ''FD_metric_file'' should list values in columns');
 end
 
 if size(dvars,2) > 1
     error('Input argument ''DVARS_file'' should list values in columns');
 end
 
-%% Detect outliers with DVARS threhold
+if ~strcmp(FD_metric, 'FD') && ~strcmp(FD_metric, 'FDRMS')
+    error('ERROR: FD_metric can only be FDRMS or FD.');
+end
+
+%% Detect outliers with DVARS threshold
 DV_th = str2num(DV_th);
 % 1 means the frame below the threshold is kept, 0 means the frame above the threshold is removed
 DV_vect = (dvars <= DV_th);
 
-%% Detect outliers with FDRMS threhold
+%% Detect outliers with FDRMS/FD threshold
 FD_th = str2num(FD_th);
 % 1 means the frame below the threshold is kept, 0 means the frame above the threshold is removed
 FD_vect = (fd <= FD_th);
@@ -63,10 +71,10 @@ FD_vect = (fd <= FD_th);
 DV_censor = (DV_vect & [DV_vect(2:end,1); 1] & [1; DV_vect(1:end-1)] & [1;1; DV_vect(1:end-2)]);
 FD_censor = (FD_vect & [FD_vect(2:end,1); 1] & [1; FD_vect(1:end-1)] & [1;1; FD_vect(1:end-2)]);
 
-%% Plot DVARS and FDRMS with threshold line
-% Plot FD
+%% Plot DVARS and FDRMS/FD with threshold line
+% Plot FDRMS/FD
 pos_set = [0.08 0.55 0.89 0.4; ...
-    0.08 0.06 0.89 0.4];
+    0.08 0.09 0.89 0.37];
 
 figure;
 set(gcf,'Visible','off');
@@ -75,20 +83,18 @@ g = subplot(2,1,1);
 set(g, 'Position', pos_set(1,:));
 hold on
 plot(fd, 'LineWidth', 2);
-ti = title('FDRMS (in mm)');
+ti = title([FD_metric ' (in mm)']);
 set(ti, 'FontSize', 18);
 ylabel('FD (mm)', 'FontSize', 18);
+% Get automatically generated x-axis limits
 xlim = get(gca, 'XLim');
-ylim = get(gca, 'YLim');
-MinorTicks = 0:floor(length(fd)/50):(length(fd));
-plot(repmat(MinorTicks, 2, 1), repmat([ylim(1); (ylim(2)-ylim(1))/100 + ylim(1)], 1, length(MinorTicks)), 'k');
 line([xlim(1) xlim(2)], [FD_th FD_th], 'color', 'r', 'LineWidth', 1.5);
-set(gca, 'XTick', [0: floor(length(fd)/10):length(fd)])
+% Let MATLAB automatically determine major and minor ticks
+set(gca, 'XMinorTick', 'on');
 set(gca, 'FontSize', 18)
 hold off
 set(gcf, 'PaperPositionMode', 'auto')
 clear xlim
-
 
 % Plot DVARS
 g = subplot(2,1,2);
@@ -100,19 +106,17 @@ set(ti, 'FontSize', 18);
 xlabel('Frame Number', 'FontSize', 18);
 ylabel('DVARS', 'FontSize', 18);
 xlim = get(gca, 'XLim');
-ylim = get(gca, 'YLim');
-MinorTicks = 0:floor(length(dvars)/50):(length(dvars));
-plot(repmat(MinorTicks, 2, 1), repmat([ylim(1); (ylim(2)-ylim(1))/100 + ylim(1)], 1, length(MinorTicks)), 'k');
 line([xlim(1) xlim(2)], [DV_th DV_th], 'color', 'r', 'LineWidth', 1.5);
-set(gca, 'XTick', [0:floor(length(dvars)/10):length(dvars)]);
+set(gca, 'XMinorTick', 'on');
 set(gca, 'FontSize', 18)
 hold off
 set(gcf, 'PaperPositionMode', 'auto');
-print(gcf, [output_dir_name '_FDRMS' num2str(FD_th) '_DVARS' num2str(DV_th) '.png'], '-dpng');
+print(gcf, [output_dir_name '_' FD_metric num2str(FD_th) ...
+    '_DVARS' num2str(DV_th) '.png'], '-dpng');
 clear xlim
 close(gcf);
 
-%% Combine DVARS and FDRMS so that a frame is either above FD_th or DV_th, it will be removed
+%% Combine DVARS and FDRMS/FD so that a frame is either above FD_th or DV_th, it will be removed
 DV_FD_censor = [DV_censor & FD_censor];
 
 %% remove uncensored segments of data lasting fewer than discard_seg contiguous frames
@@ -128,7 +132,7 @@ for idx = 1:length(seg_start)
 end
 
 %% Save out the outlier vector into a text file
-outfilename_index = fopen([output_dir_name '_FDRMS' num2str(FD_th) '_DVARS'...
-    num2str(DV_th) '_motion_outliers.txt'], 'w+');
+outfilename_index = fopen([output_dir_name '_' FD_metric num2str(FD_th) ...
+    '_DVARS' num2str(DV_th) '_motion_outliers.txt'], 'w+');
 fprintf(outfilename_index, '%d\n', DV_FD_censor);
-
+fclose(outfilename_index);

@@ -27,13 +27,13 @@ fi
 export CBIG_CODE_DIR=/home/yxie/storage/CBIG_private/
 
 # PLEASE CHANGE: define locations for these libraries
-export FREESURFER_HOME=/apps/freesurfer/5.3.0
-export CBIG_MATLAB_DIR=/apps/matlab/R2018b
-export CBIG_SPM_DIR=/apps/spm/spm12
-export CBIG_AFNI_DIR=/apps/afni/AFNI_2011_12_21_1014/linux_openmp_64
-export CBIG_ANTS_DIR=/apps/ants/ants_v2.2.0/BUILD/bin/
-export CBIG_WB_DIR=/apps/HCP/workbench-1.1.1/
-export CBIG_FSLDIR=/apps/fsl/5.0.10
+export FREESURFER_HOME=/apps/freesurfer/7.4.1
+export CBIG_MATLAB_DIR=/apps/matlab/R2025b
+export CBIG_SPM_DIR=/apps/spm/spm25
+export CBIG_AFNI_DIR=/apps/afni/AFNI_25.2.18/linux_openmp_64
+export CBIG_ANTS_DIR=/apps/ants/ants_v2.6.3/bin
+export CBIG_WB_DIR=/apps/HCP/workbench-2.1.0
+export CBIG_FSLDIR=/apps/fsl/6.0.7.19
 
 # PLEASE CHANGE: define locations for input data for Xie2025_LBC
 export LBC_rep_dir=/mnt/nas/CSC21/Yeolab/Users/yxie/Xie_Code/ABCD/Replication #a_placeholder_dir 

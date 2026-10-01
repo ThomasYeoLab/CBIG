@@ -7,14 +7,10 @@
 # Thumbnails
 ._*
 
-
-
 # LINUX
 # Temporary files
 *~
 *.swp
-
-
 
 # WINDOWS
 # image file caches
@@ -32,8 +28,6 @@ miniconda.sh
 __pycache__/
 *.py[cod]
 *$py.class
-
-
 
 # Unit test intermediate output folder
 unit_tests/**/output/**

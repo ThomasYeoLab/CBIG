@@ -76,10 +76,10 @@ for id in `cat ${idList}`; do
     rsync -az ${imgPath} ${imgPathReorient}
 
     if [ -z "${queue}" ]; then
-        matlab -nodisplay -nosplash -r \
+        matlab -batch \
         "spm_dir='${spmDir}';script_dir='${scriptDir}';\
         image_path='${imgPathReorient}';reorient_matrix='${reorient_matrix}';\
-        CBIG_MMLDA_apply_reorient_matrix;exit;" > ${logFile}
+        CBIG_MMLDA_apply_reorient_matrix;" > ${logFile}
         echo "${id}" >> ${progressFile}
     else
         qsub -V -q ${queue} << EOJ
@@ -93,10 +93,10 @@ for id in `cat ${idList}`; do
     
     cd ${scriptDir}
     
-    matlab -nodisplay -nosplash -r \
+    matlab -batch \
     "spm_dir='${spmDir}';script_dir='${scriptDir}';\
     image_path='${imgPathReorient}';reorient_matrix='${reorient_matrix}';\
-    CBIG_MMLDA_apply_reorient_matrix;exit;" > ${logFile}
+    CBIG_MMLDA_apply_reorient_matrix;" > ${logFile}
     echo "${id}" >> ${progressFile}
 EOJ
     fi

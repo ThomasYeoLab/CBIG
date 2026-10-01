@@ -5,7 +5,7 @@ classdef CBIG_IndCBM_unit_test < matlab.unittest.TestCase
         function test_example(testCase)
             % create output folder
             CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-            load(fullfile(CBIG_CODE_DIR, 'unit_tests', 'replace_unittest_flag'));
+            load(fullfile(CBIG_CODE_DIR, 'unit_tests', 'replace_unittest_flag.txt'));
             cur_dir = fullfile(CBIG_CODE_DIR, 'stable_projects', ...
                 'brain_parcellation', 'Xue2021_IndCerebellum', 'unit_tests');
             output_dir = fullfile(cur_dir, 'output');

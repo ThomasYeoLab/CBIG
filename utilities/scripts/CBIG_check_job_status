@@ -72,9 +72,20 @@ fi
 
 # Check output files
 if [ $out_file ]; then
-    if [ ! -f ${out_file} ]; then
-        echo "[FAILED] Job is unsuccessful. Out file: $out_file does not exist."
-        exit 1
-    fi
+    max_retries=10
+    retry=1
+    while [ $retry -le $max_retries ]; do
+        if [ -f "$out_file" ]; then
+            break
+        fi
+        if [ $retry -lt $max_retries ]; then
+            echo "Output file $out_file does not exist yet. Waiting 1 min (attempt $retry/$max_retries)..."
+            sleep 60
+        else
+            echo "[FAILED] Job is unsuccessful. Out file: $out_file does not exist after $max_retries checks."
+            exit 1
+        fi
+        retry=$((retry + 1))
+    done
 fi
 

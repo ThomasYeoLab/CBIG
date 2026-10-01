@@ -708,17 +708,22 @@ def check_results():
     print(">>>>>>>>> Results comparison finished")
 
 
-def clean_up():
+def clean_up(folder_list=None):
     """
     Deletes specified folders located in the same parent directory
-    as this script.
+    as this script. If no folder list is provided, uses a default list.
+
+    Args:
+        folder_list (list, optional): List of folder names to delete.
     """
+
     # Get the directory where the current script is located
     # script_dir = Path(__file__).parent.resolve() # Use resolve() for absolute path
     script_dir = global_config.root_path
 
     # List of folder names to delete relative to the script's directory
-    folders_to_delete = ["checkpoints", "data", "predictions", "raw_data"]
+    default_folders = ["checkpoints", "data", "predictions", "raw_data"]
+    folders_to_delete = folder_list if folder_list is not None else default_folders
 
     print(f"Script directory: {script_dir}")
     print("Attempting to delete the following folders:")

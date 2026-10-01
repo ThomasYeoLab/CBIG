@@ -51,9 +51,9 @@ progressFile=${logDir}/progress.txt
 id=gm_icv
 logFile=${logDir}/${id}.log
 if [ -z "${queue}" ]; then
-    matlab -nodisplay -nosplash -r \
+    matlab -batch \
     "spm_dir='${spmDir}';script_dir='${scriptDir}';\
-    id_list='${idList}';output_dir='${inDir}';CBIG_MMLDA_compute_GM_ICV;exit;" > ${logFile}
+    id_list='${idList}';output_dir='${inDir}';CBIG_MMLDA_compute_GM_ICV;" > ${logFile}
     echo "Done" >> ${progressFile}
 else
         qsub -V -q ${queue} << EOJ
@@ -67,9 +67,9 @@ else
     
     cd ${scriptDir}
 
-    matlab -nodisplay -nosplash -r \
+    matlab -batch \
     "spm_dir='${spmDir}';script_dir='${scriptDir}';\
-    id_list='${idList}';output_dir='${inDir}';CBIG_MMLDA_compute_GM_ICV;exit;" > ${logFile}
+    id_list='${idList}';output_dir='${inDir}';CBIG_MMLDA_compute_GM_ICV;" > ${logFile}
     echo "Done" >> ${progressFile}
 EOJ
 fi

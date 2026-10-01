@@ -69,6 +69,5 @@ grid on;
 % Save the plot
 if nargin > 4 && ~isempty(outputDir)
     output_name = fullfile(outputDir, ['k' k], ['r' r_final], 'corrWithAllRuns');
-    hgexport(gcf, output_name);
-    eps2xxx([output_name '.eps'], {'png'});
+    exportgraphics(gcf, [output_name '.png']);
 end

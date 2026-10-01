@@ -31,7 +31,7 @@ function colortable = CBIG_GenerateAnnotationColortable(discretization_res, colo
     colortable.orig_tab = '';
     colortable.struct_names = cell(discretization_res+1, 1);
     for i = 1:discretization_res+1
-        colortable.struct_names{i} = 'unknown';
+        colortable.struct_names{i} = ['Val_' num2str(i)];
     end
     
     % fill in the colors

@@ -152,9 +152,9 @@ foreach curr_bold ($zpdbold)
             set output_file = $boldfile"_bp_"$low_f"_"$high_f".nii.gz"
             set matlab_args = "'$fMRI_file' '$output_file' '$low_f' '$high_f' '$detrend' '$retrend' '$censor_file'"
             if ( "$matlab_runtime_util" == "" ) then
-                set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r '"' \
+                set cmd = ( $MATLAB -batch '"' \
                     'addpath(fullfile('"'"'$root_dir'"'"','"'"'utilities'"'"'))'; \
-                    CBIG_bandpass_vol $matlab_args; exit '"' );
+                    CBIG_bandpass_vol $matlab_args '"' );
             else
                 set cmd = ( ${matlab_runtime_util}/CBIG_bandpass_vol $matlab_args )
             endif

@@ -17,7 +17,7 @@ classdef CBIG_DiffProc_TBSS_unit_test < matlab.unittest.TestCase
             ref_dir = fullfile(DIFF_CODE_DIR,'examples','TBSS_example_data');
             base_output_dir = fullfile(DIFF_CODE_DIR, 'unit_tests', 'TBSS', 'output');
             output_dir = fullfile(base_output_dir, 'fsl_non_parallel');
-            replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag'));
+            replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag.txt'));
             if exist(output_dir, 'dir')
                 rmdir(output_dir, 's')
             end

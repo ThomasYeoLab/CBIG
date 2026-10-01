@@ -44,10 +44,10 @@ echo "metric = $metric" >> $LF
 
 # prepare input parameters to the linear ridge regression
 
-matlab -nodesktop -nosplash -nodisplay -r " addpath $root_dir; CBIG_TRBPC_LRR_LpOCV_prepare_parameters( \
+matlab -batch " addpath $root_dir; CBIG_TRBPC_LRR_LpOCV_prepare_parameters( \
     '$csv_file', '$subject_list', '$feature_file', '$y_list', '$covariate_list', '$FD_file', \
     '$DVARS_file', '$outdir', '$outstem', '$num_leave_out', '$num_inner_folds','$domain','$eval','$tree',\
-    '$metric' ); exit; " >> $LF 2>&1
+    '$metric' ); " >> $LF 2>&1
 
 paramfile=${outdir}/param.mat
 num_test_folds=`cat ${outdir}/num_test_folds.txt`
@@ -87,8 +87,8 @@ if [ "$cluster" != "none" ];then
 fi
 
 # gather results of all cross-validation test folds
-matlab -nodesktop -nosplash -nodisplay -r " addpath $root_dir; load $paramfile; CBIG_TRBPC_LRR_LpOCV_pick_optima(\
-    ${num_test_folds},${num_score},param.outdir, param.outstem); exit; " >> $LF 2>&1
+matlab -batch " addpath $root_dir; load $paramfile; CBIG_TRBPC_LRR_LpOCV_pick_optima(\
+    ${num_test_folds},${num_score},param.outdir, param.outstem); " >> $LF 2>&1
 }
 
 #############################

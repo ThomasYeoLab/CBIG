@@ -52,9 +52,9 @@ id=dartel
 logFile=${logDir}/${id}.log
 imgPath=${inDir}/${id}.nii
 if [ -z "${queue}" ]; then
-    matlab -nodisplay -nosplash -r \
+    matlab -batch \
     "spm_dir='${spmDir}';script_dir='${scriptDir}';\
-    id_list='${idList}';output_dir='${inDir}';CBIG_MMLDA_dartel;exit;" > ${logFile}
+    id_list='${idList}';output_dir='${inDir}';CBIG_MMLDA_dartel;" > ${logFile}
     echo "Done" >> ${progressFile}
 else
     qsub -V -q ${queue} << EOJ
@@ -68,9 +68,9 @@ else
     
     cd ${scriptDir}
     
-    matlab -nodisplay -nosplash -r \
+    matlab -batch \
     "spm_dir='${spmDir}';script_dir='${scriptDir}';\
-    id_list='${idList}';output_dir='${inDir}';CBIG_MMLDA_dartel;exit;" > ${logFile}
+    id_list='${idList}';output_dir='${inDir}';CBIG_MMLDA_dartel;" > ${logFile}
     echo "Done" >> ${progressFile}
 EOJ
 fi

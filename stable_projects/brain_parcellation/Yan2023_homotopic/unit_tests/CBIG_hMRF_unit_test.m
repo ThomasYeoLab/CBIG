@@ -4,7 +4,7 @@ methods (Test)
     function test_example(testCase)
         % create output folder
         CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-        load(fullfile(CBIG_CODE_DIR, 'unit_tests', 'replace_unittest_flag'));
+        load(fullfile(CBIG_CODE_DIR, 'unit_tests', 'replace_unittest_flag.txt'));
         cur_dir = fullfile(CBIG_CODE_DIR, 'stable_projects', 'brain_parcellation', 'Yan2023_homotopic', 'unit_tests');
         out_dir = fullfile(cur_dir, 'output');
         
@@ -12,10 +12,10 @@ methods (Test)
         addpath(fullfile(CBIG_CODE_DIR, 'stable_projects', ...
             'brain_parcellation', 'Yan2023_homotopic', 'examples'));
         CBIG_hMRF_example_wrapper(out_dir);
-        
+
         % check example results
         CBIG_hMRF_check_example_results(out_dir);
-        
+
         % replace reference outputs if flag is 1
         ref_dir = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'brain_parcellation',...
             'Yan2023_homotopic', 'examples', 'ref_results');

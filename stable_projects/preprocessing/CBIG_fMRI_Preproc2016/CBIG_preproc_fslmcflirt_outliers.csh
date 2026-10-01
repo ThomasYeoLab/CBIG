@@ -6,8 +6,8 @@
 #############################################
 # In this script, we: 
 # 1) use mcflirt to do the motion correction, 
-# 2) use fsl_motion_outliers to obtain FDRMS and DVARS
-# 3) use DV_th and FD_th as threhold to find outliers, the default DV_th is 50, default of FD_th is 0.2
+# 2) use fsl_motion_outliers to obtain FDRMS/FD and DVARS
+# 3) use DV_th and FD_th as threshold to find outliers, the default DV_th is 50, default of FD_th is 0.2
 # 4) frames either above FD_th or above DV_th will be removed
 # 5) 1 frame before 2 frames after each removed frame will also be removed, as well as kept segments of data lasting 
 #    fewer than $discard_seg contiguous frames will be removed. If not specified, the default is 5.
@@ -54,7 +54,7 @@ set sub_dir = ""
 set zpdbold = ""
 set BOLD_stem = ""
 set nframe = 0;  # Perform mcflirt with the n-th frame
-set fd_th = 0.2; # Default FDRMS threshold is 0.2
+set fd_th = 0.2; # Default FDRMS/FD threshold is 0.2
 set dv_th = 50;  # Default DVARS threshold is 50
 set force = 0;   # Default if file exist, then skip this step.
 set nocleanup = 0; # Default clean up intermediate file
@@ -66,6 +66,9 @@ set high_f = ""; # default no filtering of respiratory pseudomotion
 set echo_number = 1 # number of echos default to be 1
 set echo_stem = ""
 set matlab_runtime_util = "" # MATLAB Runtime utilities folder
+set FD_metric = "FDRMS" # string indicating FD/FDRMS, default is FDRMS
+set use_FD = 0
+set use_FDRMS = 0
 
 goto parse_args;
 parse_args_return:
@@ -233,8 +236,8 @@ foreach curr_bold ($zpdbold)
     set matlab_args = "'$mc_par_file' '$mc_abs_rms_file' '$mc_rel_rms_file'"
     set matlab_args = "${matlab_args} '$qc' '$outname_prefix'"
     if ( "$matlab_runtime_util" == "" ) then
-        set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; )
-        set cmd = ( $cmd CBIG_preproc_plot_mcflirt_par $matlab_args; exit '"' )
+        set cmd = ( $MATLAB -batch '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; )
+        set cmd = ( $cmd CBIG_preproc_plot_mcflirt_par $matlab_args '"' )
     else
         set cmd = ( ${matlab_runtime_util}/CBIG_preproc_plot_mcflirt_par $matlab_args )
     endif
@@ -246,7 +249,7 @@ end
 echo "=========================== Plot mcflirt parameters done =============================" |& tee -a $LF
 
 #############################################
-#compute FDRMS and DVARS
+#compute FDRMS/FD and DVARS
 #############################################
 
 echo "=======================FSL motion outliers=======================" |& tee -a $LF
@@ -267,15 +270,25 @@ foreach curr_bold ($zpdbold)
         echo "[MC]: bold = $curr_bold Perform FSL motion outliers with metric = dvars already done!"
     endif
 
-    #Use FDRMS as metric
-    if ( (! -e $mc/${boldfile}_motion_outliers_FDRMS) || ($force == 1) ) then
-        echo "[MC]: bold = $curr_bold Perform FSL motion outliers with metric = fdrms" |& tee -a $LF
-        set cmd = "${root_dir}/utilities/CBIG_preproc_compute_FDRMS_wrapper.sh \
-        $boldfile $mc $mc/tmp_outliers/$curr_bold "$low_f" "$high_f""
+    #Use FDRMS/FD as metric
+    if ( (! -e $mc/${boldfile}_motion_outliers_${FD_metric}) || ($force == 1) ) then
+        echo "[MC]: bold = $curr_bold Perform FSL motion outliers with metric = ${FD_metric}" |& tee -a $LF
+        set cmd = ( "${root_dir}/utilities/CBIG_preproc_compute_FD_metric_wrapper.sh \
+        -i $boldfile -o $mc -t $mc/tmp_outliers/$curr_bold -f $FD_metric" )
+        if ( "$low_f" != "" ) then
+            set cmd = ( $cmd -l $low_f )
+        endif
+        if ( "$high_f" != "" ) then
+            set cmd = ( $cmd -u $high_f )
+        endif
+        if ( "$matlab_runtime_util" != "" ) then
+            set cmd = ( $cmd -m $matlab_runtime_util )
+        endif
         echo $cmd |& tee -a $LF
         eval $cmd >> $LF
     else
-        echo "[MC]: bold = $curr_bold Perform FSL motion outliers with metric = refrms already done!"
+        set FD_metric_lower = `echo $FD_metric | tr '[:upper:]' '[:lower:]'`
+        echo "[MC]: bold = $curr_bold Perform FSL motion outliers with metric = $FD_metric_lower already done!"
     endif
 
     popd
@@ -287,24 +300,24 @@ echo "" |& tee -a $LF
 # Outlier Detection
 #############################################
 
-echo "=============Compute correlation between DVARS and FDRMS and detect the motion outliers===========" |& tee -a $LF
+echo "==========Compute correlation between DVARS and FDRMS/FD and detect the motion outliers==========" |& tee -a $LF
 foreach curr_bold ($zpdbold)
     pushd $curr_bold
     set boldfile = $subject"_bld"$curr_bold$echo_stem$BOLD_stem
-    if ( (! -e "$qc/${subject}_bld${curr_bold}_FDRMS${fd_th}_DVARS${dv_th}_motion_outliers.txt") || ($force == 1) ) then
+    if ( (! -e "$qc/${subject}_bld${curr_bold}_${FD_metric}${fd_th}_DVARS${dv_th}_motion_outliers.txt") || ($force == 1) ) then
         set output = "$qc/${subject}_bld${curr_bold}"
         set dvars_file = "$mc/${boldfile}_motion_outliers_DVARS"
-        set fd_file = "$mc/${boldfile}_motion_outliers_FDRMS"
-        set matlab_args_DVARS_FDRMS_Correlation = "'$dvars_file' '$fd_file' '$output'"
-        set matlab_args_motion_outliers = "'$dvars_file' '$fd_file' '$fd_th' '$dv_th' '$discard_seg' '$output'"
+        set fd_file = "$mc/${boldfile}_motion_outliers_${FD_metric}"
+        set matlab_args_DVARS_FD_metric_Correlation = "'$dvars_file' '$fd_file' '$FD_metric' '$output'"
+        set matlab_args_motion_outliers = "'$dvars_file' '$fd_file' '$fd_th' '$dv_th' '$discard_seg' '$FD_metric' '$output'"
         if ( "$matlab_runtime_util" == "" ) then
-            set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; \
-                CBIG_preproc_DVARS_FDRMS_Correlation $matlab_args_DVARS_FDRMS_Correlation; \
-                CBIG_preproc_motion_outliers $matlab_args_motion_outliers; exit; '"' );
+            set cmd = ( $MATLAB -batch '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; \
+                CBIG_preproc_DVARS_FD_metric_Correlation $matlab_args_DVARS_FD_metric_Correlation; \
+                CBIG_preproc_motion_outliers $matlab_args_motion_outliers '"' );
             eval $cmd |& tee -a $LF
             echo $cmd |& tee -a $LF
         else
-            set cmd = ( ${matlab_runtime_util}/CBIG_preproc_DVARS_FDRMS_Correlation $matlab_args_DVARS_FDRMS_Correlation )
+            set cmd = ( ${matlab_runtime_util}/CBIG_preproc_DVARS_FD_metric_Correlation $matlab_args_DVARS_FD_metric_Correlation )
             eval $cmd |& tee -a $LF
             echo $cmd |& tee -a $LF
             set cmd = ( ${matlab_runtime_util}/CBIG_preproc_motion_outliers $matlab_args_motion_outliers )
@@ -314,7 +327,7 @@ foreach curr_bold ($zpdbold)
     else
         echo "[MC]: Motion outliers detection already created!" |& tee -a $LF
     endif
-    echo "[MC]: Motion outliers is in $qc/${subject}_bld${curr_bold}_FDRMS${fd_th}_DVARS${dv_th}_motion_outliers.txt" \
+    echo "[MC]: Motion outliers is in $qc/${subject}_bld${curr_bold}_${FD_metric}${fd_th}_DVARS${dv_th}_motion_outliers.txt" \
 |& tee -a $LF
 
     popd
@@ -331,7 +344,7 @@ if ($rm_run == 1) then
     set bold_file = "$sub_dir/$subject/logs/${subject}.bold"
     echo "[MC]: bold_file = $bold_file" |& tee -a $LF
     foreach runfolder ($zpdbold)
-        set outlier_file = "$sub_dir/$subject/qc/${subject}_bld${runfolder}_FDRMS${fd_th}_DVARS${dv_th}_motion_outliers.txt"
+        set outlier_file = "$sub_dir/$subject/qc/${subject}_bld${runfolder}_${FD_metric}${fd_th}_DVARS${dv_th}_motion_outliers.txt"
         echo "[MC]: outlier_file = $outlier_file" |& tee -a $LF
         set num_zeros = `fgrep -o 0 ${outlier_file} | wc -l`
         echo "[MC]: num_zeros = $num_zeros" |& tee -a $LF
@@ -481,7 +494,7 @@ while( $#argv != 0 )
             set nframe = "$argv[1]"; shift;
             breaksw
 
-        #FDRMS threshold for motion outlier detection
+        #FDRMS/FD threshold for motion outlier detection
         case "-FD_th":
             if ( $#argv == 0 ) goto arg1err;
             set fd_th = "$argv[1]"; shift;
@@ -545,6 +558,18 @@ while( $#argv != 0 )
             set matlab_runtime_util = $argv[1]; shift;
             breaksw
 
+        # FD metric = FD
+        case "-FD":
+            set FD_metric = "FD";
+            set use_FD = 1;
+            breaksw
+
+        # FD metric = FDRMS
+        case "-FDRMS":
+            set FD_metric = "FDRMS";
+            set use_FDRMS = 1;
+            breaksw
+
         default:
             echo ERROR: Flag $flag unrecognized.
             echo $cmdline
@@ -576,6 +601,10 @@ if ( "$BOLD_stem" == "" ) then
     echo "ERROR: input file stem not specified"
     exit 1;
 endif
+if ( $use_FD && $use_FDRMS ) then
+    echo "ERROR: Cannot use both -FD and -FDRMS flags."
+    exit 1
+endif
 
 goto check_params_return;
 
@@ -599,10 +628,10 @@ NAME:
 DESCRIPTION:
     This function 
       1) uses mcflirt to do the motion correction. 
-      2) uses fsl_motion_outliers to obtain FDRMS and DVARS. It can also perfrom respiratory pseudomotion filtering
-         on motion parameters before computing FDRMS if -low_f is passed in. See respiratory_pseudomotion_filtering.md
-         for more details.
-      3) uses DV_th and FD_th as threholds of DVARS and FDRMS to find outliers (high-motion frames). 
+      2) uses fsl_motion_outliers to obtain FDRMS/FD and DVARS. It can also perfrom respiratory pseudomotion filtering
+         on motion parameters before computing FDRMS/FD if -low_f is passed in.
+         See respiratory_pseudomotion_filtering.md for more details.
+      3) uses DV_th and FD_th as thresholds of DVARS and FDRMS/FD to find outliers (high-motion frames). 
          The default DV_th is 50; the default FD_th is 0.2. Frames either above FD_th or above DV_th 
          will be regarded as outliers. 
       4) 1 frame before, and 2 frames after each high-motion frame in (3) will also be labeled as 
@@ -628,7 +657,7 @@ REQUIRED ARGUMENTS:
                                  
 OPTIONAL ARGUMENTS:
     -nframe  <nframe>          : perform mcflirt with the n-th frame. Default is <nframe> = 0, i.e. the 1st frame,
-    -FD_th  <fd_th>            : FDRMS threshold for motion outlier detection, default <fd_th> = 0.2
+    -FD_th  <fd_th>            : FDRMS/FD threshold for motion outlier detection, default <fd_th> = 0.2
     -DV_th  <dv_th>            : DVARS threshold for motion outlier detection, default <dv_th> = 50
     -force                     : force-update results. Existing results will be overwritten
     -discard-run  <rm_run_th>  : discard run which has more than <rm_run_th>% frames being outliers
@@ -639,13 +668,17 @@ OPTIONAL ARGUMENTS:
     -low_f                     : start frequency of respiration. If the both this argument and high_f is used, the
                                  motion parameters will go through a bandstop filter to filter out the respiration
                                  pseudomotion, where the stop band is between low_f and high_f. If only this argument
-                                 is used, the motion paramters will go through a lowpass filter, where the stop
+                                 is used, the motion parameters will go through a lowpass filter, where the stop
                                  frequency is low_f. See respiratory_pseudomotion_filtering.md for more details
     -high_f                    : stop frequency of respiration. It can only be used together with low_f
     -echo_number <echo_number> : number of echoes. For single echo data, default set to be 1.
     -nocleanup                 : use this flag to keep all intermediate files
     -matlab_runtime_util       : Full path of MATLAB Runtime utilities folder containing executable files.
                                  If not empty, MATLAB Runtime will be used.
+    -FD                        : Flag specifies using FD metric.
+                                 -FD flag cannot be specified simultaneously with -FDRMS.
+    -FDRMS                     : Flag specifies using FDRMS metric.
+                                 -FDRMS flag cannot be specified simultaneously with -FD.
     -help                      : help
     -version                   : version
 
@@ -668,18 +701,18 @@ OUTPUTS:
     (4) Motion outlier text file
         In this file, each line is a number 0 or 1 corresponding to one frame. 0 represents this frame is 
         censored (removed in analyses). 1 means this frame is uncensored (kept).
-        ${sub_dir}/${subject}/qc/${subject}_bld${run_folder}_FDRMS0.2_DVARS50_motion_outliers.txt
+        ${sub_dir}/${subject}/qc/${subject}_bld${run_folder}_${FD_metric}0.2_DVARS50_motion_outliers.txt
 
     (5) QC figures
         
         The traces of mcflirt estimated rotations (radians), translations (mm), and mean displacement (mm)
         <subject_dir>/<subject_id>/qc/<subject_id>_bld<run_number><BOLD_stem>_mc_rot_trans_disp.png
         
-        The scatter plot indicating the correlation between DVARS and FDRMS
-        <subject_dir>/<subject_id>/qc/<subject_id>_bld<run_number>_DVARS_FDRMS_correlation.png
+        The scatter plot indicating the correlation between DVARS and FDRMS/FD
+        <subject_dir>/<subject_id>/qc/<subject_id>_bld<run_number>_DVARS_<FD_metric>_correlation.png
         
-        The traces of FDRMS and DVARS
-        <subject_dir>/<subject_id>/qc/<subject_id>_bld<run_number>_FDRMS<fd_th>_DVARS<dv_th>.png
+        The traces of FDRMS/FD and DVARS
+        <subject_dir>/<subject_id>/qc/<subject_id>_bld<run_number>_<FD_metric><fd_th>_DVARS<dv_th>.png
 
 EXAMPLE:
     $CBIG_CODE_DIR/stable_projects/preprocessing/CBIG_fMRI_Preproc2016/CBIG_preproc_fslmcflirt_outliers.csh 

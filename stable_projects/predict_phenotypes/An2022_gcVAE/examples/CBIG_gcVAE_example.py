@@ -155,23 +155,23 @@ def gen_example_data_step2(args, x_site0, y_site0, x_site1, y_site1):
     # train
     x_train = np.concatenate((x_site0_train, x_site1_train), axis=0)
     y_train = np.concatenate((y_site0_train, y_site1_train), axis=0)
-    s_train = np.concatenate((np.zeros(
-        (y_site0_train.shape[0], 1)), np.ones((y_site1_train.shape[0], 1))),
-                             axis=0)
+    zeros_train = np.zeros((y_site0_train.shape[0], 1))
+    ones_train = np.ones((y_site1_train.shape[0], 1))
+    s_train = np.concatenate((zeros_train, ones_train), axis=0)
     train_yx = np.concatenate((y_train, x_train), axis=1)
     # val
     x_val = np.concatenate((x_site0_val, x_site1_val), axis=0)
     y_val = np.concatenate((y_site0_val, y_site1_val), axis=0)
-    s_val = np.concatenate((np.zeros(
-        (y_site0_val.shape[0], 1)), np.ones((y_site1_val.shape[0], 1))),
-                           axis=0)
+    zeros_val = np.zeros((y_site0_val.shape[0], 1))
+    ones_val = np.ones((y_site1_val.shape[0], 1))
+    s_val = np.concatenate((zeros_val, ones_val), axis=0)
     val_yx = np.concatenate((y_val, x_val), axis=1)
     # test
     x_test = np.concatenate((x_site0_test, x_site1_test), axis=0)
     y_test = np.concatenate((y_site0_test, y_site1_test), axis=0)
-    s_test = np.concatenate((np.zeros(
-        (y_site0_test.shape[0], 1)), np.ones((y_site1_test.shape[0], 1))),
-                            axis=0)
+    zeros_test = np.zeros((y_site0_test.shape[0], 1))
+    ones_test = np.ones((y_site1_test.shape[0], 1))
+    s_test = np.concatenate((zeros_test, ones_test), axis=0)
     test_yx = np.concatenate((y_test, x_test), axis=1)
 
     return train_yx, s_train, val_yx, s_val, test_yx, s_test
@@ -287,7 +287,8 @@ def example_wrapper(args):
     assert args.stage in stages, 'Wrong input arguments for args.stage'
 
     if args.unittest:
-        args.working_dir = os.path.join(global_config.root_path, 'unit_tests')
+        args.working_dir = os.path.join(global_config.root_path, 'unit_tests',
+                                        'output')
 
     if args.stage == 'prepare':
         # generate toy example data

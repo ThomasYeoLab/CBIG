@@ -19,7 +19,7 @@ classdef CBIG_TRBPC_unit_test < matlab.unittest.TestCase
             
             % compare the results or replace the reference output
             CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-            load(fullfile(CBIG_CODE_DIR, 'unit_tests','replace_unittest_flag'));
+            load(fullfile(CBIG_CODE_DIR, 'unit_tests','replace_unittest_flag.txt'));
             if replace_unittest_flag
                 % replace regression results
                 copyfile(fullfile(outdir,'LRR','final_result_all_score.mat'), ...

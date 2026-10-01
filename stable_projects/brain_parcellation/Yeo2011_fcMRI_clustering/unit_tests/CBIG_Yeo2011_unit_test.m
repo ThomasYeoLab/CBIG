@@ -4,7 +4,7 @@ classdef CBIG_Yeo2011_unit_test < matlab.unittest.TestCase
     methods (Test)
         function test_example(testCase)
             CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-            load(fullfile(CBIG_CODE_DIR, 'unit_tests', 'replace_unittest_flag'));
+            load(fullfile(CBIG_CODE_DIR, 'unit_tests', 'replace_unittest_flag.txt'));
             % Create output folder
             script_dir = fileparts(mfilename('fullpath'));
             pos_v = strfind(script_dir, filesep);

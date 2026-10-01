@@ -3,8 +3,16 @@ classdef CBIG_MMLDA_unit_test < matlab.unittest.TestCase
 
     methods (Test)
         function test_example(testCase)
+            % This is temp cmds for freeview 7.4.1
+            [status, ~] = system('timeout 2s freeview');
+            if (status ~= 124)
+                origPath = getenv('LD_LIBRARY_PATH');
+                testCase.addTeardown(@setenv, 'LD_LIBRARY_PATH', origPath);
+                setenv('LD_LIBRARY_PATH', '');
+            end
+
             CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-            load(fullfile(CBIG_CODE_DIR, 'unit_tests','replace_unittest_flag'));
+            load(fullfile(CBIG_CODE_DIR, 'unit_tests','replace_unittest_flag.txt'));
             cur_dir = fullfile(CBIG_CODE_DIR, 'stable_projects/disorder_subtypes/', ...
                 'Sun2019_ADJointFactors/unit_tests');
             addpath(fullfile(CBIG_CODE_DIR, 'stable_projects/disorder_subtypes/', ...

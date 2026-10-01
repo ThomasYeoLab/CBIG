@@ -67,10 +67,9 @@ echo "rh_avg_profile = $rh_avg_profile"
 if( -e $lh_avg_profile && -e $rh_avg_profile ) then
     echo "Averaged profiles $lh_avg_profile & $rh_avg_profile already exist. Skipping ......"
 else
-    set cmd = ( $MATLAB -nojvm -nodesktop -nosplash -r '"')
-    set cmd = ($cmd 'addpath(genpath(fullfile('"'"$CBIG_CODE_DIR"'", "'"utilities"'", "'"matlab"'"')));')
+    set cmd = ( $MATLAB -batch '"' 'addpath(genpath(fullfile('"'"$CBIG_CODE_DIR"'", "'"utilities"'", "'"matlab"'"')));')
     set cmd = ($cmd CBIG_AvgFreeSurferVolumes "'"${lh_profile_txt}"'" "'"${lh_avg_profile}"'"';')
-    set cmd = ($cmd CBIG_AvgFreeSurferVolumes "'"${rh_profile_txt}"'" "'"${rh_avg_profile}"'"'; exit;''"')
+    set cmd = ($cmd CBIG_AvgFreeSurferVolumes "'"${rh_profile_txt}"'" "'"${rh_avg_profile}"'"'"')
     eval $cmd
 endif
 
@@ -95,8 +94,7 @@ echo "===>> Cluster"
 if( -e "${output_file}.mat" ) then
     echo "Clustering results ${output_file}.mat already exist. Skipping ......"
 else
-    set cmd = ( $MATLAB -nojvm -nodesktop -nosplash -r '"')
-    set cmd = ($cmd 'addpath(genpath(fullfile('"'"$CBIG_CODE_DIR"'", "'"utilities"'", "'"matlab"'"')));')
+    set cmd = ( $MATLAB -batch '"' 'addpath(genpath(fullfile('"'"$CBIG_CODE_DIR"'", "'"utilities"'", "'"matlab"'"')));')
     set cmd = ($cmd 'addpath(fullfile('"'"$CBIG_CODE_DIR"'", "'"external_packages"'",)
     set cmd = ($cmd "'"SD"'", "'"SDv1.5.1-svn593"'", "'"BasicTools"'"'));')
     set cmd = ($cmd 'addpath(fullfile('"'"$CBIG_CODE_DIR"'", "'"external_packages"'",)
@@ -104,7 +102,7 @@ else
     set cmd = ($cmd CBIG_VonmisesSeriesClustering_fix_bessel_randnum_bsxfun "'"${mesh}"'" "'"${mask}"'")
     set cmd = ($cmd "'"${num_clusters}"'" "'"${output_file}"'" "'"${lh_avg_profile}"'" "'"${rh_avg_profile}"'")
     set cmd = ($cmd "'"${smooth}"'" "'"${num_tries}"'" "'"${znorm}"'"' "'"${max_iter}"'"')
-    set cmd = ($cmd "'"${no_silhouette}"'"'; exit;''"')
+    set cmd = ($cmd "'"${no_silhouette}"'"'"')
     eval $cmd
 endif
 
@@ -136,12 +134,11 @@ else if( $mesh == fsaverage6 ) then
 endif
 
 if( $mesh == fsaverage5 || $mesh == fsaverage6 ) then
-    set cmd = ( $MATLAB -nojvm -nodesktop -nosplash -r '"')
-    set cmd = ($cmd 'addpath(genpath(fullfile('"'"$CBIG_CODE_DIR"'", "'"utilities"'", "'"matlab"'"')));')
+    set cmd = ( $MATLAB -batch '"' 'addpath(genpath(fullfile('"'"$CBIG_CODE_DIR"'", "'"utilities"'", "'"matlab"'"')));')
     set cmd = ($cmd 'addpath(fullfile('"'"$CBIG_CODE_DIR"'", "'"external_packages"'",)
     set cmd = ($cmd "'"matlab"'", "'"default_packages"'", "'"others"'"'));')
     set cmd = ($cmd CBIG_HungarianClusterMatchSurfWrapper "'"${ref_file}"'" "'"${output_file}"'")
-    set cmd = ($cmd "'"${output_file}"'"'; exit;''"')
+    set cmd = ($cmd "'"${output_file}"'"'"')
     eval $cmd
     echo "Hungarian match finished."
 else

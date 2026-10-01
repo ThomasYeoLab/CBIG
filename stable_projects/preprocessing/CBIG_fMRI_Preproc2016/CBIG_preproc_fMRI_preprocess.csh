@@ -62,6 +62,7 @@ set echo_number = 1 # echo number default to be 1
 set nii_file_input = 0 # flag indicated whether input for -fmrinii is nifti file
 set is_BIDS_input = 0 # flag indicated whether input for -fmrinii is BIDS dataset
 set matlab_runtime_util = "" # MATLAB Runtime utilities folder
+set FD_metric = "FDRMS" # string indicating FD/FDRMS, default is FDRMS
 
 set root_dir = `python -c "import os; print(os.path.realpath('$0'))"`
 set root_dir = `dirname $root_dir`
@@ -299,8 +300,8 @@ set column_number = `echo "$echo_number +1"|bc`
 if ( $nii_file_input == 0 ) then
     set lowest_numof_column = (`awk '{print NF}' $fmrinii_file | sort -nu | head -n 1`)
     set highest_numof_column = (`awk '{print NF}' $fmrinii_file | sort -nu | tail -n 1`)
-    echo "lowest_numof_column = $lowest_numof_column" >> $LF
-    echo "highest_numof_column = $highest_numof_column" >> $LF
+    echo "[BOLD INFO]: lowest_numof_column = $lowest_numof_column" >> $LF
+    echo "[BOLD INFO]: highest_numof_column = $highest_numof_column" >> $LF
     if ( $lowest_numof_column != $column_number || $highest_numof_column != $column_number) then
         echo "[ERROR]: The input nifti file should only contain one column more than echo number!" >> $LF
         exit 1
@@ -313,6 +314,13 @@ if ( $echo_number == 1 ) then
         if ( ! -e $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold$BOLD_stem.nii.gz" ) then
             mkdir -p $output_dir/$subject/bold/$curr_bold
             rsync -a --chmod=755 $boldname[$k] $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold$BOLD_stem.nii.gz"
+            set dtype = (`fslhd $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold$BOLD_stem.nii.gz" \
+| grep "^data_type" | awk '{print $2}'`)
+            if ("$dtype" =~ *INT*) then
+                echo "[BOLD INFO]: Data type is INT. Convert to float. " >> $LF
+                fslmaths $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold$BOLD_stem.nii.gz" \
+$output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold$BOLD_stem.nii.gz" -odt float
+            endif
         endif
         @ k++
     end
@@ -324,6 +332,13 @@ else
             if ( ! -e $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold"_e$j"$BOLD_stem.nii.gz" ) then
                 mkdir -p $output_dir/$subject/bold/$curr_bold
                 rsync -a --chmod=755 $boldname[$k] $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold"_e$j"$BOLD_stem.nii.gz"
+                set dtype = (`fslhd $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold"_e$j"$BOLD_stem.nii.gz" \
+| grep "^data_type" | awk '{print $2}'`)
+                if ("$dtype" =~ *INT*) then
+                    echo "[BOLD INFO]: Data type is INT. Convert to float. " >> $LF
+                    fslmaths $output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold"_e$j"$BOLD_stem.nii.gz" \
+$output_dir/$subject/bold/$curr_bold/$subject"_bld$curr_bold"_e$j"$BOLD_stem.nii.gz" -odt float
+                endif
             endif
             @ j++
             @ k++
@@ -380,7 +395,7 @@ foreach step ( "`cat $config`" )
             @ k = 1
             foreach curr_bold ($zpdbold)
                 set cmd = "$root_dir/utilities/CBIG_preproc_deoblique.sh"
-                set cmd = "$cmd -i $boldname[$k]"
+                set cmd = "$cmd -i $output_dir/$subject/bold/$curr_bold/${subject}_bld$curr_bold$BOLD_stem.nii.gz"
                 set cmd = "$cmd -o $output_dir/$subject/bold/$curr_bold/${subject}_bld$curr_bold$BOLD_stem.nii.gz"
                 echo "[Deoblique]: $cmd" >> $LF
                 eval $cmd >>& $LF
@@ -392,7 +407,7 @@ foreach step ( "`cat $config`" )
                 @ j = 1
                 while ($j <= $echo_number)
                     set cmd = "$root_dir/utilities/CBIG_preproc_deoblique.sh"
-                    set cmd = "$cmd -i $boldname[$k]"
+                    set cmd = "$cmd -i $output_dir/$subject/bold/$curr_bold/${subject}_bld${curr_bold}_e$j$BOLD_stem.nii.gz"
                     set cmd = "$cmd -o $output_dir/$subject/bold/$curr_bold/${subject}_bld${curr_bold}_e$j$BOLD_stem.nii.gz"
                     echo "[Deoblique]: $cmd" >> $LF
                     eval $cmd >>& $LF
@@ -498,7 +513,7 @@ can not be found" >> $LF
         end
 
     ##########################################
-    # Preprocess step: motion correction and detect outliers using FDRMS & DVARS as metric 
+    # Preprocess step: motion correction and detect outliers using FDRMS/FD & DVARS as metric 
     ##########################################
 
     else if ( $curr_step == "CBIG_preproc_fslmcflirt_outliers" ) then
@@ -530,28 +545,51 @@ The intermediate files from motion correction step will not be removed." >> $LF
         set FD_stem = (`echo $curr_flag | awk -F "-FD_th" '{print $2}' | awk -F " " '{print $1}'`)
         set DV_stem = (`echo $curr_flag | awk -F "-DV_th" '{print $2}' | awk -F " " '{print $1}'`)
 
-        #Both FDRMS, DVARS threshold are given
+        # Define FD_metric global variable
+        set use_FD = 0
+        set use_FDRMS = 0
+        foreach arg ($curr_flag)
+            if ("$arg" == "-FD") then
+                set FD_metric = "FD"
+                set use_FD = 1                
+            else if ("$arg" == "-FDRMS") then
+                set FD_metric = "FDRMS"
+                set use_FDRMS = 1
+            endif
+        end
+        # Check user did not pass in both -FD and -FDRMS flags
+        if ($use_FD && $use_FDRMS) then
+            echo "[ERROR]: Cannot pass in both -FD and -FDRMS into CBIG_preproc_fslmcflirt_outliers!" >> $LF
+            exit 1
+        endif
+        # Check FD_metric can only be FD or FDRMS
+        if (! $?FD_metric || ("$FD_metric" != "FD" && "$FD_metric" != "FDRMS")) then
+            echo "[ERROR]: FD_metric can only be FDRMS or FD." >> $LF
+            exit 1
+        endif
+
+        #Both FDRMS/FD, DVARS threshold are given
         if ( "$FD_stem" != "" && "$DV_stem" != "") then 
-            set OUTLIER_stem = "_FDRMS${FD_stem}_DVARS${DV_stem}_motion_outliers.txt"
-            echo "[$curr_step]: FDRMS threshold = $FD_stem"  >> $LF
+            set OUTLIER_stem = "_${FD_metric}${FD_stem}_DVARS${DV_stem}_motion_outliers.txt"
+            echo "[$curr_step]: ${FD_metric} threshold = $FD_stem"  >> $LF
             echo "[$curr_step]: DVARS threshold = $DV_stem"  >> $LF
         endif
-        #Only FDRMS threshold given, use DVARS threshold as default: 50
+        #Only FDRMS/FD threshold given, use DVARS threshold as default: 50
         if ( "$FD_stem" != "" && "$DV_stem" == "") then 
-            set OUTLIER_stem = "_FDRMS${FD_stem}_DVARS50_motion_outliers.txt"
-            echo "[$curr_step]: FDRMS threshold = $FD_stem"  >> $LF
+            set OUTLIER_stem = "_${FD_metric}${FD_stem}_DVARS50_motion_outliers.txt"
+            echo "[$curr_step]: ${FD_metric} threshold = $FD_stem"  >> $LF
             echo "[$curr_step]: DVARS threshold set as default: 50"  >> $LF
         endif
-        #Only DVARS threshold given, use FDRMS threshold as default: 0.2
+        #Only DVARS threshold given, use FDRMS/FD threshold as default: 0.2
         if ( "$FD_stem" == "" && "$DV_stem" != "") then 
-            set OUTLIER_stem = "_FDRMS0.2_DVARS${DV_stem}_motion_outliers.txt"
-            echo "[$curr_step]: FDRMS threshold set as default: 0.2"  >> $LF
+            set OUTLIER_stem = "_${FD_metric}0.2_DVARS${DV_stem}_motion_outliers.txt"
+            echo "[$curr_step]: ${FD_metric} threshold set as default: 0.2"  >> $LF
             echo "[$curr_step]: DVARS threshold = $DV_stem"  >> $LF
         endif
-        #FDRMS and DVARS threshold not given, use FDRMS threshold as default: 0.2, use DVARS threshold as default: 50
+        #FDRMS/FD and DVARS threshold not given, use FDRMS/FD threshold as default: 0.2, use DVARS threshold as default: 50
         if ( "$FD_stem" == "" && "$DV_stem" == "") then 
-            set OUTLIER_stem = "_FDRMS0.2_DVARS50_motion_outliers.txt"
-            echo "[$curr_step]: FDRMS threshold set as default: 0.2"  >> $LF
+            set OUTLIER_stem = "_${FD_metric}0.2_DVARS50_motion_outliers.txt"
+            echo "[$curr_step]: ${FD_metric} threshold set as default: 0.2"  >> $LF
             echo "[$curr_step]: DVARS threshold set as default: 50"  >> $LF
         endif
         echo "[$curr_step]: OUTLIER_stem = $OUTLIER_stem" >> $LF
@@ -835,15 +873,18 @@ The intermediate censoring interpolation volume will not be removed." >> $LF
         if ( "$matlab_runtime_util" != "" ) then
             set cmd = "$cmd -matlab_runtime_util $matlab_runtime_util"
         endif
+        if ( "$FD_metric" != "" ) then
+            set cmd = "$cmd -FD_metric $FD_metric"
+        endif
         echo "[$curr_step]: $cmd" >> $LF
         eval $cmd >&  /dev/null 
 
         #update stem
-        set FD_th = (`echo $OUTLIER_stem | awk -F "FDRMS" '{print $2}' | awk -F "_" '{print $1}'`)
+        set FD_th = (`echo $OUTLIER_stem | awk -F "${FD_metric}" '{print $2}' | awk -F "_" '{print $1}'`)
         set DV_th = (`echo $OUTLIER_stem | awk -F "DVARS" '{print $2}' | awk -F "_" '{print $1}'`)
         set low_f = ( `echo $curr_flag | awk -F "-low_f" '{print $2}' | awk -F " " '{print $1}'` )
         set high_f = ( `echo $curr_flag | awk -F "-high_f" '{print $2}' | awk -F " " '{print $1}'` )
-        set curr_stem = "interp_FDRMS${FD_th}_DVARS${DV_th}"
+        set curr_stem = "interp_${FD_metric}${FD_th}_DVARS${DV_th}"
         if ( "$low_f" != "" && "$high_f" != "") then 
             set curr_stem = ${curr_stem}"_bp_"$low_f"_"$high_f
         endif
@@ -962,6 +1003,9 @@ The intermediate files from plotting QC greyplot will not be removed." >> $LF
         set cmd = "$cmd -echo_number $echo_number $curr_flag"
         if ( "$matlab_runtime_util" != "" ) then
             set cmd = "$cmd -matlab_runtime_util $matlab_runtime_util"
+        endif
+        if ( "$FD_metric" != "" ) then
+            set cmd = "$cmd -FD_metric $FD_metric"
         endif
         echo "[$curr_step]: $cmd" >> $LF
         eval $cmd >&  /dev/null
@@ -1620,7 +1664,12 @@ OUTPUTS:
        FC_metrics/ROIs contains the 19 subcortical ROIs file;
        FC_metrics/lists contains the input lists for corresponding matlab function;
        FC_metrics/Pearson_r contains the static Pearson's correlation of this subject.
-  
+
+    7. If FD_metric = FD instead of FDRMS, output file names would contain "FD" instead of "FDRMS".
+       For example:
+       Sub0033_Ses1_bld002_FDRMS0.2_DVARS50_motion_outliers.txt will be named
+       Sub0033_Ses1_bld002_FD0.2_DVARS50_motion_outliers.txt instead.
+
 EXAMPLE:
     CBIG_preproc_fMRI_preprocess.csh -s Sub0033_Ses1 -output_d $CBIG_TESTDATA_DIR/stable_projects/preprocessing/\
     CBIG_fMRI_Preproc2016/100subjects_clustering/preproc_out -anat_s Sub0033_Ses1_FS -anat_d \

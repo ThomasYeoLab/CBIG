@@ -80,8 +80,7 @@ end
 
 %% Save the plot
 if nargin > 3 && ~isempty(output_name)
-    hgexport(gcf, output_name);
-    eps2xxx([output_name '.eps'], {'png'});
+    exportgraphics(gcf, [output_name '.png']);
 end
 
 

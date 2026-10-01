@@ -231,6 +231,12 @@ else
     disp('group_prior already exists!');
 end
 
+% Flexibly ascertain number of networks to be estimated using the group
+% priors
+prior_mat=load(group_prior);
+num_clusters=size(prior_mat.Params.theta, 2);
+clear prior_mat
+
 % censor_list and fMRI_list should be a 1XN cell array or Nx1 cell array
 % check if censor_list is a cell array
 censor_flag = 1;
@@ -373,10 +379,10 @@ end
 % perform parcellation
 if(num_sess == 1)
     [lh_labels, rh_labels] = CBIG_MSHBM_generate_individual_parcellation(project_dir,...
-        target_mesh, '2', '17', '1', w, c, 'test_set');
+        target_mesh, '2', num2str(num_clusters), '1', w, c, 'test_set');
 else
     [lh_labels, rh_labels] = CBIG_MSHBM_generate_individual_parcellation(project_dir,...
-        target_mesh, num2str(num_sess), '17', '1', w, c, 'test_set');
+        target_mesh, num2str(num_sess), num2str(num_clusters), '1', w, c, 'test_set');
 end
 
 rmpath(fullfile(CBIG_CODE_DIR,'stable_projects','brain_parcellation','Kong2019_MSHBM',...

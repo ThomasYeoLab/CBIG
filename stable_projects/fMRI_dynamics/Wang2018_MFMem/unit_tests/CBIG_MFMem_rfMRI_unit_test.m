@@ -34,7 +34,7 @@ classdef CBIG_MFMem_rfMRI_unit_test < matlab.unittest.TestCase
             
             %% compare the current output with expected output
             load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', ...
-                'replace_unittest_flag'))
+                'replace_unittest_flag.txt'))
             
             % load output
             load(fullfile(ReferenceDir, 'corr_check.mat')); % expected output

@@ -63,18 +63,18 @@ ${code_dir}/CBIG_ASDf_polarLDA_est.sh \
     -q circ-spool
 
 ## hold until submitted jobs are finished
-matlab -nodisplay -nosplash -nodesktop -r \
-"clear;clc;close all;CBIG_ASDf_checkJobStatus('${progressFile_set1}','50','600');exit;"
+matlab -batch \
+"clear;clc;close all;CBIG_ASDf_checkJobStatus('${progressFile_set1}','50','600');"
 
-matlab -nodisplay -nosplash -nodesktop -r \
-"clear;clc;close all;CBIG_ASDf_checkJobStatus('${progressFile_set2}','50','600');exit;"
+matlab -batch \
+"clear;clc;close all;CBIG_ASDf_checkJobStatus('${progressFile_set2}','50','600');"
 
 ## step2B visualize factors
 cd ${code_dir}
 mkdir -p ${output_dir_step2b}
 
-matlab -nodisplay -nosplash -nodesktop -r \
+matlab -batch \
 "clear;clc;close all;CBIG_ASDf_visualizeFactors('${output_dir_step2a}', \
-'${output_dir_step2b}','${K}');exit;"
+'${output_dir_step2b}','${K}');"
 
 EOJ

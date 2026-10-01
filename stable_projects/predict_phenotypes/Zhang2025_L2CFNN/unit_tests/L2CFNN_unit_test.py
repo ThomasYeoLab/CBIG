@@ -89,7 +89,7 @@ def main():
 
     # step 6
     print(">>>>>> Cleanup generated files <<<<<<")
-    clean_up()
+    clean_up(['output'])
 
     print(f"Test_passed_flag: {passed}")
     print(f"Test_message: {msg}")

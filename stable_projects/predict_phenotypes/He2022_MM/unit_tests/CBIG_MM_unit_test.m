@@ -56,7 +56,7 @@ classdef CBIG_MM_unit_test < matlab.unittest.TestCase
             ref_output_dir = fullfile(cur_dir, 'results');
             addpath(genpath(fullfile(base_dir, 'examples')));
             % compare the results or replace the reference output
-            load(fullfile(CBIG_CODE_DIR, 'unit_tests','replace_unittest_flag'));
+            load(fullfile(CBIG_CODE_DIR, 'unit_tests','replace_unittest_flag.txt'));
             if replace_unittest_flag
                 % replace regression results
                 copyfile(fullfile(output_classical_dir, 'final_result', 'krr_classical_res_test.mat'),...

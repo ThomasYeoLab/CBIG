@@ -1,0 +1,92 @@
+{
+    "preproc": {
+        "skip_N": 10,
+        "FD_metric": "FD",
+        "DV_metric": "DVARS",
+        "FD_th": 0.08,
+        "DV_th": 50,
+        "discard_run": 100,
+        "rm_seg": 5,
+        "bandstop": true,
+        "bandstop_TR_th": 1.5,
+        "bandstop_low_f": 0.2,
+        "bandstop_high_f": 0.33333,
+        "lowpass_low_f": 0.1,
+        "regressor": "GSR",
+        "bandpass_low_f": 0.009,
+        "bandpass_high_f": 0.08,
+        "FD_no_interp_th": 99999,
+        "DV_no_interp_th": 99999
+    },
+    "select_subID": {
+        "gt": {
+            "min_gt_hr": 1,
+            "min_uniq_sesID": 3
+        },
+        "window": {
+            "window_time_sec": 60,
+            "idx_frame_start_ini": 1,
+            "percent_censored_bin_interval": 10.0,
+            "percent_censored_bin_lower": 0.0,
+            "percent_censored_bin_upper": 100.0,
+            "FD_metric_bin_interval": 0.1,
+            "FD_metric_bin_lower": 0.0,
+            "FD_metric_bin_upper": 1.0,
+            "DV_metric_bin_interval": 10.0,
+            "DV_metric_bin_lower": 0.0,
+            "DV_metric_bin_upper": 100.0,
+            "col_ngt_nframes_name": "ngt_nframes"
+        },
+        "sim": {
+            "sim_iter": 100,
+            "num_window_per_run": 10,
+            "sample_bin_interval": 10,
+            "sample_bin_min": -10,
+            "sample_bin_max": 100,
+            "num_sim_per_bin": 60,
+            "num_select_bin2select_subID": 2,
+            "num_sample_bin2select_subID": 5,
+            "num_sim_run_per_sim_ses": 2,
+            "sim_deficient_bin_iter": 100,
+            "select_bin_min": -25,
+            "select_bin_max": 100,
+            "select_bin_interval": 25,
+            "rm_run_th": [
+                50,
+                100
+            ],
+            "keep_select_bin_percent_th": 50,
+            "pre_select_bin_interval": 5,
+            "num_select_try": 6
+        }
+    },
+    "func2T1": {
+        "func2T1_sm": 4
+    },
+    "split": {
+        "max_postcensored_min": 10
+    },
+    "TMS": {
+        "FD_metric_value": [
+            0.08,
+            99999.0
+        ],
+        "DV_metric_value": [
+            50,
+            99999
+        ],
+        "oneBtwoA_flag": "1",
+        "min5_flag": "1"
+    },
+    "MSHBM": {
+        "MSHBM_w": 200,
+        "MSHBM_MRF": 50
+    },
+    "compare": {
+        "compare_num_sim_run_per_sim_ses": 50
+    },
+    "stem": {
+        "FD_stem": "_FD",
+        "DV_stem": "_DVARS"
+    }
+}

@@ -1,657 +1,723 @@
 using gordon gradient prior
 outputname:Graph_Cut_faster__grad_prior_gordon_cluster_20_datacost_1_smoothcost_5000_iterations_2
-using profile /mnt/isilon/CSC1/Yeolab/Users/xxyan/CBIG_private/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/unit_tests/output/example_out/mult_mat//lh_mult_matrix.mat and /mnt/isilon/CSC1/Yeolab/Users/xxyan/CBIG_private/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/unit_tests/output/example_out/mult_mat//rh_mult_matrix.mat
+using profile /mnt/nas/CSC21/Yeolab/Users/ahpxue/CBIG_private/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/unit_tests/output/example_out/mult_mat//lh_mult_matrix.mat and /mnt/nas/CSC21/Yeolab/Users/ahpxue/CBIG_private/stable_projects/brain_parcellation/Schaefer2018_LocalGlobal/unit_tests/output/example_out/mult_mat//rh_mult_matrix.mat
 Will iterate from initialization 1 to initialization 1 
 Computing parameters in split brains 
 with gradient 
 seed number 1 
-improvement after 1 iterations of 1590198656.000000 percent 
-Smoothcost: 9882294.000000, DataCost: 62875332608.000000, Energy 62885220352.000000 
+improvement after 1 iterations of 1591014784.000000 percent 
+Smoothcost: 9900902.000000, DataCost: 62843064320.000000, Energy 62852964352.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of 40.263603 percent 
-Smoothcost: 10088271.000000, DataCost: 44823511040.000000, Energy 44833599488.000000 
+improvement after 2 iterations of 40.086208 percent 
+Smoothcost: 10098042.000000, DataCost: 44857249792.000000, Energy 44867346432.000000 
 missed termination of 1.000000  
-improvement after 1 iterations of 2406926336.000000 percent 
-Smoothcost: 10159217.000000, DataCost: 41536602112.000000, Energy 41546760192.000000 
+improvement after 1 iterations of 2405671680.000000 percent 
+Smoothcost: 10219719.000000, DataCost: 41558212608.000000, Energy 41568432128.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of 4.621649 percent 
-Smoothcost: 10079404.000000, DataCost: 39701356544.000000, Energy 39711436800.000000 
+improvement after 2 iterations of 4.686940 percent 
+Smoothcost: 10062081.000000, DataCost: 39697309696.000000, Energy 39707373568.000000 
 missed termination of 1.000000  
-improvement after 1 iterations of 2582572288.000000 percent 
-Smoothcost: 10057029.000000, DataCost: 38711021568.000000, Energy 38721081344.000000 
+improvement after 1 iterations of 2584931328.000000 percent 
+Smoothcost: 10104399.000000, DataCost: 38675644416.000000, Energy 38685749248.000000 
 missed termination of 0.010000  
-improvement after 2 iterations of 1.636279 percent 
-Smoothcost: 10147713.000000, DataCost: 38087553024.000000, Energy 38097698816.000000 
+improvement after 2 iterations of 1.706862 percent 
+Smoothcost: 10193348.000000, DataCost: 38026321920.000000, Energy 38036516864.000000 
 missed termination of 0.010000  
-improvement after 1 iterations of 2655793920.000000 percent 
-Smoothcost: 10353979.000000, DataCost: 37643165696.000000, Energy 37653520384.000000 
+improvement after 1 iterations of 2661773312.000000 percent 
+Smoothcost: 10259660.000000, DataCost: 37558681600.000000, Energy 37568942080.000000 
 missed termination of 0.000100  
-improvement after 2 iterations of 0.883913 percent 
-Smoothcost: 10411795.000000, DataCost: 37313200128.000000, Energy 37323612160.000000 
+improvement after 2 iterations of 0.943732 percent 
+Smoothcost: 10236529.000000, DataCost: 37207474176.000000, Energy 37217705984.000000 
 missed termination of 0.000100  
-improvement after 1 iterations of 13691294720.000000 percent 
-Smoothcost: 10448305.000000, DataCost: 7293463040.000000, Energy 7303911424.000000 
+improvement after 1 iterations of 13742630912.000000 percent 
+Smoothcost: 10156482.000000, DataCost: 7266470912.000000, Energy 7276627456.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of 0.623965 percent 
-Smoothcost: 10366453.000000, DataCost: 7248253440.000000, Energy 7258619904.000000 
+improvement after 2 iterations of 0.667238 percent 
+Smoothcost: 10057904.000000, DataCost: 7218339328.000000, Energy 7228397056.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of 13854159872.000000 percent 
-Smoothcost: 10275472.000000, DataCost: 7207772672.000000, Energy 7218048512.000000 
+improvement after 1 iterations of 13910525952.000000 percent 
+Smoothcost: 9929589.000000, DataCost: 7178870784.000000, Energy 7188800512.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of 0.504851 percent 
-Smoothcost: 10073811.000000, DataCost: 7171717120.000000, Energy 7181791232.000000 
+improvement after 2 iterations of 0.440145 percent 
+Smoothcost: 9810338.000000, DataCost: 7147487744.000000, Energy 7157298176.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of 13981102080.000000 percent 
-Smoothcost: 9980136.000000, DataCost: 7142531072.000000, Energy 7152511488.000000 
+improvement after 1 iterations of 14022377472.000000 percent 
+Smoothcost: 9776316.000000, DataCost: 7121681408.000000, Energy 7131458048.000000 
 missed termination of 0.010000  
-improvement after 2 iterations of 0.358665 percent 
-Smoothcost: 9846344.000000, DataCost: 7117103104.000000, Energy 7126949376.000000 
+improvement after 2 iterations of 0.278127 percent 
+Smoothcost: 9698764.000000, DataCost: 7101979648.000000, Energy 7111678464.000000 
 missed termination of 0.010000  
-improvement after 1 iterations of 14069123072.000000 percent 
-Smoothcost: 9776510.000000, DataCost: 7097987072.000000, Energy 7107763200.000000 
+improvement after 1 iterations of 14091857920.000000 percent 
+Smoothcost: 9650368.000000, DataCost: 7086645760.000000, Energy 7096296448.000000 
 missed termination of 0.000100  
-improvement after 2 iterations of 0.223660 percent 
-Smoothcost: 9717826.000000, DataCost: 7082183168.000000, Energy 7091901440.000000 
+improvement after 2 iterations of 0.178337 percent 
+Smoothcost: 9676278.000000, DataCost: 7073987072.000000, Energy 7083663360.000000 
 missed termination of 0.000100  
 reduction iteration: 1 
 gamma bar 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 250000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000  
 gamma     10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 50000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000  
-improvement after 1 iterations of 76431147008.000000 percent 
-Smoothcost: 9489764.000000, DataCost: 1298877312.000000, Energy 1308367104.000000 
+improvement after 1 iterations of 76503793664.000000 percent 
+Smoothcost: 9394605.000000, DataCost: 1297730176.000000, Energy 1307124736.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of 0.165915 percent 
-Smoothcost: 9432333.000000, DataCost: 1296767488.000000, Energy 1306199936.000000 
+improvement after 2 iterations of 0.130081 percent 
+Smoothcost: 9334585.000000, DataCost: 1296092160.000000, Energy 1305426688.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of 76661309440.000000 percent 
-Smoothcost: 9388715.000000, DataCost: 1295050240.000000, Energy 1304439040.000000 
+improvement after 1 iterations of 76688343040.000000 percent 
+Smoothcost: 9298099.000000, DataCost: 1294680960.000000, Energy 1303979136.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of 0.125086 percent 
-Smoothcost: 9371809.000000, DataCost: 1293437568.000000, Energy 1302809472.000000 
+improvement after 2 iterations of 0.118732 percent 
+Smoothcost: 9298536.000000, DataCost: 1293134080.000000, Energy 1302432768.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of 76851421184.000000 percent 
-Smoothcost: 9343223.000000, DataCost: 1291868928.000000, Energy 1301212160.000000 
+improvement after 1 iterations of 76850479104.000000 percent 
+Smoothcost: 9276151.000000, DataCost: 1291951744.000000, Energy 1301228032.000000 
 missed termination of 0.010000  
-improvement after 2 iterations of 0.106168 percent 
-Smoothcost: 9276619.000000, DataCost: 1290555520.000000, Energy 1299832192.000000 
+improvement after 2 iterations of 0.082231 percent 
+Smoothcost: 9273318.000000, DataCost: 1290885632.000000, Energy 1300158848.000000 
 missed termination of 0.010000  
-improvement after 1 iterations of 77001859072.000000 percent 
-Smoothcost: 9248127.000000, DataCost: 1289421952.000000, Energy 1298669952.000000 
+improvement after 1 iterations of 76963340288.000000 percent 
+Smoothcost: 9246588.000000, DataCost: 1290073344.000000, Energy 1299319936.000000 
 missed termination of 0.000100  
-improvement after 2 iterations of 0.083768 percent 
-Smoothcost: 9233951.000000, DataCost: 1288349056.000000, Energy 1297582976.000000 
+improvement after 2 iterations of 0.074756 percent 
+Smoothcost: 9247416.000000, DataCost: 1289101952.000000, Energy 1298349312.000000 
 missed termination of 0.000100  
 reduction iteration: 2 
 gamma bar 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 50000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000  
 gamma     2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 10000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000  
-improvement after 1 iterations of 661283667968.000000 percent 
-Smoothcost: 8445860.000000, DataCost: 142775168.000000, Energy 151221024.000000 
+improvement after 1 iterations of 660844576768.000000 percent 
+Smoothcost: 8419076.000000, DataCost: 142902448.000000, Energy 151321520.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of 0.179482 percent 
-Smoothcost: 8292901.000000, DataCost: 142657232.000000, Energy 150950096.000000 
+improvement after 2 iterations of 0.155675 percent 
+Smoothcost: 8308733.500000, DataCost: 142777584.000000, Energy 151086320.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of 663341694976.000000 percent 
-Smoothcost: 8208927.000000, DataCost: 142542944.000000, Energy 150751872.000000 
+improvement after 1 iterations of 662727491584.000000 percent 
+Smoothcost: 8125220.500000, DataCost: 142766368.000000, Energy 150891584.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of 0.121152 percent 
-Smoothcost: 8168292.000000, DataCost: 142401168.000000, Energy 150569456.000000 
+improvement after 2 iterations of 0.117445 percent 
+Smoothcost: 8040598.500000, DataCost: 142673968.000000, Energy 150714576.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of 664564858880.000000 percent 
-Smoothcost: 8133709.500000, DataCost: 142340704.000000, Energy 150474400.000000 
+improvement after 1 iterations of 664200609792.000000 percent 
+Smoothcost: 7998581.500000, DataCost: 142558336.000000, Energy 150556928.000000 
 missed termination of 0.010000  
-improvement after 2 iterations of 0.048852 percent 
-Smoothcost: 8098721.500000, DataCost: 142302176.000000, Energy 150400928.000000 
+improvement after 2 iterations of 0.069177 percent 
+Smoothcost: 7940559.000000, DataCost: 142512304.000000, Energy 150452848.000000 
 missed termination of 0.010000  
-improvement after 1 iterations of 665243615232.000000 percent 
-Smoothcost: 8079062.000000, DataCost: 142241808.000000, Energy 150320880.000000 
+improvement after 1 iterations of 665089343488.000000 percent 
+Smoothcost: 7931026.000000, DataCost: 142424704.000000, Energy 150355744.000000 
 missed termination of 0.000100  
-improvement after 2 iterations of 0.050557 percent 
-Smoothcost: 8066780.000000, DataCost: 142178144.000000, Energy 150244928.000000 
+improvement after 2 iterations of 0.060558 percent 
+Smoothcost: 7888661.000000, DataCost: 142376080.000000, Energy 150264752.000000 
 missed termination of 0.000100  
 reduction iteration: 3 
 gamma bar 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 10000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000  
 gamma     400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 2000000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000  
-improvement after 1 iterations of -1253600395264.000000 percent 
-Smoothcost: 6114407.500000, DataCost: -85884648.000000, Energy -79770240.000000 
+improvement after 1 iterations of -1251917824000.000000 percent 
+Smoothcost: 5915544.000000, DataCost: -85792992.000000, Energy -79877448.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.444210 percent 
-Smoothcost: 5707594.000000, DataCost: -85833768.000000, Energy -80126168.000000 
+improvement after 2 iterations of -0.495136 percent 
+Smoothcost: 5535924.000000, DataCost: -85810848.000000, Energy -80274920.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -1244250112000.000000 percent 
-Smoothcost: 5505703.500000, DataCost: -85875400.000000, Energy -80369696.000000 
+improvement after 1 iterations of -1242583662592.000000 percent 
+Smoothcost: 5405192.500000, DataCost: -85882672.000000, Energy -80477480.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.162703 percent 
-Smoothcost: 5457420.000000, DataCost: -85958096.000000, Energy -80500672.000000 
+improvement after 2 iterations of -0.102335 percent 
+Smoothcost: 5312661.500000, DataCost: -85872584.000000, Energy -80559920.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -1241075941376.000000 percent 
-Smoothcost: 5322124.000000, DataCost: -85897368.000000, Energy -80575248.000000 
+improvement after 1 iterations of -1240210735104.000000 percent 
+Smoothcost: 5246834.500000, DataCost: -85878288.000000, Energy -80631456.000000 
 missed termination of 0.010000  
-improvement after 2 iterations of -0.152934 percent 
-Smoothcost: 5273736.000000, DataCost: -85972392.000000, Energy -80698664.000000 
+improvement after 2 iterations of -0.109655 percent 
+Smoothcost: 5093047.000000, DataCost: -85813024.000000, Energy -80719968.000000 
 missed termination of 0.010000  
-improvement after 1 iterations of -1238604972032.000000 percent 
-Smoothcost: 5241687.500000, DataCost: -85977688.000000, Energy -80735992.000000 
+improvement after 1 iterations of -1237445771264.000000 percent 
+Smoothcost: 5008101.500000, DataCost: -85819720.000000, Energy -80811616.000000 
 missed termination of 0.000100  
-improvement after 2 iterations of -0.056380 percent 
-Smoothcost: 5196396.000000, DataCost: -85977936.000000, Energy -80781536.000000 
+improvement after 2 iterations of -0.071985 percent 
+Smoothcost: 4977722.000000, DataCost: -85847552.000000, Energy -80869832.000000 
 missed termination of 0.000100  
 reduction iteration: 4 
 gamma bar 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 2000000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000  
 gamma     80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 400000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000  
-improvement after 1 iterations of -776561688576.000000 percent 
-Smoothcost: 2553963.750000, DataCost: -131326744.000000, Energy -128772776.000000 
+improvement after 1 iterations of -776462008320.000000 percent 
+Smoothcost: 2705874.000000, DataCost: -131495168.000000, Energy -128789296.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.695527 percent 
-Smoothcost: 2312753.750000, DataCost: -131987448.000000, Energy -129674696.000000 
+improvement after 2 iterations of -0.550663 percent 
+Smoothcost: 2324047.750000, DataCost: -131826464.000000, Energy -129502416.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -770386624512.000000 percent 
-Smoothcost: 2239680.250000, DataCost: -132044632.000000, Energy -129804952.000000 
+improvement after 1 iterations of -770816344064.000000 percent 
+Smoothcost: 2198705.250000, DataCost: -131931296.000000, Energy -129732584.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.124133 percent 
-Smoothcost: 2058676.250000, DataCost: -132024960.000000, Energy -129966280.000000 
+improvement after 2 iterations of -0.050151 percent 
+Smoothcost: 2102483.750000, DataCost: -131900160.000000, Energy -129797680.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -768673185792.000000 percent 
-Smoothcost: 1922802.250000, DataCost: -132017104.000000, Energy -130094304.000000 
+improvement after 1 iterations of -769880883200.000000 percent 
+Smoothcost: 2036142.500000, DataCost: -131926368.000000, Energy -129890224.000000 
 missed termination of 0.010000  
-improvement after 2 iterations of -0.079292 percent 
-Smoothcost: 1844606.875000, DataCost: -132042152.000000, Energy -130197544.000000 
+improvement after 2 iterations of -0.026089 percent 
+Smoothcost: 2026410.125000, DataCost: -131950536.000000, Energy -129924120.000000 
 missed termination of 0.010000  
-improvement after 1 iterations of -767652331520.000000 percent 
-Smoothcost: 1749916.125000, DataCost: -132017232.000000, Energy -130267312.000000 
+improvement after 1 iterations of -769673134080.000000 percent 
+Smoothcost: 2023966.625000, DataCost: -131949256.000000, Energy -129925288.000000 
 missed termination of 0.000100  
-improvement after 2 iterations of -0.029653 percent 
-Smoothcost: 1744700.625000, DataCost: -132050656.000000, Energy -130305952.000000 
-missed termination of 0.000100  
+improvement after 2 iterations of -0.000030 percent 
+Smoothcost: 2026040.875000, DataCost: -131951368.000000, Energy -129925328.000000 
+hit termination of 0.000100  
 reduction iteration: 5 
 gamma bar 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 400000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000  
 gamma     16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 80000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000  
-improvement after 1 iterations of -710206750720.000000 percent 
-Smoothcost: 1118081.000000, DataCost: -141922144.000000, Energy -140804064.000000 
+improvement after 1 iterations of -711779352576.000000 percent 
+Smoothcost: 1281244.250000, DataCost: -141774224.000000, Energy -140492976.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.298566 percent 
-Smoothcost: 1061359.000000, DataCost: -142287072.000000, Energy -141225712.000000 
+improvement after 2 iterations of -0.376141 percent 
+Smoothcost: 1194668.750000, DataCost: -142218096.000000, Energy -141023424.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -709938249728.000000 percent 
-Smoothcost: 1097373.875000, DataCost: -141954688.000000, Energy -140857312.000000 
+improvement after 1 iterations of -712224145408.000000 percent 
+Smoothcost: 1231773.000000, DataCost: -141636992.000000, Energy -140405232.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.039607 percent 
-Smoothcost: 1105566.250000, DataCost: -142018672.000000, Energy -140913120.000000 
+improvement after 2 iterations of -0.061238 percent 
+Smoothcost: 1244263.250000, DataCost: -141735536.000000, Energy -140491264.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -709661360128.000000 percent 
-Smoothcost: 1107048.750000, DataCost: -142019312.000000, Energy -140912272.000000 
+improvement after 1 iterations of -715358011392.000000 percent 
+Smoothcost: 1246772.875000, DataCost: -141036912.000000, Energy -139790144.000000 
+missed termination of 1.000000  
+improvement after 2 iterations of -0.116724 percent 
+Smoothcost: 1255228.000000, DataCost: -141208736.000000, Energy -139953504.000000 
+hit termination of 1.000000  
+improvement after 1 iterations of -714745315328.000000 percent 
+Smoothcost: 1258966.125000, DataCost: -141168928.000000, Energy -139909968.000000 
+missed termination of 1.000000  
+improvement after 2 iterations of -0.001431 percent 
+Smoothcost: 1259123.625000, DataCost: -141171104.000000, Energy -139911968.000000 
+hit termination of 1.000000  
+improvement after 1 iterations of -714727358464.000000 percent 
+Smoothcost: 1258323.375000, DataCost: -141171824.000000, Energy -139913488.000000 
 missed termination of 0.010000  
-improvement after 2 iterations of -0.000286 percent 
-Smoothcost: 1106769.625000, DataCost: -142019440.000000, Energy -140912672.000000 
+improvement after 2 iterations of -0.001442 percent 
+Smoothcost: 1258060.125000, DataCost: -141173568.000000, Energy -139915504.000000 
 hit termination of 0.010000  
-improvement after 1 iterations of -709953978368.000000 percent 
-Smoothcost: 1102341.750000, DataCost: -141956544.000000, Energy -140854208.000000 
-missed termination of 0.010000  
-improvement after 2 iterations of -0.004178 percent 
-Smoothcost: 1100563.250000, DataCost: -141960656.000000, Energy -140860096.000000 
-hit termination of 0.010000  
-improvement after 1 iterations of -709921734656.000000 percent 
-Smoothcost: 1101317.250000, DataCost: -141961904.000000, Energy -140860592.000000 
+improvement after 1 iterations of -714710908928.000000 percent 
+Smoothcost: 1257766.000000, DataCost: -141174464.000000, Energy -139916704.000000 
 missed termination of 0.000100  
-improvement after 2 iterations of 0.000072 percent 
-Smoothcost: 1101314.875000, DataCost: -141961808.000000, Energy -140860496.000000 
+improvement after 2 iterations of -0.000048 percent 
+Smoothcost: 1254581.250000, DataCost: -141171344.000000, Energy -139916768.000000 
 hit termination of 0.000100  
 reduction iteration: 6 
 gamma bar 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 80000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000  
-gamma     3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 16000 3200 3200 16000 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 16000 3200 3200 3200 16000 3200 3200 16000 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200  
-improvement after 1 iterations of -695240491008.000000 percent 
-Smoothcost: 1084999.875000, DataCost: -144920128.000000, Energy -143835120.000000 
+gamma     3200 3200 3200 3200 3200 16000 3200 3200 3200 3200 3200 3200 16000 16000 3200 3200 16000 3200 3200 3200 3200 16000 16000 3200 3200 3200 3200 3200 16000 3200 3200 3200 16000 3200 3200 3200 3200 3200 3200 3200 3200 16000 3200 16000 3200 3200 3200 16000 3200 3200  
+improvement after 1 iterations of -696621072384.000000 percent 
+Smoothcost: 1116811.250000, DataCost: -144666880.000000, Energy -143550064.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.087744 percent 
-Smoothcost: 1136418.750000, DataCost: -145097856.000000, Energy -143961440.000000 
+improvement after 2 iterations of -0.132370 percent 
+Smoothcost: 1136414.875000, DataCost: -144876752.000000, Energy -143740336.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -697629343744.000000 percent 
-Smoothcost: 1086061.625000, DataCost: -144428656.000000, Energy -143342592.000000 
+improvement after 1 iterations of -698281558016.000000 percent 
+Smoothcost: 1076243.250000, DataCost: -144284944.000000, Energy -143208704.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.068843 percent 
-Smoothcost: 1087248.375000, DataCost: -144528592.000000, Energy -143441344.000000 
+improvement after 2 iterations of -0.058478 percent 
+Smoothcost: 1073336.500000, DataCost: -144365840.000000, Energy -143292496.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -702188158976.000000 percent 
-Smoothcost: 1073376.000000, DataCost: -143485344.000000, Energy -142411968.000000 
+improvement after 1 iterations of -702641209344.000000 percent 
+Smoothcost: 1104490.875000, DataCost: -143424640.000000, Energy -142320144.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.286245 percent 
-Smoothcost: 1073578.250000, DataCost: -143894352.000000, Energy -142820784.000000 
+improvement after 2 iterations of -0.242603 percent 
+Smoothcost: 1080938.625000, DataCost: -143747200.000000, Energy -142666256.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -701621731328.000000 percent 
-Smoothcost: 1049334.250000, DataCost: -143576272.000000, Energy -142526944.000000 
+improvement after 1 iterations of -702640357376.000000 percent 
+Smoothcost: 1088952.250000, DataCost: -143409280.000000, Energy -142320320.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.121909 percent 
-Smoothcost: 1048735.750000, DataCost: -143749648.000000, Energy -142700912.000000 
+improvement after 2 iterations of -0.020874 percent 
+Smoothcost: 1081742.625000, DataCost: -143431776.000000, Energy -142350032.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -702845616128.000000 percent 
-Smoothcost: 1057932.125000, DataCost: -143336688.000000, Energy -142278752.000000 
+improvement after 1 iterations of -703136792576.000000 percent 
+Smoothcost: 1090473.625000, DataCost: -143310320.000000, Energy -142219840.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.042701 percent 
-Smoothcost: 1059003.625000, DataCost: -143398528.000000, Energy -142339536.000000 
+improvement after 2 iterations of -0.036383 percent 
+Smoothcost: 1062798.000000, DataCost: -143334384.000000, Energy -142271600.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -704319651840.000000 percent 
-Smoothcost: 1086399.375000, DataCost: -143067392.000000, Energy -141980992.000000 
+improvement after 1 iterations of -703260393472.000000 percent 
+Smoothcost: 1054402.250000, DataCost: -143249248.000000, Energy -142194848.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.148082 percent 
-Smoothcost: 1065431.000000, DataCost: -143256992.000000, Energy -142191552.000000 
+improvement after 2 iterations of -0.008267 percent 
+Smoothcost: 1053523.625000, DataCost: -143260128.000000, Energy -142206608.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -705043365888.000000 percent 
-Smoothcost: 1080054.125000, DataCost: -142915296.000000, Energy -141835248.000000 
+improvement after 1 iterations of -703966281728.000000 percent 
+Smoothcost: 1052556.125000, DataCost: -143104816.000000, Energy -142052256.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.080502 percent 
-Smoothcost: 1081779.625000, DataCost: -143031312.000000, Energy -141949520.000000 
+improvement after 2 iterations of -0.028610 percent 
+Smoothcost: 1045375.937500, DataCost: -143138288.000000, Energy -142092912.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -705820164096.000000 percent 
-Smoothcost: 1096281.875000, DataCost: -142775440.000000, Energy -141679152.000000 
+improvement after 1 iterations of -704277512192.000000 percent 
+Smoothcost: 1052277.250000, DataCost: -143041776.000000, Energy -141989488.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.106096 percent 
-Smoothcost: 1088312.000000, DataCost: -142917936.000000, Energy -141829632.000000 
+improvement after 2 iterations of -0.008994 percent 
+Smoothcost: 1064969.125000, DataCost: -143067216.000000, Energy -142002256.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -705107263488.000000 percent 
-Smoothcost: 1084503.000000, DataCost: -142906912.000000, Energy -141822400.000000 
-missed termination of 1.000000  
-improvement after 2 iterations of -0.005358 percent 
-Smoothcost: 1082111.875000, DataCost: -142912112.000000, Energy -141830000.000000 
-hit termination of 1.000000  
-improvement after 1 iterations of -705067024384.000000 percent 
-Smoothcost: 1081398.000000, DataCost: -142911888.000000, Energy -141830496.000000 
+improvement after 1 iterations of -704189235200.000000 percent 
+Smoothcost: 1047688.187500, DataCost: -143054976.000000, Energy -142007280.000000 
 missed termination of 0.010000  
-improvement after 2 iterations of -0.008327 percent 
-Smoothcost: 1077176.375000, DataCost: -142919472.000000, Energy -141842304.000000 
+improvement after 2 iterations of -0.004315 percent 
+Smoothcost: 1048491.750000, DataCost: -143061888.000000, Energy -142013408.000000 
 hit termination of 0.010000  
-improvement after 1 iterations of -705004699648.000000 percent 
-Smoothcost: 1076835.750000, DataCost: -142919856.000000, Energy -141843024.000000 
-missed termination of 0.000100  
-improvement after 2 iterations of -0.000012 percent 
-Smoothcost: 1076835.750000, DataCost: -142919872.000000, Energy -141843040.000000 
-hit termination of 0.000100  
-reduction iteration: 7 
-gamma bar 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 16000 3200 3200 16000 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 16000 3200 3200 3200 16000 3200 3200 16000 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200  
-gamma     5000 5000 1000 1000 1000 1000 1000 5000 5000 1000 5000 5000 1000 3200 5000 1000 3200 5000 1000 0 5000 1000 5000 1000 5000 1000 1000 5000 3200 5000 5000 1000 3200 1000 5000 3200 5000 5000 5000 1000 5000 1000 5000 1000 1000 5000 1000 1000 5000 1000  
-improvement after 1 iterations of -692292812800.000000 percent 
-Smoothcost: 1079322.125000, DataCost: -145526880.000000, Energy -144447552.000000 
-missed termination of 1.000000  
-improvement after 2 iterations of -0.060827 percent 
-Smoothcost: 1100676.625000, DataCost: -145636144.000000, Energy -144535472.000000 
-hit termination of 1.000000  
-improvement after 1 iterations of -695724605440.000000 percent 
-Smoothcost: 1044581.437500, DataCost: -144779616.000000, Energy -143735040.000000 
-missed termination of 1.000000  
-improvement after 2 iterations of -0.059718 percent 
-Smoothcost: 1046996.625000, DataCost: -144867936.000000, Energy -143820928.000000 
-hit termination of 1.000000  
-improvement after 1 iterations of -700227780608.000000 percent 
-Smoothcost: 1047804.187500, DataCost: -143858480.000000, Energy -142810672.000000 
-missed termination of 1.000000  
-improvement after 2 iterations of -0.215954 percent 
-Smoothcost: 1042141.437500, DataCost: -144161888.000000, Energy -143119744.000000 
-hit termination of 1.000000  
-improvement after 1 iterations of -700866691072.000000 percent 
-Smoothcost: 1041047.687500, DataCost: -143721520.000000, Energy -142680480.000000 
-missed termination of 1.000000  
-improvement after 2 iterations of -0.067955 percent 
-Smoothcost: 1037160.125000, DataCost: -143814672.000000, Energy -142777504.000000 
-hit termination of 1.000000  
-improvement after 1 iterations of -703596134400.000000 percent 
-Smoothcost: 1042260.437500, DataCost: -143169264.000000, Energy -142126992.000000 
-missed termination of 1.000000  
-improvement after 2 iterations of -0.051421 percent 
-Smoothcost: 1036375.312500, DataCost: -143236480.000000, Energy -142200112.000000 
-hit termination of 1.000000  
-improvement after 1 iterations of -704095059968.000000 percent 
-Smoothcost: 1037083.062500, DataCost: -143063376.000000, Energy -142026288.000000 
-missed termination of 1.000000  
-improvement after 2 iterations of -0.015837 percent 
-Smoothcost: 1037679.437500, DataCost: -143086464.000000, Energy -142048784.000000 
-hit termination of 1.000000  
-improvement after 1 iterations of -703982665728.000000 percent 
-Smoothcost: 1036470.312500, DataCost: -143085440.000000, Energy -142048960.000000 
-missed termination of 0.010000  
-improvement after 2 iterations of -0.001061 percent 
-Smoothcost: 1036158.250000, DataCost: -143086624.000000, Energy -142050464.000000 
-hit termination of 0.010000  
-improvement after 1 iterations of -703974998016.000000 percent 
-Smoothcost: 1035848.812500, DataCost: -143086352.000000, Energy -142050496.000000 
+improvement after 1 iterations of -704157974528.000000 percent 
+Smoothcost: 1048252.000000, DataCost: -143061840.000000, Energy -142013584.000000 
 missed termination of 0.000100  
 improvement after 2 iterations of -0.000048 percent 
-Smoothcost: 1035977.500000, DataCost: -143086528.000000, Energy -142050560.000000 
+Smoothcost: 1047753.062500, DataCost: -143061408.000000, Energy -142013648.000000 
 hit termination of 0.000100  
-reduction iteration: 8 
-gamma bar 5000 5000 1000 1000 1000 1000 1000 5000 5000 1000 5000 5000 1000 3200 5000 1000 3200 5000 1000 0 5000 1000 5000 1000 5000 1000 1000 5000 3200 5000 5000 1000 3200 1000 5000 3200 5000 5000 5000 1000 5000 1000 5000 1000 1000 5000 1000 1000 5000 1000  
-gamma     5000 5000 5000 5000 1000 1000 1000 1000 5000 1000 5000 5000 1000 0 1000 5000 1000 5000 1000 0 5000 1000 5000 1000 5000 5000 1000 5000 1000 5000 1000 1000 1000 1000 5000 1000 5000 5000 5000 1000 5000 1000 1000 5000 1000 5000 5000 1000 5000 0  
-improvement after 1 iterations of -691644334080.000000 percent 
-Smoothcost: 1042125.625000, DataCost: -145625104.000000, Energy -144582976.000000 
+reduction iteration: 7 
+gamma bar 3200 3200 3200 3200 3200 16000 3200 3200 3200 3200 3200 3200 16000 16000 3200 3200 16000 3200 3200 3200 3200 16000 16000 3200 3200 3200 3200 3200 16000 3200 3200 3200 16000 3200 3200 3200 3200 3200 3200 3200 3200 16000 3200 16000 3200 3200 3200 16000 3200 3200  
+gamma     1000 5000 1000 5000 1000 3200 5000 1000 1000 1000 1000 5000 3200 3200 1000 1000 3200 5000 1000 0 5000 3200 3200 1000 1000 1000 1000 5000 16000 5000 5000 1000 3200 1000 5000 1000 5000 5000 1000 1000 5000 3200 1000 3200 1000 5000 1000 3200 5000 0  
+improvement after 1 iterations of -694261579776.000000 percent 
+Smoothcost: 1018812.062500, DataCost: -145056752.000000, Energy -144037936.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.047803 percent 
-Smoothcost: 1054449.000000, DataCost: -145706576.000000, Energy -144652128.000000 
+improvement after 2 iterations of -0.063688 percent 
+Smoothcost: 1047687.937500, DataCost: -145177408.000000, Energy -144129728.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -695309697024.000000 percent 
-Smoothcost: 1038401.875000, DataCost: -144859200.000000, Energy -143820800.000000 
+improvement after 1 iterations of -696326684672.000000 percent 
+Smoothcost: 1015832.375000, DataCost: -144626576.000000, Energy -143610752.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.028473 percent 
-Smoothcost: 1036969.187500, DataCost: -144898736.000000, Energy -143861760.000000 
+improvement after 2 iterations of -0.053072 percent 
+Smoothcost: 1016826.437500, DataCost: -144703840.000000, Energy -143687008.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -699784626176.000000 percent 
-Smoothcost: 1060013.500000, DataCost: -143961120.000000, Energy -142901104.000000 
+improvement after 1 iterations of -699943223296.000000 percent 
+Smoothcost: 1044197.250000, DataCost: -143912928.000000, Energy -142868736.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.107503 percent 
-Smoothcost: 1065312.500000, DataCost: -144120208.000000, Energy -143054896.000000 
+improvement after 2 iterations of -0.225586 percent 
+Smoothcost: 1022638.687500, DataCost: -144214400.000000, Energy -143191760.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -701246930944.000000 percent 
-Smoothcost: 1062614.875000, DataCost: -143665744.000000, Energy -142603120.000000 
+improvement after 1 iterations of -700793552896.000000 percent 
+Smoothcost: 1005078.812500, DataCost: -143700448.000000, Energy -142695376.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.022042 percent 
-Smoothcost: 1063135.750000, DataCost: -143697696.000000, Energy -142634560.000000 
+improvement after 2 iterations of -0.139213 percent 
+Smoothcost: 996161.812500, DataCost: -143890464.000000, Energy -142894304.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -701988143104.000000 percent 
-Smoothcost: 1061437.000000, DataCost: -143513984.000000, Energy -142452544.000000 
+improvement after 1 iterations of -702048108544.000000 percent 
+Smoothcost: 1001010.812500, DataCost: -143441392.000000, Energy -142440384.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.018078 percent 
-Smoothcost: 1063722.875000, DataCost: -143542032.000000, Energy -142478304.000000 
+improvement after 2 iterations of -0.013715 percent 
+Smoothcost: 1001592.062500, DataCost: -143461520.000000, Energy -142459920.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -702629347328.000000 percent 
-Smoothcost: 1065994.125000, DataCost: -143388528.000000, Energy -142322544.000000 
+improvement after 1 iterations of -705829535744.000000 percent 
+Smoothcost: 1025932.312500, DataCost: -142703200.000000, Energy -141677264.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.002742 percent 
-Smoothcost: 1067314.500000, DataCost: -143393776.000000, Energy -142326448.000000 
+improvement after 2 iterations of -0.057226 percent 
+Smoothcost: 1007840.937500, DataCost: -142766224.000000, Energy -141758384.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -703615008768.000000 percent 
-Smoothcost: 1103129.125000, DataCost: -143226304.000000, Energy -142123168.000000 
+improvement after 1 iterations of -709089427456.000000 percent 
+Smoothcost: 1071207.750000, DataCost: -142097152.000000, Energy -141025936.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.106579 percent 
-Smoothcost: 1075585.500000, DataCost: -143350384.000000, Energy -142274800.000000 
+improvement after 2 iterations of -0.134397 percent 
+Smoothcost: 1040342.687500, DataCost: -142256064.000000, Energy -141215728.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -704092897280.000000 percent 
-Smoothcost: 1107453.125000, DataCost: -143134160.000000, Energy -142026704.000000 
+improvement after 1 iterations of -710666289152.000000 percent 
+Smoothcost: 1054102.750000, DataCost: -141767120.000000, Energy -140713024.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.073260 percent 
-Smoothcost: 1108128.250000, DataCost: -143238960.000000, Energy -142130832.000000 
+improvement after 2 iterations of -0.023556 percent 
+Smoothcost: 1034977.375000, DataCost: -141781152.000000, Energy -140746176.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -703690833920.000000 percent 
-Smoothcost: 1109455.250000, DataCost: -143217312.000000, Energy -142107856.000000 
+improvement after 1 iterations of -712727396352.000000 percent 
+Smoothcost: 1026101.312500, DataCost: -141332192.000000, Energy -140306096.000000 
+missed termination of 1.000000  
+improvement after 2 iterations of -0.194472 percent 
+Smoothcost: 1027339.125000, DataCost: -141606816.000000, Energy -140579488.000000 
+hit termination of 1.000000  
+improvement after 1 iterations of -713673670656.000000 percent 
+Smoothcost: 1051268.875000, DataCost: -141171344.000000, Energy -140120064.000000 
+missed termination of 1.000000  
+improvement after 2 iterations of -0.237644 percent 
+Smoothcost: 1049058.375000, DataCost: -141502896.000000, Energy -140453840.000000 
+hit termination of 1.000000  
+improvement after 1 iterations of -713800679424.000000 percent 
+Smoothcost: 1041335.187500, DataCost: -141136464.000000, Energy -140095136.000000 
+missed termination of 1.000000  
+improvement after 2 iterations of -0.006592 percent 
+Smoothcost: 1041155.562500, DataCost: -141145520.000000, Energy -140104368.000000 
+hit termination of 1.000000  
+improvement after 1 iterations of -716364251136.000000 percent 
+Smoothcost: 1108783.625000, DataCost: -140702576.000000, Energy -139593792.000000 
+missed termination of 1.000000  
+improvement after 2 iterations of -0.058091 percent 
+Smoothcost: 1130348.375000, DataCost: -140805280.000000, Energy -139674928.000000 
+hit termination of 1.000000  
+improvement after 1 iterations of -716184879104.000000 percent 
+Smoothcost: 1137733.875000, DataCost: -140766480.000000, Energy -139628752.000000 
+missed termination of 1.000000  
+improvement after 2 iterations of -0.028366 percent 
+Smoothcost: 1137549.500000, DataCost: -140805920.000000, Energy -139668368.000000 
+hit termination of 1.000000  
+improvement after 1 iterations of -715928305664.000000 percent 
+Smoothcost: 1137539.375000, DataCost: -140816320.000000, Energy -139678784.000000 
 missed termination of 0.010000  
-improvement after 2 iterations of -0.001860 percent 
-Smoothcost: 1109455.250000, DataCost: -143219936.000000, Energy -142110496.000000 
+improvement after 2 iterations of -0.005358 percent 
+Smoothcost: 1134362.500000, DataCost: -140820624.000000, Energy -139686272.000000 
 hit termination of 0.010000  
-improvement after 1 iterations of -703677792256.000000 percent 
-Smoothcost: 1109455.250000, DataCost: -143219936.000000, Energy -142110496.000000 
-missed termination of 0.000100  
-improvement after 2 iterations of 0.000000 percent 
-Smoothcost: 1109455.250000, DataCost: -143219936.000000, Energy -142110496.000000 
-hit termination of 0.000100  
-reduction iteration: 9 
-gamma bar 5000 5000 5000 5000 1000 1000 1000 1000 5000 1000 5000 5000 1000 0 1000 5000 1000 5000 1000 0 5000 1000 5000 1000 5000 5000 1000 5000 1000 5000 1000 1000 1000 1000 5000 1000 5000 5000 5000 1000 5000 1000 1000 5000 1000 5000 5000 1000 5000 0  
-gamma     5000 25000 5000 5000 1000 1000 1000 5000 5000 1000 5000 5000 1000 0 1000 5000 1000 5000 1000 0 5000 5000 5000 1000 1000 5000 1000 5000 1000 5000 1000 1000 1000 1000 5000 1000 5000 1000 5000 1000 5000 1000 1000 1000 1000 5000 1000 1000 5000 0  
+improvement after 1 iterations of -714894934016.000000 percent 
+Smoothcost: 1040824.750000, DataCost: -140921520.000000, Energy -139880688.000000 
+empty cluster 
+improvement after 2 iterations of -0.117427 percent 
+Smoothcost: 1039553.937500, DataCost: -141084704.000000, Energy -140045136.000000 
+empty cluster 
+improvement after 1 iterations of -715598200832.000000 percent 
+Smoothcost: 1038807.937500, DataCost: -140782032.000000, Energy -139743216.000000 
+empty cluster 
+improvement after 2 iterations of 0.133812 percent 
+Smoothcost: 1037161.750000, DataCost: -140593632.000000, Energy -139556480.000000 
+empty cluster 
+reduction iteration: 8 
+gamma bar 1000 5000 1000 5000 1000 3200 5000 1000 1000 1000 1000 5000 3200 3200 1000 1000 3200 5000 1000 0 5000 3200 3200 1000 1000 1000 1000 5000 16000 5000 5000 1000 3200 1000 5000 1000 5000 5000 1000 1000 5000 3200 1000 3200 1000 5000 1000 3200 5000 0  
+gamma     1000 25000 1000 5000 5000 5000 5000 5000 1000 5000 1000 5000 25000 0 5000 5000 1000 5000 1000 0 5000 25000 5000 1000 5000 5000 5000 5000 16000 5000 5000 5000 5000 1000 5000 5000 5000 5000 5000 5000 5000 5000 5000 5000 1000 5000 50000000 5000 5000 1000  
 with gradient 
 seed number 1 
-improvement after 1 iterations of 1671556480.000000 percent 
-Smoothcost: 10615907.000000, DataCost: 59813863424.000000, Energy 59824476160.000000 
+improvement after 1 iterations of 1671816576.000000 percent 
+Smoothcost: 10608796.000000, DataCost: 59804561408.000000, Energy 59815170048.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of 41.694283 percent 
-Smoothcost: 10553095.000000, DataCost: 42210258944.000000, Energy 42220810240.000000 
+improvement after 2 iterations of 41.678154 percent 
+Smoothcost: 10549363.000000, DataCost: 42208501760.000000, Energy 42219048960.000000 
 missed termination of 1.000000  
-improvement after 1 iterations of 2536493568.000000 percent 
-Smoothcost: 10493194.000000, DataCost: 39414005760.000000, Energy 39424499712.000000 
+improvement after 1 iterations of 2536503296.000000 percent 
+Smoothcost: 10491519.000000, DataCost: 39413862400.000000, Energy 39424352256.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of 3.194690 percent 
-Smoothcost: 10550346.000000, DataCost: 38193451008.000000, Energy 38204002304.000000 
+improvement after 2 iterations of 3.194892 percent 
+Smoothcost: 10553325.000000, DataCost: 38193229824.000000, Energy 38203781120.000000 
 missed termination of 1.000000  
-improvement after 1 iterations of 2663842304.000000 percent 
-Smoothcost: 10446731.000000, DataCost: 37529309184.000000, Energy 37539758080.000000 
+improvement after 1 iterations of 2663957504.000000 percent 
+Smoothcost: 10440201.000000, DataCost: 37527691264.000000, Energy 37538131968.000000 
 missed termination of 0.010000  
-improvement after 2 iterations of 1.125646 percent 
-Smoothcost: 10307977.000000, DataCost: 37111586816.000000, Energy 37121896448.000000 
+improvement after 2 iterations of 1.125133 percent 
+Smoothcost: 10308284.000000, DataCost: 37110165504.000000, Energy 37120475136.000000 
 missed termination of 0.010000  
-improvement after 1 iterations of 2716355072.000000 percent 
-Smoothcost: 9981784.000000, DataCost: 36804055040.000000, Energy 36814036992.000000 
+improvement after 1 iterations of 2716709120.000000 percent 
+Smoothcost: 9973912.000000, DataCost: 36799266816.000000, Energy 36809240576.000000 
 missed termination of 0.000100  
-improvement after 2 iterations of 0.657320 percent 
-Smoothcost: 9768267.000000, DataCost: 36563861504.000000, Energy 36573630464.000000 
+improvement after 2 iterations of 0.651848 percent 
+Smoothcost: 9765158.000000, DataCost: 36561088512.000000, Energy 36570853376.000000 
 missed termination of 0.000100  
-improvement after 1 iterations of 13950406656.000000 percent 
-Smoothcost: 9645708.000000, DataCost: 7158604288.000000, Energy 7168249856.000000 
+improvement after 1 iterations of 13951846400.000000 percent 
+Smoothcost: 9625002.000000, DataCost: 7157885440.000000, Energy 7167510016.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of 0.444150 percent 
-Smoothcost: 9599318.000000, DataCost: 7126952960.000000, Energy 7136552448.000000 
+improvement after 2 iterations of 0.440156 percent 
+Smoothcost: 9612877.000000, DataCost: 7126486528.000000, Energy 7136099840.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of 14063630336.000000 percent 
-Smoothcost: 9754983.000000, DataCost: 7100785152.000000, Energy 7110539776.000000 
+improvement after 1 iterations of 14064796672.000000 percent 
+Smoothcost: 9765303.000000, DataCost: 7100185088.000000, Energy 7109949952.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of 0.320303 percent 
-Smoothcost: 9805617.000000, DataCost: 7078031360.000000, Energy 7087837184.000000 
+improvement after 2 iterations of 0.321341 percent 
+Smoothcost: 9827805.000000, DataCost: 7077347328.000000, Energy 7087175680.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of 14144532480.000000 percent 
-Smoothcost: 9881948.000000, DataCost: 7059987968.000000, Energy 7069869568.000000 
+improvement after 1 iterations of 14145897472.000000 percent 
+Smoothcost: 9902218.000000, DataCost: 7059284992.000000, Energy 7069187072.000000 
 missed termination of 0.010000  
-improvement after 2 iterations of 0.223792 percent 
-Smoothcost: 9928229.000000, DataCost: 7044154880.000000, Energy 7054083072.000000 
+improvement after 2 iterations of 0.214803 percent 
+Smoothcost: 9926503.000000, DataCost: 7044108288.000000, Energy 7054034432.000000 
 missed termination of 0.010000  
-improvement after 1 iterations of 14202948608.000000 percent 
-Smoothcost: 9993266.000000, DataCost: 7030798336.000000, Energy 7040791552.000000 
+improvement after 1 iterations of 14203593728.000000 percent 
+Smoothcost: 9999721.000000, DataCost: 7030472704.000000, Energy 7040472064.000000 
 missed termination of 0.000100  
-improvement after 2 iterations of 0.155306 percent 
-Smoothcost: 10007904.000000, DataCost: 7019865600.000000, Energy 7029873664.000000 
+improvement after 2 iterations of 0.152099 percent 
+Smoothcost: 10022882.000000, DataCost: 7019757568.000000, Energy 7029779968.000000 
 missed termination of 0.000100  
 reduction iteration: 1 
 gamma bar 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000 50000000  
 gamma     10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000  
-improvement after 1 iterations of 77101481984.000000 percent 
-Smoothcost: 9784483.000000, DataCost: 1287207552.000000, Energy 1296992000.000000 
+improvement after 1 iterations of 77104521216.000000 percent 
+Smoothcost: 9788389.000000, DataCost: 1287152384.000000, Energy 1296940800.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of 0.123036 percent 
-Smoothcost: 9766949.000000, DataCost: 1285631360.000000, Energy 1295398272.000000 
+improvement after 2 iterations of 0.129437 percent 
+Smoothcost: 9791102.000000, DataCost: 1285473280.000000, Energy 1295264256.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of 77279592448.000000 percent 
-Smoothcost: 9746305.000000, DataCost: 1284256512.000000, Energy 1294002688.000000 
+improvement after 1 iterations of 77284089856.000000 percent 
+Smoothcost: 9767298.000000, DataCost: 1284160128.000000, Energy 1293927424.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of 0.091124 percent 
-Smoothcost: 9761956.000000, DataCost: 1283062656.000000, Energy 1292824576.000000 
+improvement after 2 iterations of 0.094521 percent 
+Smoothcost: 9771031.000000, DataCost: 1282934528.000000, Energy 1292705536.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of 77413662720.000000 percent 
-Smoothcost: 9783522.000000, DataCost: 1281978112.000000, Energy 1291761664.000000 
+improvement after 1 iterations of 77421174784.000000 percent 
+Smoothcost: 9791014.000000, DataCost: 1281845120.000000, Energy 1291636224.000000 
 missed termination of 0.010000  
-improvement after 2 iterations of 0.068569 percent 
-Smoothcost: 9831973.000000, DataCost: 1281044480.000000, Energy 1290876544.000000 
+improvement after 2 iterations of 0.065935 percent 
+Smoothcost: 9810321.000000, DataCost: 1280974848.000000, Energy 1290785152.000000 
 missed termination of 0.010000  
-improvement after 1 iterations of 77525590016.000000 percent 
-Smoothcost: 9858085.000000, DataCost: 1280038528.000000, Energy 1289896576.000000 
+improvement after 1 iterations of 77525049344.000000 percent 
+Smoothcost: 9832878.000000, DataCost: 1280072704.000000, Energy 1289905664.000000 
 missed termination of 0.000100  
-improvement after 2 iterations of 0.052834 percent 
-Smoothcost: 9927499.000000, DataCost: 1279288064.000000, Energy 1289215488.000000 
+improvement after 2 iterations of 0.056434 percent 
+Smoothcost: 9906171.000000, DataCost: 1279272064.000000, Energy 1289178112.000000 
 missed termination of 0.000100  
 reduction iteration: 2 
 gamma bar 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000 10000000  
 gamma     2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000  
-improvement after 1 iterations of 665949831168.000000 percent 
-Smoothcost: 9048392.000000, DataCost: 141113056.000000, Energy 150161472.000000 
+improvement after 1 iterations of 666130055168.000000 percent 
+Smoothcost: 9069548.000000, DataCost: 141051312.000000, Energy 150120848.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of 0.114143 percent 
-Smoothcost: 8931627.000000, DataCost: 141058656.000000, Energy 149990272.000000 
+improvement after 2 iterations of 0.095582 percent 
+Smoothcost: 8952364.000000, DataCost: 141025136.000000, Energy 149977488.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of 667334344704.000000 percent 
-Smoothcost: 8847253.000000, DataCost: 141002656.000000, Energy 149849920.000000 
+improvement after 1 iterations of 667334541312.000000 percent 
+Smoothcost: 8873773.000000, DataCost: 140976112.000000, Energy 149849872.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of 0.087571 percent 
-Smoothcost: 8801727.000000, DataCost: 140917088.000000, Energy 149718816.000000 
+improvement after 2 iterations of 0.088680 percent 
+Smoothcost: 8817403.000000, DataCost: 140899696.000000, Energy 149717104.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of 668201451520.000000 percent 
-Smoothcost: 8759726.000000, DataCost: 140895728.000000, Energy 149655472.000000 
+improvement after 1 iterations of 668151119872.000000 percent 
+Smoothcost: 8801895.000000, DataCost: 140864864.000000, Energy 149666752.000000 
 missed termination of 0.010000  
-improvement after 2 iterations of 0.067210 percent 
-Smoothcost: 8740733.000000, DataCost: 140814224.000000, Energy 149554960.000000 
+improvement after 2 iterations of 0.088680 percent 
+Smoothcost: 8760602.000000, DataCost: 140773536.000000, Energy 149534144.000000 
 missed termination of 0.010000  
-improvement after 1 iterations of 669067378688.000000 percent 
-Smoothcost: 8678874.000000, DataCost: 140782928.000000, Energy 149461776.000000 
+improvement after 1 iterations of 669097852928.000000 percent 
+Smoothcost: 8723710.000000, DataCost: 140731264.000000, Energy 149454976.000000 
 missed termination of 0.000100  
-improvement after 2 iterations of 0.055325 percent 
-Smoothcost: 8628336.000000, DataCost: 140750816.000000, Energy 149379136.000000 
+improvement after 2 iterations of 0.060701 percent 
+Smoothcost: 8694109.000000, DataCost: 140670192.000000, Energy 149364304.000000 
 missed termination of 0.000100  
 reduction iteration: 3 
 gamma bar 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000 2000000  
 gamma     400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000  
-improvement after 1 iterations of -1261666041856.000000 percent 
-Smoothcost: 6504525.000000, DataCost: -85764792.000000, Energy -79260272.000000 
+improvement after 1 iterations of -1261595394048.000000 percent 
+Smoothcost: 6468392.500000, DataCost: -85733104.000000, Energy -79264712.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.583112 percent 
-Smoothcost: 6187250.000000, DataCost: -85912408.000000, Energy -79725160.000000 
+improvement after 2 iterations of -0.602001 percent 
+Smoothcost: 6084914.000000, DataCost: -85829688.000000, Energy -79744776.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -1251468640256.000000 percent 
-Smoothcost: 5935416.000000, DataCost: -85841528.000000, Energy -79906120.000000 
+improvement after 1 iterations of -1250800697344.000000 percent 
+Smoothcost: 5949124.500000, DataCost: -85897920.000000, Energy -79948792.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.185263 percent 
-Smoothcost: 5806112.500000, DataCost: -85860536.000000, Energy -80054432.000000 
+improvement after 2 iterations of -0.083745 percent 
+Smoothcost: 5812036.500000, DataCost: -85827840.000000, Energy -80015800.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -1247953813504.000000 percent 
-Smoothcost: 5713215.500000, DataCost: -85844384.000000, Energy -80131168.000000 
+improvement after 1 iterations of -1248464338944.000000 percent 
+Smoothcost: 5704866.000000, DataCost: -85803272.000000, Energy -80098400.000000 
 missed termination of 0.010000  
-improvement after 2 iterations of -0.073218 percent 
-Smoothcost: 5599884.000000, DataCost: -85789760.000000, Energy -80189880.000000 
+improvement after 2 iterations of -0.055021 percent 
+Smoothcost: 5635968.500000, DataCost: -85778456.000000, Energy -80142496.000000 
 missed termination of 0.010000  
-improvement after 1 iterations of -1246384226304.000000 percent 
-Smoothcost: 5554412.500000, DataCost: -85786496.000000, Energy -80232080.000000 
+improvement after 1 iterations of -1247110103040.000000 percent 
+Smoothcost: 5543289.000000, DataCost: -85728672.000000, Energy -80185384.000000 
 missed termination of 0.000100  
-improvement after 2 iterations of -0.033689 percent 
-Smoothcost: 5532280.500000, DataCost: -85791400.000000, Energy -80259120.000000 
+improvement after 2 iterations of -0.042516 percent 
+Smoothcost: 5526215.000000, DataCost: -85745704.000000, Energy -80219488.000000 
 missed termination of 0.000100  
 reduction iteration: 4 
 gamma bar 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000 400000  
 gamma     80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000  
-improvement after 1 iterations of -780236357632.000000 percent 
-Smoothcost: 3099333.000000, DataCost: -131265624.000000, Energy -128166296.000000 
+improvement after 1 iterations of -780509052928.000000 percent 
+Smoothcost: 3193535.750000, DataCost: -131315040.000000, Energy -128121504.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.523269 percent 
-Smoothcost: 2817166.750000, DataCost: -131657648.000000, Energy -128840480.000000 
+improvement after 2 iterations of -0.547183 percent 
+Smoothcost: 2959776.500000, DataCost: -131786192.000000, Energy -128826416.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -777562357760.000000 percent 
-Smoothcost: 2699982.000000, DataCost: -131307032.000000, Energy -128607048.000000 
+improvement after 1 iterations of -775583236096.000000 percent 
+Smoothcost: 2787929.750000, DataCost: -131723152.000000, Energy -128935224.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.135297 percent 
-Smoothcost: 2600910.500000, DataCost: -131382200.000000, Energy -128781288.000000 
+improvement after 2 iterations of -0.092930 percent 
+Smoothcost: 2581607.250000, DataCost: -131636760.000000, Energy -129055152.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -776031371264.000000 percent 
-Smoothcost: 2543603.500000, DataCost: -131404368.000000, Energy -128860768.000000 
+improvement after 1 iterations of -774201344000.000000 percent 
+Smoothcost: 2509327.750000, DataCost: -131674696.000000, Energy -129165368.000000 
 missed termination of 0.010000  
-improvement after 2 iterations of -0.039345 percent 
-Smoothcost: 2538114.000000, DataCost: -131449600.000000, Energy -128911488.000000 
+improvement after 2 iterations of -0.021178 percent 
+Smoothcost: 2492172.000000, DataCost: -131684904.000000, Energy -129192728.000000 
 missed termination of 0.010000  
-improvement after 1 iterations of -775654080512.000000 percent 
-Smoothcost: 2536832.000000, DataCost: -131460280.000000, Energy -128923448.000000 
+improvement after 1 iterations of -773762121728.000000 percent 
+Smoothcost: 2482830.500000, DataCost: -131721512.000000, Energy -129238680.000000 
 missed termination of 0.000100  
-improvement after 2 iterations of -0.000513 percent 
-Smoothcost: 2538035.000000, DataCost: -131462152.000000, Energy -128924112.000000 
+improvement after 2 iterations of -0.005364 percent 
+Smoothcost: 2480784.000000, DataCost: -131726400.000000, Energy -129245616.000000 
 missed termination of 0.000100  
 reduction iteration: 5 
 gamma bar 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000 80000  
-gamma     16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 80000 16000 16000 16000 16000 16000  
-improvement after 1 iterations of -716020252672.000000 percent 
-Smoothcost: 1829592.250000, DataCost: -141490448.000000, Energy -139660864.000000 
+gamma     16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000  
+improvement after 1 iterations of -715096588288.000000 percent 
+Smoothcost: 1820573.875000, DataCost: -141661824.000000, Energy -139841248.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.268763 percent 
-Smoothcost: 1756578.375000, DataCost: -141793808.000000, Energy -140037232.000000 
+improvement after 2 iterations of -0.219023 percent 
+Smoothcost: 1753798.375000, DataCost: -141902016.000000, Energy -140148208.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -717338902528.000000 percent 
-Smoothcost: 1834571.500000, DataCost: -141238688.000000, Energy -139404112.000000 
+improvement after 1 iterations of -715566612480.000000 percent 
+Smoothcost: 1801376.125000, DataCost: -141550768.000000, Energy -139749392.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.139087 percent 
-Smoothcost: 1803391.750000, DataCost: -141401664.000000, Energy -139598272.000000 
+improvement after 2 iterations of -0.095540 percent 
+Smoothcost: 1784727.250000, DataCost: -141667776.000000, Energy -139883040.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -716072615936.000000 percent 
-Smoothcost: 1795943.750000, DataCost: -141446592.000000, Energy -139650640.000000 
+improvement after 1 iterations of -714581999616.000000 percent 
+Smoothcost: 1782109.125000, DataCost: -141724064.000000, Energy -139941952.000000 
 missed termination of 0.010000  
-improvement after 2 iterations of -0.005352 percent 
-Smoothcost: 1782472.250000, DataCost: -141440592.000000, Energy -139658112.000000 
+improvement after 2 iterations of -0.002331 percent 
+Smoothcost: 1782529.750000, DataCost: -141727744.000000, Energy -139945216.000000 
 hit termination of 0.010000  
-improvement after 1 iterations of -715815124992.000000 percent 
-Smoothcost: 1771581.500000, DataCost: -141472464.000000, Energy -139700880.000000 
+improvement after 1 iterations of -714565156864.000000 percent 
+Smoothcost: 1783321.250000, DataCost: -141728576.000000, Energy -139945248.000000 
 missed termination of 0.000100  
-improvement after 2 iterations of -0.001740 percent 
-Smoothcost: 1771729.125000, DataCost: -141475040.000000, Energy -139703312.000000 
-missed termination of 0.000100  
-improvement after 1 iterations of -717157040128.000000 percent 
-Smoothcost: 1801318.625000, DataCost: -141240800.000000, Energy -139439472.000000 
-missed termination of 0.000100  
-improvement after 2 iterations of -0.058162 percent 
-Smoothcost: 1791337.500000, DataCost: -141311968.000000, Energy -139520624.000000 
-missed termination of 0.000100  
-improvement after 1 iterations of -717305151488.000000 percent 
-Smoothcost: 1787042.250000, DataCost: -141197728.000000, Energy -139410688.000000 
-missed termination of 0.000100  
-improvement after 2 iterations of -0.039774 percent 
-Smoothcost: 1785616.000000, DataCost: -141251776.000000, Energy -139466160.000000 
-missed termination of 0.000100  
+improvement after 2 iterations of -0.000036 percent 
+Smoothcost: 1783118.250000, DataCost: -141728416.000000, Energy -139945296.000000 
+hit termination of 0.000100  
 reduction iteration: 6 
-gamma bar 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 80000 16000 16000 16000 16000 16000  
-gamma     3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 16000 3200 3200 3200 3200 3200 16000 3200 3200 3200 16000 3200 3200 3200 3200 3200 16000 3200 3200 16000 3200 3200 3200 3200 3200 3200 3200 16000 3200 3200 16000 3200 16000  
-improvement after 1 iterations of -700522889216.000000 percent 
-Smoothcost: 1669456.750000, DataCost: -144419968.000000, Energy -142750512.000000 
+gamma bar 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000 16000  
+gamma     3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 16000 3200 3200 3200 3200 3200 16000 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 16000  
+improvement after 1 iterations of -699852718080.000000 percent 
+Smoothcost: 1482279.625000, DataCost: -144369472.000000, Energy -142887200.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.288039 percent 
-Smoothcost: 1679536.125000, DataCost: -144842416.000000, Energy -143162880.000000 
+improvement after 2 iterations of -0.428391 percent 
+Smoothcost: 1464327.750000, DataCost: -144966288.000000, Energy -143501952.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -704302809088.000000 percent 
-Smoothcost: 1676920.500000, DataCost: -143661296.000000, Energy -141984384.000000 
+improvement after 1 iterations of -701329309696.000000 percent 
+Smoothcost: 1455020.000000, DataCost: -144041392.000000, Energy -142586368.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.491220 percent 
-Smoothcost: 1674674.625000, DataCost: -144359952.000000, Energy -142685280.000000 
+improvement after 2 iterations of -0.340438 percent 
+Smoothcost: 1433706.000000, DataCost: -144507152.000000, Energy -143073440.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -706473164800.000000 percent 
-Smoothcost: 1635902.625000, DataCost: -143184096.000000, Energy -141548192.000000 
+improvement after 1 iterations of -704284393472.000000 percent 
+Smoothcost: 1520922.625000, DataCost: -143509024.000000, Energy -141988096.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.291359 percent 
-Smoothcost: 1641848.250000, DataCost: -143603648.000000, Energy -141961808.000000 
+improvement after 2 iterations of -0.156689 percent 
+Smoothcost: 1451959.625000, DataCost: -143662880.000000, Energy -142210928.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -708584800256.000000 percent 
-Smoothcost: 1622243.750000, DataCost: -142748608.000000, Energy -141126368.000000 
+improvement after 1 iterations of -706045345792.000000 percent 
+Smoothcost: 1446315.500000, DataCost: -143080288.000000, Energy -141633968.000000 
 missed termination of 1.000000  
-improvement after 2 iterations of -0.410432 percent 
-Smoothcost: 1595707.750000, DataCost: -143303696.000000, Energy -141707984.000000 
+improvement after 2 iterations of -0.325119 percent 
+Smoothcost: 1435646.875000, DataCost: -143531600.000000, Energy -142095952.000000 
 hit termination of 1.000000  
-improvement after 1 iterations of -708881678336.000000 percent 
-Smoothcost: 1608351.000000, DataCost: -142675616.000000, Energy -141067264.000000 
-empty cluster 
-improvement after 2 iterations of -0.257480 percent 
-Smoothcost: 1461995.500000, DataCost: -142893408.000000, Energy -141431424.000000 
-empty cluster 
-improvement after 1 iterations of -707212279808.000000 percent 
-Smoothcost: 1450792.750000, DataCost: -142851040.000000, Energy -141400256.000000 
-empty cluster 
-improvement after 2 iterations of -0.054848 percent 
-Smoothcost: 1450065.125000, DataCost: -142927920.000000, Energy -141477856.000000 
-empty cluster 
-improvement after 1 iterations of -706740355072.000000 percent 
-Smoothcost: 1449512.250000, DataCost: -142944176.000000, Energy -141494672.000000 
-empty cluster 
-improvement after 2 iterations of 0.000393 percent 
-Smoothcost: 1449916.500000, DataCost: -142944016.000000, Energy -141494112.000000 
-empty cluster 
-improvement after 1 iterations of -707613622272.000000 percent 
-Smoothcost: 1443056.875000, DataCost: -142763120.000000, Energy -141320064.000000 
-empty cluster 
-improvement after 2 iterations of -0.033909 percent 
-Smoothcost: 1430603.625000, DataCost: -142798608.000000, Energy -141368000.000000 
-empty cluster 
-improvement after 1 iterations of -708909268992.000000 percent 
-Smoothcost: 1442988.875000, DataCost: -142504768.000000, Energy -141061776.000000 
-empty cluster 
-improvement after 2 iterations of -0.070477 percent 
-Smoothcost: 1445075.625000, DataCost: -142606336.000000, Energy -141161264.000000 
-empty cluster 
-improvement after 1 iterations of -708353982464.000000 percent 
-Smoothcost: 1441804.000000, DataCost: -142614160.000000, Energy -141172352.000000 
-empty cluster 
-improvement after 2 iterations of -0.042176 percent 
-Smoothcost: 1437621.375000, DataCost: -142669552.000000, Energy -141231920.000000 
-empty cluster 
-improvement after 1 iterations of -708116938752.000000 percent 
-Smoothcost: 1436503.125000, DataCost: -142656128.000000, Energy -141219616.000000 
-empty cluster 
-improvement after 2 iterations of -0.001436 percent 
-Smoothcost: 1436436.125000, DataCost: -142658096.000000, Energy -141221648.000000 
-empty cluster 
-improvement after 1 iterations of -708088954880.000000 percent 
-Smoothcost: 1434926.750000, DataCost: -142660128.000000, Energy -141225200.000000 
-empty cluster 
-improvement after 2 iterations of -0.001496 percent 
-Smoothcost: 1434882.125000, DataCost: -142662192.000000, Energy -141227312.000000 
-empty cluster 
+improvement after 1 iterations of -707684335616.000000 percent 
+Smoothcost: 1460589.875000, DataCost: -142766528.000000, Energy -141305936.000000 
+missed termination of 1.000000  
+improvement after 2 iterations of -0.190437 percent 
+Smoothcost: 1491042.250000, DataCost: -143066592.000000, Energy -141575552.000000 
+hit termination of 1.000000  
+improvement after 1 iterations of -706542305280.000000 percent 
+Smoothcost: 1447747.000000, DataCost: -142982080.000000, Energy -141534336.000000 
+missed termination of 1.000000  
+improvement after 2 iterations of -0.038183 percent 
+Smoothcost: 1446614.125000, DataCost: -143035008.000000, Energy -141588400.000000 
+hit termination of 1.000000  
+improvement after 1 iterations of -707069214720.000000 percent 
+Smoothcost: 1463111.500000, DataCost: -142892000.000000, Energy -141428880.000000 
+missed termination of 1.000000  
+improvement after 2 iterations of -0.012004 percent 
+Smoothcost: 1451515.125000, DataCost: -142897360.000000, Energy -141445856.000000 
+hit termination of 1.000000  
+improvement after 1 iterations of -709168988160.000000 percent 
+Smoothcost: 1522508.750000, DataCost: -142532624.000000, Energy -141010112.000000 
+missed termination of 1.000000  
+improvement after 2 iterations of -0.079125 percent 
+Smoothcost: 1534726.875000, DataCost: -142656512.000000, Energy -141121776.000000 
+hit termination of 1.000000  
+improvement after 1 iterations of -708607279104.000000 percent 
+Smoothcost: 1534867.500000, DataCost: -142656768.000000, Energy -141121888.000000 
+missed termination of 1.000000  
+improvement after 2 iterations of -0.001383 percent 
+Smoothcost: 1535336.125000, DataCost: -142659184.000000, Energy -141123840.000000 
+hit termination of 1.000000  
+improvement after 1 iterations of -709274697728.000000 percent 
+Smoothcost: 1540425.625000, DataCost: -142529536.000000, Energy -140989104.000000 
+missed termination of 1.000000  
+improvement after 2 iterations of -0.032717 percent 
+Smoothcost: 1535926.625000, DataCost: -142571168.000000, Energy -141035248.000000 
+hit termination of 1.000000  
+improvement after 1 iterations of -709307006976.000000 percent 
+Smoothcost: 1533902.625000, DataCost: -142516576.000000, Energy -140982672.000000 
+missed termination of 1.000000  
+improvement after 2 iterations of -0.001329 percent 
+Smoothcost: 1534281.500000, DataCost: -142518832.000000, Energy -140984544.000000 
+hit termination of 1.000000  
+improvement after 1 iterations of -709294161920.000000 percent 
+Smoothcost: 1534287.375000, DataCost: -142519520.000000, Energy -140985232.000000 
+missed termination of 0.010000  
+improvement after 2 iterations of 0.000000 percent 
+Smoothcost: 1534287.375000, DataCost: -142519520.000000, Energy -140985232.000000 
+hit termination of 0.010000  
+improvement after 1 iterations of -709294161920.000000 percent 
+Smoothcost: 1534287.375000, DataCost: -142519520.000000, Energy -140985232.000000 
+missed termination of 0.000100  
+improvement after 2 iterations of 0.000000 percent 
+Smoothcost: 1534287.375000, DataCost: -142519520.000000, Energy -140985232.000000 
+hit termination of 0.000100  
 reduction iteration: 7 
-gamma bar 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 16000 3200 3200 3200 3200 3200 16000 3200 3200 3200 16000 3200 3200 3200 3200 3200 16000 3200 3200 16000 3200 3200 3200 3200 3200 3200 3200 16000 3200 3200 16000 3200 16000  
-gamma     1000 1000 5000 1000 5000 5000 5000 5000 5000 0 1000 1000 5000 5000 1000 0 1000 16000 1000 1000 1000 1000 50000000 3200 1000 5000 1000 3200 1000 0 1000 5000 1000 3200 5000 1000 3200 1000 1000 0 0 1000 1000 5000 3200 5000 5000 3200 1000 3200  
+gamma bar 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 16000 3200 3200 3200 3200 3200 16000 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 3200 16000  
+gamma     5000 5000 5000 5000 1000 1000 5000 5000 5000 1000 1000 1000 5000 1000 5000 0 5000 5000 5000 5000 5000 1000 5000 5000 1000 5000 1000 3200 1000 0 5000 5000 1000 3200 5000 5000 5000 1000 1000 0 1000 1000 1000 1000 1000 1000 5000 1000 5000 3200  
+improvement after 1 iterations of -695538352128.000000 percent 
+Smoothcost: 1431941.250000, DataCost: -145205456.000000, Energy -143773520.000000 
+missed termination of 1.000000  
+improvement after 2 iterations of -0.136584 percent 
+Smoothcost: 1452555.000000, DataCost: -145422720.000000, Energy -143970160.000000 
+hit termination of 1.000000  
+improvement after 1 iterations of -700440772608.000000 percent 
+Smoothcost: 1475612.750000, DataCost: -144242864.000000, Energy -142767248.000000 
+missed termination of 1.000000  
+improvement after 2 iterations of -0.266254 percent 
+Smoothcost: 1470660.625000, DataCost: -144619040.000000, Energy -143148384.000000 
+hit termination of 1.000000  
+improvement after 1 iterations of -704818905088.000000 percent 
+Smoothcost: 1517845.750000, DataCost: -143398256.000000, Energy -141880416.000000 
+missed termination of 1.000000  
+improvement after 2 iterations of -0.208652 percent 
+Smoothcost: 1472766.875000, DataCost: -143649840.000000, Energy -142177072.000000 
+hit termination of 1.000000  
+improvement after 1 iterations of -706109243392.000000 percent 
+Smoothcost: 1516015.750000, DataCost: -143137168.000000, Energy -141621152.000000 
+missed termination of 1.000000  
+improvement after 2 iterations of -0.197446 percent 
+Smoothcost: 1500759.250000, DataCost: -143402080.000000, Energy -141901328.000000 
+hit termination of 1.000000  
+improvement after 1 iterations of -707927146496.000000 percent 
+Smoothcost: 1544645.125000, DataCost: -142802112.000000, Energy -141257472.000000 
+missed termination of 1.000000  
+improvement after 2 iterations of -0.185204 percent 
+Smoothcost: 1560090.000000, DataCost: -143079664.000000, Energy -141519568.000000 
+hit termination of 1.000000  
+improvement after 1 iterations of -707643637760.000000 percent 
+Smoothcost: 1554381.875000, DataCost: -142868448.000000, Energy -141314064.000000 
+missed termination of 1.000000  
+improvement after 2 iterations of -0.014353 percent 
+Smoothcost: 1545772.500000, DataCost: -142880128.000000, Energy -141334352.000000 
+hit termination of 1.000000  
+improvement after 1 iterations of -707787685888.000000 percent 
+Smoothcost: 1531838.875000, DataCost: -142817136.000000, Energy -141285312.000000 
+missed termination of 1.000000  
+improvement after 2 iterations of -0.028890 percent 
+Smoothcost: 1530763.000000, DataCost: -142856896.000000, Energy -141326144.000000 
+hit termination of 1.000000  
+improvement after 1 iterations of -707515121664.000000 percent 
+Smoothcost: 1526474.500000, DataCost: -142866208.000000, Energy -141339728.000000 
+missed termination of 0.010000  
+improvement after 2 iterations of -0.001270 percent 
+Smoothcost: 1526844.875000, DataCost: -142868368.000000, Energy -141341520.000000 
+hit termination of 0.010000  
+improvement after 1 iterations of -708524769280.000000 percent 
+Smoothcost: 1532220.875000, DataCost: -142670544.000000, Energy -141138320.000000 
+missed termination of 0.010000  
+improvement after 2 iterations of -0.116652 percent 
+Smoothcost: 1530481.875000, DataCost: -142833648.000000, Energy -141303152.000000 
+missed termination of 0.010000  
+improvement after 1 iterations of -708087709696.000000 percent 
+Smoothcost: 1528235.875000, DataCost: -142753680.000000, Energy -141225440.000000 
+missed termination of 0.010000  
+improvement after 2 iterations of -0.001937 percent 
+Smoothcost: 1523263.875000, DataCost: -142751440.000000, Energy -141228176.000000 
+hit termination of 0.010000  
+improvement after 1 iterations of -709577801728.000000 percent 
+Smoothcost: 1543225.875000, DataCost: -142472096.000000, Energy -140928864.000000 
+missed termination of 0.010000  
+improvement after 2 iterations of -0.012678 percent 
+Smoothcost: 1545738.625000, DataCost: -142492480.000000, Energy -140946736.000000 
+missed termination of 0.010000  
+improvement after 1 iterations of -710868598784.000000 percent 
+Smoothcost: 1559242.500000, DataCost: -142232208.000000, Energy -140672976.000000 
+missed termination of 0.010000  
+improvement after 2 iterations of -0.007111 percent 
+Smoothcost: 1561057.750000, DataCost: -142244032.000000, Energy -140682976.000000 
+hit termination of 0.010000  
+improvement after 1 iterations of -710961987584.000000 percent 
+Smoothcost: 1561342.500000, DataCost: -142215840.000000, Energy -140654496.000000 
+missed termination of 0.010000  
+improvement after 2 iterations of -0.000650 percent 
+Smoothcost: 1560582.625000, DataCost: -142216000.000000, Energy -140655408.000000 
+hit termination of 0.010000  
+improvement after 1 iterations of -710956220416.000000 percent 
+Smoothcost: 1561289.250000, DataCost: -142216928.000000, Energy -140655632.000000 
+missed termination of 0.000100  
+improvement after 2 iterations of -0.000012 percent 
+Smoothcost: 1560517.125000, DataCost: -142216160.000000, Energy -140655648.000000 
+hit termination of 0.000100  
+reduction iteration: 8 
+gamma bar 5000 5000 5000 5000 1000 1000 5000 5000 5000 1000 1000 1000 5000 1000 5000 0 5000 5000 5000 5000 5000 1000 5000 5000 1000 5000 1000 3200 1000 0 5000 5000 1000 3200 5000 5000 5000 1000 1000 0 1000 1000 1000 1000 1000 1000 5000 1000 5000 3200  
+gamma     1000 5000 1000 5000 1000 5000 1000 5000 5000 1000 1000 1000 5000 1000 5000 0 5000 1000 1000 5000 25000 1000 25000 5000 1000 5000 1000 1000 1000 0 1000 5000 1000 0 5000 1000 5000 1000 5000 0 0 1000 5000 5000 1000 5000 5000 1000 5000 1000  

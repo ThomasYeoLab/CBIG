@@ -63,12 +63,19 @@ function CBIG_AuthorTopic_EstimateComponentSmoothness(allKs, maskPath, ...
       znormBrainImagePath = fullfile(outputDir, ['BestSolution_K' num2str(K) '_C' num2str(C) '_znorm.nii']);
       MRIwrite(znormBrain, znormBrainImagePath);
 
-      % Call AFNI's 3dFWHMx
-      system(['3dFWHMx -input ' znormBrainImagePath ' -mask ' maskPath ' >> ' afniOutputFile]);
+      % Call AFNI's 3dFWHMx. -ShowMeClassicFWHM requests the classic Gaussian
+      % FWHM estimate (matching this function's documented method) since
+      % newer AFNI versions default to the ACF method and otherwise print
+      % this line as all zeros. -acf NULL suppresses the extra
+      % 3dFWHMx.1D/.png diagnostic files that AFNI writes unconditionally.
+      system(['3dFWHMx -ShowMeClassicFWHM -acf NULL -input ' znormBrainImagePath ...
+        ' -mask ' maskPath ' >> ' afniOutputFile]);
     end
   end
 
-  % read AFNI's 3dFWHMx output
+  % read AFNI's 3dFWHMx output. Each call above prints 2 lines: the classic
+  % FWHM (FWHMx FWHMy FWHMz FWHMcombined) followed by an ACF model line
+  % (a b c FWHMcombined). Only the classic line is used here.
   for K = allKs
     afniOutputFile = fullfile(outputDir, ['BestSolution_AFNI_K' num2str(K) '_smoothness.txt']);
     fileID = fopen(afniOutputFile, 'r');
@@ -79,7 +86,8 @@ function CBIG_AuthorTopic_EstimateComponentSmoothness(allKs, maskPath, ...
     for C = 1:K
       line = fgetl(fileID);
       currFwhm = strread(line, '%f');
-      afniFWHM(C, :) = currFwhm';
+      afniFWHM(C, :) = currFwhm(1:3)';
+      fgetl(fileID); % discard the ACF model line
     end
     minAfniFWHM = min(afniFWHM, [], 1);
     fwhmVol = minAfniFWHM(1) * minAfniFWHM(2) * minAfniFWHM(3);

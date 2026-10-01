@@ -54,11 +54,11 @@ for id in `cat ${idList}`; do
     logFile=${logDir}/${id}.log
     imgPath=${inDir}/${id}.nii
     if [ -z "${queue}" ]; then
-        matlab -nodisplay -nosplash -r \
+        matlab -batch \
         "spm_dir='${spmDir}';script_dir='${scriptDir}';\
         image_path='${imgPath}';output_dir='${inDir}';\
         new_template='${newTemp}';\
-        CBIG_MMLDA_segment_new_template;exit;" > ${logFile}
+        CBIG_MMLDA_segment_new_template;" > ${logFile}
         echo "${id}" >> ${progressFile}
     else
         qsub -V -q ${queue} << EOJ
@@ -72,11 +72,11 @@ for id in `cat ${idList}`; do
     
     cd ${scriptDir}
     
-    matlab -nodisplay -nosplash -r \
+    matlab -batch \
     "spm_dir='${spmDir}';script_dir='${scriptDir}';\
     image_path='${imgPath}';output_dir='${inDir}';\
     new_template='${newTemp}';\
-    CBIG_MMLDA_segment_new_template;exit;" > ${logFile}
+    CBIG_MMLDA_segment_new_template;" > ${logFile}
     echo "${id}" >> ${progressFile}
 EOJ
     fi

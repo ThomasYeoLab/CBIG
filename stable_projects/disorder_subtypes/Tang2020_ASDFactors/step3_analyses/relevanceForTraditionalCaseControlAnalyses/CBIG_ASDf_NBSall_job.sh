@@ -43,9 +43,9 @@ $CBIG_SCHEDULER_DIR/qsub -V -q circ-spool << EOJ
 #PBS -o ${output_dir}/job_logs/${output_name}.out
 
         cd ${script_dir}
-        matlab -nodisplay -nosplash -nodesktop -r \
+        matlab -batch \
         "clear all;close all;clc;CBIG_ASDf_FCDiffAllSub_NBS(${tThresh}, \
-        '${id_asd}','${id_con}','${sub_info_file}',${Nperm},'${output_name}');exit;" >> $LF
+        '${id_asd}','${id_con}','${sub_info_file}',${Nperm},'${output_name}');" >> $LF
         echo -e "Completed" >> ${progressFile}
 EOJ
 

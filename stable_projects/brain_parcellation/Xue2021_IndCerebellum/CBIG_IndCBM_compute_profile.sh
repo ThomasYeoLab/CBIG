@@ -36,14 +36,14 @@ do
             echo "Profiles for subject ${i}, session ${j} exist. Skip computing."
         else
             echo "Computing profile for subject ${i}, session ${j}..."
-            matlab -nosplash -nodisplay -nodesktop -r " \
+            matlab -batch " \
             addpath(genpath(fullfile('$CBIG_CODE_DIR', 'external_packages', 'SD'))); \
             addpath(genpath(fullfile('$CBIG_CODE_DIR', 'utilities', 'matlab'))); \
             addpath(genpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'brain_parcellation', \
             'Kong2019_MSHBM', 'step1_generate_profiles_and_ini_params'))); \
             CBIG_MSHBM_generate_profiles('fsaverage3','${surf_mesh}', \
             '${proj_dir}','${i}','${j}','0'); \
-            exit;"
+            "
         fi
     done
 done
@@ -56,13 +56,13 @@ if [ -f ${lh_avg_profile} -a -f ${rh_avg_profile} ];then
     echo "Average profile exist. Skip computing average profile."
 else
     echo "Computing average profile..."
-    matlab -nosplash -nodisplay -nodesktop -r " \
+    matlab -batch " \
     addpath(genpath(fullfile('$CBIG_CODE_DIR', 'external_packages', 'SD'))); \
     addpath(genpath(fullfile('$CBIG_CODE_DIR', 'utilities', 'matlab'))); \
     addpath(genpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'brain_parcellation', \
     'Kong2019_MSHBM', 'step1_generate_profiles_and_ini_params'))); \
     CBIG_MSHBM_avg_profiles 'fsaverage3' '${surf_mesh}' '${proj_dir}' '${sub_num}' '${sess_num}'; \
-    exit;"
+    "
 fi
 
 # Make profile list

@@ -5,11 +5,14 @@ classdef CBIG_GradPar_unit_test < matlab.unittest.TestCase
         function test_example(testCase)
             % create output folder
             CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-            load(fullfile(CBIG_CODE_DIR, 'unit_tests', 'replace_unittest_flag'));
+            load(fullfile(CBIG_CODE_DIR, 'unit_tests', 'replace_unittest_flag.txt'));
 
             cur_dir = fullfile(CBIG_CODE_DIR, 'stable_projects', ...
                 'predict_phenotypes', 'Kong2023_GradPar', 'unit_tests');
             out_dir = fullfile(cur_dir, 'output');
+            if(exist(out_dir, 'dir'))
+                rmdir(out_dir, 's')
+            end
             mkdir(out_dir)
             
             % run the example
@@ -18,16 +21,15 @@ classdef CBIG_GradPar_unit_test < matlab.unittest.TestCase
             
             CBIG_GradPar_example_LRR_frac_wrapper(out_dir);
             CBIG_GradPar_example_KRR_wrapper(out_dir);
-            
-            % check example results
-            CBIG_GradPar_check_example_results(out_dir);
-            
+                 
             % replace reference output if flag is 1
             ref_dir = fullfile(CBIG_CODE_DIR, 'stable_projects', ...
                 'predict_phenotypes', 'Kong2023_GradPar', 'examples', 'ref_results');
             if(replace_unittest_flag)
                 disp('Replacing unit test reference results for CBIG_GradPar_unit_test...');
                 copyfile(out_dir, ref_dir);
+            else
+                CBIG_GradPar_check_example_results(out_dir);
             end
 
             % remove the output directory

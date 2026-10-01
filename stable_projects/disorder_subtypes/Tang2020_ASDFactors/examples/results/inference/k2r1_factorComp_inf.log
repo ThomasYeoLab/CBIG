@@ -1,0 +1,11 @@
+Tue 07 Jul 2026 02:15:54 PM +08
+Corpus: /home/ahpxue/storage/CBIG_private/stable_projects/disorder_subtypes/Tang2020_ASDFactors/examples/input/step1_output_inf_dx1.dat
+k = 2
+Inference settings are:
+var max iter -1
+var convergence 1e-12
+em max iter 100
+em convergence 1e-12
+alpha estimate
+
+/home/ahpxue/storage/CBIG_private/stable_projects/disorder_subtypes/Tang2020_ASDFactors/step2_polarLDA/polarLDA inf  /home/ahpxue/storage/CBIG_private/stable_projects/disorder_subtypes/Tang2020_ASDFactors/step2_polarLDA/CBIG_ASDf_polarLDA_infSettings.txt /home/ahpxue/storage/CBIG_private/stable_projects/disorder_subtypes/Tang2020_ASDFactors/examplesresults/estimate/k2/r1/final  /home/ahpxue/storage/CBIG_private/stable_projects/disorder_subtypes/Tang2020_ASDFactors/examples/input/step1_output_inf_dx1.dat /home/ahpxue/storage/CBIG_private/stable_projects/disorder_subtypes/Tang2020_ASDFactors/examplesresults/inference/k2r1_factorComp_inf

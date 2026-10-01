@@ -50,12 +50,13 @@ for pipeline in GSR Baseline; do
     for seed in $(seq 1 1 3); do
         log_file="${top_outdir}/CBIG_LiGSR_KRR_unittest_PMAT_HCP_${seed}.log"
         cmd="$project_dir/KernelRidgeRegression/HCP/scripts/CBIG_LiGSR_KRR_workflowHCP.sh -subject_list $subject_list "
-        cmd="$cmd -RSFC_file $RSFC_file -y_list $cog_list -covariate_list $covariate_list -FD_file $FD_file -DVARS_file "
+        cmd="$cmd -RSFC_file $RSFC_file -y_list $cog_list -covariate_list $covariate_list "
+        cmd="$cmd -FD_file $FD_file -DVARS_file "
         cmd="$cmd $DVARS_file -outdir $outdir -outstem $outstem -seed $seed -num_test_folds 5 -num_inner_folds 5 "
         cmd="$cmd -with_bias $with_bias -restricted_csv $restricted_csv -unrestricted_csv $unrestricted_csv"
         cmd="$cmd | tee -a ${log_file}"
 
-        $CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "$cmd" -walltime 2:00:00 -mem 6G \
+        $CBIG_CODE_DIR/setup/CBIG_pbsubmit -cmd "$cmd" -walltime 2:00:00 -mem 15G \
         -name "LiGSRUT_KR"
     
         if [ ! -f $outdir/covariates_${outstem}.mat ] || [ ! -f $outdir/y_${outstem}.mat ]; then

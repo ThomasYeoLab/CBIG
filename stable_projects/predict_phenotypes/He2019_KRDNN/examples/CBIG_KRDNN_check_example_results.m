@@ -23,7 +23,7 @@ CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
 if flag_cv
     ref_dir = fullfile(CBIG_CODE_DIR, 'stable_projects', ...
         'predict_phenotypes', 'He2019_KRDNN', 'examples', ...
-        'results', 'KR_CV_matlab_r2018b');
+        'results', 'KR_CV_matlab');
     
     ref_output = load(fullfile(ref_dir, 'final_result.mat'));
     test_output = load(fullfile(out_dir, 'final_result.mat'));

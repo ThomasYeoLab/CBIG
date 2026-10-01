@@ -38,7 +38,7 @@ kernel_folders=$outdir/kernel_folders.mat
 LF=$outdir/logs/testloop_${test_fold}.log
 mkdir -p $outdir/job_err_out
 
-matlab -nodesktop -nosplash -nodisplay -r " load $paramfile; load $kernel_folders; CBIG_MultiKRR_FindOptTestAcc(\
+matlab -batch " load $paramfile; load $kernel_folders; CBIG_MultiKRR_FindOptTestAcc(\
 param.outdir, param.sub_fold,kernel_folders,param.outstem, param.num_inner_folds,${test_fold},\
 param.domain,param.group_kernel, param.with_bias, param.threshold, param.ker_param, \
-param.metric); exit; " >> $LF 2>&1
+param.metric); " >> $LF 2>&1

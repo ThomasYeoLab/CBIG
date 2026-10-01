@@ -47,41 +47,10 @@ set DV_th = 50             # the threshold of DV in censoring
 set echo_number = 1        # number of echos
 set nocleanup = 0          # default clean up intermediate files
 set matlab_runtime_util = "" # MATLAB Runtime utilities folder
+set FD_metric = ""         # string indicating FD/FDRMS, default is empty
 
 goto parse_args;
 parse_args_return:
-
-goto check_params;
-check_params_return:
-
-set root_dir = `python -c "import os; print(os.path.realpath('$0'))"`
-set root_dir = `dirname $root_dir`
-
-###############################
-# check if matlab exists
-###############################
-if ( "$matlab_runtime_util" == "" ) then
-    set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
-    if ($status) then
-        echo "ERROR: could not find MATLAB"
-        exit 1;
-    endif
-else
-    set MATLAB=$MATLAB_RUNTIME_DIR
-    if ($status) then
-        echo "ERROR: could not find MATLAB Runtime"
-        exit 1;
-    endif
-    echo "Setting up environment variables for MATLAB Runtime"
-    setenv LD_LIBRARY_PATH ${MATLAB}/runtime/glnxa64:${MATLAB}/bin/glnxa64:${MATLAB}/sys/os/glnxa64:${MATLAB}/sys/opengl/lib/glnxa64:${LD_LIBRARY_PATH}
-    # check if MATLAB Runtime utilities folder exists
-    if ( ! -d $matlab_runtime_util ) then
-        echo "ERROR: MATLAB Runtime utilities folder does not exist!"
-        exit 1;
-    endif
-endif
-
-cd $sub_dir/$subject
 
 
 ###############################
@@ -111,6 +80,63 @@ echo "[CMD]: CBIG_preproc_QC_greyplot.csh $cmdline"   >>$LF
 set boldfolder = "$sub_dir/$subject/bold"
 echo "[Greyplot]: boldfolder = $boldfolder" |& tee -a $LF
 echo "[Greyplot]: bold = $bold" |& tee -a $LF
+
+
+###############################
+# Check FD metric type (if user did not specify)
+###############################
+if ( "$FD_metric" == "" ) then
+    set FD_files = ( `find ${mc} -name "${subject}_bld*motion_outliers_FD"` )
+    set FDRMS_files = ( `find ${mc} -name "${subject}_bld*motion_outliers_FDRMS"` )
+
+    if ( $#FD_files > 0 && $#FDRMS_files == 0 ) then
+        set FD_metric = "FD"
+    else if ( $#FDRMS_files > 0 && $#FD_files == 0 ) then
+        set FD_metric = "FDRMS"
+    else if ( $#FD_files > 0 && $#FDRMS_files > 0 ) then
+        echo "ERROR: FD_metric not specified. \
+        ${mc} contains both FD and FDRMS motion outlier files. Please keep only one." |& tee -a $LF
+        exit 1
+    else
+        echo "ERROR: FD_metric not specified. No FD/FDRMS motion outlier files found in ${mc}." |& tee -a $LF
+        exit 1
+    endif
+
+    echo "FD_metric is $FD_metric" |& tee -a $LF
+endif
+
+goto check_params;
+check_params_return:
+
+set root_dir = `python -c "import os; print(os.path.realpath('$0'))"`
+set root_dir = `dirname $root_dir`
+
+
+###############################
+# check if matlab exists
+###############################
+if ( "$matlab_runtime_util" == "" ) then
+    set MATLAB=`which $CBIG_MATLAB_DIR/bin/matlab`
+    if ($status) then
+        echo "ERROR: could not find MATLAB"
+        exit 1;
+    endif
+else
+    set MATLAB=$MATLAB_RUNTIME_DIR
+    if ($status) then
+        echo "ERROR: could not find MATLAB Runtime"
+        exit 1;
+    endif
+    echo "Setting up environment variables for MATLAB Runtime"
+    setenv LD_LIBRARY_PATH ${MATLAB}/runtime/glnxa64:${MATLAB}/bin/glnxa64:${MATLAB}/sys/os/glnxa64:${MATLAB}/sys/opengl/lib/glnxa64:${LD_LIBRARY_PATH}
+    # check if MATLAB Runtime utilities folder exists
+    if ( ! -d $matlab_runtime_util ) then
+        echo "ERROR: MATLAB Runtime utilities folder does not exist!"
+        exit 1;
+    endif
+endif
+
+cd $sub_dir/$subject
 
 
 ###############################
@@ -194,9 +220,9 @@ if( -e $ROI_regressors_list ) then
         set fMRI_list = "$regress_folder/fMRI_list.txt"
         set matlab_args = "'$fMRI_list' '$GS_list' '$wb_mask' '' '' '0'"
         if ( "$matlab_runtime_util" == "" ) then
-            set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r )
+            set cmd = ( $MATLAB -batch )
             set cmd = ( $cmd '"' 'addpath(fullfile('"'"$root_dir"'"','"'"utilities"'"'))'; )
-            set cmd = ( $cmd CBIG_preproc_create_ROI_regressors $matlab_args; exit '"' )
+            set cmd = ( $cmd CBIG_preproc_create_ROI_regressors $matlab_args '"' )
         else
             set cmd = ( ${matlab_runtime_util}/CBIG_preproc_create_ROI_regressors $matlab_args )
         endif
@@ -222,10 +248,10 @@ set gm_mask = $boldfolder/mask/$subject.func.gm.nii.gz
 foreach runfolder ($bold)
     set fmri_file = $boldfolder/$runfolder/${subject}_bld${runfolder}${BOLD_stem}.nii.gz
     if ( $echo_number == 1 ) then
-        set FD_file = $mc/${subject}_bld${runfolder}${mc_stem}_motion_outliers_FDRMS
+        set FD_file = $mc/${subject}_bld${runfolder}${mc_stem}_motion_outliers_${FD_metric}
         set DV_file = $mc/${subject}_bld${runfolder}${mc_stem}_motion_outliers_DVARS
     else
-        set FD_file = $mc/${subject}_bld${runfolder}_e1${mc_stem}_motion_outliers_FDRMS
+        set FD_file = $mc/${subject}_bld${runfolder}_e1${mc_stem}_motion_outliers_${FD_metric}
         set DV_file = $mc/${subject}_bld${runfolder}_e1${mc_stem}_motion_outliers_DVARS
     endif
     set output = $qc/${subject}_bld${runfolder}${BOLD_stem}_greyplot.png
@@ -242,8 +268,8 @@ foreach runfolder ($bold)
         set matlab_args = "${matlab_args} '$tp_fac' 'FD_thres' '$FD_th' 'DV_thres' '$DV_th'"
     endif
     if ( "$matlab_runtime_util" == "" ) then
-        set cmd = ( $MATLAB -nodesktop  -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; )
-        set cmd = ( $cmd CBIG_preproc_QC_greyplot $matlab_args; exit; '"' )
+        set cmd = ( $MATLAB -batch '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; )
+        set cmd = ( $cmd CBIG_preproc_QC_greyplot $matlab_args '"' )
     else
         set cmd = ( ${matlab_runtime_util}/CBIG_preproc_QC_greyplot $matlab_args )
     endif
@@ -271,14 +297,14 @@ foreach runfolder ($bold)
             Skip creating Multi-echo QC greyplot." |& tee -a $LF
         else
             pushd $boldfolder/mc/
-            set FDpath = `ls -d *bld${runfolder}*motion_outliers_FDRMS`
+            set FDpath = `ls -d *bld${runfolder}*motion_outliers_${FD_metric}`
             popd
             set FDpath = "$boldfolder/mc/$FDpath"
             set matlab_args = "'$before_MEICA' '$after_MEICA' '$FDpath'"
             set matlab_args = "${matlab_args} '$sub_dir/$subject/qc/${subject}_bold${runfolder}_multi_echo_QC_greyplot.png'"
             if ( "$matlab_runtime_util" == "" ) then
-                set cmd = ( $MATLAB -nodesktop  -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; )
-                set cmd = ( $cmd CBIG_preproc_multiecho_QC_greyplot $matlab_args; exit; '"' )
+                set cmd = ( $MATLAB -batch '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; )
+                set cmd = ( $cmd CBIG_preproc_multiecho_QC_greyplot $matlab_args '"' )
             else
                 set cmd = ( ${matlab_runtime_util}/CBIG_preproc_multiecho_QC_greyplot $matlab_args )
             endif
@@ -397,6 +423,12 @@ while( $#argv != 0 )
             set matlab_runtime_util = $argv[1]; shift;
             breaksw
 
+        #select FD or FDRMS (optional)
+        case "-FD_metric":
+            if ( $#argv == 0 ) goto arg1err;
+                set FD_metric = "$argv[1]"; shift;
+            breaksw
+
         default:
             echo ERROR: Flag $flag unrecognized.
             echo $cmdline
@@ -448,6 +480,11 @@ endif
 if ( "$mc_stem" == "" ) then
     echo "ERROR: mc stem not specified"
     exit 1;
+endif
+
+if ( "$FD_metric" != "FD" && "$FD_metric" != "FDRMS" ) then
+    echo "ERROR: FD_metric can only be FDRMS or FD."
+    exit 1
 endif
 
 goto check_params_return;
@@ -531,6 +568,8 @@ OPTIONAL ARGUMENTS:
                                   is set to be 1.
     -matlab_runtime_util        : Full path of MATLAB Runtime utilities folder containing executable files.
                                   If not empty, MATLAB Runtime will be used.
+    -FD_metric                  : String indicating FD metric used for motion outlier detection.
+                                  Only 'FD' or 'FDRMS' values are allowed.
     -help                       : help
     -version                    : version
     -nocleanup                  : do not delete intermediate volumes

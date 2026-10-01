@@ -1,0 +1,49 @@
+#!/bin/bash
+# NOTE: This script is intended for CSC-HPC users only.
+#
+# tkregister2 is no longer maintained in newer FreeSurfer versions and its GUI becomes unclickable.
+# freeview is the recommended replacement but is significantly slower, making it impractical for
+# QC across many subjects. This wrapper invokes the FreeSurfer 5.3.0 tkregister2 binary, allowing
+# it to coexist with newer FreeSurfer versions in your environment.
+#
+# This wrapper also fixes the Xlib thread-safety error on new CSC-HPC by preloading a shim that
+# calls XInitThreads(), which the original binary was not compiled with.
+#
+# Usage: CBIG_tkregister2 [tkregister2 arguments]
+#   All arguments are passed directly to tkregister2. Run tkregister2 --help for details.
+#
+# Written by XUE Aihuiping under MIT license: https://github.com/ThomasYeoLab/CBIG/blob/master/LICENSE.md
+
+SHIM_SO="$(mktemp /tmp/xthread_init_XXXX.so)"
+SHIM_C="$(mktemp /tmp/xthread_init_XXXX.c)"
+
+cat > "$SHIM_C" << 'EOF'
+#include <X11/Xlib.h>
+__attribute__((constructor)) void init_threads() {
+    XInitThreads();
+}
+EOF
+
+gcc -shared -fPIC -o "$SHIM_SO" "$SHIM_C" -lX11
+gcc_status=$?
+rm -f "$SHIM_C"
+if [ $gcc_status -ne 0 ]; then
+    echo "[CBIG] ERROR: Failed to compile shim. Check that gcc and libX11-devel are available."
+    rm -f "$SHIM_SO"
+    exit 1
+fi
+
+export FREESURFER_HOME='/apps/freesurfer/5.3.0'
+
+# Parse -sd from arguments and export as SUBJECTS_DIR so tkregister2 5.3.0 picks it up
+args=("$@")
+for ((i=0; i<${#args[@]}; i++)); do
+    if [ "${args[$i]}" = "--sd" ] && [ $((i+1)) -lt ${#args[@]} ]; then
+        export SUBJECTS_DIR="${args[$((i+1))]}"
+        echo "[CBIG] SUBJECTS_DIR set to $SUBJECTS_DIR"
+        break
+    fi
+done
+
+LD_PRELOAD="$SHIM_SO" /apps/freesurfer/5.3.0/bin/tkregister2 "$@"
+rm -f "$SHIM_SO"

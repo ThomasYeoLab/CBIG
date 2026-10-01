@@ -44,6 +44,6 @@ date >> $LF
 param_file=$outdir/param.mat
 scripts_dir=`dirname "$(readlink -f "$0")"`
 
-matlab -nodesktop -nosplash -nodisplay -r " addpath $scripts_dir; load $param_file; \
-    CBIG_TRBPC_LRR_fitrlinear_workflow_parallel_folds(param,${behav_ind},${fold_start},${fold_num}); exit; " \
+matlab -batch " addpath $scripts_dir; load $param_file; \
+    CBIG_TRBPC_LRR_fitrlinear_workflow_parallel_folds(param,${behav_ind},${fold_start},${fold_num}); " \
     >> ${outdir}/logs/LRR_behav${behav_ind}_foldStart${fold_start}.txt 2>&1

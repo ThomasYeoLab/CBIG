@@ -41,8 +41,8 @@ csh ${codeDir}/CBIG_ASDf_polarLDA_inf.csh \
 gamma_file=${outputDir}/k${factorNum}r${ref_runNum}_${outputName}-gamma.dat
 factorComp_fileName=${outputDir}/${outputName}_k${factorNum}r${ref_runNum}_factorComp.txt
 cd ${codeDir}
-matlab -nodisplay -nosplash -nodesktop -r \
+matlab -batch \
 "clear all;close all;clc; \
-CBIG_ASDf_gamma2table('${gamma_file}','${factorComp_fileName}');exit;"
+CBIG_ASDf_gamma2table('${gamma_file}','${factorComp_fileName}');"
 
 

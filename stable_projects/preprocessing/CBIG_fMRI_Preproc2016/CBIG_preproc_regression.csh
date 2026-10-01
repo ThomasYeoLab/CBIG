@@ -374,8 +374,8 @@ if ($motion12_itamar == 1) then
     if ($mc_regressor_exist_flag == 0) then
         set matlab_args = "'$mc_par_list' '$mc_regressor_list' '$detrend_method' '$mt_diff_flag'"
         if ( "$matlab_runtime_util" == "" ) then
-            set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r '"' 'addpath(fullfile('"'"$root_dir"'"\
-                ','"'"utilities"'"'))'; CBIG_preproc_create_mc_regressors $matlab_args; exit '"' );
+            set cmd = ( $MATLAB -batch '"' 'addpath(fullfile('"'"$root_dir"'"\
+                ','"'"utilities"'"'))'; CBIG_preproc_create_mc_regressors $matlab_args '"' );
         else
             set cmd = ( ${matlab_runtime_util}/CBIG_preproc_create_mc_regressors $matlab_args )
         endif
@@ -400,8 +400,8 @@ if ($whole_brain || $wm || $csf) then
         set matlab_args = "'$fMRI_list' '$ROI_regressors_list' '$wb_mask'"
         set matlab_args = "${matlab_args} '$wm_mask' '$csf_mask' '$other_diff_flag'"
         if ( "$matlab_runtime_util" == "" ) then
-            set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r '"' 'addpath(fullfile('"'"$root_dir"'"\
-                ','"'"utilities"'"'))'; CBIG_preproc_create_ROI_regressors $matlab_args; exit '"' );
+            set cmd = ( $MATLAB -batch '"' 'addpath(fullfile('"'"$root_dir"'"\
+                ','"'"utilities"'"'))'; CBIG_preproc_create_ROI_regressors $matlab_args '"' );
         else
             set cmd = ( ${matlab_runtime_util}/CBIG_preproc_create_ROI_regressors $matlab_args )
         endif
@@ -435,8 +435,8 @@ if ( $aCompCor ) then
         set matlab_args = "'$fMRI_list' '$wm_csf_mask_comb' '$CompCor_regressors_list'"
         set matlab_args = "${matlab_args} '$nPCs' '$per_run' '$aCompCor_diff_flag'"
         if ( "$matlab_runtime_util" == "" ) then
-            set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r '"' 'addpath(fullfile('"'"$root_dir"'"','\
-                "'"utilities"'"'))'; CBIG_preproc_aCompCor_multipleruns $matlab_args; exit '"' );
+            set cmd = ( $MATLAB -batch '"' 'addpath(fullfile('"'"$root_dir"'"','\
+                "'"utilities"'"'))'; CBIG_preproc_aCompCor_multipleruns $matlab_args '"' );
         else
             set cmd = ( ${matlab_runtime_util}/CBIG_preproc_aCompCor_multipleruns $matlab_args )
         endif
@@ -538,8 +538,8 @@ if ($motion12_itamar || $whole_brain || $wm || $csf || $aCompCor) then
         set matlab_args = "'$fMRI_list' '$resid_list' '$all_regressors_list' '$polynomial_fit'"
         set matlab_args = "${matlab_args} '$censor_list' '$per_run' '$save_beta'"
         if ( "$matlab_runtime_util" == "" ) then
-            set cmd = ( $MATLAB -nojvm -nodesktop -nodisplay -nosplash -r '"' 'addpath(fullfile('"'"$root_dir"'"','\
-                "'"utilities"'"'))'; CBIG_glm_regress_vol $matlab_args; exit '"' )
+            set cmd = ( $MATLAB -batch '"' 'addpath(fullfile('"'"$root_dir"'"','\
+                "'"utilities"'"'))'; CBIG_glm_regress_vol $matlab_args '"' )
         else
             set cmd = ( ${matlab_runtime_util}/CBIG_glm_regress_vol $matlab_args )
         endif

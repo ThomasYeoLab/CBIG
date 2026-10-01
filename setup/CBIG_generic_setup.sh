@@ -40,7 +40,7 @@ else
   # check whether user's default freesurfer version matches CBIG default freesurfer version
   CBIG_default_FREESURFER=`cat $CBIG_CODE_DIR/setup/CBIG_sample_config.sh | grep FREESURFER_HOME \
     | grep -E -o [0-9]+.[0-9]+.[0-9]+`
-  USER_default_FREESURFER=`freesurfer | grep -E v[0-9]+.[0-9]+.[0-9]+ | grep -E -o [0-9]+.[0-9]+.[0-9]+`
+  USER_default_FREESURFER=`freesurfer 2>&1 | grep -E -o '[0-9]+\.[0-9]+\.[0-9]+' | head -n 1`
 
   if [ -z "$USER_default_FREESURFER" ]; then
     warn_msg
@@ -71,9 +71,7 @@ else
 
   # check whether user's default matlab version matches CBIG default matlab version
   CBIG_default_MATLAB=`cat $CBIG_CODE_DIR/setup/CBIG_sample_config.sh | grep -o R20[0-9][0-9][a-b]`
-  USER_default_MATLAB=`which matlab | sed 's/bin\/matlab//g'`
-  USER_default_MATLAB=`cat $USER_default_MATLAB/help/matlab/matlab-version-and-license.html \
-    | grep -o R20[0-9][0-9][a-b] | sed -n '1p'`
+  USER_default_MATLAB=$(grep -o 'R20[0-9][0-9][a-b]' "$(which matlab | sed 's|/bin/matlab||')/VersionInfo.xml" 2>/dev/null | head -1)
 
   if [ -z "$USER_default_MATLAB" ]; then
     warn_msg
@@ -115,9 +113,9 @@ else
 
   # check whether user's default fsl version matches CBIG default fsl version
   CBIG_default_FSL=`cat $CBIG_CODE_DIR/setup/CBIG_sample_config.sh | grep CBIG_FSLDIR \
-    | grep -E -o [0-9]+.[0-9]+.[0-9]+`
+    | grep -E -o '[0-9]+(\.[0-9]+){2,3}'`
   USER_default_FSL=`which fsl | sed 's/bin\/fsl//g'`
-  USER_default_FSL=`cat $USER_default_FSL/etc/fslversion`
+  USER_default_FSL=`cat $USER_default_FSL/etc/fslversion | cut -d':' -f1`
 
   if [ -z "$USER_default_FSL" ]; then
     warn_msg
@@ -146,6 +144,30 @@ if [ -z $CBIG_ANTS_DIR ] || [ ! -d $CBIG_ANTS_DIR ]; then
 else
   export ANTSPATH=$CBIG_ANTS_DIR
   export PATH=$CBIG_ANTS_DIR:$PATH
+  
+    # check whether user's default ANTs version matches CBIG default ANTs version
+  CBIG_default_ANTS=`cat $CBIG_CODE_DIR/setup/CBIG_sample_config.sh | grep CBIG_ANTS_DIR \
+    | grep -E -o '[0-9]+\.[0-9]+\.[0-9]+'`
+
+  USER_default_ANTS=$(antsRegistration --version 2>/dev/null \
+    | grep -E 'ANTs Version' \
+    | grep -E -o '[0-9]+\.[0-9]+\.[0-9]+')
+
+  if [ -z "$USER_default_ANTS" ]; then
+    warn_msg
+    warn_msg "[WARNING]: This version of CBIG repository's default ANTs version is $CBIG_default_ANTS."
+    warn_msg "You appear to be using an unrecognized/invalid ANTs version. \
+Switch to ANTs $CBIG_default_ANTS if possible."
+  elif [ "$USER_default_ANTS" != "$CBIG_default_ANTS" ]; then
+    warn_msg
+    warn_msg "[WARNING]: This version of CBIG repository's default ANTs version is $CBIG_default_ANTS."
+    warn_msg "You appear to be using ANTs $USER_default_ANTS (which may or may not work with current repo). \
+Switch to ANTs version $CBIG_default_ANTS if possible."
+    warn_msg "Note: stable projects may not follow default setting, \
+refer to the proper config file of the project you use."
+    warn_msg "If you are unsure, please run our stable projects' examples \
+to check if the results can be replicated."
+  fi
 fi
 
 ############################
@@ -161,8 +183,11 @@ else
   # check whether user's default workbench version matches CBIG default workbench version
   CBIG_default_WB=`cat $CBIG_CODE_DIR/setup/CBIG_sample_config.sh | grep CBIG_WB_DIR \
     | grep -E -o [0-9]+.[0-9]+.[0-9]+`
-  USER_default_WB=`wb_command | grep Version | grep -E -o [0-9]+.[0-9]+.[0-9]+`
-
+  USER_default_WB=$(wb_command -version 2>/dev/null | grep -E '^Version:' | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+')
+  if [ -z "$USER_default_WB" ]; then
+    USER_default_WB=$(echo "$CBIG_WB_DIR" | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+')
+  fi
+  
   if [ -z "$USER_default_WB" ]; then
     warn_msg
     warn_msg "[WARNING]: This version of CBIG repository's default WORKBENCH version is $CBIG_default_WB."
@@ -193,7 +218,7 @@ else
   # check whether user's default afni version matches CBIG default afni version
   CBIG_default_AFNI=`cat $CBIG_CODE_DIR/setup/CBIG_sample_config.sh | grep CBIG_AFNI_DIR \
     | grep -o afni.* | grep -o AFNI.* | sed 's/\/linux_openmp_64//g'`
-  USER_default_AFNI=`afni --version | grep -o "AFNI_.*" | sed 's/)//g'`
+  USER_default_AFNI=`afni --version | grep -o "AFNI_[0-9]\+\.[0-9]\+\.[0-9]\+"`
 
   if [ -z "$USER_default_AFNI" ]; then
     warn_msg

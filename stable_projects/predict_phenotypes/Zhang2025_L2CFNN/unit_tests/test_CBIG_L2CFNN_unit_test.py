@@ -83,7 +83,6 @@ class TestL2C(unittest.TestCase):
         job_log = os.path.join(log_dir, "unittest.out")
         job_err = os.path.join(log_dir, "unittest.err")
         job_name = "L2CFNN_unittest"
-        specific_host_node = 1  # choose from RTX3090 gpuservers
 
         # --- 3. Construct the command to be executed on the compute node (`inner_cmd`) ---
         # This command includes all necessary environment setup for the job itself.
@@ -111,9 +110,9 @@ class TestL2C(unittest.TestCase):
 
         submit_cmd = (
             f"ssh headnode \"echo '{inner_cmd}' | "
-            "qsub -V -q gpuQ "
+            "qsub -V -q gpuQ-L40S "
             f"-l walltime=00:10:00 "
-            f"-l select=1:ncpus=4:mem=10G:ngpus=1:host=gpuserver{specific_host_node} "
+            f"-l select=1:ncpus=1:mem=10G:ngpus=1 "
             f"-m ae "
             f"-N {job_name} "
             f'-e {job_err} -o {job_log}"'

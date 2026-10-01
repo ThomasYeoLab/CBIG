@@ -82,10 +82,9 @@ echo "[ROIs2ROIs VolAnatDistance]: cortical_ROIs_file = $cortical_ROIs_file"
 echo "[ROIs2ROIs VolAnatDistance]: subcortical_ROIs_file = $subcortical_ROIs_file"
 echo "[ROIs2ROIs VolAnatDistance]: output_name = $output_name"
 
-set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; );
+set cmd = ( $MATLAB -batch '"' 'addpath(genpath('"'"${root_dir}'/utilities'"'"'))'; )
 set cmd = ( $cmd CBIG_preproc_compute_ROIs2ROIs_VolAnatDistance $cortical_ROIs_file \
-$subcortical_ROIs_file $output_name; )
-set cmd = ( $cmd exit; '"' )
+$subcortical_ROIs_file $output_name '"' )
 echo $cmd
 eval $cmd
 

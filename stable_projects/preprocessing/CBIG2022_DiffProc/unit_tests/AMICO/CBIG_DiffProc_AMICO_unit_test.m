@@ -16,7 +16,7 @@ classdef CBIG_DiffProc_AMICO_unit_test < matlab.unittest.TestCase
                 'CBIG2022_DiffProc', 'AMICO_example_data');
             ref_dir = fullfile(DIFF_CODE_DIR,'examples','AMICO_example_data');
             output_dir = fullfile(DIFF_CODE_DIR, 'unit_tests', 'AMICO', 'output');
-            replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag'));
+            replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag.txt'));
             if exist(output_dir, 'dir')
                 rmdir(output_dir, 's')
             end

@@ -10,7 +10,7 @@
              
              % replace reference files
              load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', ...
-                'replace_unittest_flag'))
+                'replace_unittest_flag.txt'))
             
              if(replace_unittest_flag)
                  CBIG_TESTDATA_DIR = getenv('CBIG_TESTDATA_DIR');
@@ -85,10 +85,10 @@
              
              % replace reference files
              load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', ...
-                'replace_unittest_flag'))
+                'replace_unittest_flag.txt'))
             
              if(replace_unittest_flag)
-                 out_dir = [cur_dir 'results'];
+                 out_dir = [cur_dir '/results'];
                  cmd = ['sh ' fullfile(cur_dir, 'scripts/', ...
                      'CBIG_ASDf_example_script.sh') ' ' out_dir];
                  system(cmd);

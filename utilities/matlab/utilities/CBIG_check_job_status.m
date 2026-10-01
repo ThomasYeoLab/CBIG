@@ -68,16 +68,24 @@ end
 % Wait till all jobs are completed
 status = 0;
 [~, whoami] = system('whoami');
-whoami = whoami(1:end-1);
+whoami = strtrim(whoami);
+[~, currnode] = system('hostname');
+currnode = strtrim(currnode);
+
+if(~strcmp(currnode, 'headnode'))
+    fprintf(['WARNING: ssh from ' currnode ' to headnode ...\n']);
+    qstat_cmd = ['ssh headnode "qstat -a | grep -E ''' job ''' | grep ' whoami ' | wc -l"'];
+else
+    qstat_cmd = ['qstat -a | grep -E ''' job ''' | grep ' whoami ' | wc -l'];
+end
+
 % Count the running job number
-cmd = ['qstat -a | grep -E ''' job ''' | grep ' whoami ' | wc -l'];
-[~, job_num] = system(cmd);
-job_num = str2num(job_num(1: end-1));
+[~, job_num] = system(qstat_cmd);
+job_num = str2num(strtrim(job_num));
 while(job_num)
     pause(60);
-    cmd = ['qstat -a | grep -E ''' job ''' | grep ' whoami ' | wc -l'];
-    [~, job_num] = system(cmd);
-    job_num = str2num(job_num(1: end-1));
+    [~, job_num] = system(qstat_cmd);
+    job_num = str2num(strtrim(job_num));
 end
 
 % Check logs
@@ -102,9 +110,25 @@ if(~isempty(out_file))
         temp{1} = out_file;
         out_file = temp;
     end
-    for i=1:length(out_file)
-        if(~exist(out_file{i}, 'file'))
-            fprintf(['[FAILED] Output file ' out_file{i} ' does not exist. \n']);
+    max_retries = 10;
+    for retry = 1:max_retries
+        missing = {};
+        for i = 1:length(out_file)
+            if(~exist(out_file{i}, 'file'))
+                missing{end+1} = out_file{i};
+            end
+        end
+        if(isempty(missing))
+            break;
+        end
+        if(retry < max_retries)
+            fprintf('Some output files do not exist yet. Waiting 1 min (attempt %d/%d)...\n', retry, max_retries);
+            pause(60);
+        else
+            for i = 1:length(missing)
+                fprintf(['[FAILED] Output file ' missing{i} ' does not exist after ' ...
+                    num2str(max_retries) ' checks. \n']);
+            end
             status = 1;
         end
     end

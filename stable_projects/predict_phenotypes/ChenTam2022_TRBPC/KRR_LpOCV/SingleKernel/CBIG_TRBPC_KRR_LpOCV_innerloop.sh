@@ -36,6 +36,6 @@ fi
 
 LF=$outdir/logs/innerloop_${test_fold}.log
 mkdir -p $outdir/job_err_out
-matlab -nodesktop -nosplash -nodisplay -r " load $paramfile; CBIG_KRR_innerloop_cv_allparams_LITE( $test_fold,\
+matlab -batch " load $paramfile; CBIG_KRR_innerloop_cv_allparams_LITE( $test_fold,\
     param.sub_fold, param.num_inner_folds,param.outdir, param.outstem, param.with_bias, 'none', param.ker_param,\
-    param.lambda_set,param.threshold_set, param.metric ); exit; " >> $LF 2>&1
+    param.lambda_set,param.threshold_set, param.metric ); " >> $LF 2>&1

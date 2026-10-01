@@ -14,7 +14,7 @@ classdef CBIG_DiffProc_MRtrix_unit_test < matlab.unittest.TestCase
                 'CBIG2022_DiffProc','MRtrix_example_data');
             base_output_dir = fullfile(DIFF_CODE_DIR, 'unit_tests', 'MRtrix', 'output');
             output_dir = fullfile(base_output_dir, 'test_iFOD');
-            replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag'));
+            replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag.txt'));
             if exist(output_dir, 'dir')
                 rmdir(output_dir, 's');
             end
@@ -53,7 +53,7 @@ classdef CBIG_DiffProc_MRtrix_unit_test < matlab.unittest.TestCase
                 'CBIG2022_DiffProc','MRtrix_example_data');
             base_output_dir = fullfile(DIFF_CODE_DIR, 'unit_tests', 'MRtrix', 'output');
             output_dir = fullfile(base_output_dir, 'test_FACT');
-            replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag'));
+            replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag.txt'));
             if exist(output_dir, 'dir')
                 rmdir(output_dir, 's');
             end

@@ -28,7 +28,7 @@ classdef CBIG_preproc_100subjects_clustering_unit_test < matlab.unittest.TestCas
             UnitTestDir = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects',...
                 'preprocessing', 'CBIG_fMRI_Preproc2016', 'unit_tests');
             OutputDir = fullfile(UnitTestDir, 'output', '100_subjects_Case');
-            load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag'));
+            load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag.txt'));
             
             %create output dir (IMPORTANT)
             if(exist(OutputDir, 'dir'))

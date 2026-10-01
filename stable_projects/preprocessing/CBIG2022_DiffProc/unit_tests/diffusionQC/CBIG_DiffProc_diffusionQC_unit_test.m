@@ -16,7 +16,7 @@ classdef CBIG_DiffProc_diffusionQC_unit_test < matlab.unittest.TestCase
             input_dir = fullfile(CBIG_TEST_DIR,'stable_projects', 'preprocessing', ...
                 'CBIG2022_DiffProc', 'diffusionQC_example_data');
             ref_dir = fullfile(DIFF_CODE_DIR,'examples','diffusionQC_example_data');
-            replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag'));
+            replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag.txt'));
             
             output_dir = fullfile(DIFF_CODE_DIR, 'unit_tests', 'diffusionQC', 'output');
             if exist(output_dir, 'dir')

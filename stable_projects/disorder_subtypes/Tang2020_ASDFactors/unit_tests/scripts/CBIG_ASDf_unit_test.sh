@@ -86,10 +86,10 @@ echo -e "Performing step1_FC2doc for factor estimation:\n" >> $LF
 cd ${code_dir_step1a}
 mkdir -p ${output_dir_step1a}
 
-matlab -nosplash -nodisplay -nodesktop -r \
+matlab -batch \
 "clear;clc;close all; \
 CBIG_ASDf_FC2doc_estFactors_wrapper('${corrMat_ASD_est}', \
-'${corrMat_con_est}','${sub_info_file_est}','${output_dir_step1a}');exit"
+'${corrMat_con_est}','${sub_info_file_est}','${output_dir_step1a}');"
 
 echo -e "Step1_FC2doc for factor estimation finished.\n\n" >> $LF
 
@@ -101,10 +101,10 @@ echo -e "Performing step1_FC2doc for inference:\n" >> $LF
 
 cd ${code_dir_step1b}
 
-matlab -nosplash -nodisplay -nodesktop -r \
+matlab -batch \
 "clear;clc;close all; \
 CBIG_ASDf_FC2doc_infFactorComp_wrapper('${corrMat_ASD_inf}', \
-'${corrMat_con_inf}','${ref_inf}','${sub_info_file_inf}','${output_dir_step1b}');exit"
+'${corrMat_con_inf}','${ref_inf}','${sub_info_file_inf}','${output_dir_step1b}');"
 
 echo -e "step1_FC2doc for inference finished.\n\n" >> $LF
 
@@ -133,9 +133,9 @@ ${code_dir_step2a}/CBIG_ASDf_polarLDA_est.sh \
     -q CBIG_cluster
 
 ## hold until submitted jobs are finished
-matlab -nodisplay -nosplash -nodesktop -r \
+matlab -batch \
 "clear;clc;close all; \
-CBIG_ASDf_checkJobStatus('${progressFile}','${numRuns_est}','600');exit;"
+CBIG_ASDf_checkJobStatus('${progressFile}','${numRuns_est}','600');"
 
 echo -e "K = 2 factor estimation finished.\n\n" >> $LF
 
@@ -148,9 +148,9 @@ echo -e "Get final estimate and visualize the factors.\n" >> $LF
 cd ${code_dir_step2b}
 mkdir -p ${output_dir_step2b}
 
-matlab -nodisplay -nosplash -nodesktop -r \
+matlab -batch \
 "clear;clc;close all; \
-CBIG_ASDf_visualizeFactors('${output_dir_step2a}','${output_dir_step2b}','2');exit;"
+CBIG_ASDf_visualizeFactors('${output_dir_step2a}','${output_dir_step2b}','2');"
 
 echo -e "Plotting factor visualization finished.\n\n" >> $LF
 

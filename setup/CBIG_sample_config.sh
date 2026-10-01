@@ -24,13 +24,13 @@ fi
 export CBIG_CODE_DIR=$HOME/storage/CBIG_private
 
 # PLEASE CHANGE: define locations for these libraries
-export FREESURFER_HOME=/apps/freesurfer/5.3.0
-export CBIG_MATLAB_DIR=/apps/matlab/R2018b
-export CBIG_SPM_DIR=/apps/spm/spm12
-export CBIG_AFNI_DIR=/apps/afni/AFNI_2011_12_21_1014/linux_openmp_64
-export CBIG_ANTS_DIR=/apps/ants/ants_v2.2.0/BUILD/bin/
-export CBIG_WB_DIR=/apps/HCP/workbench-1.1.1/
-export CBIG_FSLDIR=/apps/fsl/5.0.10
+export FREESURFER_HOME=/apps/freesurfer/7.4.1
+export CBIG_MATLAB_DIR=/apps/matlab/R2025b
+export CBIG_SPM_DIR=/apps/spm/spm25
+export CBIG_AFNI_DIR=/apps/afni/AFNI_25.2.18/linux_openmp_64
+export CBIG_ANTS_DIR=/apps/ants/ants_v2.6.3/bin
+export CBIG_WB_DIR=/apps/HCP/workbench-2.1.0
+export CBIG_FSLDIR=/apps/fsl/6.0.7.19
 
 # DO NOT CHANGE: define locations for unit tests data and replication data
 export CBIG_TESTDATA_DIR=/mnt/nas/CSC21/Yeolab/CodeMaintenance/UnitTestData

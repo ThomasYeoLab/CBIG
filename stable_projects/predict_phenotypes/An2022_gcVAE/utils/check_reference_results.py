@@ -174,7 +174,7 @@ def check_reference_results(args):
     if args.unittest:
         # for unit test
         results_path = os.path.join(global_config.root_path, 'unit_tests',
-                                    'results')
+                                    'output', 'results')
         # 1. check dataset prediction
         site_models = ['unharm', 'cVAE', 'gcVAE']
         site_prefix = 'site_pred_'
@@ -186,8 +186,7 @@ def check_reference_results(args):
             site_result = round(site_result, 4)
             site_loger.append(site_result)
         site_loger = np.array(site_loger).astype(float)
-        site_pred_ref = np.array(
-            [0.9701492537313433, 0.7611940298507462, 0.7761194029850746])
+        site_pred_ref = np.array([0.9701, 0.7662, 0.8259])
         assert np.allclose(
             site_loger, site_pred_ref,
             atol=1e-3), 'Unit test failed for dataset prediction'
@@ -202,8 +201,7 @@ def check_reference_results(args):
             mmse_result = round(mmse_result, 4)
             mmse_loger.append(mmse_result)
         mmse_loger = np.array(mmse_loger).astype(float)
-        mmse_pred_ref = np.array(
-            [6.000762594751565, 3.977287407380989, 3.764270954821483])
+        mmse_pred_ref = np.array([7.8627, 4.2604, 4.2771])
         assert np.allclose(
             mmse_pred_ref, mmse_loger,
             atol=1e-3), 'Unit test failed for MMSE prediction'

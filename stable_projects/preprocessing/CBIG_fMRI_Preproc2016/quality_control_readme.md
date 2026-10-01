@@ -6,10 +6,11 @@
  
 - Visualization check by tkregister2. The user can check the registration by looking at the alignment of the green line and the boundary of grey matter, and also by clicking "compare" to load in anatomical image and compare. The user is able to select different space coordinates to check the alignment in different position. The following three lines are the commands that the user would need. (`REG_stem` is the stem that passed into registration step, i.e. the stem of the image at which step that the user wants to use for registration)
 
+  Note: `tkregister2` is no longer maintained in newer FreeSurfer versions and its GUI may become unclickable. CSC-HPC users should use the `CBIG_tkregister2` wrapper instead (see `$CBIG_CODE_DIR/utilities/scripts/CBIG_tkregister2`).
+
 ```
 cd ${sub_dir}/${subject}/bold/${run_folder}
-setenv SUBJECTS_DIR ${anat_d}
-tkregister2 --mov ${subject}_bld${run_folder}${REG_stem}.nii.gz --reg ${subject}_bld${run_folder}${REG_stem}_reg.dat --surf
+CBIG_tkregister2 --mov ${subject}_bld${run_folder}${REG_stem}.nii.gz --reg ${subject}_bld${run_folder}${REG_stem}_reg.dat --surf --sd ${anat_d}
 ```
       
 ----
@@ -22,15 +23,15 @@ Power et al. "Methods to detect, characterize, and remove motion artifact in res
 - Motion outliers text file.
 
   In this file, each line is a number 0 or 1 corresponding to one frame. 0 represents this frame is censored (removed in analyses). 1 means this frame is uncensored (kept).
-  `${sub_dir}/${subject}/qc/${subject}_bld${run_folder}_FDRMS0.2_DVARS50_motion_outliers.txt`
+  `${sub_dir}/${subject}/qc/${subject}_bld${run_folder}_${FD_metric}0.2_DVARS50_motion_outliers.txt`
 
 - Motion correction parameters figures.
 
-  Please take a look at the framewise displacement (FD) and DVARS figure to see if too many frames exceed the threshold, which is:
-  `${sub_dir}/${subject}/qc/${subject}_bld${run_folder}_FDRMS${FD_thres}_DVARS${DVARS_thres}.png`
+  Please take a look at the framewise displacement (FD) (or FDRMS, if user chose FDRMS instead of FD) and DVARS figure to see if too many frames exceed the threshold, which is:
+  `${sub_dir}/${subject}/qc/${subject}_bld${run_folder}_${FD_metric}${FD_thres}_DVARS${DVARS_thres}.png`
 
-  Another figure the user can refer to is the correlation between FD and DVARS, to see if these two parameters are consistent:
-  `${sub_dir}/${subject}/qc/${subject}_bld${run_folder}_DVARS_FDRMS_correlation.png` (correlation between FD and DVARS)
+  Another figure the user can refer to is the correlation between FDRMS/FD and DVARS, to see if these two parameters are consistent:
+  `${sub_dir}/${subject}/qc/${subject}_bld${run_folder}_DVARS_${FD_metric}_correlation.png` (correlation between FDRMS/FD and DVARS)
   
   Furthermore, the user can view the MCFLIRT estimated rotation, translation, and mean displacement:
   `${sub_dir}/${subject}/qc/${subject}_bld${run_folder}${BOLD_stem}_mc_rot_trans_disp.png`

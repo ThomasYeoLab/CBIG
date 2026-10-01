@@ -225,8 +225,8 @@ foreach runfolder ($bold)
             endif
             set matlab_args = "'$hemi' 'fsaverage6' '$input1' '$input2' '$tmp_output'"
             if ( "$matlab_runtime_util" == "" ) then
-                set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(fullfile('"'"$root_dir"'"\
-                    ','"'"utilities"'"'))'; CBIG_preproc_fsaverage_medialwall_fillin $matlab_args; exit '"' );
+                set cmd = ( $MATLAB -batch '"' 'addpath(fullfile('"'"$root_dir"'"\
+                    ','"'"utilities"'"'))'; CBIG_preproc_fsaverage_medialwall_fillin $matlab_args '"' );
             else
                 set cmd = ( ${matlab_runtime_util}/CBIG_preproc_fsaverage_medialwall_fillin $matlab_args )
             endif
@@ -331,8 +331,8 @@ foreach runfolder ($bold)
             set after_NaN_name = $surffolder/$hemi.${subject}_bld${runfolder}${out_stem}_medialwallNaN.nii.gz
             set matlab_args = "'$hemi' '$out_mesh' '$before_NaN_name' '$after_NaN_name'"
             if ( "$matlab_runtime_util" == "" ) then
-                set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"' 'addpath(fullfile('"'"$root_dir"'"\
-                    ','"'"utilities"'"'))'; CBIG_preproc_set_medialwall_NaN $matlab_args; exit '"' );
+                set cmd = ( $MATLAB -batch '"' 'addpath(fullfile('"'"$root_dir"'"\
+                    ','"'"utilities"'"'))'; CBIG_preproc_set_medialwall_NaN $matlab_args '"' );
             else
                 set cmd = ( ${matlab_runtime_util}/CBIG_preproc_set_medialwall_NaN $matlab_args )
             endif

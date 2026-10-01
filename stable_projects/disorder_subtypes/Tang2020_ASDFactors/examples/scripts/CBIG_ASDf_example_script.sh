@@ -50,12 +50,12 @@ cd ${code_dir_step1a}
 mkdir -p ${output_dir_step1a}
 echo -e "Performing step1_FC2doc for factor estimation:\n" >> ${LF}
 
-matlab -nosplash -nodisplay -nodesktop -r \
+matlab -batch \
 "clear;clc;close all; \
 CBIG_ASDf_FC2doc_estFactors_wrapper('${corrMat_ASD_est}', \
 '${corrMat_Con_est}', \
 '${sub_info_file_est}', \
-'${output_dir_step1a}');exit"
+'${output_dir_step1a}');"
 
 echo -e "step1_FC2doc for factor estimation finished.\n\n" >> ${LF}
 
@@ -75,13 +75,13 @@ echo -e "Performing step1_FC2doc for inference:\n" >> ${LF}
 
 cd ${code_dir_step1b}
 
-matlab -nosplash -nodisplay -nodesktop -r \
+matlab -batch \
 "clear;clc;close all; \
 CBIG_ASDf_FC2doc_infFactorComp_wrapper('${corrMat_ASD_inf}', \
 '${corrMat_Con_inf}', \
 '${ref_inf}', \
 '${sub_info_file_inf}', \
-'${output_dir_step1b}');exit"
+'${output_dir_step1b}');"
 
 echo -e "step1_FC2doc for inference finished.\n\n" >> ${LF}
 
@@ -131,9 +131,9 @@ echo -e "Get final estimate and visualize the factors:\n" >> ${LF}
 cd ${code_dir_step2b}
 mkdir -p ${output_dir_step2b}
 
-matlab -nodisplay -nosplash -nodesktop -r \
+matlab -batch \
 "clear;clc;close all;addpath(genpath(fullfile(getenv('CBIG_CODE_DIR'),'utilities','matlab')));\
-CBIG_ASDf_visualizeFactors('${output_dir_step2a}','${output_dir_step2b}','2');exit;"
+CBIG_ASDf_visualizeFactors('${output_dir_step2a}','${output_dir_step2b}','2');"
 
 echo -e "Plotting factor visualization finished.\n\n" >> ${LF}
 
@@ -180,9 +180,11 @@ echo -e "Comparing your results to reference results.\n" >> ${LF}
 
 cd ${code_dir}/examples/scripts
 
-matlab -nodisplay -nosplash -nodesktop -r \
-"clear; close all;clc; \
-CBIG_ASDf_check_example_results('${output_dir}','${LF}');exit;"
+matlab -batch \
+"try; clear; close all; clc; \
+CBIG_ASDf_check_example_results('${output_dir}','${LF}'); \
+exit(0); \
+catch ME; disp(getReport(ME)); exit(1); end;"
 
 echo -e "Checking results finished.\n\n" >> ${LF}
 

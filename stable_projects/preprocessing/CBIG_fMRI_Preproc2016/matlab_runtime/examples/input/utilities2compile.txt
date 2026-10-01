@@ -7,7 +7,8 @@ CBIG_bandpass_vol.m
 CBIG_preproc_censor_wrapper.m
 CBIG_preproc_CensorQC.m
 CBIG_preproc_plot_mcflirt_par.m
-CBIG_preproc_DVARS_FDRMS_Correlation.m
+CBIG_preproc_DVARS_FD_metric_Correlation.m
+CBIG_preproc_filter_out_respiratory_pseudomotion.m
 CBIG_preproc_motion_outliers.m
 CBIG_preproc_fsaverage_medialwall_fillin.m
 CBIG_preproc_set_medialwall_NaN.m

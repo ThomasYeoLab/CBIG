@@ -77,10 +77,10 @@ logfile=${doc_out_dir}/CBIG_MMLDA_vbm_behavior_to_doc.log
 
 gm_merge_path=${vbm_out_dir}/mri/gm_merg_MNI2mm_s10.nii.gz
 gmvol_icv_path=${vbm_out_dir}/gmVolAndICV/id_gmVol_icv.mat
-matlab -nodisplay -nosplash -r \
+matlab -batch \
 "subinfo_path='${subinfo}';gm_merge_path='${gm_merge_path}';\
 gmvol_icv_path='${gmvol_icv_path}';doc_out_dir='${doc_out_dir}'; \
-CBIG_MMLDA_vbm_behavior_to_doc;exit;" > ${logfile}
+CBIG_MMLDA_vbm_behavior_to_doc;" > ${logfile}
 
 ###### Step 3: MMLDA infer factor loadings given factors
 mmlda_out_dir=${outDir}/mmlda_inf
@@ -110,20 +110,20 @@ cd ${CBIG_CODE_DIR}/stable_projects/disorder_subtypes/Sun2019_ADJointFactors/inf
 
 gamma_file=${mmlda_out_dir}/k${k}_inf_mmlda-gamma.dat
 prob_file=${prob_out_dir}/k${k}_inf_mmlda_prob.csv
-matlab -nodisplay -nosplash -r \
+matlab -batch \
 "gamma_file='${gamma_file}';prob_file='${prob_file}';\
-CBIG_MMLDA_gamma2prob;exit;" > ${logfile}
+CBIG_MMLDA_gamma2prob;" > ${logfile}
 
 gamma_file=${mmlda_out_dir}/k${k}_inf1_mmlda-gamma.dat
 prob_file=${prob_out_dir}/k${k}_inf1_mmlda_prob.csv
-matlab -nodisplay -nosplash -r \
+matlab -batch \
 "gamma_file='${gamma_file}';prob_file='${prob_file}';\
-CBIG_MMLDA_gamma2prob;exit;" > ${logfile}
+CBIG_MMLDA_gamma2prob;" > ${logfile}
 
 gamma_file=${mmlda_out_dir}/k${k}_inf2_mmlda-gamma.dat
 prob_file=${prob_out_dir}/k${k}_inf2_mmlda_prob.csv
-matlab -nodisplay -nosplash -r \
+matlab -batch \
 "gamma_file='${gamma_file}';prob_file='${prob_file}';\
-CBIG_MMLDA_gamma2prob;exit;" > ${logfile}
+CBIG_MMLDA_gamma2prob;" > ${logfile}
 
 

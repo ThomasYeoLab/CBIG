@@ -44,8 +44,7 @@ rotateXLabels(gca(), 45);
 
 %% Save the plot
 if nargin > 2 && ~isempty(output_name)
-    hgexport(gcf, output_name);
-    eps2xxx([output_name '.eps'], {'png'});
+    exportgraphics(gcf, [output_name '.png']);
 end
 
 hold off;

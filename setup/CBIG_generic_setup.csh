@@ -29,9 +29,8 @@ else
   # check whether user's default freesurfer version matches CBIG default freesurfer version
   set CBIG_default_FREESURFER = `cat $CBIG_CODE_DIR/setup/CBIG_sample_config.csh | grep FREESURFER_HOME \
     | grep -E -o "[0-9]+.[0-9]+.[0-9]+"`
-  set USER_default_FREESURFER = `freesurfer | grep -E "v[0-9]+.[0-9]+.[0-9]+" | grep -E -o "[0-9]+.[0-9]+.[0-9]+"`
-  
-  if (! $?USER_default_FREESURFER) then
+  set USER_default_FREESURFER = `freesurfer |& grep -E -o '[0-9]+\.[0-9]+\.[0-9]+' | head -n 1`
+  if ("$USER_default_FREESURFER" == "") then
     if ($?prompt) then
       echo "[WARNING]: This version of CBIG repository's default FREESURFER version is $CBIG_default_FREESURFER."
       echo -n "You appear to be using an unrecognized/invalid FREESURFER version."
@@ -63,18 +62,17 @@ else
 
   # check whether user's default matlab version matches CBIG default matlab version
   set CBIG_default_MATLAB = `cat $CBIG_CODE_DIR/setup/CBIG_sample_config.csh | grep -o "R20[0-9][0-9][a-b]"`
-  set USER_default_MATLAB = `which matlab | sed 's/bin\/matlab//g'`
-  set USER_default_MATLAB = `cat $USER_default_MATLAB/help/matlab/matlab-version-and-license.html \
-    | grep -o "R20[0-9][0-9][a-b]" | sed -n '1p'`
+  set MATLAB_DIR = `where matlab | head -1 | sed 's|/bin/matlab||'`
+  set USER_default_MATLAB = `grep -o 'R20[0-9][0-9][a-b]' $MATLAB_DIR/VersionInfo.xml | head -1`
 
-  if (! $?USER_default_MATLAB) then
+  if ("$USER_default_MATLAB" == "") then
     if ($?prompt) then
       echo "[WARNING]: This version of CBIG repository's default MATLAB version is $CBIG_default_MATLAB."
       echo -n "You appear to be using an unrecognized/invalid MATLAB version."
       echo "Switch to MATLAB $CBIG_default_MATLAB if possible.\n"
     endif
   else if ("$USER_default_MATLAB" != "$CBIG_default_MATLAB") then
-    
+    if ($?prompt) then
       echo "[WARNING]: This version of CBIG repository's default MATLAB version is $CBIG_default_MATLAB."
       echo -n "You appear to be using MATLAB $USER_default_MATLAB (which may or may not work with current repo)."
       echo "Switch to MATLAB version $CBIG_default_MATLAB if possible."
@@ -82,7 +80,7 @@ else
       echo "refer to the proper config file of the project you use."
       echo -n "If you are unsure, please run our stable projects' examples "
       echo "to check if the results can be replicated.\n"
-    
+    endif
   endif
 endif
 
@@ -111,11 +109,11 @@ FSLDIR is the FSL directory defined by FSL. FSL_DIR is the FSL directory defined
 
   # check whether user's default fsl version matches CBIG default fsl version
   set CBIG_default_FSL = `cat $CBIG_CODE_DIR/setup/CBIG_sample_config.csh | grep CBIG_FSLDIR \
-    | grep -E -o "[0-9]+.[0-9]+.[0-9]+"`
+    | grep -E -o '[0-9]+(\.[0-9]+){2,3}'`
   set USER_default_FSL = `which fsl | sed 's/bin\/fsl//g'`
-  set USER_default_FSL = `cat $USER_default_FSL/etc/fslversion`
+  set USER_default_FSL = `cat $USER_default_FSL/etc/fslversion | cut -d':' -f1`
 
-  if (! $?USER_default_FSL) then
+  if ("$USER_default_FSL" == "") then
     if ($?prompt) then
       echo "[WARNING]: This version of CBIG repository's default FSL version is $CBIG_default_FSL."
       echo -n "You appear to be using an unrecognized/invalid FSL version."
@@ -145,6 +143,31 @@ if ((! $?CBIG_ANTS_DIR)  || { eval 'test ! -d $CBIG_ANTS_DIR' }) then
 else
   setenv ANTSPATH $CBIG_ANTS_DIR
   set path = ($CBIG_ANTS_DIR $path)
+  
+  # check whether user's default ANTs version matches CBIG default ANTs version
+  set CBIG_default_ANTS = `cat $CBIG_CODE_DIR/setup/CBIG_sample_config.csh | grep CBIG_ANTS_DIR \
+    | grep -E -o "[0-9]+.[0-9]+.[0-9]+"`
+
+  set USER_default_ANTS = `antsRegistration --version |& \
+    grep -E 'ANTs Version' | grep -E -o "[0-9]+\.[0-9]+\.[0-9]+"`
+
+  if ("$USER_default_ANTS" == "") then
+    if ($?prompt) then
+      echo "[WARNING]: This version of CBIG repository's default ANTs version is $CBIG_default_ANTS."
+      echo -n "You appear to be using an unrecognized/invalid ANTs version. "
+      echo "Switch to ANTs $CBIG_default_ANTS if possible.\n"
+    endif
+  else if ("$USER_default_ANTS" != "$CBIG_default_ANTS") then
+    if ($?prompt) then
+      echo "[WARNING]: This version of CBIG repository's default ANTs version is $CBIG_default_ANTS."
+      echo -n "You appear to be using ANTs $USER_default_ANTS (which may or may not work with current repo). "
+      echo "Switch to ANTs version $CBIG_default_ANTS if possible."
+      echo -n "Note: stable projects may not follow default setting, "
+      echo "refer to the proper config file of the project you use."
+      echo -n "If you are unsure, please run our stable projects' examples "
+      echo "to check if the results can be replicated.\n"
+    endif
+  endif
 endif
 
 ############################
@@ -161,9 +184,12 @@ else
   # check whether user's default workbench version matches CBIG default workbench version
   set CBIG_default_WB = `cat $CBIG_CODE_DIR/setup/CBIG_sample_config.csh | grep CBIG_WB_DIR \
     | grep -E -o "[0-9]+.[0-9]+.[0-9]+"`
-  set USER_default_WB = `wb_command | grep "Version" | grep -E -o "[0-9]+.[0-9]+.[0-9]+"`
+  set USER_default_WB = `wb_command -version |& grep -E '^Version:' | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+'`
+  if ("$USER_default_WB" == "") then
+    set USER_default_WB = `echo "$CBIG_WB_DIR" | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+'`
+  endif
 
-  if (! $?USER_default_WB) then
+  if ("$USER_default_WB" == "") then
     if ($?prompt) then
       echo "[WARNING]: This version of CBIG repository's default WORKBENCH version is $CBIG_default_WB."
       echo -n "You appear to be using an unrecognized/invalid WORKBENCH version."
@@ -196,9 +222,9 @@ else
   # check whether user's default afni version matches CBIG default afni version
   set CBIG_default_AFNI = `cat $CBIG_CODE_DIR/setup/CBIG_sample_config.csh | grep CBIG_AFNI_DIR \
     | grep -o "afni.*" | grep -o "AFNI.*" | sed 's/\/linux_openmp_64//g'`
-  set USER_default_AFNI = `afni --version | grep -o "AFNI_.*" | sed 's/)//g'`
+  set USER_default_AFNI = `afni --version | grep -o "AFNI_[0-9]\+\.[0-9]\+\.[0-9]\+"`
 
-  if (! $?USER_default_AFNI) then
+  if ("$USER_default_AFNI" == "") then
     if ($?prompt) then
       echo "[WARNING]: This version of CBIG repository's default AFNI version is $CBIG_default_AFNI."
       echo -n "You appear to be using an unrecognized/invalid AFNI version."

@@ -45,10 +45,10 @@ echo "metric = $metric" >> $LF
 
 # prepare input parameters to the multi-kernel regression
 
-matlab -nodesktop -nosplash -nodisplay -r " addpath $root_dir; CBIG_TRBPC_multiKRR_LpOCV_prepare_parameters( \
+matlab -batch " addpath $root_dir; CBIG_TRBPC_multiKRR_LpOCV_prepare_parameters( \
     '$csv_file', '$subject_list', '$feature_files', '$y_list', '$covariate_list', '$FD_file', \
     '$DVARS_file', '$outdir', '$outstem', '$num_leave_out', '$num_inner_folds','$ker_param_file',\
-    '$threshold','$group_kernel','$domain','$metric' ); exit; " >> $LF 2>&1
+    '$threshold','$group_kernel','$domain','$metric' ); " >> $LF 2>&1
 
 paramfile=${outdir}/param.mat
 kernel_folders=${outdir}/kernel_folders.mat
@@ -71,7 +71,7 @@ else
         cmd="${root_dir}/CBIG_TRBPC_multiKRR_LpOCV_testloop.sh -p ${paramfile} -t ${test_fold} -o ${outdir}"
         errfile=${outdir}/job_err_out/testloop_${test_fold}.err
         outfile=${outdir}/job_err_out/testloop_${test_fold}.out
-        ${CBIG_CODE_DIR}/setup/CBIG_pbsubmit -walltime 50:00:0 -mem 16gb -joberr ${errfile} -jobout ${outfile}\
+        ${CBIG_CODE_DIR}/setup/CBIG_pbsubmit -walltime 2:00:00 -mem 16gb -joberr ${errfile} -jobout ${outfile}\
             -cmd "${cmd}" -name ${testLPname}
     done
 
@@ -83,8 +83,8 @@ if [ "$cluster" != "none" ];then
 fi
 
 # gather results of all cross-validation test folds
-matlab -nodesktop -nosplash -nodisplay -r " addpath $root_dir; load $paramfile; CBIG_TRBPC_multiKRR_LpOCV_pick_optima(\
-    ${num_test_folds}, param.outdir, param.outstem); exit; " >> $LF 2>&1
+matlab -batch " addpath $root_dir; load $paramfile; CBIG_TRBPC_multiKRR_LpOCV_pick_optima(\
+    ${num_test_folds}, param.outdir, param.outstem); " >> $LF 2>&1
 }
 
 #############################

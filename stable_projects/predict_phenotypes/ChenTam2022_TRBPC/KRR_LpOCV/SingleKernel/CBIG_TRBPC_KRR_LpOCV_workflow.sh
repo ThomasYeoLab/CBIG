@@ -41,10 +41,10 @@ echo "num_inner_folds = $num_inner_folds" >> $LF
 ############################
 
 # prepare input parameters to the single-kernel regression
-matlab -nodesktop -nosplash -nodisplay -r " addpath $root_dir; CBIG_TRBPC_KRR_LpOCV_prepare_parameters( '$csv_file',\
+matlab -batch " addpath $root_dir; CBIG_TRBPC_KRR_LpOCV_prepare_parameters( '$csv_file',\
     '$subject_list', '$feature_file', '$y_list', '$covariate_list', '$FD_file', '$DVARS_file', '$outdir', '$outstem', \
     '$num_leave_out','$num_inner_folds', '$ker_param_file','$lambda_set_file','$threshold_set_file',\
-    '$metric' ); exit; " >> $LF 2>&1
+    '$metric' ); " >> $LF 2>&1
 
 # run testloop cross validation
 paramfile=${outdir}/param.mat
@@ -94,9 +94,9 @@ if [ "$cluster" != "none" ];then
 fi
 
 # gather results of all cross-validation test folds
-matlab -nodesktop -nosplash -nodisplay -r " addpath $root_dir; load $paramfile; CBIG_KRR_pick_optima( \
+matlab -batch " addpath $root_dir; load $paramfile; CBIG_KRR_pick_optima( \
     param.sub_fold, param.outdir, param.outstem, param.bin_flag, param.ker_param, param.lambda_set,\
-    param.threshold_set ); exit; " >> $LF 2>&1
+    param.threshold_set ); " >> $LF 2>&1
    
 }
 

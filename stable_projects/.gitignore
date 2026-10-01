@@ -44,6 +44,7 @@
 !/preprocessing/Li2019_GSR/**
 !/preprocessing/Orban2020_tod/**
 !/preprocessing/CBIG2022_DiffProc/**
+!/preprocessing/Tan2026_TMSmotion/**
 
 !/registration/*
 !/registration/Wu2017_RegistrationFusion/**

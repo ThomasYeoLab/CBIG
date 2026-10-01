@@ -104,7 +104,7 @@ classdef CBIG_AuthorTopic_unit_test < matlab.unittest.TestCase
             
             % load flag
             replace_unittest_flagDir = fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests');
-            load(fullfile(replace_unittest_flagDir, 'replace_unittest_flag'));
+            load(fullfile(replace_unittest_flagDir, 'replace_unittest_flag.txt'));
             
             % refTheta = [0.3712, 0.5404, 0.4980, 0.7596, 0.1926, 0.7443, 0.0840; ...
             %    0.6288, 0.4596, 0.5020, 0.2404, 0.8074, 0.2557, 0.9160]';

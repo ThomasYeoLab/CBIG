@@ -21,7 +21,7 @@ methods (Test)
     function test_examples(testCase)
         addpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', ...
             'Li2019_GSR', 'examples', 'scripts'));
-        replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag'));
+        replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag.txt'));
         
         % generate example results
         CBIG_LiGSR_generate_example_results
@@ -181,7 +181,7 @@ methods (Test)
             'Li2019_GSR', 'unit_tests', 'intelligence_score', 'scripts'));
         OutputDir = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', ...
             'Li2019_GSR', 'unit_tests', 'output', 'intelligence_score_LME_GSP_Case');
-        replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag'));
+        replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag.txt'));
         
         % create output dir (IMPORTANT)
         if(exist(OutputDir, 'dir'))
@@ -196,9 +196,12 @@ methods (Test)
         system(cmd) % this will submit 2 jobs to HPC
         
         %% we need to periodically check whether the job has finished or not
-        cmd='sh $CBIG_CODE_DIR/utilities/scripts/CBIG_check_job_status -n LiGSRUT_ME';
-        system(cmd)
-        
+        out_files = {fullfile(OutputDir, 'GSR', 'del431_set5', 'm2_QuantileNorm_Shipley_Vocab_Raw.mat'), ...
+            fullfile(OutputDir, 'GSR', 'del431_set5', 'm2_QuantileNorm_Matrix_WAIS.mat'), ...
+            fullfile(OutputDir, 'Baseline', 'del431_set5', 'm2_QuantileNorm_Shipley_Vocab_Raw.mat'), ...
+            fullfile(OutputDir, 'Baseline', 'del431_set5', 'm2_QuantileNorm_Matrix_WAIS.mat')};
+        CBIG_check_job_status('LiGSRUT_ME', 'out', out_files);
+
         %% compare two preprocessing pipelines
         CBIG_LiGSR_LME_unittest_intelligence_score_cmp2pipe_GSP( OutputDir );
         
@@ -228,7 +231,8 @@ methods (Test)
         end
         CBIG_LiGSR_LME_unittest_intelligence_score_cmp_w_reference_GSP( fullfile(OutputDir, ...
             'compare_2pipe', 'allstats_cmp2pipelines.mat') );
-        
+
+        rmdir(OutputDir, 's');
         rmpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', ...
             'Li2019_GSR', 'unit_tests', 'intelligence_score', 'scripts'));
     end
@@ -239,7 +243,7 @@ methods (Test)
             'Li2019_GSR', 'unit_tests', 'intelligence_score', 'scripts'));
         OutputDir = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', ...
             'Li2019_GSR', 'unit_tests', 'output', 'intelligence_score_LME_HCP_Case');
-        replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag'));
+        replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag.txt'));
         
         % create output dir (IMPORTANT)
         if(exist(OutputDir, 'dir'))
@@ -254,9 +258,10 @@ methods (Test)
         system(cmd);
         
         %% we need to periodically check whether the job has finished or not
-        cmd='sh $CBIG_CODE_DIR/utilities/scripts/CBIG_check_job_status -n LiGSRUT_ME';
-        system(cmd)
-        
+        out_files = {fullfile(OutputDir, 'GSR', 'del209_set5', 'm2_QuantileNorm_PMAT24_A_CR.mat'), ...
+            fullfile(OutputDir, 'Baseline', 'del209_set5', 'm2_QuantileNorm_PMAT24_A_CR.mat')};
+        CBIG_check_job_status('LiGSRUT_ME', 'out', out_files);
+
         %% compare two preprocessing pipelines
         CBIG_LiGSR_LME_unittest_PMAT_cmp2pipe_HCP( OutputDir );
         
@@ -286,7 +291,8 @@ methods (Test)
         end
         CBIG_LiGSR_LME_unittest_PMAT_cmp_w_reference_HCP( fullfile(OutputDir, ...
             'compare_2pipe', 'allstats_cmp2pipelines.mat') );
-        
+
+        rmdir(OutputDir, 's');
         rmpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', ...
             'Li2019_GSR', 'unit_tests', 'intelligence_score', 'scripts'));
     end
@@ -297,7 +303,7 @@ methods (Test)
             'Li2019_GSR', 'unit_tests', 'intelligence_score', 'scripts'));
         OutputDir = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', ...
             'Li2019_GSR', 'unit_tests', 'output', 'intelligence_score_KRR_GSP_Case');
-        replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag'));
+        replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag.txt'));
         
         % create output dir (IMPORTANT)
         if(exist(OutputDir, 'dir'))
@@ -312,9 +318,14 @@ methods (Test)
         system(cmd); % this will submit 6 jobs to HPC
         
         %% we need to periodically check whether the job has finished or not
-        cmd='sh $CBIG_CODE_DIR/utilities/scripts/CBIG_check_job_status -n LiGSRUT_KR';
-        system(cmd)
-        
+        out_files = {fullfile(OutputDir, 'GSR', 'randseed_1', 'final_result_2intelligence.mat'), ...
+            fullfile(OutputDir, 'GSR', 'randseed_2', 'final_result_2intelligence.mat'), ...
+            fullfile(OutputDir, 'GSR', 'randseed_3', 'final_result_2intelligence.mat'), ...
+            fullfile(OutputDir, 'Baseline', 'randseed_1', 'final_result_2intelligence.mat'), ...
+            fullfile(OutputDir, 'Baseline', 'randseed_2', 'final_result_2intelligence.mat'), ...
+            fullfile(OutputDir, 'Baseline', 'randseed_3', 'final_result_2intelligence.mat')};
+        CBIG_check_job_status('LiGSRUT_KR', 'out', out_files);
+
         %% compare two preprocessing pipelines
         CBIG_LiGSR_KRR_unittest_intelligence_score_cmp2pipe_GSP( OutputDir );
         
@@ -342,6 +353,8 @@ methods (Test)
         end
         CBIG_LiGSR_KRR_unittest_intelligence_score_cmp_w_reference_GSP( fullfile(OutputDir, ...
             'compare_2pipe', 'final_result.mat') );
+
+        rmdir(OutputDir, 's');
         
         rmpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', ...
             'Li2019_GSR', 'unit_tests', 'intelligence_score', 'scripts'));
@@ -353,7 +366,7 @@ methods (Test)
             'Li2019_GSR', 'unit_tests', 'intelligence_score', 'scripts'));
         OutputDir = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', ...
             'Li2019_GSR', 'unit_tests', 'output', 'intelligence_score_KRR_HCP_Case');
-        replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag'));
+        replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag.txt'));
         
         % create output dir (IMPORTANT)
         if(exist(OutputDir, 'dir'))
@@ -368,9 +381,14 @@ methods (Test)
         system(cmd); % this will submit 6 jobs to HPC
         
         %% we need to periodically check whether the job has finished or not
-        cmd='sh $CBIG_CODE_DIR/utilities/scripts/CBIG_check_job_status -n LiGSRUT_KR';
-        system(cmd)
-        
+        out_files = {fullfile(OutputDir, 'GSR', 'randseed_1', 'final_result_PMAT24.mat'), ...
+            fullfile(OutputDir, 'GSR', 'randseed_2', 'final_result_PMAT24.mat'), ...
+            fullfile(OutputDir, 'GSR', 'randseed_3', 'final_result_PMAT24.mat'), ...
+            fullfile(OutputDir, 'Baseline', 'randseed_1', 'final_result_PMAT24.mat'), ...
+            fullfile(OutputDir, 'Baseline', 'randseed_2', 'final_result_PMAT24.mat'), ...
+            fullfile(OutputDir, 'Baseline', 'randseed_3', 'final_result_PMAT24.mat')};
+        CBIG_check_job_status('LiGSRUT_KR', 'out', out_files);
+
         %% compare two preprocessing pipelines
         CBIG_LiGSR_KRR_unittest_PMAT_cmp2pipe_HCP( OutputDir );
         
@@ -398,7 +416,8 @@ methods (Test)
         end
         CBIG_LiGSR_KRR_unittest_PMAT_cmp_w_reference_HCP( fullfile(OutputDir, ...
             'compare_2pipe', 'final_result.mat') );
-        
+
+        rmdir(OutputDir, 's');
         rmpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', ...
             'Li2019_GSR', 'unit_tests', 'intelligence_score', 'scripts'));
     end
@@ -411,7 +430,7 @@ methods (Test)
             'non_default_packages', 'Gaussian_Process');
         OutputDir = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', ...
             'Li2019_GSR', 'unit_tests', 'output', 'intelligence_score_LRR_GSP_Case');
-        replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag'));
+        replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag.txt'));
         
         % create output dir (IMPORTANT)
         if(exist(OutputDir, 'dir'))
@@ -427,9 +446,21 @@ methods (Test)
         system(cmd); % this will submit 6 jobs to HPC
         
         %% we need to periodically check whether the job has finished or not
-        cmd='sh $CBIG_CODE_DIR/utilities/scripts/CBIG_check_job_status -n LiGSRUT_LR';
-        system(cmd)
-        
+        out_files = { ...
+            fullfile(OutputDir, 'GSR', 'randseed_1', 'results', 'optimal_acc', 'Shipley_Vocab_Raw.mat'), ...
+            fullfile(OutputDir, 'GSR', 'randseed_2', 'results', 'optimal_acc', 'Shipley_Vocab_Raw.mat'), ...
+            fullfile(OutputDir, 'GSR', 'randseed_3', 'results', 'optimal_acc', 'Shipley_Vocab_Raw.mat'), ...
+            fullfile(OutputDir, 'Baseline', 'randseed_1', 'results', 'optimal_acc', 'Shipley_Vocab_Raw.mat'), ...
+            fullfile(OutputDir, 'Baseline', 'randseed_2', 'results', 'optimal_acc', 'Shipley_Vocab_Raw.mat'), ...
+            fullfile(OutputDir, 'Baseline', 'randseed_3', 'results', 'optimal_acc', 'Shipley_Vocab_Raw.mat'), ...
+            fullfile(OutputDir, 'GSR', 'randseed_1', 'results', 'optimal_acc', 'Matrix_WAIS.mat'), ...
+            fullfile(OutputDir, 'GSR', 'randseed_2', 'results', 'optimal_acc', 'Matrix_WAIS.mat'), ...
+            fullfile(OutputDir, 'GSR', 'randseed_3', 'results', 'optimal_acc', 'Matrix_WAIS.mat'), ...
+            fullfile(OutputDir, 'Baseline', 'randseed_1', 'results', 'optimal_acc', 'Matrix_WAIS.mat'), ...
+            fullfile(OutputDir, 'Baseline', 'randseed_2', 'results', 'optimal_acc', 'Matrix_WAIS.mat'), ...
+            fullfile(OutputDir, 'Baseline', 'randseed_3', 'results', 'optimal_acc', 'Matrix_WAIS.mat')};
+        CBIG_check_job_status('LiGSRUT_LR', 'out', out_files);
+
         %% compare two preprocessing pipelines
         CBIG_LiGSR_LRR_unittest_intelligence_score_cmp2pipe_GSP( OutputDir );
         
@@ -457,7 +488,8 @@ methods (Test)
         end
         CBIG_LiGSR_LRR_unittest_intelligence_score_cmp_w_reference_GSP( fullfile(OutputDir, ...
             'compare_2pipe', 'final_result.mat') );
-        
+
+        rmdir(OutputDir, 's');
         rmpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', ...
             'Li2019_GSR', 'unit_tests', 'intelligence_score', 'scripts'));
     end
@@ -470,7 +502,7 @@ methods (Test)
             'non_default_packages', 'Gaussian_Process');
         OutputDir = fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', ...
             'Li2019_GSR', 'unit_tests', 'output', 'intelligence_score_LRR_HCP_Case');
-        replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag'));
+        replace_unit_test = load(fullfile(getenv('CBIG_CODE_DIR'), 'unit_tests', 'replace_unittest_flag.txt'));
         
         % create output dir (IMPORTANT)
         if(exist(OutputDir, 'dir'))
@@ -485,9 +517,15 @@ methods (Test)
         system(cmd); % this will submit 6 jobs to HPC
         
         %% we need to periodically check whether the job has finished or not
-        cmd='sh $CBIG_CODE_DIR/utilities/scripts/CBIG_check_job_status -n LiGSRUT_LR';
-        system(cmd)
-        
+        out_files = { ...
+            fullfile(OutputDir, 'GSR', 'randseed_1', 'results', 'optimal_acc', 'PMAT24_A_CR.mat'), ...
+            fullfile(OutputDir, 'GSR', 'randseed_2', 'results', 'optimal_acc', 'PMAT24_A_CR.mat'), ...
+            fullfile(OutputDir, 'GSR', 'randseed_3', 'results', 'optimal_acc', 'PMAT24_A_CR.mat'), ...
+            fullfile(OutputDir, 'Baseline', 'randseed_1', 'results', 'optimal_acc', 'PMAT24_A_CR.mat'), ...
+            fullfile(OutputDir, 'Baseline', 'randseed_2', 'results', 'optimal_acc', 'PMAT24_A_CR.mat'), ...
+            fullfile(OutputDir, 'Baseline', 'randseed_3', 'results', 'optimal_acc', 'PMAT24_A_CR.mat')};
+        CBIG_check_job_status('LiGSRUT_LR', 'out', out_files);
+
         %% compare two preprocessing pipelines
         CBIG_LiGSR_LRR_unittest_PMAT_cmp2pipe_HCP( OutputDir );
         
@@ -515,6 +553,8 @@ methods (Test)
         end
         CBIG_LiGSR_LRR_unittest_PMAT_cmp_w_reference_HCP( fullfile(OutputDir, ...
             'compare_2pipe', 'final_result.mat') );
+
+        rmdir(OutputDir, 's');
         
         rmpath(fullfile(getenv('CBIG_CODE_DIR'), 'stable_projects', 'preprocessing', ...
             'Li2019_GSR', 'unit_tests', 'intelligence_score', 'scripts'));

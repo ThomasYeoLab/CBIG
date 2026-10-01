@@ -13,7 +13,7 @@ function [if_both_hemi_match] = CBIG_gwMRF_check_example_results(output_folder, 
 
 % check if replacing example results
 CBIG_CODE_DIR = getenv('CBIG_CODE_DIR');
-load(fullfile(CBIG_CODE_DIR, 'unit_tests', 'replace_unittest_flag'));
+load(fullfile(CBIG_CODE_DIR, 'unit_tests', 'replace_unittest_flag.txt'));
 
 if(~ischar(seed))
     seed = num2str(seed);

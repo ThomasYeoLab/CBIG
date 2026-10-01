@@ -36,6 +36,6 @@ fi
  
 LF=$outdir/logs/testloop.log
 mkdir -p $outdir/job_err_out
-matlab -nodesktop -nosplash -nodisplay -r " load $paramfile; for i = 1:${N_test_folds};\
+matlab -batch " load $paramfile; for i = 1:${N_test_folds};\
 CBIG_KRR_test_cv_allparams_LITE( i, param.sub_fold, param.outdir, param.outstem, param.with_bias,\
-    'none',param.ker_param, param.lambda_set, param.threshold_set );end; exit; " >> $LF 2>&1
+    'none',param.ker_param, param.lambda_set, param.threshold_set );end; " >> $LF 2>&1

@@ -208,7 +208,12 @@ else if ( $fpm == "oppo_PED" ) then
     #if user does not specify topup config file, use default config file
     if ( $topup_config == "" ) then
         echo "[WARNING] FSL TOPUP configuration file not specified. Use default topup config file."|& tee -a $LF
-        set topup_config = "$CBIG_FSLDIR"/src/topup/flirtsch/b02b0.cnf
+        # newer FSL versions (>=6.0.6) moved topup config to src/fsl-topup/flirtsch/
+        if ( -f "$CBIG_FSLDIR"/src/fsl-topup/flirtsch/b02b0.cnf ) then
+            set topup_config = "$CBIG_FSLDIR"/src/fsl-topup/flirtsch/b02b0.cnf
+        else
+            set topup_config = "$CBIG_FSLDIR"/src/topup/flirtsch/b02b0.cnf
+        endif
     endif
 
     #create datain.txt
@@ -306,12 +311,16 @@ foreach curr_bold ($zpdbold)
     echo $cmd |& tee -a $LF
     eval $cmd
 
-    #Cluster inverted brain mask
-    set cmd = ( cluster -i "$phase"_inv_brain_mask -t 0.5 --no_table -o "$phase"_inv_brain_mask_clust )
+    #Cluster inverted brain mask (renamed to fsl-cluster in FSL >= 6.0.6)
+    if ( `which fsl-cluster >& /dev/null; echo $status` == 0 ) then
+        set cmd = ( fsl-cluster -i "$phase"_inv_brain_mask -t 0.5 -o "$phase"_inv_brain_mask_clust )
+    else
+        set cmd = ( cluster -i "$phase"_inv_brain_mask -t 0.5 -o "$phase"_inv_brain_mask_clust )
+    endif
     echo $cmd |& tee -a $LF
-    eval $cmd 
+    eval $cmd
 
-    #Save intensity of largest cluster 
+    #Save intensity of largest cluster
     set max = `fslstats "$phase"_inv_brain_mask_clust -R | awk '{print $2}'`
 
     #Threshhold the image by max, then invert again. Get a new, tighter brain mask.

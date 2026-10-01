@@ -14,6 +14,6 @@ scripts_dir=`dirname "$(readlink -f "$0")"`
 LF=${outdir}/logs/perm_test_score${score}_perm_start${perm_start}.txt
 date >> $LF
 
-matlab -nodesktop -nosplash -nodisplay -r " addpath $scripts_dir; \
+matlab -batch " addpath $scripts_dir; \
 CBIG_TRBPC_compute_${model}_perm_stats('${input_dir}','${outstem}','${score}',${perm_start},\
-${N_per_job},'${group}','${outdir}'); exit; " >> $LF
+${N_per_job},'${group}','${outdir}'); " >> $LF

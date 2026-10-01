@@ -1,0 +1,22 @@
+{
+    "jobscheduler": {
+        "username": "trevortan"
+    },
+    "path": {
+        "first_N_T1_list": "/mnt/nas/CSC21/Yeolab/CodeMaintenance/ReplicationData/stable_projects/preprocessing/Tan2026_TMSmotion/input_data/first_N_T1_list.txt",
+        "data_dir": "/mnt/nas/CSC21/Yeolab/Data/precision_fmri/preprocessed/Tan2026_TMSmotion",
+        "rep_dir": "/mnt/nas/CSC21/Yeolab/Users/trevortan/stable_projects/preprocessing/Tan2026_TMSmotion/replication"
+    },
+    "preproc_struct": {
+        "reconall_map": [
+            {
+                "dataset": "Newbold",
+                "subID": "sub-cast1",
+                "map2": {
+                    "dataset": "MSC",
+                    "subID": "sub-MSC02"
+                }
+            }
+        ]
+    }
+}

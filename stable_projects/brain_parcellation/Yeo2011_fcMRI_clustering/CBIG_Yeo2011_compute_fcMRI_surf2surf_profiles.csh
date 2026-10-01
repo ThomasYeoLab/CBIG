@@ -93,20 +93,19 @@ endif
 if( -e ${output_file1} && -e ${output_file2} ) then
     echo "Outputs already exist. Skipping......"
 else
-    set cmd = ( $MATLAB -nodesktop -nodisplay -nosplash -r '"')
-    set cmd = ($cmd 'addpath(genpath(fullfile('"'"$CBIG_CODE_DIR"'", "'"utilities"'", "'"matlab"'"')));')
+    set cmd = ( $MATLAB -batch '"' 'addpath(genpath(fullfile('"'"$CBIG_CODE_DIR"'", "'"utilities"'", "'"matlab"'"')));')
     set cmd = ($cmd 'addpath(fullfile('"'"$CBIG_CODE_DIR"'", "'"external_packages"'",)
     set cmd = ($cmd "'"SD"'", "'"SDv1.5.1-svn593"'", "'"BasicTools"'"'));')
     if( $scrub_flag == 0 ) then
         set cmd = ($cmd CBIG_ComputeCorrelationProfile "'"${roi}"'" "'"${target}"'" "'"${output_file1}"'")
         set cmd = ($cmd "'"${output_file2}"'" "'"${threshold}"'" "'"${lh_input_file}"'")
-        set cmd = ($cmd "'"${rh_input_file}"'"'; exit;''"')
+        set cmd = ($cmd "'"${rh_input_file}"'"'"')
     endif
     
     if( $scrub_flag == 1 ) then
         set cmd = ($cmd CBIG_ComputeCorrelationProfile "'"${roi}"'" "'"${target}"'" "'"${output_file1}"'")
         set cmd = ($cmd "'"${output_file2}"'" "'"${threshold}"'" "'"${lh_input_file}"'")
-        set cmd = ($cmd "'"${rh_input_file}"'" "'"${outlier_input_file}"'"'; exit;''"')
+        set cmd = ($cmd "'"${rh_input_file}"'" "'"${outlier_input_file}"'"'"')
     endif
     eval $cmd
 endif

@@ -95,19 +95,19 @@ wb_command -volume-label-import ${mask_file} ${LUT} ${label_mask_file} -discard-
 
 # Generate surface gii files
 if [ -n "$N_lh" ] && [ -n "$N_rh" ];then
-    matlab -nosplash -nodisplay -nodesktop -r " \
+    matlab -batch " \
 CBIG_CODE_DIR=getenv('CBIG_CODE_DIR'); \
 addpath(fullfile(CBIG_CODE_DIR, 'external_packages', 'matlab', 'default_packages', 'cifti-matlab')); \
 addpath(genpath(fullfile(CBIG_CODE_DIR, 'stable_projects', 'brain_parcellation', 'Xue2021_IndCerebellum', 'lib')));\
 CBIG_IndCBM_create_surf_gifti('${surf_mesh}', '${script_dir}', 'lh', '${N_lh}', 'rh', '${N_rh}'); \
-exit;"
+"
 else
-    matlab -nosplash -nodisplay -nodesktop -r " \
+    matlab -batch " \
 CBIG_CODE_DIR=getenv('CBIG_CODE_DIR'); \
 addpath(fullfile(CBIG_CODE_DIR, 'external_packages', 'matlab', 'default_packages', 'cifti-matlab')); \
 addpath(genpath(fullfile(CBIG_CODE_DIR, 'stable_projects', 'brain_parcellation', 'Xue2021_IndCerebellum', 'lib')));\
 CBIG_IndCBM_create_surf_gifti('${surf_mesh}', '${script_dir}'); \
-exit;"
+"
 fi
 
 lh_gifti="${script_dir}/L.${surf_mesh}.func.gii"

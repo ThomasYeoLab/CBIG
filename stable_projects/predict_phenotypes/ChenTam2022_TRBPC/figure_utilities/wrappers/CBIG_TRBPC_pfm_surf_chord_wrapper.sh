@@ -8,8 +8,8 @@ code_dir=$CBIG_CODE_DIR/stable_projects/predict_phenotypes/ChenTam2022_TRBPC/fig
 
 
 # call matlab wrapper to generate all the PFMs
-matlab -nodesktop -nosplash -nodisplay -r " addpath $code_dir; CBIG_TRBPC_replicate_matrix_plots( \
-   '$outdir' ); exit; " 
+matlab -batch " addpath $code_dir; CBIG_TRBPC_replicate_matrix_plots( \
+   '$outdir' ); "
 
 # generate PFM similarity plots
 source activate py_trbpc
